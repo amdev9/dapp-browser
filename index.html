@@ -27,12 +27,12 @@
                         <a data-section="welcome" href="#">Welcome</a>
                     </li>
                     <li>
-                        <a data-section="whoweare" href="#">
+                        <a data-section="whoweare" id="dapp1" onClick="clicked(this.id)" href="#">
                                 <img data-section="whoweare" src="dapps/dapp1/favicon.png"></img>
                         </a>
                     </li>
                     <li>
-                        <a data-section="whatwedo" href="#">
+                        <a data-section="whatwedo" id="dapp2" onClick="clicked(this.id)" href="#">
                             <img data-section="whatwedo" src="dapps/dapp2/favicon.png"></img>
                         </a>
                     </li>
@@ -64,6 +64,7 @@
     <script src="assets/js/skel.min.js"></script>
     <script src="assets/js/util.js"></script>
     <script src="assets/js/main.js"></script>
+    <script src="renderer.js"></script>
     <script>
         require('./assets/js/menu')
     </script>

@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "electron-reload": "^1.2.2"
+    "electron-reload": "^1.2.2",
+    "node-dir": "^0.1.17"
   }
 }
