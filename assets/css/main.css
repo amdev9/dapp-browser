@@ -16,9 +16,19 @@
 		font: inherit;
 		vertical-align: baseline;
 	}
+	#dapp1{
+		margin-top: 10px
+	}
+	#dapp2{
+		margin-top: 10px
+	}
 
 	article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
 		display: block;
+	}
+
+	a.disabled{
+		pointer-events: none !important;
 	}
 
 	body {

@@ -18,7 +18,6 @@ function clicked(id) {
       let parsedContent = JSON.parse(content);
       NameAndPermissions.name = parsedContent["name"];
       NameAndPermissions.permissions = parsedContent["permissions"]
-      module.exports = NameAndPermissions;
       console.log(NameAndPermissions);
       next();
     },
@@ -28,3 +27,9 @@ function clicked(id) {
     }
   );
 }
+
+// module.exports = function () {
+//     return NameAndPermissions;
+// }
+module.exports = NameAndPermissions;
+module.exports.clicked = clicked;
