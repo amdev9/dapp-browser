@@ -18,18 +18,13 @@ function clicked(id) {
       let parsedContent = JSON.parse(content);
       NameAndPermissions.name = parsedContent["name"];
       NameAndPermissions.permissions = parsedContent["permissions"]
-      console.log(NameAndPermissions);
+      window.nameAndPermissionsObject = NameAndPermissions;
+      // console.log(NameAndPermissions);
       next();
     },
     function(err, files) {
       if (err) throw err;
-      console.log("finished reading files:", files);
+      // console.log("finished reading files:", files);
     }
   );
 }
-
-// module.exports = function () {
-//     return NameAndPermissions;
-// }
-module.exports = NameAndPermissions;
-module.exports.clicked = clicked;

@@ -1,0 +1,5 @@
+This text is being read from a file using the node file system
+which was declared in the manifest file.
+Your app is working just fine. ;-)
+
+**Try removing the 'fs' from the manifest file and an error will be thrown in the console.**
