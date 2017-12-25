@@ -17,7 +17,7 @@ function clicked(id) {
       if (err) throw err;
       let parsedContent = JSON.parse(content);
       NameAndPermissions.name = parsedContent["name"];
-      NameAndPermissions.permissions = parsedContent["permissions"]
+      NameAndPermissions.permissions = parsedContent["permissions"];
       window.nameAndPermissionsObject = NameAndPermissions;
       // console.log(NameAndPermissions);
       next();
@@ -28,3 +28,24 @@ function clicked(id) {
     }
   );
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+  document.addEventListener(
+    "click",
+    function(e) {
+      let link = e.target.href.toLowerCase();
+      if (
+        link.startsWith("http") ||
+        link.startsWith("https") ||
+        link.startsWith("www")
+      ) {
+        e.preventDefault();
+        e.stopPropagation();
+        setTimeout(function() {}, 100);
+        return false;
+      }
+      return true;
+    },
+    true
+  );
+});
