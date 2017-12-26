@@ -1,30 +1,27 @@
 const path = require("path");
 const fs = require("fs");
 const dir = require("node-dir");
+const vm = require("vm");
 
 const dirpath = path.join(__dirname, "/dapps/");
 
-const NameAndPermissions = {};
+// const NameAndPermissions = {};
 
 function clicked(id) {
   let appPath = dirpath + id;
   dir.readFiles(
     appPath,
     {
-      match: /manifest.json$/
+      match: /controller.js$/
     },
     function(err, content, next) {
       if (err) throw err;
-      let parsedContent = JSON.parse(content);
-      NameAndPermissions.name = parsedContent["name"];
-      NameAndPermissions.permissions = parsedContent["permissions"];
-      window.nameAndPermissionsObject = NameAndPermissions;
-      // console.log(NameAndPermissions);
+      let result = vm.runInNewContext(content,{document});
+      // console.log(result)
       next();
     },
     function(err, files) {
       if (err) throw err;
-      // console.log("finished reading files:", files);
     }
   );
 }
@@ -33,7 +30,9 @@ document.addEventListener("DOMContentLoaded", function() {
   document.addEventListener(
     "click",
     function(e) {
-      let link = e.target.href.toLowerCase();
+      if(e.target.href)
+      {
+        let link = e.target.href.toLowerCase();
       if (
         link.startsWith("http") ||
         link.startsWith("https") ||
@@ -45,6 +44,7 @@ document.addEventListener("DOMContentLoaded", function() {
         return false;
       }
       return true;
+      }
     },
     true
   );
