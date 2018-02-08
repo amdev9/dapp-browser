@@ -1,0 +1,13 @@
+{
+    "version": "1.0",
+  
+    "key": "8gsh76asd757000",
+    "name": "Log Controller",
+    "main" : "main.js",
+
+    "description": "This is Log Controller",
+
+    "permissions": [
+        "console", "fs"
+    ]
+}

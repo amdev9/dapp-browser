@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="23px" height="22px" viewBox="0 0 23 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>search</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icons" transform="translate(-765.000000, -619.000000)" fill="#5C96BE" fill-rule="nonzero">
+            <g id="search" transform="translate(776.142857, 630.000000) scale(-1, 1) translate(-776.142857, -630.000000) translate(765.000000, 619.000000)">
+                <path d="M14.0371058,0 C9.48837308,0 5.78849722,3.69987586 5.78849722,8.24860853 C5.78849722,12.7973412 9.48837308,16.4972171 14.0371058,16.4972171 C18.5858384,16.4972171 22.2857143,12.7973412 22.2857143,8.24860853 C22.2857143,3.69987586 18.5843387,0 14.0371058,0 Z M14.0371058,14.9974701 C10.3162334,14.9974701 7.28824422,11.9694809 7.28824422,8.24860853 C7.28824422,4.52773621 10.3147337,1.49974701 14.0371058,1.49974701 C17.7594778,1.49974701 20.7859673,4.52773621 20.7859673,8.24860853 C20.7859673,11.9694809 17.7579781,14.9974701 14.0371058,14.9974701 Z" id="Shape"></path>
+                <rect id="Rectangle-path" transform="translate(4.341373, 17.799629) rotate(-45.000000) translate(-4.341373, -17.799629) " x="-0.868274583" y="17.0760668" width="10.419295" height="1.4471243"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

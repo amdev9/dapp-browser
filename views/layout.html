@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>{{ title }}</title>
+
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	
+	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+	<link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&subset=cyrillic" rel="stylesheet">
+
+	<link rel="stylesheet" href="/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="/css/icons.css" />
+	<link rel="stylesheet" href="/css/theme.css" />
+	<link rel="stylesheet" href="/css/style.css" />
+
+	<!-- Module -->
+	<script src="/module/socket.io.js"></script>
+	<script src="/module/lib.js"></script>
+
+	<script src="/js/vue.min.js"></script>
+</head>
+<body>
+
+{% block content %}{% endblock %}
+
+{% include "include/modal/access.html" %}
+<script src="/js/jquery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/index.js"></script>
+</body>
+</html>

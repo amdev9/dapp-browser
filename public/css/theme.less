@@ -1,0 +1,26 @@
+@theme: #5C96BE;
+
+.btn {
+    border: 0;
+    padding: 4px 15px;
+
+    &-secondary {
+        color: @theme;
+        background: #CEE4F3;
+
+        &:hover, &.hover {
+            color: #fff;
+            background: @theme
+        }
+
+        &:active {
+            background: @theme !important
+        }
+    }
+}
+
+.form-control {
+    &:focus {
+        box-shadow: none
+    }
+}

@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="wrapper">
+	{% include "include/header.html" %}
+
+	<main>
+		<div class="main">
+			<aside>
+				<div class="contextmenu">
+					<span data-value="pin">Pin</span>
+					<span data-value="close">Close App</span>
+				</div>
+
+				<div class="apps"></div>
+			</aside>
+
+			<div class="content">
+				<div class="frames"></div>
+
+				<div class="container-fluid">
+					{% if items.length %}
+						<h3 class="title">Your apps</h3>
+
+						<div class="row apps">
+							{% for item in items %}
+								<div data-href="{{ item.index }}" data-type="apps" data-icon="{{ item.icon }}" class="col-md-6 col-lg-3 apps-item">
+									<div class="apps-item-header" style="background-image: url( {{ item.thumb }} )"></div>
+
+									<div class="apps-item-body">
+										<h5 class="apps-item-name">{{ item.name }}</h5>
+										<small class="apps-item-type">{{ item.type }}</small>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					{% else %}
+						<div class="row h-100 align-items-center">
+							<div class="col content-empty text-center">
+								<span>Your apps page</span>
+							</div>
+						</div>
+					{% endif %}
+				</div>
+
+				{% include "include/console.html" %}
+			</div>
+		</div>
+	</main>
+</div>
+{% endblock %}

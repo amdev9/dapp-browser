@@ -1,0 +1,13 @@
+{
+    "version": "1.0",
+  
+    "key": "asd876asd7575af",
+    "name": "Web Controller",
+    "main" : "main.js",
+
+    "description": "This is Web Controller",
+
+    "permissions": [
+        "console", "fs"
+    ]
+}

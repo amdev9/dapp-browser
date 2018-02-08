@@ -1,0 +1,19 @@
+.btn {
+  border: 0;
+  padding: 4px 15px;
+}
+.btn-secondary {
+  color: #5C96BE;
+  background: #CEE4F3;
+}
+.btn-secondary:hover,
+.btn-secondary.hover {
+  color: #fff;
+  background: #5C96BE;
+}
+.btn-secondary:active {
+  background: #5C96BE !important;
+}
+.form-control:focus {
+  box-shadow: none;
+}

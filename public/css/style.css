@@ -1,0 +1,316 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+html {
+  height: 100%;
+}
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+nav,
+section,
+summary {
+  display: block;
+}
+body {
+  font: 16px 'Roboto', sans-serif;
+  height: 100%;
+}
+.wrapper {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+/* Header
+-----------------------------------------------------------------------------*/
+header {
+  width: 100%;
+  height: 60px;
+  background: #F2F8FC;
+}
+header .navbar {
+  height: 100%;
+}
+header .navbar-home {
+  height: 100%;
+  flex: 0 0 60px;
+  padding: 0;
+  background: #DBEBF6;
+}
+header .navbar-home-link {
+  display: block;
+  height: 100%;
+  cursor: pointer;
+  text-align: center;
+}
+header .navbar-home-link .icon {
+  margin: 50% 0 0;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+header .navbar-user-search form {
+  width: 100%;
+}
+header .navbar-user-search form input,
+header .navbar-user-search form input:focus {
+  border: 0;
+  color: #5C96BE;
+  padding: 4px 10px 4px 40px;
+  border-radius: 0;
+  background: #DEECF6 url('../images/icons/search.svg') no-repeat left 10px center;
+}
+header .navbar-user-nav {
+  padding-left: 0;
+}
+header .navbar-user-nav a {
+  display: inline-block;
+}
+header .navbar-user-nav a + a {
+  margin-left: 10px;
+}
+/* Middle
+-----------------------------------------------------------------------------*/
+main {
+  display: flex;
+  flex-grow: 1;
+  flex: 1;
+}
+main .main {
+  display: flex;
+  flex: 1;
+}
+main .main aside {
+  position: relative;
+  width: 60px;
+  height: 100%;
+  padding: 7px 0;
+  background: #CEE4F3;
+  display: flex;
+}
+main .main aside .apps {
+  flex: 1;
+}
+main .main aside .apps-item {
+  position: relative;
+  padding: 7px 0;
+  cursor: pointer;
+}
+main .main aside .apps-item.active,
+main .main aside .apps-item.focus {
+  background: #6CADDB;
+}
+main .main aside .apps-item.online:after {
+  position: absolute;
+  content: '';
+  height: 12px;
+  width: 12px;
+  top: -6px;
+  right: -6px;
+  border-radius: 50%;
+  background: #5C96BE;
+}
+main .main aside .apps-item .icns {
+  display: block;
+  width: 35px;
+  height: 35px;
+  padding: 4px;
+  margin: 0 auto;
+  border-radius: 4px;
+  background: #97BCD6 url('../images/icons/app.svg') no-repeat center;
+  background-size: 60%;
+}
+main .main aside .apps-item .icns img {
+  display: block;
+  max-width: 100%;
+}
+main .main aside .contextmenu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+  min-width: 150px;
+  padding: 5px 0;
+  background: #6CADDB;
+  z-index: 3;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+main .main aside .contextmenu span {
+  display: block;
+  font-size: 16px;
+  color: #fff;
+  height: 35px;
+  padding: 0 20px;
+  line-height: 35px;
+  cursor: pointer;
+  white-space: nowrap;
+  -webkit-transition: all 0.1s ease-in-out;
+  -moz-transition: all 0.1s ease-in-out;
+  -ms-transition: all 0.1s ease-in-out;
+  transition: all 0.1s ease-in-out;
+}
+main .main aside .contextmenu span:hover {
+  background: #5C96BE;
+}
+main .main .content {
+  position: relative;
+  display: flex;
+  flex: 1;
+  padding: 10px 40px 40px;
+}
+main .main .content .title {
+  font-weight: 400;
+  color: #5C96BE;
+  margin: 30px 0 30px;
+}
+main .main .content .apps-item {
+  cursor: pointer;
+  margin: 0 0 30px;
+}
+main .main .content .apps-item:hover {
+  text-decoration: none;
+}
+main .main .content .apps-item-header {
+  min-height: 120px;
+  background-color: #CEE4F3;
+  background-position: center;
+  background-size: cover;
+}
+main .main .content .apps-item-body {
+  padding: 15px;
+  background: #EFF9FF;
+}
+main .main .content .apps-item-name {
+  font-size: 18px;
+  font-weight: 400;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #5C96BE;
+}
+main .main .content .apps-item-type {
+  color: #5C96BE;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+main .main .content .frames {
+  position: absolute;
+  display: none;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 30px;
+  z-index: 1;
+  background: #fff url('../images/preloader.svg') no-repeat center;
+}
+main .main .content .frames.view {
+  display: block;
+}
+main .main .content .frames iframe {
+  height: 100%;
+  width: 100%;
+  border: 0;
+}
+main .main .content-empty span {
+  font-size: 28px;
+  color: #BCD9EF;
+}
+main .main .content .view-code {
+  position: fixed;
+  margin: 0 auto;
+  left: 60px;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+}
+main .main .content .view-code-panel {
+  position: relative;
+  cursor: pointer;
+  height: 30px;
+  line-height: 30px;
+  padding: 0 30px 0 40px;
+  background: #EFF9FF url('../images/icons/up.svg') no-repeat right 10px center;
+  background-size: auto 50%;
+}
+main .main .content .view-code-panel span {
+  font-size: 12px;
+  display: block;
+  color: #5C96BE;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+main .main .content .view-code-panel .icon {
+  position: absolute;
+}
+main .main .content .view-code-panel .icon-console {
+  left: 10px;
+  top: 5px;
+}
+main .main .content .view-code-console {
+  height: 0;
+  color: #c3e3ff;
+  overflow: auto;
+  padding: 0 30px 0;
+  opacity: 0;
+  background: #163246;
+  -webkit-transition: all 0.15s ease-in-out;
+  -moz-transition: all 0.15s ease-in-out;
+  -ms-transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
+}
+main .main .content .view-code-console p {
+  margin: 0 0 15px;
+}
+main .main .content .view-code-console span.info {
+  color: #28a745;
+}
+main .main .content .view-code-console span.debug {
+  color: #007bff;
+}
+main .main .content .view-code-console span.error {
+  color: #dc3545;
+}
+main .main .content .view-code-console span.warning {
+  color: #ffc107;
+}
+main .main .content .view-code-console.open {
+  height: 270px;
+  opacity: 1;
+  padding: 30px 30px 15px;
+}
+.modal-backdrop {
+  background: rgba(92, 150, 190, 0.7);
+}
+.modal-content {
+  border-radius: 0;
+  box-shadow: none;
+  border: 0;
+}
+.modal-header {
+  color: #5C96BE;
+}
+.modal-header .close {
+  opacity: 1;
+}
+.modal-header .close span {
+  font-weight: 100;
+  font-size: 30px;
+  color: #5C96BE;
+}
+.modal-body {
+  color: #5C96BE;
+}
