@@ -10,7 +10,7 @@ const Datastore = require( 'nedb' );
 global.access_db = new Datastore({filename: 'database/access.db', autoload: true});
 
 // Socket IO
-global.io = require( 'socket.io' )( 3306 );
+global.io = require( 'socket.io' )( 4040 );
 
 // Dirname
 global.__public = path.join(__dirname, '/public/');

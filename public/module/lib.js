@@ -2,7 +2,7 @@
 
     'use strict';
 
-    const socket = io( 'ws://localhost:3306' );
+    const socket = io( 'ws://localhost:4040' );
 
     const API = Object.freeze({
         Socket: Object.freeze({
