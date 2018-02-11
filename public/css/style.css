@@ -145,6 +145,9 @@ main .main aside .contextmenu {
   z-index: 3;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+main .main aside .contextmenu.show {
+  display: block;
+}
 main .main aside .contextmenu span {
   display: block;
   font-size: 16px;
@@ -206,7 +209,7 @@ main .main .content .apps-item-type {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-main .main .content .frames {
+main .main .content #views {
   position: absolute;
   display: none;
   left: 0;
@@ -216,10 +219,10 @@ main .main .content .frames {
   z-index: 1;
   background: #fff url('../images/preloader.svg') no-repeat center;
 }
-main .main .content .frames.view {
+main .main .content #views.show {
   display: block;
 }
-main .main .content .frames iframe {
+main .main .content #views iframe {
   height: 100%;
   width: 100%;
   border: 0;
@@ -291,26 +294,4 @@ main .main .content .view-code-console.open {
   height: 270px;
   opacity: 1;
   padding: 30px 30px 15px;
-}
-.modal-backdrop {
-  background: rgba(92, 150, 190, 0.7);
-}
-.modal-content {
-  border-radius: 0;
-  box-shadow: none;
-  border: 0;
-}
-.modal-header {
-  color: #5C96BE;
-}
-.modal-header .close {
-  opacity: 1;
-}
-.modal-header .close span {
-  font-weight: 100;
-  font-size: 30px;
-  color: #5C96BE;
-}
-.modal-body {
-  color: #5C96BE;
 }

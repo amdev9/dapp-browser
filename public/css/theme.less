@@ -1,5 +1,12 @@
 @theme: #5C96BE;
 
+.transition(@property: all, @delay: .15s, @duration: ease-in-out) {
+    -webkit-transition: @arguments;
+    -moz-transition: @arguments;
+    -ms-transition: @arguments;
+    transition: @arguments;
+}
+
 .btn {
     border: 0;
     padding: 4px 15px;
@@ -23,4 +30,41 @@
     &:focus {
         box-shadow: none
     }
+}
+
+.modal {
+    display: block;
+    opacity: 0;
+    visibility: hidden;
+    .transition();
+
+    &.show {
+        opacity: 1;
+        visibility: visible;
+        background: fade(@theme, 70%);
+    }
+
+	&-content {
+		border-radius: 0;
+		box-shadow: none;
+		border: 0
+	}
+
+	&-header {
+		color: @theme;
+
+		.close {
+			opacity: 1;
+			
+			span {
+				font-weight: 100;
+				font-size: 30px;
+				color: @theme;
+			}
+		}
+	}
+
+	&-body {
+		color: @theme;
+	}
 }

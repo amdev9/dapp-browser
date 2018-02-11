@@ -1,5 +1,5 @@
 <div class="view-code">
-    <div class="view-code-panel"><i class="icon icon-console"></i> <span>C:\ > приложение.ex e--uri=anni://wallet/?sendto=address2</span></div>
+    <div class="view-code-panel" v-on:click="toogle"><i class="icon icon-console"></i> <span>C:\ > приложение.ex e--uri=anni://wallet/?sendto=address2</span></div>
 
-    <div class="view-code-console"></div>
+    <div class="view-code-console" ref="console" v-bind:class="{open: open}"></div>
 </div>

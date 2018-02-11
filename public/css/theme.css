@@ -17,3 +17,36 @@
 .form-control:focus {
   box-shadow: none;
 }
+.modal {
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transition: all 0.15s ease-in-out;
+  -moz-transition: all 0.15s ease-in-out;
+  -ms-transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
+}
+.modal.show {
+  opacity: 1;
+  visibility: visible;
+  background: rgba(92, 150, 190, 0.7);
+}
+.modal-content {
+  border-radius: 0;
+  box-shadow: none;
+  border: 0;
+}
+.modal-header {
+  color: #5C96BE;
+}
+.modal-header .close {
+  opacity: 1;
+}
+.modal-header .close span {
+  font-weight: 100;
+  font-size: 30px;
+  color: #5C96BE;
+}
+.modal-body {
+  color: #5C96BE;
+}

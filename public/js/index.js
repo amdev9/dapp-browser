@@ -2,188 +2,296 @@
 
     'use strict';
 
-    // Vue Options
-    Vue.options.delimiters = ['${', '}'];
-
-    // ВСЕ ДАННЫЕ ПЕРЕНОСИТЬ ЧЕРЕЗ localStorage !!!
-
-    // 
-    new Vue({
-        el: '.content .apps',
-        data: {
-            test: 'test'
-        },
-        methods: {
-            demo: function () {
-               
-            }
-        }
-    });
-
-
-
-    // -------------------------------------------------------------------------------------------------------------- //
-
-    // Nodes
-    const viewer  = document.querySelector( '.view-code-console' );
-    const header  = document.querySelector( 'header' );
-    const sidebar = document.querySelector( 'aside' );
-    const frames  = document.querySelector( '.frames' );
-
-    const disableContextMenu = event => {
-        event.preventDefault()
-    }
-
-    const hiddenContextMenu = event => {
-        $( 'aside .apps .apps-item' ).removeClass( 'focus' );
-        $( '.contextmenu' ).removeAttr( 'data-key' ).hide();
-    }
-
-    // Disabled Context Menu
-    $( document ).on('contextmenu', disableContextMenu);
-
-
-    // Close All Context Menu
-    $( document ).on('click', hiddenContextMenu);
-
-
-    // Context Menu Event
-    $( document ).on('click', '.contextmenu span', function () {
-        let value = $( this ).data( 'value' );
-        let key = this.parentNode.getAttribute( 'data-key' );
-        let target = $( 'iframe#' + key );
-         
-        if ( value === 'close' ) {
-            target.remove();
-
-            $('.apps-item[data-key = ' + key + ']', sidebar).remove();
-            if ( target.hasClass( 'active' ) ) $( frames ).removeClass( 'view' );
-        }
-    });
-
-
-    // Context Menu Open App
-    $( document ).on('contextmenu', 'aside .apps .apps-item', function ( event ) {
-        let x = event.clientX;
-        let y = event.clientY;
-
-        let offset = $( this ).outerHeight();
-        let key = $( this ).data( 'key' );
-
-        $( 'aside .apps .apps-item' ).removeClass( 'focus' );
-        $( this ).addClass( 'focus' );
-
-        $('.contextmenu', sidebar).css({left: x, top: y - offset}).attr('data-key', key).show()
-    });
-
-
-    // Open/Close Console
-    $( document ).on('click', '.view-code-panel', function () {
-        $( viewer ).toggleClass( 'open' );
-        viewer.scrollTop = viewer.scrollHeight;
-    });
-
-
-    // Home Page
-    $( document ).on('click', '.navbar-home-link', function () {
-        $('iframe', frames).addClass( 'd-none' );
-        $( frames ).removeClass( 'view' );
-
-        $('.apps .apps-item', sidebar).removeClass( 'active' );
-    });
-
-
-    // View App
-    $( document ).on('click', '.content .apps .apps-item', function () {
-        let href = $( this ).data( 'href' );
-        let icon = $( this ).data( 'icon' );
-        let type = $( this ).data( 'type' );
-        let key  = href.replace('users/', '').split( '/' ).shift();
-
-        let target = $( 'iframe#' + key );
-        let panel = $( '.' + type, sidebar );
-
-        $('.apps .apps-item', sidebar).removeClass( 'active' );
-        $( '#access' ).attr('data-target', key);
-
-        if ( target.length ) {
-            $('iframe', frames).removeClass( 'active' ).addClass( 'd-none' );
-            target.addClass( 'active' ).removeClass( 'd-none' );
-            
-            $('.apps-item[data-key = ' + key + ']', sidebar).addClass( 'active' );
-        } else {
-            let iframe = document.createElement( 'iframe' );
-            $( iframe ).addClass( 'active' ).attr({id : key, src: href});
-            
-            let item  = $( '<div/>' ).addClass( 'apps-item active' ).attr('data-key', key);
-            let icns  = $( '<div/>' ).addClass( 'icns' );
-            let image = $( '<img/>' ).attr('src', icon); 
- 
-            panel.append( item.append( icns.append( image ) ) );
-
-            frames.append( iframe );
-
-            $( iframe ).on('load', function () {
-                let head = $('head', this.contentWindow.document);
-
-                $( '<script/>' ).attr('src', '/module/socket.io.js').appendTo( head );
-                $( '<script/>' ).attr('src', '/module/lib.js').appendTo( head );
-
-                $( this.contentWindow.document ).on('contextmenu', disableContextMenu);
-                $( this.contentWindow.document ).on('click', hiddenContextMenu);
-            });
-        }
-
-        $( frames ).addClass( 'view' );
-    });
-
-
-    // Select App
-    $( document ).on('click', 'aside .apps .apps-item', function ( event ) {
-        let key = $( this ).data( 'key' );
-
-        $( '#access' ).attr('data-target', key);
-        $('.apps .apps-item', sidebar).removeClass( 'active' );
-        $( this ).addClass( 'active' );
-
-        $( frames ).addClass( 'view' );
-        $('iframe', frames).removeClass( 'active' ).addClass( 'd-none' );
-        $('iframe#' + key, frames).addClass( 'active' ).removeClass( 'd-none' );
-    });
-
-
-    // Update Permissions
-    $( '#access .accept' ).on('click', function () {
-        let target = $( '#access' ).attr( 'data-target' );
-
-        $.post('/access', {target: target}, function ( response ) {
-            if ( response.status == true ) $( '#access' ).modal( 'hide' );
-        })
-    });
-
 
     // Console
-    API.Socket.subscribe('console', response => {
-        let string = $( '<p/>' );
-        string.html( response.time + ' : ' + response.target + ' : <span class="' + response.type.toLowerCase() + '">' + response.type + '</span> : ' + JSON.stringify( response.message ) );
+    // ------------------------------------------------------ //
 
-        $( viewer ).append( string );
-        viewer.scrollTop = viewer.scrollHeight;
+    const _console = new Vue({
+        el: '.view-code',
+        data: {
+            open: false
+        },
+        methods: {
+            toogle: function () {
+                this.open = !this.open;
+                this.$refs.console.scrollTop = this.$refs.console.scrollHeight;
+            }
+        },
+        computed: {
+            content: {
+                set: function ( value ) {
+                    let string = this.$createEl( 'p' );
+                    string.innerHTML = value;
+
+                    this.$refs.console.appendChild( string );
+                    this.$refs.console.scrollTop = this.$refs.console.scrollHeight;
+                }
+            }
+        }
     });
 
-    // Access
-    API.Socket.subscribe('access', response => {
-        console.log('ok')
 
-        $( '#access' ).on('show.bs.modal', function () {
-            let message = response.message;
-            let rows = response.rows;
+    // Context Menu
+    // ------------------------------------------------------ //
 
-            for (let i = 0; i < rows.length; i++) {
-                rows[i] = '<b>' + rows[i] +'</b>'
+    const _context = new Vue({
+        el: 'aside .contextmenu',
+        data: {
+            show: false,
+            target: null
+        },
+        methods: {
+            pin: function () {
+                alert( 'pin' )
+            },
+            close: function () {
+                let view = _windows.$el.querySelector( '#' + this.target );
+                view.parentNode.removeChild( view );
+
+                let item = _aside.$el.querySelector( '[data-key = ' + this.target + ']' );
+                item.parentNode.removeChild( item );
+                
+                if ( _windows.key == this.target ) _windows.show = null;
             }
+        },
+        watch: {
+            show: function ( value ) {
+                if ( value === true ) return;
 
-            $('.modal-body', this).html('<p>' + message +'</p>' + rows.join( ', ' ))
-        }).modal( 'show' );
-    })
+                [].forEach.call(_aside.$el.children, element => element.classList.remove( 'focus' ))
+            }
+        }
+    });
+
+
+    // Header
+    // ------------------------------------------------------ //
+
+    const _header = new Vue({
+        el: 'header',
+        methods: {
+            close: function () {
+                _windows.show = null
+            }
+        }
+    });
+
+
+    // Sidebar
+    // ------------------------------------------------------ //
+
+    const _aside = new Vue({
+        el: 'aside .apps',
+        data: {
+            view: null
+        },
+        methods: {
+            renderer: function ( value ) {
+                [].forEach.call(this.$el.children, element => element.classList.remove( 'active' ));
+
+                let target = this.$el.querySelector( '[data-key = ' + this.key + ']' );
+                
+                if ( !this.$el.contains( target ) ) {
+                    this.view.classList.add( 'active' );
+                    this.$el.appendChild( this.view );
+                } else {
+                    target.classList.add( 'active' );
+                    target.classList.remove( 'd-none' );
+                }
+            }
+        },
+        computed: {
+            create: {
+                set: function ( options ) {
+                    let element = this.$createEl('div', null, ['apps-item']);
+                    element.dataset['key'] = options.key
+
+                    let icns  = this.$createEl('div', null, ['icns']);
+                    let image = this.$createEl('img', {src: options.icon});
+
+                    icns.appendChild( image );
+                    element.appendChild( icns );
+
+                    element.addEventListener('click', event => {
+                        [].forEach.call(this.$el.children, element => element.classList.remove( 'active' ));
+                        event.currentTarget.classList.add( 'active' );
+
+                        _windows.create = {key: options.key, src: null};
+                    });
+
+                    element.addEventListener('contextmenu', event => {
+                        let bounds = {x: event.clientX, y: event.clientY}
+                        let offset = element.clientHeight;
+                        let key = element.dataset.key;
+
+                        [].forEach.call(this.$el.children, element => element.classList.remove( 'focus' ));
+                        element.classList.add( 'focus' );
+
+                        _context.$el.style.left = bounds.x + 'px';
+                        _context.$el.style.top  = bounds.y - offset + 'px';
+
+                        _context.target = key;
+                        _context.show = true;
+                    });
+
+                    this.view = element;
+                    this.key  = options.key;
+
+                    this.renderer();
+                }
+            }
+        }
+    });
+
+
+    // Windows
+    // ------------------------------------------------------ //
+
+    const _windows = new Vue({
+        el: '#views',
+        data: {
+            view: null,
+            show: null,
+            key : null
+        },
+        methods: {
+            renderer: function () {
+                this.$hideEls( this.$el.children );
+
+                let target = this.$el.querySelector( '#' + this.key );
+
+                if ( !this.$el.contains( target ) ) {
+                    this.view.classList.add( 'active' );
+                    this.$el.appendChild( this.view );
+                    this.view.addEventListener('load', () => { this.onload() });
+                } else {
+                    target.classList.add( 'active' );
+                    target.classList.remove( 'd-none' );
+                }
+
+                this.show = true;
+            },
+            onload: function () {
+                let doc = this.view.contentWindow.document;
+
+                doc.head.appendChild( this.$createEl('script', {src: '/module/socket.io.js'}) );
+                doc.head.appendChild( this.$createEl('script', {src: '/module/lib.js'}) );
+
+                doc.addEventListener('contextmenu', event => event.preventDefault());
+                doc.addEventListener('click', event => _context.show = false);
+            },
+            close: function () {
+                this.show = null
+            }
+        },
+        computed: {
+            create: {
+                set: function ( options ) {
+                    this.view = this.$createEl('iframe', {id: options.key, src: options.src});
+                    this.key  = options.key;
+
+                    this.renderer();
+                }
+            }
+        },
+        watch: {
+            show: function ( value ) {
+                if ( value === true ) return;
+
+                this.$hideEls( this.$el.children );
+                [].forEach.call(_aside.$el.children, element => element.classList.remove( ... ['active', 'focus']));
+            }
+        }
+    });
+
+
+    // Applications
+    // ------------------------------------------------------ //
+
+    const _apps = new Vue({
+        el: '.content .apps',
+        methods: {
+            view: function ( event ) {
+                let target = event.currentTarget;
+                let icon = target.dataset.icon;
+                let src  = target.dataset.src;
+                let key  = this._replace( src );
+
+                _windows.create = {key: key, src: src};
+                _aside.create = {key: key, icon: icon};
+            },
+            _replace: function ( string ) {
+                return string.replace('users/', '').split( '/' ).shift();
+            }
+        },
+        mounted: function ( event ) {
+            [].forEach.call(this.$el.children, element => {
+                let _header = element.querySelector( '.apps-item-header' );
+                _header.style.backgroundImage = 'url(' + _header.dataset.thumb + ')';
+            });
+        }
+    });
+
+
+    // Modals
+    // ------------------------------------------------------ //
+
+    const _modals = new Vue({
+        el: '.modal',
+        data: {
+            target: null,
+            name: null
+        },
+        methods: {
+            hidden: function () {
+                this.target.classList.remove( 'show' )
+            },
+            show: function (name, content) {
+                this.name = name;
+                this.target = this.$refs[this.name];
+                 
+                let body = this.target.querySelector( '.modal-body' );
+
+                if ( this.target.contains( body ) ) {
+                    body.innerHTML = content;
+                    this.target.classList.add( 'show' );
+                }
+            },
+            submit: function () {
+                this.$http.post(this.name, {target: _windows.key}, response => {
+                    let output = JSON.parse( response )
+                    if ( output.status == true ) this.hidden();
+                })
+            }
+        }
+    });
+
+
+    // Disabled Context Menu
+    // ------------------------------------------------------ //
+
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    document.addEventListener('click', event => _context.show = false);
+
+
+    // Socket Console
+    // ------------------------------------------------------ //
+
+    API.Socket.subscribe('console', response => {
+        _console.content = response.time + ' : ' + response.target + ' : <span class="' + response.type.toLowerCase() + '">' + response.type + '</span> : ' + JSON.stringify( response.message );
+    });
+
+
+    // Socket Access
+    // ------------------------------------------------------ //
+    
+    API.Socket.subscribe('access', response => {
+        let message = response.message;
+        let rows = response.rows;
+
+        for (let i = 0; i < rows.length; i++) rows[i] = '<b>' + rows[i] +'</b>';
+
+        _modals.show('access', '<p>' + message +'</p>' + rows.join( ', ' ));
+    });
+
 })( this );
