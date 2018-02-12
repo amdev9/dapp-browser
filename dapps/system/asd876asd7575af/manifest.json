@@ -7,7 +7,5 @@
 
     "description": "This is Web Controller",
 
-    "permissions": [
-        "console", "fs"
-    ]
+    "permissions": []
 }

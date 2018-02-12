@@ -12,6 +12,10 @@
         
             publish: (name, response) => {
                 socket.emit(name, response);
+            },
+
+            connect: (name, func) => {
+                socket.emit( name ).on(name, func);
             }
         })
     });

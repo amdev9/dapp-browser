@@ -163,7 +163,7 @@
                 if ( !this.$el.contains( target ) ) {
                     this.view.classList.add( 'active' );
                     this.$el.appendChild( this.view );
-                    this.view.addEventListener('load', () => { this.onload() });
+                    this.view.onload = this.onload();
                 } else {
                     target.classList.add( 'active' );
                     target.classList.remove( 'd-none' );
@@ -172,13 +172,10 @@
                 this.show = true;
             },
             onload: function () {
-                let doc = this.view.contentWindow.document;
+                let _document = this.view.contentWindow.document;
 
-                doc.head.appendChild( this.$createEl('script', {src: '/module/socket.io.js'}) );
-                doc.head.appendChild( this.$createEl('script', {src: '/module/lib.js'}) );
-
-                doc.addEventListener('contextmenu', event => event.preventDefault());
-                doc.addEventListener('click', event => _context.show = false);
+                _document.addEventListener('contextmenu', event => event.preventDefault());
+                _document.addEventListener('click', event => _context.show = false);
             },
             close: function () {
                 this.show = null

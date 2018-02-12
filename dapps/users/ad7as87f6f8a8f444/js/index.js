@@ -7,7 +7,6 @@
         event.preventDefault();
     
         var username = form.username;
-        var password = form.password;
     
         var notify = form.querySelector( '.alert' );
 
@@ -22,19 +21,48 @@
 
                 let object = JSON.parse( this.response );
 
-                username.value = object.message.form.username;
-                password.value = object.message.form.password;
+                username.value = object.message.username;
 
                 notify.classList.remove( 'd-none' );
             }
         }
 
         XMLHttp.send(JSON.stringify({message_type: 'webreq', message: {
-            form: {
-                username: username.value,
-                password: password.value
-            }
+            username: username.value
         }}));
+    });
+
+    const renderUsers = ( response ) => {
+        let container = document.querySelector( '.users' );
+
+        if ( !document.contains( container ) ) return;
+
+        let string = document.createElement( 'div' );
+
+        for (let i = 0; i < response.length; i++) {
+            let string = document.createElement( 'div' );
+            string.innerHTML = response[i].username;
+            container.appendChild( string );
+        }
+    }
+
+    API.Socket.subscribe('insert', ( response ) => {
+        console.log( 'Ok!' )
+    })
+
+    API.Socket.connect('find', ( response ) => {
+        console.log(response )
+        let container = document.querySelector( '.users' );
+
+        if ( !document.contains( container ) ) return;
+
+        let string = document.createElement( 'div' );
+
+        for (let i = 0; i < response.length; i++) {
+            let string = document.createElement( 'div' );
+            string.innerHTML = response[i].username;
+            container.appendChild( string );
+        }
     });
     
 })();

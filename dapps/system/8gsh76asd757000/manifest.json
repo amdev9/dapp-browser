@@ -7,7 +7,5 @@
 
     "description": "This is Log Controller",
 
-    "permissions": [
-        "console", "fs"
-    ]
+    "permissions": []
 }

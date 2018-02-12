@@ -5,13 +5,13 @@ const SystemDappsLoader = require( '../components/system.loader' );
 // Router
 const router = express.Router();
 
-// User Dapps
-const userLoader = new UserDappsLoader('manifest.json', 'users');
-userLoader.runInContext();
-
 // System Dapps
 const systemLoader = new SystemDappsLoader('manifest.json', 'system');
 systemLoader.runInContext();
+
+// User Dapps
+const userLoader = new UserDappsLoader('manifest.json', 'users');
+userLoader.runInContext();
 
 // Routes
 router.get('/', (request, response, next) => {

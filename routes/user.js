@@ -42,7 +42,7 @@ router.post('/web', (request, response, next) => {
 
 	let access = [];
 
-	access_db.find({target: target}, (error, rows) => {
+	db.access.find({target: target}, (error, rows) => {
 		if ( !rows.length ) {
 			logger.write({payload: {message: rejected + permissions.join( ', ' ), target: target}}, 'ERROR');
 			io.emit('access', {message: rejected, rows: permissions});
@@ -91,10 +91,10 @@ router.post('/access', (request, response, next) => {
 
 	permissions.forEach(value => data[value] = true);
 
-	access_db.find({target: target}, (error, rows) => {
+	db.access.find({target: target}, (error, rows) => {
 		!rows.length 
-			? access_db.insert( data )
-				: access_db.update({target: target}, data);
+			? db.access.insert( data )
+				: db.access.update({target: target}, data);
 		
 		response.send({status: true})
 	});

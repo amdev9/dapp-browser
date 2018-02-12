@@ -7,7 +7,9 @@ const bodyParser = require( 'body-parser' );
 const Datastore = require( 'nedb' );
 
 // Database Application
-global.access_db = new Datastore({filename: 'database/access.db', autoload: true});
+global.db = {};
+db.access  = new Datastore({filename: 'database/access.db',  autoload: true});
+db.storage = new Datastore({filename: 'database/storage.db', autoload: true});
 
 // Socket IO
 global.io = require( 'socket.io' )( 4040 );
