@@ -19,23 +19,28 @@ const getHeaders = headers => {
     return pathname.replace(/(users\/)|(system\/)/gi, '').split( '/' ).shift();
 }
 
-// Routes
+const readDataFile = ( source ) => {
+	if ( fs.existsSync( source ) ) {
+		try {
+			return JSON.parse( fs.readFileSync( source ).toString() );
+		} catch ( error ) {
+			throw error;
+		}
+	} else {
+		throw new Error( 'NOT FOUND!' );
+	}
+}
+
+
+// Request Web Controller
 router.post('/web', (request, response, next) => {
 	let target = getHeaders(request.headers);
 	request.body.target = target;
 
 	const events = new EventBus();
 	const source = __apps + 'users/' + target + '/manifest.json';
- 
-	if ( fs.existsSync( source ) ) {
-		try {
-			events.data = JSON.parse( fs.readFileSync( source ).toString() );
-		} catch ( error ) {
-			return response.send( 'ERROR!' )
-		}
-	} else {
-		return response.send( 'NOT FOUND!' )
-	}
+
+	events.data = readDataFile( source );
 
 	const permissions = events.data.permissions;
 	const rejected = 'No access to system applications: ';
@@ -72,19 +77,28 @@ router.post('/web', (request, response, next) => {
 	});
 });
 
+
+// Request Storage Controller
+router.post('/storage', (request, response, next) => {
+	let target = getHeaders(request.headers);
+	request.body.target = target;
+
+	const events = new EventBus();
+	const source = __apps + 'users/' + target + '/manifest.json';
+ 
+	events.data = readDataFile( source );
+
+	request.body.callback = () => response.send( request.body );
+	events.publish(system.StrCtrl, request.body.message_type, request.body);
+});
+
+
+// Request Access Permissions
 router.post('/access', (request, response, next) => {
 	const target = request.body.target;
 	const source = __apps + 'users/' + target + '/manifest.json';
- 
-	if ( fs.existsSync( source ) ) {
-		try {
-			var object = JSON.parse( fs.readFileSync( source ).toString() );
-		} catch ( error ) {
-			return response.send( 'ERROR!' )
-		}
-	} else {
-		return response.send( 'NOT FOUND!' )
-	}
+
+	const object = readDataFile( source );
 
 	const permissions = object.permissions;
 	const data = {target: target}

@@ -14,6 +14,7 @@
 		"nedb": "^1.8.0",
 		"node-datetime": "^2.0.6",
 		"nunjucks": "^3.0.1",
-		"socket.io": "^2.0.4"
+		"socket.io": "^2.0.4",
+		"sync": "^0.2.5"
 	}
 }

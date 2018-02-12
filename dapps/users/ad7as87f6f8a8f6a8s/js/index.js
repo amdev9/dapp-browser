@@ -9,22 +9,18 @@
         var textarea = form.message.value;
         var notify = form.querySelector( '.alert' );
 
-        var XMLHttp = new XMLHttpRequest();
+        API.Http.post('/web', {message_type: 'test', message: {value: textarea}}, function ( response ) {
+            if ( !response ) return;
 
-        XMLHttp.open('POST', '/web');
-        XMLHttp.setRequestHeader('Content-Type', 'application/json');
-
-        XMLHttp.onreadystatechange = function() {
-            if ( this.readyState == 4 && this.status == 200 ) {
-                if ( !this.response ) return;
-
-                notify.classList.remove( 'd-none' );
-            }
-        }
-
-        XMLHttp.send(JSON.stringify({message_type: 'test', message: {
-            value: textarea
-        }}));
+            notify.classList.remove( 'd-none' );
+        })
     });
+
+    // API.Socket.connect('db.find', ( response ) => {
+    //     console.log( response )
+    // })
     
+    // API.Socket.subscribe('db.remove', ( response ) => {
+    //     console.log(response)
+    // })
 })();

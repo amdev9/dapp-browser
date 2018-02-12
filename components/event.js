@@ -3,9 +3,6 @@ const Events = require( 'events' );
 // Events
 const events = new Events();
 
-// Permissions Method Name
-const permissions = Symbol( 'permissions' );
-
 class EventBus {
     constructor () {
         this.data = {}
@@ -21,10 +18,6 @@ class EventBus {
 
     subscribe (message_type, func) {
         events.on(message_type + this.data.key, ( message ) => func( message ))
-    }
-
-    [permissions] ( object ) {
-        console.log( object );
     }
 }
 

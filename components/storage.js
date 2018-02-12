@@ -3,39 +3,39 @@ class Storage {
         let object = Object.assign({target: response.from}, response.payload.message)
         
         db.storage.insert(object, (error, docs) => {
-            io.emit('insert', object);
+            if ( error ) throw error
         });
     }
 
     find ( response ) {
-        let object = response.payload;
+        db.storage.find(response.payload.message, (error, docs) => {
+            if ( error ) throw error
 
-        io.on('connection', function (socket) {
-            socket.on('find', function () {
-                db.storage.find(object, (error, docs) => {
-                    io.emit('find', docs);
-                })
-            })
+            response.payload.docs = docs;
+            return response.payload.callback()
         })
     }
 
     findOne ( response ) {
-        let object = response.payload;
+        db.storage.findOne(response.payload, (error, docs) => {
+            if ( error ) throw error
 
-        db.storage.findOne(object, (error, docs) => {
-            delete docs.target;
-            delete docs._id;
-
-            io.emit('findOne', docs);
+            response.payload.message.docs = docs;
+            return response.payload.callback()
         })
     }
 
     update ( response ) {
         console.log( response )
+        // db.storage.update({year: 1946}, {name: "Doug the Head", year: 1940}, {});
     }
 
     remove ( response ) {
-        console.log( response )
+        db.storage.remove(response.payload.message, {multi: true}, (error, num) => {
+            if ( error ) throw error;
+            
+            return response.payload.callback()
+        });
     }
 }
 

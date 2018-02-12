@@ -10,59 +10,42 @@
     
         var notify = form.querySelector( '.alert' );
 
-        var XMLHttp = new XMLHttpRequest();
+        API.Http.post('/web', {message_type: 'request', message: {username: username.value}}, function ( response ) {
+            if ( !response ) return;
 
-        XMLHttp.open('POST', '/web');
-        XMLHttp.setRequestHeader('Content-Type', 'application/json');
+            let object = JSON.parse( response );
 
-        XMLHttp.onreadystatechange = function() {
-            if ( this.readyState == 4 && this.status == 200 ) {
-                if ( !this.response ) return;
+            username.value = object.message.username;
 
-                let object = JSON.parse( this.response );
-
-                username.value = object.message.username;
-
-                notify.classList.remove( 'd-none' );
-            }
-        }
-
-        XMLHttp.send(JSON.stringify({message_type: 'webreq', message: {
-            username: username.value
-        }}));
+            notify.classList.remove( 'd-none' );
+        })
     });
 
-    const renderUsers = ( response ) => {
+    API.Http.post('/storage', {message_type: 'find', message: {}}, function ( response ) {
+        let object = JSON.parse( response );
+        
         let container = document.querySelector( '.users' );
 
         if ( !document.contains( container ) ) return;
 
         let string = document.createElement( 'div' );
 
-        for (let i = 0; i < response.length; i++) {
+        for (let i = 0; i < object.docs.length; i++) {
             let string = document.createElement( 'div' );
-            string.innerHTML = response[i].username;
+            string.innerHTML = object.docs[i].username;
+
+            let button = document.createElement( 'button' );
+            button.innerText = 'x';
+            
+            button.addEventListener('click', () => {
+                API.Http.post('/storage', {message_type: 'remove', message: {username: object.docs[i].username}}, () => {
+                    string.parentNode.removeChild( string );
+                    console.log('remove')
+                });
+            });
+
+            string.appendChild( button );
             container.appendChild( string );
         }
-    }
-
-    API.Socket.subscribe('insert', ( response ) => {
-        console.log( 'Ok!' )
     })
-
-    API.Socket.connect('find', ( response ) => {
-        console.log(response )
-        let container = document.querySelector( '.users' );
-
-        if ( !document.contains( container ) ) return;
-
-        let string = document.createElement( 'div' );
-
-        for (let i = 0; i < response.length; i++) {
-            let string = document.createElement( 'div' );
-            string.innerHTML = response[i].username;
-            container.appendChild( string );
-        }
-    });
-    
 })();
