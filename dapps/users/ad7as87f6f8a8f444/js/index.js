@@ -23,6 +23,7 @@
 
     API.Http.post('/storage', {message_type: 'find', message: {}}, function ( response ) {
         let object = JSON.parse( response );
+        let array  = object.docs;
         
         let container = document.querySelector( '.users' );
 
@@ -30,15 +31,15 @@
 
         let string = document.createElement( 'div' );
 
-        for (let i = 0; i < object.docs.length; i++) {
+        for (let i = 0; i < array.length; i++) {
             let string = document.createElement( 'div' );
-            string.innerHTML = object.docs[i].username;
+            string.innerHTML = array[i].username;
 
             let button = document.createElement( 'button' );
             button.innerText = 'x';
             
             button.addEventListener('click', () => {
-                API.Http.post('/storage', {message_type: 'remove', message: {username: object.docs[i].username}}, () => {
+                API.Http.post('/storage', {message_type: 'remove', message: {username: array[i].username}}, () => {
                     string.parentNode.removeChild( string );
                     console.log('remove')
                 });

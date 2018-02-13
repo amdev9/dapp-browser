@@ -13,3 +13,7 @@ Events.subscribe('find', response => {
 Events.subscribe('remove', response => {
 	Events.publish(system.StrCtrl, 'remove', response.payload);
 })
+
+Events.subscribe('update', response => {
+	Events.publish(system.StrCtrl, 'update', response.payload);
+})
