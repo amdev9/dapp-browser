@@ -5,6 +5,7 @@ Game.Finish = function () {
     }
 
     this.create = () => {
+        this.input.onDown.add(() => this.state.start( 'Engine' ))
         this.finish.position.setTo(window.innerWidth / 2 - this.finish.width / 2, window.innerHeight / 2 - this.finish.height / 2 );
     }
 }

@@ -4,11 +4,16 @@ class Storage {
         
         db.storage.insert(object, (error, docs) => {
             if ( error ) throw error;
+
+            response.payload.docs = docs;
+            return response.payload.callback()
         });
     }
 
     find ( response ) {
-        db.storage.find(response.payload.message, (error, docs) => {
+        let object = Object.assign({target: response.from}, response.payload.message);
+
+        db.storage.find(object, (error, docs) => {
             if ( error ) throw error;
 
             response.payload.docs = docs;
@@ -17,7 +22,9 @@ class Storage {
     }
 
     findOne ( response ) {
-        db.storage.findOne(response.payload.message, (error, docs) => {
+        let object = Object.assign({target: response.from}, response.payload.message);
+
+        db.storage.findOne(object, (error, docs) => {
             if ( error ) throw error;
 
             response.payload.docs = docs;
@@ -26,7 +33,9 @@ class Storage {
     }
 
     update ( response ) {
-        db.storage.update({target: response.from}, response.payload.message, {multi: true}, (error, num) => {
+        let object = Object.assign({target: response.from}, response.payload.message);
+
+        db.storage.update({target: response.from}, object, {multi: true}, (error, num) => {
             if ( error ) throw error;
             
             return response.payload.callback()
@@ -34,7 +43,9 @@ class Storage {
     }
 
     remove ( response ) {
-        db.storage.remove(response.payload.message, {multi: true}, (error, num) => {
+        let object = Object.assign({target: response.from}, response.payload.message);
+
+        db.storage.remove(object, {multi: true}, (error, num) => {
             if ( error ) throw error;
             
             return response.payload.callback()

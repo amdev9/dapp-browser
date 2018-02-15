@@ -94,9 +94,7 @@ Game.Engine = function() {
 
         // Player
         this.player = this.add.sprite(0, 0, 'player')
-
         this.player.data.health = 3
-        this.player.data.total  = 0
 
         this.player.coords = {
             x: this.data.player.x ? this.data.player.x : 0,
@@ -124,7 +122,7 @@ Game.Engine = function() {
         this.coins = this.add.sprite(15, 15, 'coins')
         this.coins.fixedToCamera = true
 
-        this.coins.addChild(this.add.text(this.coins.width + 15, this.coins.height / 2 - 10, 'Total: ' + this.player.data.total, {
+        this.coins.addChild(this.add.text(this.coins.width + 15, this.coins.height / 2 - 10, 'Total: ' + (Game.storage.coins || 0), {
             font: '20px Helvetica',
             fill: '#000'
         }))
@@ -257,8 +255,12 @@ Game.Engine = function() {
             var index = this.elements['coins'].indexOf( object )
             this.elements['coins'].splice(index, 1)
 
-            this.player.data.total++
-            this.coins.children[0].text = 'Total: ' + this.player.data.total
+            let total = Game.storage.coins + 1 || 1
+            this.coins.children[0].text = 'Total: ' + total
+
+            API.Http.post('/storage', {message_type: Game.storage.coins ? 'update' : 'insert', message: {coins: total}}, () => {
+                Game.storage.coins = total
+            })
         })
 
         
