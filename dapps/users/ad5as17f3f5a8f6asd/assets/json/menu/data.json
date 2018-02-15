@@ -1,0 +1,10 @@
+{
+    "audio": {
+        "background": "background.mp3"
+    },
+
+    "images": {
+        "menu": "menu.png",
+        "start": "start.png"
+    }
+}

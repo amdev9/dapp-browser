@@ -1,0 +1,31 @@
+{
+    "color": "#cfedfc",
+    
+    "audio": {
+        "music": "music.mp3"
+    },
+
+    "images": {
+        "background": "background.png",
+        "bombs": "bombs.png"
+    },
+
+    "player": {
+        "x": 200,
+        "y": 100
+    },
+
+    "items": [
+        { "key": "coins",  "width": 60,  "height": 60,  "physics": true,  "gravity": false, "static": true,  "x": 1400,  "y": 630 },
+        { "key": "coins",  "width": 60,  "height": 60,  "physics": true,  "gravity": false, "static": true,  "x": 1100,  "y": 540 },
+        { "key": "coins",  "width": 60,  "height": 60,  "physics": true,  "gravity": false, "static": true,  "x": 800,   "y": 540 },
+        { "key": "coins",  "width": 60,  "height": 60,  "physics": true,  "gravity": false, "static": true,  "x": 600,   "y": 190 },
+        { "key": "bombs",  "width": 100, "height": 53,  "physics": true,  "gravity": false, "static": true,  "x": 800,   "y": 100 },
+        { "key": "bombs",  "width": 100, "height": 53,  "physics": true,  "gravity": false, "static": true,  "x": 990,   "y": 100 },
+        { "key": "bombs",  "width": 100, "height": 53,  "physics": true,  "gravity": false, "static": true,  "x": 1380,  "y": 100 },
+        { "key": "bombs",  "width": 100, "height": 53,  "physics": true,  "gravity": false, "static": true,  "x": 3480,  "y": 0 },
+        { "key": "bombs",  "width": 100, "height": 53,  "physics": true,  "gravity": false, "static": true,  "x": 3610,  "y": 0 },
+        { "key": "spring", "width": 100, "height": 100, "physics": true,  "gravity": false, "static": true,  "x": 600,   "y": 100 },
+        { "key": "spring", "width": 100, "height": 100, "physics": true,  "gravity": false, "static": true,  "x": 2280,  "y": 100 }
+    ]
+}

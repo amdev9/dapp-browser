@@ -163,7 +163,7 @@
                 if ( !this.$el.contains( target ) ) {
                     this.view.classList.add( 'active' );
                     this.$el.appendChild( this.view );
-                    this.view.onload = this.onload();
+                    this.view.addEventListener('load', () => this.onload());
                 } else {
                     target.classList.add( 'active' );
                     target.classList.remove( 'd-none' );

@@ -1,0 +1,11 @@
+{
+    "audio": {
+        "water": "water.mp3",
+        "boom" : "boom.mp3"
+    },
+
+    "images": {
+        "coins" : "coins.png",
+        "health": "health.png"
+    }
+}
