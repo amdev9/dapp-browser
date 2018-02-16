@@ -23,8 +23,8 @@ Game.Engine = function() {
 
         // Background
         this.background = this.add.tileSprite(
-            this.tilemap.width < window.innerWidth ? - ( window.innerWidth - this.tilemap.width ) / 2 : 0, 0,
-            this.tilemap.width < window.innerWidth ? window.innerWidth : this.tilemap.width,
+            this.tilemap.width < document.body.clientWidth ? - ( document.body.clientWidth - this.tilemap.width ) / 2 : 0, 0,
+            this.tilemap.width < document.body.clientWidth ? document.body.clientWidth : this.tilemap.width,
             this.tilemap.height,
             'background'
         )
@@ -32,14 +32,14 @@ Game.Engine = function() {
 
         // Swap Sprite
         this.world.swap(this.tilemap, this.background)
-        
+
 
         // World
-        var round = window.innerHeight / this.tilemap.height
+        var round = document.body.clientHeight / this.tilemap.height
 
         this.world.setBounds(
-            this.tilemap.width < window.innerWidth ? - ( window.innerWidth - this.tilemap.width ) / 2 : 0, 
-            this.tilemap.height < window.innerHeight ? - ( window.innerHeight - this.tilemap.height ) : 0,
+            this.tilemap.width  < document.body.clientWidth  ? - ( document.body.clientWidth  - this.tilemap.width ) / 2 : 0, 
+            this.tilemap.height < document.body.clientHeight ? - ( document.body.clientHeight - this.tilemap.height ) : 0,
         	this.tilemap.width, this.tilemap.height * (round > 1 ? round : 1)
         )
 
@@ -54,16 +54,6 @@ Game.Engine = function() {
         this.elements['health'] = []
         this.elements['bombs']  = []
         this.elements['coins']  = []
-
-
-        // Platforms
-        this.platforms = this.add.physicsGroup()
-
-        for (var i = 0; i < this.elements.ground.length; i++) {
-            this.platforms.add( this.elements.ground[i] )
-        }
-
-        // this.platforms.setAll('body.velocity.x', 100)
 
 
         // Items map
@@ -88,13 +78,15 @@ Game.Engine = function() {
         // Spring
         for (let i = 0; i < this.elements['spring'].length; i++) {
             this.elements['spring'][i].frame = 3
-            this.elements['spring'][i].animations.add('up', Phaser.Animation.generateFrameNames('up_', 0, 4, '.png'), 15, false)
+            this.elements['spring'][i].animations.add('up', Phaser.Animation.generateFrameNames('up_', 0, 4, '.png'), 20, false)
         }
 
 
         // Player
         this.player = this.add.sprite(0, 0, 'player')
+
         this.player.data.health = 3
+        this.player.data.total  = Game.storage.coins || 0
 
         this.player.coords = {
             x: this.data.player.x ? this.data.player.x : 0,
@@ -119,13 +111,11 @@ Game.Engine = function() {
 
 
         // Total Coins
-        this.coins = this.add.sprite(15, 15, 'coins')
+        this.coins = this.add.sprite(0, 0, 'coins')
         this.coins.fixedToCamera = true
+        this.coins.cameraOffset.setTo(15, 15)
 
-        this.coins.addChild(this.add.text(this.coins.width + 15, this.coins.height / 2 - 10, 'Total: ' + (Game.storage.coins || 0), {
-            font: '20px Helvetica',
-            fill: '#000'
-        }))
+        this.highscore(this.coins, this.player.data.total)
 
 
         // Total Health 
@@ -136,12 +126,8 @@ Game.Engine = function() {
             item.fixedToCamera = true
             item.cameraOffset.setTo(offset - (item.width + 15) * i, 15)
 
-            this.elements['health'].unshift( item )
+            this.elements['health'].push( item )
         }
-
-
-        // Cursor
-        // this.input.onDown.add(this.fullscreen, this)
 
 
         // Camera
@@ -153,7 +139,8 @@ Game.Engine = function() {
         this.audio = {
             music: this.add.audio( 'music' ),
             water: this.add.audio( 'water' ),
-            boom : this.add.audio( 'boom' )
+            boom : this.add.audio( 'boom' ),
+            coin : this.add.audio( 'coin' )
         }
 
 
@@ -162,25 +149,24 @@ Game.Engine = function() {
         this.audio.music.loop = true
         this.audio.music.play()
 
+        
+        // Sound Coin
+        this.audio.coin.volume = 0.3
+
 
         // Collisions
         this.physics.p2.setPostBroadphaseCallback(this.disableCollision, this)
 
 
-        // Drown in Water
-        // this.drowned = this.add.tween(this.player.scale).to({ x: 0, y: 0 }, 100);
-
-
-        // Spray
-        // this.spray = this.add.emitter(0, 0, 100);
-        // this.spray.makeParticles('spray');
-        // this.spray.setAlpha(.7, 0, 1500);
-        // this.spray.gravity = 0;
-        // this.spray.width = 50
-
-
         // World Resize
-        window.addEventListener('resize', () => this.worldResize())
+        window.addEventListener('resize', () => {
+            this.elements['health'].forEach((element, index) => {
+                let offset = document.body.clientWidth - element.width - 15
+                element.cameraOffset.setTo(offset - (element.width + 15) * index, 15)
+            })
+
+            this.worldResize()
+        })
         
 
         // Helper
@@ -194,7 +180,7 @@ Game.Engine = function() {
         // })
 
         // this.fps.fixedToCamera = true
-        // this.fps.cameraOffset.setTo(15, window.innerHeight - this.fps.height)
+        // this.fps.cameraOffset.setTo(15, document.body.clientHeight - this.fps.height)
 
 
         // Keyboard
@@ -213,7 +199,6 @@ Game.Engine = function() {
     }
 
     this.update = () => {
-        // this.cloud.tilePosition.x += 2
         this.background.tilePosition.x = - ( this.camera.x * 0.07 )
 
 
@@ -227,12 +212,11 @@ Game.Engine = function() {
                         
             object.destroy()
 
-            var index  = this.elements['bombs'].indexOf( object )
-            let health = this.elements['health'].shift()
-
-            if ( health ) health.destroy()
-
+            var index = this.elements['bombs'].indexOf( object )
             this.elements['bombs'].splice(index, 1)
+
+            let health = this.elements['health'].pop()
+            if ( health ) health.destroy()
 
             explode.animations.add('explode', Phaser.Animation.generateFrameNames('plane_', 0, 7, '.png'), 25, false)
                     
@@ -244,31 +228,29 @@ Game.Engine = function() {
 
             this.player.animations.play( 'fall' ).onComplete.add(() => {
                 this.isDie = this.player.data.health <= 0
+
+                if ( this.isDie ) {
+                    this.audio.music.stop()
+                    this.state.start( 'GameOver' )
+                }
             })
         })
 
 
         // Get Coins
         this.detectCollision(this.player, this.elements['coins'], object => {
+            this.audio.coin.play()
+
             object.destroy()
 
             var index = this.elements['coins'].indexOf( object )
             this.elements['coins'].splice(index, 1)
 
-            let total = Game.storage.coins + 1 || 1
-            this.coins.children[0].text = 'Total: ' + total
+            this.player.data.total++
+            this.highscore(this.coins, this.player.data.total)
 
-            API.Http.post('/storage', {message_type: Game.storage.coins ? 'update' : 'insert', message: {coins: total}}, () => {
-                Game.storage.coins = total
-            })
+            API.Http.post('/storage', {message_type: Game.storage.coins ? 'update' : 'insert', message: {coins: this.player.data.total}})
         })
-
-        
-        // Player Position
-        var position = {
-            x: this.player.position.x,
-            y: this.player.position.y
-        } 
 
 
         // Is Touching Down Player
@@ -326,7 +308,7 @@ Game.Engine = function() {
         }
 
         if ( this.spaceKey.isDown && isTouchingDown && !this.isFall ) {
-            this.player.body.moveUp( 600 )
+            this.player.body.moveUp( 650 )
             this.isJump = false
         }
 
@@ -355,12 +337,22 @@ Game.Engine = function() {
             }
         }
 
+        // Player Position
+        var position = {
+            x: this.player.position.x,
+            y: this.player.position.y
+        } 
+
          
         // Detect Collision
-        var exit = this.physics.p2.hitTest(position, this.elements['exit']);
-        if ( exit.length ) this.state.start( 'Finish' );
+        var exit = this.physics.p2.hitTest(position, this.elements['exit'])
+        
+        if ( exit.length ) {
+            this.audio.music.stop()
+            this.state.start( 'Finish' )
+        }
 
-        var spring = this.physics.p2.hitTest(this.player.bottom, this.elements['spring']);
+        var spring = this.physics.p2.hitTest(this.player.bottom, this.elements['spring'])
         
         if ( spring.length ) {
             this.detectCollision(this.player, this.elements['spring'], object => {

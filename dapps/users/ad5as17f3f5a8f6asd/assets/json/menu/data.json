@@ -4,7 +4,7 @@
     },
 
     "images": {
-        "menu": "menu.png",
+        "menu" : "menu.png",
         "start": "start.png"
     }
 }

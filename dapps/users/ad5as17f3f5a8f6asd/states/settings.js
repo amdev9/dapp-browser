@@ -171,6 +171,28 @@ Game.Settings.prototype.createObjects = function ( data ) {
 
 
 /*
+ *  Update Highscore
+ */
+
+Game.Settings.prototype.highscore = function (parent, total) {
+    let array = String( total ).split( '' )
+
+    parent.children = []
+
+    array.forEach(element => {
+        let number = this.add.sprite(0, 0, 'num' + element)
+        let offset = 0
+
+        for (let i = 0; i < parent.children.length; i++) offset += parent.children[i].width + 5
+        
+        number.position.setTo(parent.width + offset + 15, parent.height / 2 - number.height / 2)
+        parent.addChild( number )
+    })
+}
+
+
+
+/*
  *  Reposition Player
  */
 
@@ -194,8 +216,8 @@ Game.Settings.prototype.getImageData = function ( name ) {
     return {
         width: image.width,
         height: image.height,
-        x: (window.innerWidth - image.width) / 2,
-        y: (window.innerHeight - image.height) / 2
+        x: (document.body.clientWidth - image.width) / 2,
+        y: (document.body.clientHeight - image.height) / 2
     }
 }
 
@@ -206,11 +228,11 @@ Game.Settings.prototype.getImageData = function ( name ) {
  */
 
 Game.Settings.prototype.worldResize = function () {
-    const round = window.innerHeight / this.tilemap.height
+    const round = document.body.clientHeight / this.tilemap.height
 
     const bounds = {
-        x: this.tilemap.width  < window.innerWidth  ? - ( window.innerWidth  - this.tilemap.width ) / 2 : 0,
-        y: this.tilemap.height < window.innerHeight ? - ( window.innerHeight - this.tilemap.height ) : 0
+        x: this.tilemap.width  < document.body.clientWidth  ? - ( document.body.clientWidth  - this.tilemap.width ) / 2 : 0,
+        y: this.tilemap.height < document.body.clientHeight ? - ( document.body.clientHeight - this.tilemap.height ) : 0
     }
 
     this.world.bounds.x = bounds.x
@@ -218,7 +240,7 @@ Game.Settings.prototype.worldResize = function () {
     this.world.bounds.height = this.tilemap.height * (round > 1 ? round : 1)
 
     this.background.x = bounds.x
-    this.background.width = this.tilemap.width < window.innerWidth ? window.innerWidth : this.tilemap.width
+    this.background.width = this.tilemap.width < document.body.clientWidth ? document.body.clientWidth : this.tilemap.width
 }
 
 

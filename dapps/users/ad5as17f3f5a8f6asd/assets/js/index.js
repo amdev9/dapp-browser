@@ -6,6 +6,7 @@
 	game.state.add('Preloader', Game.Preloader);
 	game.state.add('MainMenu',  Game.MainMenu);
 	game.state.add('Finish',    Game.Finish);
+	game.state.add('GameOver',  Game.GameOver);
 	game.state.add('Engine',    Game.Engine);
 
 	game.state.start( 'Boot' );

@@ -1,7 +1,7 @@
 Game.Preloader = function () {
     this.preload = () => {
         // Splash Screen
-        this.splash = this.add.tileSprite(0, 0, window.innerWidth, window.innerHeight, 'splash')
+        this.splash = this.add.tileSprite(0, 0, document.body.clientWidth, document.body.clientHeight, 'splash')
 
 
         // Progress Bar
@@ -40,6 +40,15 @@ Game.Preloader = function () {
             this.load.audio(key, 'assets/audio/' + this.settings.audio[key])
         }
 
+        // Images Settings Game
+        for (var key in this.settings.images) {
+            this.load.image(key, 'assets/images/' + this.settings.images[key])
+        }
+        
+        for (var key in this.settings.numbers) {
+            this.load.image(key, 'assets/images/numbers/' + this.settings.numbers[key])
+        }
+
 
         // Audio Data Level
         for (var key in this.data.audio) {
@@ -56,12 +65,6 @@ Game.Preloader = function () {
         // Images Level
         for (var key in this.data.images) {
             this.load.image(key, 'levels/' + Game.level + '/images/' + this.data.images[key])
-        }
-        
-
-        // Images Settings Game
-        for (var key in this.settings.images) {
-            this.load.image(key, 'assets/images/' + this.settings.images[key])
         }
         
 
