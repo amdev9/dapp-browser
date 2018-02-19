@@ -10,10 +10,20 @@ Game.MainMenu = function () {
 
 
         // Start Button
-        this.start = this.add.button(0, 0, 'start', this.startGame, this)
+        this.start = this.add.button(0, 0, Game.storage.start ? 'start' : 'continue', this.startGame, this)
         this.start.position.setTo(this.menu.width / 2 - this.start.width / 2, this.menu.height / 2 - this.start.height / 2)
 
         this.menu.addChild( this.start )
+
+
+        // Restart Button
+        if ( !Game.storage.start ) {
+            this.restart = this.add.button(0, 0, 'restart', this.startGame, this)
+            this.restart.data.restart = true
+            this.restart.position.setTo(this.menu.width / 2 - this.restart.width / 2, this.menu.height / 2 + this.start.height)
+
+            this.menu.addChild( this.restart )
+        }
 
 
         // Audio
@@ -36,9 +46,15 @@ Game.MainMenu = function () {
         })
     }
 
-    this.startGame = () => {
+    this.startGame = event => {
         this.audio.background.stop()
-        this.state.start( 'Engine' )
+
+        if ( !event.data.restart ) return this.state.start( 'Engine' )
+        
+        API.Http.post('/storage', {message_type: 'remove', message: {type: 'coin'}}, ( response ) => {
+            Game.storage.coins = []
+            this.state.start( 'Engine' )
+        })
     }
 }
 

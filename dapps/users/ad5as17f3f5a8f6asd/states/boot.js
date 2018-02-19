@@ -1,5 +1,6 @@
 var Game = {
     level: 1,
+    start: true,
     storage: {}
 }
 
@@ -14,9 +15,10 @@ Game.Boot = function () {
     }
 
     this.create = () => {
-        API.Http.post('/storage', {message_type: 'findOne', message: {}}, ( response ) => {
+        API.Http.post('/storage', {message_type: 'find', message: {type: 'coin'}}, ( response ) => {
             let object = JSON.parse( response )
-            Game.storage = object.docs || {}
+            Game.storage.coins = object.docs || []
+            Game.storage.start = !Game.storage.coins.length
 
             this.state.start( 'Settings' )
         })

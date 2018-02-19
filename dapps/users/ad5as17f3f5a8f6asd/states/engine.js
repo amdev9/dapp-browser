@@ -60,6 +60,7 @@ Game.Engine = function() {
         for (var i = 0; i < this.data.items.length; i++) {
             var item = this.add.sprite(this.data.items[i].x, 0, this.data.items[i].key)
             item.position.y = this.tilemap.height - (this.data.items[i].y + item.height / 2)
+            item.data.index = i
 
             if ( this.data.items[i].physics ) {
                 this.physics.p2.enable(item, false) // true - debug
@@ -82,11 +83,24 @@ Game.Engine = function() {
         }
 
 
+        // Destroy Coins
+        Game.storage.coins.forEach(element => {
+            this.elements['coins'].forEach(object => {
+                if ( object.data.index == element.index ) {
+                    object.destroy()
+
+                    let index = this.elements['coins'].indexOf( object )
+                    this.elements['coins'].splice(index, 1)
+                }
+            })             
+        })
+
+
         // Player
         this.player = this.add.sprite(0, 0, 'player')
 
         this.player.data.health = 3
-        this.player.data.total  = Game.storage.coins || 0
+        this.player.data.total  = Game.storage.coins.length
 
         this.player.coords = {
             x: this.data.player.x ? this.data.player.x : 0,
@@ -241,6 +255,7 @@ Game.Engine = function() {
         this.detectCollision(this.player, this.elements['coins'], object => {
             this.audio.coin.play()
 
+            let data = object.data
             object.destroy()
 
             var index = this.elements['coins'].indexOf( object )
@@ -249,7 +264,7 @@ Game.Engine = function() {
             this.player.data.total++
             this.highscore(this.coins, this.player.data.total)
 
-            API.Http.post('/storage', {message_type: Game.storage.coins ? 'update' : 'insert', message: {coins: this.player.data.total}})
+            API.Http.post('/storage', {message_type: 'insert', message: {type: 'coin', index: data.index}})
         })
 
 

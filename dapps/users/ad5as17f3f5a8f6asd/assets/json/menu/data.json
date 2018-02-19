@@ -5,6 +5,8 @@
 
     "images": {
         "menu" : "menu.png",
-        "start": "start.png"
+        "start": "start.png",
+        "restart" : "restart.png",
+        "continue": "continue.png"
     }
 }
