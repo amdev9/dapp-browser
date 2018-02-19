@@ -49,9 +49,9 @@ class UserDappsLoader {
         let code = 'Events.data = ' + JSON.stringify( object );
         code += this.getFileSync( _path + '/' + object.main );
          
-        object.icon  = this.source + '/' + dirname + '/' + object.icon;
-        object.thumb = this.source + '/' + dirname + '/' + object.thumb;
-        object.index = this.source + '/' + dirname + '/' + object.index;
+        object.icon   = this.source + '/' + dirname + '/' + object.icon;
+        object.thumb  = this.source + '/' + dirname + '/' + object.thumb;
+        object.index  = this.source + '/' + dirname + '/' + object.index;
 
         this.items.push( object );
 

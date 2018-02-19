@@ -31,7 +31,6 @@ const readDataFile = ( source ) => {
 	}
 }
 
-
 // Request Web Controller
 router.post('/web', (request, response, next) => {
 	let target = getHeaders(request.headers);
@@ -77,7 +76,6 @@ router.post('/web', (request, response, next) => {
 	});
 });
 
-
 // Request Storage Controller
 router.post('/storage', (request, response, next) => {
 	let target = getHeaders(request.headers);
@@ -91,7 +89,6 @@ router.post('/storage', (request, response, next) => {
 	request.body.callback = () => response.send( request.body );
 	events.publish(system.StrCtrl, request.body.message_type, request.body);
 });
-
 
 // Request Access Permissions
 router.post('/access', (request, response, next) => {

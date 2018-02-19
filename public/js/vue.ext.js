@@ -20,6 +20,20 @@
     }
 
 
+    // Vue Concat HTMLCollection
+    // ------------------------------------------------------ //
+
+    Vue.prototype.$concat = ( value ) => {
+        let array = [];
+
+        for (let i = 0; i < value.length; i++) {
+            array = array.concat( Array.from( value[i] ) )
+        }
+
+        return array;
+    }
+
+
     // Vue Create Element
     // ------------------------------------------------------ //
 

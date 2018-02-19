@@ -13,11 +13,36 @@ systemLoader.runInContext();
 const userLoader = new UserDappsLoader('manifest.json', 'users');
 userLoader.runInContext();
 
-// Routes
+// Request Index Page
 router.get('/', (request, response, next) => {
-	response.render('layouts/index', {
-		title: 'Express',
-		items: userLoader.items
+	db.setting.find({type: 'pin'}, (error, rows) => {
+		const items = userLoader.items;
+
+		rows.forEach((pin, index) => {
+			items.forEach(app => {
+				if ( pin.target == app.key ) rows[index] = app
+			})
+		});
+		
+		response.render('layouts/index', {
+			title: 'Express',
+			pins : rows,
+			items: items
+		});
+	});
+});
+
+// Request Setting Pin
+router.post('/setting.pin', (request, response, next) => {
+	const object = {type: 'pin', target: request.body.target}
+
+	db.setting.find(object, (error, rows) => {
+		let status = true;
+
+		!rows.length ? db.setting.insert( object ) : db.setting.remove( object );
+		if ( rows.length ) status = false;
+
+		response.send({status: status})
 	});
 });
 

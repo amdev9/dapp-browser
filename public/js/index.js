@@ -35,21 +35,31 @@
     // ------------------------------------------------------ //
 
     const _context = new Vue({
-        el: 'aside .contextmenu',
+        el: '.contextmenu',
         data: {
             show: false,
             target: null
         },
         methods: {
             pin: function () {
-                alert( 'pin' )
+                this.$http.post('/setting.pin', {target: this.target}, response => {
+                    let object = JSON.parse( response );
+
+                    let pins = _aside.$refs.pins;
+                    let apps = _aside.$refs.apps;
+
+                    let item = _aside.$el.querySelector( '[data-key = ' + this.target + ']' );
+ 
+                    (() => object.status ? pins : apps)().appendChild( item )
+                })
             },
             close: function () {
                 let view = _windows.$el.querySelector( '#' + this.target );
-                view.parentNode.removeChild( view );
-
                 let item = _aside.$el.querySelector( '[data-key = ' + this.target + ']' );
-                item.parentNode.removeChild( item );
+
+                if ( _windows.$el.contains( view ) ) view.parentNode.removeChild( view );
+
+                if ( item.parentNode != _aside.$refs.pins ) item.parentNode.removeChild( item );
                 
                 if ( _windows.key == this.target ) _windows.show = null;
             }
@@ -58,7 +68,8 @@
             show: function ( value ) {
                 if ( value === true ) return;
 
-                [].forEach.call(_aside.$el.children, element => element.classList.remove( 'focus' ))
+                let children = this.$concat([_aside.$refs.apps.children, _aside.$refs.pins.children])
+                children.forEach(element => element.classList.remove( 'focus' ))
             }
         }
     });
@@ -81,31 +92,78 @@
     // ------------------------------------------------------ //
 
     const _aside = new Vue({
-        el: 'aside .apps',
+        el: 'aside',
         data: {
             view: null
         },
         methods: {
             renderer: function ( value ) {
-                [].forEach.call(this.$el.children, element => element.classList.remove( 'active' ));
+                let children = this.$concat([this.$refs.apps.children, this.$refs.pins.children])
+                children.forEach(element => element.classList.remove( 'active' ));
 
                 let target = this.$el.querySelector( '[data-key = ' + this.key + ']' );
                 
-                if ( !this.$el.contains( target ) ) {
+                if ( !this.$refs.apps.contains( target ) && !this.$refs.pins.contains( target ) ) {
                     this.view.classList.add( 'active' );
-                    this.$el.appendChild( this.view );
+                    this.$refs.apps.appendChild( this.view );
                 } else {
                     target.classList.add( 'active' );
                     target.classList.remove( 'd-none' );
                 }
+            },
+            _click: function (event, options) {
+                let children = this.$concat([this.$refs.apps.children, this.$refs.pins.children])
+                children.forEach(element => element.classList.remove( 'active' ));
+                
+                event.currentTarget.classList.add( 'active' );
+
+                _windows.create = options;
+            },
+            _context: function (event, options) {
+                let bounds = {x: event.clientX, y: event.clientY}
+         
+                let children = this.$concat([this.$refs.apps.children, this.$refs.pins.children])
+                children.forEach(element => element.classList.remove( 'focus' ));
+                
+                event.currentTarget.classList.add( 'focus' );
+
+                _context.$el.style.left = bounds.x + 'px';
+                _context.$el.style.top  = bounds.y + 'px';
+
+                _context.target = options.key;
+                _context.show = true;
             }
+        },
+        mounted: function () {
+            let children = Array.from( this.$refs.pins.children );
+
+            children.forEach(element => {
+                let options = Object.assign({}, element.dataset);
+
+                let icns  = this.$createEl('div', null, ['icns']);
+                let image = this.$createEl('img', {src: options.icon});
+
+                icns.appendChild( image );
+                element.appendChild( icns );
+
+                element.addEventListener('click', event => {
+                    this._click(event, options)
+                });
+
+                element.addEventListener('contextmenu', event => {
+                    this._context(event, options)
+                });
+            })
         },
         computed: {
             create: {
                 set: function ( options ) {
                     let element = this.$createEl('div', null, ['apps-item']);
-                    element.dataset['key'] = options.key
 
+                    for (const key in options) {
+                        element.dataset[key] = options[key]
+                    }
+                
                     let icns  = this.$createEl('div', null, ['icns']);
                     let image = this.$createEl('img', {src: options.icon});
 
@@ -113,25 +171,11 @@
                     element.appendChild( icns );
 
                     element.addEventListener('click', event => {
-                        [].forEach.call(this.$el.children, element => element.classList.remove( 'active' ));
-                        event.currentTarget.classList.add( 'active' );
-
-                        _windows.create = {key: options.key, src: null};
+                        this._click(event, options)
                     });
 
                     element.addEventListener('contextmenu', event => {
-                        let bounds = {x: event.clientX, y: event.clientY}
-                        let offset = element.clientHeight;
-                        let key = element.dataset.key;
-
-                        [].forEach.call(this.$el.children, element => element.classList.remove( 'focus' ));
-                        element.classList.add( 'focus' );
-
-                        _context.$el.style.left = bounds.x + 'px';
-                        _context.$el.style.top  = bounds.y - offset + 'px';
-
-                        _context.target = key;
-                        _context.show = true;
+                        this._context(event, options)
                     });
 
                     this.view = element;
@@ -196,7 +240,9 @@
                 if ( value === true ) return;
 
                 this.$hideEls( this.$el.children );
-                [].forEach.call(_aside.$el.children, element => element.classList.remove( ... ['active', 'focus']));
+
+                let children = this.$concat([_aside.$refs.apps.children, _aside.$refs.pins.children])
+                children.forEach(element => element.classList.remove( ... ['active', 'focus']));
             }
         }
     });
@@ -209,16 +255,11 @@
         el: '.content .apps',
         methods: {
             view: function ( event ) {
-                let target = event.currentTarget;
-                let icon = target.dataset.icon;
-                let src  = target.dataset.src;
-                let key  = this._replace( src );
+                let target  = event.currentTarget;
+                let dataset = {key: target.dataset.key, icon: target.dataset.icon, src: target.dataset.src}
 
-                _windows.create = {key: key, src: src};
-                _aside.create = {key: key, icon: icon};
-            },
-            _replace: function ( string ) {
-                return string.replace('users/', '').split( '/' ).shift();
+                _windows.create = dataset
+                _aside.create = dataset
             }
         },
         mounted: function ( event ) {

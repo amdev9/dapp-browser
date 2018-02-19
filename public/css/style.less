@@ -118,11 +118,8 @@ main {
 			height: 100%;
 			padding: 7px 0;
 			background: #CEE4F3;
-			display: flex;
 
-			.apps {
-				flex: 1;
-
+			.apps, .pins {
 				&-item {
 					position: relative;
 					padding: 7px 0;
@@ -163,34 +160,10 @@ main {
 				}
 			}
 
-			.contextmenu {
-				position: absolute;
-				top: 0;
-				left: 0;
-				display: none;
-				min-width: 150px;
-				padding: 5px 0;
-				background: #6CADDB;
-				z-index: 3;
-				box-shadow: 0 0 10px fade(#000, 10%); 
-
-				&.show {
-					display: block
-				}
-
-				span {
-					display: block;
-					font-size: 16px;
-					color: #fff;
-					height: 35px;
-					padding: 0 20px;
-					line-height: 35px;
-					cursor: pointer;
-					white-space: nowrap;
-					.transition(all, .1s);
-
-					&:hover {
-						background: #5C96BE
+			.pins {
+				.apps-item {
+					&:last-child {
+						border-bottom: 1px solid #BBD4E6
 					}
 				}
 			}
@@ -339,6 +312,38 @@ main {
 						padding: 30px 30px 15px;
 					}
 				}
+			}
+		}
+	}
+
+	.contextmenu {
+		position: absolute;
+		top: 0;
+		left: 0;
+		display: none;
+		min-width: 150px;
+		padding: 5px 0;
+		background: #6CADDB;
+		z-index: 3;
+		box-shadow: 0 0 10px fade(#000, 10%); 
+
+		&.show {
+			display: block
+		}
+
+		span {
+			display: block;
+			font-size: 16px;
+			color: #fff;
+			height: 35px;
+			padding: 0 20px;
+			line-height: 35px;
+			cursor: pointer;
+			white-space: nowrap;
+			.transition(all, .1s);
+
+			&:hover {
+				background: #5C96BE
 			}
 		}
 	}

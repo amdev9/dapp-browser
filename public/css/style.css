@@ -96,21 +96,21 @@ main .main aside {
   height: 100%;
   padding: 7px 0;
   background: #CEE4F3;
-  display: flex;
 }
-main .main aside .apps {
-  flex: 1;
-}
-main .main aside .apps-item {
+main .main aside .apps-item,
+main .main aside .pins-item {
   position: relative;
   padding: 7px 0;
   cursor: pointer;
 }
 main .main aside .apps-item.active,
-main .main aside .apps-item.focus {
+main .main aside .pins-item.active,
+main .main aside .apps-item.focus,
+main .main aside .pins-item.focus {
   background: #6CADDB;
 }
-main .main aside .apps-item.online:after {
+main .main aside .apps-item.online:after,
+main .main aside .pins-item.online:after {
   position: absolute;
   content: '';
   height: 12px;
@@ -120,7 +120,8 @@ main .main aside .apps-item.online:after {
   border-radius: 50%;
   background: #5C96BE;
 }
-main .main aside .apps-item .icns {
+main .main aside .apps-item .icns,
+main .main aside .pins-item .icns {
   display: block;
   width: 35px;
   height: 35px;
@@ -130,40 +131,13 @@ main .main aside .apps-item .icns {
   background: #97BCD6 url('../images/icons/app.svg') no-repeat center;
   background-size: 60%;
 }
-main .main aside .apps-item .icns img {
+main .main aside .apps-item .icns img,
+main .main aside .pins-item .icns img {
   display: block;
   max-width: 100%;
 }
-main .main aside .contextmenu {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: none;
-  min-width: 150px;
-  padding: 5px 0;
-  background: #6CADDB;
-  z-index: 3;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-main .main aside .contextmenu.show {
-  display: block;
-}
-main .main aside .contextmenu span {
-  display: block;
-  font-size: 16px;
-  color: #fff;
-  height: 35px;
-  padding: 0 20px;
-  line-height: 35px;
-  cursor: pointer;
-  white-space: nowrap;
-  -webkit-transition: all 0.1s ease-in-out;
-  -moz-transition: all 0.1s ease-in-out;
-  -ms-transition: all 0.1s ease-in-out;
-  transition: all 0.1s ease-in-out;
-}
-main .main aside .contextmenu span:hover {
-  background: #5C96BE;
+main .main aside .pins .apps-item:last-child {
+  border-bottom: 1px solid #BBD4E6;
 }
 main .main .content {
   position: relative;
@@ -294,4 +268,35 @@ main .main .content .view-code-console.open {
   height: 270px;
   opacity: 1;
   padding: 30px 30px 15px;
+}
+main .contextmenu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+  min-width: 150px;
+  padding: 5px 0;
+  background: #6CADDB;
+  z-index: 3;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+main .contextmenu.show {
+  display: block;
+}
+main .contextmenu span {
+  display: block;
+  font-size: 16px;
+  color: #fff;
+  height: 35px;
+  padding: 0 20px;
+  line-height: 35px;
+  cursor: pointer;
+  white-space: nowrap;
+  -webkit-transition: all 0.1s ease-in-out;
+  -moz-transition: all 0.1s ease-in-out;
+  -ms-transition: all 0.1s ease-in-out;
+  transition: all 0.1s ease-in-out;
+}
+main .contextmenu span:hover {
+  background: #5C96BE;
 }

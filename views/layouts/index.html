@@ -6,13 +6,18 @@
 
 	<main>
 		<div class="main">
-			<aside>
-				<div class="contextmenu" v-bind:class="{show: show}">
-					<span v-on:click="pin">Pin</span>
-					<span v-on:click="close">Close App</span>
-				</div>
+			<div class="contextmenu" v-bind:class="{show: show}">
+				<span v-on:click="pin">Pin</span>
+				<span v-on:click="close">Close App</span>
+			</div>
 
-				<div class="apps"></div>
+			<aside>
+				<div class="pins" ref="pins">
+					{% for item in pins %}
+						<div class="apps-item" data-key="{{ item.key }}" data-icon="{{ item.icon }}" data-src="{{ item.index }}"></div>
+					{% endfor %}
+				</div>
+				<div class="apps" ref="apps"></div>
 			</aside>
 
 			<div class="content">
@@ -24,7 +29,7 @@
 					
 						<div class="row apps">
 							{% for item in items %}
-								<div v-on:click="view" class="col-md-6 col-lg-3 apps-item" data-src="{{ item.index }}" data-icon="{{ item.icon }}">
+								<div v-on:click="view" class="col-md-6 col-lg-3 apps-item" data-key="{{ item.key }}" data-icon="{{ item.icon }}" data-src="{{ item.index }}">
 									<div class="apps-item-header" data-thumb="{{ item.thumb }}"></div>
 									
 									<div class="apps-item-body">
