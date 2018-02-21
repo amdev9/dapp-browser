@@ -7,3 +7,11 @@ Events.subscribe('web', response => {
 Events.subscribe('response', response =>  {
     return response;
 });
+
+Events.subscribe('generate', response =>  {
+    const array  = response.payload.message.empty;
+    const rand   = Math.floor(Math.random() * (array.length - 1));
+    const bounds = array[rand];
+
+    response.payload.message.bounds = bounds;
+});

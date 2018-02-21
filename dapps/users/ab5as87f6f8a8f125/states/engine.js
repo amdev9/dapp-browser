@@ -5,7 +5,8 @@ Game.Engine = function () {
         this.input.mouse.capture = true
 
         // Finish
-        this.finish = false
+        this.finish  = false
+        this.request = false
 
 
         // Settings
@@ -120,10 +121,32 @@ Game.Engine = function () {
     }
 
     this._onMouseDown = (target, pointer) => {
-        if ( target.children.length || this.finish ) return
+        if ( target.children.length || this.finish || this.request) return
 
-        let type = pointer.leftButton.isDown ? 'cross' : 'zero'
+        this._checkPoint(target, 'cross')
 
+        this._checkFinish(target, () => {
+            this._message('Победа!', 250)
+        })
+
+        if ( this.finish ) return
+
+        this.request = true
+
+        API.Http.post('/web', {message_type: 'generate', message: {empty: this.empty}}, response => {
+            let object = JSON.parse( response )
+            let bounds = object.message.bounds
+
+            this._checkPoint(this.tree[bounds.y + '' + bounds.x], 'zero')
+            this._checkFinish( this.tree[bounds.y + '' + bounds.x], () => {
+                this._message('Проиграл (', 250)
+            })
+
+            this.request = false
+        })
+    }
+
+    this._checkPoint = (target, type) => {
         let sprite = this.add.sprite(0, 0, type)
         sprite.alpha = 0
         sprite.position.setTo(target.width / 2 - sprite.width / 2, target.height / 2 - sprite.height / 2)
@@ -132,8 +155,15 @@ Game.Engine = function () {
         target.data.type = type
 
         this.add.tween( sprite ).to({alpha: 1}, 200, Phaser.Easing.Linear.None, true)
+    }
 
-        let index = []
+    this._checkFinish = (target, func) => {
+        this.index = []
+        this.empty = []
+
+        for (const key in this.tree) {
+            if ( this.tree[key].data.type === null ) this.empty.push( this.tree[key].data.bounds )
+        }
 
         for (let y = 0; y < this.position.length; y++) {
             let winner = true
@@ -146,29 +176,18 @@ Game.Engine = function () {
 
             if ( winner ) {
                 this.finish = true
-                index = this.position[y]
+                this.index  = this.position[y]
 
                 break
             }
         }
 
-        if ( !this.finish ) {
-            let free = false
+        if ( !this.empty.length ) return this._message('Ничья!', 250)
 
-            for (const key in this.tree) {
-                if ( this.tree[key].data.type === null ) {
-                    free = true
-                    break
-                }
-            }
+        if ( !this.finish ) return
 
-            if ( !free ) this._message('Ничья!', 250)
-
-            return
-        }
-
-        let start = index.shift().join( '' )
-        let end = index.pop().join( '' )
+        let start = this.index.shift().join( '' )
+        let end = this.index.pop().join( '' )
 
         let offset = this.size.x / this.count
 
@@ -187,7 +206,7 @@ Game.Engine = function () {
 
         this.add.tween( this.graphics ).to({alpha: 1}, 200, Phaser.Easing.Linear.None, true)
 
-        this._message('Победа!', 250)
+        func()
     }
 
     this._message = (message, time) => {
