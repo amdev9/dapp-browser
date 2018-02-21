@@ -182,7 +182,7 @@ Game.Engine = function () {
             }
         }
 
-        if ( !this.empty.length ) return this._message('Ничья!', 250)
+        if ( !this.empty.length && !this.finish ) return this._message('Ничья!', 250)
 
         if ( !this.finish ) return
 
