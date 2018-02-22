@@ -2,23 +2,31 @@
     <div class="container-fluid h-100">
         <div class="row h-100">
             <div class="col navbar-home">
-                <div class="navbar-home-link" v-on:click="close"><i class="icon icon-home"></i></div>
+                <div class="navbar-home-link" v-on:click="index" data-title="Home" ref="home"><i class="icon icon-home"></i></div>
             </div>
 
             <div class="col navbar-user">
                 <div class="row h-100 align-items-center">
+                    <div class="col-auto navbar-user-title" ref="pagetitle">Home</div>
+
                     <div class="col navbar-user-search">
                         <form>
-                            <input type="search" class="form-control">
+                            <div class="input-group">
+                                <input type="text" class="form-control" v-bind:class="{visible: visible}" ref="search" placeholder="Search ...">
+
+                                <div class="input-group-prepend">
+                                    <button type="button" v-on:click="search">
+                                        <img src="images/icons/search.svg" class="svg visible" alt="...">
+                                        <img src="images/icons/close.svg" class="svg" alt="...">
+                                    </button>
+                                </div>
+                            </div>
                         </form>
                     </div>
 
                     <div class="col-auto navbar-user-nav">
-                        <a href="/" class="btn btn-secondary">Node</a>
-                        <a href="/"><i class="icon icon-purse"></i></a>
-                        <a href="/"><i class="icon icon-bag"></i></a>
-                        <a href="/"><i class="icon icon-settings"></i></a>
-                        <a href="/"><i class="icon icon-user"></i></a>
+                        <button type="button" v-on:click="settings"><img src="images/icons/settings.svg" class="svg" alt="..."></button>
+                        <button type="button" v-on:click="notify"><img src="images/icons/notification.svg" class="svg" alt="..."></button>
                     </div>
                 </div>
             </div>

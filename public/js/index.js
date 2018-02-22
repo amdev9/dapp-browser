@@ -62,6 +62,8 @@
                 if ( item.parentNode != _aside.$refs.pins ) item.parentNode.removeChild( item );
                 
                 if ( _windows.key == this.target ) _windows.show = null;
+
+                _header.$refs.pagetitle.innerHTML = _header.$refs.home.dataset.title;
             }
         },
         watch: {
@@ -80,9 +82,31 @@
 
     const _header = new Vue({
         el: 'header',
+        data: {
+            visible: false
+        },
         methods: {
-            close: function () {
+            index: function ( event ) {
+                let target = event.currentTarget;
+                this.$refs.pagetitle.innerHTML = target.dataset.title;
+
                 _windows.show = null
+            },
+            search: function ( event ) {
+                let target = event.currentTarget;
+
+                this.visible = !this.visible;
+
+                let children = Array.from( target.children );
+                children.forEach(element => element.classList.toggle( 'visible' ));
+
+                if ( !this.visible ) this.$refs.search.value = '';
+            },
+            settings: function () {
+
+            },
+            notify: function () {
+                
             }
         }
     });
@@ -112,21 +136,24 @@
                 }
             },
             _click: function (event, options) {
+                let target = event.currentTarget;
                 let children = this.$concat([this.$refs.apps.children, this.$refs.pins.children])
                 children.forEach(element => element.classList.remove( 'active' ));
                 
-                event.currentTarget.classList.add( 'active' );
+                target.classList.add( 'active' );
 
                 _windows.create = options;
+                _header.$refs.pagetitle.innerHTML = target.dataset.title;
             },
             _context: function (event, options) {
+                let target = event.currentTarget;
                 let bounds = {x: event.clientX, y: event.clientY}
          
                 let children = this.$concat([this.$refs.apps.children, this.$refs.pins.children])
                 children.forEach(element => element.classList.remove( 'focus' ));
                 
-                event.currentTarget.classList.add( 'focus' );
-
+                target.classList.add( 'focus' );
+                
                 _context.$el.style.left = bounds.x + 'px';
                 _context.$el.style.top  = bounds.y + 'px';
 
@@ -256,10 +283,11 @@
         methods: {
             view: function ( event ) {
                 let target  = event.currentTarget;
-                let dataset = {key: target.dataset.key, icon: target.dataset.icon, src: target.dataset.src}
+                let dataset = {key: target.dataset.key, icon: target.dataset.icon, title: target.dataset.title, src: target.dataset.src}
 
-                _windows.create = dataset
-                _aside.create = dataset
+                _windows.create = dataset;
+                _aside.create = dataset;
+                _header.$refs.pagetitle.innerHTML = target.dataset.title;
             }
         },
         mounted: function ( event ) {

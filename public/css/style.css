@@ -20,8 +20,9 @@ summary {
   display: block;
 }
 body {
-  font: 16px 'Roboto', sans-serif;
+  font: 16px 'Open Sans', sans-serif;
   height: 100%;
+  color: #252526;
 }
 .wrapper {
   min-height: 100%;
@@ -35,16 +36,18 @@ body {
 header {
   width: 100%;
   height: 60px;
-  background: #F2F8FC;
+  background: #fff;
+  z-index: 5;
+  box-shadow: 0 2px 3px rgba(32, 32, 73, 0.05);
 }
 header .navbar {
   height: 100%;
 }
 header .navbar-home {
   height: 100%;
-  flex: 0 0 60px;
+  flex: 0 0 62px;
   padding: 0;
-  background: #DBEBF6;
+  background: #fff;
 }
 header .navbar-home-link {
   display: block;
@@ -59,25 +62,98 @@ header .navbar-home-link .icon {
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
 }
+header .navbar-user-search {
+  height: 100%;
+}
 header .navbar-user-search form {
+  height: 100%;
   width: 100%;
 }
-header .navbar-user-search form input,
-header .navbar-user-search form input:focus {
+header .navbar-user-search form .input-group {
+  height: 100%;
+}
+header .navbar-user-search form .input-group .form-control,
+header .navbar-user-search form .input-group .form-control:focus {
   border: 0;
-  color: #5C96BE;
-  padding: 4px 10px 4px 40px;
+  height: 100%;
+  color: #252526;
+  opacity: 0;
+  visibility: hidden;
   border-radius: 0;
-  background: #DEECF6 url('../images/icons/search.svg') no-repeat left 10px center;
+}
+header .navbar-user-search form .input-group .form-control.visible,
+header .navbar-user-search form .input-group .form-control:focus.visible {
+  opacity: 1;
+  visibility: visible;
+}
+header .navbar-user-search form .input-group-prepend button {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  border: 0;
+  top: 50%;
+  margin: 1px 0 0;
+  cursor: pointer;
+  background: none;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+header .navbar-user-search form .input-group-prepend button svg {
+  position: absolute;
+  opacity: 0;
+  top: 50%;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  visibility: hidden;
+  -webkit-transition: all 0.15s ease-in-out;
+  -moz-transition: all 0.15s ease-in-out;
+  -ms-transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+header .navbar-user-search form .input-group-prepend button svg path {
+  -webkit-transition: all 0.15s ease-in-out;
+  -moz-transition: all 0.15s ease-in-out;
+  -ms-transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
+}
+header .navbar-user-search form .input-group-prepend button svg.visible {
+  opacity: 1;
+  visibility: visible;
+}
+header .navbar-user-search form .input-group-prepend button:hover svg path {
+  fill: #4686FF;
 }
 header .navbar-user-nav {
   padding-left: 0;
 }
-header .navbar-user-nav a {
+header .navbar-user-nav button {
   display: inline-block;
+  border: 0;
+  cursor: pointer;
+  background: none;
+  vertical-align: middle;
 }
-header .navbar-user-nav a + a {
-  margin-left: 10px;
+header .navbar-user-nav button svg {
+  display: block;
+}
+header .navbar-user-nav button svg path {
+  -webkit-transition: all 0.15s ease-in-out;
+  -moz-transition: all 0.15s ease-in-out;
+  -ms-transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
+}
+header .navbar-user-nav button:hover svg path {
+  fill: #4686FF;
+}
+header .navbar-user-nav button + button {
+  margin-left: 15px;
 }
 /* Middle
 -----------------------------------------------------------------------------*/
@@ -92,10 +168,10 @@ main .main {
 }
 main .main aside {
   position: relative;
-  width: 60px;
+  width: 62px;
   height: 100%;
   padding: 7px 0;
-  background: #CEE4F3;
+  background: #FAFAFC;
 }
 main .main aside .apps-item,
 main .main aside .pins-item {
@@ -118,7 +194,7 @@ main .main aside .pins-item.online:after {
   top: -6px;
   right: -6px;
   border-radius: 50%;
-  background: #5C96BE;
+  background: #4686FF;
 }
 main .main aside .apps-item .icns,
 main .main aside .pins-item .icns {
@@ -144,10 +220,11 @@ main .main .content {
   display: flex;
   flex: 1;
   padding: 10px 40px 40px;
+  background: #F2F3F6;
 }
 main .main .content .title {
-  font-weight: 400;
-  color: #5C96BE;
+  font: 600 28px 'Montserrat', sans-serif;
+  color: #252526;
   margin: 30px 0 30px;
 }
 main .main .content .apps-item {
@@ -162,26 +239,46 @@ main .main .content .apps-item-header {
   background-color: #CEE4F3;
   background-position: center;
   background-size: cover;
+  border-radius: 8px 8px 0 0;
 }
 main .main .content .apps-item-body {
   padding: 15px;
-  background: #EFF9FF;
+  background: #fff;
+  border-radius: 0 0 8px 8px;
 }
 main .main .content .apps-item-name {
-  font-size: 18px;
-  font-weight: 400;
+  font: 500 18px 'Open Sans', sans-serif;
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: #5C96BE;
+  color: #252526;
 }
-main .main .content .apps-item-type {
-  color: #5C96BE;
+main .main .content .apps-item-tags:after {
+  display: table;
+  content: '';
+  clear: both;
+}
+main .main .content .apps-item-tags small {
+  font: 11px 'Open Sans', sans-serif;
+  color: #252526;
   display: block;
+  float: left;
   overflow: hidden;
+  padding: 4px 12px;
+  text-transform: uppercase;
   text-overflow: ellipsis;
   white-space: nowrap;
+  background: #FAFAFC;
+  border-radius: 12px;
+}
+main .main .content .apps-item-tags small + small {
+  margin-left: 10px;
+}
+main .main .content .apps-item-tags small.custom {
+  color: #4686FF;
+  float: right;
+  background: #DFEAFF;
 }
 main .main .content #views {
   position: absolute;
@@ -225,7 +322,7 @@ main .main .content .view-code-panel {
 main .main .content .view-code-panel span {
   font-size: 12px;
   display: block;
-  color: #5C96BE;
+  color: #4686FF;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -275,18 +372,19 @@ main .contextmenu {
   left: 0;
   display: none;
   min-width: 150px;
-  padding: 5px 0;
-  background: #6CADDB;
+  padding: 8px 0;
+  background: #fff;
   z-index: 3;
+  border-radius: 6px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 main .contextmenu.show {
   display: block;
 }
 main .contextmenu span {
+  font: 16px 'Open Sans', sans-serif;
   display: block;
-  font-size: 16px;
-  color: #fff;
+  color: #252526;
   height: 35px;
   padding: 0 20px;
   line-height: 35px;
@@ -298,5 +396,5 @@ main .contextmenu span {
   transition: all 0.1s ease-in-out;
 }
 main .contextmenu span:hover {
-  background: #5C96BE;
+  background: #F2F3F6;
 }

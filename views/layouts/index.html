@@ -7,14 +7,14 @@
 	<main>
 		<div class="main">
 			<div class="contextmenu" v-bind:class="{show: show}">
-				<span v-on:click="pin">Pin</span>
-				<span v-on:click="close">Close App</span>
+				<span v-on:click="pin">Pin app</span>
+				<span v-on:click="close">Close app</span>
 			</div>
 
 			<aside>
 				<div class="pins" ref="pins">
 					{% for item in pins %}
-						<div class="apps-item" data-key="{{ item.key }}" data-icon="{{ item.icon }}" data-src="{{ item.index }}"></div>
+						<div class="apps-item" data-key="{{ item.key }}" data-icon="{{ item.icon }}" data-title="{{ item.name }}" data-src="{{ item.index }}"></div>
 					{% endfor %}
 				</div>
 				<div class="apps" ref="apps"></div>
@@ -29,12 +29,16 @@
 					
 						<div class="row apps">
 							{% for item in items %}
-								<div v-on:click="view" class="col-md-6 col-lg-3 apps-item" data-key="{{ item.key }}" data-icon="{{ item.icon }}" data-src="{{ item.index }}">
+								<div v-on:click="view" class="col-md-6 col-lg-4 col-xl-3 apps-item" data-key="{{ item.key }}" data-icon="{{ item.icon }}" data-title="{{ item.name }}" data-src="{{ item.index }}">
 									<div class="apps-item-header" data-thumb="{{ item.thumb }}"></div>
 									
 									<div class="apps-item-body">
 										<h5 class="apps-item-name">{{ item.name }}</h5>
-										<small class="apps-item-type">{{ item.type }}</small>
+
+										<div class="apps-item-tags">
+											<small>{{ item.type }}</small>
+											<small class="custom">Update</small>
+										</div>
 									</div>
 								</div>
 							{% endfor %}
