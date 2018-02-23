@@ -9,12 +9,12 @@
     const _console = new Vue({
         el: '.view-code',
         data: {
-            open: false
+            visible: false
         },
         methods: {
             toogle: function () {
-                this.open = !this.open;
-                this.$refs.console.scrollTop = this.$refs.console.scrollHeight;
+                this.visible = !this.visible;
+                this.$refs.logger.scrollTop = this.$refs.logger.scrollHeight;
             }
         },
         computed: {
@@ -23,8 +23,8 @@
                     let string = this.$createEl( 'p' );
                     string.innerHTML = value;
 
-                    this.$refs.console.appendChild( string );
-                    this.$refs.console.scrollTop = this.$refs.console.scrollHeight;
+                    this.$refs.logger.appendChild( string );
+                    this.$refs.logger.scrollTop = this.$refs.logger.scrollHeight;
                 }
             }
         }
@@ -103,11 +103,14 @@
                 if ( !this.visible ) this.$refs.search.value = '';
             },
             settings: function () {
-
+                
             },
             notify: function () {
-                
+                _notify.visible = !_notify.visible;
             }
+        },
+        mounted: function () {
+            this.$dropdown.enable( this.$el )
         }
     });
 
@@ -168,7 +171,11 @@
                 let options = Object.assign({}, element.dataset);
 
                 let icns  = this.$createEl('div', null, ['icns']);
-                let image = this.$createEl('img', {src: options.icon});
+
+                let image = new Image();
+                image.src = options.icon;
+
+                image.onerror = () => {image.src = 'images/favicon.svg'}
 
                 icns.appendChild( image );
                 element.appendChild( icns );
@@ -215,11 +222,24 @@
     });
 
 
+    // Notifications
+    // ------------------------------------------------------ //
+    const _notify = new Vue({
+        el: '.notifications',
+        data: {
+            visible: false
+        },
+        methods: {
+
+        }
+    })
+
+
     // Windows
     // ------------------------------------------------------ //
 
     const _windows = new Vue({
-        el: '#views',
+        el: '.views',
         data: {
             view: null,
             show: null,
@@ -337,7 +357,10 @@
     // ------------------------------------------------------ //
 
     document.addEventListener('contextmenu', event => event.preventDefault());
-    document.addEventListener('click', event => _context.show = false);
+    document.addEventListener('click', event => {
+        Vue.prototype.$dropdown.hidden();
+        _context.show = false;
+    });
 
 
     // Socket Console

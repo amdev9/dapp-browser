@@ -23,7 +23,7 @@
 
     API.Http.post('/web', {message_type: 'find', message: {}}, response => {
         let object = JSON.parse( response );
-        let array  = object.docs;
+        let array  = object.docs || [];
 
         let container = document.querySelector( '.users' );
 

@@ -4,6 +4,10 @@ Events.subscribe('web', response => {
     Events.publish(response.from, response.message_type, response.payload);
 });
 
+// Events.subscribe('access', response =>  {
+//     
+// });
+
 Events.subscribe('response', response =>  {
     response.payload.message.status = true
 });

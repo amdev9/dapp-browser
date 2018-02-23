@@ -1,4 +1,14 @@
-@theme: #5C96BE;
+@theme: #4686FF;
+
+@font-opensans: 'Open Sans', sans-serif;
+@font-montserrat: 'Montserrat', sans-serif;
+
+@dark : #252526;
+@light: #FAFAFC;
+@white: #fff;
+@gray : #F2F3F6;
+@altg : #7B8DA7;
+@green: #42D286;
 
 .transition(@property: all, @delay: .15s, @duration: ease-in-out) {
     -webkit-transition: @arguments;
@@ -7,9 +17,29 @@
     transition: @arguments;
 }
 
+.transform(@property: scale(1)) {
+    -webkit-transform: @property;
+    -moz-transform: @property;
+    -ms-transform: @property;
+    transform: @property;
+}
+
+.selection {
+    -webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
 .btn {
+    font: 12px @font-montserrat;
     border: 0;
-    padding: 4px 15px;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    cursor: default !important;
+    border-radius: 17px;
 
     &-secondary {
         color: @theme;
@@ -24,11 +54,116 @@
             background: @theme !important
         }
     }
+
+    &-primary {
+        color: @white;
+        background: @theme;
+
+        &:hover, &.hover {
+            color: @white;
+            background: #689BFA
+        }
+
+        &:active {
+            background: #689BFA !important
+        }
+    }
 }
 
 .form-control {
     &:focus {
         box-shadow: none
+    }
+}
+
+.dropdown {
+    & > button {
+        position: relative;
+        font: 12px @font-opensans;
+        color: @altg;
+        background: @white;
+        cursor: default;
+        text-transform: uppercase;
+        border: 1px solid @gray;
+        padding: 5px 35px 5px 20px;
+        border-radius: 17px;
+        .selection();
+
+        &:after {
+            position: absolute;
+            content: '';
+            height: 6px;
+            width: 11px;
+            top: 50%;
+            right: 15px;
+            margin: -2px 0 0;
+            background: url('../images/icons/arrow.svg') no-repeat center
+        }
+    }
+
+    &-menu {
+        border: 0;
+        min-width: 100%;
+        border-radius: 6px;
+        background: @white;
+		box-shadow: 0 2px 3px rgba(32, 32, 73, .05);
+    }
+
+    &-item {
+        position: relative;
+        cursor: default;
+        padding: 0;
+        background: none;
+        text-transform: uppercase;
+         
+        .dropdown-menu {
+            position: absolute;
+            top: 0;
+            left: auto;
+            right: 100%;
+            border-top-right-radius: 0
+        }
+
+        span {
+            display: block;
+            font: 12px @font-opensans;
+            color: @altg;
+            padding: 7px 20px;
+            .selection();
+             
+            &:hover {
+                background: @gray;
+            }
+
+            &:active {
+                color: @white;
+                background: @theme;
+            }
+        }
+
+        &:hover {
+            background: @gray;
+
+            & > .dropdown-menu {
+                display: block
+            }
+        }
+
+        &:active {
+            background: @gray;
+        }
+    }
+
+    &.show {
+        & > button {
+            &:after {
+                .transform(rotate(-180deg))
+            }
+        }
+
+        & > .dropdown-menu {
+            display: block;
+        }
     }
 }
 

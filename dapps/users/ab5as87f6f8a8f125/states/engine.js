@@ -134,10 +134,13 @@ Game.Engine = function () {
         this.request = true
 
         API.Http.post('/web', {message_type: 'bot', message: {empty: this.empty}}, response => {
-            let object = JSON.parse( response )
-            let bounds = object.message.bounds
+            try {
+                var object = JSON.parse( response )
+            } catch ( error ) {
+                return new Error( error )
+            }
 
-            console.log(object)
+            let bounds = object.message.bounds
 
             this._checkPoint(this.tree[bounds.y + '' + bounds.x], 'zero')
             this._checkFinish( this.tree[bounds.y + '' + bounds.x], () => {

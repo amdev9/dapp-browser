@@ -11,49 +11,9 @@
 				<span v-on:click="close">Close app</span>
 			</div>
 
-			<aside>
-				<div class="pins" ref="pins">
-					{% for item in pins %}
-						<div class="apps-item" data-key="{{ item.key }}" data-icon="{{ item.icon }}" data-title="{{ item.name }}" data-src="{{ item.index }}"></div>
-					{% endfor %}
-				</div>
-				<div class="apps" ref="apps"></div>
-			</aside>
-
-			<div class="content">
-				<div id="views" v-bind:class="{show: show}"></div>
-
-				<div class="container-fluid">
-					{% if items.length %}
-						<h3 class="title">Your apps</h3>
-					
-						<div class="row apps">
-							{% for item in items %}
-								<div v-on:click="view" class="col-md-6 col-lg-4 col-xl-3 apps-item" data-key="{{ item.key }}" data-icon="{{ item.icon }}" data-title="{{ item.name }}" data-src="{{ item.index }}">
-									<div class="apps-item-header" data-thumb="{{ item.thumb }}"></div>
-									
-									<div class="apps-item-body">
-										<h5 class="apps-item-name">{{ item.name }}</h5>
-
-										<div class="apps-item-tags">
-											<small>{{ item.type }}</small>
-											<small class="custom">Update</small>
-										</div>
-									</div>
-								</div>
-							{% endfor %}
-						</div>
-					{% else %}
-						<div class="row h-100 align-items-center">
-							<div class="col content-empty text-center">
-								<span>Your apps page</span>
-							</div>
-						</div>
-					{% endif %}
-				</div>
-
-				{% include "include/console.html" %}
-			</div>
+			{% include "include/aside.html" %}
+			{% include "include/content.html" %}
+			{% include "include/notify.html" %}
 		</div>
 	</main>
 </div>

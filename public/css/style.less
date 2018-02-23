@@ -7,6 +7,8 @@
 @light: #FAFAFC;
 @white: #fff;
 @gray : #F2F3F6;
+@altg : #7B8DA7;
+@green: #42D286;
 
 * {
 	margin: 0;
@@ -28,10 +30,11 @@ body {
 }
 
 .wrapper {
+	display: flex;
 	min-height: 100%;
 	height: auto !important;
 	height: 100%;
-	display: flex;
+	overflow: hidden;
 	flex-direction: column
 }
 
@@ -47,6 +50,15 @@ body {
     -moz-transform: @property;
     -ms-transform: @property;
     transform: @property;
+}
+
+.selection {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 
@@ -93,11 +105,14 @@ header {
 						height: 100%;
 	
 						.form-control, .form-control:focus {
+							font: 16px @font-montserrat;
 							border: 0;
-							height: 100%;
+							height: 35px;
 							color: @dark;
 							opacity: 0;
+							margin: 12px 0 0 15px;
 							visibility: hidden;
+							border-left: 1px solid fade(@altg, 30%);
 							border-radius: 0;
 
 							&.visible {
@@ -105,8 +120,26 @@ header {
 								visibility: visible;
 							}
 						}
-	
+
 						&-prepend {
+							height: 100%;
+							opacity: 0;
+							visibility: hidden;
+
+							&.visible {
+								opacity: 1;
+								visibility: visible;
+							}
+
+							span {
+								font: 14px @font-montserrat;
+								line-height: 60px;
+								color: @altg;
+								text-transform: uppercase
+							}
+						}
+	
+						&-append {
 							button {
 								position: relative;
 								width: 30px;
@@ -114,7 +147,7 @@ header {
 								border: 0;
 								top: 50%;
 								margin: 1px 0 0;
-								cursor: pointer;
+								cursor: default;
 								background: none;
 								.transform(translateY(-50%));
 
@@ -155,17 +188,45 @@ header {
 			&-nav {
 				padding-left: 0;
 
-				button {
+				.dropdown {
+					display: inline-block;
+					vertical-align: middle;
+					margin-right: 15px
+				}
+
+				& > button {
+					position: relative;
 					display: inline-block;
 					border: 0;
-					cursor: pointer;
+					cursor: default;
 					background: none;
 					vertical-align: middle;
 
-					svg {
-						display: block;
+					&.notify {
+						&:before {
+							position: absolute;
+							content: '';
+							width: 8px;
+							height: 8px;
+							top: 0;
+							right: 0;
+							border-radius: 50%;
+							background: @theme;
+							box-shadow: 0 0 4px fade(@theme, 55%)
+						}
+					}
 
-						path {
+					span {
+						font: 500 14px @font-opensans;
+						color: @altg;
+						vertical-align: middle
+					}
+
+					svg {
+						display: inline-block;
+						vertical-align: middle;
+
+						path, circle {
 							.transition()
 						}
 					}
@@ -174,6 +235,19 @@ header {
 						svg {
 							path {
 								fill: @theme
+							}
+						}
+					}
+
+					&.inverse {
+						&:hover {
+							svg {
+								circle {
+									fill: @theme
+								}
+								path {
+									fill: @white
+								}
 							}
 						}
 					}
@@ -203,17 +277,31 @@ main {
 			position: relative;
 			width: 62px;
 			height: 100%;
-			padding: 7px 0;
+			padding: 7px 0 60px;
 			background: @light;
 
 			.apps, .pins {
 				&-item {
 					position: relative;
 					padding: 7px 0;
-					cursor: pointer;
+					cursor: default;
 					 
 					&.active, &.focus {
-						background: #6CADDB;
+						&:before {
+							position: absolute;
+							content: '';
+							width: 3px;
+							top: 7px;
+							left: 0;
+							bottom: 7px;
+							background: @theme
+						}
+					}
+
+					&.focus {
+						&:before {
+							background: @green
+						}
 					}
 
 					&.online {
@@ -231,13 +319,10 @@ main {
 
 					.icns {
 						display: block;
-						width: 35px;
-						height: 35px;
-						padding: 4px;
+						width: 42px;
+						height: 42px;
 						margin: 0 auto;
-						border-radius: 4px;
-						background: #97BCD6 url('../images/icons/app.svg') no-repeat center;
-						background-size: 60%;
+						border-radius: 6px;
 						
 						img {
 							display: block;
@@ -250,8 +335,32 @@ main {
 			.pins {
 				.apps-item {
 					&:last-child {
-						border-bottom: 1px solid #BBD4E6
+						margin-bottom: 15px;
+
+						&:after {
+							position: absolute;
+							display: block;
+							content: '';
+							bottom: -8px;
+							left: 0;
+							right: 0;
+							height: 1px;
+							background: #E9EEF5
+						}
 					}
+				}
+			}
+
+			.indicator {
+				position: absolute;
+				left: 0;
+				right: 0;
+				width: 15px;
+				margin: 0 auto;
+				bottom: 15px;
+
+				polygon:first-child {
+					fill: @theme
 				}
 			}
 		}
@@ -335,7 +444,7 @@ main {
 				}
 			}
 
-			#views {
+			.views {
 				position: absolute;
 				display: none;
 				left: 0;
@@ -419,7 +528,7 @@ main {
 						&.warning { color: #ffc107 }
 					}
 
-					&.open {
+					&.visible {
 						height: 270px;
 						opacity: 1;
 						padding: 30px 30px 15px;
@@ -439,25 +548,55 @@ main {
 		background: @white;
 		z-index: 3;
 		border-radius: 6px;
-		box-shadow: 0 0 10px fade(#000, 10%); 
+		box-shadow: 0 2px 3px rgba(32, 32, 73, .05);
 
 		&.show {
 			display: block
 		}
 
 		span {
-			font: 16px @font-opensans;
 			display: block;
-			color: @dark;
-			height: 35px;
-			padding: 0 20px;
-			line-height: 35px;
-			cursor: pointer;
+			font: 14px @font-opensans;
+            color: @altg;
+			padding: 7px 20px;
+			cursor: default;
 			white-space: nowrap;
 			.transition(all, .1s);
+			.selection();
 
 			&:hover {
 				background: @gray
+			}
+
+			&:active {
+				color: @white;
+				background: @theme
+			}
+		}
+	}
+
+	.notifications {
+		position: absolute;
+		top: 60px;
+		right: 0;
+		bottom: 0;
+		width: 330px;
+		padding: 15px;
+		opacity: 0;
+		visibility: hidden;
+		background: @white;
+		z-index: 5;
+		box-shadow: 0 2px 3px rgba(32, 32, 73, .05);
+		.transition();
+
+		&.visible {
+			opacity: 1;
+			visibility: visible;
+		}
+
+		&-title {
+			strong {
+				font: 600 20px @font-montserrat	
 			}
 		}
 	}

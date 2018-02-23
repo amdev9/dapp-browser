@@ -80,4 +80,36 @@
         }
     }
 
+
+    // Dropdown
+    // ------------------------------------------------------ //
+
+    Vue.prototype.$dropdown = {
+        enable: function (parent = document) {
+            let array = Array.from( parent.querySelectorAll( '.dropdown' ) )
+
+            array.forEach(element => {
+                const button = element.querySelector( 'button' );
+                const items  = Array.from( element.querySelectorAll( 'span' ) );
+
+                button.addEventListener('click', () => this._show( element ));
+                items.forEach(item => item.addEventListener('click', () => this._event( button )))
+            })
+        },
+        hidden: function (parent = document) {
+            let array = Array.from( parent.querySelectorAll( '.dropdown' ) );
+            
+            array.forEach(element => {
+                const button = element.querySelector( 'button' );
+                if ( event.target != button ) element.classList.remove( 'show' )
+            });
+        },
+        _show: function ( target ) {
+            target.classList.toggle( 'show' )
+        },
+        _event: function ( target ) {
+            target.innerText = event.target.innerText
+        }
+    }
+
 })( this );

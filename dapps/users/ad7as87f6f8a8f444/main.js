@@ -1,9 +1,12 @@
 // DAPP USER CONTROLLER
 
 Events.subscribe('request', response => {
+	// Callback
+	Events.publish(system.StrCtrl, 'insert', response.payload);
+	
+	// NOT Callback
 	Events.publish(system.WebCtrl, 'response', response.payload);
 	Events.publish(system.LogCtrl, 'debug', response.payload);
-	Events.publish(system.StrCtrl, 'insert', response.payload);
 });
 
 Events.subscribe('find', response => {

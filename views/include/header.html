@@ -12,9 +12,11 @@
                     <div class="col navbar-user-search">
                         <form>
                             <div class="input-group">
-                                <input type="text" class="form-control" v-bind:class="{visible: visible}" ref="search" placeholder="Search ...">
+                                <div class="input-group-prepend" v-bind:class="{visible: visible}"><span>uri:</span></div>
 
-                                <div class="input-group-prepend">
+                                <input type="text" class="form-control" v-bind:class="{visible: visible}" ref="search">
+
+                                <div class="input-group-append">
                                     <button type="button" v-on:click="search">
                                         <img src="images/icons/search.svg" class="svg visible" alt="...">
                                         <img src="images/icons/close.svg" class="svg" alt="...">
@@ -25,8 +27,36 @@
                     </div>
 
                     <div class="col-auto navbar-user-nav">
-                        <button type="button" v-on:click="settings"><img src="images/icons/settings.svg" class="svg" alt="..."></button>
-                        <button type="button" v-on:click="notify"><img src="images/icons/notification.svg" class="svg" alt="..."></button>
+                        <div class="dropdown">
+                            <button type="button">mainnet</button>
+                                    
+                            <div class="dropdown-menu">
+                                <div class="dropdown-item"><span>Mainnet</span></div>
+                                <div class="dropdown-item"><span>Mynet</span></div>
+                                <div class="dropdown-item"><span>Testnet</span>
+
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item"><span>Berlin, Germany</span></div>
+                                        <div class="dropdown-item"><span>Dallas, USA</span></div>
+                                        <div class="dropdown-item"><span>Nuremberg, Germany</span></div>
+                                        <div class="dropdown-item"><span>Munich, Germany</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="button" class="inverse">
+                            <img src="images/icons/key.svg" class="svg" alt="...">
+                            <span>wallet.dat</span>
+                        </button>
+
+                        <button type="button" v-on:click="settings">
+                            <img src="images/icons/settings.svg" class="svg" alt="...">
+                        </button>
+
+                        <button type="button" class="notify" v-on:click="notify">
+                            <img src="images/icons/notification.svg" class="svg" alt="...">
+                        </button>
                     </div>
                 </div>
             </div>
