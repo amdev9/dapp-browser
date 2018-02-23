@@ -264,7 +264,7 @@ Game.Engine = function() {
             this.player.data.total++
             this.highscore(this.coins, this.player.data.total)
 
-            API.Http.post('/storage', {message_type: 'insert', message: {type: 'coin', index: data.index}})
+            API.Http.post('/web', {message_type: 'insert', message: {type: 'coin', index: data.index}})
         })
 
 

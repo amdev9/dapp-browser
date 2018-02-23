@@ -6,8 +6,7 @@ class Storage {
             if ( error ) throw error;
 
             response.payload.docs = docs;
-           
-            if ( response.payload.callback ) response.payload.callback()
+            response.payload.callback()
         });
     }
 
@@ -18,7 +17,7 @@ class Storage {
             if ( error ) throw error;
 
             response.payload.docs = docs;
-            if ( response.payload.callback ) response.payload.callback()
+            response.payload.callback()
         })
     }
 
@@ -29,7 +28,7 @@ class Storage {
             if ( error ) throw error;
 
             response.payload.docs = docs;
-            if ( response.payload.callback ) response.payload.callback()
+            response.payload.callback()
         })
     }
 
@@ -39,7 +38,7 @@ class Storage {
         db.storage.update({target: response.from}, object, {multi: true}, (error, num) => {
             if ( error ) throw error;
             
-            if ( response.payload.callback ) response.payload.callback()
+            response.payload.callback()
         });
     }
 
@@ -49,7 +48,7 @@ class Storage {
         db.storage.remove(object, {multi: true}, (error, num) => {
             if ( error ) throw error;
             
-            if ( response.payload.callback ) response.payload.callback()
+            response.payload.callback()
         });
     }
 }

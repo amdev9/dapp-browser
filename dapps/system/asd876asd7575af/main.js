@@ -5,7 +5,7 @@ Events.subscribe('web', response => {
 });
 
 Events.subscribe('response', response =>  {
-    return response;
+    response.payload.message.status = true
 });
 
 Events.subscribe('generate', response =>  {
@@ -14,4 +14,5 @@ Events.subscribe('generate', response =>  {
     const bounds = array[rand];
 
     response.payload.message.bounds = bounds;
+    response.payload.callback()
 });

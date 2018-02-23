@@ -71,23 +71,9 @@ router.post('/web', (request, response, next) => {
 			return response.send( null );
 		}
 
+		request.body.callback = () => response.send( request.body );
 		events.publish(system.WebCtrl, 'web', request.body);
-		response.send( request.body )
 	});
-});
-
-// Request Storage Controller
-router.post('/storage', (request, response, next) => {
-	let target = getHeaders(request.headers);
-	request.body.target = target;
-
-	const events = new EventBus();
-	const source = __apps + 'users/' + target + '/manifest.json';
- 
-	events.data = readDataFile( source );
-
-	request.body.callback = () => response.send( request.body );
-	events.publish(system.StrCtrl, request.body.message_type, request.body);
 });
 
 // Request Access Permissions

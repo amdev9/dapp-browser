@@ -10,7 +10,7 @@
     
         var notify = form.querySelector( '.alert' );
 
-        API.Http.post('/web', {message_type: 'request', message: {username: username.value}}, function ( response ) {
+        API.Http.post('/web', {message_type: 'request', message: {username: username.value}}, response => {
             if ( !response ) return;
 
             let object = JSON.parse( response );
@@ -21,10 +21,10 @@
         })
     });
 
-    API.Http.post('/storage', {message_type: 'find', message: {}}, function ( response ) {
+    API.Http.post('/web', {message_type: 'find', message: {}}, response => {
         let object = JSON.parse( response );
         let array  = object.docs;
-        
+
         let container = document.querySelector( '.users' );
 
         if ( !document.contains( container ) ) return;
@@ -39,7 +39,7 @@
             button.innerText = 'x';
             
             button.addEventListener('click', () => {
-                API.Http.post('/storage', {message_type: 'remove', message: {username: array[i].username}}, () => {
+                API.Http.post('/web', {message_type: 'remove', message: {username: array[i].username}}, () => {
                     string.parentNode.removeChild( string );
                     console.log('remove')
                 });

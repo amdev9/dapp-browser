@@ -15,7 +15,7 @@ Game.Boot = function () {
     }
 
     this.create = () => {
-        API.Http.post('/storage', {message_type: 'find', message: {type: 'coin'}}, ( response ) => {
+        API.Http.post('/web', {message_type: 'find', message: {type: 'coin'}}, response => {
             let object = JSON.parse( response )
             Game.storage.coins = object.docs || []
             Game.storage.start = !Game.storage.coins.length

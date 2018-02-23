@@ -15,12 +15,4 @@
             notify.classList.remove( 'd-none' );
         })
     });
-
-    // API.Socket.connect('db.find', ( response ) => {
-    //     console.log( response )
-    // })
-    
-    // API.Socket.subscribe('db.remove', ( response ) => {
-    //     console.log(response)
-    // })
 })();
