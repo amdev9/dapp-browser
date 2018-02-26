@@ -2,6 +2,9 @@
 
     'use strict';
 
+    
+    const wrapper = document.querySelector( '.wrapper' );
+
 
     // Console
     // ------------------------------------------------------ //
@@ -230,7 +233,11 @@
             visible: false
         },
         methods: {
-
+            destroy: function ( event ) {
+                let target = event.currentTarget;
+                let parent = target.closest( '.notifications-content' );
+                parent.parentNode.removeChild( parent );
+            }
         }
     })
 
@@ -284,11 +291,13 @@
         },
         watch: {
             show: function ( value ) {
+                wrapper.classList[value ? 'add' : 'remove']( 'fixed' );
+
                 if ( value === true ) return;
 
                 this.$hideEls( this.$el.children );
 
-                let children = this.$concat([_aside.$refs.apps.children, _aside.$refs.pins.children])
+                let children = this.$concat([_aside.$refs.apps.children, _aside.$refs.pins.children]);
                 children.forEach(element => element.classList.remove( ... ['active', 'focus']));
             }
         }
@@ -357,12 +366,17 @@
     // ------------------------------------------------------ //
 
     document.addEventListener('contextmenu', event => event.preventDefault());
+
+
+    // Document Event
+    // ------------------------------------------------------ //
+
     document.addEventListener('click', event => {
         Vue.prototype.$dropdown.hidden();
         _context.show = false;
     });
 
-
+ 
     // Socket Console
     // ------------------------------------------------------ //
 

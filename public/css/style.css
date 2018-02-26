@@ -32,6 +32,9 @@ body {
   overflow: hidden;
   flex-direction: column;
 }
+.wrapper.fixed {
+  height: 100% !important;
+}
 .selection {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -43,10 +46,14 @@ body {
 /* Header
 -----------------------------------------------------------------------------*/
 header {
+  position: fixed;
   width: 100%;
   height: 60px;
+  top: 0;
+  left: 0;
+  right: 0;
   background: #fff;
-  z-index: 5;
+  z-index: 10;
   box-shadow: 0 2px 3px rgba(32, 32, 73, 0.05);
 }
 header .navbar {
@@ -218,6 +225,7 @@ main {
   display: flex;
   flex-grow: 1;
   flex: 1;
+  padding: 60px 0 0;
 }
 main .main {
   display: flex;
@@ -492,14 +500,14 @@ main .contextmenu span:active {
   background: #4686FF;
 }
 main .notifications {
-  position: absolute;
+  position: fixed;
   top: 60px;
-  right: 0;
+  right: -330px;
   bottom: 0;
   width: 330px;
-  padding: 15px;
   opacity: 0;
   visibility: hidden;
+  overflow: auto;
   background: #fff;
   z-index: 5;
   box-shadow: 0 2px 3px rgba(32, 32, 73, 0.05);
@@ -508,10 +516,107 @@ main .notifications {
   -ms-transition: all 0.15s ease-in-out;
   transition: all 0.15s ease-in-out;
 }
+main .notifications::-webkit-scrollbar {
+  width: 0;
+}
 main .notifications.visible {
   opacity: 1;
+  right: 0;
   visibility: visible;
+}
+main .notifications-title {
+  display: table;
+  padding: 20px 15px;
 }
 main .notifications-title strong {
   font: 600 20px 'Montserrat', sans-serif;
+  display: table-cell;
+  width: 100%;
+  padding-right: 15px;
+}
+main .notifications-title button {
+  display: table-cell;
+  width: 100%;
+  border: 0;
+  background: none;
+}
+main .notifications-title button svg path {
+  -webkit-transition: all 0.15s ease-in-out;
+  -moz-transition: all 0.15s ease-in-out;
+  -ms-transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
+}
+main .notifications-title button:hover svg path {
+  fill: #7B8DA7;
+}
+main .notifications-name {
+  display: table;
+  padding: 3px 15px;
+  background: #F2F3F6;
+}
+main .notifications-name span,
+main .notifications-name button {
+  display: table-cell;
+  width: 100%;
+  vertical-align: middle;
+}
+main .notifications-name span {
+  font: 600 12px 'Montserrat', sans-serif;
+  color: #7B8DA7;
+  text-transform: uppercase;
+}
+main .notifications-name button {
+  border: 0;
+  background: none;
+}
+main .notifications-name button svg {
+  width: 11px;
+}
+main .notifications-name button svg path {
+  -webkit-transition: all 0.15s ease-in-out;
+  -moz-transition: all 0.15s ease-in-out;
+  -ms-transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
+}
+main .notifications-name button:hover svg path {
+  fill: #7B8DA7;
+}
+main .notifications-item {
+  padding: 15px 0;
+}
+main .notifications-item + .notifications-item {
+  border-top: 1px solid #F2F3F6;
+}
+main .notifications-item-title {
+  display: table;
+  padding: 0 15px 10px;
+}
+main .notifications-item-title .item-name,
+main .notifications-item-title .item-time {
+  display: table-cell;
+  width: 100%;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+main .notifications-item-title .item-name span,
+main .notifications-item-title .item-time span,
+main .notifications-item-title .item-name img,
+main .notifications-item-title .item-time img {
+  font: 16px 'Montserrat', sans-serif;
+  display: inline-block;
+  vertical-align: middle;
+  color: #252526;
+  margin-right: 10px;
+}
+main .notifications-item-title .item-time small {
+  font: 12px 'Open Sans', sans-serif;
+  color: rgba(123, 141, 167, 0.5);
+}
+main .notifications-item-body {
+  font: 14px 'Open Sans', sans-serif;
+  color: rgba(123, 141, 167, 0.5);
+  padding: 0 15px;
+}
+main .notifications-item-body p {
+  margin: 0;
 }

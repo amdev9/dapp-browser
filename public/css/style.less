@@ -35,7 +35,11 @@ body {
 	height: auto !important;
 	height: 100%;
 	overflow: hidden;
-	flex-direction: column
+	flex-direction: column;
+
+	&.fixed {
+		height: 100% !important
+	}
 }
 
 .transition(@property: all, @delay: .15s, @duration: ease-in-out) {
@@ -65,10 +69,14 @@ body {
 /* Header
 -----------------------------------------------------------------------------*/
 header {
+	position: fixed;
 	width: 100%;
 	height: 60px;
+	top: 0;
+	left: 0;
+	right: 0;
 	background: @white;
-	z-index: 5;
+	z-index: 10;
 	box-shadow: 0 2px 3px rgba(32, 32, 73, .05);
 
 	.navbar {
@@ -267,7 +275,8 @@ header {
 main {
 	display: flex;
 	flex-grow: 1;
-	flex: 1;	
+	flex: 1;
+	padding: 60px 0 0;
 	 
 	.main {
 		display: flex;
@@ -576,27 +585,144 @@ main {
 	}
 
 	.notifications {
-		position: absolute;
+		position: fixed;
 		top: 60px;
-		right: 0;
+		right: -330px;
 		bottom: 0;
 		width: 330px;
-		padding: 15px;
 		opacity: 0;
 		visibility: hidden;
+		overflow: auto;
 		background: @white;
 		z-index: 5;
 		box-shadow: 0 2px 3px rgba(32, 32, 73, .05);
 		.transition();
 
+		&::-webkit-scrollbar {
+			width: 0;
+		}
+
 		&.visible {
 			opacity: 1;
+			right: 0;
 			visibility: visible;
 		}
 
 		&-title {
+			display: table;
+			padding: 20px 15px;
+			
 			strong {
-				font: 600 20px @font-montserrat	
+				font: 600 20px @font-montserrat;
+				display: table-cell;
+				width: 100%;
+				padding-right: 15px
+			}
+
+			button {
+				display: table-cell;
+				width: 100%;
+				border: 0;
+				background: none;
+
+				svg {
+					path {
+						.transition()
+					}
+				}
+
+				&:hover {
+					svg {
+						path {
+							fill: @altg
+						}
+					}
+				}
+			}
+		}
+
+		&-name {
+			display: table;
+			padding: 3px 15px;
+			background: @gray;
+
+			span, button {
+				display: table-cell;
+				width: 100%;
+				vertical-align: middle
+			}
+
+			span {
+				font: 600 12px @font-montserrat;
+				color: @altg;
+				text-transform: uppercase
+			}
+
+			button {
+				border: 0;
+				background: none;
+
+				svg {
+					width: 11px;
+					path {
+						.transition();
+					}
+				}
+
+				&:hover {
+					svg {
+						path {
+							fill: @altg
+						}
+					}
+				}
+			}
+		}
+
+		&-item {
+			padding: 15px 0;
+
+			& + .notifications-item {
+				border-top: 1px solid @gray;
+			}
+
+			&-title {
+				display: table;
+				padding: 0 15px 10px;
+
+				.item {
+					&-name, &-time {
+						display: table-cell;
+						width: 100%;
+						white-space: nowrap;
+						vertical-align: middle;
+
+						span, img {
+							font: 16px @font-montserrat;
+							display: inline-block;
+							vertical-align: middle;
+							color: @dark;
+							margin-right: 10px
+						}
+					}
+
+					&-time {
+						small {
+							font: 12px @font-opensans;
+							color: fade(@altg, 50%);
+						}
+					}
+				}
+			}
+
+			&-body {
+				font: 14px @font-opensans;
+				color: fade(@altg, 50%);
+				padding: 0 15px;
+
+				p {
+					margin: 0
+				}
 			}
 		}
 	}
