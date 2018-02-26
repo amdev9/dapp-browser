@@ -41,6 +41,10 @@
     cursor: default !important;
     border-radius: 17px;
 
+    &:focus, &:active {
+        box-shadow: none !important
+    }
+
     &-secondary {
         color: @theme;
         background: #CEE4F3;
@@ -77,6 +81,9 @@
 }
 
 .dropdown {
+    position: relative;
+    z-index: 20;
+    
     & > button {
         position: relative;
         font: 12px @font-opensans;
@@ -103,6 +110,7 @@
 
     &-menu {
         border: 0;
+        z-index: 15;
         min-width: 100%;
         border-radius: 6px;
         background: @white;

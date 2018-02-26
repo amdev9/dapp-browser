@@ -96,12 +96,7 @@
                 _windows.show = null
             },
             search: function ( event ) {
-                let target = event.currentTarget;
-
                 this.visible = !this.visible;
-
-                let children = Array.from( target.children );
-                children.forEach(element => element.classList.toggle( 'visible' ));
 
                 if ( !this.visible ) this.$refs.search.value = '';
             },
@@ -230,13 +225,18 @@
     const _notify = new Vue({
         el: '.notifications',
         data: {
-            visible: false
+            visible: false,
+            clean: false
         },
         methods: {
             destroy: function ( event ) {
                 let target = event.currentTarget;
                 let parent = target.closest( '.notifications-content' );
                 parent.parentNode.removeChild( parent );
+
+                let children = this.$el.querySelectorAll( '.notifications-content' );
+
+                if ( !children.length ) this.clean = true;
             }
         }
     })

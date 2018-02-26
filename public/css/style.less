@@ -13,6 +13,7 @@
 * {
 	margin: 0;
 	padding: 0;
+	outline: none !important
 }
 
 html {
@@ -109,82 +110,143 @@ header {
 					height: 100%;
 					width: 100%;
 
-					.input-group {
-						height: 100%;
-	
-						.form-control, .form-control:focus {
-							font: 16px @font-montserrat;
-							border: 0;
-							height: 35px;
-							color: @dark;
-							opacity: 0;
-							margin: 12px 0 0 15px;
-							visibility: hidden;
-							border-left: 1px solid fade(@altg, 30%);
-							border-radius: 0;
-
-							&.visible {
-								opacity: 1;
-								visibility: visible;
-							}
-						}
-
-						&-prepend {
+					.input {
+						&-group {
 							height: 100%;
-							opacity: 0;
-							visibility: hidden;
-
-							&.visible {
-								opacity: 1;
-								visibility: visible;
+		
+							.form-control, .form-control:focus {
+								font: 16px @font-montserrat;
+								border: 0;
+								height: 35px;
+								color: @dark;
+								margin: 12px 0 0 15px;
+								visibility: hidden;
+								border-left: 1px solid fade(@altg, 30%);
+								border-radius: 0;
 							}
-
-							span {
-								font: 14px @font-montserrat;
-								line-height: 60px;
-								color: @altg;
-								text-transform: uppercase
+	
+							&-prepend {
+								height: 100%;
+								display: none;
+	
+								span {
+									font: 14px @font-montserrat;
+									line-height: 60px;
+									color: @altg;
+									text-transform: uppercase
+								}
+							}
+		
+							&-append {
+								button {
+									position: relative;
+									width: 30px;
+									height: 30px;
+									border: 0;
+									top: 50%;
+									margin: 1px 0 0;
+									cursor: default;
+									background: none;
+									.transform(translateY(-50%));
+	
+									svg {
+										position: absolute;
+										top: 50%;
+										left: 0;
+										right: 0;
+										margin: 0 auto;
+										.transform(translateY(-50%));
+	
+										path {
+											.transition()
+										}
+									}
+	
+									&:hover {
+										svg {
+											path {
+												fill: @theme
+											}
+										}
+									}
+								}
 							}
 						}
-	
-						&-append {
-							button {
-								position: relative;
-								width: 30px;
-								height: 30px;
-								border: 0;
-								top: 50%;
-								margin: 1px 0 0;
-								cursor: default;
-								background: none;
-								.transform(translateY(-50%));
+						
+						&-result {
+							position: absolute;
+							display: none;
+							top: 100%;
+							left: 0;
+							right: 0;
+							background: @white;
+							border-top: 1px solid rgba(32, 32, 73, .05);
+							box-shadow: 0 2px 3px rgba(32, 32, 73, .05);
 
-								svg {
-									position: absolute;
-									opacity: 0;
-									top: 50%;
-									left: 0;
-									right: 0;
-									margin: 0 auto;
-									visibility: hidden;
-									.transition();
-									.transform(translateY(-50%));
+							&-name {
+								padding: 6px 15px;
+								background: @gray;
 
-									path {
-										.transition()
-									}
+								span {
+									font: 500 13px @font-opensans;
+									display: block;
+									color: fade(@altg, 50%);
+									text-transform: uppercase;
+									overflow: hidden;
+									white-space: nowrap;
+									text-overflow: ellipsis
+								}
+							}
 
-									&.visible {
-										opacity: 1;
-										visibility: visible;
+							&-item {
+								padding: 10px 0;
+								margin: 0;
+
+								.item-name,
+								.item-uri,
+								.item-type {
+									overflow: hidden;
+
+									span {
+										display: block;
+										overflow: hidden;
+										white-space: nowrap;
+										text-overflow: ellipsis
 									}
 								}
 
-								&:hover {
-									svg {
-										path {
-											fill: @theme
-										}
+								.item-name {
+									@media (max-width: 991px) {
+										margin-bottom: 10px
+									}
+
+									span, img {
+										font: 16px @font-montserrat;
+										display: inline-block;
+										color: @dark;
+										vertical-align: middle;
+									}
+
+									img {
+										max-width: 42px;
+										margin-right: 10px
+									}
+								}
+
+								.item-uri {
+									span {
+										font: 14px @font-montserrat;
+										color: fade(@altg, 50%);
+										display: block;
+										padding-left: 5px
+									}
+								}
+
+								.item-type {
+									span {
+										font: 12px @font-opensans;
+										color: @altg;
+										text-transform: uppercase
 									}
 								}
 							}
@@ -548,14 +610,14 @@ main {
 	}
 
 	.contextmenu {
-		position: absolute;
+		position: fixed;
 		top: 0;
 		left: 0;
 		display: none;
 		min-width: 150px;
 		padding: 8px 0;
 		background: @white;
-		z-index: 3;
+		z-index: 25;
 		border-radius: 6px;
 		box-shadow: 0 2px 3px rgba(32, 32, 73, .05);
 
@@ -587,15 +649,16 @@ main {
 	.notifications {
 		position: fixed;
 		top: 60px;
-		right: -330px;
+		right: -350px;
 		bottom: 0;
-		width: 330px;
+		width: 350px;
 		opacity: 0;
 		visibility: hidden;
 		overflow: auto;
 		background: @white;
 		z-index: 5;
-		box-shadow: 0 2px 3px rgba(32, 32, 73, .05);
+		border-top: 1px solid rgba(32, 32, 73, .05);
+		box-shadow: -1px 2px 3px rgba(32, 32, 73, .05);
 		.transition();
 
 		&::-webkit-scrollbar {
@@ -606,6 +669,17 @@ main {
 			opacity: 1;
 			right: 0;
 			visibility: visible;
+		}
+
+		&-empty {
+			display: none;
+			padding: 30px 15px;
+			text-align: center;
+
+			span {
+				font: 14px @font-opensans;
+				color: fade(@altg, 50%);
+			}
 		}
 
 		&-title {
@@ -687,26 +761,37 @@ main {
 			}
 
 			&-title {
-				display: table;
-				padding: 0 15px 10px;
+				padding: 0 0 10px;
+				margin: 0;
 
 				.item {
 					&-name, &-time {
-						display: table-cell;
-						width: 100%;
-						white-space: nowrap;
-						vertical-align: middle;
+						overflow: hidden;
+						 
+						span, small {
+							display: block;
+							overflow: hidden;
+							white-space: nowrap;
+							text-overflow: ellipsis
+						}
 
 						span, img {
 							font: 16px @font-montserrat;
 							display: inline-block;
 							vertical-align: middle;
 							color: @dark;
+							max-width: 130px;
+						}
+
+						img {
+							max-width: 42px;
 							margin-right: 10px
 						}
 					}
 
 					&-time {
+						padding-top: 10px;
+						
 						small {
 							font: 12px @font-opensans;
 							color: fade(@altg, 50%);
@@ -716,12 +801,11 @@ main {
 			}
 
 			&-body {
-				font: 14px @font-opensans;
-				color: fade(@altg, 50%);
 				padding: 0 15px;
 
-				p {
-					margin: 0
+				span {
+					font: 14px @font-opensans;
+					color: fade(@altg, 50%);
 				}
 			}
 		}

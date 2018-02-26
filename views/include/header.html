@@ -7,20 +7,78 @@
 
             <div class="col navbar-user">
                 <div class="row h-100 align-items-center">
-                    <div class="col-auto navbar-user-title" ref="pagetitle">Home</div>
+                    <div class="col-auto navbar-user-title" ref="pagetitle" v-bind:class="{'d-none': visible}">Home</div>
 
                     <div class="col navbar-user-search">
                         <form>
                             <div class="input-group">
-                                <div class="input-group-prepend" v-bind:class="{visible: visible}"><span>uri:</span></div>
+                                <div class="input-group-prepend" v-bind:class="{'d-block': visible}"><span>uri:</span></div>
 
-                                <input type="text" class="form-control" v-bind:class="{visible: visible}" ref="search">
+                                <input type="text" class="form-control" v-bind:class="{'visible': visible}" ref="search">
 
                                 <div class="input-group-append">
                                     <button type="button" v-on:click="search">
-                                        <img src="images/icons/search.svg" class="svg visible" alt="...">
-                                        <img src="images/icons/close.svg" class="svg" alt="...">
+                                        <div class="d-none" v-bind:class="{'d-block': !visible}">
+                                            <img src="images/icons/search.svg" class="svg" alt="...">
+                                        </div>
+                                         
+                                        <div class="d-none" v-bind:class="{'d-block': visible}">
+                                            <img src="images/icons/close.svg" class="svg" alt="...">
+                                        </div>
                                     </button>
+                                </div>
+                            </div>
+
+                            <div class="input-result" v-bind:class="{'d-block': visible}">
+                                <div class="input-result-item row align-items-center">
+                                    <div class="item-name col-12 col-lg-auto pr-0">
+                                        <img src="images/notify/3.png">
+                                        <span>Google</span>
+                                    </div>
+                                    <div class="item-uri col pl-lg-0"><span>- anni://wallet/?sendto=address2</span></div>
+                                    <div class="item-type col-3 text-right"><span>mainnet</span></div>
+                                </div>
+
+
+                                <div class="input-result-name"><span>Mentioned in</span></div>
+
+                                <div class="input-result-item row align-items-center">
+                                    <div class="item-name col-12 col-lg-auto pr-0">
+                                        <img src="images/notify/1.png">
+                                        <span>The Dragon</span>
+                                    </div>
+                                    <div class="item-uri col pl-lg-0"><span>- anni://wallet/?sendto=address2</span></div>
+                                    <div class="item-type col-3 text-right"><span>mainnet</span></div>
+                                </div>
+
+                                <div class="input-result-item row align-items-center">
+                                    <div class="item-name col-12 col-lg-auto pr-0">
+                                        <img src="images/notify/4.png">
+                                        <span>Tic Tac Toe</span>
+                                    </div>
+                                    <div class="item-uri col pl-lg-0"><span>- anni://wallet/?sendto=address2</span></div>
+                                    <div class="item-type col-3 text-right"><span>mainnet</span></div>
+                                </div>
+
+
+                                <div class="input-result-name"><span>Market</span></div>
+
+                                <div class="input-result-item row align-items-center">
+                                    <div class="item-name col-12 col-lg-auto pr-0">
+                                        <img src="images/notify/2.png">
+                                        <span>Apple</span>
+                                    </div>
+                                    <div class="item-uri col pl-lg-0"><span>- anni://wallet/?sendto=address2</span></div>
+                                    <div class="item-type col-3 text-right"><span>mainnet</span></div>
+                                </div>
+
+                                <div class="input-result-item row align-items-center">
+                                    <div class="item-name col-12 col-lg-auto pr-0">
+                                        <img src="images/notify/3.png">
+                                        <span>Google</span>
+                                    </div>
+                                    <div class="item-uri col pl-lg-0"><span>- anni://wallet/?sendto=address2</span></div>
+                                    <div class="item-type col-3 text-right"><span>mainnet</span></div>
                                 </div>
                             </div>
                         </form>
