@@ -112,4 +112,15 @@
         }
     }
 
+
+    // Detect Mouse Left Button
+    // ------------------------------------------------------ //
+
+    Vue.prototype.$mouseLeftButton = event => {
+        if ( 'buttons' in event ) return event.buttons == 1;
+        
+        let button = event.which || event.button;
+        return button == 1;
+    }
+
 })( this );

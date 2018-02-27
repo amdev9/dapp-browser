@@ -400,26 +400,34 @@ main {
 							max-width: 100%;
 						}
 					}
+
+					&.dragstart {
+						position: absolute;
+						height: 0;
+						left: 0;
+						right: 0;
+
+						.icns {
+							position: fixed;
+							z-index: 5;
+							margin: 0 auto;
+							box-shadow: 0 2px 3px rgba(32, 32, 73, .15);
+						}
+					}
+				}
+
+				.dragover {
+					position: relative;
+					height: 56px;
+					left: 0;
+					right: 0;
+					margin: 0 auto;
+					background: url('../images/drag.png') no-repeat center
 				}
 			}
 
 			.pins {
-				.apps-item {
-					&:last-child {
-						margin-bottom: 15px;
-
-						&:after {
-							position: absolute;
-							display: block;
-							content: '';
-							bottom: -8px;
-							left: 0;
-							right: 0;
-							height: 1px;
-							background: #E9EEF5
-						}
-					}
-				}
+				border-bottom: 1px solid #E9EEF5;
 			}
 
 			.indicator {

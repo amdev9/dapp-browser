@@ -46,14 +46,23 @@
         methods: {
             pin: function () {
                 this.$http.post('/setting.pin', {target: this.target}, response => {
-                    let object = JSON.parse( response );
+                    let object  = JSON.parse( response );
+                    let storage = _aside.storage;
 
                     let pins = _aside.$refs.pins;
                     let apps = _aside.$refs.apps;
 
                     let item = _aside.$el.querySelector( '[data-key = ' + this.target + ']' );
  
-                    (() => object.status ? pins : apps)().appendChild( item )
+                    (() => object.status ? pins : apps)().appendChild( item );
+
+                    // for (const key in storage) {
+                    //     if ( object.status ) {
+                    //         storage[Object.keys( storage ).length] = item.dataset.key
+                    //     } else {
+                    //         delete storage[item.dataset.key]
+                    //     }
+                    // }
                 })
             },
             close: function () {
@@ -119,11 +128,12 @@
     const _aside = new Vue({
         el: 'aside',
         data: {
-            view: null
+            view: null,
+            drag: null
         },
         methods: {
             renderer: function ( value ) {
-                let children = this.$concat([this.$refs.apps.children, this.$refs.pins.children])
+                let children = this.$concat([this.$refs.apps.children, this.$refs.pins.children]);
                 children.forEach(element => element.classList.remove( 'active' ));
 
                 let target = this.$el.querySelector( '[data-key = ' + this.key + ']' );
@@ -160,20 +170,64 @@
 
                 _context.target = options.key;
                 _context.show = true;
+            },
+            _mousedown: function ( target ) {
+                if ( !this.$mouseLeftButton( event ) ) return;
+
+                target.classList.add( 'dragstart' );
+
+                this.drag = this.$createEl('div', null, ['dragover']);
+                target.parentNode.insertBefore(this.drag, target);
+
+                let icns = target.querySelector( '.icns' );
+                icns.style.top = event.pageY - this.drag.offsetHeight / 2 + 'px';
+                icns.style.left = (target.parentNode.clientWidth - icns.clientWidth) / 2 + 'px';
+                    
+                document.onmousemove = () => this._mousemove( target );
+                document.onmouseup   = () => {
+                    document.onmousemove = null;
+                    document.onmouseup = null;
+
+                    target.classList.remove( 'dragstart' );
+                    this.drag.parentNode.replaceChild(target, this.drag);
+
+                    this.drag = null;
+
+                    if ( this.$refs.pins.contains( target ) ) {
+                        this.storage = Array.from( this.$refs.pins.children )
+                    }
+                }
+            },
+            _mousemove: function ( target ) {
+                let icns = target.querySelector( '.icns' );
+                icns.style.top = event.pageY - this.drag.offsetHeight / 2 + 'px';
+
+                let offsetTop = event.pageY - this.drag.offsetHeight / 2;
+                let children  = this.$refs[target.parentNode.className].children;
+
+                for (let i = 0; i < children.length; i++) {
+                    if ( offsetTop < children[i].offsetTop + this.drag.offsetHeight ) {
+                        children[i].parentNode.insertBefore(this.drag, children[i]);
+                        break;
+                    } else if ( i == children.length - 1 ) {
+                        children[i].parentNode.appendChild( this.drag );
+                    }
+                }
             }
         },
         mounted: function () {
             let children = Array.from( this.$refs.pins.children );
+            let object = this.storage;
 
             children.forEach(element => {
                 let options = Object.assign({}, element.dataset);
-
-                let icns  = this.$createEl('div', null, ['icns']);
+                let icns = this.$createEl('div', null, ['icns']);
 
                 let image = new Image();
                 image.src = options.icon;
 
-                image.onerror = () => {image.src = 'images/favicon.svg'}
+                image.onerror = () => image.src = 'images/favicon.svg';
+                image.ondragstart = () => false;
 
                 icns.appendChild( image );
                 element.appendChild( icns );
@@ -185,7 +239,19 @@
                 element.addEventListener('contextmenu', event => {
                     this._context(event, options)
                 });
+
+                element.addEventListener('mousedown',  () => this._mousedown( element ));
+
+                for (const key in object) {
+                    if ( object[key] == element.dataset.key ) object[key] = element
+                }
+
+                // if ( object ) element.parentNode.removeChild( element )
             })
+
+            // for (const key in object) {
+            //     this.$refs.pins.appendChild( object[key] )
+            // }
         },
         computed: {
             create: {
@@ -196,8 +262,13 @@
                         element.dataset[key] = options[key]
                     }
                 
-                    let icns  = this.$createEl('div', null, ['icns']);
-                    let image = this.$createEl('img', {src: options.icon});
+                    let icns = this.$createEl('div', null, ['icns']);
+                
+                    let image = new Image();
+                    image.src = options.icon;
+
+                    image.onerror = () => image.src = 'images/favicon.svg';
+                    image.ondragstart = () => false;
 
                     icns.appendChild( image );
                     element.appendChild( icns );
@@ -210,10 +281,25 @@
                         this._context(event, options)
                     });
 
+                    element.addEventListener('mousedown',  () => this._mousedown( element ));
+
                     this.view = element;
                     this.key  = options.key;
 
                     this.renderer();
+                }
+            },
+            storage: {
+                set: function ( array ) {
+                    let object = {}
+                     
+                    array.forEach((element, index) => object[index] = element.dataset.key);
+                    localStorage.setItem('sortapp', JSON.stringify( object ))
+                },
+
+                get: function () {
+                    let storage = localStorage.getItem( 'sortapp' );
+                    return JSON.parse( storage );
                 }
             }
         }

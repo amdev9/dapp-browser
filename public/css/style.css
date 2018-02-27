@@ -331,18 +331,31 @@ main .main aside .pins-item .icns img {
   display: block;
   max-width: 100%;
 }
-main .main aside .pins .apps-item:last-child {
-  margin-bottom: 15px;
-}
-main .main aside .pins .apps-item:last-child:after {
+main .main aside .apps-item.dragstart,
+main .main aside .pins-item.dragstart {
   position: absolute;
-  display: block;
-  content: '';
-  bottom: -8px;
+  height: 0;
   left: 0;
   right: 0;
-  height: 1px;
-  background: #E9EEF5;
+}
+main .main aside .apps-item.dragstart .icns,
+main .main aside .pins-item.dragstart .icns {
+  position: fixed;
+  z-index: 5;
+  margin: 0 auto;
+  box-shadow: 0 2px 3px rgba(32, 32, 73, 0.15);
+}
+main .main aside .apps .dragover,
+main .main aside .pins .dragover {
+  position: relative;
+  height: 56px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  background: url('../images/drag.png') no-repeat center;
+}
+main .main aside .pins {
+  border-bottom: 1px solid #E9EEF5;
 }
 main .main aside .indicator {
   position: absolute;
