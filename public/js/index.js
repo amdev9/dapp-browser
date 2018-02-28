@@ -56,13 +56,7 @@
  
                     (() => object.status ? pins : apps)().appendChild( item );
 
-                    // for (const key in storage) {
-                    //     if ( object.status ) {
-                    //         storage[Object.keys( storage ).length] = item.dataset.key
-                    //     } else {
-                    //         delete storage[item.dataset.key]
-                    //     }
-                    // }
+                    _aside.storage = Array.from( _aside.$refs.pins.children )
                 })
             },
             close: function () {
@@ -243,15 +237,16 @@
                 element.addEventListener('mousedown',  () => this._mousedown( element ));
 
                 for (const key in object) {
-                    if ( object[key] == element.dataset.key ) object[key] = element
+                    if ( object[key] == element.dataset.key ) {
+                        object[key] = element;
+                        element.parentNode.removeChild( element )
+                    }
                 }
-
-                // if ( object ) element.parentNode.removeChild( element )
             })
 
-            // for (const key in object) {
-            //     this.$refs.pins.appendChild( object[key] )
-            // }
+            for (const key in object) {
+                this.$refs.pins.appendChild( object[key] )
+            }
         },
         computed: {
             create: {
@@ -292,7 +287,9 @@
             storage: {
                 set: function ( array ) {
                     let object = {}
-                     
+                    
+                    console.log(array)
+
                     array.forEach((element, index) => object[index] = element.dataset.key);
                     localStorage.setItem('sortapp', JSON.stringify( object ))
                 },
