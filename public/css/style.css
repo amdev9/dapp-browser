@@ -282,13 +282,14 @@ main .main aside {
   position: relative;
   width: 62px;
   height: 100%;
-  padding: 7px 0 60px;
+  padding: 0 0 60px;
   background: #FAFAFC;
 }
 main .main aside .apps-item,
 main .main aside .pins-item {
   position: relative;
-  padding: 7px 0;
+  height: 42px;
+  margin: 15px 0 0;
   cursor: default;
 }
 main .main aside .apps-item.active:before,
@@ -298,9 +299,9 @@ main .main aside .pins-item.focus:before {
   position: absolute;
   content: '';
   width: 3px;
-  top: 7px;
+  top: 0;
   left: 0;
-  bottom: 7px;
+  bottom: 0;
   background: #4686FF;
 }
 main .main aside .apps-item.focus:before,
@@ -333,10 +334,7 @@ main .main aside .pins-item .icns img {
 }
 main .main aside .apps-item.dragstart,
 main .main aside .pins-item.dragstart {
-  position: absolute;
   height: 0;
-  left: 0;
-  right: 0;
 }
 main .main aside .apps-item.dragstart .icns,
 main .main aside .pins-item.dragstart .icns {
@@ -348,11 +346,13 @@ main .main aside .pins-item.dragstart .icns {
 main .main aside .apps .dragover,
 main .main aside .pins .dragover {
   position: relative;
-  height: 56px;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
+  height: 42px;
+  margin: 15px 0 0;
   background: url('../images/drag.png') no-repeat center;
+}
+main .main aside .apps *:last-child,
+main .main aside .pins *:last-child {
+  margin-bottom: 15px;
 }
 main .main aside .pins {
   border-bottom: 1px solid #E9EEF5;

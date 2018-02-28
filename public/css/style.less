@@ -348,13 +348,14 @@ main {
 			position: relative;
 			width: 62px;
 			height: 100%;
-			padding: 7px 0 60px;
+			padding: 0 0 60px;
 			background: @light;
 
 			.apps, .pins {
 				&-item {
 					position: relative;
-					padding: 7px 0;
+					height: 42px;
+					margin: 15px 0 0;
 					cursor: default;
 					 
 					&.active, &.focus {
@@ -362,9 +363,9 @@ main {
 							position: absolute;
 							content: '';
 							width: 3px;
-							top: 7px;
+							top: 0;
 							left: 0;
-							bottom: 7px;
+							bottom: 0;
 							background: @theme
 						}
 					}
@@ -402,10 +403,7 @@ main {
 					}
 
 					&.dragstart {
-						position: absolute;
 						height: 0;
-						left: 0;
-						right: 0;
 
 						.icns {
 							position: fixed;
@@ -415,14 +413,16 @@ main {
 						}
 					}
 				}
-
+				
 				.dragover {
 					position: relative;
-					height: 56px;
-					left: 0;
-					right: 0;
-					margin: 0 auto;
+					height: 42px;
+					margin: 15px 0 0;
 					background: url('../images/drag.png') no-repeat center
+				}
+
+				*:last-child {
+					margin-bottom: 15px
 				}
 			}
 

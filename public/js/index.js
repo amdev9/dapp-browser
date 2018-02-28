@@ -123,7 +123,8 @@
         el: 'aside',
         data: {
             view: null,
-            drag: null
+            drag: null,
+            margin: 0
         },
         methods: {
             renderer: function ( value ) {
@@ -168,33 +169,42 @@
             _mousedown: function ( target ) {
                 if ( !this.$mouseLeftButton( event ) ) return;
 
-                target.classList.add( 'dragstart' );
+                let offset = event.pageY;
 
-                this.drag = this.$createEl('div', null, ['dragover']);
+                this.drag = this.$createEl( 'div' );
                 target.parentNode.insertBefore(this.drag, target);
-
-                let icns = target.querySelector( '.icns' );
-                icns.style.top = event.pageY - this.drag.offsetHeight / 2 + 'px';
-                icns.style.left = (target.parentNode.clientWidth - icns.clientWidth) / 2 + 'px';
                     
-                document.onmousemove = () => this._mousemove( target );
+                document.onmousemove = () => this._mousemove(offset, target);
                 document.onmouseup   = () => {
                     document.onmousemove = null;
                     document.onmouseup = null;
 
-                    target.classList.remove( 'dragstart' );
-                    this.drag.parentNode.replaceChild(target, this.drag);
+                    if ( target.classList.contains( 'dragstart' ) ) {
+                        target.classList.remove( 'dragstart' );
+                        this.drag.parentNode.replaceChild(target, this.drag);
+                    } else {
+                        this.drag.parentNode.removeChild( this.drag )
+                    }
 
                     this.drag = null;
+                    this.margin = 0;
 
                     if ( this.$refs.pins.contains( target ) ) {
                         this.storage = Array.from( this.$refs.pins.children )
                     }
                 }
             },
-            _mousemove: function ( target ) {
+            _mousemove: function (offset, target) {
+                this.margin += Math.abs( offset - event.pageY );
+                
+                if ( this.margin < 15 ) return;
+
+                target.classList.add( 'dragstart' );
+                this.drag.classList.add( 'dragover' );
+                
                 let icns = target.querySelector( '.icns' );
                 icns.style.top = event.pageY - this.drag.offsetHeight / 2 + 'px';
+                icns.style.left = (target.parentNode.clientWidth - icns.clientWidth) / 2 + 'px';
 
                 let offsetTop = event.pageY - this.drag.offsetHeight / 2;
                 let children  = this.$refs[target.parentNode.className].children;
@@ -287,8 +297,6 @@
             storage: {
                 set: function ( array ) {
                     let object = {}
-                    
-                    console.log(array)
 
                     array.forEach((element, index) => object[index] = element.dataset.key);
                     localStorage.setItem('sortapp', JSON.stringify( object ))
