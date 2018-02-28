@@ -5,13 +5,11 @@
     
     // Vue Options
     // ------------------------------------------------------ //
-
     Vue.options.delimiters = ['${', '}'];
 
 
-    // Vue Hide Element
+    // Hide Element
     // ------------------------------------------------------ //
-
     Vue.prototype.$hideEls = ( value ) => {
         [].forEach.call(value, element => {
             element.classList.add( 'd-none' );
@@ -20,9 +18,8 @@
     }
 
 
-    // Vue Concat HTMLCollection
+    // Concat HTMLCollection
     // ------------------------------------------------------ //
-
     Vue.prototype.$concat = ( value ) => {
         let array = [];
 
@@ -34,9 +31,8 @@
     }
 
 
-    // Vue Create Element
+    // Create Element
     // ------------------------------------------------------ //
-
     Vue.prototype.$createEl = (name, attrs, classes) => {
         let element = document.createElement( name );
 
@@ -53,9 +49,8 @@
     }
 
 
-    // Vue HTTP Request
+    // HTTP Request
     // ------------------------------------------------------ //
-
     Vue.prototype.$http = {
         get: function (url, func) {
             var request = new XMLHttpRequest();
@@ -83,7 +78,6 @@
 
     // Dropdown
     // ------------------------------------------------------ //
-
     Vue.prototype.$dropdown = {
         enable: function (parent = document) {
             let array = Array.from( parent.querySelectorAll( '.dropdown' ) )
@@ -113,9 +107,18 @@
     }
 
 
+    // Windows
+    // ------------------------------------------------------ //
+    Vue.prototype.$window = name => {
+        let windows = Array.from( document.querySelectorAll( '.window' ) );
+
+        windows.forEach(element => element.classList.add( 'd-none' ));
+        document.getElementById( name ).classList.remove( 'd-none' );
+    }
+
+
     // Detect Mouse Left Button
     // ------------------------------------------------------ //
-
     Vue.prototype.$mouseLeftButton = event => {
         if ( 'buttons' in event ) return event.buttons == 1;
         

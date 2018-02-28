@@ -95,9 +95,19 @@ header {
 				cursor: pointer;
 				text-align: center;
 				
-				.icon {
+				svg {
 					margin: 50% 0 0;
 					.transform(translateY(-50%));
+
+					path {
+						.transition()
+					}
+				}
+
+				&:hover {
+					svg path {
+						fill: #689BFA
+					}
 				}
 			}
 		}
@@ -454,7 +464,70 @@ main {
 			.title {
 				font: 600 28px @font-montserrat;
 				color: @dark;
-				margin: 30px 0 30px
+				margin: 30px 0 30px;
+
+				&.light {
+					font: 500 26px @font-montserrat;
+				}
+			}
+
+			.category {
+				height: 75px;
+				background: #FAFAFC;
+				margin: -10px -56px 10px -55px;
+				border-left: 1px solid @gray;
+
+				.nav {
+					height: 100%;
+
+					&-item {
+						height: 100%;
+
+						button {
+							font: 12px @font-montserrat;
+							color: @altg;
+							height: 100%;
+							text-transform: uppercase;
+							border-radius: 0;
+							border-bottom: 3px solid transparent;
+
+							&.active, &:hover {
+								color: @theme;
+							}
+
+							&.active {
+								border-bottom-color: @theme
+							}
+						}
+					}
+				}
+			}
+
+			.tab-category {
+				.item {
+					display: none;
+
+					&.active {
+						display: block
+					}
+					
+					.sortby {
+						& > span {
+							font: 500 14px @font-opensans;
+							display: inline-block;
+							color: #AAB4BF;
+							margin-right: 10px
+						}
+
+						.dropdown {
+							& > button {
+								border-color: #E3E5E8;
+								background: none
+							}
+							 
+						}
+					}
+				}
 			}
 
 			.apps {

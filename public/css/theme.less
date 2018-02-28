@@ -35,14 +35,42 @@
 
 .btn {
     font: 12px @font-montserrat;
+    position: relative;
     border: 0;
     padding: 10px 20px;
     text-transform: uppercase;
-    cursor: default !important;
     border-radius: 17px;
 
-    &:focus, &:active {
-        box-shadow: none !important
+    &:hover, &:focus, &:active {
+        box-shadow: none !important;
+        text-decoration: none !important
+    }
+
+    &-link {
+        font: 500 14px @font-opensans;
+        color: #AAB4BF;
+        text-transform: none;
+
+        &.btn-corner {
+            &:after {
+                position: absolute;
+                content: '';
+                height: 12px;
+                width: 12px;
+                top: 50%;
+                right: 0;
+                background: url('../images/icons/corner.svg') no-repeat center top;
+                .transform(translateY(-50%))
+            }
+        }
+
+        &:hover {
+            color: #AAB4BF;
+
+            &:after {
+                background-position: center bottom
+            }
+        }
     }
 
     &-secondary {
@@ -82,6 +110,7 @@
 
 .dropdown {
     position: relative;
+    display: inline-block;
     z-index: 20;
     
     & > button {

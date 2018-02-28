@@ -8,15 +8,41 @@
 }
 .btn {
   font: 12px 'Montserrat', sans-serif;
+  position: relative;
   border: 0;
   padding: 10px 20px;
   text-transform: uppercase;
-  cursor: default !important;
   border-radius: 17px;
 }
+.btn:hover,
 .btn:focus,
 .btn:active {
   box-shadow: none !important;
+  text-decoration: none !important;
+}
+.btn-link {
+  font: 500 14px 'Open Sans', sans-serif;
+  color: #AAB4BF;
+  text-transform: none;
+}
+.btn-link.btn-corner:after {
+  position: absolute;
+  content: '';
+  height: 12px;
+  width: 12px;
+  top: 50%;
+  right: 0;
+  background: url('../images/icons/corner.svg') no-repeat center top;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+.btn-link:hover {
+  color: #AAB4BF;
+}
+.btn-link:hover:after {
+  background-position: center bottom;
 }
 .btn-secondary {
   color: #4686FF;
@@ -47,6 +73,7 @@
 }
 .dropdown {
   position: relative;
+  display: inline-block;
   z-index: 20;
 }
 .dropdown > button {

@@ -3,12 +3,13 @@
     'use strict';
 
     
-    const wrapper = document.querySelector( '.wrapper' );
+    const wrapper  = document.querySelector( '.wrapper' );
+    const category = document.querySelector( '.tab-category' );
+
 
 
     // Console
     // ------------------------------------------------------ //
-
     const _console = new Vue({
         el: '.view-code',
         data: {
@@ -36,7 +37,6 @@
 
     // Context Menu
     // ------------------------------------------------------ //
-
     const _context = new Vue({
         el: '.contextmenu',
         data: {
@@ -85,7 +85,6 @@
 
     // Header
     // ------------------------------------------------------ //
-
     const _header = new Vue({
         el: 'header',
         data: {
@@ -96,7 +95,9 @@
                 let target = event.currentTarget;
                 this.$refs.pagetitle.innerHTML = target.dataset.title;
 
-                _windows.show = null
+                _windows.show = null;
+
+                this.$window( 'content' );
             },
             search: function ( event ) {
                 this.visible = !this.visible;
@@ -109,16 +110,12 @@
             notify: function () {
                 _notify.visible = !_notify.visible;
             }
-        },
-        mounted: function () {
-            this.$dropdown.enable( this.$el )
         }
     });
 
 
     // Sidebar
     // ------------------------------------------------------ //
-
     const _aside = new Vue({
         el: 'aside',
         data: {
@@ -335,7 +332,6 @@
 
     // Windows
     // ------------------------------------------------------ //
-
     const _windows = new Vue({
         el: '.views',
         data: {
@@ -397,7 +393,6 @@
 
     // Applications
     // ------------------------------------------------------ //
-
     const _apps = new Vue({
         el: '.content .apps',
         methods: {
@@ -421,7 +416,6 @@
 
     // Modals
     // ------------------------------------------------------ //
-
     const _modals = new Vue({
         el: '.modal',
         data: {
@@ -453,24 +447,57 @@
     });
 
 
+    // Category
+    // ------------------------------------------------------ //
+    const _category = new Vue({
+        el: '.category',
+        methods: {
+            view: function ( event ) {
+                let target = event.currentTarget;
+                let tab = target.dataset.tab;
+
+                Array.from( category.children ).forEach(element => {
+                    element.classList[element.classList.contains( 'tab-' + tab ) ? 'add' : 'remove']( 'active' )
+                });
+
+                let children = this.$el.querySelectorAll( 'button' );
+
+                Array.from( children ).forEach(element => {
+                    element.classList[element.dataset.tab == tab ? 'add' : 'remove']( 'active' )
+                });
+            }
+        }
+    });
+
+
     // Disabled Context Menu
     // ------------------------------------------------------ //
-
     document.addEventListener('contextmenu', event => event.preventDefault());
 
 
     // Document Event
     // ------------------------------------------------------ //
-
     document.addEventListener('click', event => {
         Vue.prototype.$dropdown.hidden();
         _context.show = false;
     });
 
+
+    // Dropdown Enable
+    // ------------------------------------------------------ //
+    Vue.prototype.$dropdown.enable()
+
+
+    // Market
+    // ------------------------------------------------------ //
+    document.querySelector( '.market' ).addEventListener('click', () => {
+        _header.$refs.pagetitle.innerHTML = 'Market';
+        Vue.prototype.$window( 'market' );
+    });
+
  
     // Socket Console
     // ------------------------------------------------------ //
-
     API.Socket.subscribe('console', response => {
         _console.content = response.time + ' : ' + response.target + ' : <span class="' + response.type.toLowerCase() + '">' + response.type + '</span> : ' + JSON.stringify( response.message );
     });
@@ -478,7 +505,6 @@
 
     // Socket Access
     // ------------------------------------------------------ //
-    
     API.Socket.subscribe('access', response => {
         let message = response.message;
         let rows = response.rows;

@@ -10,6 +10,7 @@
 		"cookie-parser": "~1.4.3",
 		"debug": "~2.6.9",
 		"express": "~4.15.5",
+		"ipfs-pubsub-room": "^1.1.5",
 		"morgan": "~1.9.0",
 		"nedb": "^1.8.0",
 		"node-datetime": "^2.0.6",

@@ -12,7 +12,16 @@
 			</div>
 
 			{% include "include/aside.html" %}
-			{% include "include/content.html" %}
+
+			<div class="content">
+				<div class="views" v-bind:class="{show: show}"></div>
+				
+				{% include "window/main.html" %}
+				{% include "window/market.html" %}
+
+				{% include "include/console.html" %}
+			</div>
+
 			{% include "include/notify.html" %}
 		</div>
 	</main>

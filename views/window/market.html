@@ -1,0 +1,113 @@
+<div class="container-fluid window d-none" id="market">
+    <div class="category">
+        <ul class="nav justify-content-center">
+            <li class="nav-item"><button type="button" class="btn btn-link active" v-on:click="view" data-tab="all">all</button></li>
+            <li class="nav-item"><button type="button" class="btn btn-link" v-on:click="view" data-tab="work">Work</button></li>
+            <li class="nav-item"><button type="button" class="btn btn-link" v-on:click="view" data-tab="games">Games</button></li>
+            <li class="nav-item"><button type="button" class="btn btn-link" v-on:click="view" data-tab="education">Education</button></li>
+            <li class="nav-item"><button type="button" class="btn btn-link" v-on:click="view" data-tab="tools">Tools</button></li>
+            <li class="nav-item"><button type="button" class="btn btn-link" v-on:click="view" data-tab="finance">Finance</button></li>
+        </ul>
+    </div>
+
+    <div class="tab-category">
+        <div class="item active tab-all">
+            <div class="row align-items-center">
+                <div class="col-8">
+                    <h3 class="title">Newest</h3>
+                </div>
+        
+                <div class="col-4 text-right">
+                    <button class="btn btn-link btn-corner">See all</button>
+                </div>
+            </div>
+                
+            <div class="row market">
+                {% for item in items %}
+                    <div v-on:click="view" class="col-md-6 col-lg-4 col-xl-3 apps-item" data-key="{{ item.key }}" data-icon="{{ item.icon }}" data-title="{{ item.name }}" data-src="{{ item.index }}">
+                        <div class="apps-item-header" data-thumb="{{ item.thumb }}"></div>
+                        
+                        <div class="apps-item-body">
+                            <h5 class="apps-item-name">{{ item.name }}</h5>
+        
+                            <div class="apps-item-tags">
+                                <small>{{ item.type }}</small>
+                                <small class="custom">Update</small>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        
+            <div class="row align-items-center">
+                <div class="col-8">
+                    <h4 class="title light">Reccomendation</h4>
+                </div>
+        
+                <div class="col-4 text-right">
+                    <button class="btn btn-link btn-corner">See all</button>
+                </div>
+            </div>
+                
+            <div class="row market">
+                {% for item in items %}
+                    <div v-on:click="view" class="col-md-6 col-lg-4 col-xl-3 apps-item" data-key="{{ item.key }}" data-icon="{{ item.icon }}" data-title="{{ item.name }}" data-src="{{ item.index }}">
+                        <div class="apps-item-header" data-thumb="{{ item.thumb }}"></div>
+                        
+                        <div class="apps-item-body">
+                            <h5 class="apps-item-name">{{ item.name }}</h5>
+        
+                            <div class="apps-item-tags">
+                                <small>{{ item.type }}</small>
+                                <small class="custom">Update</small>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="item tab-work">
+            <div class="row align-items-center">
+                <div class="col-8">
+                    <h3 class="title light">Games (303)</h3>
+                </div>
+        
+                <div class="col-4 text-right">
+                    <div class="sortby">
+                        <span>Sort by:</span>
+                        
+                        <div class="dropdown">
+                            <button type="button">Popularity</button>
+                                    
+                            <div class="dropdown-menu">
+                                <div class="dropdown-item"><span>Relevance</span></div>
+                                <div class="dropdown-item"><span>Popularity</span></div>
+                                <div class="dropdown-item"><span>Name</span></div>
+                                <div class="dropdown-item"><span>Price</span></div>
+                                <div class="dropdown-item"><span>Rating</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                
+            <div class="row market">
+                {% for item in items %}
+                    <div v-on:click="view" class="col-md-6 col-lg-4 col-xl-3 apps-item" data-key="{{ item.key }}" data-icon="{{ item.icon }}" data-title="{{ item.name }}" data-src="{{ item.index }}">
+                        <div class="apps-item-header" data-thumb="{{ item.thumb }}"></div>
+                        
+                        <div class="apps-item-body">
+                            <h5 class="apps-item-name">{{ item.name }}</h5>
+        
+                            <div class="apps-item-tags">
+                                <small>{{ item.type }}</small>
+                                <small class="custom">Update</small>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div> 
