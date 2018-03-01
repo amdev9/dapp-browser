@@ -1,9 +1,6 @@
 .selection {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 .btn {
@@ -12,7 +9,7 @@
   border: 0;
   padding: 10px 20px;
   text-transform: uppercase;
-  border-radius: 17px;
+  border-radius: 20px;
 }
 .btn:hover,
 .btn:focus,
@@ -33,9 +30,6 @@
   top: 50%;
   right: 0;
   background: url('../images/icons/corner.svg') no-repeat center top;
-  -webkit-transform: translateY(-50%);
-  -moz-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
   transform: translateY(-50%);
 }
 .btn-link:hover {
@@ -46,27 +40,45 @@
 }
 .btn-secondary {
   color: #4686FF;
-  background: #CEE4F3;
+  background: #DFEAFF;
 }
 .btn-secondary:hover,
-.btn-secondary.hover {
-  color: #fff;
-  background: #4686FF;
-}
+.btn-secondary.hover,
 .btn-secondary:active {
-  background: #4686FF !important;
+  color: #4686FF !important;
+  background: #CDDDFC !important;
 }
 .btn-primary {
   color: #fff;
   background: #4686FF;
 }
 .btn-primary:hover,
-.btn-primary.hover {
-  color: #fff;
-  background: #689BFA;
-}
+.btn-primary.hover,
 .btn-primary:active {
+  color: #fff !important;
   background: #689BFA !important;
+}
+.btn-light {
+  color: #AAB4BF;
+  background: #fff;
+}
+.btn-light:hover,
+.btn-light.hover,
+.btn-light:active {
+  color: #fff !important;
+  background: #AAB4BF !important;
+}
+.btn-outline-light {
+  color: #c7ced5;
+  border: 1px solid #d6dbe0;
+  background: none;
+}
+.btn-outline-light:hover,
+.btn-outline-light.hover,
+.btn-outline-light:active {
+  color: #AAB4BF !important;
+  border-color: #AAB4BF !important;
+  background: none !important;
 }
 .form-control:focus {
   box-shadow: none;
@@ -88,9 +100,6 @@
   border-radius: 17px;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 .dropdown > button:after {
@@ -132,9 +141,6 @@
   padding: 7px 20px;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 .dropdown-item span:hover {
@@ -154,9 +160,6 @@
   background: #F2F3F6;
 }
 .dropdown.show > button:after {
-  -webkit-transform: rotate(-180deg);
-  -moz-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
 }
 .dropdown.show > .dropdown-menu {
@@ -166,9 +169,6 @@
   display: block;
   opacity: 0;
   visibility: hidden;
-  -webkit-transition: all 0.15s ease-in-out;
-  -moz-transition: all 0.15s ease-in-out;
-  -ms-transition: all 0.15s ease-in-out;
   transition: all 0.15s ease-in-out;
 }
 .modal.show {

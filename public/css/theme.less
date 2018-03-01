@@ -1,35 +1,16 @@
-@theme: #4686FF;
-
-@font-opensans: 'Open Sans', sans-serif;
-@font-montserrat: 'Montserrat', sans-serif;
-
-@dark : #252526;
-@light: #FAFAFC;
-@white: #fff;
-@gray : #F2F3F6;
-@altg : #7B8DA7;
-@green: #42D286;
+@import 'variable.less';
 
 .transition(@property: all, @delay: .15s, @duration: ease-in-out) {
-    -webkit-transition: @arguments;
-    -moz-transition: @arguments;
-    -ms-transition: @arguments;
     transition: @arguments;
 }
 
 .transform(@property: scale(1)) {
-    -webkit-transform: @property;
-    -moz-transform: @property;
-    -ms-transform: @property;
     transform: @property;
 }
 
 .selection {
-    -webkit-touch-callout: none;
+	-webkit-touch-callout: none;
 	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
 	user-select: none;
 }
 
@@ -39,7 +20,7 @@
     border: 0;
     padding: 10px 20px;
     text-transform: uppercase;
-    border-radius: 17px;
+    border-radius: 20px;
 
     &:hover, &:focus, &:active {
         box-shadow: none !important;
@@ -75,15 +56,11 @@
 
     &-secondary {
         color: @theme;
-        background: #CEE4F3;
+        background: @blue;
 
-        &:hover, &.hover {
-            color: #fff;
-            background: @theme
-        }
-
-        &:active {
-            background: @theme !important
+        &:hover, &.hover, &:active {
+            color: @theme !important;
+            background: #CDDDFC !important
         }
     }
 
@@ -91,13 +68,31 @@
         color: @white;
         background: @theme;
 
-        &:hover, &.hover {
-            color: @white;
-            background: #689BFA
-        }
-
-        &:active {
+        &:hover, &.hover, &:active {
+            color: @white !important;
             background: #689BFA !important
+        }
+    }
+
+    &-light {
+        color: @lgray;
+        background: @white;
+
+        &:hover, &.hover, &:active {
+            color: @white !important;
+            background: @lgray !important
+        }
+    }
+
+    &-outline-light {
+        color: lighten(@lgray, 10%);
+        border: 1px solid lighten(@lgray, 15%);
+        background: none;
+
+        &:hover, &.hover, &:active {
+            color: @lgray !important;
+            border-color: @lgray !important;
+            background: none !important;
         }
     }
 }
@@ -116,7 +111,7 @@
     & > button {
         position: relative;
         font: 12px @font-opensans;
-        color: @altg;
+        color: @dgray;
         background: @white;
         cursor: default;
         text-transform: uppercase;
@@ -164,7 +159,7 @@
         span {
             display: block;
             font: 12px @font-opensans;
-            color: @altg;
+            color: @dgray;
             padding: 7px 20px;
             .selection();
              

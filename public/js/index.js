@@ -3,8 +3,8 @@
     'use strict';
 
     
-    const wrapper  = document.querySelector( '.wrapper' );
-    const category = document.querySelector( '.tab-category' );
+    const wrapper = document.querySelector( '.wrapper' );
+    const market  = document.querySelector( '.market' );
 
 
 
@@ -414,6 +414,31 @@
     });
 
 
+    // Market
+    // ------------------------------------------------------ //
+    const _market = new Vue({
+        el: '.content .market',
+        methods: {
+            view: function () {
+                this.$window( 'app' );
+                _preview.init();
+            },
+            switch: function ( target ) {
+                for (const key in this.$refs) this.$refs[key].classList.remove( 'active' )
+                if ( this.$refs.hasOwnProperty( target ) ) this.$refs[target].classList.add( 'active' );
+            }
+        },
+        mounted: function ( event ) {
+            let children = Array.from( this.$el.querySelectorAll( '.apps-item' ) );
+
+            children.forEach(element => {
+                let _header = element.querySelector( '.apps-item-header' );
+                _header.style.backgroundImage = 'url(' + _header.dataset.thumb + ')';
+            });
+        }
+    })
+
+
     // Modals
     // ------------------------------------------------------ //
     const _modals = new Vue({
@@ -452,19 +477,69 @@
     const _category = new Vue({
         el: '.category',
         methods: {
-            view: function ( event ) {
+            change: function ( event ) {
                 let target = event.currentTarget;
                 let tab = target.dataset.tab;
 
-                Array.from( category.children ).forEach(element => {
-                    element.classList[element.classList.contains( 'tab-' + tab ) ? 'add' : 'remove']( 'active' )
-                });
+                _market.switch( tab );
 
                 let children = this.$el.querySelectorAll( 'button' );
 
                 Array.from( children ).forEach(element => {
                     element.classList[element.dataset.tab == tab ? 'add' : 'remove']( 'active' )
                 });
+            }
+        }
+    });
+
+
+    // Preview
+    // ------------------------------------------------------ //
+    const _preview = new Vue({
+        el: '.preview',
+        data: {
+            name: 'Application name',
+            rating: 2,
+            preview: 'images/preview/image.png',
+            tags: ['work', 'tools'],
+            updated: '24 Jan, 2018',
+            version: '2.0.1',
+            size: '315 MB',
+            carousel: null,
+            images: ['images/preview/gallery/1.png', 'images/preview/gallery/2.png', 'images/preview/gallery/1.png', 'images/preview/gallery/2.png', 'images/preview/gallery/1.png'],
+            introtext: 'Description do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+            certificate: ['images/preview/certificate/1.png', 'images/preview/certificate/2.png', 'images/preview/certificate/1.png', 'images/preview/certificate/2.png'],
+            description: '<ul><li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li><li>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</li><li>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</li></ul>',
+            reviews: [
+                {
+                    name: 'Clinton Ball',
+                    like: 'true',
+                    date: '2 min ago',
+                    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, seduis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proiden'
+                },{
+                    name: 'Lila	Hudson',
+                    like: 'false',
+                    date: '24, Jan 2017',
+                    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, seduis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proiden'
+                }
+            ]
+        },
+        methods: {
+            next: function () {
+                this.carousel.next()          
+            },
+            prev: function () {
+                this.carousel.previous()          
+            },
+            init: function () {
+                this.carousel = new Flickity(this.$refs.carousel, {
+                    contain  : true,
+                    cellAlign: 'left',
+                    pageDots : false,
+                    imagesLoaded: true,
+                    prevNextButtons: false,
+                    friction: .5
+                })
             }
         }
     });
@@ -490,7 +565,7 @@
 
     // Market
     // ------------------------------------------------------ //
-    document.querySelector( '.market' ).addEventListener('click', () => {
+    document.querySelector( '.view-market' ).addEventListener('click', () => {
         _header.$refs.pagetitle.innerHTML = 'Market';
         Vue.prototype.$window( 'market' );
     });

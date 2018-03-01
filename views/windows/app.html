@@ -1,0 +1,110 @@
+<div class="container-fluid window d-none" id="app">
+    <div class="preview">
+        <figure>
+            <img v-bind:src="preview" alt="...">
+        
+            <figcaption>
+                <h3 class="title">${ name }</h3>
+
+                <div class="icons">
+                    <template v-for="i in rating">
+                        <img src="images/icons/rating.svg" alt="...">
+                    </template>
+                </div>
+                 
+                <div class="tags">
+                    <small v-for="name in tags">${ name }</small>
+                </div>
+
+                <div class="options">
+                    <dl class="row">
+                        <dt class="col-auto">Updated:</dt>
+                        <dd class="col">${ updated }</dd>
+                    </dl>
+
+                    <dl class="row">
+                        <dt class="col-auto">Version:</dt>
+                        <dd class="col">${ version }</dd>
+                    </dl>
+
+                    <dl class="row">
+                        <dt class="col-auto">Size:</dt>
+                        <dd class="col">${ size }</dd>
+                    </dl>
+                </div>
+
+                <div class="action row">
+                    <div class="col">
+                        <button type="button" class="btn btn-primary">Install</button>
+                    </div>
+
+                    <div class="col">
+                        <button type="button" class="btn btn-secondary">Donate</button>
+                    </div>
+                </div>
+            </figcaption>
+        </figure>
+
+        <div class="carousel-wrapper">
+            <div class="carousel-body" ref="carousel">
+                <div v-for="item in images" class="carousel-cell">
+                    <img v-bind:src="item" alt="...">
+                </div>
+            </div>
+
+            <div class="carousel-nav">
+                <button v-on:click="prev"><img src="images/icons/arrow-nav.svg" class="svg" alt="..."></button>
+                <button v-on:click="next"><img src="images/icons/arrow-nav.svg" class="svg" alt="..."></button>
+            </div>
+        </div>
+
+        <div class="introtext">
+            ${ introtext }
+        </div>
+
+        <div class="certificate">
+            <h4 class="title">Certified by:</h4>
+
+            <div class="images">
+                <img v-for="item in certificate" v-bind:src="item" alt="...">
+            </div>
+        </div>
+
+        <div class="description" v-html="description">
+            ${ description }
+        </div>
+
+        <div class="reviews">
+            <div class="reviews-head row">
+                <div class="col-auto">
+                    <h4 class="title">Reviews</h4>
+
+                    <div class="status">
+                        <span class="up">72%</span>
+                        <span class="down">28%</span>
+                    </div>
+                </div>
+                <div class="col text-right">
+                    <button type="button" class="btn btn-outline-light">Write a Review</button>
+                </div>
+            </div>
+
+            <div class="media" v-for="item in reviews">
+                <div class="media-body">
+                    <div class="media-head row">
+                        <div class="col-auto">
+                            <h5 v-bind:class="item.like">${ item.name }</h5>
+                        </div>
+                        <div class="col text-right">
+                            <span class="date">${ item.date }</span>
+                        </div>
+                    </div>
+
+                    <p>${ item.comment }</p>
+                </div>
+            </div>
+            
+            <button type="button" class="btn btn-link show-all">See all comments</button>
+        </div>
+    </div>
+</div>

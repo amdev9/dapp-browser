@@ -1,17 +1,17 @@
 <div class="container-fluid window d-none" id="market">
     <div class="category">
         <ul class="nav justify-content-center">
-            <li class="nav-item"><button type="button" class="btn btn-link active" v-on:click="view" data-tab="all">all</button></li>
-            <li class="nav-item"><button type="button" class="btn btn-link" v-on:click="view" data-tab="work">Work</button></li>
-            <li class="nav-item"><button type="button" class="btn btn-link" v-on:click="view" data-tab="games">Games</button></li>
-            <li class="nav-item"><button type="button" class="btn btn-link" v-on:click="view" data-tab="education">Education</button></li>
-            <li class="nav-item"><button type="button" class="btn btn-link" v-on:click="view" data-tab="tools">Tools</button></li>
-            <li class="nav-item"><button type="button" class="btn btn-link" v-on:click="view" data-tab="finance">Finance</button></li>
+            <li class="nav-item"><button type="button" class="btn btn-link active" v-on:click="change" data-tab="all">all</button></li>
+            <li class="nav-item"><button type="button" class="btn btn-link" v-on:click="change" data-tab="work">Work</button></li>
+            <li class="nav-item"><button type="button" class="btn btn-link" v-on:click="change" data-tab="games">Games</button></li>
+            <li class="nav-item"><button type="button" class="btn btn-link" v-on:click="change" data-tab="education">Education</button></li>
+            <li class="nav-item"><button type="button" class="btn btn-link" v-on:click="change" data-tab="tools">Tools</button></li>
+            <li class="nav-item"><button type="button" class="btn btn-link" v-on:click="change" data-tab="finance">Finance</button></li>
         </ul>
     </div>
 
-    <div class="tab-category">
-        <div class="item active tab-all">
+    <div class="tab-category market">
+        <div class="item active" ref="all">
             <div class="row align-items-center">
                 <div class="col-8">
                     <h3 class="title">Newest</h3>
@@ -22,7 +22,7 @@
                 </div>
             </div>
                 
-            <div class="row market">
+            <div class="row">
                 {% for item in items %}
                     <div v-on:click="view" class="col-md-6 col-lg-4 col-xl-3 apps-item" data-key="{{ item.key }}" data-icon="{{ item.icon }}" data-title="{{ item.name }}" data-src="{{ item.index }}">
                         <div class="apps-item-header" data-thumb="{{ item.thumb }}"></div>
@@ -49,7 +49,7 @@
                 </div>
             </div>
                 
-            <div class="row market">
+            <div class="row">
                 {% for item in items %}
                     <div v-on:click="view" class="col-md-6 col-lg-4 col-xl-3 apps-item" data-key="{{ item.key }}" data-icon="{{ item.icon }}" data-title="{{ item.name }}" data-src="{{ item.index }}">
                         <div class="apps-item-header" data-thumb="{{ item.thumb }}"></div>
@@ -67,7 +67,7 @@
             </div>
         </div>
 
-        <div class="item tab-work">
+        <div class="item" ref="work">
             <div class="row align-items-center">
                 <div class="col-8">
                     <h3 class="title light">Games (303)</h3>
@@ -92,7 +92,7 @@
                 </div>
             </div>
                 
-            <div class="row market">
+            <div class="row">
                 {% for item in items %}
                     <div v-on:click="view" class="col-md-6 col-lg-4 col-xl-3 apps-item" data-key="{{ item.key }}" data-icon="{{ item.icon }}" data-title="{{ item.name }}" data-src="{{ item.index }}">
                         <div class="apps-item-header" data-thumb="{{ item.thumb }}"></div>

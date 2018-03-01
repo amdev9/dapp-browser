@@ -39,9 +39,6 @@ body {
 .selection {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 /* Header
@@ -74,15 +71,9 @@ header .navbar-home-link {
 }
 header .navbar-home-link svg {
   margin: 50% 0 0;
-  -webkit-transform: translateY(-50%);
-  -moz-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
   transform: translateY(-50%);
 }
 header .navbar-home-link svg path {
-  -webkit-transition: all 0.15s ease-in-out;
-  -moz-transition: all 0.15s ease-in-out;
-  -ms-transition: all 0.15s ease-in-out;
   transition: all 0.15s ease-in-out;
 }
 header .navbar-home-link:hover svg path {
@@ -128,9 +119,6 @@ header .navbar-user-search form .input-group-append button {
   margin: 1px 0 0;
   cursor: default;
   background: none;
-  -webkit-transform: translateY(-50%);
-  -moz-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
   transform: translateY(-50%);
 }
 header .navbar-user-search form .input-group-append button svg {
@@ -139,15 +127,9 @@ header .navbar-user-search form .input-group-append button svg {
   left: 0;
   right: 0;
   margin: 0 auto;
-  -webkit-transform: translateY(-50%);
-  -moz-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
   transform: translateY(-50%);
 }
 header .navbar-user-search form .input-group-append button svg path {
-  -webkit-transition: all 0.15s ease-in-out;
-  -moz-transition: all 0.15s ease-in-out;
-  -ms-transition: all 0.15s ease-in-out;
   transition: all 0.15s ease-in-out;
 }
 header .navbar-user-search form .input-group-append button:hover svg path {
@@ -258,9 +240,6 @@ header .navbar-user-nav > button svg {
 }
 header .navbar-user-nav > button svg path,
 header .navbar-user-nav > button svg circle {
-  -webkit-transition: all 0.15s ease-in-out;
-  -moz-transition: all 0.15s ease-in-out;
-  -ms-transition: all 0.15s ease-in-out;
   transition: all 0.15s ease-in-out;
 }
 header .navbar-user-nav > button:hover svg path {
@@ -428,7 +407,7 @@ main .main .content .tab-category .item.active {
 main .main .content .tab-category .item .sortby > span {
   font: 500 14px 'Open Sans', sans-serif;
   display: inline-block;
-  color: #AAB4BF;
+  color: #7B8DA7;
   margin-right: 10px;
 }
 main .main .content .tab-category .item .sortby .dropdown > button {
@@ -487,6 +466,214 @@ main .main .content .apps-item-tags small.custom {
   color: #4686FF;
   float: right;
   background: #DFEAFF;
+}
+main .main .content .preview {
+  margin: 30px 0;
+}
+main .main .content .preview figure > img {
+  float: left;
+  margin-right: 20px;
+}
+main .main .content .preview figure figcaption {
+  overflow: hidden;
+}
+main .main .content .preview figure figcaption .title {
+  display: inline-block;
+  margin: 0;
+  vertical-align: middle;
+}
+main .main .content .preview figure figcaption .icons {
+  display: inline-block;
+  vertical-align: middle;
+}
+main .main .content .preview figure figcaption .icons img {
+  display: inline-block;
+  margin: 0 0 0 10px;
+  vertical-align: middle;
+}
+main .main .content .preview figure figcaption .tags {
+  margin: 10px 0 0;
+}
+main .main .content .preview figure figcaption .tags:after {
+  display: table;
+  content: '';
+  clear: both;
+}
+main .main .content .preview figure figcaption .tags small {
+  font: 11px 'Open Sans', sans-serif;
+  color: #252526;
+  display: block;
+  float: left;
+  overflow: hidden;
+  padding: 4px 12px;
+  text-transform: uppercase;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background: #fff;
+  border-radius: 12px;
+}
+main .main .content .preview figure figcaption .tags small + small {
+  margin-left: 10px;
+}
+main .main .content .preview figure figcaption .tags small.custom {
+  color: #4686FF;
+  float: right;
+  background: #DFEAFF;
+}
+main .main .content .preview figure figcaption .options {
+  margin: 15px 0;
+}
+main .main .content .preview figure figcaption .options dl {
+  font: 14px 'Montserrat', sans-serif;
+  margin-bottom: 0;
+}
+main .main .content .preview figure figcaption .options dl + dl {
+  margin-top: 10px;
+}
+main .main .content .preview figure figcaption .options dl dt {
+  font-weight: 400;
+  color: #7B8DA7;
+}
+main .main .content .preview figure figcaption .options dl dd {
+  padding-left: 0;
+  margin: 0;
+}
+main .main .content .preview figure figcaption .action .btn {
+  min-width: 140px;
+}
+main .main .content .preview .carousel-wrapper {
+  position: relative;
+  margin: 40px 0 30px;
+}
+main .main .content .preview .carousel-cell {
+  margin-right: 20px;
+}
+main .main .content .preview .carousel-nav {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 0;
+}
+main .main .content .preview .carousel-nav button {
+  position: absolute;
+  display: block;
+  height: 32px;
+  width: 32px;
+  top: -15px;
+  left: 15px;
+  border: 0;
+  cursor: pointer;
+  background: none;
+}
+main .main .content .preview .carousel-nav button svg path,
+main .main .content .preview .carousel-nav button svg circle {
+  transition: all 0.15s ease-in-out;
+}
+main .main .content .preview .carousel-nav button + button {
+  left: auto;
+  right: 15px;
+}
+main .main .content .preview .carousel-nav button + button svg {
+  transform: rotate(-180deg);
+}
+main .main .content .preview .carousel-nav button:hover svg path {
+  fill: #252526;
+}
+main .main .content .preview .carousel-nav button:hover svg circle {
+  stroke: #252526;
+}
+main .main .content .preview .introtext {
+  font: 14px 'Open Sans', sans-serif;
+}
+main .main .content .preview .certificate {
+  margin: 40px 0 10px;
+}
+main .main .content .preview .certificate .title {
+  font-size: 20px;
+  margin-top: 0;
+}
+main .main .content .preview .certificate .images img {
+  margin: 0 50px 30px 0;
+}
+main .main .content .preview .description {
+  font: 14px 'Open Sans', sans-serif;
+  margin: 0 0 40px;
+}
+main .main .content .preview .description ul li {
+  display: block;
+  list-style: none;
+  margin: 0 0 15px;
+}
+main .main .content .preview .description ul li:before {
+  content: '-';
+}
+main .main .content .preview .reviews-head {
+  margin-bottom: 15px;
+}
+main .main .content .preview .reviews-head .title {
+  font-size: 20px;
+  display: inline-block;
+  margin: 0;
+  vertical-align: middle;
+}
+main .main .content .preview .reviews-head .status {
+  font: 15px 'Open Sans', sans-serif;
+  color: #7B8DA7;
+  display: inline-block;
+  vertical-align: middle;
+}
+main .main .content .preview .reviews-head .status .up,
+main .main .content .preview .reviews-head .status .down {
+  position: relative;
+  padding-left: 30px;
+  margin-left: 20px;
+}
+main .main .content .preview .reviews-head .status .up:after,
+main .main .content .preview .reviews-head .status .down:after {
+  position: absolute;
+  content: '';
+  top: 0;
+  left: 0;
+  height: 18px;
+  width: 18px;
+  background: url('../images/icons/dir.svg') no-repeat center;
+}
+main .main .content .preview .reviews-head .status .down:after {
+  transform: rotate(-180deg);
+}
+main .main .content .preview .reviews .media + .media {
+  padding-top: 20px;
+  border-top: 1px solid #E3E5E8;
+}
+main .main .content .preview .reviews .media-body {
+  font: 14px 'Open Sans', sans-serif;
+}
+main .main .content .preview .reviews .media-head h5 {
+  font: 400 16px 'Montserrat', sans-serif;
+  position: relative;
+  padding-right: 30px;
+}
+main .main .content .preview .reviews .media-head h5:after {
+  position: absolute;
+  content: '';
+  top: 0;
+  right: 0;
+  height: 18px;
+  width: 18px;
+  background: url('../images/icons/dir.svg') no-repeat center;
+  transform: scale(0.75);
+}
+main .main .content .preview .reviews .media-head h5.false:after {
+  transform: scale(0.75) rotate(-180deg);
+}
+main .main .content .preview .reviews .media-head .date {
+  font: 200 12px 'Montserrat', sans-serif;
+  color: #7B8DA7;
+}
+main .main .content .preview .show-all {
+  display: block;
+  margin: 20px auto 0;
 }
 main .main .content .views {
   position: absolute;
@@ -549,9 +736,6 @@ main .main .content .view-code-console {
   padding: 0 30px 0;
   opacity: 0;
   background: #163246;
-  -webkit-transition: all 0.15s ease-in-out;
-  -moz-transition: all 0.15s ease-in-out;
-  -ms-transition: all 0.15s ease-in-out;
   transition: all 0.15s ease-in-out;
 }
 main .main .content .view-code-console p {
@@ -596,15 +780,9 @@ main .contextmenu span {
   padding: 7px 20px;
   cursor: default;
   white-space: nowrap;
-  -webkit-transition: all 0.1s ease-in-out;
-  -moz-transition: all 0.1s ease-in-out;
-  -ms-transition: all 0.1s ease-in-out;
   transition: all 0.1s ease-in-out;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 main .contextmenu span:hover {
@@ -627,9 +805,6 @@ main .notifications {
   z-index: 5;
   border-top: 1px solid rgba(32, 32, 73, 0.05);
   box-shadow: -1px 2px 3px rgba(32, 32, 73, 0.05);
-  -webkit-transition: all 0.15s ease-in-out;
-  -moz-transition: all 0.15s ease-in-out;
-  -ms-transition: all 0.15s ease-in-out;
   transition: all 0.15s ease-in-out;
 }
 main .notifications::-webkit-scrollbar {
@@ -666,9 +841,6 @@ main .notifications-title button {
   background: none;
 }
 main .notifications-title button svg path {
-  -webkit-transition: all 0.15s ease-in-out;
-  -moz-transition: all 0.15s ease-in-out;
-  -ms-transition: all 0.15s ease-in-out;
   transition: all 0.15s ease-in-out;
 }
 main .notifications-title button:hover svg path {
@@ -698,9 +870,6 @@ main .notifications-name button svg {
   width: 11px;
 }
 main .notifications-name button svg path {
-  -webkit-transition: all 0.15s ease-in-out;
-  -moz-transition: all 0.15s ease-in-out;
-  -ms-transition: all 0.15s ease-in-out;
   transition: all 0.15s ease-in-out;
 }
 main .notifications-name button:hover svg path {
