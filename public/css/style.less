@@ -470,7 +470,7 @@ main {
 				}
 			}
 
-			.category {
+			.navigate {
 				height: 75px;
 				background: #FAFAFC;
 				margin: -10px -56px 10px -55px;
@@ -502,7 +502,7 @@ main {
 				}
 			}
 
-			.tab-category {
+			.category {
 				.item {
 					display: none;
 
@@ -878,11 +878,12 @@ main {
 				right: 0;
 				top: 0;
 				bottom: 30px;
-				z-index: 1;
+				z-index: 5;
 				background: @white url('../images/preloader.svg') no-repeat center;
 
 				&.show {
-					display: block
+					display: block;
+					background-image: none
 				}
 
 				iframe {
@@ -895,7 +896,7 @@ main {
 			&-empty {
 				span {
 					font-size: 28px;
-					color: #BCD9EF;
+					color: @dark;
 				}
 			}
 

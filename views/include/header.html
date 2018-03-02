@@ -2,7 +2,7 @@
     <div class="container-fluid h-100">
         <div class="row h-100">
             <div class="col navbar-home">
-                <div class="navbar-home-link" v-on:click="index" data-title="Home" ref="home">
+                <div class="navbar-home-link" v-on:click="index">
                     <img src="images/icons/home.svg" class="svg" alt="...">
                 </div>
             </div>
@@ -15,7 +15,7 @@
                         </button>    
                     </div>
 
-                    <div class="col-auto navbar-user-title" ref="pagetitle" v-bind:class="{'d-none': visible}">Home</div>
+                    <div class="col-auto navbar-user-title" ref="pagetitle" v-bind:class="{'d-none': visible}">${ title }</div>
 
                     <div class="navbar-user-uri" v-bind:class="{'d-inline-block': visible}">
                         <span>uri:</span> 
@@ -99,15 +99,15 @@
                             <button type="button">mainnet</button>
                                     
                             <div class="dropdown-menu">
-                                <div class="dropdown-item"><span>Mainnet</span></div>
-                                <div class="dropdown-item"><span>Mynet</span></div>
-                                <div class="dropdown-item"><span>Testnet</span>
+                                <div class="dropdown-item">Mainnet</div>
+                                <div class="dropdown-item">Mynet</div>
+                                <div class="dropdown-item">Testnet</span>
 
                                     <div class="dropdown-menu">
-                                        <div class="dropdown-item"><span>Berlin, Germany</span></div>
-                                        <div class="dropdown-item"><span>Dallas, USA</span></div>
-                                        <div class="dropdown-item"><span>Nuremberg, Germany</span></div>
-                                        <div class="dropdown-item"><span>Munich, Germany</span></div>
+                                        <div class="dropdown-item">Berlin, Germany</div>
+                                        <div class="dropdown-item">Dallas, USA</div>
+                                        <div class="dropdown-item">Nuremberg, Germany</div>
+                                        <div class="dropdown-item">Munich, Germany</div>
                                     </div>
                                 </div>
                             </div>
@@ -118,7 +118,7 @@
                             <span>wallet.dat</span>
                         </button>
 
-                        <button type="button" v-on:click="settings">
+                        <button type="button" v-on:click="settings" data-title="Settings">
                             <img src="images/icons/settings.svg" class="svg" alt="...">
                         </button>
 

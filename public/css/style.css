@@ -387,19 +387,19 @@ main .main .content .title {
 main .main .content .title.light {
   font: 500 26px 'Montserrat', sans-serif;
 }
-main .main .content .category {
+main .main .content .navigate {
   height: 75px;
   background: #FAFAFC;
   margin: -10px -56px 10px -55px;
   border-left: 1px solid #F2F3F6;
 }
-main .main .content .category .nav {
+main .main .content .navigate .nav {
   height: 100%;
 }
-main .main .content .category .nav-item {
+main .main .content .navigate .nav-item {
   height: 100%;
 }
-main .main .content .category .nav-item button {
+main .main .content .navigate .nav-item button {
   font: 12px 'Montserrat', sans-serif;
   color: #7B8DA7;
   height: 100%;
@@ -407,26 +407,26 @@ main .main .content .category .nav-item button {
   border-radius: 0;
   border-bottom: 3px solid transparent;
 }
-main .main .content .category .nav-item button.active,
-main .main .content .category .nav-item button:hover {
+main .main .content .navigate .nav-item button.active,
+main .main .content .navigate .nav-item button:hover {
   color: #4686FF;
 }
-main .main .content .category .nav-item button.active {
+main .main .content .navigate .nav-item button.active {
   border-bottom-color: #4686FF;
 }
-main .main .content .tab-category .item {
+main .main .content .category .item {
   display: none;
 }
-main .main .content .tab-category .item.active {
+main .main .content .category .item.active {
   display: block;
 }
-main .main .content .tab-category .item .sortby > span {
+main .main .content .category .item .sortby > span {
   font: 500 14px 'Open Sans', sans-serif;
   display: inline-block;
   color: #7B8DA7;
   margin-right: 10px;
 }
-main .main .content .tab-category .item .sortby .dropdown > button {
+main .main .content .category .item .sortby .dropdown > button {
   border-color: #E3E5E8;
   background: none;
 }
@@ -698,11 +698,12 @@ main .main .content .views {
   right: 0;
   top: 0;
   bottom: 30px;
-  z-index: 1;
+  z-index: 5;
   background: #fff url('../images/preloader.svg') no-repeat center;
 }
 main .main .content .views.show {
   display: block;
+  background-image: none;
 }
 main .main .content .views iframe {
   height: 100%;
@@ -711,7 +712,7 @@ main .main .content .views iframe {
 }
 main .main .content-empty span {
   font-size: 28px;
-  color: #BCD9EF;
+  color: #252526;
 }
 main .main .content .view-code {
   position: fixed;

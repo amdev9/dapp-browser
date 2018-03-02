@@ -8,6 +8,16 @@
     Vue.options.delimiters = ['${', '}'];
 
 
+    // Filters
+    // ------------------------------------------------------ //
+    Vue.filter('capitalize', function (value) {
+        if ( !value ) return '';
+
+        value = value.toString();
+        return value.charAt( 0 ).toUpperCase() + value.slice( 1 );
+    })      
+
+
     // Hide Element
     // ------------------------------------------------------ //
     Vue.prototype.$hideEls = ( value ) => {
@@ -59,11 +69,14 @@
             Vue.prototype.$http._ready(request, func);
             request.send();
         },
-        post: function (url, data, func) {
+        post: function (url, data, func, header) {
             var request = new XMLHttpRequest();
 
             request.open('post', url);
             request.setRequestHeader('Content-Type', 'application/json');
+            
+            if ( header ) request.setRequestHeader('Allow-Origin', header);
+
             Vue.prototype.$http._ready(request, func);
 
             request.send( JSON.stringify( data ) );
@@ -75,38 +88,7 @@
         }
     }
 
-
-    // Dropdown
-    // ------------------------------------------------------ //
-    Vue.prototype.$dropdown = {
-        enable: function (parent = document) {
-            let array = Array.from( parent.querySelectorAll( '.dropdown' ) )
-
-            array.forEach(element => {
-                const button = element.querySelector( 'button' );
-                const items  = Array.from( element.querySelectorAll( 'span' ) );
-
-                button.addEventListener('click', () => this._show( element ));
-                items.forEach(item => item.addEventListener('click', () => this._event( button )))
-            })
-        },
-        hidden: function (parent = document) {
-            let array = Array.from( parent.querySelectorAll( '.dropdown' ) );
-            
-            array.forEach(element => {
-                const button = element.querySelector( 'button' );
-                if ( event.target != button ) element.classList.remove( 'show' )
-            });
-        },
-        _show: function ( target ) {
-            target.classList.toggle( 'show' )
-        },
-        _event: function ( target ) {
-            target.innerText = event.target.innerText
-        }
-    }
-
-
+    
     // Windows
     // ------------------------------------------------------ //
     Vue.prototype.$window = name => {
@@ -114,6 +96,8 @@
 
         windows.forEach(element => element.classList.add( 'd-none' ));
         document.getElementById( name ).classList.remove( 'd-none' );
+
+        document.body.scrollTop = 0;
     }
 
 

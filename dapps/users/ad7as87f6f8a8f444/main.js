@@ -5,7 +5,6 @@ Events.subscribe('request', response => {
 	Events.publish(system.StrCtrl, 'insert', response.payload);
 	
 	// NOT Callback
-	Events.publish(system.WebCtrl, 'response', response.payload);
 	Events.publish(system.LogCtrl, 'debug', response.payload);
 });
 

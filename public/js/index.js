@@ -4,8 +4,22 @@
 
     
     const wrapper = document.querySelector( '.wrapper' );
-    const market  = document.querySelector( '.market' );
 
+    Element.prototype.$dropdown = function () {
+        const dropdown = Array.from( document.querySelectorAll( '.dropdown' ) );
+        const closest  = event.target.closest( '.dropdown' );
+
+        if ( closest ) {
+            if ( event.target.classList.contains( 'dropdown-item' ) ) {
+                let button = closest.querySelector( 'button' );
+                button.innerHTML = event.target.childNodes[0].nodeValue;
+            }
+
+            closest.classList[closest.classList.contains( 'show' ) ? 'remove' : 'add']( 'show' )
+        } else {
+            dropdown.forEach(element => element.classList.remove( 'show' ))
+        }
+    }
 
 
     // Console
@@ -69,7 +83,7 @@
                 
                 if ( _windows.key == this.target ) _windows.show = null;
 
-                _header.$refs.pagetitle.innerHTML = _header.$refs.home.dataset.title;
+                _header.title = 'Home';
             }
         },
         watch: {
@@ -88,13 +102,14 @@
     const _header = new Vue({
         el: 'header',
         data: {
+            title: 'Home',
             visible : false,
             backward: false
         },
         methods: {
             index: function ( event ) {
                 let target = event.currentTarget;
-                this.$refs.pagetitle.innerHTML = target.dataset.title;
+                _header.title = 'Home';
 
                 _windows.show = null;
                 this.backward = false;
@@ -102,12 +117,10 @@
                 this.$window( 'content' );
             },
             back: function () {
-                this.$refs.pagetitle.innerHTML = 'Market';
+                this.title = 'Market';
                 this.$window( 'market' );
 
                 this.backward = false;
-
-                document.body.scrollTop = 0
             },
             search: function ( event ) {
                 this.visible = !this.visible;
@@ -115,7 +128,13 @@
                 if ( !this.visible ) this.$refs.search.value = '';
             },
             settings: function () {
-                
+                let target = event.currentTarget;
+                this.title = target.dataset.title;
+
+                _windows.show = null;
+                this.backward = false;
+
+                this.$window( 'settings' );
             },
             notify: function () {
                 _notify.visible = !_notify.visible;
@@ -155,8 +174,9 @@
                 
                 target.classList.add( 'active' );
 
-                _windows.create = options;
-                _header.$refs.pagetitle.innerHTML = target.dataset.title;
+                _windows.create  = options;
+                _header.title    = target.dataset.title;
+                _header.backward = false;
             },
             _context: function (event, options) {
                 let target = event.currentTarget;
@@ -353,7 +373,7 @@
             renderer: function () {
                 this.$hideEls( this.$el.children );
 
-                let target = this.$el.querySelector( '#' + this.key );
+                let target = document.getElementById( this.key );
 
                 if ( !this.$el.contains( target ) ) {
                     this.view.classList.add( 'active' );
@@ -412,7 +432,7 @@
 
                 _windows.create = dataset;
                 _aside.create = dataset;
-                _header.$refs.pagetitle.innerHTML = target.dataset.title;
+                _header.title = target.dataset.title;
             }
         },
         mounted: function ( event ) {
@@ -427,31 +447,71 @@
     // Market
     // ------------------------------------------------------ //
     const _market = new Vue({
-        el: '.content .market',
-        methods: {
-            view: function ( event ) {
-                let object = event.currentTarget.dataset;
-
-                _header.backward = true;
-                _header.$refs.pagetitle.innerHTML = 'Market - ' + object.type.charAt(0).toUpperCase() + object.type.slice( 1 );
-
-                this.$window( 'app' );
-                _preview.init();
-
-                document.body.scrollTop = 0
-            },
-            switch: function ( target ) {
-                for (const key in this.$refs) this.$refs[key].classList.remove( 'active' )
-                if ( this.$refs.hasOwnProperty( target ) ) this.$refs[target].classList.add( 'active' );
-            }
+        el: '#market',
+        data: {
+            tabs: {},
+            object: []
         },
-        mounted: function ( event ) {
-            let children = Array.from( this.$el.querySelectorAll( '.apps-item' ) );
+        methods: {
+            init () {
+                let target = event.currentTarget;
+                _header.title = target.dataset.title;
 
-            children.forEach(element => {
-                let _header = element.querySelector( '.apps-item-header' );
-                _header.style.backgroundImage = 'url(' + _header.dataset.thumb + ')';
-            });
+                this.$http.post('/web', {message_type: 'getall', message: {}}, response => {
+                    try {
+                        let output = JSON.parse( response );
+                        this.object = output.message.docs;
+                    } catch ( error ) {
+                        return alert( error )
+                    }
+
+                    this.create()
+                }, target.dataset.key)
+            },
+            create () {
+                this.tabs = {}
+                this.tabs['all'] = {class: 'active', items: []}
+
+                for (let i = 0; i < this.object.length; i++) {
+                    for (let t = 0; t < this.object[i].tags.length; t++) {
+                        this.tabs[this.object[i].tags[t]] = {class: ''}
+                    }
+
+                    this.tabs.all.items.push( this.object[i] )
+                }
+
+                for (const key in this.tabs) {
+                    for (let i = 0; i < this.object.length; i++) {
+                        if ( !this.tabs[key].hasOwnProperty( 'items' ) ) this.tabs[key].items = []
+                        
+                        for (let t = 0; t < this.object[i].tags.length; t++) {
+                            if ( key == this.object[i].tags[t] ) {
+                                this.tabs[key].items.push( this.object[i] )
+                            }
+                        }
+                    }
+                }
+
+                this.$window( 'market' );
+            },
+            change ( name ) {
+                const navigate = Array.from( this.$refs.navigate.querySelectorAll( 'button' ) );
+                const category = Array.from( this.$refs.category.querySelectorAll( '.item' ) );
+
+                navigate.forEach(element => element.classList[element.name == name ? 'add' : 'remove']( 'active' ))
+                category.forEach(element => element.classList[element.classList.contains( name ) ? 'add' : 'remove']( 'active' ))
+            },
+            preview ( key ) {
+                for (let i = 0; i < this.object.length; i++) {
+                    if ( this.object[i].key == key ) {
+                        var target = this.object[i];
+                        break;
+                    }
+                }
+
+                _preview.create  = target;
+                _header.backward = true
+            }
         }
     })
 
@@ -489,74 +549,43 @@
     });
 
 
-    // Category
-    // ------------------------------------------------------ //
-    const _category = new Vue({
-        el: '.category',
-        methods: {
-            change: function ( event ) {
-                let target = event.currentTarget;
-                let tab = target.dataset.tab;
-
-                _market.switch( tab );
-
-                let children = this.$el.querySelectorAll( 'button' );
-
-                Array.from( children ).forEach(element => {
-                    element.classList[element.dataset.tab == tab ? 'add' : 'remove']( 'active' )
-                });
-            }
-        }
-    });
-
-
     // Preview
     // ------------------------------------------------------ //
     const _preview = new Vue({
-        el: '.preview',
+        el: '#preview',
         data: {
-            name: 'Application name',
-            rating: 2,
-            preview: 'images/preview/image.png',
-            tags: ['work', 'tools'],
-            updated: '24 Jan, 2018',
-            version: '2.0.1',
-            size: '315 MB',
-            carousel: null,
-            images: ['images/preview/gallery/1.png', 'images/preview/gallery/2.png', 'images/preview/gallery/1.png', 'images/preview/gallery/2.png', 'images/preview/gallery/1.png'],
-            introtext: 'Description do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-            certificate: ['images/preview/certificate/1.png', 'images/preview/certificate/2.png', 'images/preview/certificate/1.png', 'images/preview/certificate/2.png'],
-            description: '<ul><li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li><li>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</li><li>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</li></ul>',
-            reviews: [
-                {
-                    name: 'Clinton Ball',
-                    like: 'true',
-                    date: '2 min ago',
-                    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, seduis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proiden'
-                },{
-                    name: 'Lila	Hudson',
-                    like: 'false',
-                    date: '24, Jan 2017',
-                    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, seduis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proiden'
-                }
-            ]
+            size: null, tags: null, images: null, rating: null,
+            version: null, updated: null, reviews: null, carousel: null,
+            introtext: null, description: null, certificate: null, preview: null
         },
         methods: {
-            next: function () {
+            next () {
                 this.carousel.next()          
             },
-            prev: function () {
+            prev () {
                 this.carousel.previous()          
-            },
-            init: function () {
-                this.carousel = new Flickity(this.$refs.carousel, {
-                    contain  : true,
-                    cellAlign: 'left',
-                    pageDots : false,
-                    imagesLoaded: true,
-                    prevNextButtons: false,
-                    friction: .5
-                })
+            }
+        },
+        computed: {
+            create: {
+                set ( object ) {
+                    for (const key in object) {
+                        this[key] = object[key]
+                    }
+
+                    this.$window( 'preview' );
+
+                    setTimeout(() => {
+                        this.carousel = new Flickity(this.$refs.carousel, {
+                            contain  : true,
+                            cellAlign: 'left',
+                            pageDots : false,
+                            imagesLoaded: true,
+                            prevNextButtons: false,
+                            friction: .5
+                        })
+                    }, 0 );
+                }
             }
         }
     });
@@ -570,22 +599,15 @@
     // Document Event
     // ------------------------------------------------------ //
     document.addEventListener('click', event => {
-        Vue.prototype.$dropdown.hidden();
         _context.show = false;
+        event.target.$dropdown()         
     });
 
-
-    // Dropdown Enable
-    // ------------------------------------------------------ //
-    Vue.prototype.$dropdown.enable()
 
 
     // Market
     // ------------------------------------------------------ //
-    document.querySelector( '.view-market' ).addEventListener('click', () => {
-        _header.$refs.pagetitle.innerHTML = 'Market';
-        Vue.prototype.$window( 'market' );
-    });
+    document.querySelector( '.view-market' ).addEventListener('click', event => _market.init());
 
  
     // Socket Console

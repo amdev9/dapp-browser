@@ -15,6 +15,8 @@ const logger = new Logger();
 
 // Headers
 const getHeaders = headers => {
+	if ( headers['allow-origin'] ) return headers['allow-origin'];
+
     let pathname = headers.referer.replace(headers.origin + '/', '');
     return pathname.replace(/(users\/)|(system\/)/gi, '').split( '/' ).shift();
 }
@@ -36,8 +38,17 @@ router.post('/web', (request, response, next) => {
 	let target = getHeaders(request.headers);
 	request.body.target = target;
 
+	let __dir = 'users/';
+
+	for (const key in system) {
+		if ( system[key] == target ) {
+			__dir = 'system/'
+			break
+		}
+	}
+
 	const events = new EventBus();
-	const source = __apps + 'users/' + target + '/manifest.json';
+	const source = __apps + __dir + target + '/manifest.json';
 
 	events.data = readDataFile( source );
 
@@ -47,7 +58,7 @@ router.post('/web', (request, response, next) => {
 	let access = [];
 
 	db.access.find({target: target}, (error, rows) => {
-		if ( !rows.length ) {
+		if ( !rows.length && permissions.length ) {
 			logger.write({payload: {message: rejected + permissions.join( ', ' ), target: target}}, 'ERROR');
 			io.emit('access', {message: rejected, rows: permissions});
 
@@ -79,8 +90,17 @@ router.post('/web', (request, response, next) => {
 // Request Access Permissions
 router.post('/access', (request, response, next) => {
 	const target = request.body.target;
-	const source = __apps + 'users/' + target + '/manifest.json';
 
+	let __dir = 'users/';
+
+	for (const key in system) {
+		if ( system[key] == target ) {
+			__dir = 'system/'
+			break
+		}
+	}
+
+	const source = __apps + __dir + target + '/manifest.json';
 	const object = readDataFile( source );
 
 	const permissions = object.permissions;

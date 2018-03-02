@@ -1,4 +1,5 @@
 const express = require( 'express' );
+const UseLib = require( '../components/uselib' );
 const UserDappsLoader = require( '../components/user.loader' );
 const SystemDappsLoader = require( '../components/system.loader' );
 
@@ -15,11 +16,20 @@ userLoader.runInContext();
 
 // Request Index Page
 router.get('/', (request, response, next) => {
+	const system = new UseLib( 'system.id' );
+
 	db.setting.find({type: 'pin'}, (error, rows) => {
-		const items = userLoader.items;
+		const userapps = userLoader.items;
+		const sysapps  = systemLoader.items;
+		
+		let market = {}
+
+		sysapps.forEach(app => {
+			if ( app.key == system.MrkCtrl ) market = app
+		})
 
 		rows.forEach((pin, index) => {
-			items.forEach(app => {
+			userapps.forEach(app => {
 				if ( pin.target == app.key ) rows[index] = app
 			})
 		});
@@ -27,7 +37,8 @@ router.get('/', (request, response, next) => {
 		response.render('layouts/index', {
 			title: 'Express',
 			pins : rows,
-			items: items
+			market: market,
+			userapps: userapps
 		});
 	});
 });

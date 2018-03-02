@@ -29,11 +29,14 @@
                 request.send();
             },
 
-            post: (url, data, func) => {
+            post: (url, data, func, header) => {
                 var request = new XMLHttpRequest();
     
                 request.open('post', url);
                 request.setRequestHeader('Content-Type', 'application/json');
+
+                if ( header ) request.setRequestHeader('Allow-Origin', header);
+
                 API.Http[_private](request, func);
     
                 request.send( JSON.stringify( data ) );

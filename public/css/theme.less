@@ -106,7 +106,7 @@
 .dropdown {
     position: relative;
     display: inline-block;
-    z-index: 20;
+    z-index: 2;
     
     & > button {
         position: relative;
@@ -142,11 +142,14 @@
     }
 
     &-item {
+        font: 12px @font-opensans;
+        color: @dgray;
         position: relative;
         cursor: default;
-        padding: 0;
+        padding: 7px 20px;
         background: none;
         text-transform: uppercase;
+        .selection();
          
         .dropdown-menu {
             position: absolute;
@@ -155,25 +158,9 @@
             right: 100%;
             border-top-right-radius: 0
         }
-
-        span {
-            display: block;
-            font: 12px @font-opensans;
-            color: @dgray;
-            padding: 7px 20px;
-            .selection();
-             
-            &:hover {
-                background: @gray;
-            }
-
-            &:active {
-                color: @white;
-                background: @theme;
-            }
-        }
-
+   
         &:hover {
+            color: @dgray;
             background: @gray;
 
             & > .dropdown-menu {
@@ -182,6 +169,7 @@
         }
 
         &:active {
+            color: @dgray;
             background: @gray;
         }
     }
