@@ -573,6 +573,8 @@
                         this[key] = object[key]
                     }
 
+                    _header.title = _header.title + ' - ' + object.name;
+
                     this.$window( 'preview' );
 
                     setTimeout(() => {
