@@ -88,7 +88,8 @@
     const _header = new Vue({
         el: 'header',
         data: {
-            visible: false
+            visible : false,
+            backward: false
         },
         methods: {
             index: function ( event ) {
@@ -96,8 +97,17 @@
                 this.$refs.pagetitle.innerHTML = target.dataset.title;
 
                 _windows.show = null;
+                this.backward = false;
 
                 this.$window( 'content' );
+            },
+            back: function () {
+                this.$refs.pagetitle.innerHTML = 'Market';
+                this.$window( 'market' );
+
+                this.backward = false;
+
+                document.body.scrollTop = 0
             },
             search: function ( event ) {
                 this.visible = !this.visible;
@@ -419,9 +429,16 @@
     const _market = new Vue({
         el: '.content .market',
         methods: {
-            view: function () {
+            view: function ( event ) {
+                let object = event.currentTarget.dataset;
+
+                _header.backward = true;
+                _header.$refs.pagetitle.innerHTML = 'Market - ' + object.type.charAt(0).toUpperCase() + object.type.slice( 1 );
+
                 this.$window( 'app' );
                 _preview.init();
+
+                document.body.scrollTop = 0
             },
             switch: function ( target ) {
                 for (const key in this.$refs) this.$refs[key].classList.remove( 'active' )

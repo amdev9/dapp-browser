@@ -94,8 +94,39 @@ header {
 		}
 
 		&-user {
+			&-back {
+				display: none;
+				vertical-align: middle;
+				
+				button {
+					height: 35px;
+					cursor: pointer;
+					line-height: 38px;
+					background: none;
+					padding: 0 15px;
+					border: 0;
+					border-right: 1px solid lighten(@lgray, 20%);
+				}
+			}
+
+			&-uri {
+				display: none;
+				vertical-align: middle;
+				height: 37px;
+				padding: 0 15px;
+				border-right: 1px solid lighten(@lgray, 20%);
+
+				span {
+					font: 14px @font-montserrat;
+					color: @dgray;
+					line-height: 38px;
+					text-transform: uppercase
+				}
+			}
+
 			&-search {
 				height: 100%;
+				padding-left: 0;
 
 				form {
 					height: 100%;
@@ -110,22 +141,9 @@ header {
 								border: 0;
 								height: 35px;
 								color: @dark;
-								margin: 12px 0 0 15px;
+								margin: 12px 0 0;
 								visibility: hidden;
-								border-left: 1px solid fade(@dgray, 30%);
 								border-radius: 0;
-							}
-	
-							&-prepend {
-								height: 100%;
-								display: none;
-	
-								span {
-									font: 14px @font-montserrat;
-									line-height: 60px;
-									color: @dgray;
-									text-transform: uppercase
-								}
 							}
 		
 							&-append {

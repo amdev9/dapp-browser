@@ -24,7 +24,7 @@
                 
             <div class="row">
                 {% for item in items %}
-                    <div v-on:click="view" class="col-md-6 col-lg-4 col-xl-3 apps-item" data-key="{{ item.key }}" data-icon="{{ item.icon }}" data-title="{{ item.name }}" data-src="{{ item.index }}">
+                    <div v-on:click="view" class="col-md-6 col-lg-4 col-xl-3 apps-item" data-key="{{ item.key }}" data-icon="{{ item.icon }}" data-title="{{ item.name }}" data-type="{{ item.type }}" data-src="{{ item.index }}">
                         <div class="apps-item-header" data-thumb="{{ item.thumb }}"></div>
                         
                         <div class="apps-item-body">
@@ -51,7 +51,7 @@
                 
             <div class="row">
                 {% for item in items %}
-                    <div v-on:click="view" class="col-md-6 col-lg-4 col-xl-3 apps-item" data-key="{{ item.key }}" data-icon="{{ item.icon }}" data-title="{{ item.name }}" data-src="{{ item.index }}">
+                    <div v-on:click="view" class="col-md-6 col-lg-4 col-xl-3 apps-item" data-key="{{ item.key }}" data-icon="{{ item.icon }}" data-title="{{ item.name }}" data-type="{{ item.type }}" data-src="{{ item.index }}">
                         <div class="apps-item-header" data-thumb="{{ item.thumb }}"></div>
                         
                         <div class="apps-item-body">
@@ -94,7 +94,7 @@
                 
             <div class="row">
                 {% for item in items %}
-                    <div v-on:click="view" class="col-md-6 col-lg-4 col-xl-3 apps-item" data-key="{{ item.key }}" data-icon="{{ item.icon }}" data-title="{{ item.name }}" data-src="{{ item.index }}">
+                    <div v-on:click="view" class="col-md-6 col-lg-4 col-xl-3 apps-item" data-key="{{ item.key }}" data-icon="{{ item.icon }}" data-title="{{ item.name }}" data-type="{{ item.type }}" data-src="{{ item.index }}">
                         <div class="apps-item-header" data-thumb="{{ item.thumb }}"></div>
                         
                         <div class="apps-item-body">

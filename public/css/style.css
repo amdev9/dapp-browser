@@ -79,8 +79,35 @@ header .navbar-home-link svg path {
 header .navbar-home-link:hover svg path {
   fill: #689BFA;
 }
+header .navbar-user-back {
+  display: none;
+  vertical-align: middle;
+}
+header .navbar-user-back button {
+  height: 35px;
+  cursor: pointer;
+  line-height: 38px;
+  background: none;
+  padding: 0 15px;
+  border: 0;
+  border-right: 1px solid #e4e7eb;
+}
+header .navbar-user-uri {
+  display: none;
+  vertical-align: middle;
+  height: 37px;
+  padding: 0 15px;
+  border-right: 1px solid #e4e7eb;
+}
+header .navbar-user-uri span {
+  font: 14px 'Montserrat', sans-serif;
+  color: #7B8DA7;
+  line-height: 38px;
+  text-transform: uppercase;
+}
 header .navbar-user-search {
   height: 100%;
+  padding-left: 0;
 }
 header .navbar-user-search form {
   height: 100%;
@@ -95,20 +122,9 @@ header .navbar-user-search form .input-group .form-control:focus {
   border: 0;
   height: 35px;
   color: #252526;
-  margin: 12px 0 0 15px;
+  margin: 12px 0 0;
   visibility: hidden;
-  border-left: 1px solid rgba(123, 141, 167, 0.3);
   border-radius: 0;
-}
-header .navbar-user-search form .input-group-prepend {
-  height: 100%;
-  display: none;
-}
-header .navbar-user-search form .input-group-prepend span {
-  font: 14px 'Montserrat', sans-serif;
-  line-height: 60px;
-  color: #7B8DA7;
-  text-transform: uppercase;
 }
 header .navbar-user-search form .input-group-append button {
   position: relative;

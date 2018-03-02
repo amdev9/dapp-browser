@@ -9,13 +9,21 @@
 
             <div class="col navbar-user">
                 <div class="row h-100 align-items-center">
+                    <div class="navbar-user-back" v-bind:class="{'d-inline-block': backward}">
+                        <button type="button" v-on:click="back">
+                            <img src="images/icons/back.svg" class="svg" alt="...">
+                        </button>    
+                    </div>
+
                     <div class="col-auto navbar-user-title" ref="pagetitle" v-bind:class="{'d-none': visible}">Home</div>
+
+                    <div class="navbar-user-uri" v-bind:class="{'d-inline-block': visible}">
+                        <span>uri:</span> 
+                    </div>
 
                     <div class="col navbar-user-search">
                         <form>
                             <div class="input-group">
-                                <div class="input-group-prepend" v-bind:class="{'d-block': visible}"><span>uri:</span></div>
-
                                 <input type="text" class="form-control" v-bind:class="{'visible': visible}" ref="search">
 
                                 <div class="input-group-append">
