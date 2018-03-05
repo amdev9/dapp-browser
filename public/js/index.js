@@ -462,7 +462,7 @@
                 this.$http.post('/web', {message_type: 'getall', message: {}}, response => {
                     try {
                         let output = JSON.parse( response );
-                        this.object = output.message.docs;
+                        this.object = output.message.items;
                     } catch ( error ) {
                         return alert( error )
                     }

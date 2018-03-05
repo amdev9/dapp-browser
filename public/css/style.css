@@ -286,8 +286,18 @@ main .main aside {
   position: relative;
   width: 62px;
   height: 100%;
-  padding: 0 0 60px;
   background: #FAFAFC;
+}
+main .main aside .overflow {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  bottom: 60px;
+  overflow: auto;
+}
+main .main aside .overflow::-webkit-scrollbar {
+  width: 0;
 }
 main .main aside .apps-item,
 main .main aside .pins-item {
