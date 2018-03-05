@@ -1,5 +1,8 @@
 const fs = require( 'fs' );
 const express = require( 'express' );
+const Datastore = require( 'nedb' );
+const coexp = require( 'co-express' );
+const codb  = require( 'co-nedb' );
 const Logger = require( '../components/logger' );
 const UseLib = require( '../components/uselib' );
 const EventBus = require( '../components/event' );
@@ -34,7 +37,10 @@ const readDataFile = ( source ) => {
 }
 
 // Request Web Controller
-router.post('/web', (request, response, next) => {
+router.post('/web', coexp(function * (request, response, next) {
+	const database = new Datastore({filename: 'database/access.db',  autoload: true});
+	const access   = codb( database );
+
 	let target = getHeaders(request.headers);
 	request.body.target = target;
 
@@ -55,40 +61,44 @@ router.post('/web', (request, response, next) => {
 	const permissions = events.data.permissions;
 	const rejected = 'No access to system applications: ';
 
-	let access = [];
+	const items = [];
 
-	db.access.find({target: target}, (error, rows) => {
-		if ( !rows.length && permissions.length ) {
-			logger.write({payload: {message: rejected + permissions.join( ', ' ), target: target}}, 'ERROR');
-			io.emit('access', {message: rejected, rows: permissions});
+	const rows = yield access.find({target: target});
 
-			return response.send( null );
+	if ( !rows.length && permissions.length ) {
+		logger.write({payload: {message: rejected + permissions.join( ', ' ), target: target}}, 'ERROR');
+		io.emit('access', {message: rejected, rows: permissions});
+
+		return response.send( null );
+	}
+
+	const note = rows.shift();
+
+	permissions.forEach(value => {
+		if ( note.hasOwnProperty( value ) ) {
+			if ( note[value] !== true ) items.push( value )
+		} else {
+			items.push( value )
 		}
-
-		let note = rows.shift();
-
-		permissions.forEach(value => {
-			if ( note.hasOwnProperty( value ) ) {
-				if ( note[value] !== true ) access.push( value )
-			} else {
-				access.push( value )
-			}
-		});
-
-		if ( access.length ) {
-			logger.write({payload: {message: rejected + access.join( ', ' ), target: target}}, 'ERROR');
-			return io.emit('access', {message: rejected, rows: access});
-
-			return response.send( null );
-		}
-
-		request.body.callback = () => response.send( request.body );
-		events.publish(system.WebCtrl, 'web', request.body);
 	});
-});
+
+	if ( items.length ) {
+		logger.write({payload: {message: rejected + access.join( ', ' ), target: target}}, 'ERROR');
+		return io.emit('access', {message: rejected, rows: items});
+
+		return response.send( null );
+	}
+
+	yield events.publish(system.WebCtrl, 'web', request.body);
+
+	response.send( request.body );
+}));
 
 // Request Access Permissions
-router.post('/access', (request, response, next) => {
+router.post('/access', coexp(function * (request, response, next) {
+	const database = new Datastore({filename: 'database/access.db',  autoload: true});
+	const access   = codb( database );
+
 	const target = request.body.target;
 
 	let __dir = 'users/';
@@ -108,13 +118,11 @@ router.post('/access', (request, response, next) => {
 
 	permissions.forEach(value => data[value] = true);
 
-	db.access.find({target: target}, (error, rows) => {
-		!rows.length 
-			? db.access.insert( data )
-				: db.access.update({target: target}, data);
+	const rows = yield access.find({target: target});
+
+	yield !rows.length ? access.insert( data ) : access.update({target: target}, data);
 		
-		response.send({status: true})
-	});
-})
+	response.send({status: true})
+}))
 
 module.exports = router;

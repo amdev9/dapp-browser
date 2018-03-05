@@ -175,7 +175,7 @@
                 target.classList.add( 'active' );
 
                 _windows.create  = options;
-                _header.title    = target.dataset.title;
+                _header.title    = options.title;
                 _header.backward = false;
             },
             _context: function (event, options) {
@@ -376,10 +376,12 @@
                 let target = document.getElementById( this.key );
 
                 if ( !this.$el.contains( target ) ) {
+                    this.view.addEventListener('load', () => this.onload());
+
                     this.view.classList.add( 'active' );
                     this.$el.appendChild( this.view );
-                    this.view.addEventListener('load', () => this.onload());
                 } else {
+                    this.view = target;
                     target.classList.add( 'active' );
                     target.classList.remove( 'd-none' );
                 }

@@ -4,14 +4,6 @@ const path = require( 'path' );
 const logger = require( 'morgan' );
 const cookieParser = require( 'cookie-parser' );
 const bodyParser = require( 'body-parser' );
-const Datastore = require( 'nedb' );
-
-// Database Application
-global.db = {
-	access : new Datastore({filename: 'database/access.db',  autoload: true}),
-	setting: new Datastore({filename: 'database/setting.db', autoload: true}),
-	storage: new Datastore({filename: 'database/storage.db', autoload: true})
-};
 
 // Socket IO
 global.io = require( 'socket.io' )( 4040 );

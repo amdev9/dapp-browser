@@ -1,4 +1,7 @@
 const express = require( 'express' );
+const Datastore = require( 'nedb' );
+const coexp = require( 'co-express' );
+const codb  = require( 'co-nedb' );
 const UseLib = require( '../components/uselib' );
 const UserDappsLoader = require( '../components/user.loader' );
 const SystemDappsLoader = require( '../components/system.loader' );
@@ -15,46 +18,52 @@ const userLoader = new UserDappsLoader('manifest.json', 'users');
 userLoader.runInContext();
 
 // Request Index Page
-router.get('/', (request, response, next) => {
+router.get('/', coexp(function * (request, response, next) {
+	const database = new Datastore({filename: 'database/setting.db',  autoload: true});
+	const setting  = codb( database );
+
 	const system = new UseLib( 'system.id' );
+	
+	const userapps = userLoader.items;
+	const sysapps  = systemLoader.items;
+	const pins = yield setting.find({type: 'pin'})
 
-	db.setting.find({type: 'pin'}, (error, rows) => {
-		const userapps = userLoader.items;
-		const sysapps  = systemLoader.items;
-		
-		let market = {}
+	let market = {}
 
-		sysapps.forEach(app => {
-			if ( app.key == system.MrkCtrl ) market = app
+	sysapps.forEach(app => {
+		if ( app.key == system.MrkCtrl ) market = app
+	})
+	 
+	pins.forEach((pin, index) => {
+		userapps.forEach(app => {
+			if ( pin.target == app.key ) pins[index] = app
 		})
-
-		rows.forEach((pin, index) => {
-			userapps.forEach(app => {
-				if ( pin.target == app.key ) rows[index] = app
-			})
-		});
-		
-		response.render('layouts/index', {
-			title: 'Express',
-			pins : rows,
-			market: market,
-			userapps: userapps
-		});
 	});
-});
+	  
+	response.render('layouts/index', {
+		title: 'Express',
+		pins : pins,
+		market: market,
+		userapps: userapps
+	});
+}));
 
 // Request Setting Pin
-router.post('/setting.pin', (request, response, next) => {
+router.post('/setting.pin', coexp(function * (request, response, next) {
+	const database = new Datastore({filename: 'database/setting.db',  autoload: true});
+	const setting  = codb( database );
+
 	const object = {type: 'pin', target: request.body.target}
 
-	db.setting.find(object, (error, rows) => {
-		let status = true;
+	const pins = yield setting.find( object )
 
-		!rows.length ? db.setting.insert( object ) : db.setting.remove( object );
-		if ( rows.length ) status = false;
+	let status = true;
 
-		response.send({status: status})
-	});
-});
+	yield !pins.length ? setting.insert( object ) : setting.remove( object );
+	
+	if ( pins.length ) status = false;
+
+	response.send({status: status})
+}));
 
 module.exports = router;

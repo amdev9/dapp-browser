@@ -1,6 +1,6 @@
 // DAPP USER CONTROLLER
 
-Events.subscribe('bot', response => {
-	Events.publish(system.WebCtrl, 'generate', response.payload);
-	Events.publish(system.LogCtrl, 'info', response.payload);
+Events.subscribe('bot', function * ( response ) {
+	yield Events.publish(system.WebCtrl, 'generate', response.payload);
+	yield Events.publish(system.LogCtrl, 'info', response.payload);
 });

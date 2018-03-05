@@ -2,7 +2,7 @@ const datetime = require( 'node-datetime' );
 const fs = require( 'fs' );
 
 class Logger {
-    write (response, type) {
+    * write (response, type) {
         let message = response.payload.message;
         let target = response.payload.target;
         

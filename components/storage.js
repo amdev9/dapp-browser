@@ -1,55 +1,53 @@
+const Datastore = require( 'nedb' );
+const codb = require( 'co-nedb' );
+
 class Storage {
-    insert ( response ) {
-        let object = Object.assign({target: response.from}, response.payload.message);
-        
-        db.storage.insert(object, (error, docs) => {
-            if ( error ) throw error;
+    * insert ( response ) {
+        const database = new Datastore({filename: 'database/storage.db',  autoload: true});
+        const storage  = codb( database );
 
-            response.payload.docs = docs;
-            response.payload.callback()
-        });
+        const object = Object.assign({target: response.from}, response.payload.message);
+        const items  = yield storage.insert( object );
+
+        response.payload.items = items;
     }
 
-    find ( response ) {
-        let object = Object.assign({target: response.from}, response.payload.message);
+    * find ( response ) {
+        const database = new Datastore({filename: 'database/storage.db',  autoload: true});
+        const storage  = codb( database );
 
-        db.storage.find(object, (error, docs) => {
-            if ( error ) throw error;
+        const object = Object.assign({target: response.from}, response.payload.message);
+        const items  = yield storage.find( object );
 
-            response.payload.docs = docs;
-            response.payload.callback()
-        })
+        response.payload.items = items;
     }
 
-    findOne ( response ) {
-        let object = Object.assign({target: response.from}, response.payload.message);
+    * findOne ( response ) {
+        const database = new Datastore({filename: 'database/storage.db',  autoload: true});
+        const storage  = codb( database );
 
-        db.storage.findOne(object, (error, docs) => {
-            if ( error ) throw error;
+        const object = Object.assign({target: response.from}, response.payload.message);
+        const items  = yield storage.findOne( object );
 
-            response.payload.docs = docs;
-            response.payload.callback()
-        })
+        response.payload.items = items;
     }
 
-    update ( response ) {
-        let object = Object.assign({target: response.from}, response.payload.message);
+    * update ( response ) {
+        const database = new Datastore({filename: 'database/storage.db',  autoload: true});
+        const storage  = codb( database );
 
-        db.storage.update({target: response.from}, object, {multi: true}, (error, num) => {
-            if ( error ) throw error;
-            
-            response.payload.callback()
-        });
+        const object = Object.assign({target: response.from}, response.payload.message);
+
+        yield storage.update({target: response.from}, object, {multi: true});
     }
 
-    remove ( response ) {
-        let object = Object.assign({target: response.from}, response.payload.message);
+    * remove ( response ) {
+        const database = new Datastore({filename: 'database/storage.db',  autoload: true});
+        const storage  = codb( database );
 
-        db.storage.remove(object, {multi: true}, (error, num) => {
-            if ( error ) throw error;
-            
-            response.payload.callback()
-        });
+        const object = Object.assign({target: response.from}, response.payload.message);
+
+        yield storage.remove(object, {multi: true});
     }
 }
 

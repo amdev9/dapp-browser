@@ -5,13 +5,10 @@
     
     form.addEventListener('submit', event => {
         event.preventDefault();
-    
-        var textarea = form.message.value;
-        var notify = form.querySelector( '.alert' );
 
-        API.Http.post('/web', {message_type: 'test', message: {value: textarea}}, function ( response ) {
-            if ( !response ) return;
+        let notify = form.querySelector( '.alert' );
 
+        API.Http.post('/web', {message_type: 'logger', message: {value: form.message.value}}, () => {
             notify.classList.remove( 'd-none' );
         })
     });

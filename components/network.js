@@ -1,8 +1,12 @@
 const fs = require( 'fs' );
 
 class Network {
-    getJson ( response ) {
-        const string = fs.readFileSync( 'blockchain.json' ).toString();
+    constructor () {
+        this.source = 'blockchain.json'
+    }
+
+    * getJson ( response ) {
+        const string = fs.readFileSync( this.source ).toString();
         let object = {}
 
         try {
@@ -11,8 +15,7 @@ class Network {
             console.error( error.name + ': ' + error.message )
         }
 
-        response.payload.message.docs = object;
-        response.payload.callback()
+        response.payload.message.items = object;
     }
 }
 

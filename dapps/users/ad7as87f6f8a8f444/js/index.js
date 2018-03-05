@@ -6,9 +6,9 @@
     form.addEventListener('submit', event => {
         event.preventDefault();
     
-        var username = form.username;
+        let username = form.username;
     
-        var notify = form.querySelector( '.alert' );
+        let notify = form.querySelector( '.alert' );
 
         API.Http.post('/web', {message_type: 'request', message: {username: username.value}}, response => {
             if ( !response ) return;
@@ -23,7 +23,7 @@
 
     API.Http.post('/web', {message_type: 'find', message: {}}, response => {
         let object = JSON.parse( response );
-        let array  = object.docs || [];
+        let array  = object.items || [];
 
         let container = document.querySelector( '.users' );
 
@@ -41,7 +41,6 @@
             button.addEventListener('click', () => {
                 API.Http.post('/web', {message_type: 'remove', message: {username: array[i].username}}, () => {
                     string.parentNode.removeChild( string );
-                    console.log('remove')
                 });
             });
 
