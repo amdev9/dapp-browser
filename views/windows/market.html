@@ -2,7 +2,7 @@
     <div class="navigate" ref="navigate">
         <ul class="nav justify-content-center">
             <li v-for="(value, key) in tabs" class="nav-item">
-                <button type="button" class="btn btn-link" v-bind:class="value.class" v-bind:name="key" v-on:click="change( key )">${ key }</button>
+                <button type="button" class="btn btn-link" v-bind:class="value.class" v-bind:name="key" v-on:click="change( key )">${ value.name }</button>
             </li>
         </ul>
     </div>

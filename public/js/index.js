@@ -21,6 +21,8 @@
         }
     }
 
+    const selected = $( 'select' ).niceSelect();
+
 
     // Console
     // ------------------------------------------------------ //
@@ -134,7 +136,7 @@
                 _windows.show = null;
                 this.backward = false;
 
-                this.$window( 'settings' );
+                _settings.init();
             },
             notify: function () {
                 _notify.visible = !_notify.visible;
@@ -472,11 +474,11 @@
             },
             create () {
                 this.tabs = {}
-                this.tabs['all'] = {class: 'active', items: []}
+                this.tabs['all'] = {name: 'all', class: 'active', items: []}
 
                 for (let i = 0; i < this.object.length; i++) {
                     for (let t = 0; t < this.object[i].tags.length; t++) {
-                        this.tabs[this.object[i].tags[t]] = {class: ''}
+                        this.tabs[this.object[i].tags[t]] = {name: this.object[i].tags[t], class: ''}
                     }
 
                     this.tabs.all.items.push( this.object[i] )
@@ -497,8 +499,8 @@
                 this.$window( 'market' );
             },
             change ( name ) {
-                const navigate = Array.from( this.$refs.navigate.querySelectorAll( 'button' ) );
-                const category = Array.from( this.$refs.category.querySelectorAll( '.item' ) );
+                const navigate = this.$refs.navigate.querySelectorAll( 'button' );
+                const category = this.$refs.category.querySelectorAll( '.item' );
 
                 navigate.forEach(element => element.classList[element.name == name ? 'add' : 'remove']( 'active' ))
                 category.forEach(element => element.classList[element.classList.contains( name ) ? 'add' : 'remove']( 'active' ))
@@ -513,6 +515,25 @@
 
                 _preview.create  = target;
                 _header.backward = true
+            }
+        }
+    })
+
+
+    // Market
+    // ------------------------------------------------------ //
+    const _settings = new Vue({
+        el: '#settings',
+        methods: {
+            init () {
+                this.$window( 'settings' );
+            },
+            change ( name ) {
+                const navigate = this.$refs.navigate.querySelectorAll( 'button' );
+                const category = this.$refs.category.querySelectorAll( '.item' );
+
+                navigate.forEach(element => element.classList[element.name == name ? 'add' : 'remove']( 'active' ))
+                category.forEach(element => element.classList[element.classList.contains( name ) ? 'add' : 'remove']( 'active' ))
             }
         }
     })

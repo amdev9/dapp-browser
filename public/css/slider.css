@@ -2,7 +2,6 @@
 http://flickity.metafizzy.co
 ---------------------------------------------- */
 .flickity {
-  /* draggable */
   /* ---- previous/next buttons ---- */
   /* right to left */
   /* ---- page dots ---- */
@@ -25,7 +24,6 @@ http://flickity.metafizzy.co
 }
 .flickity-enabled.is-draggable {
   -webkit-tap-highlight-color: transparent;
-  tap-highlight-color: transparent;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
