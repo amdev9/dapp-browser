@@ -1,0 +1,55 @@
+<div class="container-fluid window d-none" id="market">
+    <div class="navigate" ref="navigate">
+        <ul class="nav justify-content-center">
+            <li v-for="(value, key) in tabs" class="nav-item">
+                <button type="button" class="btn btn-link" v-bind:class="value.class" v-bind:name="key" v-on:click="change( key )">${ value.name }</button>
+            </li>
+        </ul>
+    </div>
+
+    <div class="category" ref="category">
+        <template v-for="(value, key) in tabs">
+            <div class="item" v-bind:class="[value.class, key]">
+                <div class="row align-items-center">
+                    <div class="col-8">
+                        <h3 class="title">${ key | capitalize } ( ${ value.items.length } )</h3>
+                    </div>
+
+                    <div class="col-4 text-right">
+                       <div class="sortby">
+                            <span>Sort by:</span>
+                            
+                            <div class="dropdown">
+                                <button type="button">Popularity</button>
+                                        
+                                <div class="dropdown-menu">
+                                    <div class="dropdown-item">Relevance</div>
+                                    <div class="dropdown-item">Popularity</div>
+                                    <div class="dropdown-item">Name</div>
+                                    <div class="dropdown-item">Price</div>
+                                    <div class="dropdown-item">Rating</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <template v-for="item in value.items">
+                        <div class="col-md-6 col-lg-4 col-xl-3 apps-item" v-on:click="preview( item.key )">
+                            <div class="apps-item-header" v-bind:style="{ backgroundImage: 'url(' + item.thumb + ')' }"> </div>
+                            
+                            <div class="apps-item-body">
+                                <h5 class="apps-item-name">${ item.name }</h5>
+            
+                                <div class="apps-item-tags">
+                                    <small v-for="tag in item.tags">${ tag }</small>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </template>
+    </div>
+</div> 

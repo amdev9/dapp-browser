@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="10px" height="15px" viewBox="0 0 10 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>arow_back</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="arow_back" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g>
+            <polygon id="Rectangle-13" fill="#BBD4E6" opacity="0" points="0 0 10 0 10 15 0 15"></polygon>
+            <path d="M-1.8455487,4.31466135 L4.11869259,11.769963 C4.46370214,12.2012249 5.09299451,12.2711463 5.52425645,11.9261367 C5.5667698,11.892126 5.60643466,11.8547003 5.64285555,11.8142326 L12.352627,4.35893103 C12.722086,3.94842101 12.6888076,3.31613117 12.2782976,2.94667216 C12.0946729,2.78140992 11.8563746,2.6899663 11.6093329,2.6899663 L-1.06467989,2.6899663 C-1.61696464,2.6899663 -2.06467989,3.13768155 -2.06467989,3.6899663 C-2.06467989,3.9170378 -1.98739914,4.1373483 -1.8455487,4.31466135 Z" fill="#AAB4BF" transform="translate(5.272331, 7.417636) rotate(90.000000) translate(-5.272331, -7.417636) "></path>
+        </g>
+    </g>
+</svg>

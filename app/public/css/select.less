@@ -1,0 +1,197 @@
+@color_1: #999;
+@font_family_1: inherit;
+@background_color_1: #fff;
+@background_color_2: transparent;
+@background_color_3: #f6f6f6;
+@border_color_1: #dbdbdb;
+@border_color_2: #999;
+@border_color_3: #ededed;
+@border_color_4: #cccccc;
+
+.nice-select {
+	-webkit-tap-highlight-color: transparent;
+	background-color: @background_color_1;
+	border-radius: 5px;
+	border: solid 1px #e8e8e8;
+	box-sizing: border-box;
+	clear: both;
+	cursor: pointer;
+	display: block;
+	float: left;
+	font-family: @font_family_1;
+	font-size: 14px;
+	font-weight: normal;
+	height: 42px;
+	line-height: 40px;
+	outline: none;
+	padding-left: 18px;
+	padding-right: 30px;
+	position: relative;
+	text-align: left !important;
+	-webkit-transition: all 0.2s ease-in-out;
+	transition: all 0.2s ease-in-out;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	white-space: nowrap;
+	width: auto;
+
+	&:hover {
+		border-color: @border_color_1;
+	}
+
+	&:active {
+		border-color: @border_color_2;
+	}
+
+	&:focus {
+		border-color: @border_color_2;
+	}
+
+	&:after {
+		content: '';
+		display: block;
+		height: 5px;
+		pointer-events: none;
+		position: absolute;
+		right: 12px;
+		top: 50%;
+		width: 5px;
+	}
+
+	.list {
+		background-color: @background_color_1;
+		border-radius: 5px;
+		box-shadow: 0 0 0 1px rgba(68, 68, 68, 0.11);
+		box-sizing: border-box;
+		margin-top: 4px;
+		opacity: 0;
+		overflow: hidden;
+		padding: 0;
+		pointer-events: none;
+		position: absolute;
+		top: 100%;
+		left: 0;
+		z-index: 9;
+
+		&:hover {
+			.option {
+				&:not(:hover) {
+					background-color: @background_color_2 !important;
+				}
+			}
+		}
+	}
+
+	.option {
+		cursor: pointer;
+		font-weight: 400;
+		line-height: 40px;
+		list-style: none;
+		min-height: 40px;
+		outline: none;
+		padding-left: 18px;
+		padding-right: 29px;
+		text-align: left;
+		-webkit-transition: all 0.2s;
+		transition: all 0.2s;
+		&:hover {
+			background-color: @background_color_3;
+		}
+	}
+
+	.option.focus {
+		background-color: @background_color_3;
+	}
+
+	.option.selected.focus {
+		background-color: @background_color_3;
+	}
+
+	.option.selected {
+		font-weight: bold;
+	}
+
+	.option.disabled {
+		background-color: @background_color_2;
+		color: @color_1;
+		cursor: default;
+	}
+}
+
+.nice-select.open {
+	border-color: @border_color_2;
+
+	&:after {
+		-webkit-transform: rotate(-180deg);
+		-ms-transform: rotate(-180deg);
+		transform: rotate(-180deg);
+	}
+	
+	.list {
+		opacity: 1;
+		pointer-events: auto;
+		-webkit-transform: scale(1) translateY(0);
+		-ms-transform: scale(1) translateY(0);
+		transform: scale(1) translateY(0);
+	}
+}
+
+.nice-select.disabled {
+	border-color: @border_color_3;
+	color: @color_1;
+	pointer-events: none;
+
+	&:after {
+		border-color: @border_color_4;
+	}
+}
+
+.nice-select.wide {
+	width: 100%;
+
+	.list {
+		left: 0 !important;
+		right: 0 !important;
+	}
+}
+
+.nice-select.right {
+	float: right;
+
+	.list {
+		left: auto;
+		right: 0;
+	}
+}
+
+.nice-select.small {
+	font-size: 12px;
+	height: 36px;
+	line-height: 34px;
+
+	&:after {
+		height: 4px;
+		width: 4px;
+	}
+
+	.option {
+		line-height: 34px;
+		min-height: 34px;
+	}
+}
+
+.no-csspointerevents {
+	.nice-select {
+		.list {
+			display: none;
+		}
+	}
+	
+	.nice-select.open {
+		.list {
+			display: block;
+		}
+	}
+}

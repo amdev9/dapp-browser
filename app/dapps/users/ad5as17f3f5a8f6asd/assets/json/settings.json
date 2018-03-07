@@ -1,0 +1,25 @@
+{
+    "audio": {
+        "water": "water.mp3",
+        "boom" : "boom.mp3",
+        "coin" : "coin.mp3"
+    },
+
+    "images": {
+        "coins" : "coins.png",
+        "health": "health.png"
+    },
+
+    "numbers": {
+        "num0": "0.png",
+        "num1": "1.png",
+        "num2": "2.png",
+        "num3": "3.png",
+        "num4": "4.png",
+        "num5": "5.png",
+        "num6": "6.png",
+        "num7": "7.png",
+        "num8": "8.png",
+        "num9": "9.png"
+    }
+}

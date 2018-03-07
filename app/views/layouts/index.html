@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="wrapper">
+	{% include "include/header.html" %}
+
+	<main>
+		<div class="main">
+			<div class="contextmenu" v-bind:class="{show: show}">
+				<span v-on:click="pin">Pin app</span>
+				<span v-on:click="close">Close app</span>
+			</div>
+
+			{% include "include/aside.html" %}
+
+			<div class="content">
+				<div class="views" v-bind:class="{show: show}"></div>
+				
+				{% include "windows/main.html" %}
+				{% include "windows/settings.html" %}
+				{% include "windows/market.html" %}
+				{% include "windows/preview.html" %}
+
+				{% include "include/console.html" %}
+			</div>
+
+			{% include "include/notify.html" %}
+		</div>
+	</main>
+</div>
+{% endblock %}

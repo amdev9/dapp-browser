@@ -1,0 +1,15 @@
+<aside>
+    <div class="overflow">
+        <div class="pins" ref="pins">
+            {% for item in pins %}
+                <div class="apps-item" data-key="{{ item.key }}" data-icon="{{ item.icon }}" data-title="{{ item.name }}" data-src="{{ item.index }}"></div>
+            {% endfor %}
+        </div>
+    
+        <div class="apps" ref="apps"></div>
+    </div>
+
+    <div class="indicator">
+        <img src="images/icons/indicator.svg" class="svg" alt="...">
+    </div>
+</aside>

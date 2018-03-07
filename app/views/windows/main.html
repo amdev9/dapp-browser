@@ -1,0 +1,36 @@
+<div class="container-fluid window" id="content">
+    <div class="row align-items-center">
+        <div class="col-8">
+            <h3 class="title">Your apps</h3>
+        </div>
+
+        <div class="col-4 text-right">
+            <button type="button" class="btn btn-primary btn-rounded view-market" data-key="{{ market.key }}" data-title="{{ market.name }}" data-src="{{ market.index }}">Go to market</button>
+        </div>
+    </div>
+    
+    {% if userapps.length %}
+        <div class="row apps">
+            {% for item in userapps %}
+                <div v-on:click="view" class="col-md-6 col-lg-4 col-xl-3 apps-item" data-key="{{ item.key }}" data-icon="{{ item.icon }}" data-title="{{ item.name }}" data-src="{{ item.index }}">
+                    <div class="apps-item-header" data-thumb="{{ item.thumb }}"></div>
+                    
+                    <div class="apps-item-body">
+                        <h5 class="apps-item-name">{{ item.name }}</h5>
+
+                        <div class="apps-item-tags">
+                            <small>{{ item.type }}</small>
+                            <small class="custom">Update</small>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="row h-100 align-items-center">
+            <div class="col content-empty text-center">
+                <span>Your apps page</span>
+            </div>
+        </div>
+    {% endif %}
+</div> 
