@@ -7,6 +7,14 @@
     "start": "electron .",
     "dist": "electron-builder"
   },
+  "build": {
+    "appId": "com.market",
+    "productName": "Market",
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "icon": "icon.icns"
+    }
+  },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
     "Electron",

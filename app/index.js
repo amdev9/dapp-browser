@@ -1,3 +1,4 @@
+const electron = require('electron')
 const express = require( 'express' );
 const nunjucks = require( 'nunjucks' );
 const cookieParser = require( 'cookie-parser' );
@@ -8,6 +9,9 @@ const path = require( 'path' );
 const http = require( 'http' );
 
 // Dirname
+global.__dbdir  = electron.app.getPath( 'desktop' );
+global.__appdir = electron.app.getPath( 'desktop' );
+
 global.__public = path.join(__dirname, 'public/');
 global.__apps   = path.join(__dirname, 'dapps/');
 global.__logs   = path.join(__dirname, 'logs/');
