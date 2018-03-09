@@ -22,8 +22,13 @@
     });
 
     API.Http.post('/web', {message_type: 'find', message: {}}, response => {
-        let object = JSON.parse( response );
-        let array  = object.items || [];
+        let object = {}
+
+        try {
+            object = JSON.parse( response );
+        } catch ( error ) {}
+
+        let array = object.items || [];
 
         let container = document.querySelector( '.users' );
 

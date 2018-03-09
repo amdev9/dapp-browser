@@ -2,7 +2,6 @@
 
     'use strict';
 
-    
     const wrapper = document.querySelector( '.wrapper' );
 
     Element.prototype.$dropdown = function () {
@@ -250,6 +249,9 @@
         },
         mounted: function () {
             let children = Array.from( this.$refs.pins.children );
+             
+            if ( !children.length ) this.storage = [];
+
             let object = this.storage;
 
             children.forEach(element => {

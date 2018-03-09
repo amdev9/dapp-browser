@@ -2,16 +2,8 @@
 
     'use strict';
 
-    const socket = eio( 'ws://localhost:3000' );
+    const socket = io( 'ws://localhost:3000' );
     const _private = Symbol( 'private' );
-
-    socket.on('open', () => {
-        console.log( 'connection socket' )
-    })
-
-    socket.on('access', data => {
-        console.log( 'access data' )
-    })
 
     const API = Object.freeze({
         Socket: Object.freeze({

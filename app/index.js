@@ -2,7 +2,6 @@ const express = require( 'express' );
 const nunjucks = require( 'nunjucks' );
 const cookieParser = require( 'cookie-parser' );
 const bodyParser = require( 'body-parser' );
-const engine = require( 'engine.io' );
 const socket = require( 'socket.io' );
 const logger = require( 'morgan' );
 const path = require( 'path' );
@@ -51,7 +50,6 @@ app.use((request, response, next) => {
 
 // Error handler
 app.use((err, request, response, next) => {
-	// export NODE_ENV=production
 	response.locals.message = err.message;
 	response.locals.error = request.app.get( 'env' ) === 'development' ? err : {};
 
@@ -60,6 +58,6 @@ app.use((err, request, response, next) => {
 });
 
 const server = http.createServer( app ).listen( 3000 );
-global.io = engine.attach( server );
+global.io = socket(server, {wsEngine: 'ws'});
 
 module.exports = app;
