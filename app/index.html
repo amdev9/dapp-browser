@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Welcome</title>
+
+	<link rel="stylesheet" href="/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="/css/select.css" />
+	<link rel="stylesheet" href="/css/slider.css" />
+	<link rel="stylesheet" href="/css/fonts.css" />
+	<link rel="stylesheet" href="/css/theme.css" />
+	<link rel="stylesheet" href="/css/style.css" />
+
+	<!-- Module -->
+	<script src="/module/socket.io.js"></script>
+	<script src="/module/lib.js"></script>
+
+	<!-- View -->
+	<link href="/app-header.vue" id="header" rel="import">
+	<link href="/app-aside.vue"  id="aside" rel="import">
+	<link href="/app-card.vue"   id="card" rel="import">
+	<link href="/app-notify.vue" id="notify" rel="import">
+	<link href="/app-logger.vue" id="logger" rel="import">
+
+	<link href="/view-index.vue" id="index" rel="import">
+	<link href="/view-frame.vue" id="frame" rel="import">
+	<link href="/view-market.vue" id="market" rel="import">
+</head>
+<body>
+
+<div id="app" :class="{loading: loading}">
+	<app-header></app-header>
+	<app-aside></app-aside>
+
+	<main :class="{viewapp: viewapp}">
+		<div class="contextmenu">
+			<span>Pin app</span>
+			<span>Close app</span>
+		</div>
+		
+		<components :is="currentView"></components>
+
+		<app-logger></app-logger>
+		<app-notify></app-notify>
+	</main>
+</div>
+
+<script src="/js/jquery.js"></script>
+<script src="/js/vue.min.js"></script>
+<script src="/js/vue.res.js"></script>
+<script src="/js/vue.ext.js"></script>
+<script src="/js/vue.svg.js"></script>
+<script src="/js/vue.app.js"></script>
+
+<script src="/js/select.js"></script>
+<script src="/js/slider.js"></script>
+</body>
+</html>

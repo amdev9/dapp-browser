@@ -1,11 +1,11 @@
 const electron = require('electron')
-const include = require('./app')
+const server = require('./app')
 const path = require('path')
 const url = require('url')
+const fs = require('fs')
 
-const app = electron.app
-const dialog = electron.dialog;
-const BrowserWindow = electron.BrowserWindow
+const {app, dialog, session, BrowserWindow} = electron
+// const homeDir = app.getPath( 'home' )
 
 var window
 
@@ -22,8 +22,7 @@ function createWindow () {
 
 	window.loadURL('http://localhost:3000/')
 	window.on('closed', () => window = null)
-
-	// window.webContents.openDevTools()
+	window.webContents.openDevTools()
 }
 
 app.on('ready', createWindow)

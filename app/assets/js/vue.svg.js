@@ -1,4 +1,4 @@
-;(selector => {
+;(function ( selector ) {
 
     const init = () => {
         const images = document.querySelectorAll( selector );
