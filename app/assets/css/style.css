@@ -579,9 +579,6 @@ main .preview .carousel-wrapper {
   position: relative;
   margin: 40px 0 30px;
 }
-main .preview .carousel-cell {
-  margin-right: 20px;
-}
 main .preview .carousel-nav {
   position: absolute;
   top: 50%;
@@ -597,6 +594,7 @@ main .preview .carousel-nav button {
   top: -15px;
   left: 15px;
   border: 0;
+  z-index: 1;
   cursor: pointer;
   background: none;
 }
@@ -607,9 +605,6 @@ main .preview .carousel-nav button svg circle {
 main .preview .carousel-nav button + button {
   left: auto;
   right: 15px;
-}
-main .preview .carousel-nav button + button svg {
-  transform: rotate(-180deg);
 }
 main .preview .carousel-nav button:hover svg path {
   fill: #252526;
@@ -716,11 +711,6 @@ main .views {
   top: 0;
   bottom: 0;
   z-index: 5;
-  background: #fff url('../images/preloader.svg') no-repeat center;
-}
-main .views.show {
-  display: block;
-  background-image: none;
 }
 main .views iframe {
   height: 100%;

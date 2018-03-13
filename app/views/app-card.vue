@@ -6,7 +6,7 @@
             <h5 class="apps-item-name"><slot></slot></h5>
 
             <div class="apps-item-tags">
-                <small>{{ type }}</small>
+                <small v-for="tag in tags" :key="tag">{{ tag }}</small>
                 <small class="custom">Update</small>
             </div>
         </div>

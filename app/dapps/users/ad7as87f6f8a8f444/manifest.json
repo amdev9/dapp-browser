@@ -3,7 +3,7 @@
   
     "key": "ad7as87f6f8a8f444",
     "name": "Google",
-    "type": "work",
+    "tags": ["work", "tools"],
     "icon": "favicon.png",
     "thumb": "thumb.png",
     "index": "index.html",

@@ -718,9 +718,7 @@ main {
 				margin: 40px 0 30px;
 			}
 
-			&-cell {
-				margin-right: 20px;
-			}
+			 
 
 			&-nav {
 				position: absolute;
@@ -737,6 +735,7 @@ main {
 					top: -15px;
 					left: 15px;
 					border: 0;
+					z-index: 1;
 					cursor: pointer;
 					background: none;
 
@@ -749,10 +748,6 @@ main {
 					& + button {
 						left: auto;
 						right: 15px;
-
-						svg {
-							.transform(rotate(-180deg))
-						}
 					}
 
 					&:hover {
@@ -902,12 +897,6 @@ main {
 		top: 0;
 		bottom: 0;
 		z-index: 5;
-		background: @white url('../images/preloader.svg') no-repeat center;
-
-		&.show {
-			display: block;
-			background-image: none
-		}
 
 		iframe {
 			height: 100%;

@@ -11,7 +11,7 @@
         </div>
     
         <div class="row">
-            <app-card v-for="item in userapps" :key="item.key" :id="item.key" :src="item.index" :type="item.type" :thumb="item.thumb">{{ item.name | capitalize }}</app-card>
+            <app-card v-for="item in userapps" :key="item.key" :id="item.key" :src="item.index" :tags="item.tags" :thumb="item.thumb">{{ item.name | capitalize }}</app-card>
         </div>
     </div>
 </template>

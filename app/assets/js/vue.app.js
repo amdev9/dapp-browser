@@ -7,8 +7,8 @@
             title: 'Home',
             viewapp: false,
             loading: true,
-            currentView: 'view-index',
-            currentFrame: {},
+            response: null,
+            currentView: 'view-index'
         }
     })
 })( this );
