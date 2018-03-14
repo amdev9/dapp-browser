@@ -6,7 +6,8 @@ const path = require( 'path' )
 
 global.db = {
 	access : new Datastore({filename: 'database/access.db',  autoload: true}),
-	storage: new Datastore({filename: 'database/storage.db',  autoload: true})
+	storage: new Datastore({filename: 'database/storage.db',  autoload: true}),
+	setting: new Datastore({filename: 'database/setting.db',  autoload: true})
 }
 
 global.__apps = path.join(__dirname, 'dapps/')

@@ -1,65 +1,52 @@
 const express = require( 'express' )
 const Datastore = require( 'nedb' )
-const coexp = require( 'co-express' )
-const codb  = require( 'co-nedb' )
-const os = require( 'os' )
+
 const UseLib = require( '../components/uselib' )
 const UserDappsLoader = require( '../components/user.loader' )
 const SystemDappsLoader = require( '../components/system.loader' )
 
-// Router
 const router = express.Router()
+const system = new UseLib( 'system.id' )
 
-// System Dapps
 const systemLoader = new SystemDappsLoader('manifest.json', 'system')
 systemLoader.runInContext()
 
-// User Dapps
 const userLoader = new UserDappsLoader('manifest.json', 'users')
 userLoader.runInContext()
 
-// Request Index Page
-router.post('/', coexp(function * (request, response, next) {
-	const database = new Datastore({filename: 'database/setting.db',  autoload: true})
-	const setting  = codb( database )
-
-	const system = new UseLib( 'system.id' )
-	
+router.post('/', function (request, response, next) {
 	const userapps = userLoader.items
 	const sysapps  = systemLoader.items
-	const pins = yield setting.find({type: 'pin'})
+	
+	db.setting.find({type: 'pin'}, (error, rows) => {
+		let market = {}
 
-	let market = {}
-
-	sysapps.forEach(app => {
-		if ( app.key == system.MrkCtrl ) market = app
-	})
-	 
-	pins.forEach((pin, index) => {
-		userapps.forEach(app => {
-			if ( pin.target == app.key ) pins[index] = app
+		sysapps.forEach(app => {
+			if ( app.key == system.MrkCtrl ) market = app
 		})
+		
+		rows.forEach((pin, index) => {
+			userapps.forEach(app => {
+				if ( pin.target == app.key ) rows[index] = app
+			})
+		})
+
+		response.send({pins: rows, market: market, userapps: userapps})
 	})
+})
 
-	response.send({pins: pins, market: market, userapps: userapps})
-}))
-
-// Request Setting Pin
-router.post('/setting.pin', coexp(function * (request, response, next) {
-	const database = new Datastore({filename: 'database/setting.db',  autoload: true})
-	const setting  = codb( database )
-
+router.post('/setting.pin', function (request, response, next) {
 	const object = {type: 'pin', target: request.body.target}
 
-	const pins = yield setting.find( object )
+	db.setting.find(object, (error, rows) => {
+		let status = true
 
-	let status = true
-
-	yield !pins.length ? setting.insert( object ) : setting.remove( object )
+		!rows.length ? db.setting.insert( object ) : db.setting.remove( object )
+		
+		if ( rows.length ) status = false
 	
-	if ( pins.length ) status = false
-
-	response.send({status: status})
-}))
+		response.send({status: status})
+	})
+})
 
 module.exports = router
