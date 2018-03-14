@@ -55,7 +55,6 @@ class UserDappsLoader {
 
         this.items.push( object )
 
-        // Sandbox
         let sandbox = {Events: new EventBus(), system: new UseLib( 'system.id' )}
         vm.runInContext(code, vm.createContext( sandbox ))
     }

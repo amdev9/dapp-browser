@@ -5,4 +5,4 @@ const object = {
     MrkCtrl: '5m5s8d4g8s2d325'
 }
 
-module.exports = object;
+module.exports = object

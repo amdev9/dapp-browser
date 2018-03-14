@@ -8,8 +8,14 @@
 
         let notify = form.querySelector( '.alert' );
 
-        API.Http.post('/web', {message_type: 'logger', message: {value: form.message.value}}, response => {
-            notify.classList.remove( 'd-none' );
+        API.Http.post('/web', {message_type: 'logger', message: {value: 1}}, response => {
+            // notify.classList.remove( 'd-none' );
+            console.log(response)
+        })
+
+        API.Http.post('/web', {message_type: 'logger2', message: {value: 2}}, response => {
+            // notify.classList.remove( 'd-none' );
+            console.log(response)
         })
     });
 })();

@@ -13,6 +13,8 @@
         API.Http.post('/web', {message_type: 'request', message: {username: username.value}}, response => {
             if ( !response ) return;
 
+            console.log(response)
+
             let object = JSON.parse( response );
 
             username.value = object.message.username;
@@ -24,11 +26,13 @@
     API.Http.post('/web', {message_type: 'find', message: {}}, response => {
         let object = {}
 
+        console.log(response)
+
         try {
             object = JSON.parse( response );
         } catch ( error ) {}
 
-        let array = object.items || [];
+        let array = JSON.parse( object.message.response ) || [];
 
         let container = document.querySelector( '.users' );
 

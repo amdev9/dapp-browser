@@ -343,7 +343,7 @@
             this.$http.post('/web', {message_type: 'getall', message: {}}, {
                 headers: {'Allow-Origin': this.$root.market}
             }).then(response => {
-                let items  = response.body.message.items
+                let items  = JSON.parse( response.body.message.response )
                 let object = {}
 
                 object['all'] = {name: 'all', active: true, items: []}

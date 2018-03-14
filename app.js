@@ -1,7 +1,13 @@
 const express = require( 'express' )
 const cookieParser = require( 'cookie-parser' )
 const bodyParser = require( 'body-parser' )
+const Datastore = require( 'nedb' )
 const path = require( 'path' )
+
+global.db = {
+	access : new Datastore({filename: 'database/access.db',  autoload: true}),
+	storage: new Datastore({filename: 'database/storage.db',  autoload: true})
+}
 
 global.__apps = path.join(__dirname, 'dapps/')
 global.__logs = path.join(__dirname, 'logs/')

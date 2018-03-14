@@ -1,54 +1,46 @@
-const Datastore = require( 'nedb' );
-const codb = require( 'co-nedb' );
+const UseLib = require( './uselib' )
+
+const storage = new UseLib( 'system.map' )
 
 class Storage {
-    * insert ( response ) {
-        const database = new Datastore({filename: 'database/storage.db',  autoload: true});
-        const storage  = codb( database );
+    insert ( response ) {
+        const object = Object.assign({target: response.from}, response.payload.message)
 
-        const object = Object.assign({target: response.from}, response.payload.message);
-        const items  = yield storage.insert( object );
-
-        response.payload.items = items;
+        db.storage.insert(object, (error, rows) => {
+            if ( storage[response.payload.target] )
+                storage[response.payload.target][response.payload.message_type] = rows
+        })
     }
 
-    * find ( response ) {
-        const database = new Datastore({filename: 'database/storage.db',  autoload: true});
-        const storage  = codb( database );
+    find ( response ) {
+        const object = Object.assign({target: response.from}, response.payload.message)
 
-        const object = Object.assign({target: response.from}, response.payload.message);
-        const items  = yield storage.find( object );
-
-        response.payload.items = items;
+        db.storage.find(object, (error, rows) => {
+            if ( storage[response.payload.target] )
+                storage[response.payload.target][response.payload.message_type] = rows
+        })
     }
 
-    * findOne ( response ) {
-        const database = new Datastore({filename: 'database/storage.db',  autoload: true});
-        const storage  = codb( database );
+    findOne ( response ) {
+        const object = Object.assign({target: response.from}, response.payload.message)
 
-        const object = Object.assign({target: response.from}, response.payload.message);
-        const items  = yield storage.findOne( object );
-
-        response.payload.items = items;
+        db.storage.findOne(object, (error, string) => {
+            if ( storage[response.payload.target] )
+                storage[response.payload.target][response.payload.message_type] = string
+        })
     }
 
-    * update ( response ) {
-        const database = new Datastore({filename: 'database/storage.db',  autoload: true});
-        const storage  = codb( database );
+    update ( response ) {
+        const object = Object.assign({target: response.from}, response.payload.message)
 
-        const object = Object.assign({target: response.from}, response.payload.message);
-
-        yield storage.update({target: response.from}, object, {multi: true});
+        db.storage.update({target: response.from}, object, {multi: true})
     }
 
-    * remove ( response ) {
-        const database = new Datastore({filename: 'database/storage.db',  autoload: true});
-        const storage  = codb( database );
+    remove ( response ) {
+        const object = Object.assign({target: response.from}, response.payload.message)
 
-        const object = Object.assign({target: response.from}, response.payload.message);
-
-        yield storage.remove(object, {multi: true});
+        db.storage.remove(object, {multi: true})
     }
 }
 
-module.exports = Storage;
+module.exports = Storage
