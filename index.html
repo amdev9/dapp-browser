@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Welcome</title>
+
+	<link rel="stylesheet" href="/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="/css/select.css" />
+	<link rel="stylesheet" href="/css/slider.css" />
+	<link rel="stylesheet" href="/css/fonts.css" />
+	<link rel="stylesheet" href="/css/theme.css" />
+	<link rel="stylesheet" href="/css/style.css" />
+
+	<!-- Module -->
+	<script src="/module/socket.io.js"></script>
+	<script src="/module/lib.js"></script>
+
+	<!-- View -->
+	<link href="/app-header.vue"  id="header" rel="import">
+	<link href="/app-aside.vue"   id="aside" rel="import">
+	<link href="/app-card.vue"    id="card" rel="import">
+	<link href="/app-modal.vue"   id="modal" rel="import">
+	<link href="/app-notify.vue"  id="notify" rel="import">
+	<link href="/app-logger.vue"  id="logger" rel="import">
+	<link href="/app-opened.vue"  id="opened" rel="import">
+	<link href="/app-context.vue" id="context" rel="import">
+
+	<link href="/view-index.vue"   id="index" rel="import">
+	<link href="/view-frame.vue"   id="frame" rel="import">
+	<link href="/view-market.vue"  id="market" rel="import">
+	<link href="/view-setting.vue" id="setting" rel="import">
+	<link href="/view-preview.vue" id="preview" rel="import">
+</head>
+<body>
+<div id="app" :class="{loading: loading}" @contextmenu.prevent>
+	<app-header></app-header>
+
+	<app-aside>
+		<div class="pins">
+			<app-opened v-for="(value, key) in aside.pins" :name="value.name" :icon="value.icon" :image="'images/favicon.svg'" :src="value.src" :id="key"></app-opened>
+		</div>
+	
+		<div class="apps">
+			<app-opened v-for="(value, key) in aside.apps" :name="value.name" :icon="value.icon" :image="'images/favicon.svg'" :src="value.src" :id="key"></app-opened>
+		</div>
+	</app-aside>
+
+	<main :class="{viewapp: viewapp}">
+		<app-context v-if="context" :data="context"></app-context>
+
+		<div class="views" :class="{showin: viewapp}">
+			<view-frame v-for="item in frames" :src="item.src" :id="item.id"></view-frame>
+		</div>
+		
+		<components :is="currentView"></components>
+
+		<app-logger></app-logger>
+		<app-notify></app-notify>
+	</main>
+
+	<app-modal :type="'access'"></app-modal>
+</div>
+
+<script src="/js/jquery.js"></script>
+<script src="/js/vue.min.js"></script>
+<script src="/js/vue.res.js"></script>
+<script src="/js/vue.ext.js"></script>
+<script src="/js/vue.svg.js"></script>
+<script src="/js/vue.app.js"></script>
+
+<script src="/js/select.js"></script>
+<script src="/js/slider.js"></script>
+</body>
+</html>

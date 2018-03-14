@@ -1,0 +1,39 @@
+const express = require( 'express' )
+const cookieParser = require( 'cookie-parser' )
+const bodyParser = require( 'body-parser' )
+const path = require( 'path' )
+
+global.__apps = path.join(__dirname, 'dapps/')
+global.__logs = path.join(__dirname, 'logs/')
+
+const app = express()
+
+app.set('view engine', 'html')
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(cookieParser())
+app.use(express.static( path.join(__dirname, 'assets/') ))
+app.use(express.static( path.join(__dirname, 'views/') ))
+app.use(express.static( __apps ))
+
+const index = require( './routes/index' )
+const user = require( './routes/user' )
+
+app.use('/', index)
+app.use('/', user)
+
+app.get('/', (request, response) => {
+	response.sendFile( path.join(__dirname, 'index.html') )
+})
+
+app.use((request, response, next) => response.send( '404' ))
+
+app.use((err, request, response, next) => {
+	response.locals.message = err.message
+	response.locals.error = request.app.get( 'env' ) === 'development' ? err : {}
+
+	response.status(err.status || 500)
+	response.send( err.status || 500 )
+})
+
+module.exports = app
