@@ -1,5 +1,4 @@
-/node_modules
-/database/*.db
-/app/logs/*.log
-/dist 
+/node_modules 
+/database/*.db 
+/logs/*.log 
 .DS_Store

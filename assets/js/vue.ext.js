@@ -25,6 +25,12 @@
 
     document.addEventListener('click', event => event.target.dropdown())
 
+    Vue.use(MultiLanguage, {
+        default: 'en',
+        en: i18n_en,
+        ru: i18n_ru
+    })
+
     Vue.filter('capitalize', function (value) {
         if ( !value ) return ''
 
@@ -90,7 +96,7 @@
 
                 if ( this.data.id == this.$root.currentFrame ) {
                     this.$root.viewapp = false
-                    this.$root.pagetitle = 'Home'
+                    this.$root.pagetitle = this.translate( 'home' )
                     this.$root.currentView = 'view-index'
                 }
                      
@@ -114,7 +120,7 @@
         methods: {
             tohome () { 
                 this._reset()
-                this.$root.pagetitle = 'Home'
+                this.$root.pagetitle = this.translate( 'home' )
                 this.$root.currentView = 'view-index'
             },
             prevent () {
@@ -233,7 +239,9 @@
 
                 this.$root.frames = frames
                 this.$root.pagetitle = this.name
-                this.$root.aside.apps[this.id] = {icon: this.icon, src: this.src, name: this.name}
+
+                if ( !this.$root.aside.pins.hasOwnProperty( this.id ) )
+                    this.$root.aside.apps[this.id] = {icon: this.icon, src: this.src, name: this.name}
             }
         }
     })

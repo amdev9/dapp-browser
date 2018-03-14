@@ -25,6 +25,7 @@
         },
         mounted () {
             this.aside = {pins: {}, apps: {}}
+            this.pagetitle = this.translate( 'home' )
 
             document.addEventListener('click', event => this.context = null)
         }
