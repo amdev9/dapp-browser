@@ -7,8 +7,10 @@
   },
   "dependencies": {
     "body-parser": "~1.18.2",
+    "co-emitter": "^0.2.3",
+    "co-express": "^2.0.0",
+    "co-nedb": "^2.0.1",
     "cookie-parser": "~1.4.3",
-    "events": "^2.0.0",
     "express": "~4.15.5",
     "ipfs-pubsub-room": "^1.1.5",
     "nedb": "^1.8.0",

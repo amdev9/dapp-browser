@@ -134,8 +134,6 @@ Game.Engine = function () {
         this.request = true
 
         API.Http.post('/web', {message_type: 'bot', message: {empty: this.empty}}, response => {
-            
-            console.log(response)
 
             try {
                 var object = JSON.parse( response )

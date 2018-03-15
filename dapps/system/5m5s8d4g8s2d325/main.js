@@ -1,5 +1,5 @@
 // MARKET PLACE SYSTEM CONTROLLER
 
-Events.subscribe('getall', function (response) {
-	Network.getJson( response )
+Events.subscribe('getall', function * (response) {
+	yield Network.getJson( response )
 })

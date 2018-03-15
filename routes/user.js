@@ -1,8 +1,9 @@
 const express = require( 'express' )
+const coexp = require( 'co-express' )
+const codb  = require( 'co-nedb' )
 const Datastore = require( 'nedb' )
 const fs = require( 'fs' )
 
-const Logger = require( '../components/logger' )
 const UseLib = require( '../components/uselib' )
 const EventBus = require( '../components/event' )
 
@@ -10,7 +11,6 @@ const router = express.Router()
 
 const system  = new UseLib( 'system.id' )
 const storage = new UseLib( 'system.map' )
-const logger  = new Logger()
 
 const getHeaders = headers => {
 	if ( headers['allow-origin'] ) return headers['allow-origin']
@@ -31,7 +31,7 @@ const readDataFile = ( source ) => {
 	}
 }
 
-router.post('/web', function (request, response, next) {
+router.post('/web', coexp(function * (request, response, next) {
 	let target = getHeaders(request.headers)
 	request.body.target = target
 
@@ -49,64 +49,66 @@ router.post('/web', function (request, response, next) {
 
 	events.data = readDataFile( source )
 
-	const permissions = events.data.permissions
-	const rejected = 'No access to system applications: '
+	yield events.publish(system.WebCtrl, 'web', request.body)
+	request.body.message.response = JSON.stringify( storage[target][request.body.message_type] )
 
-	const items = []
+	response.send( request.body )
+}))
 
-	db.access.find({target: target}, (error, rows) => {
-		if ( !rows.length && permissions.length ) {
-			logger.write({payload: {message: rejected + permissions.join( ', ' ), target: target}}, 'ERROR')
-			return io.emit('access', {message: rejected, rows: permissions})
-		}
+// router.post('/access', function (request, response, next) {
+// 	const target = request.body.target
 
-		const note = rows.shift()
+// 	let __dir = 'users/'
 
-		permissions.forEach(value => {
-			if ( note.hasOwnProperty( value ) ) {
-				if ( note[value] !== true ) items.push( value )
-			} else {
-				items.push( value )
-			}
-		})
+// 	for (const key in system) {
+// 		if ( system[key] == target ) {
+// 			__dir = 'system/'
+// 			break
+// 		}
+// 	}
 
-		if ( items.length ) {
-			logger.write({payload: {message: rejected + access.join( ', ' ), target: target}}, 'ERROR')
-			return io.emit('access', {message: rejected, rows: items})
-		}
+// 	const source = __apps + __dir + target + '/manifest.json'
+// 	const object = readDataFile( source )
 
-		events.publish(system.WebCtrl, 'web', request.body)
-		request.body.message.response = JSON.stringify( storage[target][request.body.message_type] )
+// 	const permissions = object.permissions
+// 	const data = {target: target}
 
-		response.send( request.body )
-	})
-})
+// 	permissions.forEach(value => data[value] = true)
 
-router.post('/access', function (request, response, next) {
-	const target = request.body.target
-
-	let __dir = 'users/'
-
-	for (const key in system) {
-		if ( system[key] == target ) {
-			__dir = 'system/'
-			break
-		}
-	}
-
-	const source = __apps + __dir + target + '/manifest.json'
-	const object = readDataFile( source )
-
-	const permissions = object.permissions
-	const data = {target: target}
-
-	permissions.forEach(value => data[value] = true)
-
-	db.access.find({target: target}, () => {
-		!rows.length ? db.access.insert( data ) : db.access.update({target: target}, data)
+// 	db.access.find({target: target}, () => {
+// 		!rows.length ? db.access.insert( data ) : db.access.update({target: target}, data)
 		
-		response.send({status: true})
-	})
-})
+// 		response.send({status: true})
+// 	})
+// })
+
+// const permissions = events.data.permissions
+// const rejected = 'No access to system applications: '
+
+// const items = []
+
+// db.access.find({target: target}, (error, rows) => {
+// 	if ( !rows.length && permissions.length ) {
+// 		logger.write({payload: {message: rejected + permissions.join( ', ' ), target: target}}, 'ERROR')
+// 		return io.emit('access', {message: rejected, rows: permissions})
+// 	}
+
+// 	const note = rows.shift()
+
+// 	permissions.forEach(value => {
+// 		if ( note.hasOwnProperty( value ) ) {
+// 			if ( note[value] !== true ) items.push( value )
+// 		} else {
+// 			items.push( value )
+// 		}
+// 	})
+
+// 	if ( items.length ) {
+// 		logger.write({payload: {message: rejected + access.join( ', ' ), target: target}}, 'ERROR')
+// 		return io.emit('access', {message: rejected, rows: items})
+// 	}
+
+// 	console.log('async')
+// })
 
 module.exports = router

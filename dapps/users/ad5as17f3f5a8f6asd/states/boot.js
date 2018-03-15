@@ -17,7 +17,7 @@ Game.Boot = function () {
     this.create = () => {
         API.Http.post('/web', {message_type: 'find', message: {type: 'coin'}}, response => {
             let object = JSON.parse( response )
-            Game.storage.coins = object.items || []
+            Game.storage.coins = JSON.parse( object.message.response ) || []
             Game.storage.start = !Game.storage.coins.length
 
             this.state.start( 'Settings' )

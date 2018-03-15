@@ -1,21 +1,21 @@
 // STORAGE SYSTEM CONTROLLER
 
-Events.subscribe('insert', function ( response ) {
-    Storage.insert( response )
+Events.subscribe('insert', function * ( response ) {
+    yield Storage.insert( response )
 });
 
-Events.subscribe('find', function ( response ) {
-    Storage.find( response )
+Events.subscribe('find', function * ( response ) {
+    yield Storage.find( response )
 });
 
-Events.subscribe('findOne', function ( response ) {
-    Storage.findOne( response )
+Events.subscribe('findOne', function * ( response ) {
+    yield Storage.findOne( response )
 });
 
-Events.subscribe('update', function ( response ) {
-    Storage.update( response )
+Events.subscribe('update', function * ( response ) {
+    yield Storage.update( response )
 });
 
-Events.subscribe('remove', function ( response ) {
-    Storage.remove( response )
+Events.subscribe('remove', function * ( response ) {
+    yield Storage.remove( response )
 });

@@ -5,7 +5,7 @@ const fs = require( 'fs' )
 const storage = new UseLib( 'system.map' )
 
 class Logger {
-    write (response, type) {
+    * write (response, type) {
         let message = response.payload.message
         let target = response.payload.target
         

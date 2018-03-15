@@ -8,7 +8,7 @@ class Network {
         this.source = 'blockchain.json'
     }
 
-    getJson ( response ) {
+    * getJson ( response ) {
         const string = fs.readFileSync( this.source ).toString()
         let object = {}
 

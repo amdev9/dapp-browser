@@ -6,8 +6,8 @@ const path = require( 'path' )
 
 global.db = {
 	access : new Datastore({filename: 'database/access.db',  autoload: true}),
-	storage: new Datastore({filename: 'database/storage.db',  autoload: true}),
-	setting: new Datastore({filename: 'database/setting.db',  autoload: true})
+	storage: new Datastore({filename: 'database/storage.db', autoload: true}),
+	setting: new Datastore({filename: 'database/setting.db', autoload: true})
 }
 
 global.__apps = path.join(__dirname, 'dapps/')
@@ -35,12 +35,12 @@ app.get('/', (request, response) => {
 
 app.use((request, response, next) => response.send( '404' ))
 
-app.use((err, request, response, next) => {
-	response.locals.message = err.message
-	response.locals.error = request.app.get( 'env' ) === 'development' ? err : {}
+app.use((error, request, response, next) => {
+	response.locals.message = error.message
+	response.locals.error = request.app.get( 'env' ) === 'development' ? error : {}
 
-	response.status(err.status || 500)
-	response.send( err.status || 500 )
+	response.status(error.status || 500)
+	console.error( error )
 })
 
 module.exports = app
