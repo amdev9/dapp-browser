@@ -4,6 +4,8 @@ const bodyParser = require( 'body-parser' )
 const Datastore = require( 'nedb' )
 const path = require( 'path' )
 
+global.io = require( 'socket.io' )( 3310 )
+
 global.db = {
 	access : new Datastore({filename: 'database/access.db',  autoload: true}),
 	storage: new Datastore({filename: 'database/storage.db', autoload: true}),

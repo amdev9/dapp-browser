@@ -5,10 +5,14 @@ Events.subscribe('web', function * ( response ) {
     yield Events.publish(response.from, response.message_type, response.payload)
 })
 
-Events.subscribe('generate', function * (response) {
+Events.subscribe('generate', function * ( response ) {
     const array  = response.payload.message.empty
     const rand   = Math.floor(Math.random() * (array.length - 1))
     const bounds = array[rand]
 
     response.payload.message.bounds = bounds
+})
+
+Events.subscribe('broadcast', function * ( response ) {
+    yield Connect.broadcast( response.payload.message )
 })

@@ -4,15 +4,17 @@ const Storage  = require( './storage' )
 const Network   = require( './network' )
 const EventBus = require( './event' )
 const UseLib   = require( './uselib' )
+const Connect  = require( './connect' )
 const EventMap = require( './event.map' )
 const UserDappsLoader = require( './user.loader' )
 
 const sandbox = {
-    Events : new EventBus(),
-    Logger : new Logger(),
-    Storage: new Storage(),
-    Network: new Network(),
-    system : new UseLib( 'system.id' ),
+    Events  : new EventBus(),
+    Logger  : new Logger(),
+    Connect : new Connect(),
+    Storage : new Storage(),
+    Network : new Network(),
+    system  : new UseLib( 'system.id' ),
     EventMap: new EventMap()
 }
 

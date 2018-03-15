@@ -2,7 +2,7 @@
 
     'use strict'
 
-    const socket = io( 'ws://localhost:3000' )
+    const socket = io( 'ws://localhost:3310' )
     const _private = Symbol( 'private' )
 
     const API = Object.freeze({

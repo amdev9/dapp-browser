@@ -1,13 +1,25 @@
 Game.Engine = function () {
     this.create = () => {
+
+        API.Socket.subscribe('message', response => {
+            console.log( response )
+
+            this.type = response.type == 'cross' ? 'zero' : 'cross'
+
+            let bounds = response.bounds
+
+            this._checkPoint(this.tree[bounds.y + '' + bounds.x], this.type == 'cross' ? 'zero' : 'cross')
+        })
+
         // Background
         this.stage.backgroundColor = '#F5F5F5'
         this.input.mouse.capture = true
 
         // Finish
-        this.finish  = false
+        this.type = 'cross'
+        this.finish = false
         this.request = false
-
+         
 
         // Settings
         this.tree  = {}
@@ -123,33 +135,39 @@ Game.Engine = function () {
     this._onMouseDown = (target, pointer) => {
         if ( target.children.length || this.finish || this.request) return
 
-        this._checkPoint(target, 'cross')
+        this.request = false
+
+        this._checkPoint(target, this.type)
 
         this._checkFinish(target, () => {
             this._message('Победа!', 250)
         })
 
-        if ( this.finish ) return
+        // if ( this.finish ) return
 
-        this.request = true
+         
+        API.Http.post('/web', {message_type: 'broadcast', message: {
+            room: 'tic-tac-toe',
+            type: target.data.type,
+            empty: this.empty,
+            bounds: target.data.bounds
+        }})
 
-        API.Http.post('/web', {message_type: 'bot', message: {empty: this.empty}}, response => {
+        // try {
+        //     var object = JSON.parse( response )
+        // } catch ( error ) {
+        //     return new Error( error )
+        // }
 
-            try {
-                var object = JSON.parse( response )
-            } catch ( error ) {
-                return new Error( error )
-            }
+        // let bounds = object.message.bounds
 
-            let bounds = object.message.bounds
+        // this._checkPoint(this.tree[bounds.y + '' + bounds.x], 'zero')
+        // this._checkFinish( this.tree[bounds.y + '' + bounds.x], () => {
+        //     this._message('Проиграл (', 250)
+        // })
 
-            this._checkPoint(this.tree[bounds.y + '' + bounds.x], 'zero')
-            this._checkFinish( this.tree[bounds.y + '' + bounds.x], () => {
-                this._message('Проиграл (', 250)
-            })
-
-            this.request = false
-        })
+        // this.request = false
+        
     }
 
     this._checkPoint = (target, type) => {
