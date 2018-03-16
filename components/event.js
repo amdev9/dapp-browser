@@ -1,6 +1,6 @@
 const Emitter = require('co-emitter')
 
-const events = new Emitter()
+const Events = new Emitter()
 
 class EventBus {
     constructor () {
@@ -8,7 +8,7 @@ class EventBus {
     }
 
     * publish (to, message_type, payload) {
-        yield events.emit(message_type + to, {
+        yield Events.emit(message_type + to, {
             from: this.data.key,
             message_type: payload.message_type,
             payload: payload
@@ -16,7 +16,7 @@ class EventBus {
     }
 
     subscribe (message_type, func) {
-        events.on(message_type + this.data.key, function * ( message ) {
+        Events.on(message_type + this.data.key, function * ( message ) {
             yield func( message )
         })
     }

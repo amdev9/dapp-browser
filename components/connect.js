@@ -1,3 +1,8 @@
+const UseLib = require( './uselib' )
+
+const system  = new UseLib( 'system.id' )
+const storage = new UseLib( 'system.map' )
+
 class Connect {
     constructor () {
         io.on('connection', socket => {
@@ -5,8 +10,11 @@ class Connect {
         })
     }
 
-    * broadcast ( object ) {
-        io.sockets.in( object.room ).emit('message', object)
+    * broadcast ( response ) {
+        const name = response.payload.target // Room Name
+        const message = response.payload.message
+        
+        io.sockets.in( name ).emit('message', message)
     }
 }
 

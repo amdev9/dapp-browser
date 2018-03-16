@@ -1,9 +1,9 @@
 // IPFSPubSub SYSTEM CONTROLLER
 
 Events.subscribe('create', function * ( response ) {
-	yield IPFSPubSub.create(response.from, response.payload.message)
+	yield IPFSPubSub.create( response )
 })
 
 Events.subscribe('broadcast', function * ( response ) {
-	yield IPFSPubSub.broadcast(response.from, response.payload.message)
+	yield IPFSPubSub.broadcast( response )
 })

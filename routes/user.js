@@ -44,12 +44,12 @@ router.post('/web', coexp(function * (request, response, next) {
 		}
 	}
 
-	const events = new EventBus()
+	const Events = new EventBus()
 	const source = __apps + __dir + target + '/manifest.json'
 
-	events.data = readDataFile( source )
+	Events.data = readDataFile( source )
 
-	yield events.publish(system.WebCtrl, 'web', request.body)
+	yield Events.publish(system.WebCtrl, 'web', request.body)
 	request.body.message.response = JSON.stringify( storage[target][request.body.message_type] )
 
 	response.send( request.body )

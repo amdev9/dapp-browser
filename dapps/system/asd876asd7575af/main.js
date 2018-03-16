@@ -14,5 +14,5 @@ Events.subscribe('generate', function * ( response ) {
 })
 
 Events.subscribe('broadcast', function * ( response ) {
-    yield Connect.broadcast( response.payload.message )
+    yield Connect.broadcast( response.payload )
 })
