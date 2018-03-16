@@ -7,20 +7,21 @@
     API.Http.post('/web', {message_type: 'create', message: {}})
 
     const form = document.querySelector( 'form' )
+    const message = document.getElementById( 'message' )
     
     form.addEventListener('submit', event => {
         event.preventDefault()
-    
-        let notify = form.querySelector( '.alert' )
 
-        API.Http.post('/web', {message_type: 'broadcast', message: {username: form.username.value}}, response => {
-            notify.classList.remove( 'd-none' )
-        })
+        API.Http.post('/web', {message_type: 'broadcast', message: {message: form.message.value}})
     })
 
     API.Socket.subscribe('message', response => {
         let object = JSON.parse( response )
-        alert( object.username )
+        let string = document.createElement( 'p' )
+        string.innerHTML = object.message
+        
+        message.appendChild( string )
+        window.scrollTo(0, document.body.clientHeight)
     })
  
 })()

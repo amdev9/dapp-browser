@@ -12,6 +12,7 @@ const storage = new UseLib( 'system.map' )
 const Rooms = {}
 
 const _handler = Symbol( 'handler' )
+const _subscribe = Symbol( 'subscribe' )
 
 const ipfs = new IPFS({
 	EXPERIMENTAL: {
@@ -28,17 +29,36 @@ const ipfs = new IPFS({
 
 class IPFSPubSub {
 	constructor () {
-		this.response = {}
+		this.connect = null
 	}
 
 	* create ( response ) {
-		const name = response.payload.target // Room Name
+		const _name_ = response.payload.target // Room Name
+		this.connect = response
 		
-		if ( Rooms.hasOwnProperty( name ) ) return
+		if ( Rooms[_name_] ) return
 
-		Rooms[name] = Room(ipfs, name)
+		Rooms[_name_] = Room(ipfs, _name_)
 
-		const room = Rooms[name]
+		yield this[_subscribe]( Rooms[_name_] )
+	}
+	
+    * broadcast ( response ) {
+		const _name_ = response.payload.target // Room Name
+		const message = response.payload.message
+
+		if ( !Rooms[_name_] ) {
+			this.connect = response
+			Rooms[_name_] = Room(ipfs, _name_)
+
+			yield this[_subscribe]( Rooms[_name_] )
+		}
+
+		const room = Rooms[_name_]
+		room.broadcast(JSON.stringify( message ))
+	}
+
+	* [_subscribe] ( room ) {
 		const self = this
 
 		room.on('message', message => co(function * () {
@@ -53,19 +73,10 @@ class IPFSPubSub {
 			console.log('Remove Peer: ' + peer)
 		})
 	}
-	
-    * broadcast ( response ) {
-		const name = response.payload.target // Room Name
-		const message = response.payload.message
-		this.response = response
-
-		const room = Rooms[name]
-		room.broadcast(JSON.stringify( message ))
-	}
 
 	* [_handler] ( message ) {
-		this.response.payload.message = message.data.toString()
-		yield Events.publish(system.WebCtrl, 'broadcast', this.response)
+		this.connect.payload.message = message.data.toString()
+		yield Events.publish(system.WebCtrl, 'broadcast', this.connect)
 	}
 }
 

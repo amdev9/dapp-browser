@@ -11,10 +11,10 @@ class Connect {
     }
 
     * broadcast ( response ) {
-        const name = response.payload.target // Room Name
+        const _name_ = response.payload.target // Room Name
         const message = response.payload.message
-        
-        io.sockets.in( name ).emit('message', message)
+
+        io.sockets.in( _name_ ).emit('message', message)
     }
 }
 
