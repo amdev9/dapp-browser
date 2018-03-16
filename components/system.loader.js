@@ -1,11 +1,12 @@
 const vm = require( 'vm' )
-const Logger   = require( './logger' )
-const Storage  = require( './storage' )
-const Network   = require( './network' )
+const Logger  = require( './logger' )
+const Storage = require( './storage' )
+const Network = require( './network' )
 const EventBus = require( './event' )
 const UseLib   = require( './uselib' )
 const Connect  = require( './connect' )
 const EventMap = require( './event.map' )
+const IPFSPubSub = require( './ipfs' )
 const UserDappsLoader = require( './user.loader' )
 
 const sandbox = {
@@ -14,8 +15,9 @@ const sandbox = {
     Connect : new Connect(),
     Storage : new Storage(),
     Network : new Network(),
+    EventMap: new EventMap(),
     system  : new UseLib( 'system.id' ),
-    EventMap: new EventMap()
+    IPFSPubSub: new IPFSPubSub()
 }
 
 const context = vm.createContext( sandbox )

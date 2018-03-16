@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Index</title>
+    
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+
+    <script src="/module/socket.io.js"></script>
+    <script src="/module/lib.js"></script>
+</head>
+<body>
+    
+<div class="container pt-5">
+    <h1><img src="favicon.png"> Index Page</h1>
+
+    <form>
+        <div class="alert alert-success d-none">
+            Success !
+        </div>
+
+        <div class="form-group">
+            <label>Username</label>
+            <input type="text" name="username" class="form-control" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <a href="page.html" class="btn btn-success">Next Page</a>
+    </form>
+
+    <p>&nbsp;</p>
+
+    <div class="users"></div>
+</div>
+
+<script src="js/index.js"></script>
+</body>
+</html>
