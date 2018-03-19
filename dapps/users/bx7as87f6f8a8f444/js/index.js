@@ -14,7 +14,9 @@
     form.addEventListener('submit', event => {
         event.preventDefault()
 
-        API.Http.post('/web', {message_type: 'broadcast', message: {message: form.message.value, avatar: avatar}})
+        API.Http.post('/web', {message_type: 'broadcast', message: {message: form.message.value, avatar: avatar}}, () => {
+            form.message.value = ''
+        })
     })
 
     API.Socket.subscribe('message', response => {
@@ -47,8 +49,6 @@
 
         message.appendChild( container )
         window.scrollTo(0, document.body.clientHeight)
-
-        form.message.value = ''
     })
  
 })()
