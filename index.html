@@ -49,7 +49,7 @@
 		</div>
 	</app-aside>
 
-	<main :class="{viewapp: viewapp}">
+	<main :class="{viewapp: viewapp, logger: logger}">
 		<app-context v-if="context" :data="context"></app-context>
 
 		<div class="views" :class="{showin: viewapp}">

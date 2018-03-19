@@ -8,6 +8,7 @@
             aside: {},
             market: null,
             frames: {},
+            logger: false,
             notify: false,
             context: null,
             viewapp: false,

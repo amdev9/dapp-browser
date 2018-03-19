@@ -194,6 +194,7 @@
         methods: {
             toogle () {
                 this.open = !this.open
+                this.$root.logger = this.open
                 this.$refs.console.scrollTop = this.$refs.console.scrollHeight
             }
         },
