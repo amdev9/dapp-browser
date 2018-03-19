@@ -14,6 +14,7 @@
             viewapp: false,
             loading: true,
             response: null,
+            apptitle: null,
             pagetitle: 'Home',
             preventView: null,
             currentView: 'view-index',

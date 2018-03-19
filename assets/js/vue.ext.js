@@ -120,6 +120,7 @@
         methods: {
             tohome () { 
                 this._reset()
+                this.$root.apptitle = null
                 this.$root.pagetitle = this.translate( 'home' )
                 this.$root.currentView = 'view-index'
             },
@@ -160,6 +161,7 @@
                 this.$root.preventView = null
                 this.$root.currentFrame = this.id
                 this.$root.pagetitle = this.name
+                this.$root.apptitle = this.name.replace(' ', '_').toLowerCase()
             },
             context ( event ) {
                 this.$root.context = {
@@ -240,6 +242,7 @@
 
                 this.$root.frames = frames
                 this.$root.pagetitle = this.name
+                this.$root.apptitle = this.name.replace(' ', '_').toLowerCase()
 
                 if ( !this.$root.aside.pins.hasOwnProperty( this.id ) )
                     this.$root.aside.apps[this.id] = {icon: this.icon, src: this.src, name: this.name}
