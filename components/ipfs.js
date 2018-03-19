@@ -1,10 +1,11 @@
 const datetime = require( 'node-datetime' )
-const co = require( 'co' )
-const fs = require( 'fs' )
 const Room = require( 'ipfs-pubsub-room' )
-const IPFS = require( 'ipfs' )
+const username = require( 'username' )
 const EventBus = require( './event' )
 const UseLib = require( './uselib' )
+const IPFS = require( 'ipfs' )
+const co = require( 'co' )
+const fs = require( 'fs' )
 
 const Events  = new EventBus()
 const system  = new UseLib( 'system.id' )
@@ -53,6 +54,9 @@ class IPFSPubSub {
 
 			yield this[_subscribe]( Rooms[_name_] )
 		}
+
+        message.datetime = datetime.create().format( 'd-m-Y H:M:S' )
+        message.username = username.sync()
 
 		const room = Rooms[_name_]
 		room.broadcast(JSON.stringify( message ))
