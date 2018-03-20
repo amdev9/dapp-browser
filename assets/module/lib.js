@@ -23,7 +23,7 @@
         }),
 
         Room: Object.freeze({
-            create: (room, func) => {
+            create: (room, func = () => {}) => {
                 API.Room[_private]( room )
                 API.Http.post('/web', {message_type: 'create', message: {room: room}}, func)
             },
@@ -38,11 +38,19 @@
                 API.Http.post('/web', {message_type: 'broadcast', message: object}, func)
             },
 
-            message: ( func ) => {
+            message: func => {
                 API.Socket.subscribe('message', func)
             },
 
-            [_private]: ( room ) => {
+            joined: func => {
+                API.Socket.subscribe('joined', func)
+            },
+
+            detached: func => {
+                API.Socket.subscribe('detached', func)
+            },
+
+            [_private]: room => {
                 _room = room
                 API.Socket.publish('room', room)
             }
@@ -50,22 +58,22 @@
 
         Http: Object.freeze({
             get: (url, func) => {
-                var request = new XMLHttpRequest();
+                var request = new XMLHttpRequest()
     
-                request.open('get', url);
-                API.Http[_private](request, func);
-                request.send();
+                request.open('get', url)
+                API.Http[_private](request, func)
+                request.send()
             },
 
             post: (url, data, func) => {
-                var request = new XMLHttpRequest();
+                var request = new XMLHttpRequest()
     
-                request.open('post', url);
-                request.setRequestHeader('Content-Type', 'application/json');
+                request.open('post', url)
+                request.setRequestHeader('Content-Type', 'application/json')
 
-                API.Http[_private](request, func);
+                API.Http[_private](request, func)
     
-                request.send( JSON.stringify( data ) );
+                request.send( JSON.stringify( data ) )
             },
             
             [_private]: (http, func) => {

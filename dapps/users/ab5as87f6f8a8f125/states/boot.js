@@ -8,5 +8,5 @@ Game.Boot = function () {
         API.Socket.publish('room', 'tic-tac-toe')
     }
 
-    this.create = () => this.state.start( 'MainMenu' )
+    this.create = () => this.state.start( 'Engine' )
 }

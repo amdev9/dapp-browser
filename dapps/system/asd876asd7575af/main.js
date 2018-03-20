@@ -16,3 +16,11 @@ Events.subscribe('generate', function * ( response ) {
 Events.subscribe('broadcast', function * ( response ) {
     yield Connect.broadcast( response.payload )
 })
+
+Events.subscribe('joined', function * ( response ) {
+    yield Connect.joined( response.payload )
+})
+
+Events.subscribe('detached', function * ( response ) {
+    yield Connect.detached( response.payload )
+})

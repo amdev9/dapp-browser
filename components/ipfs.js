@@ -13,6 +13,8 @@ const storage = new UseLib( 'system.map' )
 const Rooms = {}
 
 const _handler = Symbol( 'handler' )
+const _joined = Symbol( 'joined' )
+const _detached = Symbol( 'detached' )
 const _subscribe = Symbol( 'subscribe' )
 
 const ipfs = new IPFS({
@@ -80,18 +82,28 @@ class IPFSPubSub {
 			yield self[_handler]( message )
 		}))
 
-		room.on('peer joined', peer => {
-			console.log('Add Peer: ' + peer)
-		})
+		room.on('peer joined', peer => co(function * () {
+			yield self[_joined]( room.getPeers() )
+		}))
 
-		room.on('peer left', peer => {
-			console.log('Remove Peer: ' + peer)
-		})
+		room.on('peer left', peer => co(function * () {
+			yield self[_detached]( room.getPeers() )
+		}))
 	}
 
 	* [_handler] ( message ) {
 		this.data.payload.message = message.data.toString()
 		yield Events.publish(system.WebCtrl, 'broadcast', this.data)
+	}
+
+	* [_joined] ( peers ) {
+		this.data.payload.message.peers = peers
+		yield Events.publish(system.WebCtrl, 'joined', this.data)
+	}
+
+	* [_detached] ( peers ) {
+		this.data.payload.message.peers = peers
+		yield Events.publish(system.WebCtrl, 'detached', this.data)
 	}
 }
 

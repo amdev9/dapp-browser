@@ -1,14 +1,21 @@
 Game.Engine = function () {
     this.create = () => {
 
-        API.Socket.subscribe('message', response => {
-            console.log( response )
-
-            this.type = response.type == 'cross' ? 'zero' : 'cross'
-
-            let bounds = response.bounds
-
+        API.Room.message(response => {
+            let object = JSON.parse( response )
+            
+            this.type = object.type == 'cross' ? 'zero' : 'cross'
+            
+            let bounds = object.bounds
             this._checkPoint(this.tree[bounds.y + '' + bounds.x], this.type == 'cross' ? 'zero' : 'cross')
+        })
+
+        API.Room.joined(response => {
+            console.log( 'joined' )
+        })
+
+        API.Room.detached(response => {
+            console.log( 'detached' )
         })
 
         // Background
@@ -145,13 +152,14 @@ Game.Engine = function () {
 
         // if ( this.finish ) return
 
+        API.Room.broadcast({type: target.data.type, empty: this.empty, bounds: target.data.bounds})
          
-        API.Http.post('/web', {message_type: 'broadcast', message: {
-            room: 'tic-tac-toe',
-            type: target.data.type,
-            empty: this.empty,
-            bounds: target.data.bounds
-        }})
+        // API.Http.post('/web', {message_type: 'broadcast', message: {
+        //     room: 'tic-tac-toe',
+        //     type: target.data.type,
+        //     empty: this.empty,
+        //     bounds: target.data.bounds
+        // }})
 
         // try {
         //     var object = JSON.parse( response )

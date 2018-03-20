@@ -12,11 +12,17 @@ class Connect {
 
     * broadcast ( response ) {
         const object = JSON.parse( response.payload.message )
+        io.sockets.in( object.room ).emit('message', response.payload.message)
+    }
 
-        const _name_ = object.room // Room Name
-        const message = response.payload.message
+    * joined ( response ) {
+        const object = response.payload.message
+        io.sockets.in( object.room ).emit('joined', object.peers)
+    }
 
-        io.sockets.in( _name_ ).emit('message', message)
+    * detached ( response ) {
+        const object = response.payload.message
+        io.sockets.in( object.room ).emit('detached', object.peers)
     }
 }
 
