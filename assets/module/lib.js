@@ -5,6 +5,8 @@
     const socket = io( 'ws://localhost:3310' )
     const _private = Symbol( 'private' )
 
+    var _room = null
+
     const API = Object.freeze({
         Socket: Object.freeze({
             subscribe: (name, func) => {
@@ -17,6 +19,32 @@
 
             connect: (name, func) => {
                 socket.emit( name ).on(name, func)
+            }
+        }),
+
+        Room: Object.freeze({
+            create: (room, func) => {
+                API.Room[_private]( room )
+                API.Http.post('/web', {message_type: 'create', message: {room: room}}, func)
+            },
+
+            connect: (room, func) => {
+                API.Room[_private]( room )
+                API.Http.post('/web', {message_type: 'connect', message: {room: room}}, func)
+            },
+
+            broadcast: (data , func) => {
+                let object = Object.assign(data, {room: _room})
+                API.Http.post('/web', {message_type: 'broadcast', message: object}, func)
+            },
+
+            message: ( func ) => {
+                API.Socket.subscribe('message', func)
+            },
+
+            [_private]: ( room ) => {
+                _room = room
+                API.Socket.publish('room', room)
             }
         }),
 

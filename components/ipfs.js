@@ -30,12 +30,23 @@ const ipfs = new IPFS({
 
 class IPFSPubSub {
 	constructor () {
-		this.connect = null
+		this.data = null
 	}
 
 	* create ( response ) {
-		const _name_ = response.payload.target // Room Name
-		this.connect = response
+		const _name_ = response.payload.message.room // Room Name
+		this.data = response
+		
+		if ( Rooms[_name_] ) return
+
+		Rooms[_name_] = Room(ipfs, _name_)
+
+		yield this[_subscribe]( Rooms[_name_] )
+	}
+
+	* connect ( response ) {
+		const _name_ = response.payload.message.room // Room Name
+		this.data = response
 		
 		if ( Rooms[_name_] ) return
 
@@ -45,11 +56,11 @@ class IPFSPubSub {
 	}
 	
     * broadcast ( response ) {
-		const _name_ = response.payload.target // Room Name
+		const _name_ = response.payload.message.room // Room Name
 		const message = response.payload.message
 
 		if ( !Rooms[_name_] ) {
-			this.connect = response
+			this.data = response
 			Rooms[_name_] = Room(ipfs, _name_)
 
 			yield this[_subscribe]( Rooms[_name_] )
@@ -79,8 +90,8 @@ class IPFSPubSub {
 	}
 
 	* [_handler] ( message ) {
-		this.connect.payload.message = message.data.toString()
-		yield Events.publish(system.WebCtrl, 'broadcast', this.connect)
+		this.data.payload.message = message.data.toString()
+		yield Events.publish(system.WebCtrl, 'broadcast', this.data)
 	}
 }
 

@@ -198,6 +198,13 @@
                 this.open = !this.open
                 this.$root.logger = this.open
                 this.$refs.console.scrollTop = this.$refs.console.scrollHeight
+                
+                if ( !this.$root.logger ) return
+
+                setTimeout(() => {
+                    let frame = document.getElementById( this.$root.currentFrame )
+                    frame.contentWindow.scrollTo(0, frame.contentDocument.body.clientHeight)
+                }, 0)
             }
         },
         mounted () {

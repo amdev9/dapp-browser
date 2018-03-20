@@ -386,7 +386,6 @@ main {
   position: relative;
   overflow: auto;
   padding: 60px 40px 40px 102px;
-  transition: all 0.15s ease-in-out;
 }
 main.logger {
   margin-bottom: 270px;

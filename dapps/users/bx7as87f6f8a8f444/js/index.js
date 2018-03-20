@@ -1,25 +1,22 @@
-(function () {
+;(function () {
 
-    // Create Room
-    // API.Room.connect()
+    // Forms
+    const create = document.querySelector( 'form[name = create]' )
+    const connect = document.querySelector( 'form[name = connect]' )
+    const broadcast = document.querySelector( 'form[name = broadcast]' )
 
-    API.Socket.publish('room', 'bx7as87f6f8a8f444')
-    API.Http.post('/web', {message_type: 'create', message: {}})
-
+    // Avatar
     const avatar = blockies.create({size: 15, scale: 3}).toDataURL()
 
-    const form = document.querySelector( 'form' )
-    const message = document.getElementById( 'message' )
-    
-    form.addEventListener('submit', event => {
-        event.preventDefault()
+    // Ready Room
+    const ready = () => {
+        let view = document.querySelector( '.ready' )
+        view.classList.add( 'd-none' )
+        broadcast.classList.remove( 'd-none' )
+    }
 
-        API.Http.post('/web', {message_type: 'broadcast', message: {message: form.message.value, avatar: avatar}}, () => {
-            form.message.value = ''
-        })
-    })
-
-    API.Socket.subscribe('message', response => {
+    // Render Message
+    const renderer = response => {
         let object = JSON.parse( response )
 
         let username = document.createElement( 'strong' )
@@ -49,6 +46,26 @@
 
         message.appendChild( container )
         window.scrollTo(0, document.body.clientHeight)
+    }
+
+    // Create
+    create.addEventListener('submit', function ( event ) {
+        event.preventDefault()
+        API.Room[this.name](this.message.value, ready)
     })
- 
-})()
+
+    // Connect
+    connect.addEventListener('submit', function ( event ) {
+        event.preventDefault()
+        API.Room[this.name](this.message.value, ready)
+    })
+
+    // Broadcast
+    broadcast.addEventListener('submit', function ( event ) {
+        event.preventDefault()
+        API.Room[this.name]({message: this.message.value, avatar: avatar}, () => this.message.value = '')
+    })
+
+    // Get Message From Room
+    API.Room.message( renderer )
+})();

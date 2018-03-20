@@ -11,7 +11,9 @@ class Connect {
     }
 
     * broadcast ( response ) {
-        const _name_ = response.payload.target // Room Name
+        const object = JSON.parse( response.payload.message )
+
+        const _name_ = object.room // Room Name
         const message = response.payload.message
 
         io.sockets.in( _name_ ).emit('message', message)
