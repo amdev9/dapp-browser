@@ -3,7 +3,6 @@ Game.Engine = function () {
 
         this.connected = false
         
-        
         // Background
         this.stage.backgroundColor = '#F5F5F5'
         this.input.mouse.capture = true
