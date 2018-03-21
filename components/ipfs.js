@@ -106,6 +106,7 @@ class IPFSPubSub {
 	}
 
 	* [_detached] ( peers ) {
+		console.log( this.data.payload.message )
 		this.data.payload.message.peers = peers
 		yield Events.publish(system.WebCtrl, 'detached', this.data)
 	}

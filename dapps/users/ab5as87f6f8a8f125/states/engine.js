@@ -130,13 +130,13 @@ Game.Engine = function () {
         API.Room.message(response => {
             let object = JSON.parse( response )
 
-            if ( !object.empty.length && !object.finish ) return this._message('Ничья!', 250)
-            if ( object.finish ) return this._message('Победа игрока ' + object.username, 250)
-
             this.type = object.type == 'cross' ? 'zero' : 'cross'
             
             let bounds = object.bounds
             this._checkPoint(this.tree[bounds.y + '' + bounds.x], this.type == 'cross' ? 'zero' : 'cross')
+
+            if ( !object.empty.length && !object.finish ) return this._message('Ничья!', 250)
+            if ( object.finish ) return this._message('Победа игрока ' + object.username, 250)
 
             this.ready.destroy()
             this.connected = true
@@ -233,8 +233,6 @@ Game.Engine = function () {
     }
 
     this._message = (message, time) => {
-        setTimeout(() => {
-            alert( message )
-        }, time )
+        setTimeout(() => alert( message ), time )
     }
 }
