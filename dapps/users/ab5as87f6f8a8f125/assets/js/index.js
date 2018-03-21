@@ -8,7 +8,8 @@
     const create = document.querySelector( 'form[name = create]' )
 	const connect = document.querySelector( 'form[name = connect]' )
 	
-	const ready = () => {
+	const ready = ( response ) => {
+		console.log( response )
 		document.body.innerHTML = ''
 
 		const game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO)

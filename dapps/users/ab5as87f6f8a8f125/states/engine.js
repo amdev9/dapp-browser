@@ -1,23 +1,9 @@
 Game.Engine = function () {
     this.create = () => {
 
-        API.Room.message(response => {
-            let object = JSON.parse( response )
-            
-            this.type = object.type == 'cross' ? 'zero' : 'cross'
-            
-            let bounds = object.bounds
-            this._checkPoint(this.tree[bounds.y + '' + bounds.x], this.type == 'cross' ? 'zero' : 'cross')
-        })
-
-        API.Room.joined(response => {
-            console.log( 'joined' )
-        })
-
-        API.Room.detached(response => {
-            console.log( 'detached' )
-        })
-
+        this.connected = false
+        
+        
         // Background
         this.stage.backgroundColor = '#F5F5F5'
         this.input.mouse.capture = true
@@ -25,7 +11,6 @@ Game.Engine = function () {
         // Finish
         this.type = 'cross'
         this.finish = false
-        this.request = false
          
 
         // Settings
@@ -130,6 +115,10 @@ Game.Engine = function () {
         this.grid.addChild( this.graphics )
         
 
+        // Ready
+        this._ready()
+
+
         // Events
         window.addEventListener('resize', () => {
             this.stage.width  = document.body.clientWidth
@@ -137,45 +126,37 @@ Game.Engine = function () {
 
             this.grid.position.setTo(this.stage.width / 2 - this.size.x / 2, this.stage.height / 2 - this.size.y / 2)
         })
+
+        API.Room.message(response => {
+            let object = JSON.parse( response )
+
+            if ( !object.empty.length && !object.finish ) return this._message('Ничья!', 250)
+            if ( object.finish ) return this._message('Победа игрока ' + object.username, 250)
+
+            this.type = object.type == 'cross' ? 'zero' : 'cross'
+            
+            let bounds = object.bounds
+            this._checkPoint(this.tree[bounds.y + '' + bounds.x], this.type == 'cross' ? 'zero' : 'cross')
+
+            this.ready.destroy()
+            this.connected = true
+        })
+
+        API.Room.joined(response => {
+            this.ready.destroy()
+            this.connected = true
+        })
+
+        API.Room.detached(response => this._ready())
     }
 
     this._onMouseDown = (target, pointer) => {
-        if ( target.children.length || this.finish || this.request) return
-
-        this.request = false
+        if ( target.children.length || this.finish || !this.connected) return
 
         this._checkPoint(target, this.type)
+        this._updated( target )
 
-        this._checkFinish(target, () => {
-            this._message('Победа!', 250)
-        })
-
-        // if ( this.finish ) return
-
-        API.Room.broadcast({type: target.data.type, empty: this.empty, bounds: target.data.bounds})
-         
-        // API.Http.post('/web', {message_type: 'broadcast', message: {
-        //     room: 'tic-tac-toe',
-        //     type: target.data.type,
-        //     empty: this.empty,
-        //     bounds: target.data.bounds
-        // }})
-
-        // try {
-        //     var object = JSON.parse( response )
-        // } catch ( error ) {
-        //     return new Error( error )
-        // }
-
-        // let bounds = object.message.bounds
-
-        // this._checkPoint(this.tree[bounds.y + '' + bounds.x], 'zero')
-        // this._checkFinish( this.tree[bounds.y + '' + bounds.x], () => {
-        //     this._message('Проиграл (', 250)
-        // })
-
-        // this.request = false
-        
+        API.Room.broadcast({type: target.data.type, empty: this.empty, bounds: target.data.bounds, finish: this.finish}, () => this._ready())
     }
 
     this._checkPoint = (target, type) => {
@@ -189,7 +170,7 @@ Game.Engine = function () {
         this.add.tween( sprite ).to({alpha: 1}, 200, Phaser.Easing.Linear.None, true)
     }
 
-    this._checkFinish = (target, func) => {
+    this._updated = target => {
         this.index = []
         this.empty = []
 
@@ -214,8 +195,6 @@ Game.Engine = function () {
             }
         }
 
-        if ( !this.empty.length && !this.finish ) return this._message('Ничья!', 250)
-
         if ( !this.finish ) return
 
         let start = this.index.shift().join( '' )
@@ -237,8 +216,20 @@ Game.Engine = function () {
         this.graphics.endFill()
 
         this.add.tween( this.graphics ).to({alpha: 1}, 200, Phaser.Easing.Linear.None, true)
+    }
 
-        func()
+    this._ready = () => {
+        this.ready = this.add.tileSprite(0, 0, document.body.clientWidth, document.body.clientHeight, 'ready')
+        
+        let message = this.add.text(0, 0, 'Ready ...', {
+            font: "40px Open Sans",
+            fill: "#000"
+        })
+
+        message.position.setTo(document.body.clientWidth / 2 - message.width / 2, document.body.clientHeight / 2 - message.height / 2)
+        this.ready.addChild( message )
+
+        this.connected = false
     }
 
     this._message = (message, time) => {

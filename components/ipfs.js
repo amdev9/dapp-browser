@@ -36,10 +36,13 @@ class IPFSPubSub {
 	}
 
 	* create ( response ) {
-		const _name_ = response.payload.message.room // Room Name
+		const _room_ = response.payload.message.room
+		const _name_ = _room_ + response.payload.target // Room Name
+
 		this.data = response
+		this.data.payload.message.room = _name_
 		
-		if ( Rooms[_name_] ) return
+		if ( Rooms[_name_] ) return this.data.payload.message.error = true
 
 		Rooms[_name_] = Room(ipfs, _name_)
 
@@ -47,10 +50,13 @@ class IPFSPubSub {
 	}
 
 	* connect ( response ) {
-		const _name_ = response.payload.message.room // Room Name
+		const _room_ = response.payload.message.room
+		const _name_ = _room_ + response.payload.target // Room Name
+
 		this.data = response
-		
-		if ( Rooms[_name_] ) return
+		this.data.payload.message.room = _name_
+
+		// if ( !Rooms[_name_] ) return this.data.payload.message.error = true
 
 		Rooms[_name_] = Room(ipfs, _name_)
 
@@ -58,18 +64,16 @@ class IPFSPubSub {
 	}
 	
     * broadcast ( response ) {
-		const _name_ = response.payload.message.room // Room Name
+		const _room_ = response.payload.message.room
+		const _name_ = _room_ + response.payload.target // Room Name
+
 		const message = response.payload.message
 
-		if ( !Rooms[_name_] ) {
-			this.data = response
-			Rooms[_name_] = Room(ipfs, _name_)
+		if ( !Rooms[_name_] ) return message.error = true
 
-			yield this[_subscribe]( Rooms[_name_] )
-		}
-
+		message.room = _name_
         message.datetime = datetime.create().format( 'd-m-Y H:M:S' )
-        message.username = username.sync()
+		message.username = username.sync()
 
 		const room = Rooms[_name_]
 		room.broadcast(JSON.stringify( message ))

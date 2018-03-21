@@ -3,10 +3,18 @@ const UseLib = require( './uselib' )
 const system  = new UseLib( 'system.id' )
 const storage = new UseLib( 'system.map' )
 
+const getHeaders = headers => {
+    let pathname = headers.referer.replace(headers.origin + '/', '')
+    return pathname.replace(/(users\/)|(system\/)/gi, '').split( '/' ).shift()
+}
+
 class Connect {
     constructor () {
         io.on('connection', socket => {
-            socket.on('room', room => socket.join( room ))
+            socket.on('room', room => {
+                let target = getHeaders( socket.handshake.headers )
+                socket.join(room + target)
+            })
         })
     }
 
