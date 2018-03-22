@@ -1,3 +1,22 @@
+22-03-2018 13:11:32 : INFO : {"value":""}
+22-03-2018 11:27:22 : DEBUG : {"value":"response.payload.target = 'ad5as17f3f5a8f6asd'\nEvents.publish(system.LogCtrl, 'info', response.payload)"}
+22-03-2018 11:27:07 : DEBUG : {"value":"response.payload.message.target = 'ad5as17f3f5a8f6asd'\nEvents.publish(system.LogCtrl, 'info', response.payload)"}
+22-03-2018 11:27:07 : INFO : {"value":"response.payload.message.target = 'ad5as17f3f5a8f6asd'\nEvents.publish(system.LogCtrl, 'info', response.payload)","target":"ad5as17f3f5a8f6asd"}
+22-03-2018 11:26:26 : DEBUG : {"value":"Events.publish(system.LogCtrl, 'info', response.payload.message.taget)"}
+22-03-2018 11:26:10 : DEBUG : {"value":"Events.publish(system.LogCtrl, 'info', response.payload.message.taget)"}
+22-03-2018 11:24:35 : DEBUG : {"value":"Events.publish(system.LogCtrl, 'info', response.payload)"}
+22-03-2018 11:24:35 : INFO : {"value":"Events.publish(system.LogCtrl, 'info', response.payload)"}
+22-03-2018 11:21:51 : DEBUG : {"value":"Events.publish(system.LogCtrl, 'info', response.payload)"}
+22-03-2018 11:21:51 : INFO : {"value":"Events.publish(system.LogCtrl, 'info', response.payload)"}
+22-03-2018 11:21:25 : DEBUG : {"value":"yield Events.publish(system.LogCtrl, 'info', response.payload)"}
+22-03-2018 11:20:30 : DEBUG : {"value":"Events.publish(system.LogCtrl, 'info', response.payload)"}
+22-03-2018 11:20:30 : INFO : {"value":"Events.publish(system.LogCtrl, 'info', response.payload)"}
+22-03-2018 11:20:18 : DEBUG : {"value":""}
+22-03-2018 10:51:21 : DEBUG : {"value":"Events.publish(system.LogCtrl, 'info', response.payload)"}
+22-03-2018 10:51:21 : INFO : {"value":"Events.publish(system.LogCtrl, 'info', response.payload)"}
+22-03-2018 10:51:08 : DEBUG : {"value":"asdasd"}
+22-03-2018 10:50:12 : DEBUG : {"value":"asdasd"}
+22-03-2018 10:50:12 : INFO : {"value":"asdasd"}
 19-03-2018 14:31:25 : DEBUG : {"value":"qwqw"}
 19-03-2018 14:31:25 : INFO : {"value":"qwqw"}
 16-03-2018 10:56:13 : DEBUG : {"value":"1231"}

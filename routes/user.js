@@ -50,7 +50,8 @@ router.post('/web', coexp(function * (request, response, next) {
 	Events.data = readDataFile( source )
 
 	yield Events.publish(system.WebCtrl, 'web', request.body)
-	request.body.message.response = JSON.stringify( storage[target][request.body.message_type] )
+
+	// request.body.message.response = JSON.stringify( storage[target][request.body.message_type] )
 
 	response.send( request.body )
 }))

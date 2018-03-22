@@ -6,6 +6,8 @@ const storage = new UseLib( 'system.map' )
 
 class Logger {
     * write (response, type) {
+        console.log(response)
+    
         let message = response.payload.message
         let target = response.payload.target
         

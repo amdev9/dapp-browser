@@ -1,4 +1,6 @@
-const vm = require( 'vm' )
+const UserDappsLoader = require( './user.loader' )
+const child_process = require( 'child_process' )
+const ProcessBus = require( './process' )
 const Logger  = require( './logger' )
 const Storage = require( './storage' )
 const Network = require( './network' )
@@ -7,7 +9,7 @@ const UseLib   = require( './uselib' )
 const Connect  = require( './connect' )
 const EventMap = require( './event.map' )
 const IPFSPubSub = require( './ipfs' )
-const UserDappsLoader = require( './user.loader' )
+const { NodeVM } = require( 'vm2' )
 
 const sandbox = {
     Events  : new EventBus(),
@@ -20,7 +22,7 @@ const sandbox = {
     IPFSPubSub: new IPFSPubSub()
 }
 
-const context = vm.createContext( sandbox )
+const vm = new NodeVM({sandbox: sandbox})
 
 class SystemDappsLoader extends UserDappsLoader {
     sourceCode (_path, dirname, object) {
@@ -31,7 +33,7 @@ class SystemDappsLoader extends UserDappsLoader {
 
         this.items.push( object )
 
-        vm.runInContext(code, context)
+        vm.run( code )
     }
 }
 

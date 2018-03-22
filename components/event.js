@@ -8,7 +8,7 @@ class EventBus {
     }
 
     * publish (to, message_type, payload) {
-        yield Events.emit(message_type + to, {
+        yield Events.emit(to, {
             from: this.data.key,
             message_type: payload.message_type,
             payload: payload
@@ -16,7 +16,14 @@ class EventBus {
     }
 
     subscribe (message_type, func) {
-        Events.on(message_type + this.data.key, function * ( message ) {
+        Events.on(this.data.key, function * ( message ) {
+            if ( message.message_type == message_type )
+                yield func( message )
+        })
+    }
+
+    subscribeAll ( func ) {
+        Events.on(this.data.key, function * ( message ) {
             yield func( message )
         })
     }
