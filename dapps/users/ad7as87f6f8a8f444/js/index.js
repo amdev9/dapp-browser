@@ -28,7 +28,7 @@
             object = JSON.parse( response );
         } catch ( error ) {}
 
-        let array = JSON.parse( object.message.response ) || [];
+        let array = object.response || [];
 
         let container = document.querySelector( '.users' );
 

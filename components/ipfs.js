@@ -1,6 +1,7 @@
 const datetime = require( 'node-datetime' )
 const Room = require( 'ipfs-pubsub-room' )
 const username = require( 'username' )
+const Cleaner = require( './cleaner' )
 const EventBus = require( './event' )
 const UseLib = require( './uselib' )
 const IPFS = require( 'ipfs' )
@@ -8,8 +9,9 @@ const co = require( 'co' )
 const fs = require( 'fs' )
 
 const Events  = new EventBus()
+const Trash   = new Cleaner()
 const system  = new UseLib( 'system.id' )
-const storage = new UseLib( 'system.map' )
+const mapping = new UseLib( 'system.map' )
 const Rooms = {}
 
 const _handler = Symbol( 'handler' )
@@ -42,11 +44,16 @@ class IPFSPubSub {
 		this.data = response
 		this.data.payload.message.room = _name_
 		
-		if ( Rooms[_name_] ) return this.data.payload.message.error = true
+		if ( Rooms[_name_] || !_room_.length ) {
+			this.data.payload.message.error = true
+			return Trash.clean( this.data.payload )
+		}
 
 		Rooms[_name_] = Room(ipfs, _name_)
 
 		yield this[_subscribe]( Rooms[_name_] )
+
+		Trash.clean( this.data.payload )
 	}
 
 	* connect ( response ) {
@@ -56,20 +63,24 @@ class IPFSPubSub {
 		this.data = response
 		this.data.payload.message.room = _name_
 
-		// if ( !Rooms[_name_] ) return this.data.payload.message.error = true
+		if ( !Rooms[_name_] || !_room_.length ) {
+			this.data.payload.message.error = true
 
-		Rooms[_name_] = Room(ipfs, _name_)
+			return Trash.clean( this.data.payload )
+		}
 
-		yield this[_subscribe]( Rooms[_name_] )
+		Trash.clean( this.data.payload )
 	}
 	
     * broadcast ( response ) {
-		const _room_ = response.payload.message.room
-		const _name_ = _room_ + response.payload.target // Room Name
-
+		const _room_  = response.payload.message.room
+		const _name_  = _room_ + response.payload.target // Room Name
 		const message = response.payload.message
 
-		if ( !Rooms[_name_] ) return message.error = true
+		if ( !Rooms[_name_] ) {
+			message.error = true
+			return Trash.clean( response.payload )  
+		}
 
 		message.room = _name_
         message.datetime = datetime.create().format( 'd-m-Y H:M:S' )
@@ -77,6 +88,8 @@ class IPFSPubSub {
 
 		const room = Rooms[_name_]
 		room.broadcast(JSON.stringify( message ))
+
+		Trash.clean( response.payload )  
 	}
 
 	* [_subscribe] ( room ) {
@@ -106,7 +119,6 @@ class IPFSPubSub {
 	}
 
 	* [_detached] ( peers ) {
-		console.log( this.data.payload.message )
 		this.data.payload.message.peers = peers
 		yield Events.publish(system.WebCtrl, 'detached', this.data)
 	}

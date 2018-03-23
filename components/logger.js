@@ -1,6 +1,10 @@
 const datetime = require( 'node-datetime' )
+const Cleaner = require( './cleaner' )
 const UseLib = require( './uselib' )
 const fs = require( 'fs' )
+
+const Trash = new Cleaner()
+const mapping  = new UseLib( 'system.map' )
 
 class Logger {
     * write (response, type) {
@@ -20,6 +24,8 @@ class Logger {
 
         fs.writeFileSync(logfile, logmsg)
         io.emit('console', {type: type, time: time, target: target, message: JSON.stringify( message )})
+
+        Trash.clean( response.payload )  
     }
 }
 

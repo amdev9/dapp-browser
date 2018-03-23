@@ -1,6 +1,8 @@
-const fs = require( 'fs' )
+const Cleaner = require( './cleaner' )
 const UseLib = require( './uselib' )
+const fs = require( 'fs' )
 
+const Trash = new Cleaner()
 const storage = new UseLib( 'system.map' )
 
 class Network {
@@ -10,17 +12,14 @@ class Network {
 
     * getJson ( response ) {
         const string = fs.readFileSync( this.source ).toString()
-        let object = {}
 
         try {
-            object = JSON.parse( string )
+            response.payload.response = JSON.parse( string )
         } catch ( error ) {
             console.error( error.name + ': ' + error.message )
         }
 
-        if ( storage[response.payload.target] ) {
-            storage[response.payload.target][response.payload.message_type] = object
-        }
+        Trash.clean( response.payload )
     }
 }
 

@@ -351,10 +351,11 @@
         mounted () {
             this.$root.loading = true
 
-            this.$http.post('/web', {message_type: 'getall', message: {}}, {
+            this.$http.post('/web', {message_type: 'market', message: {}}, {
                 headers: {'Allow-Origin': this.$root.market}
             }).then(response => {
-                let items  = JSON.parse( response.body.message.response )
+                let items = response.body.response
+
                 let object = {}
 
                 object['all'] = {name: 'all', active: true, items: []}

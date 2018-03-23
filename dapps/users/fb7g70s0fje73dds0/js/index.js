@@ -14,7 +14,7 @@
 
     API.Http.post('/web', {message_type: 'find', message: {}}, response => {
         let object = JSON.parse( response )
-        let data = JSON.parse( object.message.response )
+        let data = object.response
 
         if ( !data.length ) return
 
@@ -36,7 +36,7 @@
             key: key.value
         }}, response => {
             let object = JSON.parse( response )
-            let data = JSON.parse( object.message.response )
+            let data = object.response
 
             contacts.appendChild( createString( data ) )
         })

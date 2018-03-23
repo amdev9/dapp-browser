@@ -3,21 +3,21 @@ const child_process = require( 'child_process' )
 const ProcessBus = require( './process' )
 const Logger  = require( './logger' )
 const Storage = require( './storage' )
+const Cleaner = require( './cleaner' )
 const Network = require( './network' )
 const EventBus = require( './event' )
 const UseLib   = require( './uselib' )
 const Connect  = require( './connect' )
-const EventMap = require( './event.map' )
 const IPFSPubSub = require( './ipfs' )
 const { NodeVM } = require( 'vm2' )
 
 const sandbox = {
     Events  : new EventBus(),
+    Trash   : new Cleaner(),
     Logger  : new Logger(),
     Connect : new Connect(),
     Storage : new Storage(),
     Network : new Network(),
-    EventMap: new EventMap(),
     mapping : new UseLib( 'system.map' ),
     system  : new UseLib( 'system.id' ),
     IPFSPubSub: new IPFSPubSub(),

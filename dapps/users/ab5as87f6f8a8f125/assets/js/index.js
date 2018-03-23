@@ -9,9 +9,12 @@
 	const connect = document.querySelector( 'form[name = connect]' )
 	
 	const ready = ( response ) => {
-		console.log( response )
-		document.body.innerHTML = ''
+		let object = JSON.parse( response )
+		
+		if ( object.message.error ) return alert( 'Room Error!' )
 
+		document.body.innerHTML = ''
+		
 		const game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO)
 
 		game.state.add('Boot',     Game.Boot)

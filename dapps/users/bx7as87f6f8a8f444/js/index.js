@@ -9,7 +9,11 @@
     const avatar = blockies.create({size: 15, scale: 3}).toDataURL()
 
     // Ready Room
-    const ready = () => {
+    const ready = response => {
+        let object = JSON.parse( response )
+
+        if ( object.message.error ) return alert( 'Room Error!' )
+        
         let view = document.querySelector( '.ready' )
         view.classList.add( 'd-none' )
         broadcast.classList.remove( 'd-none' )

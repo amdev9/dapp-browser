@@ -1,7 +1,6 @@
 // WEB SYSTEM CONTROLLER
 
 Events.subscribe('web', function * ( response ) {
-    // yield EventMap.send(response.from, response.message_type)
     yield Events.publish(response.from, response.message_type, response.payload)
 })
 
@@ -14,10 +13,7 @@ Events.subscribe('generate', function * ( response ) {
 })
 
 Events.subscribe('frontend_response', function * ( response ) {
-    if ( mapping[response.payload.unic] ) {
-        mapping[response.payload.unic]()
-        delete mapping[response.payload.unic]
-    }
+    Trash.clean( response.payload )
 })
 
 Events.subscribe('broadcast', function * ( response ) {

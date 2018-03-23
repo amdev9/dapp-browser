@@ -20,41 +20,30 @@ const getHeaders = headers => {
     return pathname.replace(/(users\/)|(system\/)/gi, '').split( '/' ).shift()
 }
 
-const readDataFile = ( source ) => {
-	if ( fs.existsSync( source ) ) {
-		try {
-			return JSON.parse( fs.readFileSync( source ).toString() )
-		} catch ( error ) {
-			throw error
-		}
-	} else {
-		throw new Error( 'NOT FOUND!' )
-	}
-}
-
 router.post('/web', coexp(function * (request, response, next) {
 	let target = getHeaders(request.headers)
 	request.body.target = target
 	request.body.unic = uniqid()
 
-	mapping[request.body.unic] = () => response.send( request.body )
+	mapping[request.body.unic] = ( body ) => response.send( body )
+	console.log(mapping)
+	yield new EventBus().publish(target, request.body.message_type, request.body)
 
-	let __dir = 'users/'
-
-	for (const key in system) {
-		if ( system[key] == target ) {
-			__dir = 'system/'
-			break
-		}
-	}
-
-	const Events = new EventBus()
-	const source = __apps + __dir + target + '/manifest.json'
-
-	Events.data = readDataFile( source )
-
-	yield Events.publish(target, request.body.message_type, request.body)
+	 
 }))
+
+
+// const readDataFile = ( source ) => {
+// 	if ( fs.existsSync( source ) ) {
+// 		try {
+// 			return JSON.parse( fs.readFileSync( source ).toString() )
+// 		} catch ( error ) {
+// 			throw error
+// 		}
+// 	} else {
+// 		throw new Error( 'NOT FOUND!' )
+// 	}
+// }
 
 // router.post('/access', function (request, response, next) {
 // 	const target = request.body.target
