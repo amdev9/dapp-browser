@@ -1,8 +1,8 @@
-const Cleaner = require( './cleaner' )
+const Frontend = require( './frontend' )
 const UseLib = require( './uselib' )
 const fs = require( 'fs' )
 
-const Trash = new Cleaner()
+const FrontEnd = new Frontend()
 const storage = new UseLib( 'system.map' )
 
 class Network {
@@ -19,7 +19,7 @@ class Network {
             console.error( error.name + ': ' + error.message )
         }
 
-        Trash.clean( response.payload )
+        FrontEnd.complete( response.payload )
     }
 }
 

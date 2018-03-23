@@ -1,7 +1,7 @@
 const datetime = require( 'node-datetime' )
 const Room = require( 'ipfs-pubsub-room' )
 const username = require( 'username' )
-const Cleaner = require( './cleaner' )
+const Frontend = require( './frontend' )
 const EventBus = require( './event' )
 const UseLib = require( './uselib' )
 const IPFS = require( 'ipfs' )
@@ -9,7 +9,7 @@ const co = require( 'co' )
 const fs = require( 'fs' )
 
 const Events  = new EventBus()
-const Trash   = new Cleaner()
+const FrontEnd = new Frontend()
 const system  = new UseLib( 'system.id' )
 const mapping = new UseLib( 'system.map' )
 const Rooms = {}
@@ -46,14 +46,14 @@ class IPFSPubSub {
 		
 		if ( Rooms[_name_] || !_room_.length ) {
 			this.data.payload.message.error = true
-			return Trash.clean( this.data.payload )
+			return FrontEnd.complete( this.data.payload )
 		}
 
 		Rooms[_name_] = Room(ipfs, _name_)
 
 		yield this[_subscribe]( Rooms[_name_] )
 
-		Trash.clean( this.data.payload )
+		FrontEnd.complete( this.data.payload )
 	}
 
 	* connect ( response ) {
@@ -66,10 +66,10 @@ class IPFSPubSub {
 		if ( !Rooms[_name_] || !_room_.length ) {
 			this.data.payload.message.error = true
 
-			return Trash.clean( this.data.payload )
+			return FrontEnd.complete( this.data.payload )
 		}
 
-		Trash.clean( this.data.payload )
+		FrontEnd.complete( this.data.payload )
 	}
 	
     * broadcast ( response ) {
@@ -79,7 +79,7 @@ class IPFSPubSub {
 
 		if ( !Rooms[_name_] ) {
 			message.error = true
-			return Trash.clean( response.payload )  
+			return FrontEnd.complete( response.payload )  
 		}
 
 		message.room = _name_
@@ -89,7 +89,7 @@ class IPFSPubSub {
 		const room = Rooms[_name_]
 		room.broadcast(JSON.stringify( message ))
 
-		Trash.clean( response.payload )  
+		FrontEnd.complete( response.payload )  
 	}
 
 	* [_subscribe] ( room ) {

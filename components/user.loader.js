@@ -1,5 +1,4 @@
 const child_process = require( 'child_process' )
-const ProcessBus = require( './process' )
 const EventBus = require( './event' )
 const UseLib = require( './uselib' )
 const { NodeVM } = require( 'vm2' )

@@ -1,9 +1,9 @@
-const Cleaner = require( './cleaner' )
+const Frontend = require( './frontend' )
 const Datastore = require( 'nedb' )
 const codb = require( 'co-nedb' )
 const UseLib = require( './uselib' )
 
-const Trash = new Cleaner()
+const FrontEnd = new Frontend()
 const mapping  = new UseLib( 'system.map' )
 const _private = Symbol( 'private' )
 
@@ -54,7 +54,7 @@ class Storage {
     }
 
     [_private] ( payload ) {
-        Trash.clean( payload )
+        FrontEnd.complete( payload )
         db.storage = new Datastore({filename: 'database/storage.db', autoload: true})
     }
 }

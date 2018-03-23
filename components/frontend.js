@@ -2,8 +2,8 @@ const UseLib = require( './uselib' )
 
 const mapping = new UseLib( 'system.map' )
 
-class Cleaner {
-    clean ( payload ) {
+class FrontEnd {
+    complete ( payload ) {
         if ( !mapping[payload.unic] ) return
 
         mapping[payload.unic]( payload )
@@ -11,4 +11,4 @@ class Cleaner {
     }
 }
 
-module.exports = Cleaner
+module.exports = FrontEnd

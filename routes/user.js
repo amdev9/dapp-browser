@@ -26,10 +26,7 @@ router.post('/web', coexp(function * (request, response, next) {
 	request.body.unic = uniqid()
 
 	mapping[request.body.unic] = ( body ) => response.send( body )
-	console.log(mapping)
 	yield new EventBus().publish(target, request.body.message_type, request.body)
-
-	 
 }))
 
 

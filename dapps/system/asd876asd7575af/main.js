@@ -13,7 +13,7 @@ Events.subscribe('generate', function * ( response ) {
 })
 
 Events.subscribe('frontend_response', function * ( response ) {
-    Trash.clean( response.payload )
+    FrontEnd.complete( response.payload )
 })
 
 Events.subscribe('broadcast', function * ( response ) {

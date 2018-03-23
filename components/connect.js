@@ -1,7 +1,6 @@
 const UseLib = require( './uselib' )
 
 const system  = new UseLib( 'system.id' )
-const storage = new UseLib( 'system.map' )
 
 const getHeaders = headers => {
     let pathname = headers.referer.replace(headers.origin + '/', '')
