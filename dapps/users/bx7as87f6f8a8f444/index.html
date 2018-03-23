@@ -3,15 +3,149 @@
 <head>
     <title>Index</title>
     
-    <link rel="stylesheet" href="css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/style.css" />
 
     <script src="/module/socket.io.js"></script>
     <script src="/module/lib.js"></script>
 </head>
 <body>
-    
-<div class="container py-5">
+<div class="wrapper">
+    <div class="container">
+        <div class="left">
+            <div class="top">
+                <input type="text" />
+                <button type="button" class="search"></button>
+            </div>
+            
+            <ul class="people">
+                <li class="person" data-chat="person1">
+                    <img src="https://s13.postimg.org/ih41k9tqr/img1.jpg" alt="" />
+                    <span class="name">Thomas Bangalter</span>
+                    <span class="time">2:09 PM</span>
+                    <p class="preview">I was wondering...</p>
+                </li>
+                <li class="person" data-chat="person2">
+                    <img src="https://s3.postimg.org/yf86x7z1r/img2.jpg" alt="" />
+                    <span class="name">Dog Woofson</span>
+                    <span class="time">1:44 PM</span>
+                    <p class="preview">I've forgotten how it felt before</p>
+                </li>
+                <li class="person" data-chat="person3">
+                    <img src="https://s3.postimg.org/h9q4sm433/img3.jpg" alt="" />
+                    <span class="name">Louis CK</span>
+                    <span class="time">2:09 PM</span>
+                    <p class="preview">But we’re probably gonna need a new carpet.</p>
+                </li>
+                <li class="person" data-chat="person4">
+                    <img src="https://s3.postimg.org/quect8isv/img4.jpg" alt="" />
+                    <span class="name">Bo Jackson</span>
+                    <span class="time">2:09 PM</span>
+                    <p class="preview">It’s not that bad...</p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="right">
+            <div class="top"><span>To: <span class="name">Dog Woofson</span></span></div>
+            
+            <div class="chat" data-chat="person1">
+                <div class="conversation-start">
+                    <span>Today, 6:48 AM</span>
+                </div>
+                <div class="bubble you">
+                    Hello,
+                </div>
+                <div class="bubble you">
+                    it's me.
+                </div>
+                <div class="bubble you">
+                    I was wondering...
+                </div>
+            </div>
+            <div class="chat" data-chat="person2">
+                <div class="conversation-start">
+                    <span>Today, 5:38 PM</span>
+                </div>
+                <div class="bubble you">
+                    Hello, can you hear me?
+                </div>
+                <div class="bubble you">
+                    I'm in California dreaming
+                </div>
+                <div class="bubble me">
+                    ... about who we used to be.
+                </div>
+                <div class="bubble me">
+                    Are you serious?
+                </div>
+                <div class="bubble you">
+                    When we were younger and free...
+                </div>
+                <div class="bubble you">
+                    I've forgotten how it felt before
+                </div>
+            </div>
+            <div class="chat active-chat" data-chat="person3">
+                <div class="conversation-start">
+                    <span>Today, 3:38 AM</span>
+                </div>
+                <div class="bubble you">
+                    Hey human!
+                </div>
+                <div class="bubble you">
+                    Umm... Someone took a shit in the hallway.
+                </div>
+                <div class="bubble me">
+                    ... what.
+                </div>
+                <div class="bubble me">
+                    Are you serious?
+                </div>
+                <div class="bubble you">
+                    I mean...
+                </div>
+                <div class="bubble you">
+                    It’s not that bad...
+                </div>
+                <div class="bubble you">
+                    But we’re probably gonna need a new carpet.
+                </div>
+            </div>
+            <div class="chat" data-chat="person4">
+                <div class="conversation-start">
+                    <span>Yesterday, 4:20 PM</span>
+                </div>
+                <div class="bubble me">
+                    Hey human!
+                </div>
+                <div class="bubble me">
+                    Umm... Someone took a shit in the hallway.
+                </div>
+                <div class="bubble you">
+                    ... what.
+                </div>
+                <div class="bubble you">
+                    Are you serious?
+                </div>
+                <div class="bubble me">
+                    I mean...
+                </div>
+                <div class="bubble me">
+                    It’s not that bad...
+                </div>
+            </div>
+
+            <div class="write">
+                <div class="textarea">
+                    <input type="text" />
+                    <a href="javascript:void(0)" class="write-link send"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <div class="container py-5">
     <div class="container pt-5">
         <h1 class="mb-3">Messanger</h1>
 
@@ -54,9 +188,10 @@
             <button type="submit" class="btn btn-success">Send</button>
         </form>
     </div>
-</div>
+</div> -->
 
-<script src="js/blockies.js"></script>
-<script src="js/index.js"></script>
+<script src="js/jquery.js"></script>
+<!-- <script src="js/blockies.js"></script> -->
+<!-- <script src="js/index.js"></script> -->
 </body>
 </html>
