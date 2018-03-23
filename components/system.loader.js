@@ -18,8 +18,10 @@ const sandbox = {
     Storage : new Storage(),
     Network : new Network(),
     EventMap: new EventMap(),
+    mapping : new UseLib( 'system.map' ),
     system  : new UseLib( 'system.id' ),
-    IPFSPubSub: new IPFSPubSub()
+    IPFSPubSub: new IPFSPubSub(),
+    console : console,
 }
 
 const vm = new NodeVM({sandbox: sandbox})

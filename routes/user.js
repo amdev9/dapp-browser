@@ -2,6 +2,7 @@ const express = require( 'express' )
 const coexp = require( 'co-express' )
 const codb  = require( 'co-nedb' )
 const Datastore = require( 'nedb' )
+const uniqid = require( 'uniqid' )
 const fs = require( 'fs' )
 
 const UseLib = require( '../components/uselib' )
@@ -9,8 +10,8 @@ const EventBus = require( '../components/event' )
 
 const router = express.Router()
 
-const system  = new UseLib( 'system.id' )
-const storage = new UseLib( 'system.map' )
+const system = new UseLib( 'system.id' )
+const mapping = new UseLib( 'system.map' )
 
 const getHeaders = headers => {
 	if ( headers['allow-origin'] ) return headers['allow-origin']
@@ -34,6 +35,9 @@ const readDataFile = ( source ) => {
 router.post('/web', coexp(function * (request, response, next) {
 	let target = getHeaders(request.headers)
 	request.body.target = target
+	request.body.unic = uniqid()
+
+	mapping[request.body.unic] = () => response.send( request.body )
 
 	let __dir = 'users/'
 
@@ -49,11 +53,7 @@ router.post('/web', coexp(function * (request, response, next) {
 
 	Events.data = readDataFile( source )
 
-	yield Events.publish(system.WebCtrl, 'web', request.body)
-
-	// request.body.message.response = JSON.stringify( storage[target][request.body.message_type] )
-
-	response.send( request.body )
+	yield Events.publish(target, request.body.message_type, request.body)
 }))
 
 // router.post('/access', function (request, response, next) {

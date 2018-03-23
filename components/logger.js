@@ -2,12 +2,8 @@ const datetime = require( 'node-datetime' )
 const UseLib = require( './uselib' )
 const fs = require( 'fs' )
 
-const storage = new UseLib( 'system.map' )
-
 class Logger {
     * write (response, type) {
-        console.log(response)
-    
         let message = response.payload.message
         let target = response.payload.target
         
@@ -24,10 +20,6 @@ class Logger {
 
         fs.writeFileSync(logfile, logmsg)
         io.emit('console', {type: type, time: time, target: target, message: JSON.stringify( message )})
-
-        if ( storage[response.payload.target] ) {
-            storage[response.payload.target][response.payload.message_type] = response.payload.message
-        }
     }
 }
 

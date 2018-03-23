@@ -6,7 +6,6 @@ class ProcessBus {
     }
 
     * publish (to, message_type, payload) {
-        console.log('publish')
         process.send({to: to, message_type: message_type, payload: payload})
     }
 
@@ -19,10 +18,11 @@ class ProcessBus {
     }
 
     inject ( message ) {
-        console.log('inject')
-        let handlers = this.handlers[message.message_type]
+        let handlers = this.handlers[message.message_type] || []
         
-        if ( handlers ) handlers.forEach(element => element( message ))
+        handlers.forEach(func => co(function * () {
+            yield func( message )
+        }))
     }
 }
 

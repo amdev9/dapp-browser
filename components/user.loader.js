@@ -60,20 +60,19 @@ class UserDappsLoader {
 
         this.items.push( object )
 
+        // let sandbox = {Events: new EventBus(), system: new UseLib( 'system.id' )}
+        // new NodeVM({sandbox: sandbox}).run( code )
+
         const Events = new EventBus()
         Events.data.key = object.key
 
         const child = child_process.fork( path.join(__dirname, 'helper'), {stdio: [0,1,2, 'ipc']} )
 
         child.on('message', message => co(function * () {
-            console.log('start')
-            yield Events.publish(message.to,  message.message_type, message.payload)
+            yield Events.publish(message.to, message.message_type, message.payload)
         }))
 
-        Events.subscribeAll(message => {
-            console.log(message)
-            child.send( message )
-        })
+        Events.everytime(message => child.send( message ))
 
         child.send({init: code})
     }

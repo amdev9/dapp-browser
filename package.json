@@ -18,6 +18,7 @@
     "nedb": "^1.8.0",
     "node-datetime": "^2.0.6",
     "socket.io": "^2.0.4",
+    "uniqid": "^4.1.1",
     "username": "^3.0.0",
     "vm2": "^3.5.2"
   }
