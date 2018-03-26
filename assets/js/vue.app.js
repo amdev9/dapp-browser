@@ -13,6 +13,7 @@
             context: null,
             viewapp: false,
             loading: true,
+            setting: {},
             response: null,
             apptitle: null,
             pagetitle: 'Home',

@@ -18,20 +18,31 @@ router.post('/', function (request, response, next) {
 	const userapps = userLoader.items
 	const sysapps  = systemLoader.items
 	
-	db.setting.find({type: 'pin'}, (error, rows) => {
+	db.setting.find({}, (error, rows) => {
+		let setting = []
 		let market = {}
+		let pins = []
 
 		sysapps.forEach(app => {
 			if ( app.key == system.MrkCtrl ) market = app
 		})
-		
-		rows.forEach((pin, index) => {
-			userapps.forEach(app => {
-				if ( pin.target == app.key ) rows[index] = app
-			})
-		})
 
-		response.send({pins: rows, market: market, userapps: userapps})
+		for (let i = 0; i < rows.length; i++) {
+			if ( rows[i].type == 'pin' ) {
+				for (let a = 0; a < userapps.length; a++) {
+					if ( rows[i].target == userapps[a].key ) pins.push( userapps[a] )
+				}
+			}
+
+			if ( rows[i].type == 'setting' ) setting.push( rows[i] )
+		}
+
+		response.send({
+			pins: pins,
+			market: market,
+			setting: setting,
+			userapps: userapps
+		})
 	})
 })
 
@@ -46,6 +57,16 @@ router.post('/setting.pin', function (request, response, next) {
 		if ( rows.length ) status = false
 	
 		response.send({status: status})
+	})
+})
+
+router.post('/setting.setting', function (request, response, next) {
+	const object = request.body
+
+	db.setting.findOne({type: object.type, group: object.group}, (error, string) => {
+		string ? db.setting.update(string, object) : db.setting.insert( object )
+
+		response.send({status: true})
 	})
 })
 

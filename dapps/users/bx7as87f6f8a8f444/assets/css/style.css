@@ -1,0 +1,227 @@
+@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600);
+* {
+  outline: none !important;
+}
+html,
+body {
+  font: 16px 'Source Sans Pro', sans-serif;
+  height: 100%;
+  color: #1a1a1a;
+}
+.wrapper {
+  height: 100%;
+}
+.icon {
+  display: inline-block;
+  height: 100%;
+}
+.icon-create {
+  width: 15px;
+  background: url('../images/icons/create.png') no-repeat center;
+}
+.icon-send {
+  width: 16px;
+  background: url('../images/icons/send.png') no-repeat center;
+}
+main {
+  height: 100%;
+}
+main #app {
+  height: 100%;
+  margin: 0;
+  padding: 0 0 15px;
+}
+main .search {
+  padding: 30px 15px;
+  margin: 0 -15px;
+  border-bottom: 1px solid #e6e6e6;
+}
+main .search .form-control {
+  box-shadow: none;
+  border-color: #e6e6e6;
+  border-radius: 20px !important;
+}
+main .search .form-control:focus {
+  border-color: #00b0ff;
+}
+main .search .input-group-text {
+  border: 0;
+  padding: 0 0 0 15px;
+  background: none;
+}
+main .search .input-group-text button {
+  width: 42px;
+  height: 42px;
+  border: 0;
+  cursor: pointer;
+  border-radius: 50%;
+  background: #00b0ff;
+}
+main .rooms {
+  position: absolute;
+  top: 103px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+main .rooms .overflow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-height: 100%;
+  overflow-y: auto;
+}
+main .rooms .overflow::-webkit-scrollbar {
+  width: 0;
+}
+main .rooms .overflow .media {
+  padding: 15px;
+  margin: 0 ;
+  color: #999999;
+  cursor: pointer;
+  background: transparent;
+  border-bottom: 1px solid #e6e6e6;
+}
+main .rooms .overflow .media:hover,
+main .rooms .overflow .media.active {
+  background: #00b0ff;
+  border-bottom-color: #00b0ff;
+}
+main .rooms .overflow .media:hover strong,
+main .rooms .overflow .media.active strong,
+main .rooms .overflow .media:hover small,
+main .rooms .overflow .media.active small,
+main .rooms .overflow .media:hover p,
+main .rooms .overflow .media.active p {
+  color: #ffffff;
+}
+main .rooms .overflow .media img {
+  border-radius: 50%;
+}
+main .rooms .overflow .media strong,
+main .rooms .overflow .media small,
+main .rooms .overflow .media p {
+  font-size: 14px;
+  margin: 0;
+}
+main .rooms .overflow .media-head {
+  margin-bottom: 5px;
+}
+main .rooms .overflow .media-head strong {
+  color: #1a1a1a;
+}
+main .roomname {
+  font-size: 16px;
+  height: 45px;
+  margin: 0 -15px;
+  padding: 12px;
+  background: #eceff1;
+  border-bottom: 1px solid #e6e6e6;
+}
+main .messages {
+  position: absolute;
+  top: 45px;
+  left: 15px;
+  right: 15px;
+  bottom: 75px;
+}
+main .messages .overflow {
+  position: absolute;
+  max-height: 100%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow-y: auto;
+}
+main .messages .overflow::-webkit-scrollbar {
+  width: 0;
+}
+main .messages .overflow .content .item {
+  position: relative;
+  float: right;
+  clear: both;
+  margin: 15px 8px 0;
+  padding: 12px;
+  max-width: 80%;
+  border-radius: 3px;
+  background: #e6e6e6;
+}
+main .messages .overflow .content .item:before {
+  position: absolute;
+  top: 17px;
+  right: -3px;
+  display: block;
+  width: 10px;
+  height: 8px;
+  content: '\00a0';
+  background: #e6e6e6;
+  -webkit-transform: rotate(29deg) skew(-35deg);
+  transform: rotate(29deg) skew(-35deg);
+}
+main .messages .overflow .content .item.from {
+  float: left;
+  clear: both;
+  color: #ffffff;
+  background: #00b0ff;
+}
+main .messages .overflow .content .item.from:before {
+  right: auto;
+  left: -3px;
+  background: #00b0ff;
+}
+main .action {
+  position: absolute;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+}
+main .action .form-control {
+  border-color: #e6e6e6;
+  border-right: 0;
+  background: #eceff1;
+}
+main .action .form-control:focus {
+  box-shadow: none;
+}
+main .action .input-group-text {
+  padding: 0;
+  border-color: #e6e6e6;
+  background: #eceff1;
+}
+main .action .input-group-text button {
+  width: 50px;
+  height: 42px;
+  border: 0;
+  cursor: pointer;
+  background: none;
+}
+main .side-left,
+main .side-right {
+  position: relative;
+  height: 100%;
+  overflow: auto;
+}
+main .side-left {
+  max-width: 400px;
+  min-width: 400px;
+  border-right: 1px solid #e6e6e6;
+}
+main .side-right .empty {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #ffffff;
+}
+main .side-right .empty .content {
+  position: absolute;
+  font-size: 30px;
+  top: 50%;
+  left: 0;
+  right: 0;
+  color: #e6e6e6;
+  text-align: center;
+}

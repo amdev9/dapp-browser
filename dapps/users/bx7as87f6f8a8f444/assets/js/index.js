@@ -1,5 +1,9 @@
 ;(function () {
 
+    'use strict';
+
+    return
+
     // Forms
     const create = document.querySelector( 'form[name = create]' )
     const connect = document.querySelector( 'form[name = connect]' )

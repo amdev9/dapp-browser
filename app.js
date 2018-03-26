@@ -45,4 +45,10 @@ app.use((error, request, response, next) => {
 	console.error( error )
 })
 
+// var xor = require('bitwise-xor');
+// var md5 = require('md5');
+
+// var test = xor(new Buffer('3344', 'hex'), new Buffer('00ff', 'hex'))
+// console.log( md5( test.toString() ) )
+
 module.exports = app

@@ -279,6 +279,23 @@
         methods: {
             change ( event ) {
                 this.view = event.currentTarget.name
+            },
+            submit ( event ) {
+                let form = $( event.target ).serialize().split( '&' )
+                let name = event.target.name
+
+                let serialize = {}
+
+                for (let i = 0; i < form.length; i++) {
+                    let value = form[i].split( '=' )
+                    serialize[value.shift()] = value.shift()
+                }
+
+                serialize = Object.assign({type: 'setting', group: name}, serialize)
+
+                this.$http.post('/setting.setting', serialize).then(response => {
+                    alert( 'Success !' )
+                })
             }
         },
         mounted () {
@@ -413,6 +430,8 @@
 
                 this.userapps = data.userapps
                 this.$root.market = data.market ? data.market.key : null
+
+                data.setting.forEach(item => this.$root.setting[item.group] = item)
 
                 data.pins.forEach(app => {
                     this.$root.aside.pins[app.key] = {

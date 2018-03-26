@@ -156,36 +156,42 @@
                     </div>
 
                     <div class="item" v-if="view == 'network'">
-                        <form class="form-settings">
+                        <form @submit.prevent="submit" name="network" class="form-settings">
                             <div class="form-group">
                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="input-proxy" checked>
+                                    <input type="hidden" name="proxy" value="false">
+                                    <input type="checkbox" name="proxy" value="true" class="custom-control-input" id="input-proxy" :checked="$root.setting.network && $root.setting.network.proxy == 'true'">
                                     <label class="custom-control-label" for="input-proxy">Use socks proxy</label>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label>Host</label>
-                                <input type="text" class="form-control">
+                                <input type="text" name="host" :value="$root.setting.network && $root.setting.network.host" class="form-control">
                             </div>
 
                             <div class="form-group">
                                 <label>Port</label>
-                                <input type="text" class="form-control">
+                                <input type="text" name="port" :value="$root.setting.network && $root.setting.network.port" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Public Key</label>
+                                <input type="text" name="public" :value="$root.setting.network && $root.setting.network.public" class="form-control">
                             </div>
 
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-auto">
                                         <div class="custom-control custom-radio">
-                                            <input type="radio" id="radio-socks-3" name="socks" class="custom-control-input">
+                                            <input type="radio" id="radio-socks-3" name="socks" value="3" class="custom-control-input" :checked="$root.setting.network && $root.setting.network.socks == 3 ? true : $root.setting.network && $root.setting.network.socks == 4 ? false : true">
                                             <label class="custom-control-label" for="radio-socks-3">Socks 3</label>
                                         </div>
                                     </div>
 
                                     <div class="col-auto">
                                         <div class="custom-control custom-radio">
-                                            <input type="radio" id="radio-socks-4" name="socks" class="custom-control-input" checked>
+                                            <input type="radio" id="radio-socks-4" name="socks" value="4" class="custom-control-input" :checked="$root.setting.network && $root.setting.network.socks == 4">
                                             <label class="custom-control-label" for="radio-socks-4">Socks 4</label>
                                         </div>
                                     </div>
@@ -194,7 +200,7 @@
 
                             <div class="form-group text-right">
                                 <button type="button" class="btn btn-light btn-lg">Cancel</button>
-                                <button type="button" class="btn btn-primary btn-lg">Save</button>
+                                <button type="submit" class="btn btn-primary btn-lg">Save</button>
                             </div>
                         </form>
                     </div>

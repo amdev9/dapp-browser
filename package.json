@@ -6,6 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "bitwise-xor": "0.0.0",
     "body-parser": "~1.18.2",
     "co": "^4.6.0",
     "co-emitter": "^0.2.3",
@@ -15,6 +16,7 @@
     "express": "~4.15.5",
     "ipfs": "^0.28.2",
     "ipfs-pubsub-room": "^1.1.5",
+    "md5": "^2.2.1",
     "nedb": "^1.8.0",
     "node-datetime": "^2.0.6",
     "socket.io": "^2.0.4",
