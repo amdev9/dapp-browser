@@ -8,7 +8,8 @@
 @dark : #1a1a1a;
 
 * {
-    outline: none !important
+    outline: none !important;
+    -webkit-font-smoothing: antialiased;
 }
 
 html, body {
@@ -34,6 +35,16 @@ html, body {
         width: 16px;
         background: url('../images/icons/send.png') no-repeat center
     }
+
+    &-link {
+        width: 20px;
+        background: url('../images/icons/link.png') no-repeat center
+    }
+
+    &-key {
+        width: 21px;
+        background: url('../images/icons/key.png') no-repeat center
+    }
 }
 
 .transition(@property: all, @delay: .15s, @duration: ease-in-out) {
@@ -46,12 +57,8 @@ html, body {
 
 main {
     height: 100%;
-
-    #app {
-        height: 100%;
-        margin: 0;
-        padding: 0 0 15px;
-    }
+    margin: 0;
+    padding: 0 15px 15px;
 
     .search {
         padding: 30px 15px;
@@ -64,7 +71,7 @@ main {
             border-radius: 20px !important;
 
             &:focus {
-                border-color: @theme
+                border-color: @gray
             }
         }
 
@@ -81,7 +88,11 @@ main {
                         border: 0;
                         cursor: pointer;
                         border-radius: 50%;
-                        background: @theme
+                        background: @theme;
+
+                        & + button {
+                            margin-left: 15px
+                        }
                     }
                 }
             }
@@ -106,6 +117,15 @@ main {
 
             &::-webkit-scrollbar {
                 width: 0;
+            }
+
+            .empty {
+                text-align: center;
+
+                span {
+                    display: block;
+                    padding: 30px 15px;
+                }
             }
 
             .media {
@@ -174,6 +194,12 @@ main {
             }
 
             .content {
+                &:after {
+                    display: table;
+                    content: '';
+                    clear: both;
+                }
+
                 .item {
                     position: relative;
                     float: right;
@@ -238,7 +264,7 @@ main {
 
                 button {
                     width: 50px;
-                    height: 42px;
+                    height: 40px;
                     border: 0;
                     cursor: pointer;
                     background: none;
@@ -276,6 +302,56 @@ main {
                 right: 0;
                 color: @gray;
                 text-align: center
+            }
+        }
+    }
+
+    .modal {
+        &-content {
+            border: 0;
+            border-radius: 0
+        }
+
+        &-body {
+            .input-group {
+                .form-control {
+                    border-color: @gray;
+                    box-shadow: none;
+
+                    &:focus {
+                        border-color: @gray;
+                    }
+                }
+
+                &-text {
+                    border-color: @gray;
+                    padding-right: 0;
+                    background: none;
+
+                    .icon {
+                        height: 28px;
+                    }
+                }
+            }
+        }
+
+        &-footer {
+            .btn {
+                border: 0;
+                min-width: 100px;
+                border-radius: 20px;
+                 
+                &:active, &:focus {
+                    box-shadow: none !important
+                }
+
+                &-primary, &-primary:active {
+                    background: @theme !important
+                }
+
+                &-dark, &-dark:active {
+                    background: @color !important
+                }
             }
         }
     }

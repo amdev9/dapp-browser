@@ -1,6 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600);
 * {
   outline: none !important;
+  -webkit-font-smoothing: antialiased;
 }
 html,
 body {
@@ -23,13 +24,18 @@ body {
   width: 16px;
   background: url('../images/icons/send.png') no-repeat center;
 }
+.icon-link {
+  width: 20px;
+  background: url('../images/icons/link.png') no-repeat center;
+}
+.icon-key {
+  width: 21px;
+  background: url('../images/icons/key.png') no-repeat center;
+}
 main {
   height: 100%;
-}
-main #app {
-  height: 100%;
   margin: 0;
-  padding: 0 0 15px;
+  padding: 0 15px 15px;
 }
 main .search {
   padding: 30px 15px;
@@ -42,7 +48,7 @@ main .search .form-control {
   border-radius: 20px !important;
 }
 main .search .form-control:focus {
-  border-color: #00b0ff;
+  border-color: #e6e6e6;
 }
 main .search .input-group-text {
   border: 0;
@@ -56,6 +62,9 @@ main .search .input-group-text button {
   cursor: pointer;
   border-radius: 50%;
   background: #00b0ff;
+}
+main .search .input-group-text button + button {
+  margin-left: 15px;
 }
 main .rooms {
   position: absolute;
@@ -75,6 +84,13 @@ main .rooms .overflow {
 }
 main .rooms .overflow::-webkit-scrollbar {
   width: 0;
+}
+main .rooms .overflow .empty {
+  text-align: center;
+}
+main .rooms .overflow .empty span {
+  display: block;
+  padding: 30px 15px;
 }
 main .rooms .overflow .media {
   padding: 15px;
@@ -138,6 +154,11 @@ main .messages .overflow {
 main .messages .overflow::-webkit-scrollbar {
   width: 0;
 }
+main .messages .overflow .content:after {
+  display: table;
+  content: '';
+  clear: both;
+}
 main .messages .overflow .content .item {
   position: relative;
   float: right;
@@ -192,7 +213,7 @@ main .action .input-group-text {
 }
 main .action .input-group-text button {
   width: 50px;
-  height: 42px;
+  height: 40px;
   border: 0;
   cursor: pointer;
   background: none;
@@ -224,4 +245,40 @@ main .side-right .empty .content {
   right: 0;
   color: #e6e6e6;
   text-align: center;
+}
+main .modal-content {
+  border: 0;
+  border-radius: 0;
+}
+main .modal-body .input-group .form-control {
+  border-color: #e6e6e6;
+  box-shadow: none;
+}
+main .modal-body .input-group .form-control:focus {
+  border-color: #e6e6e6;
+}
+main .modal-body .input-group-text {
+  border-color: #e6e6e6;
+  padding-right: 0;
+  background: none;
+}
+main .modal-body .input-group-text .icon {
+  height: 28px;
+}
+main .modal-footer .btn {
+  border: 0;
+  min-width: 100px;
+  border-radius: 20px;
+}
+main .modal-footer .btn:active,
+main .modal-footer .btn:focus {
+  box-shadow: none !important;
+}
+main .modal-footer .btn-primary,
+main .modal-footer .btn-primary:active {
+  background: #00b0ff !important;
+}
+main .modal-footer .btn-dark,
+main .modal-footer .btn-dark:active {
+  background: #999999 !important;
 }

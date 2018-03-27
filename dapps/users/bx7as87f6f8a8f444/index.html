@@ -13,28 +13,24 @@
     <script src="/module/lib.js"></script>
 
     <!-- Vue -->
-	<link href="assets/vue/app-room.vue" id="room" rel="import">
-	<link href="assets/vue/app-area.vue" id="area" rel="import">
+	<link href="assets/vue/app-room.vue"   id="room" rel="import">
+	<link href="assets/vue/app-area.vue"   id="area" rel="import">
+	<link href="assets/vue/app-modal.vue"  id="modal" rel="import">
+	<link href="assets/vue/app-search.vue" id="search" rel="import">
 </head>
 <body>
 <div class="wrapper">
-    <main>
-        <div class="row" id="app">
+    <main id="app">
+        <div class="row h-100">
             <div class="col side-left">
-                <div class="search">
-                    <div class="input-group">
-                        <input type="text" class="form-control">
-
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <button><i class="icon icon-create"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <app-search></app-search>
 
                 <div class="rooms">
                     <div class="overflow">
+                        <div v-if="!Object.keys(rooms).length" class="empty">
+                            <span>Not Found</span>
+                        </div>
+
                         <app-room v-for="(value, key) in rooms" :key="key" :id="key" :messages="value.messages">
                             <img class="mr-3" :src="value.image">
 
@@ -45,7 +41,7 @@
                                 </div>
                     
                                 <div class="media-content">
-                                    <p>{{ value.lastmsg | truncate(50) }}</p>
+                                    <p>{{ value.introtext | truncate(50) || '----' }}</p>
                                 </div>
                             </div>
                         </app-room>
@@ -55,13 +51,16 @@
     
             <div class="col side-right">
                 <div class="empty" v-if="!target"><div class="content">Empty</div></div>
-                <app-area v-else :data="rooms[target]"></app-area>
+                <app-area v-else :data="current"></app-area>
             </div>
         </div>
+
+        <app-modal :id="'create'" :title="'Create Room'"></app-modal>
     </main>
 </div>
 
 <script src="assets/js/jquery.js"></script>
+<script src="assets/js/bootstrap.js"></script>
 <script src="assets/js/avatar.js"></script>
 <script src="assets/js/vue.min.js"></script>
 <script src="assets/js/vue.ext.js"></script>

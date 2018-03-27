@@ -5,7 +5,7 @@
         </div>
 
         <div class="messages">
-            <div class="overflow">
+            <div class="overflow" id="overflow">
                 <div class="content">
                     <div class="item" v-for="item in data.messages" :key="item.username" :class="{'from': item.from}">
                         {{ item.content }}

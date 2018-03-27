@@ -1,6 +1,6 @@
 ;(function () {
 
-    'use strict';
+    'use strict'
     
     Document.prototype.template = function () {
         return this.querySelector( 'template' )
@@ -11,20 +11,66 @@
         element.innerHTML = value
         
         let content = element.textContent || ''
-        return content
+        return content.trim()
     }
 
     Vue.filter('truncate', (text, stop, clamp = '...') => {
         return text.slice(0, stop || text.length) + (stop < text.length ? clamp : '')
     })
 
+    Vue.component('app-search', {
+        template: search.import.template(),
+        data () {
+            return {
+                data: null
+            }
+        },
+        methods: {
+            keyup ( event ) {
+                this.data = this._search()
+
+                let value = event.target.value.toLowerCase().trim()
+                let object = {}
+
+                for (const key in this.data) {
+                    if ( !this.data[key] ) continue
+                    if ( this.data[key].name.toLowerCase().includes( value ) ) {
+                        object[key] = this.data[key]
+                    }
+                }
+
+                this.$root.rooms = !value.length ? this.data : object
+
+                if ( this.$root.rooms[this.$root.target] )
+                    this.$root.rooms[this.$root.target] = this.$root.current
+            },
+            _search() {
+                let object = this.data ? this.data : this.$root.rooms
+
+                for (const ak in this.$root.rooms) {
+                    for (const bk in object) {
+                        if ( !object.hasOwnProperty( ak ) ) object[ak] = this.$root.rooms[ak]
+                    }
+                }
+
+                return object
+            }
+        }
+    })
+
     Vue.component('app-room', {
         template: room.import.template(),
-        props: ['id', 'name', 'time', 'image', 'lastmsg', 'messages'],
+        props: ['id', 'name', 'time', 'image', 'introtext', 'messages'],
         methods: {
             click () {
                 this.$root.target = this.id
-                console.dir( this.messages )
+                this.$root.current = this.$root.rooms[this.id]
+                API.Room.connect( this.id )
+
+                this.$root.$nextTick(function () {
+                    let container = document.getElementById( 'overflow' )
+                    container.scrollTop = container.scrollHeight
+                })
             }
         }
     })
@@ -35,7 +81,49 @@
         methods: {
             submit () {
                 let message = strip( this.$refs.message.value )
-                console.log( message )
+                
+                this.$root.current.messages.push({
+                    from: false,
+                    username: 'test',
+                    content: message
+                })
+
+                this.$nextTick(function () {
+                    let container = document.getElementById( 'overflow' )
+                    container.scrollTop = container.scrollHeight
+
+                    API.Room.broadcast({message: message}, () => this.$refs.message.value = '')
+                })
+            }
+        }
+    })
+
+    Vue.component('app-modal', {
+        template: modal.import.template(),
+        props: ['id', 'title'],
+        methods: {
+            submit () {
+                let key = this.$refs.key.value.trim()
+                let name = this.$refs.name.value.trim()
+                let introtext = this.$refs.introtext.value.trim()
+                let object = Object.assign({}, this.$root.rooms)
+
+                if ( object[key] || !name.length ) return
+
+                let avatar = blockies.create({size: 15, scale: 3}).toDataURL()
+
+                object[key] = {
+                    name: name,
+                    time: String(),
+                    image: avatar,
+                    introtext: introtext,
+                    messages: []
+                }
+
+                API.Room.create(key, () => {
+                    let room = Object.assign({key: key}, object[key])
+                    API.Http.post('/web', {message_type: 'insert', message: room}, () => this.$root.rooms = object)
+                })
             }
         }
     })

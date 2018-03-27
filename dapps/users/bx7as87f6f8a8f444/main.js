@@ -1,5 +1,13 @@
 // DAPP USER CONTROLLER
 
+Events.subscribe('find', function * (response) {
+	yield Events.publish(system.StrCtrl, 'find', response.payload)
+})
+
+Events.subscribe('insert', function * (response) {
+	yield Events.publish(system.StrCtrl, 'insert', response.payload)
+})
+
 Events.subscribe('create', function * ( response ) {
 	yield Events.publish(system.IPFSCtrl, 'create', response.payload)
 })
