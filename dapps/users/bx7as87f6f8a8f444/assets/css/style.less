@@ -204,7 +204,7 @@ main {
                     position: relative;
                     float: right;
                     clear: both;
-                    margin: 15px 8px 0;
+                    margin: 40px 8px 0;
                     padding: 12px;
                     max-width: 80%;
                     border-radius: 3px;
@@ -223,11 +223,23 @@ main {
                         transform: rotate(29deg) skew(-35deg);
                     }
 
+                    strong {
+                        position: absolute;
+                        bottom: 110%;
+                        right: 0
+                    }
+
                     &.from {
                         float: left;
                         clear: both;
                         color: @white;
                         background: @theme;
+
+                        strong {
+                            right: auto;
+                            left: 0;
+                            color: @dark
+                        }
 
                         &:before {
                             right: auto;

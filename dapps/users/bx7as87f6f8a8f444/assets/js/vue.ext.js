@@ -82,19 +82,17 @@
             submit () {
                 let message = strip( this.$refs.message.value )
                 
-                this.$root.current.messages.push({
-                    from: false,
-                    username: 'test',
+                let object = {
+                    unic: this.$root.unic,
                     content: message
-                })
+                }
 
-                this.$nextTick(function () {
-                    let container = document.getElementById( 'overflow' )
-                    container.scrollTop = container.scrollHeight
-
-                    API.Room.broadcast({message: message}, () => this.$refs.message.value = '')
-                })
+                API.Room.broadcast({message: object}, () => this.$refs.message.value = '')
             }
+        },
+        updated () {
+            let container = document.getElementById( 'overflow' )
+            container.scrollTop = container.scrollHeight
         }
     })
 
@@ -114,7 +112,6 @@
 
                 object[key] = {
                     name: name,
-                    time: String(),
                     image: avatar,
                     introtext: introtext,
                     messages: []

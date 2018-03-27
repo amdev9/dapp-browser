@@ -163,7 +163,7 @@ main .messages .overflow .content .item {
   position: relative;
   float: right;
   clear: both;
-  margin: 15px 8px 0;
+  margin: 40px 8px 0;
   padding: 12px;
   max-width: 80%;
   border-radius: 3px;
@@ -181,11 +181,21 @@ main .messages .overflow .content .item:before {
   -webkit-transform: rotate(29deg) skew(-35deg);
   transform: rotate(29deg) skew(-35deg);
 }
+main .messages .overflow .content .item strong {
+  position: absolute;
+  bottom: 110%;
+  right: 0;
+}
 main .messages .overflow .content .item.from {
   float: left;
   clear: both;
   color: #ffffff;
   background: #00b0ff;
+}
+main .messages .overflow .content .item.from strong {
+  right: auto;
+  left: 0;
+  color: #1a1a1a;
 }
 main .messages .overflow .content .item.from:before {
   right: auto;

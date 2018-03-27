@@ -63,8 +63,13 @@ class IPFSPubSub {
 		this.data = response
 		this.data.payload.message.room = _name_
 
-		if ( !Rooms[_name_] || !_room_.length ) {
-			this.data.payload.message.error = true
+		if ( !_room_.length ) this.data.payload.message.error = true
+		
+		if ( !Rooms[_name_] && _room_.length ) {
+			
+			Rooms[_name_] = Room(ipfs, _name_)
+
+			yield this[_subscribe]( Rooms[_name_] )
 
 			return FrontEnd.complete( this.data.payload )
 		}
