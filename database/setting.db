@@ -1,4 +1,5 @@
 {"type":"pin","key":"ad7as87f6f8a8f444","_id":"BWXmNMzZTM4R7wFP"}
 {"type":"pin","key":"bx7as87f6f8a8f444","_id":"PmX8eaNi03dEF5Xl"}
-{"type":"setting","group":"network","proxy":"true","host":"","port":"","public":"76as87gas7865as4h5a4sha567sh8a7s6h7a97s0a","socks":"4","_id":"pvSy2aZZegzuxiEV"}
+{"type":"pin","key":"ab5as87f6f8a8f125","_id":"gGjwcJQ0Uz3mCa03"}
+{"type":"setting","group":"network","proxy":"true","host":"localhost","port":"3333","public":"76as87gas7865as4h5a4sha567sh8a7s6h7a97s0a","socks":"4","_id":"pvSy2aZZegzuxiEV"}
 {"type":"pin","key":"ad5as17f3f5a8f6asd","_id":"utt9QayFBOH1uqzR"}
