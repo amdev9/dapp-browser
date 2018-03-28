@@ -1,2 +1,4 @@
-{"type":"setting","group":"network","proxy":"false","host":"","port":"","public":"5JDh3XmHK8CDaQSxQZHh5PUV3zwzG68uVcrTfmg9yQ9idNisYnE","socks":"4","_id":"P0FTn0aERmiCmIrs"}
-{"type":"pin","target":"bx7as87f6f8a8f444","_id":"sKCT4DOjrSI5uBjt"}
+{"type":"pin","key":"ad7as87f6f8a8f444","_id":"BWXmNMzZTM4R7wFP"}
+{"type":"pin","key":"bx7as87f6f8a8f444","_id":"PmX8eaNi03dEF5Xl"}
+{"type":"setting","group":"network","proxy":"true","host":"","port":"","public":"76as87gas7865as4h5a4sha567sh8a7s6h7a97s0a","socks":"4","_id":"pvSy2aZZegzuxiEV"}
+{"type":"pin","key":"ad5as17f3f5a8f6asd","_id":"utt9QayFBOH1uqzR"}

@@ -8,6 +8,10 @@ Events.subscribe('insert', function * (response) {
 	yield Events.publish(system.StrCtrl, 'insert', response.payload)
 })
 
+Events.subscribe('update', function * (response) {
+	yield Events.publish(system.StrCtrl, 'update', response.payload)
+})
+
 Events.subscribe('create', function * ( response ) {
 	yield Events.publish(system.IPFSCtrl, 'create', response.payload)
 })

@@ -12,7 +12,7 @@
         return string
     }
 
-    API.Http.post('/web', {message_type: 'find', message: {}}, response => {
+    API.Http.post('/web', {message_type: 'find'}, response => {
         let object = JSON.parse( response )
         let data = object.response
 

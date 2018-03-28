@@ -84,7 +84,7 @@
             change () {
                 this.data.type == 'app' ? this.pin() : this.app()
 
-                this.$http.post('/setting.pin', {target: this.data.id}).then(response => {
+                this.$http.post('/setting.pin', {key: this.data.id}).then(response => {
                     console.log( response.body )
                 })
             },
@@ -293,7 +293,7 @@
 
                 serialize = Object.assign({type: 'setting', group: name}, serialize)
 
-                this.$http.post('/setting.setting', serialize).then(response => {
+                this.$http.post('/setting.setting', {where: {type: 'setting', group: name}, message: serialize}).then(response => {
                     alert( 'Success !' )
                 })
             }

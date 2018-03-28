@@ -25,7 +25,7 @@
             current: {},
         },
         mounted () {
-            API.Http.post('/web', {message_type: 'find', message: {}}, response => {
+            API.Http.post('/web', {message_type: 'find'}, response => {
                 let object = JSON.parse( response )
                 let rooms = Object.assign({}, this.rooms)
                 
@@ -44,7 +44,14 @@
                 message.datetime = object.datetime
                 message.username = object.username
 
+                this.current.introtext = message.content
                 this.current.messages.push( message )
+
+                for (let i = 0; i < this.current.messages.length; i++) {
+                    delete this.current.messages[i].unic
+                }
+                
+                API.Http.post('/web', {message_type: 'update', where: {key: this.current.key}, message: this.current})
             })
         }
     })

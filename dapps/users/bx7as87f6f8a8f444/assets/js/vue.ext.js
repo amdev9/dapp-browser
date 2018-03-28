@@ -103,7 +103,6 @@
             submit () {
                 let key = this.$refs.key.value.trim()
                 let name = this.$refs.name.value.trim()
-                let introtext = this.$refs.introtext.value.trim()
                 let object = Object.assign({}, this.$root.rooms)
 
                 if ( object[key] || !name.length ) return
@@ -111,15 +110,20 @@
                 let avatar = blockies.create({size: 15, scale: 3}).toDataURL()
 
                 object[key] = {
+                    key: key,
                     name: name,
                     image: avatar,
-                    introtext: introtext,
+                    introtext: String(),
                     messages: []
                 }
 
                 API.Room.create(key, () => {
                     let room = Object.assign({key: key}, object[key])
-                    API.Http.post('/web', {message_type: 'insert', message: room}, () => this.$root.rooms = object)
+                    
+                    API.Http.post('/web', {message_type: 'insert', message: room}, () => {
+                        this.$root.rooms = object
+                        $( '#' + this.id ).modal( 'hide' )
+                    })
                 })
             }
         }

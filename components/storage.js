@@ -9,7 +9,7 @@ const _private = Symbol( 'private' )
 
 class Storage {
     * insert ( response ) {
-        const object = Object.assign({target: response.from}, response.payload.message)
+        const object = Object.assign({target: response.from}, response.payload.message || {})
         const database = codb( db.storage )
 
         response.payload.response = yield database.insert( object )
@@ -18,7 +18,7 @@ class Storage {
     }
 
     * find ( response ) {
-        const object = Object.assign({target: response.from}, response.payload.message)
+        const object = Object.assign({target: response.from}, response.payload.where || {})
         const database = codb( db.storage )
 
         response.payload.response = yield database.find( object )
@@ -27,7 +27,7 @@ class Storage {
     }
 
     * findOne ( response ) {
-        const object = Object.assign({target: response.from}, response.payload.message)
+        const object = Object.assign({target: response.from}, response.payload.where || {})
         const database = codb( db.storage )
 
         response.payload.response = yield database.findOne( object )
@@ -36,16 +36,17 @@ class Storage {
     }
 
     * update ( response ) {
-        const object = Object.assign({target: response.from}, response.payload.message)
+        const where = Object.assign({target: response.from}, response.payload.where || {})
+        const object = Object.assign({target: response.from}, response.payload.message || {})
         const database = codb( db.storage )
 
-        yield database.update({target: response.from}, object, {multi: true})
+        yield database.update(where, object, {multi: true})
 
         this[_private]( response.payload )
     }
 
     * remove ( response ) {
-        const object = Object.assign({target: response.from}, response.payload.message)
+        const object = Object.assign({target: response.from}, response.payload.where || {})
         const database = codb( db.storage )
 
         yield database.remove(object, {multi: true})
@@ -54,8 +55,8 @@ class Storage {
     }
 
     [_private] ( payload ) {
-        FrontEnd.complete( payload )
         db.storage = new Datastore({filename: 'database/storage.db', autoload: true})
+        FrontEnd.complete( payload )
     }
 }
 

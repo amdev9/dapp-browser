@@ -21,7 +21,7 @@
         })
     });
 
-    API.Http.post('/web', {message_type: 'find', message: {}}, response => {
+    API.Http.post('/web', {message_type: 'find'}, response => {
         let object = {}
 
         try {
@@ -44,7 +44,7 @@
             button.innerText = 'x';
             
             button.addEventListener('click', () => {
-                API.Http.post('/web', {message_type: 'remove', message: {username: array[i].username}}, () => {
+                API.Http.post('/web', {message_type: 'remove', where: {username: array[i].username}}, () => {
                     string.parentNode.removeChild( string );
                 });
             });

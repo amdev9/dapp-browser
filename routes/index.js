@@ -1,4 +1,6 @@
 const express = require( 'express' )
+const coexp = require( 'co-express' )
+const codb  = require( 'co-nedb' )
 const Datastore = require( 'nedb' )
 
 const UseLib = require( '../components/uselib' )
@@ -14,60 +16,92 @@ systemLoader.runInContext()
 const userLoader = new UserDappsLoader('manifest.json', 'users')
 userLoader.runInContext()
 
-router.post('/', function (request, response, next) {
+const getHeaders = headers => {
+	if ( headers['allow-origin'] ) return headers['allow-origin']
+
+    let pathname = headers.referer.replace(headers.origin + '/', '')
+    return pathname.replace(/(users\/)|(system\/)/gi, '').split( '/' ).shift()
+}
+
+router.post('/', coexp(function * (request, response, next) {
 	const userapps = userLoader.items
-	const sysapps  = systemLoader.items
-	
-	db.setting.find({}, (error, rows) => {
-		let setting = []
-		let market = {}
-		let pins = []
+	const sysapps = systemLoader.items
 
-		sysapps.forEach(app => {
-			if ( app.key == system.MrkCtrl ) market = app
-		})
+	const database = codb( db.setting )
+	const result = yield database.find({})
 
-		for (let i = 0; i < rows.length; i++) {
-			if ( rows[i].type == 'pin' ) {
-				for (let a = 0; a < userapps.length; a++) {
-					if ( rows[i].target == userapps[a].key ) pins.push( userapps[a] )
-				}
+	let setting = []
+	let market = {}
+	let pins = []
+
+	for (let i = 0; i < sysapps.length; i++) {
+		if ( sysapps[i].key == system.MrkCtrl ) {
+			market = sysapps[i]
+			break
+		}
+	}
+
+	result.forEach(item => {
+		if ( item.type == 'pin' ) {
+			for (let i = 0; i < userapps.length; i++) {
+				if ( item.key == userapps[i].key ) pins.push( userapps[i] )
 			}
-
-			if ( rows[i].type == 'setting' ) setting.push( rows[i] )
 		}
 
-		response.send({
-			pins: pins,
-			market: market,
-			setting: setting,
-			userapps: userapps
-		})
+		if ( item.type == 'setting' ) setting.push( item )
 	})
-})
 
-router.post('/setting.pin', function (request, response, next) {
-	const object = {type: 'pin', target: request.body.target}
+	db.setting = new Datastore({filename: 'database/setting.db', autoload: true})
 
-	db.setting.find(object, (error, rows) => {
-		let status = true
+	response.send({
+		pins: pins,
+		market: market,
+		setting: setting,
+		userapps: userapps
+	})
+}))
 
-		!rows.length ? db.setting.insert( object ) : db.setting.remove( object )
-		
-		if ( rows.length ) status = false
+router.post('/setting.pin', coexp(function * (request, response, next) {
+	let target = getHeaders( request.headers )
 	
-		response.send({status: status})
-	})
-})
+	if ( target.trim().length ) return response.send({status: false})
 
-router.post('/setting.setting', function (request, response, next) {
-	const object = request.body
+	const object = {type: 'pin', key: request.body.key}
 
-	db.setting.findOne({type: object.type, group: object.group}, (error, string) => {
-		string ? db.setting.update(string, object) : db.setting.insert( object )
+	const database = codb( db.setting )
+	const result = yield database.find( object )
 
-		response.send({status: true})
-	})
-})
+	let status = true
+
+	yield (!result.length ? database.insert( object ) : database.remove( object ))
+
+	if ( result.length ) status = false
+
+	db.setting = new Datastore({filename: 'database/setting.db', autoload: true})
+
+	response.send({status: status})
+}))
+
+router.post('/setting.setting', coexp(function * (request, response, next) {
+	let target = getHeaders( request.headers )
+	
+	if ( target.trim().length ) return response.send({status: false})
+
+	const where = request.body.where || null
+	const object = Object.assign({}, request.body.message)
+
+	if ( !where ) return response.send({status: false})
+
+	const database = codb( db.setting )
+	const result = yield database.findOne( where )
+
+	if ( result ) Object.assign(result, object)
+
+	yield (result ? database.update(where, result) : database.insert( object ))
+
+	db.setting = new Datastore({filename: 'database/setting.db', autoload: true})
+
+	response.send({status: true})
+}))
 
 module.exports = router

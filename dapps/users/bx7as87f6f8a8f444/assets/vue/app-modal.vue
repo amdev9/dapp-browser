@@ -18,14 +18,6 @@
                         </div>
 
                         <div class="form-group">
-                            <label>Introtext</label>
-                            
-                            <div class="input-group">
-                                <input type="text" class="form-control" ref="introtext">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
                             <label>Key</label>
                             
                             <div class="input-group">

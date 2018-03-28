@@ -51,7 +51,7 @@ Game.MainMenu = function () {
 
         if ( !event.data.restart ) return this.state.start( 'Engine' )
         
-        API.Http.post('/web', {message_type: 'remove', message: {type: 'coin'}}, () => {
+        API.Http.post('/web', {message_type: 'remove', where: {type: 'coin'}}, () => {
             Game.storage.coins = []
             this.state.start( 'Engine' )
         })
