@@ -7,6 +7,12 @@
     "start": "node ./bin/www",
     "dist": "node build.js"
   },
+  "window": {
+    "width": 1000,
+    "height": 650,
+    "min_width": 1000,
+    "min_height": 650
+  },
   "dependencies": {
     "bitwise-xor": "0.0.0",
     "body-parser": "~1.18.2",
