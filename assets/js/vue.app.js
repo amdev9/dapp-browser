@@ -31,6 +31,14 @@
             this.pagetitle = this.translate( 'home' )
 
             document.addEventListener('click', event => this.context = null)
+
+            if ( !window._webreq.key ) return
+            alert( window._webreq.key )
         }
+    })
+
+    window.addEventListener('message', ( event ) => {
+        if ( !window._webreq.key ) return
+        alert( window._webreq.key )
     })
 })( this );
