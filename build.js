@@ -1,6 +1,5 @@
 const NwBuilder = require( 'nw-builder' )
 
-// include add './node_modules/**'
 const include = ['./**', './*.js', './*.json', './*.html', './*.plist']
 const exclude = ['!./build.js','!./package-lock.json', '!./cache/**', '!./dist/**']
 const files = include.concat( exclude )

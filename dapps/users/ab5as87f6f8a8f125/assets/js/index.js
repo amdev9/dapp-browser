@@ -7,6 +7,8 @@
 	// Forms
     const create = document.querySelector( 'form[name = create]' )
 	const connect = document.querySelector( 'form[name = connect]' )
+
+	connect.querySelector( '[name = message]' ).value = argv.room || ''
 	
 	const ready = ( response ) => {
 		let object = JSON.parse( response )

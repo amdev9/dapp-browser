@@ -3,9 +3,8 @@ const fs = require( 'fs' )
 
 class DappManager {
     constructor ( proto ) {
-        this.argv = null
-        this.proto = proto
-        this.params = []
+        this.argv = []
+        this.params = {}
     }
 
     getDirSync ( dirname ) {
@@ -56,19 +55,34 @@ class DappManager {
         return data
     }
 
-    set setValue ( val ) {
-        this.argv = String( val )
+    set setValue ( value ) {
+        let string = String( value ).split( '://' ).pop()
+        let array = string.split( '?' )
         
-        let string = this.argv.replace(this.proto, '')
-        this.params = string.split( ':' )
+        let argv = array.shift().replace(RegExp('/', 'g') , '')
+         
+        this.argv = argv.split( ':' )
+
+        if ( !array.length ) return
+
+        let params = array.shift()
+        let object = params.split( '&' )
+
+        for (let i = 0; i < object.length; i++) {
+            let keyval = object[i].split( '=' )
+            this.params[keyval.shift()] = keyval.shift()
+        }
     }
 
     get getValue () {
-        const name = this.params.length ? this.params.shift() : ''
-        const network = this.params.length ? this.params.shift().split( '/' ).join( '' ) : ''
+        if ( !this.argv.length ) return {}
+
+        const name = this.argv.shift()
+        const network = this.argv.shift()
 
         const data = this.findOneData( name )
         data.network = network
+        data.params = this.params
 
         return data
     }

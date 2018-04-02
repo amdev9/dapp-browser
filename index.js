@@ -5,7 +5,7 @@ const gui = require( 'nw.gui' )
 const child = child_process.exec( './array ./bin/www' )
 child.on('close', () => gui.App.quit())
 
-const manager = new Manager( 'array://' )
+const manager = new Manager()
 manager.setValue = gui.App.argv
 
 var connect
