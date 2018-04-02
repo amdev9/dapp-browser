@@ -443,6 +443,7 @@
 
                 this.$nextTick(function () {
                     this.$root.loading = false
+                    this.$root.argv( this.$root.remote )
                 })
             })
         }

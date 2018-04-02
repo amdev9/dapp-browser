@@ -26,11 +26,11 @@ class DappManager {
         return fs.existsSync( filepath ) ? fs.readFileSync( filepath ).toString() : null
     }
 
-    findOneUnicKey ( name ) {
+    findOneData ( name ) {
         const _path = path.join(__dirname, '../dapps/users/')
         const dapps = this.getDirSync( _path )
         
-        let key = null
+        const data = {}
 
         for (let i = 0; i < dapps.length; i++) {
             let object = this.getFileSync(_path + dapps[i] + '/manifest.json')
@@ -42,12 +42,18 @@ class DappManager {
             }
 
             if ( object.unic == name ) {
-                key = object.key
+                let url = 'users/' + object.key + '/'
+
+                data.id = object.key
+                data.name = object.name
+                data.icon = url + object.icon
+                data.src = url + object.index
+                
                 break
             }
         }
 
-        return key
+        return data
     }
 
     set setValue ( val ) {
@@ -61,13 +67,10 @@ class DappManager {
         const name = this.params.length ? this.params.shift() : ''
         const network = this.params.length ? this.params.shift().split( '/' ).join( '' ) : ''
 
-        const key = this.findOneUnicKey( name )
-        
-        return {
-            key: key,
-            name: name,
-            network: network
-        }
+        const data = this.findOneData( name )
+        data.network = network
+
+        return data
     }
 }
 

@@ -30,7 +30,13 @@ child.stdout.on('data', () => {
         min_height: 650
     }, target => {
         server = target
-        server.window._webreq = manager.getValue
+
+        const message = manager.getValue
+        message.start = true
+
+        server.window.addEventListener('DOMContentLoaded', event => {
+            server.window.postMessage(message, '*')
+        })
 
         server.on('close', () => child.kill())
 
@@ -41,7 +47,9 @@ child.stdout.on('data', () => {
 
 gui.App.on('open', argv => {
     manager.setValue = argv
-    server.window._webreq = manager.getValue
 
-    server.window.postMessage('message', '*')
+    const message = manager.getValue
+    message.start = false
+    
+    server.window.postMessage(message, '*')
 })

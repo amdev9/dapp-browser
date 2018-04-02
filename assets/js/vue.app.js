@@ -8,6 +8,7 @@
             aside: {},
             market: null,
             frames: {},
+            remote: {},
             logger: false,
             notify: false,
             context: null,
@@ -26,19 +27,34 @@
                 if ( !value ) this.currentFrame = null
             }
         },
+        methods: {
+            argv ( value ) {
+                if ( !value.id ) return
+                
+                this.viewapp = true
+                this.currentFrame = value.id
+
+                let frames = Object.assign({}, this.frames)
+                frames[value.id] = {id: value.id, src: value.src}
+
+                this.frames = frames
+                this.pagetitle = value.name
+                this.apptitle = value.name.replace(' ', '_').toLowerCase()
+
+                if ( !this.aside.pins.hasOwnProperty( value.id ) )
+                    this.aside.apps[value.id] = {icon: value.icon, src: value.src, name: value.name}
+            }
+        },
         mounted () {
             this.aside = {pins: {}, apps: {}}
             this.pagetitle = this.translate( 'home' )
 
             document.addEventListener('click', event => this.context = null)
 
-            if ( !window._webreq.key ) return
-            alert( window._webreq.key )
+            window.addEventListener('message',  event => {
+                this.remote = event.data
+                if ( !event.data.start ) this.argv( this.remote )
+            })
         }
-    })
-
-    window.addEventListener('message', ( event ) => {
-        if ( !window._webreq.key ) return
-        alert( window._webreq.key )
     })
 })( this );
