@@ -28,21 +28,21 @@
             }
         },
         methods: {
-            argv ( value ) {
-                if ( !value.id ) return
+            sidebar ( object ) {
+                if ( !object.id ) return
                 
                 this.viewapp = true
-                this.currentFrame = value.id
+                this.currentFrame = object.id
 
                 let frames = Object.assign({}, this.frames)
-                frames[value.id] = {id: value.id, src: value.src}
+                frames[object.id] = {id: object.id, src: object.src}
 
                 this.frames = frames
-                this.pagetitle = value.name
-                this.apptitle = value.name.replace(' ', '_').toLowerCase()
+                this.pagetitle = object.name
+                this.apptitle = object.name.replace(' ', '_').toLowerCase()
 
-                if ( !this.aside.pins.hasOwnProperty( value.id ) )
-                    this.aside.apps[value.id] = {icon: value.icon, src: value.src, name: value.name}
+                if ( !this.aside.pins.hasOwnProperty( object.id ) )
+                    this.aside.apps[object.id] = {icon: object.icon, src: object.src, name: object.name}
             }
         },
         mounted () {
@@ -53,7 +53,15 @@
 
             window.addEventListener('message',  event => {
                 this.remote = event.data
-                if ( !event.data.start ) this.argv( this.remote )
+
+                if ( event.data.start ) return
+
+                this.sidebar( this.remote )
+
+                this.$nextTick(function () {
+                    let content = document.getElementById( this.remote.id )
+                    content.contentWindow.postMessage(this.remote.params, '*')
+                })
             })
         }
     })

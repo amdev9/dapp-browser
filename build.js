@@ -10,8 +10,7 @@ const object = new NwBuilder({
     platforms: ['osx64'],
     buildDir: './dist',
     flavor: 'sdk', // normal
-    macPlist: './Info.plist',
-    production: true
+    macPlist: './Info.plist'
 })
 
 object.build(function ( error ) {

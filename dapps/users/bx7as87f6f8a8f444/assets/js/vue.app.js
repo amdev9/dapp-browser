@@ -24,6 +24,25 @@
             target: null,
             current: {},
         },
+        methods: {
+            getroom ( object ) {
+                if ( !object || !object.room ) return
+
+                for (const key in this.rooms) {
+                    if ( object.room.toLowerCase() == this.rooms[key].name.toLowerCase() ) {
+                        this.target = this.rooms[key].key
+                        this.current = this.rooms[this.target]
+
+                        this.$nextTick(function () {
+                            let container = document.getElementById( 'overflow' )
+                            container.scrollTop = container.scrollHeight
+                        })
+
+                        break
+                    }    
+                }
+            }
+        },
         mounted () {
             API.Http.post('/web', {message_type: 'find'}, response => {
                 let object = JSON.parse( response )
@@ -34,6 +53,7 @@
                 }
 
                 this.rooms = rooms
+                this.getroom( argv )
             })
 
             API.Room.message(response => {
@@ -53,7 +73,10 @@
                 
                 API.Http.post('/web', {message_type: 'update', where: {key: this.current.key}, message: this.current})
             })
+
+            window.addEventListener('message', event => {
+                this.getroom( event.data )
+            })
         }
     })
-
 })();

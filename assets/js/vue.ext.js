@@ -262,10 +262,10 @@
         props: ['id', 'src'],
         mounted () {
             this.$root.loading = true
-            this.$el.contentWindow.argv = this.$root.remote.params
 
             this.$nextTick(function () {
                 this.$root.loading = false
+                this.$el.contentWindow.argv = this.$root.remote.params
             })
         }
     })
@@ -444,7 +444,7 @@
 
                 this.$nextTick(function () {
                     this.$root.loading = false
-                    this.$root.argv( this.$root.remote )
+                    this.$root.sidebar( this.$root.remote )
                 })
             })
         }
