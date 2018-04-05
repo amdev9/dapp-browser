@@ -1,15 +1,16 @@
 {
     "version": "1.0",
   
-    "key": "fb7g70s0fje73dds0",
-    "name": "Contact Book",
+    "key": "000000000000000",
+    "name": "Demo App",
+    "unic": "demo",
     "tags": ["tools"],
     "icon": "favicon.png",
     "thumb": "thumb.png",
     "index": "index.html",
     "main" : "main.js",
 
-    "description": "This is a sample dapp app-13",
+    "description": "This is a demo dapp",
 
     "permissions": [
         "web", "log"

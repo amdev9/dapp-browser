@@ -18,6 +18,8 @@
     "express": "~4.15.5",
     "ipfs": "^0.28.2",
     "ipfs-pubsub-room": "^1.1.5",
+    "leveldown": "^3.0.0",
+    "levelup": "^2.0.2",
     "md5": "^2.2.1",
     "nedb": "^1.8.0",
     "node-datetime": "^2.0.6",

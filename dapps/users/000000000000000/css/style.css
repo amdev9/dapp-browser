@@ -1,0 +1,82 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+html {
+	height: 100%;
+}
+
+article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, section, summary {
+	display: block;
+}
+
+body {
+	font: 12px/18px Arial, sans-serif;
+    height: 100%;
+    color: #2f2f2f
+}
+
+a, a:hover, a:focus {
+    color: #2f2f2f
+}
+
+.wrapper {
+	margin: 0 auto;
+	height: 100%;
+}
+
+
+/* Header
+-----------------------------------------------------------------------------*/
+header {
+	height: 60px;
+	background: #e0e0e0;
+}
+
+header h5 {
+    margin: 0;
+    padding: 18px 15px;
+}
+
+
+/* Middle
+-----------------------------------------------------------------------------*/
+.middle {
+    height: calc(100% - 60px);
+}
+
+.middle .min-100 {
+    min-height: 100%;
+    margin: 0
+}
+
+main {
+    padding: 10px 0
+}
+
+
+/* Left Sidebar
+-----------------------------------------------------------------------------*/
+aside {
+	position: relative;
+	background: #f5f5f5;
+}
+
+aside ul {
+    margin: 0;
+    padding: 0;
+}
+
+aside ul li {
+    list-style: none;
+    display: block;
+    margin: 0 -15px;
+    border-bottom: 1px solid #e0e0e0
+}
+
+aside ul li a {
+    font-size: 18px;
+    display: block;
+    padding: 15px 10px
+}

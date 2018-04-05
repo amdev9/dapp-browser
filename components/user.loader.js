@@ -59,9 +59,6 @@ class UserDappsLoader {
 
         this.items.push( object )
 
-        // let sandbox = {Events: new EventBus(), system: new UseLib( 'system.id' )}
-        // new NodeVM({sandbox: sandbox}).run( code )
-
         const Events = new EventBus()
         Events.data.key = object.key
 

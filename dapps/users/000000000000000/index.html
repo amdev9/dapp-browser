@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Demo</title>
+
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="wrapper">
+    
+    <header>
+        <h5>Demo App</h5>
+    </header>
+    
+    <div class="middle">
+        <div class="row min-100">
+            <aside class="col-md-4 col-lg-3">
+                <ul>
+                    <li><a href="index.html">Main</a></li>
+                    <li><a href="other.html">Other</a></li>
+                </ul>
+            </aside>
+
+            <main class="col-md-8 col-lg-9">
+                <div class="mb-3">
+                    <strong>argv:</strong>
+                    <pre id="data">{}</pre>
+                </div>
+
+                <div class="form-group">
+                    <input type="text" id="params" class="form-control" placeholder="Params">
+                    <span class="form-text text-muted">key=value&key2=value2</span>
+                </div>
+
+                <a href="arr://demo:mainet/" class="btn btn-success" id="open">Open This Dapp With Params</a>
+                <a href="arr://demo:mainet/?page=other" class="btn btn-primary ml-2" id="open">Open Other Page</a>
+            </main>
+        </div>
+    </div>
+</div>
+        
+<script src="js/index.js"></script>
+</body>
+</html>

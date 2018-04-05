@@ -21,6 +21,8 @@ nw.Window.open('connect.html', {
 }, target => {
     connect = target
     connect.show()
+
+    connect.on('close', () => child.kill())
 })
 
 child.stdout.on('data', () => {
@@ -40,7 +42,7 @@ child.stdout.on('data', () => {
 
         server.on('close', () => child.kill())
 
-        connect.close()
+        connect.hide()
         server.show()
     })
 })
