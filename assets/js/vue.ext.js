@@ -123,6 +123,8 @@
                 this.$root.apptitle = null
                 this.$root.pagetitle = this.translate( 'home' )
                 this.$root.currentView = 'view-index'
+
+                console.log( 'frames: ', this.$root.frames )
             },
             prevent () {
                 this.$root.currentView = this.$root.preventView
@@ -265,7 +267,7 @@
 
             this.$nextTick(function () {
                 this.$root.loading = false
-                this.$el.contentWindow.argv = this.$root.remote.params
+                this.$el.loaded = true
             })
         }
     })
@@ -434,17 +436,20 @@
 
                 data.setting.forEach(item => this.$root.setting[item.group] = item)
 
+                let pins = {}
+
                 data.pins.forEach(app => {
-                    this.$root.aside.pins[app.key] = {
+                    pins[app.key] = {
                         src: app.index,
                         icon: app.icon,
                         name: app.name
                     }
                 })
 
+                this.$root.aside.pins = pins
+
                 this.$nextTick(function () {
                     this.$root.loading = false
-                    this.$root.sidebar( this.$root.remote )
                 })
             })
         }

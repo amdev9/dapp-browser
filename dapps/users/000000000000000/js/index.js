@@ -2,26 +2,23 @@
 
     'use strict'
 
+    // Request
+    const request = 'arr://demo:mainet/'
+
+    // Var
     const open = document.getElementById( 'open' )
-    const data = document.getElementById( 'data' )
+    const code = document.getElementById( 'code' )
+    const route = document.getElementById( 'route' )
     const params = document.getElementById( 'params' )
 
-    // Location
+    // Reopen With Params
     open.addEventListener('click', function ( event ) {
-        event.preventDefault()
-
-        let href = this.getAttribute( 'href' )
-        let url = href + '?' + params.value
-
-        location.href = url
+        location.href = request + '?' + params.value
     })
 
-    // DOM conent loaded
-    data.innerHTML = window.argv ? JSON.stringify( window.argv ) : '{}'
-
-    console.log( window.argv )
-
-    // Focus window event
-    window.addEventListener('message', event => data.innerHTML = JSON.stringify( event.data ))
+    // Event Post Message
+    window.addEventListener('message', event => {
+        code.innerHTML = JSON.stringify( event.data )
+    })
 
 })();

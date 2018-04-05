@@ -2,7 +2,7 @@
     "version": "1.0",
   
     "key": "000000000000000",
-    "name": "Demo App",
+    "name": "API Demos",
     "unic": "demo",
     "tags": ["tools"],
     "icon": "favicon.png",
@@ -10,7 +10,7 @@
     "index": "index.html",
     "main" : "main.js",
 
-    "description": "This is a demo dapp",
+    "description": "This is a api demo dapp",
 
     "permissions": [
         "web", "log"

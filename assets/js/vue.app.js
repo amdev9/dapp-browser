@@ -54,13 +54,19 @@
             window.addEventListener('message',  event => {
                 this.remote = event.data
 
-                if ( event.data.start ) return
-
                 this.sidebar( this.remote )
 
                 this.$nextTick(function () {
                     let content = document.getElementById( this.remote.id )
-                    content.contentWindow.postMessage(this.remote.params, '*')
+
+                    if ( !content ) return
+                     
+                    if ( content.loaded )
+                        return content.contentWindow.postMessage(this.remote.params, '*')
+                    
+                    content.contentWindow.addEventListener('DOMContentLoaded', () => {
+                        content.contentWindow.postMessage(this.remote.params, '*')
+                    })
                 })
             })
         }

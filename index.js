@@ -5,9 +5,6 @@ const gui = require( 'nw.gui' )
 const child = child_process.exec( './array ./bin/www' )
 child.on('close', () => gui.App.quit())
 
-const manager = new Manager()
-manager.setValue = gui.App.argv
-
 var connect
 var server
 
@@ -33,11 +30,11 @@ child.stdout.on('data', () => {
     }, target => {
         server = target
 
-        const message = manager.getValue
-        message.start = true
+        const manager = new Manager()
+        manager.setValue = gui.App.argv
 
         server.window.addEventListener('DOMContentLoaded', event => {
-            server.window.postMessage(message, '*')
+            server.window.postMessage(manager.getValue, '*')
         })
 
         server.on('close', () => child.kill())
@@ -48,10 +45,8 @@ child.stdout.on('data', () => {
 })
 
 gui.App.on('open', argv => {
+    const manager = new Manager()
     manager.setValue = argv
-
-    const message = manager.getValue
-    message.start = false
     
-    server.window.postMessage(message, '*')
+    server.window.postMessage(manager.getValue, '*')
 })

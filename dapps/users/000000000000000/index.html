@@ -7,38 +7,45 @@
 
     <title>Demo</title>
 
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&subset=cyrillic" rel="stylesheet">
+
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <div class="wrapper">
-    
-    <header>
-        <h5>Demo App</h5>
-    </header>
-    
     <div class="middle">
         <div class="row min-100">
             <aside class="col-md-4 col-lg-3">
+                <h5><strong>API Demos</strong></h5>
+
                 <ul>
-                    <li><a href="index.html">Main</a></li>
-                    <li><a href="other.html">Other</a></li>
+                    <li class="active"><a href="index.html">Request Page</a></li>
+                    <li><a href="scroll.html">Scroll Content</a></li>
+                    <li><a href="index.html">Empty Page</a></li>
                 </ul>
             </aside>
 
             <main class="col-md-8 col-lg-9">
+                <h4 class="title">Request Page</h4>
+                
+                <blockquote>
+                    <p>Esse nulla pariatur nulla culpa pariatur nisi consectetur laboris cupidatat deserunt et. Labore aliqua Lorem excepteur incididunt elit adipisicing fugiat amet esse enim consectetur in. Voluptate qui nulla aute sunt ad reprehenderit ex velit consequat deserunt excepteur. Sit consectetur do ex id fugiat esse pariatur commodo labore cupidatat labore amet.</p>
+                </blockquote>
+                      
                 <div class="mb-3">
                     <strong>argv:</strong>
-                    <pre id="data">{}</pre>
+                    <pre id="code">{}</pre>
                 </div>
 
                 <div class="form-group">
-                    <input type="text" id="params" class="form-control" placeholder="Params">
-                    <span class="form-text text-muted">key=value&key2=value2</span>
+                    <input type="text" id="params" class="form-control">
+                    <small class="form-text text-muted"><em>key=value&key2=value2</em></small>
                 </div>
 
-                <a href="arr://demo:mainet/" class="btn btn-success" id="open">Open This Dapp With Params</a>
-                <a href="arr://demo:mainet/?page=other" class="btn btn-primary ml-2" id="open">Open Other Page</a>
+                <div class="form-group">
+                    <button class="btn btn-info" id="open">Request With Params</button>
+                </div>
             </main>
         </div>
     </div>
