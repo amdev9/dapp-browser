@@ -7,7 +7,7 @@
     "tags": ["tools"],
     "icon": "favicon.png",
     "thumb": "thumb.png",
-    "index": "index.html",
+    "index": "views/index.html",
     "main" : "main.js",
 
     "description": "This is a api demo dapp",

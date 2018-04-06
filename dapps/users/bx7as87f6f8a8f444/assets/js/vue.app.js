@@ -33,6 +33,8 @@
                         this.target = this.rooms[key].key
                         this.current = this.rooms[this.target]
 
+                        API.Room.connect( this.target )
+
                         this.$nextTick(function () {
                             let container = document.getElementById( 'overflow' )
                             container.scrollTop = container.scrollHeight
@@ -53,8 +55,7 @@
                 }
 
                 this.rooms = rooms
-                this.getroom( argv )
-            })
+            }, true)
 
             API.Room.message(response => {
                 let object = JSON.parse( response )

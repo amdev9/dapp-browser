@@ -9,8 +9,8 @@
 
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&subset=cyrillic" rel="stylesheet">
 
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
 <div class="wrapper">
@@ -22,7 +22,7 @@
                 <ul>
                     <li><a href="index.html">Request Page</a></li>
                     <li class="active"><a href="scroll.html">Scroll Content</a></li>
-                    <li><a href="index.html">Empty Page</a></li>
+                    <li><a href="empty.html">Empty Page</a></li>
                 </ul>
             </aside>
 
@@ -32,6 +32,22 @@
                 <blockquote>
                     <p>Esse nulla pariatur nulla culpa pariatur nisi consectetur laboris cupidatat deserunt et. Labore aliqua Lorem excepteur incididunt elit adipisicing fugiat amet esse enim consectetur in. Voluptate qui nulla aute sunt ad reprehenderit ex velit consequat deserunt excepteur. Sit consectetur do ex id fugiat esse pariatur commodo labore cupidatat labore amet.</p>
                 </blockquote>
+
+                <div class="mb-3">
+                    <strong>argv:</strong>
+                    <pre id="code">{}</pre>
+                </div>
+
+                <div class="form-group">
+                    <button class="btn btn-info" id="scroll">Scroll With Params</button>
+                </div>
+
+                <div class="btn-group group mb-3">
+                    <button type="button" class="btn btn-secondary item" data-href="one">One</button>
+                    <button type="button" class="btn btn-secondary item" data-href="two">Two</button>
+                    <button type="button" class="btn btn-secondary item" data-href="three">Three</button>
+                    <button type="button" class="btn btn-secondary item" data-href="four">Four</button>
+                </div>
                       
                 <section id="one">
                     <h5>One Section</h5>
@@ -60,5 +76,7 @@
         </div>
     </div>
 </div>
+
+<script src="../js/scroll.js"></script>
 </body>
 </html>

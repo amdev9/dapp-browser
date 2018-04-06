@@ -57,18 +57,18 @@
         }),
 
         Http: Object.freeze({
-            get: (url, func) => {
+            get: (url, func, sync = false) => {
                 var request = new XMLHttpRequest()
     
-                request.open('get', url)
+                request.open('get', url, !sync)
                 API.Http[_private](request, func)
                 request.send()
             },
 
-            post: (url, data, func) => {
+            post: (url, data, func, sync = false) => {
                 var request = new XMLHttpRequest()
     
-                request.open('post', url)
+                request.open('post', url, !sync)
                 request.setRequestHeader('Content-Type', 'application/json')
 
                 API.Http[_private](request, func)
