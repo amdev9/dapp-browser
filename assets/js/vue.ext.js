@@ -84,9 +84,7 @@
             change () {
                 this.data.type == 'app' ? this.pin() : this.app()
 
-                this.$http.post('/setting.pin', {key: this.data.id}).then(response => {
-                    console.log( response.body )
-                })
+                this.$http.post('/setting.pin', {key: this.data.id})
             },
             close () {
                 let frames = Object.assign({}, this.$root.frames)
@@ -123,8 +121,6 @@
                 this.$root.apptitle = null
                 this.$root.pagetitle = this.translate( 'home' )
                 this.$root.currentView = 'view-index'
-
-                console.log( 'frames: ', this.$root.frames )
             },
             prevent () {
                 this.$root.currentView = this.$root.preventView
@@ -152,7 +148,7 @@
 
     Vue.component('app-opened', {
         template: opened.import.template(),
-        props: ['id', 'image', 'icon', 'src', 'name'],
+        props: ['id', 'image', 'icon', 'src', 'name', 'active'],
         methods: {
             click () {
                 let frames = Object.assign({}, this.$root.frames)
@@ -254,7 +250,7 @@
                 this.$root.apptitle = this.name.replace(RegExp(' ', 'g') , '_').toLowerCase()
 
                 if ( !this.$root.aside.pins.hasOwnProperty( this.id ) )
-                    this.$root.aside.apps[this.id] = {icon: this.icon, src: this.src, name: this.name}
+                    this.$root.aside.apps[this.id] = {icon: this.icon, src: this.src, name: this.name, active: true}
             }
         }
     })
@@ -442,7 +438,8 @@
                     pins[app.key] = {
                         src: app.index,
                         icon: app.icon,
-                        name: app.name
+                        name: app.name,
+                        active: false
                     }
                 })
 

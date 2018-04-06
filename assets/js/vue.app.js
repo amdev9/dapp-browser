@@ -25,6 +25,15 @@
         watch: {
             viewapp ( value ) {
                 if ( !value ) this.currentFrame = null
+            },
+            currentFrame ( value ) {
+                for (const type in this.aside) {
+                    for (const key in this.aside[type]) {
+                        this.aside[type][key].active = null
+
+                        if ( key == value ) this.aside[type][key].active = true
+                    }
+                }
             }
         },
         methods: {
@@ -42,7 +51,7 @@
                 this.apptitle = object.name.replace(' ', '_').toLowerCase()
 
                 if ( !this.aside.pins.hasOwnProperty( object.id ) )
-                    this.aside.apps[object.id] = {icon: object.icon, src: object.src, name: object.name}
+                    this.aside.apps[object.id] = {icon: object.icon, src: object.src, name: object.name, active: true}
             }
         },
         mounted () {

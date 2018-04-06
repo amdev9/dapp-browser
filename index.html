@@ -41,11 +41,11 @@
 
 	<app-aside>
 		<div class="pins">
-			<app-opened v-for="(value, key) in aside.pins" :name="value.name" :icon="value.icon" :image="'images/favicon.svg'" :src="value.src" :id="key"></app-opened>
+			<app-opened v-for="(value, key) in aside.pins" :name="value.name" :icon="value.icon" :image="'images/favicon.svg'" :src="value.src" :active="value.active" :id="key"></app-opened>
 		</div>
 	
 		<div class="apps">
-			<app-opened v-for="(value, key) in aside.apps" :name="value.name" :icon="value.icon" :image="'images/favicon.svg'" :src="value.src" :id="key"></app-opened>
+			<app-opened v-for="(value, key) in aside.apps" :name="value.name" :icon="value.icon" :image="'images/favicon.svg'" :src="value.src" :active="value.active" :id="key"></app-opened>
 		</div>
 	</app-aside>
 

@@ -7,8 +7,6 @@
 	// Forms
     const create = document.querySelector( 'form[name = create]' )
 	const connect = document.querySelector( 'form[name = connect]' )
-
-	connect.querySelector( '[name = message]' ).value = argv.room || ''
 	
 	const ready = ( response ) => {
 		let object = JSON.parse( response )
@@ -36,5 +34,10 @@
     connect.addEventListener('submit', function ( event ) {
         event.preventDefault()
         API.Room[this.name](this.message.value, ready)
+	})
+
+	// Event Post Message
+	window.addEventListener('message', event => {
+		connect.querySelector( '[name = message]' ).value = event.data.room || ''
 	})
 })()
