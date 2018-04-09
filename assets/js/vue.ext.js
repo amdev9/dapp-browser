@@ -143,7 +143,7 @@
     })
 
     Vue.component('app-aside', {
-        template: aside.import.template()
+        template: aside.import.template(),
     })
 
     Vue.component('app-opened', {
@@ -188,21 +188,36 @@
         data () {
             return {
                 open: false,
+                show: false,
                 content: ''
             }
         },
         methods: {
+            showall () {
+               this.show = !this.show
+               this._offset()
+            },
             toogle () {
                 this.open = !this.open
-                this.$root.logger = this.open
                 this.$refs.console.scrollTop = this.$refs.console.scrollHeight
-                
-                if ( !this.$root.logger ) return
 
+                this._offset()  
+            },
+            _offset () {
                 setTimeout(() => {
-                    let frame = document.getElementById( this.$root.currentFrame )
-                    frame.contentWindow.scrollTo(0, frame.contentDocument.body.clientHeight)
-                }, 0)
+                    let panel = this.$refs.panel.clientHeight - 45
+                    let size = panel + 250
+
+                    this.$root.offset = this.open ? size : panel
+
+                    setTimeout(() => {
+                        let frame = document.getElementById( this.$root.currentFrame )
+
+                        if ( !frame ) return
+
+                        frame.contentWindow.scrollBy(0, 1000 * 1000)
+                    })
+                })
             }
         },
         mounted () {

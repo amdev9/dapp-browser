@@ -19,7 +19,7 @@
 	<script src="/i18n/en.js"></script>
 	<script src="/i18n/ru.js"></script>
 
-	<!-- View -->
+	<!-- Dev Mode -->
 	<link href="/app-header.vue"  id="header"  rel="import">
 	<link href="/app-aside.vue"   id="aside"   rel="import">
 	<link href="/app-card.vue"    id="card"    rel="import">
@@ -49,7 +49,7 @@
 		</div>
 	</app-aside>
 
-	<main :class="{viewapp: viewapp, logger: logger}">
+	<main :class="{viewapp: viewapp}" :style="{'margin-bottom': offset + 'px'}">
 		<app-context v-if="context" :data="context"></app-context>
 
 		<div class="views" :class="{showin: viewapp}">

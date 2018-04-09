@@ -1,11 +1,7 @@
 <template>
     <aside>
-        <div class="overflow">
+        <div class="overflow" :style="{'margin-bottom': $root.offset + 45 + 'px'}">
             <slot></slot>
-        </div>
-
-        <div class="indicator">
-            <img src="/images/icons/indicator.svg" class="svg">
         </div>
     </aside>
 </template>

@@ -9,7 +9,7 @@
             market: null,
             frames: {},
             remote: {},
-            logger: false,
+            offset: 0,
             notify: false,
             context: null,
             viewapp: false,

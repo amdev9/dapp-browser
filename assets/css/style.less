@@ -39,15 +39,6 @@ body {
 		background: @white url('../images/spinner.svg') no-repeat center;
 		.transition()
 	}
-
-	// &.loading {
-	// 	overflow: hidden;
-
-	// 	&:after {
-	// 		opacity: 1;
-	// 		visibility: visible;
-	// 	}
-	// }
 }
 
 .transition(@property: all, @delay: .15s, @duration: ease-in-out) {
@@ -457,19 +448,6 @@ aside {
 	.pins {
 		border-bottom: 1px solid #E9EEF5;
 	}
-
-	.indicator {
-		position: absolute;
-		left: 0;
-		right: 0;
-		width: 15px;
-		margin: 0 auto;
-		bottom: 15px;
-
-		polygon:first-child {
-			fill: @theme
-		}
-	}
 }
 
 
@@ -480,16 +458,12 @@ main {
 	overflow: auto;
 	padding: 60px 40px 40px 102px;
 
-	&.logger {
-		margin-bottom: 270px
-	}
-
 	&.viewapp {
 		position: absolute;
 		top: 60px;
 		left: 62px;
 		right: 0;
-		bottom: 15px;
+		bottom: 45px;
 		overflow: hidden;
 	}
 
@@ -922,46 +896,116 @@ main {
 	.view-code {
 		position: fixed;
 		margin: 0 auto; 
-		left: 62px;
+		left: 0;
 		right: 0;
 		bottom: 0;
 		z-index: 10;
+		padding-left: 62px;
+		background: @light;
+
+		&-indicator {
+			position: absolute;
+			left: 22px;
+			top: 15px;
+			cursor: pointer;
+			width: 15px;
+			margin: 0 auto;
+	
+			.shape-right {
+				animation: pulse 1.5s infinite;
+			}
+
+			svg {
+				path {
+					.transition()
+				}
+			}
+
+			&:hover {
+				svg {
+					path {
+						fill: @theme
+					}
+				}
+			}
+
+			svg.destroy {
+				display: none;
+			}
+
+			&.showall {
+				svg.destroy {
+					display: block
+				}
+
+				svg.status {
+					display: none
+				}
+			}
+
+			 
+		}
 			
 		&-panel {
 			position: relative;
 			cursor: pointer;
-			height: 30px;
-			line-height: 30px;
-			padding: 0 30px 0 40px;
-			background: #EFF9FF url('../images/icons/up.svg') no-repeat right 10px center;
-			background-size: auto 50%;
+			height: 45px;
+			overflow: hidden;
+			line-height: 45px;
+			padding: 0 15px;
+			background: @light;
+			border-left: 1px solid @gray;
 
-			&:before {
-				position: absolute;
-				content: '';
-				height: 18px;
-				width: 30px;
-				top: 6px;
-				left: 5px;
-				background: url('../images/icons/console.svg') no-repeat center;
-				background-size: auto 100%
+			&.showall {
+				height: auto;
 			}
 
-			span {
-				font-size: 12px;
-				display: block;
-				color: @theme;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				white-space: nowrap;
+			.row + .row {
+				border-top: 1px solid @gray;
 			}
 
-			.icon {
-				position: absolute;
+			&.showall {
+				.row {
+					visibility: visible;
+				}
 
-				&-console {
-					left: 10px;
-					top: 5px;
+				.url {
+					visibility: visible
+				}
+			}
+
+			span, small {
+				font-size: 13px;
+				color: @dark;
+				vertical-align: middle;
+
+				&.url {
+					display: block;
+					line-height: normal;
+					margin: -10px 0 10px;
+					visibility: hidden;
+				}
+			}
+
+			small {
+				color: @dgray
+			}
+
+			svg {
+				display: inline-block;
+				margin: 0 10px 0 0;
+				vertical-align: middle;
+
+				.line-1 {
+					animation: coords 1.5s infinite;
+				}
+
+				.line-2 {
+					animation: coords 1s infinite;
+				}
+
+				.line-3 {
+					animation: coords .5s infinite;
 				}
 			}
 		}
@@ -974,7 +1018,6 @@ main {
 			opacity: 0;
 			z-index: 10;
 			background: #163246;
-			.transition();
 
 			p {
 				margin: 0 0 15px;
@@ -988,7 +1031,7 @@ main {
 			}
 
 			&.visible {
-				height: 270px;
+				height: 250px;
 				opacity: 1;
 				padding: 30px 30px 15px;
 			}
@@ -1193,5 +1236,29 @@ main {
 				}
 			}
 		}
+	}
+}
+
+@keyframes pulse {
+	0% {
+		fill: #D3DAE2
+	}
+	50% {
+		fill: @theme
+	}
+	100% {
+		fill: #D3DAE2
+	}
+}
+
+@keyframes coords {
+	0% {
+		y: 0
+	}
+	50% {
+		y: 12
+	}
+	100% {
+		y: 0
 	}
 }

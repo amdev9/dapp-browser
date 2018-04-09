@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <g id="UC01_3_Address_bar_search" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-643.000000, -22.000000)">
-        <g id="Header">
-            <g id="Address_bar" transform="translate(78.000000, 13.000000)">
-                <g id="close_icon" transform="translate(565.000000, 9.000000)">
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-643.000000, -22.000000)">
+        <g>
+            <g transform="translate(78.000000, 13.000000)">
+                <g transform="translate(565.000000, 9.000000)">
                     <g transform="translate(-6.000000, -6.000000)">
-                        <rect id="Rectangle-12" fill="#BBD4E6" opacity="0" x="6" y="6" width="15" height="15"></rect>
+                        <rect fill="#BBD4E6" opacity="0" x="6" y="6" width="15" height="15"></rect>
                         <path d="M13.0982764,13.9132032 L4.40835158,13.9132032 C4.15838089,13.9132032 3.9557396,13.7105619 3.9557396,13.4605912 C3.9557396,13.2106205 4.15838089,13.0079792 4.40835158,13.0079792 L13.0982764,13.0079792 L13.0982764,4.40835158 C13.0982764,4.15838089 13.3009177,3.9557396 13.5508884,3.9557396 C13.8008591,3.9557396 14.0035004,4.15838089 14.0035004,4.40835158 L14.0035004,13.0079792 L22.603128,13.0079792 C22.8530987,13.0079792 23.05574,13.2106205 23.05574,13.4605912 C23.05574,13.7105619 22.8530987,13.9132032 22.603128,13.9132032 L14.0035004,13.9132032 L14.0035004,22.603128 C14.0035004,22.8530987 13.8008591,23.05574 13.5508884,23.05574 C13.3009177,23.05574 13.0982764,22.8530987 13.0982764,22.603128 L13.0982764,13.9132032 Z" fill="#C8CED7" transform="translate(13.505740, 13.505740) rotate(45.000000) translate(-13.505740, -13.505740) "></path>
                     </g>
                 </g>

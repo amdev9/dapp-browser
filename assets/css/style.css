@@ -369,17 +369,6 @@ aside .pins *:last-child {
 aside .pins {
   border-bottom: 1px solid #E9EEF5;
 }
-aside .indicator {
-  position: absolute;
-  left: 0;
-  right: 0;
-  width: 15px;
-  margin: 0 auto;
-  bottom: 15px;
-}
-aside .indicator polygon:first-child {
-  fill: #4686FF;
-}
 /* Middle
 -----------------------------------------------------------------------------*/
 main {
@@ -387,15 +376,12 @@ main {
   overflow: auto;
   padding: 60px 40px 40px 102px;
 }
-main.logger {
-  margin-bottom: 270px;
-}
 main.viewapp {
   position: absolute;
   top: 60px;
   left: 62px;
   right: 0;
-  bottom: 15px;
+  bottom: 45px;
   overflow: hidden;
 }
 main .title {
@@ -722,44 +708,90 @@ main-empty span {
 main .view-code {
   position: fixed;
   margin: 0 auto;
-  left: 62px;
+  left: 0;
   right: 0;
   bottom: 0;
   z-index: 10;
+  padding-left: 62px;
+  background: #FAFAFC;
+}
+main .view-code-indicator {
+  position: absolute;
+  left: 22px;
+  top: 15px;
+  cursor: pointer;
+  width: 15px;
+  margin: 0 auto;
+}
+main .view-code-indicator .shape-right {
+  animation: pulse 1.5s infinite;
+}
+main .view-code-indicator svg path {
+  transition: all 0.15s ease-in-out;
+}
+main .view-code-indicator:hover svg path {
+  fill: #4686FF;
+}
+main .view-code-indicator svg.destroy {
+  display: none;
+}
+main .view-code-indicator.showall svg.destroy {
+  display: block;
+}
+main .view-code-indicator.showall svg.status {
+  display: none;
 }
 main .view-code-panel {
   position: relative;
   cursor: pointer;
-  height: 30px;
-  line-height: 30px;
-  padding: 0 30px 0 40px;
-  background: #EFF9FF url('../images/icons/up.svg') no-repeat right 10px center;
-  background-size: auto 50%;
-}
-main .view-code-panel:before {
-  position: absolute;
-  content: '';
-  height: 18px;
-  width: 30px;
-  top: 6px;
-  left: 5px;
-  background: url('../images/icons/console.svg') no-repeat center;
-  background-size: auto 100%;
-}
-main .view-code-panel span {
-  font-size: 12px;
-  display: block;
-  color: #4686FF;
+  height: 45px;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: 45px;
+  padding: 0 15px;
+  background: #FAFAFC;
+  border-left: 1px solid #F2F3F6;
 }
-main .view-code-panel .icon {
-  position: absolute;
+main .view-code-panel.showall {
+  height: auto;
 }
-main .view-code-panel .icon-console {
-  left: 10px;
-  top: 5px;
+main .view-code-panel .row + .row {
+  border-top: 1px solid #F2F3F6;
+}
+main .view-code-panel.showall .row {
+  visibility: visible;
+}
+main .view-code-panel.showall .url {
+  visibility: visible;
+}
+main .view-code-panel span,
+main .view-code-panel small {
+  font-size: 13px;
+  color: #252526;
+  vertical-align: middle;
+}
+main .view-code-panel span.url,
+main .view-code-panel small.url {
+  display: block;
+  line-height: normal;
+  margin: -10px 0 10px;
+  visibility: hidden;
+}
+main .view-code-panel small {
+  color: #7B8DA7;
+}
+main .view-code-panel svg {
+  display: inline-block;
+  margin: 0 10px 0 0;
+  vertical-align: middle;
+}
+main .view-code-panel svg .line-1 {
+  animation: coords 1.5s infinite;
+}
+main .view-code-panel svg .line-2 {
+  animation: coords 1s infinite;
+}
+main .view-code-panel svg .line-3 {
+  animation: coords .5s infinite;
 }
 main .view-code-console {
   height: 0;
@@ -769,7 +801,6 @@ main .view-code-console {
   opacity: 0;
   z-index: 10;
   background: #163246;
-  transition: all 0.15s ease-in-out;
 }
 main .view-code-console p {
   margin: 0 0 15px;
@@ -787,7 +818,7 @@ main .view-code-console span.warning {
   color: #ffc107;
 }
 main .view-code-console.visible {
-  height: 270px;
+  height: 250px;
   opacity: 1;
   padding: 30px 30px 15px;
 }
@@ -957,4 +988,26 @@ main .notifications-item-body {
 main .notifications-item-body span {
   font: 14px 'Open Sans', sans-serif;
   color: rgba(123, 141, 167, 0.5);
+}
+@keyframes pulse {
+  0% {
+    fill: #D3DAE2;
+  }
+  50% {
+    fill: #4686FF;
+  }
+  100% {
+    fill: #D3DAE2;
+  }
+}
+@keyframes coords {
+  0% {
+    y: 0;
+  }
+  50% {
+    y: 12;
+  }
+  100% {
+    y: 0;
+  }
 }
