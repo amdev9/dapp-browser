@@ -10,47 +10,13 @@ html, body {
     width: 100%;
     height: 100%;
     z-index: 999999999;
-}
 
-.circle {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: 0 auto;
-    background: rgba(0, 0, 0, .3);
-
-    &:before {
+    #animate {
         position: absolute;
-        content: '';
-        width: 300px;
-        height: 300px;
         top: 50%;
         left: 0;
         right: 0;
         bottom: 0;
-        margin: 0 auto;
-        background-image: radial-gradient(circle at center, #000B20 50%, transparent 100%);
-        border-radius: 50%;
         transform: translateY(-50%)
     }
-}
-
-.logo {
-    position: absolute;
-    width: 150px;
-    height: 150px;
-    background: #000B20 url('../images/logo.gif') no-repeat center;
-    background-size: cover;
-    border-radius: 50%;
-    top: 50%;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: 0 auto;
-    z-index: 1;
-    transform: translateY(-50%)
 }

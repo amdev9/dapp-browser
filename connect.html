@@ -11,8 +11,20 @@
 </head>
 <body>
     <div class="preloader">
-        <div class="logo"></div>
-        <div class="circle"></div>
+        <div id="animate"></div>
     </div>
+
+<script src="/assets/js/lottie.min.js"></script>
+<script>
+    const animate = document.getElementById( 'animate' )
+
+    bodymovin.loadAnimation({
+        container: animate,
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: '/assets/json/animate.json'
+    })
+</script>
 </body>
 </html>
