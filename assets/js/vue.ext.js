@@ -134,6 +134,17 @@
                 this.$root.pagetitle = 'Setting'
                 this.$root.currentView = 'view-setting'
             },
+            copy ( event ) {
+                let target = event.currentTarget
+                let select = document.createElement( 'textarea' )
+                select.value = target.innerText
+
+                document.body.appendChild( select )
+                select.select()
+
+                document.execCommand( 'Copy' )
+                select.parentNode.removeChild( select )
+            },
             _reset () {
                 this.$root.viewapp = false
                 this.$root.preventView = null

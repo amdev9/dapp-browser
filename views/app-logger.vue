@@ -9,7 +9,7 @@
             <div class="row">
                 <div class="col-auto">
                     <span>Berlin, Germany:</span> <small>connecting</small>
-                    <small class="url">anni://dchat/@olga</small>
+                    <small class="url">arr://chat/@olga</small>
                 </div>
 
                 <div class="col-auto">
@@ -31,7 +31,7 @@
             <div class="row">
                 <div class="col-auto">
                     <span>Berlin, Germany:</span> <small>connecting</small>
-                    <small class="url">anni://dchat/@olga</small>
+                    <small class="url">arr://chat/@olga</small>
                 </div>
 
                 <div class="col-auto">

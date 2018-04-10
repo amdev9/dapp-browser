@@ -14,7 +14,10 @@
                             <button type="button"><img src="/images/icons/back.svg" class="svg"></button>    
                         </div>
 
-                        <div class="col-auto navbar-user-title" v-if="!search">{{ $root.pagetitle }}</div>
+                        <div class="col-auto navbar-user-title" v-if="!search">
+                            <span class="apptitle" v-if="$root.apptitle" @click="copy">arr://{{ $root.apptitle }}</span>
+                            <span class="pagetitle">{{ $root.pagetitle }}</span>
+                        </div>
 
                         <div class="navbar-user-uri" v-if="search"><span>uri:</span> </div>
 

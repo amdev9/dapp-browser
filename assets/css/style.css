@@ -276,6 +276,21 @@ header .navbar-user-nav > button.inverse:hover svg path {
 header .navbar-user-nav > button + button {
   margin-left: 15px;
 }
+header .navbar-user-title .apptitle {
+  cursor: pointer;
+  display: none;
+}
+header .navbar-user-title:hover .apptitle {
+  display: block;
+}
+header .navbar-user-title:hover .apptitle + .pagetitle {
+  display: none;
+}
+header .navbar-user-title textarea {
+  position: absolute;
+  opacity: 0;
+  border: 0;
+}
 aside {
   position: absolute;
   width: 62px;

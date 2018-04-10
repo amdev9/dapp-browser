@@ -342,6 +342,29 @@ header {
 					}
 				}
 			}
+
+			&-title {
+				.apptitle {
+					cursor: pointer;
+					display: none
+				}
+
+				&:hover {
+					.apptitle {
+						display: block;
+
+						& + .pagetitle { 
+							display: none
+						}
+					}
+				}
+
+				textarea { 
+					position: absolute;
+					opacity: 0;
+					border: 0
+				}
+			}
 		}
 	}
 }
