@@ -144,6 +144,29 @@
 
                 document.execCommand( 'Copy' )
                 select.parentNode.removeChild( select )
+
+                // alert( 'Сopied !' )
+
+                $.notify.addStyle('copied', {
+                    html: '<div data-notify-text/>',
+                    classes: {
+                        base: {
+                            'white-space': 'nowrap',
+                            'background': '#99F476',
+                            'padding': '15px 30px',
+                            'margin': '15px'
+                        }
+                    }
+                })
+
+                $.notify('Сopied!', {
+                    position: 'top center',
+                    style: 'copied',
+                    className: 'success',
+                    showAnimation: 'fadeIn',
+                    hideAnimation: 'fadeOut',
+                    autoHideDelay: 2000
+                })
             },
             _reset () {
                 this.$root.viewapp = false
@@ -325,6 +348,7 @@
         },
         mounted () {
             this.$root.loading = true
+            this.$root.apptitle = null
 
             this.$nextTick(function () {
                 $( 'select' ).niceSelect()
@@ -355,6 +379,8 @@
         },
         mounted () {
             this.$root.loading = true
+            this.$root.apptitle = null
+
             this.data = this.$root.response
             
             this.$nextTick(function () {
@@ -392,6 +418,7 @@
         },
         mounted () {
             this.$root.loading = true
+            this.$root.apptitle = null
 
             this.$http.post('/web', {message_type: 'market', message: {}}, {
                 headers: {'Allow-Origin': this.$root.market}

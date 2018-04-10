@@ -276,15 +276,44 @@ header .navbar-user-nav > button.inverse:hover svg path {
 header .navbar-user-nav > button + button {
   margin-left: 15px;
 }
+header .navbar-user-title {
+  cursor: default;
+}
 header .navbar-user-title .apptitle {
   cursor: pointer;
   display: none;
+  vertical-align: middle;
+  transition: all 0.15s ease-in-out;
+}
+header .navbar-user-title .share {
+  display: none;
+  margin-left: 15px;
+  cursor: pointer;
+  vertical-align: middle;
+}
+header .navbar-user-title .share svg {
+  height: 18px;
+  margin: 3px 0 0;
+}
+header .navbar-user-title .share svg path,
+header .navbar-user-title .share svg polyline {
+  transition: all 0.15s ease-in-out;
+}
+header .navbar-user-title .share:hover svg path,
+header .navbar-user-title .share:hover svg polyline {
+  stroke: #4686FF !important;
 }
 header .navbar-user-title:hover .apptitle {
-  display: block;
+  display: inline-block;
+}
+header .navbar-user-title:hover .apptitle:hover {
+  color: #4686FF;
 }
 header .navbar-user-title:hover .apptitle + .pagetitle {
   display: none;
+}
+header .navbar-user-title:hover .apptitle + .pagetitle + .share {
+  display: inline-block;
 }
 header .navbar-user-title textarea {
   position: absolute;

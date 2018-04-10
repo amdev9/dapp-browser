@@ -344,18 +344,56 @@ header {
 			}
 
 			&-title {
+				cursor: default;
+
 				.apptitle {
 					cursor: pointer;
-					display: none
+					display: none;
+					vertical-align: middle;
+					.transition()
+				}
+
+				.share {
+					display: none;
+					margin-left: 15px;
+					cursor: pointer;
+					vertical-align: middle;
+
+					svg {
+						height: 18px;
+						margin: 3px 0 0;
+
+						path, polyline {
+							.transition()
+						}
+					}
+
+					&:hover {
+						svg {
+							path, polyline {
+								stroke: @theme !important
+							}
+						}
+					}
 				}
 
 				&:hover {
 					.apptitle {
-						display: block;
+						display: inline-block;
+						
+						&:hover {
+							color: @theme;
+						}
 
 						& + .pagetitle { 
-							display: none
+							display: none;
+
+							& + .share {
+								display: inline-block
+							}
 						}
+
+						
 					}
 				}
 
