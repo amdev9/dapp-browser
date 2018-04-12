@@ -2,7 +2,6 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Array.IO"
-#define MyAppVersion "0.1"
 #define MyAppPublisher "Array IO Ltd"
 #define MyAppURL "http://www.array.io/"
 #define MyAppExeName "Array.IO.exe"
