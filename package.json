@@ -14,6 +14,7 @@
     "co-emitter": "^0.2.3",
     "co-express": "^2.0.0",
     "co-nedb": "^2.0.1",
+    "co-sqlite3": "^0.1.3",
     "cookie-parser": "~1.4.3",
     "express": "~4.15.5",
     "ipfs": "^0.28.2",

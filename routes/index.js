@@ -32,13 +32,12 @@ router.post('/', coexp(function * (request, response, next) {
 
 	let setting = []
 	let market = {}
+	let search = {}
 	let pins = []
 
 	for (let i = 0; i < sysapps.length; i++) {
-		if ( sysapps[i].key == system.MrkCtrl ) {
-			market = sysapps[i]
-			break
-		}
+		if ( sysapps[i].key == system.MrkCtrl ) market = sysapps[i]
+		if ( sysapps[i].key == system.SrcCtrl ) search = sysapps[i]
 	}
 
 	result.forEach(item => {
@@ -56,6 +55,7 @@ router.post('/', coexp(function * (request, response, next) {
 	response.send({
 		pins: pins,
 		market: market,
+		search: search,
 		setting: setting,
 		userapps: userapps
 	})

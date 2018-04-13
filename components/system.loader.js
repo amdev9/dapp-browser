@@ -5,6 +5,7 @@ const Logger  = require( './logger' )
 const Storage = require( './storage' )
 const Frontend = require( './frontend' )
 const Network = require( './network' )
+const Search = require( './search' )
 const EventBus = require( './event' )
 const UseLib   = require( './uselib' )
 const Connect  = require( './connect' )
@@ -17,6 +18,7 @@ const sandbox = {
     Connect : new Connect(),
     Storage : new Storage(),
     Network : new Network(),
+    Search : new Search(),
     mapping : new UseLib( 'system.map' ),
     system  : new UseLib( 'system.id' ),
     IPFSPubSub: new IPFSPubSub(),

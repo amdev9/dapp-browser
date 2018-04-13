@@ -7,6 +7,7 @@
             title: 'Home',
             aside: {},
             market: null,
+            search: null,
             frames: {},
             remote: {},
             offset: 0,

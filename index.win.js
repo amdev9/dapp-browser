@@ -49,3 +49,4 @@ gui.App.on('open', argv => {
     manager.setValue = argv
     
     server.window.postMessage(manager.getValue, '*')
+})

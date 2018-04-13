@@ -36,7 +36,7 @@
                         <div class="col navbar-user-search">
                             <form>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" :class="{'visible': search}">
+                                    <input type="text" class="form-control" :class="{'visible': search}" @keyup="query" ref="query">
 
                                     <div class="input-group-append">
                                         <button type="button" @click="search = !search">

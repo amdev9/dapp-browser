@@ -2,7 +2,9 @@ const express = require( 'express' )
 const cookieParser = require( 'cookie-parser' )
 const bodyParser = require( 'body-parser' )
 const Datastore = require( 'nedb' )
+const sqlite3 = require( 'co-sqlite3' )
 const path = require( 'path' )
+const co = require( 'co' )
 
 global.io = require( 'socket.io' )( 3310 )
 
@@ -14,6 +16,11 @@ global.db = {
 
 global.__apps = path.join(__dirname, 'dapps/')
 global.__logs = path.join(__dirname, 'logs/')
+
+co(function * () {
+	global.sqlite = yield sqlite3( 'database/search.db' )
+	yield sqlite.run( 'CREATE TABLE IF NOT EXISTS results (dapp_id VARCHAR, value VARCHAR, url TEXT, icon TEXT)' )
+})
 
 const app = express()
 

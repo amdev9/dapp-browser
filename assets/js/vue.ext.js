@@ -112,7 +112,8 @@
         template: header.import.template(),
         data () {
             return {
-                search: false
+                search: false,
+                string: String
             }
         },
         methods: {
@@ -134,6 +135,13 @@
                 this.$root.pagetitle = 'Setting'
                 this.$root.currentView = 'view-setting'
             },
+            query ( value ) {
+                this.$http.post('/web', {message_type: 'search', message: {string: this.$refs.query.value}}, {
+                    headers: {'Allow-Origin': this.$root.search}
+                }).then(response => {
+                    console.log( response )
+                })
+            },
             copy ( event ) {
                 let target = event.currentTarget
                 let select = document.createElement( 'textarea' )
@@ -144,8 +152,6 @@
 
                 document.execCommand( 'Copy' )
                 select.parentNode.removeChild( select )
-
-                // alert( 'Сopied !' )
 
                 $.notify.addStyle('copied', {
                     html: '<div data-notify-text/>',
@@ -420,7 +426,7 @@
             this.$root.loading = true
             this.$root.apptitle = null
 
-            this.$http.post('/web', {message_type: 'market', message: {}}, {
+            this.$http.post('/web', {message_type: 'market'}, {
                 headers: {'Allow-Origin': this.$root.market}
             }).then(response => {
                 let items = response.body.response
@@ -482,6 +488,7 @@
 
                 this.userapps = data.userapps
                 this.$root.market = data.market ? data.market.key : null
+                this.$root.search = data.search ? data.search.key : null
 
                 data.setting.forEach(item => this.$root.setting[item.group] = item)
 
