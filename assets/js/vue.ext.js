@@ -113,7 +113,11 @@
         data () {
             return {
                 search: false,
-                string: String
+                string: String(),
+                result: {
+                    dapps : [],
+                    market: []
+                }
             }
         },
         methods: {
@@ -136,10 +140,10 @@
                 this.$root.currentView = 'view-setting'
             },
             query ( value ) {
-                this.$http.post('/web', {message_type: 'search', message: {string: this.$refs.query.value}}, {
+                this.$http.post('/web', {message_type: 'select', message: this.$refs.query.value}, {
                     headers: {'Allow-Origin': this.$root.search}
                 }).then(response => {
-                    console.log( response )
+                    this.result.dapps = response.body.response
                 })
             },
             copy ( event ) {

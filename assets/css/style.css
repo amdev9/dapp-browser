@@ -184,6 +184,10 @@ header .navbar-user-search form .input-result-item {
   padding: 10px 0;
   margin: 0;
 }
+header .navbar-user-search form .input-result-item:hover {
+  text-decoration: none;
+  background: #F2F3F6;
+}
 header .navbar-user-search form .input-result-item .item-name,
 header .navbar-user-search form .input-result-item .item-uri,
 header .navbar-user-search form .input-result-item .item-type {

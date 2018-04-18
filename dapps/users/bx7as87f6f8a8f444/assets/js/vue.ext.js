@@ -124,6 +124,11 @@
                         this.$root.rooms = object
                         $( '#' + this.id ).modal( 'hide' )
                     })
+
+                    API.Http.post('/web', {message_type: 'index', message: {
+                        value: object[key].name,
+                        url: 'room=' + object[key].name
+                    }})
                 })
             }
         }

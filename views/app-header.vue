@@ -47,36 +47,16 @@
                                 </div>
 
                                 <div class="input-result" v-if="search">
-                                    <div class="input-result-item row align-items-center">
-                                        <div class="item-name col-12 col-lg-auto pr-0">
-                                            <img src="/images/notify/3.png">
-                                            <span>Google</span>
-                                        </div>
-                                        <div class="item-uri col pl-lg-0"><span>- anni://wallet/?sendto=address2</span></div>
-                                        <div class="item-type col-3 text-right"><span>mainnet</span></div>
+                                    <div v-for="(value, key) in result" :key="key">
+                                        <a v-for="item in value" :key="item.key" :href="item.url" class="input-result-item row align-items-center" >
+                                            <div class="item-name col-12 col-lg-auto pr-0">
+                                                <img :src="item.icon">
+                                                <span>{{ item.name }}</span>
+                                            </div>
+                                            <div class="item-uri col pl-lg-0"><span>- {{ item.url }}</span></div>
+                                            <div class="item-type col-3 text-right"><span>mainnet</span></div>
+                                        </a>
                                     </div>
-
-
-                                    <div class="input-result-name"><span>Mentioned in</span></div>
-
-                                    <div class="input-result-item row align-items-center">
-                                        <div class="item-name col-12 col-lg-auto pr-0">
-                                            <img src="/images/notify/1.png">
-                                            <span>The Dragon</span>
-                                        </div>
-                                        <div class="item-uri col pl-lg-0"><span>- anni://wallet/?sendto=address2</span></div>
-                                        <div class="item-type col-3 text-right"><span>mainnet</span></div>
-                                    </div>
-
-                                    <div class="input-result-item row align-items-center">
-                                        <div class="item-name col-12 col-lg-auto pr-0">
-                                            <img src="/images/notify/4.png">
-                                            <span>Tic Tac Toe</span>
-                                        </div>
-                                        <div class="item-uri col pl-lg-0"><span>- anni://wallet/?sendto=address2</span></div>
-                                        <div class="item-type col-3 text-right"><span>mainnet</span></div>
-                                    </div>
-
 
                                     <div class="input-result-name"><span>Market</span></div>
 

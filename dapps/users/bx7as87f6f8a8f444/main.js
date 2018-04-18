@@ -23,3 +23,7 @@ Events.subscribe('connect', function * ( response ) {
 Events.subscribe('broadcast', function * ( response ) {
 	yield Events.publish(system.IPFSCtrl, 'broadcast', response.payload)
 })
+
+Events.subscribe('index', function * ( response ) {
+	yield Events.publish(system.SrcCtrl, 'insert', response.payload)
+})

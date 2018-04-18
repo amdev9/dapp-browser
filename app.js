@@ -19,7 +19,7 @@ global.__logs = path.join(__dirname, 'logs/')
 
 co(function * () {
 	global.sqlite = yield sqlite3( 'database/search.db' )
-	yield sqlite.run( 'CREATE TABLE IF NOT EXISTS results (dapp_id VARCHAR, value VARCHAR, url TEXT, icon TEXT)' )
+	yield sqlite.run( 'CREATE TABLE IF NOT EXISTS results (key VARCHAR, name VARCHAR, value VARCHAR, url TEXT, icon TEXT)' )
 })
 
 const app = express()

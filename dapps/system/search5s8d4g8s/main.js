@@ -1,5 +1,9 @@
 // SEARCH SYSTEM CONTROLLER
 
-Events.subscribe('search', function * (response) {
+Events.subscribe('select', function * (response) {
 	yield Search.query( response )
+})
+
+Events.subscribe('insert', function * (response) {
+	yield Search.insert( response )
 })
