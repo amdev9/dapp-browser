@@ -350,6 +350,8 @@ header {
 
 			&-title {
 				cursor: default;
+				height: 60px;
+				line-height: 60px;
 
 				.apptitle {
 					cursor: pointer;
@@ -359,14 +361,44 @@ header {
 				}
 
 				.share {
+					position: relative;
 					display: none;
 					margin-left: 15px;
 					cursor: pointer;
 					vertical-align: middle;
 
+					.dropdown-menu {
+						left: -15px;
+						top: 50px;
+						margin: 0;
+						box-shadow: 0 0 3px rgba(32, 32, 73, .05);
+					}
+
+					.dropdown-item {
+						padding-left: 15px;
+						padding-right: 25px;
+						text-transform: none;
+
+						span {
+							padding-left: 25px;
+						}
+					}
+
+					&-link {
+						background: url('../images/icons/share-link.svg') no-repeat left center
+					}
+
+					&-qr {
+						background: url('../images/icons/share-qr-code.svg') no-repeat left center
+					}
+
+					&-email {
+						background: url('../images/icons/share-email.svg') no-repeat left center
+					}
+
 					svg {
 						height: 18px;
-						margin: 3px 0 0;
+						margin: 22px 0 0;
 
 						path, polyline {
 							.transition()
@@ -394,11 +426,15 @@ header {
 							display: none;
 
 							& + .share {
-								display: inline-block
+								display: inline-block;
+		
+								&:hover {
+									.dropdown-menu {
+										display: block
+									}
+								}
 							}
 						}
-
-						
 					}
 				}
 

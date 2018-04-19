@@ -146,6 +146,9 @@
                     this.result.dapps = response.body.response
                 })
             },
+            share () {
+                // this.$refs.pagetitle.classList.toggle( 'show' )
+            },
             copy ( event ) {
                 let target = event.currentTarget
                 let select = document.createElement( 'textarea' )
@@ -158,24 +161,16 @@
                 select.parentNode.removeChild( select )
 
                 $.notify.addStyle('copied', {
-                    html: '<div data-notify-text/>',
-                    classes: {
-                        base: {
-                            'white-space': 'nowrap',
-                            'background': '#99F476',
-                            'padding': '15px 30px',
-                            'margin': '15px'
-                        }
-                    }
+                    html: '<div data-notify-text/>'
                 })
 
-                $.notify('Сopied!', {
+                $.notify('Link copied to clipboard', {
                     position: 'top center',
                     style: 'copied',
                     className: 'success',
                     showAnimation: 'fadeIn',
                     hideAnimation: 'fadeOut',
-                    autoHideDelay: 2000
+                    autoHideDelay: 1000
                 })
             },
             _reset () {

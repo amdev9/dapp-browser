@@ -282,6 +282,8 @@ header .navbar-user-nav > button + button {
 }
 header .navbar-user-title {
   cursor: default;
+  height: 60px;
+  line-height: 60px;
 }
 header .navbar-user-title .apptitle {
   cursor: pointer;
@@ -290,14 +292,38 @@ header .navbar-user-title .apptitle {
   transition: all 0.15s ease-in-out;
 }
 header .navbar-user-title .share {
+  position: relative;
   display: none;
   margin-left: 15px;
   cursor: pointer;
   vertical-align: middle;
 }
+header .navbar-user-title .share .dropdown-menu {
+  left: -15px;
+  top: 50px;
+  margin: 0;
+  box-shadow: 0 0 3px rgba(32, 32, 73, 0.05);
+}
+header .navbar-user-title .share .dropdown-item {
+  padding-left: 15px;
+  padding-right: 25px;
+  text-transform: none;
+}
+header .navbar-user-title .share .dropdown-item span {
+  padding-left: 25px;
+}
+header .navbar-user-title .share-link {
+  background: url('../images/icons/share-link.svg') no-repeat left center;
+}
+header .navbar-user-title .share-qr {
+  background: url('../images/icons/share-qr-code.svg') no-repeat left center;
+}
+header .navbar-user-title .share-email {
+  background: url('../images/icons/share-email.svg') no-repeat left center;
+}
 header .navbar-user-title .share svg {
   height: 18px;
-  margin: 3px 0 0;
+  margin: 22px 0 0;
 }
 header .navbar-user-title .share svg path,
 header .navbar-user-title .share svg polyline {
@@ -318,6 +344,9 @@ header .navbar-user-title:hover .apptitle + .pagetitle {
 }
 header .navbar-user-title:hover .apptitle + .pagetitle + .share {
   display: inline-block;
+}
+header .navbar-user-title:hover .apptitle + .pagetitle + .share:hover .dropdown-menu {
+  display: block;
 }
 header .navbar-user-title textarea {
   position: absolute;

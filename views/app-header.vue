@@ -14,11 +14,11 @@
                             <button type="button"><img src="/images/icons/back.svg" class="svg"></button>    
                         </div>
 
-                        <div class="col-auto navbar-user-title" v-if="!search">
+                        <div class="col-auto navbar-user-title" v-if="!search" ref="pagetitle">
                             <span class="apptitle" v-if="$root.apptitle" @click="copy">arr://{{ $root.apptitle }}</span>
                             <span class="pagetitle">{{ $root.pagetitle }}</span>
                             
-                            <span class="share">
+                            <span class="share" @click="share">
                                 <svg width="18px" height="21px" viewBox="0 0 18 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
                                         <g transform="translate(1.000000, 1.000000)" stroke="#B2BCC9" stroke-width="2">
@@ -28,6 +28,13 @@
                                         </g>
                                     </g>
                                 </svg>
+
+                                <div class="dropdown-menu">
+                                    <div class="dropdown-item"><span class="share-link">Copy Share link</span></div>
+                                    <div class="dropdown-item"><span class="share-qr">See QR code</span></div>
+                                    <div class="dropdown-divider"></div>
+                                    <div class="dropdown-item"><span class="share-email">Share to Email</span></div>
+                                </div>
                             </span>
                         </div>
 
