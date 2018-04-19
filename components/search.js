@@ -8,26 +8,57 @@ const FrontEnd = new Frontend()
 const Find = new Finder( 'dapps/users/' )
 
 class Search {
-    constructor () {
-        this.message = String()
-    }
-
     * query ( response ) {
-        this.message = response.payload.message
+        const message = response.payload.message
 
-        const sql = `SELECT * FROM results WHERE value LIKE '%${this.message}%'`
+        const sql = `SELECT * FROM results WHERE value LIKE '%${message}%'`
 
         let output = []
 
-        if ( this.message.length ) yield sqlite.all( sql ).then(rows => output = rows)
+        if ( message.length ) yield sqlite.all( sql ).then(rows => output = rows)
 
         response.payload.response = output
 
         FrontEnd.complete( response.payload )
     }
 
+    * select ( response ) {
+        const target = response.payload.target
+
+        const sql = `SELECT value, url FROM results WHERE key = '${target}'`
+
+        yield sqlite.all( sql ).then(rows => response.payload.response = rows)
+
+        FrontEnd.complete( response.payload )
+    }
+
+    * delete ( response ) {
+        const message = response.payload.message
+        const target = response.payload.target
+
+        const remove = [message.value, message.url, target]
+        const sql = `DELETE FROM results WHERE value = ? AND url = ? AND key = ?`
+
+        const prepare = yield sqlite.prepare( sql )
+        yield prepare.run( remove )
+
+        prepare.finalize()
+
+        FrontEnd.complete( response.payload )
+    }
+
+    * destroy ( response ) { 
+        const target = response.payload.target
+
+        const sql = `DELETE FROM results WHERE key = '${target}'`
+
+        yield sqlite.run( sql )
+
+        FrontEnd.complete( response.payload )
+    }
+
     * insert ( response ) {
-        this.message = response.payload.message
+        const message = response.payload.message
         const target = response.payload.target
 
         const data = Find.getFileSync( target )
@@ -38,10 +69,10 @@ class Search {
             return FrontEnd.complete( response.payload )
         }
 
-        const url = 'arr://' + object.unic + ':mainet/?' + this.message.url
+        const url = 'arr://' + object.unic + ':mainet/?' + message.url
         const icon = 'users/' + target + '/' + object.icon
 
-        const insert = [object.key, object.name, this.message.value, url, icon]
+        const insert = [object.key, object.name, message.value, url, icon]
         
         const sql = `INSERT INTO results VALUES (?, ?, ?, ?, ?)`
 

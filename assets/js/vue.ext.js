@@ -140,7 +140,7 @@
                 this.$root.currentView = 'view-setting'
             },
             query ( value ) {
-                this.$http.post('/web', {message_type: 'select', message: this.$refs.query.value}, {
+                this.$http.post('/web', {message_type: 'query', message: this.$refs.query.value}, {
                     headers: {'Allow-Origin': this.$root.search}
                 }).then(response => {
                     this.result.dapps = response.body.response
@@ -182,6 +182,16 @@
                 this.$root.viewapp = false
                 this.$root.preventView = null
                 this.$root.currentFrame = null
+            }
+        },
+        watch: {
+            search ( value ) {
+                if ( value ) return
+                
+                this.$refs.query.value = ''
+                
+                this.result.dapps = []
+                this.result.market = []
             }
         }
     })
