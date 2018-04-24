@@ -319,6 +319,9 @@
   visibility: visible;
   background: rgba(70, 134, 255, 0.7);
 }
+.modal-dialog.w-fix {
+  max-width: 290px;
+}
 .modal-content {
   border-radius: 0;
   box-shadow: none;

@@ -321,6 +321,14 @@ header .navbar-user-title .share-qr {
 header .navbar-user-title .share-email {
   background: url('../images/icons/share-email.svg') no-repeat left center;
 }
+header .navbar-user-title .share-tm {
+  background: url('../images/icons/share-tm.svg') no-repeat left center;
+  background-size: auto 17px;
+}
+header .navbar-user-title .share-viber {
+  background: url('../images/icons/share-viber.svg') no-repeat left center;
+  background-size: auto 17px;
+}
 header .navbar-user-title .share svg {
   height: 18px;
   margin: 22px 0 0;

@@ -26,6 +26,7 @@
 	<link href="/app-modal.vue"   id="modal"   rel="import">
 	<link href="/app-notify.vue"  id="notify"  rel="import">
 	<link href="/app-logger.vue"  id="logger"  rel="import">
+	<link href="/app-qrcode.vue"  id="qrcode"  rel="import">
 	<link href="/app-opened.vue"  id="opened"  rel="import">
 	<link href="/app-context.vue" id="context" rel="import">
 
@@ -63,11 +64,13 @@
 	</main>
 
 	<app-modal :type="'access'"></app-modal>
+	<app-qrcode></app-qrcode>
 </div>
 
 <!-- Dev Mode -->
 <script src="/js/jquery.js"></script>
 <script src="/js/locale.js"></script>
+<script src="/js/qrcode.js"></script>
 <script src="/js/notify.js"></script>
 <script src="/js/select.js"></script>
 <script src="/js/slider.js"></script>

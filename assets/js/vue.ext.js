@@ -53,7 +53,6 @@
                 this.visible = false
             },
             accept () {
-                this.$http.post(this.type, {target: this.$root.currentFrame})
                 this.visible = false
             }
         },
@@ -66,6 +65,27 @@
                 this.content = '<p>' + response.message +'</p>' + items.join( ', ' )
                 this.visible = true
             });
+        }
+    })
+
+    Vue.component('app-qrcode', {
+        template: qrcode.import.template(),
+        data () {
+            return {
+                visible: false
+            }
+        },
+        methods: {
+            cancel () {
+                this.visible = false
+                this.$refs.body.innerHTML = ''
+            }
+        },
+        mounted () {
+            document.addEventListener('qrcode', () => {
+                new QRCode(this.$refs.body, 'array.io/' + this.$root.apptitle)
+                this.visible = true
+            })
         }
     })
 
@@ -147,7 +167,16 @@
                 })
             },
             share () {
-                // this.$refs.pagetitle.classList.toggle( 'show' )
+                location.href = 'mailto:?subject=' + this.$root.pagetitle
+            },
+            qrcode ( event ) {
+                document.dispatchEvent( new CustomEvent( 'qrcode' ) )
+            },
+            telegram () {
+                window.open( 'https://t.me/share/url?url=array.io/' + this.$root.apptitle + '&text=' + this.$root.pagetitle )
+            },
+            viber () {
+                location.href = 'viber://forward?text=array.io/' + this.$root.apptitle
             },
             copy ( event ) {
                 let target = event.currentTarget
@@ -181,6 +210,8 @@
         },
         watch: {
             search ( value ) {
+                setTimeout(() => this.$refs.query.focus())
+                
                 if ( value ) return
                 
                 this.$refs.query.value = ''
@@ -208,7 +239,7 @@
                 this.$root.preventView = null
                 this.$root.currentFrame = this.id
                 this.$root.pagetitle = this.name
-                this.$root.apptitle = this.name.replace(' ', '_').toLowerCase()
+                this.$root.apptitle = this.name.replace(RegExp(' ', 'g') , '_').toLowerCase()
             },
             context ( event ) {
                 this.$root.context = {
