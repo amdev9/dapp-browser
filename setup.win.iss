@@ -22,7 +22,7 @@ DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
 OutputDir=setup
-OutputBaseFilename=Setup
+OutputBaseFilename=Array.IO
 Compression=lzma
 SolidCompression=yes
 
