@@ -18,6 +18,7 @@
     "cookie-parser": "~1.4.3",
     "express": "~4.15.5",
     "ipfs": "^0.28.2",
+    "ipfs-api": "^20.0.1",
     "ipfs-pubsub-room": "^1.2.0",
     "leveldown": "^3.0.0",
     "levelup": "^2.0.2",
