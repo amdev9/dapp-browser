@@ -52,20 +52,8 @@ app.use((error, request, response, next) => {
 	console.error( error )
 })
 
-// var xor = require('bitwise-xor');
-// var md5 = require('md5');
-
-// var test = xor(new Buffer('3344', 'hex'), new Buffer('00ff', 'hex'))
-// console.log( md5( test.toString() ) )
-
-// var ipfsAPI = require('ipfs-api')
-
-// var ipfs = ipfsAPI({host: '35.204.17.104', port: '5001', protocol: 'http'})
-
-// ipfs.pubsub.subscribe('room', function (msg) {
-// 	console.log(msg.data.toString())
-// })
-
-// ipfs.pubsub.publish('room', new Buffer('banana'))
+app.listen(3000, () => {
+    console.log('Example app listening on port 3000!')
+})
 
 module.exports = app

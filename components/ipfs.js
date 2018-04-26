@@ -1,11 +1,9 @@
 const datetime = require( 'node-datetime' )
-const Room = require( 'ipfs-pubsub-room' )
 const username = require( 'username' )
 const Frontend = require( './frontend' )
 const EventBus = require( './event' )
 const UseLib = require( './uselib' )
-// const IPFS = require( 'ipfs' )
-const IPAPI = require( 'ipfs-api' )
+const IPFS = require( 'ipfs-api' )
 const co = require( 'co' )
 const fs = require( 'fs' )
 
@@ -15,27 +13,8 @@ const system  = new UseLib( 'system.id' )
 const mapping = new UseLib( 'system.map' )
 const Rooms = []
 
-// var ready = true
-
-// const ipfs = new IPFS({
-// 	config: {
-// 		Addresses: {
-// 			Swarm: [
-// 				// '/ip4/80.209.231.155/tcp/8081/ws'
-// 				// '/ip4/35.204.17.104/tcp/8081/ws'
-// 				'/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star'
-// 			]
-// 		}
-// 	}
-// })
-
-// ipfs.on('error', ( error ) => {
-// 	// close app
-// })
-
-// /ip4/80.209.231.155/tcp/8081/ws
-
-var ipapi = IPAPI( '/ip4/35.204.17.104/tcp/5001' )
+// // var ipfs = IPFS( '/ip4/35.204.17.104/tcp/5001' )
+var ipfs = IPFS({host: '35.204.17.104', port: '5001', protocol: 'http'})
 
 class IPFSPubSub {
 	constructor () {
@@ -54,12 +33,12 @@ class IPFSPubSub {
 			return FrontEnd.complete( this.data.payload )
 		}
 
-		ipapi.pubsub.subscribe(_name_, message => { co(function * () {
+		ipfs.pubsub.subscribe(_name_, message => { co(function * () {
 			_self_.data.payload.message = message.data.toString()
 			yield Events.publish(system.WebCtrl, 'broadcast', _self_.data)
 		})})
 
-		ipapi.pubsub.peers(_name_, (error, peers) => { co(function * () {
+		ipfs.pubsub.peers(_name_, (error, peers) => { co(function * () {
 			_self_.data.payload.message.peers = peers
 			yield Events.publish(system.WebCtrl, 'joined', _self_.data)
 		})})
@@ -81,12 +60,12 @@ class IPFSPubSub {
 			return FrontEnd.complete( this.data.payload )
 		}
 
-		ipapi.pubsub.subscribe(_name_, message => { co(function * () {
+		ipfs.pubsub.subscribe(_name_, message => { co(function * () {
 			_self_.data.payload.message = message.data.toString()
 			yield Events.publish(system.WebCtrl, 'broadcast', _self_.data)
 		})})
 
-		ipapi.pubsub.peers(_name_, (error, peers) => { co(function * () {
+		ipfs.pubsub.peers(_name_, (error, peers) => { co(function * () {
 			_self_.data.payload.message.peers = peers
 			yield Events.publish(system.WebCtrl, 'joined', _self_.data)
 		})})
@@ -107,41 +86,10 @@ class IPFSPubSub {
 		message.datetime = datetime.create().format( 'd-m-Y H:M:S' )
 		message.username = username.sync()
 
-		ipapi.pubsub.publish(_name_, new Buffer( JSON.stringify( message ) ))
+		ipfs.pubsub.publish(_name_, new Buffer( JSON.stringify( message ) ))
 
 		FrontEnd.complete( response.payload )  
 	}
-
-	// * [_subscribe] ( room ) {
-	// 	const self = this
-
-	// 	room.on('message', message => co(function * () {
-	// 		yield self[_handler]( message )
-	// 	}))
-
-	// 	room.on('peer joined', peer => co(function * () {
-	// 		yield self[_joined]( room.getPeers() )
-	// 	}))
-
-	// 	room.on('peer left', peer => co(function * () {
-	// 		yield self[_detached]( room.getPeers() )
-	// 	}))
-	// }
-
-	// * [_handler] ( message ) {
-	// 	this.data.payload.message = message.data.toString()
-	// 	yield Events.publish(system.WebCtrl, 'broadcast', this.data)
-	// }
-
-	// * [_joined] ( peers ) {
-	// 	this.data.payload.message.peers = peers
-	// 	yield Events.publish(system.WebCtrl, 'joined', this.data)
-	// }
-
-	// * [_detached] ( peers ) {
-	// 	this.data.payload.message.peers = peers
-	// 	yield Events.publish(system.WebCtrl, 'detached', this.data)
-	// }
 }
 
 module.exports = IPFSPubSub
