@@ -39,6 +39,8 @@ class IPFSPubSub {
 		})})
 
 		ipfs.pubsub.peers(_name_, (error, peers) => { co(function * () {
+			console.log( 'Create', peers )
+
 			_self_.data.payload.message.peers = peers
 			yield Events.publish(system.WebCtrl, 'joined', _self_.data)
 		})})
@@ -66,6 +68,8 @@ class IPFSPubSub {
 		})})
 
 		ipfs.pubsub.peers(_name_, (error, peers) => { co(function * () {
+			console.log( 'connect', peers )
+			
 			_self_.data.payload.message.peers = peers
 			yield Events.publish(system.WebCtrl, 'joined', _self_.data)
 		})})
