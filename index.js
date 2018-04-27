@@ -2,7 +2,7 @@ const child_process = require( 'child_process' )
 const Manager = require( './components/manager' )
 const gui = require( 'nw.gui' )
 
-const child = child_process.exec( './array ./app' )
+const child = child_process.exec( './array ./bin/www' )
 child.on('close', () => gui.App.quit())
 
 var connect
@@ -22,7 +22,7 @@ nw.Window.open('connect.html', {
     connect.on('close', () => child.kill())
 })
 
-child.stdout.on('data', () => {
+child.stdout.on('data', event => {
     nw.Window.open('http://localhost:3000/', {
         show: false,
         min_width: 1000,
