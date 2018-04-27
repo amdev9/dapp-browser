@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Drop Files</title>
+    
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+
+    <script src="/module/socket.io.js"></script>
+    <script src="/module/lib.js"></script>
+</head>
+<body>
+    <div class="container pt-5">
+        <h1><img src="favicon.svg">Drop Files</h1>
+
+        <form id="upload">
+            <div class="form-group custom-file mb-3">
+                <input type="file" name="choose" class="custom-file-input" id="choose">
+                <label class="custom-file-label" for="choose">Choose file</label>
+            </div>
+
+            <button type="submit" class="btn btn-success">Upload</button>
+        </form>
+    </div>
+
+    <script src="assets/js/index.js"></script>
+</body>
+</html>

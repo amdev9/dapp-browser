@@ -27,12 +27,20 @@ const ipfs = new IPFS({
 		Addresses: {
 			Swarm: [
 				// '/ip4/80.209.231.155/tcp/8081/ws'
- 				// '/ip4/35.204.17.104/tcp/8081/ws'
+				// '/ip4/35.204.17.104/tcp/8081/ws'
+				// '/ip4/35.204.17.104/tcp/9090/ws'
+				// '/ip4/35.204.17.104/tcp/9090/ws/p2p-websocket-star'
 				'/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star'
 			]
 		}
 	}
 })
+
+// ipfs.on('ready', () => { console.log( 'ready' ) })
+// ipfs.on('error', () => { console.log( 'error' ) })
+// ipfs.on('init',  () => { console.log( 'init' ) })
+// ipfs.on('start', () => { console.log( 'start' ) })
+// ipfs.on('stop',  () => { console.log( 'stop' ) }) 
 
 class IPFSPubSub {
 	constructor () {
@@ -103,14 +111,17 @@ class IPFSPubSub {
 		const self = this
 
 		room.on('message', message => co(function * () {
+			console.log( 'message', message )
 			yield self[_handler]( message )
 		}))
 
 		room.on('peer joined', peer => co(function * () {
+			console.log('joined', peer )
 			yield self[_joined]( room.getPeers() )
 		}))
 
 		room.on('peer left', peer => co(function * () {
+			console.log( 'left', peer )
 			yield self[_detached]( room.getPeers() )
 		}))
 	}

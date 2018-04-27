@@ -4,7 +4,6 @@ const codb = require( 'co-nedb' )
 const UseLib = require( './uselib' )
 
 const FrontEnd = new Frontend()
-const mapping  = new UseLib( 'system.map' )
 const _private = Symbol( 'private' )
 
 class Storage {

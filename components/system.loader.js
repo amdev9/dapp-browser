@@ -1,6 +1,7 @@
 const UserDappsLoader = require( './user.loader' )
 const child_process = require( 'child_process' )
 const ProcessBus = require( './process' )
+const Dropbox = require( './dropbox' )
 const Logger  = require( './logger' )
 const Storage = require( './storage' )
 const Frontend = require( './frontend' )
@@ -18,12 +19,13 @@ const sandbox = {
     Connect : new Connect(),
     Storage : new Storage(),
     Network : new Network(),
-    Search : new Search(),
+    Dropbox : new Dropbox(),
+    Search  : new Search(),
     mapping : new UseLib( 'system.map' ),
     system  : new UseLib( 'system.id' ),
     IPFSPubSub: new IPFSPubSub(),
-    FrontEnd : new Frontend(),
-    console : console,
+    FrontEnd  : new Frontend(),
+    console   : console,
 }
 
 const vm = new NodeVM({sandbox: sandbox})

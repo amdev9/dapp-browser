@@ -1,0 +1,11 @@
+{
+    "version": "1.0",
+  
+    "key": "drop0101020300",
+    "name": "Dropbox",
+    "main" : "main.js",
+
+    "description": "This is Dropbox",
+
+    "permissions": []
+}
