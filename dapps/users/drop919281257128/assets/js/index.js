@@ -33,8 +33,14 @@
         
         xhr.onreadystatechange = function () {
             if ( this.readyState == 4 && this.status == 200 ) {
-                progress.value = 0
                 confirm.classList.remove( 'd-none' )
+                progress.value = 0
+
+                console.log( this.response )
+
+                // API.Http.post('/transfer', formData, () => {
+                //     alert( 'ok' )
+                // })
             }
         }
 

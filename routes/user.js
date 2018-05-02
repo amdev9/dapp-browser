@@ -1,5 +1,6 @@
 const express = require( 'express' )
 const formidable = require( 'formidable' )
+const crypto = require( 'crypto-js' )
 const coexp = require( 'co-express' )
 const codb  = require( 'co-nedb' )
 const Datastore = require( 'nedb' )
@@ -37,6 +38,7 @@ router.post('/transfer', coexp(function * (request, response, next) {
 	const target = getHeaders( request.headers )
 
 	const form = new formidable.IncomingForm()
+	const array = []
 
 	form.multiples = true
 	form.hash = 'sha1'
@@ -46,19 +48,23 @@ router.post('/transfer', coexp(function * (request, response, next) {
 	if ( !fs.existsSync( form.uploadDir ) ) fs.mkdirSync( form.uploadDir )
 
 	form.on('file', (field, file) => {
-		let ext = file.name.split( '.' ).pop()
+		let params = file.name.split( '.' )
+		let ext = params.length > 1 ? params.pop() : ''
 		let name = md5( file.name )
+		let upload = path.join(form.uploadDir, [name, ext].join( '.' ))
 
-		fs.renameSync(file.path, path.join(form.uploadDir, [name, ext].join( '.' )))
+		fs.renameSync(file.path, upload)
+
+		let secure = crypto.AES.encrypt(upload, '123')
+		array.push( secure.toString() )
 	})
 
 	form.on('error', error => console.log('ERROR: \n' + error))
-	form.on('end', () => response.send({ status: true }))
+	form.on('end', () => response.send({status: true, data: array}))
 
 	form.parse( request )
 }))
 
- 
 
 // const readDataFile = ( source ) => {
 // 	if ( fs.existsSync( source ) ) {

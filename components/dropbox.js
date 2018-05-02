@@ -8,12 +8,8 @@ class Dropbox {
 
     }
 
-    * upload ( response ) {
-        const formData = response.payload.message.formData
-
-        // const buffer = fs.readFileSync( path )
-        
-        console.log( formData )
+    * transfer ( response ) {
+        console.log( response.payload.message )
 
         FrontEnd.complete( response.payload )
     }
