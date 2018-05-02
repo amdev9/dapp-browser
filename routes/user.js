@@ -3,6 +3,7 @@ const coexp = require( 'co-express' )
 const codb  = require( 'co-nedb' )
 const Datastore = require( 'nedb' )
 const uniqid = require( 'uniqid' )
+const path = require( 'path' )
 const fs = require( 'fs' )
 
 const UseLib = require( '../components/uselib' )
@@ -30,6 +31,25 @@ router.post('/web', coexp(function * (request, response, next) {
 	yield new EventBus().publish(target, request.body.message_type, request.body)
 }))
 
+router.post('/transfer', coexp(function * (request, response, next) {
+	let target = getHeaders( request.headers )
+	let temp = path.join(__dirname, '../temp/' + target)
+
+	if ( !request.files || !request.files.transfer ) return response.send( 'File Not Found!' )
+
+	let sampleFile = request.files.sampleFile
+	let transfer = request.files.transfer
+
+	if ( !Array.isArray( transfer ) ) transfer = [transfer]
+
+	if ( !fs.existsSync( temp ) ) fs.mkdirSync( temp )
+
+	for (let i = 0; i < transfer.length; i++) {
+		fs.writeFileSync(temp + '/' + transfer[i].md5, transfer[i].data)
+	}
+}))
+
+ 
 
 // const readDataFile = ( source ) => {
 // 	if ( fs.existsSync( source ) ) {

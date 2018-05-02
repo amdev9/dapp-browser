@@ -1,4 +1,5 @@
 const Frontend = require( './frontend' )
+const fs = require( 'fs' )
 
 const FrontEnd = new Frontend()
 
@@ -8,9 +9,11 @@ class Dropbox {
     }
 
     * upload ( response ) {
-        const path = response.payload.message.path
+        const formData = response.payload.message.formData
+
+        // const buffer = fs.readFileSync( path )
         
-        // console.log( path )
+        console.log( formData )
 
         FrontEnd.complete( response.payload )
     }

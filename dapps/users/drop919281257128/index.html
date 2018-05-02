@@ -13,9 +13,9 @@
     <div class="container pt-5">
         <h1><img src="favicon.svg">Drop Files</h1>
 
-        <form id="upload">
+        <form action="/transfer" id="upload" method="post" enctype="multipart/form-data">
             <div class="form-group custom-file mb-3">
-                <input type="file" name="choose" class="custom-file-input" id="choose">
+                <input type="file" name="transfer" class="custom-file-input" id="choose" multiple>
                 <label class="custom-file-label" for="choose">Choose file</label>
             </div>
 

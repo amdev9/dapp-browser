@@ -181,7 +181,7 @@
             copy ( event ) {
                 let target = event.currentTarget
                 let select = document.createElement( 'textarea' )
-                select.value = target.innerText
+                select.value = 'arr://' + this.$root.apptitle
 
                 document.body.appendChild( select )
                 select.select()

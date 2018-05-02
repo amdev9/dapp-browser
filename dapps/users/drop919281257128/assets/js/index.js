@@ -4,11 +4,18 @@
 
     const upload = document.getElementById( 'upload' )
 
-    upload.addEventListener('submit', function ( event ) {
-        event.preventDefault()
+    // upload.addEventListener('submit', function ( event ) {
+    //     event.preventDefault()
+
+    //     let formData = new FormData( this )
+
+ 
+    //     console.log( this.choose.value )
+
+    //     // console.log( formData )
         
-        API.Http.post('/web', {message_type: 'upload', message: {path: this.choose.value}}, () => {
-            alert( 'ok' )
-        })
-    })
+    //     API.Http.post('/transfer', formData, () => {
+    //         alert( 'ok' )
+    //     })
+    // })
 })();
