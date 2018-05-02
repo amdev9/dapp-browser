@@ -1,9 +1,11 @@
 const express = require( 'express' )
+const formidable = require( 'formidable' )
 const coexp = require( 'co-express' )
 const codb  = require( 'co-nedb' )
 const Datastore = require( 'nedb' )
 const uniqid = require( 'uniqid' )
 const path = require( 'path' )
+const md5 = require( 'md5' )
 const fs = require( 'fs' )
 
 const UseLib = require( '../components/uselib' )
@@ -32,21 +34,28 @@ router.post('/web', coexp(function * (request, response, next) {
 }))
 
 router.post('/transfer', coexp(function * (request, response, next) {
-	let target = getHeaders( request.headers )
-	let temp = path.join(__dirname, '../temp/' + target)
+	const target = getHeaders( request.headers )
 
-	if ( !request.files || !request.files.transfer ) return response.send( 'File Not Found!' )
+	const form = new formidable.IncomingForm()
 
-	let sampleFile = request.files.sampleFile
-	let transfer = request.files.transfer
+	form.multiples = true
+	form.hash = 'sha1'
+	form.maxFileSize = 500 * 1024 * 1024 // 500 MB
+	form.uploadDir = path.join(__dirname, '../temp/' + target)
 
-	if ( !Array.isArray( transfer ) ) transfer = [transfer]
+	if ( !fs.existsSync( form.uploadDir ) ) fs.mkdirSync( form.uploadDir )
 
-	if ( !fs.existsSync( temp ) ) fs.mkdirSync( temp )
+	form.on('file', (field, file) => {
+		let ext = file.name.split( '.' ).pop()
+		let name = md5( file.name )
 
-	for (let i = 0; i < transfer.length; i++) {
-		fs.writeFileSync(temp + '/' + transfer[i].md5, transfer[i].data)
-	}
+		fs.renameSync(file.path, path.join(form.uploadDir, [name, ext].join( '.' )))
+	})
+
+	form.on('error', error => console.log('ERROR: \n' + error))
+	form.on('end', () => response.send({ status: true }))
+
+	form.parse( request )
 }))
 
  
