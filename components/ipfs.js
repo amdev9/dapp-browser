@@ -45,6 +45,7 @@ const ipfs = new IPFS({
 class IPFSPubSub {
 	constructor () {
 		this.data = null
+		this.node = ipfs
 	}
 
 	* create ( response ) {
@@ -59,7 +60,7 @@ class IPFSPubSub {
 			return FrontEnd.complete( this.data.payload )
 		}
 
-		Rooms[_name_] = Room(ipfs, _name_)
+		Rooms[_name_] = Room(this.node, _name_)
 
 		yield this[_subscribe]( Rooms[_name_] )
 
@@ -77,7 +78,7 @@ class IPFSPubSub {
 		
 		if ( !Rooms[_name_] && _room_.length ) {
 			
-			Rooms[_name_] = Room(ipfs, _name_)
+			Rooms[_name_] = Room(this.node, _name_)
 
 			yield this[_subscribe]( Rooms[_name_] )
 

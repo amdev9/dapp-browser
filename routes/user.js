@@ -55,12 +55,12 @@ router.post('/transfer', coexp(function * (request, response, next) {
 
 		fs.renameSync(file.path, upload)
 
-		let secure = crypto.AES.encrypt(upload, '123')
+		let secure = crypto.AES.encrypt(upload, '123123')
 		array.push( secure.toString() )
 	})
 
 	form.on('error', error => console.log('ERROR: \n' + error))
-	form.on('end', () => response.send({status: true, data: array}))
+	form.on('end', () => response.send({ data: array }))
 
 	form.parse( request )
 }))

@@ -4,6 +4,7 @@
 
     const upload = document.getElementById( 'upload' )
     const choose = document.getElementById( 'choose' )
+    const output = document.getElementById( 'output' )
     const confirm = document.getElementById( 'confirm' )
     const progress = document.getElementById( 'progress' )
 
@@ -17,9 +18,11 @@
         let label = this.parentNode.querySelector( 'label' )
         label.innerText = array.join( ', ' )
     })
-
+    
     upload.addEventListener('submit', function ( event ) {
         event.preventDefault()
+
+        output.innerHTML = ''
 
         let data = new FormData( this )
         let xhr  = new XMLHttpRequest()
@@ -33,14 +36,25 @@
         
         xhr.onreadystatechange = function () {
             if ( this.readyState == 4 && this.status == 200 ) {
-                confirm.classList.remove( 'd-none' )
-                progress.value = 0
+                let object = JSON.parse( this.response )
 
-                console.log( this.response )
+                API.Http.post('/web', {message_type: 'transfer', message: object.data}, response => {
+                    let object = JSON.parse( response )
+                    
+                    for (let i = 0; i < object.response.length; i++) {
+                        let body = document.createElement( 'div' )
+                        let link = document.createElement( 'a' )
 
-                // API.Http.post('/transfer', formData, () => {
-                //     alert( 'ok' )
-                // })
+                        link.href = object.response[i]
+                        link.innerHTML = object.response[i]
+
+                        body.appendChild( link )
+                        output.appendChild( body )
+                    }
+
+                    confirm.classList.remove( 'd-none' )
+                    progress.value = 0
+                })
             }
         }
 
