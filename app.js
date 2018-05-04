@@ -3,6 +3,7 @@ const cookieParser = require( 'cookie-parser' )
 const bodyParser = require( 'body-parser' )
 const Datastore = require( 'nedb' )
 const sqlite3 = require( 'co-sqlite3' )
+const uniqid = require( 'uniqid' )
 const path = require( 'path' )
 const co = require( 'co' )
 
@@ -16,6 +17,7 @@ global.db = {
 
 global.__apps = path.join(__dirname, 'dapps/')
 global.__logs = path.join(__dirname, 'logs/')
+global.__uniq = uniqid()
 
 co(function * () {
 	global.sqlite = yield sqlite3( 'database/search.db' )

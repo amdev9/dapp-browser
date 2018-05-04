@@ -19,11 +19,13 @@ class Dropbox {
         const array = response.payload.response || []
         const keygen = message[array.length]
        
-        let bytes = crypto.AES.decrypt(keygen, '123123')
+        let bytes = crypto.AES.decrypt(keygen, __uniq)
         let path = bytes.toString( crypto.enc.Utf8 )
 
         const buffer = fs.readFileSync( path )
         const stream = ipfs.node.files.addReadableStream()
+
+        fs.unlinkSync( path )
 
         stream.on('data', function ( data ) { co(function * () {
             array.push( self.url + data.hash )

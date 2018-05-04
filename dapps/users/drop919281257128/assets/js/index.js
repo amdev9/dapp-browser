@@ -47,6 +47,7 @@
 
                         link.href = object.response[i]
                         link.innerHTML = object.response[i]
+                        link.target = '_blank'
 
                         body.appendChild( link )
                         output.appendChild( body )

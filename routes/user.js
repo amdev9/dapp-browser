@@ -8,6 +8,7 @@ const uniqid = require( 'uniqid' )
 const path = require( 'path' )
 const md5 = require( 'md5' )
 const fs = require( 'fs' )
+const os = require( 'os' )
 
 const UseLib = require( '../components/uselib' )
 const EventBus = require( '../components/event' )
@@ -43,19 +44,16 @@ router.post('/transfer', coexp(function * (request, response, next) {
 	form.multiples = true
 	form.hash = 'sha1'
 	form.maxFileSize = 500 * 1024 * 1024 // 500 MB
-	form.uploadDir = path.join(__dirname, '../temp/' + target)
+	form.uploadDir = path.join(os.tmpdir(), target)
 
 	if ( !fs.existsSync( form.uploadDir ) ) fs.mkdirSync( form.uploadDir )
 
 	form.on('file', (field, file) => {
-		let params = file.name.split( '.' )
-		let ext = params.length > 1 ? params.pop() : ''
-		let name = md5( file.name )
-		let upload = path.join(form.uploadDir, [name, ext].join( '.' ))
+		let uploadPath = path.join(form.uploadDir, file.name)
 
-		fs.renameSync(file.path, upload)
+		fs.renameSync(file.path, uploadPath)
 
-		let secure = crypto.AES.encrypt(upload, '123123')
+		let secure = crypto.AES.encrypt(uploadPath, __uniq)
 		array.push( secure.toString() )
 	})
 
@@ -64,7 +62,6 @@ router.post('/transfer', coexp(function * (request, response, next) {
 
 	form.parse( request )
 }))
-
 
 // const readDataFile = ( source ) => {
 // 	if ( fs.existsSync( source ) ) {
