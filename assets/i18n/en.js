@@ -1,3 +1,3 @@
-const i18n_en = {
+export default {
 	home: 'Home'
 }

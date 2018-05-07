@@ -128,3 +128,98 @@
         </div>
     </header>
 </template>
+
+<script>
+export default {
+    data () {
+        return {
+            search: false,
+            string: String(),
+            result: {
+                dapps : [],
+                market: []
+            }
+        }
+    },
+    methods: {
+        tohome () { 
+            this._reset()
+            this.$root.apptitle = null
+            this.$root.pagetitle = this.translate( 'home' )
+            this.$root.currentView = 'view-index'
+        },
+        prevent () {
+            this.$root.currentView = this.$root.preventView
+            this.$root.preventView = null
+        },
+        notify () {
+            this.$root.notify = !this.$root.notify
+        },
+        setting () {
+            this._reset()
+            this.$root.pagetitle = 'Setting'
+            this.$root.currentView = 'view-setting'
+        },
+        query ( value ) {
+            this.$http.post('/web', {message_type: 'query', message: this.$refs.query.value}, {
+                headers: {'Allow-Origin': this.$root.search}
+            }).then(response => {
+                this.result.dapps = response.body.response
+            })
+        },
+        share () {
+            location.href = 'mailto:?subject=' + this.$root.pagetitle
+        },
+        qrcode ( event ) {
+            document.dispatchEvent( new CustomEvent( 'qrcode' ) )
+        },
+        telegram () {
+            window.open( 'https://t.me/share/url?url=array.io/' + this.$root.apptitle + '&text=' + this.$root.pagetitle )
+        },
+        viber () {
+            location.href = 'viber://forward?text=array.io/' + this.$root.apptitle
+        },
+        copy ( event ) {
+            let target = event.currentTarget
+            let select = document.createElement( 'textarea' )
+            select.value = 'arr://' + this.$root.apptitle
+
+            document.body.appendChild( select )
+            select.select()
+
+            document.execCommand( 'Copy' )
+            select.parentNode.removeChild( select )
+
+            $.notify.addStyle('copied', {
+                html: '<div data-notify-text/>'
+            })
+
+            $.notify('Link copied to clipboard', {
+                position: 'top center',
+                style: 'copied',
+                className: 'success',
+                showAnimation: 'fadeIn',
+                hideAnimation: 'fadeOut',
+                autoHideDelay: 1000
+            })
+        },
+        _reset () {
+            this.$root.viewapp = false
+            this.$root.preventView = null
+            this.$root.currentFrame = null
+        }
+    },
+    watch: {
+        search ( value ) {
+            setTimeout(() => this.$refs.query.focus())
+            
+            if ( value ) return
+            
+            this.$refs.query.value = ''
+            
+            this.result.dapps = []
+            this.result.market = []
+        }
+    }
+}
+</script>

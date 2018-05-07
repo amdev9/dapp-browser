@@ -9,7 +9,7 @@ const ipfs = new IPFS()
 
 class Dropbox {
     constructor () {
-        this.url = 'https://ipfs.io/ipfs/'
+        this.url = 'https://ipfs.array.io/ipfs/'
     }
 
     * transfer ( response ) {

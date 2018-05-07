@@ -12,3 +12,25 @@
         </div>
     </div>
 </template>
+
+<script>
+export default {
+    props: ['id', 'src', 'tags', 'thumb', 'icon', 'name'],
+    methods: {
+        click () {
+            this.$root.viewapp = true
+            this.$root.currentFrame = this.id
+
+            let frames = Object.assign({}, this.$root.frames)
+            frames[this.id] = {id: this.id, src: this.src}
+
+            this.$root.frames = frames
+            this.$root.pagetitle = this.name
+            this.$root.apptitle = this.name.replace(RegExp(' ', 'g') , '_').toLowerCase()
+
+            if ( !this.$root.aside.pins.hasOwnProperty( this.id ) )
+                this.$root.aside.apps[this.id] = {icon: this.icon, src: this.src, name: this.name, active: true}
+        }
+    }
+}
+</script>

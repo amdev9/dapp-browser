@@ -17,7 +17,7 @@
     Vue.filter('truncate', (text, stop, clamp = '...') => {
         return text.slice(0, stop || text.length) + (stop < text.length ? clamp : '')
     })
-
+    
     Vue.component('app-search', {
         template: search.import.template(),
         data () {

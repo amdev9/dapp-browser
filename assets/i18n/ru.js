@@ -1,3 +1,3 @@
-const i18n_ru = {
+export default {
 	home: 'Главная'
 }

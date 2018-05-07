@@ -31,6 +31,7 @@ const ipfs = new IPFS({
 				// '/ip4/35.204.17.104/tcp/9090/ws'
 				// '/ip4/35.204.17.104/tcp/9090/ws/p2p-websocket-star'
 				'/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star'
+				// 'https://ipfs.array.io/ipfs/'
 			]
 		}
 	}

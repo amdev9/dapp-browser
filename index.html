@@ -2,41 +2,24 @@
 <html>
 <head>
 	<meta charset="utf-8" />
-	<title>Welcome</title>
+	<title>Array.IO</title>
 
-	<link rel="stylesheet" href="/css/bootstrap.min.css" />
-	<link rel="stylesheet" href="/css/select.css" />
-	<link rel="stylesheet" href="/css/slider.css" />
-	<link rel="stylesheet" href="/css/fonts.css" />
-	<link rel="stylesheet" href="/css/theme.css" />
-	<link rel="stylesheet" href="/css/style.css" />
+	<!-- Styles -->
+	<link rel="stylesheet" href="/css/index.css" />
 
-	<!-- Dev Module -->
+	<!-- Module -->
 	<script src="/module/socket.io.js"></script>
 	<script src="/module/lib.js"></script>
 
-	<!-- Dev Language -->
-	<script src="/i18n/en.js"></script>
-	<script src="/i18n/ru.js"></script>
-
-	<!-- Dev Mode -->
-	<link href="/app-header.vue"  id="header"  rel="import">
-	<link href="/app-aside.vue"   id="aside"   rel="import">
-	<link href="/app-card.vue"    id="card"    rel="import">
-	<link href="/app-modal.vue"   id="modal"   rel="import">
-	<link href="/app-notify.vue"  id="notify"  rel="import">
-	<link href="/app-logger.vue"  id="logger"  rel="import">
-	<link href="/app-qrcode.vue"  id="qrcode"  rel="import">
-	<link href="/app-opened.vue"  id="opened"  rel="import">
-	<link href="/app-context.vue" id="context" rel="import">
-
-	<link href="/view-index.vue"   id="index"   rel="import">
-	<link href="/view-frame.vue"   id="frame"   rel="import">
-	<link href="/view-market.vue"  id="market"  rel="import">
-	<link href="/view-setting.vue" id="setting" rel="import">
-	<link href="/view-preview.vue" id="preview" rel="import">
+	<!-- Library -->
+	<script src="/js/lib/jquery.js"></script>
+	<script src="/js/lib/qrcode.js"></script>
+	<script src="/js/lib/notify.js"></script>
+	<script src="/js/lib/select.js"></script>
+	<script src="/js/lib/slider.js"></script>
 </head>
 <body>
+
 <div id="app" :class="{loading: loading}" @contextmenu.prevent>
 	<app-header></app-header>
 
@@ -67,18 +50,7 @@
 	<app-qrcode></app-qrcode>
 </div>
 
-<!-- Dev Mode -->
-<script src="/js/jquery.js"></script>
-<script src="/js/locale.js"></script>
-<script src="/js/qrcode.js"></script>
-<script src="/js/notify.js"></script>
-<script src="/js/select.js"></script>
-<script src="/js/slider.js"></script>
-
-<script src="/js/vue.min.js"></script>
-<script src="/js/vue.res.js"></script>
-<script src="/js/vue.ext.js"></script>
-<script src="/js/vue.svg.js"></script>
-<script src="/js/vue.app.js"></script>
+<!-- Main -->
+<script src="/js/index.js"></script>
 </body>
 </html>

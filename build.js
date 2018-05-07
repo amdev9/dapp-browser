@@ -1,7 +1,14 @@
 const NwBuilder = require( 'nw-builder' )
 
 const include = ['./**', './*.js', './*.json', './*.html', './*.plist']
-const exclude = ['!./build.js','!./package-lock.json', '!./cache/**', '!./dist/**']
+
+const exclude = [
+    '!./build.js', '!./build.win.js', '!./array.exe', '!./package-lock.json',
+    '!./cache/**', '!./dist/**', '!./views/**', '!./assets/vendors/**',
+    '!./assets/js/vue/**', '!./assets/i18n/**', '!./assets/webpack.js', '!./assets/webpack.less',
+    '!./test.html', '!./webpack.config.js', '!./setup.win.iss', '!./index.win.js', '!./gitignore'
+]
+
 const files = include.concat( exclude )
 
 const object = new NwBuilder({

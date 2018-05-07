@@ -182,3 +182,5 @@ MultiLanguage.install = function (Vue, languages) {
         },
     })
 }
+
+export default MultiLanguage

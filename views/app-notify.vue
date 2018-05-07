@@ -122,3 +122,22 @@
         </div>
     </div>
 </template>
+
+<script>
+export default {
+    data () {
+        return {
+            empty: false
+        }
+    },
+    methods: {
+        destroy ( event ) {
+            let children = event.currentTarget.closest( '.notifications-body' ).children
+            let content = event.currentTarget.closest( '.notifications-content' )
+            content.parentNode.removeChild( content )
+
+            if ( !children.length ) this.empty = true
+        }
+    }
+}
+</script>

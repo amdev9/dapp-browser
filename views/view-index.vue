@@ -15,3 +15,55 @@
         </div>
     </div>
 </template>
+
+<script>
+import card from './app-card.vue'
+
+export default {
+    data () {
+        return {
+            market: {},
+            userapps: []
+        }
+    },
+    components: {
+        'app-card': card
+    },
+    methods: {
+        tomarket () {
+            this.$root.viewapp = false
+            this.$root.currentView = 'view-market'
+        }
+    },
+    mounted () {
+        this.$root.loading = true
+
+        this.$http.post('/').then(response => {
+            let data = response.body
+
+            this.userapps = data.userapps
+            this.$root.market = data.market ? data.market.key : null
+            this.$root.search = data.search ? data.search.key : null
+
+            data.setting.forEach(item => this.$root.setting[item.group] = item)
+
+            let pins = {}
+
+            data.pins.forEach(app => {
+                pins[app.key] = {
+                    src: app.index,
+                    icon: app.icon,
+                    name: app.name,
+                    active: false
+                }
+            })
+
+            this.$root.aside.pins = pins
+
+            this.$nextTick(function () {
+                this.$root.loading = false
+            })
+        })
+    }
+}
+</script>

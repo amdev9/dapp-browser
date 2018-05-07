@@ -56,3 +56,52 @@
         <div class="view-code-console" :class="{'visible': open}" ref="console"></div>
     </div>
 </template>
+
+<script>
+export default {
+    data () {
+        return {
+            open: false,
+            show: false,
+            content: ''
+        }
+    },
+    methods: {
+        showall () {
+            this.show = !this.show
+            this._offset()
+        },
+        toogle () {
+            this.open = !this.open
+            this.$refs.console.scrollTop = this.$refs.console.scrollHeight
+
+            this._offset()  
+        },
+        _offset () {
+            setTimeout(() => {
+                let panel = this.$refs.panel.clientHeight - 45
+                let size = panel + 250
+
+                this.$root.offset = this.open ? size : panel
+
+                setTimeout(() => {
+                    let frame = document.getElementById( this.$root.currentFrame )
+
+                    if ( !frame ) return
+
+                    frame.contentWindow.scrollBy(0, 1000 * 1000)
+                })
+            })
+        }
+    },
+    mounted () {
+        API.Socket.subscribe('console', response => {
+            let string = document.createElement( 'p' )
+            string.innerHTML = response.time + ' : ' + response.target + ' : <span class="' + response.type.toLowerCase() + '">' + response.type + '</span> : ' + JSON.stringify( response.message )
+            
+            this.$refs.console.appendChild( string )
+            this.$refs.console.scrollTop = this.$refs.console.scrollHeight
+        })
+    }
+}
+</script>

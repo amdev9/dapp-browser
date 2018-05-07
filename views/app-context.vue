@@ -7,3 +7,44 @@
         <span @click="close">Close app</span>
     </div>
 </template>
+
+<script>
+export default {
+    props: ['data'],
+    methods: {
+        pin () {
+            this.$root.aside.pins[this.data.id] = this.$root.aside.apps[this.data.id]
+            delete this.$root.aside.apps[this.data.id]
+        },
+        app () {
+            this.$root.aside.apps[this.data.id] = this.$root.aside.pins[this.data.id]
+            delete this.$root.aside.pins[this.data.id]
+        },
+        change () {
+            this.data.type == 'app' ? this.pin() : this.app()
+
+            this.$http.post('/setting.pin', {key: this.data.id})
+        },
+        close () {
+            let frames = Object.assign({}, this.$root.frames)
+            delete frames[this.data.id]
+
+            this.$root.frames = frames
+
+            if ( this.data.id == this.$root.currentFrame ) {
+                this.$root.viewapp = false
+                this.$root.apptitle = null
+                this.$root.pagetitle = this.translate( 'home' )
+                this.$root.currentView = 'view-index'
+            }
+                    
+            if ( this.data.type == 'app' ) 
+                delete this.$root.aside.apps[this.data.id]
+        }
+    },
+    mounted () {
+        this.$el.style.top = this.data.screen.y + 'px'
+        this.$el.style.left = this.data.screen.x + 'px'
+    }
+}
+</script>
