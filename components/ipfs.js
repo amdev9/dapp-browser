@@ -19,26 +19,37 @@ const _joined = Symbol( 'joined' )
 const _detached = Symbol( 'detached' )
 const _subscribe = Symbol( 'subscribe' )
 
+const wrtc = require('wrtc') // or require('electron-webrtc')()
+const WStar = require('libp2p-webrtc-star')
+const wstar = new WStar({ wrtc: wrtc })
+
 const ipfs = new IPFS({
-	EXPERIMENTAL: {
-		pubsub: true
-	},
-	config: {
-		Addresses: {
-			Swarm: [
-				// '/ip4/80.209.231.155/tcp/8081/ws'
-				// '/ip4/35.204.17.104/tcp/8081/ws'
-				// '/ip4/35.204.17.104/tcp/9090/ws'
-				// '/ip4/35.204.17.104/tcp/9090/ws/p2p-websocket-star'
-				'/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star'
-				// 'https://ipfs.array.io/ipfs/'
-			]
-		}
-	}
+ EXPERIMENTAL: {
+  pubsub: true
+ },
+ config: {"Bootstrap": [
+    "/ip4/35.204.17.104/tcp/4001/ipfs/QmWCsxqpvYMKCeCejvXLc7TbWrraLwmAKMxWgcsKQ8xUL3"
+  ],
+  "Addresses": {
+    "Swarm": [
+      "/ip4/0.0.0.0/tcp/4001",
+      "/ip6/::/tcp/4001",
+      "/dns4/discovery.libp2p.array.io/tcp/9091/wss/p2p-webrtc-star/"
+    ],
+    "API": "/ip4/127.0.0.1/tcp/5001",
+    "Gateway": "/ip4/127.0.0.1/tcp/8080"
+  }
+ },
+  libp2p: {
+    modules: {
+      transport: [wstar],
+      discovery: [wstar.discovery]
+    }
+  }
 })
 
 // ipfs.on('ready', () => { console.log( 'ready' ) })
-// ipfs.on('error', () => { console.log( 'error' ) })
+// ipfs.on('error', (e) => { console.log( e ) })
 // ipfs.on('init',  () => { console.log( 'init' ) })
 // ipfs.on('start', () => { console.log( 'start' ) })
 // ipfs.on('stop',  () => { console.log( 'stop' ) }) 
