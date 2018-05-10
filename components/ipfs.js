@@ -34,7 +34,7 @@ const ipfs = new IPFS({
     "Swarm": [
       "/ip4/0.0.0.0/tcp/4001",
       "/ip6/::/tcp/4001",
-      "/dns4/discovery.libp2p.array.io/tcp/9091/wss/p2p-webrtc-star/"
+      "/dns4/discovery.libp2p.array.io/tcp/9091/wss/p2p-websocket-star/"
     ],
     "API": "/ip4/127.0.0.1/tcp/5001",
     "Gateway": "/ip4/127.0.0.1/tcp/8080"
@@ -49,7 +49,7 @@ const ipfs = new IPFS({
 })
 
 // ipfs.on('ready', () => { console.log( 'ready' ) })
-// ipfs.on('error', (e) => { console.log( e ) })
+ ipfs.on('error', (e) => { console.log( e ) })
 // ipfs.on('init',  () => { console.log( 'init' ) })
 // ipfs.on('start', () => { console.log( 'start' ) })
 // ipfs.on('stop',  () => { console.log( 'stop' ) }) 
