@@ -1190,7 +1190,7 @@ main {
 		position: fixed;
 		top: 60px;
 		right: -350px;
-		bottom: 0;
+		bottom: 45px;
 		width: 350px;
 		opacity: 0;
 		visibility: hidden;
@@ -1209,6 +1209,129 @@ main {
 			opacity: 1;
 			right: 0;
 			visibility: visible;
+		}
+
+		.nav {
+			&-link {
+				font: 600 20px @font-montserrat !important;
+				color: @dgray;
+				border: 0;
+				padding: 20px 10px;
+				border-radius: 0;
+				background: @gray;
+
+				&.active {
+					color: @theme;
+				}
+			}
+		}
+
+		.tab {
+			&-pane {
+				padding: 15px;
+
+				.notifications-name {
+					display: block;
+					margin: 15px -15px;
+					padding: 7px 15px;
+				}
+
+				.dragzone {
+					position: relative;
+					height: 320px;
+					border-radius: 7px;
+					border: 2px dashed @lgray;
+
+					.message {
+						position: absolute;
+						top: 50%;
+						left: 0;
+						right: 0;
+						text-align: center;
+						.transform(translateY(-50%));
+
+						strong, span {
+							font: 600 20px @font-montserrat;
+							display: block;
+							color: @lgray;
+						}
+
+						strong {
+							margin: 15px 0 5px
+						}
+
+						span {
+							font-size: 14px
+						}
+					}
+				}
+
+				ul {
+					display: block;
+					margin: 0 -15px;
+					padding: 0;
+
+					li {
+						display: block;
+						list-style: none;
+						padding: 0 15px 20px;
+
+						&:after {
+							display: table;
+							content: '';
+							clear: both;
+						}
+
+						&.complete {
+							.icon {
+								svg {
+									path {
+										fill: @theme
+									}
+								}
+							}
+						}
+
+						& + li {
+							padding: 20px 15px;
+							border-top: 1px solid @gray
+						}
+
+						.icon {
+							position: relative;
+							width: 50px;
+							height: 50px;
+							float: left;
+							background: @gray;
+							border-radius: 50%;
+
+							svg {
+								position: absolute;
+								top: 50%;
+								left: 0;
+								right: 0;
+								margin: 0 auto;
+								.transform(translateY(-50%))
+							}
+						}
+
+						.introtext {
+							overflow: hidden;
+							padding: 2px 0 0 15px;
+
+							strong {
+								font: 500 16px @font-opensans;
+								display: block;
+							}
+
+							small {
+								font: 12px @font-opensans;
+								color: @lgray
+							}
+						}
+					}
+				}
+			}
 		}
 
 		&-empty {

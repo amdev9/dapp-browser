@@ -10027,7 +10027,7 @@ main .notifications {
   position: fixed;
   top: 60px;
   right: -350px;
-  bottom: 0;
+  bottom: 45px;
   width: 350px;
   opacity: 0;
   visibility: hidden;
@@ -10045,6 +10045,101 @@ main .notifications.visible {
   opacity: 1;
   right: 0;
   visibility: visible;
+}
+main .notifications .nav-link {
+  font: 600 20px 'Montserrat', sans-serif !important;
+  color: #7B8DA7;
+  border: 0;
+  padding: 20px 10px;
+  border-radius: 0;
+  background: #F2F3F6;
+}
+main .notifications .nav-link.active {
+  color: #4686FF;
+}
+main .notifications .tab-pane {
+  padding: 15px;
+}
+main .notifications .tab-pane .notifications-name {
+  display: block;
+  margin: 15px -15px;
+  padding: 7px 15px;
+}
+main .notifications .tab-pane .dragzone {
+  position: relative;
+  height: 320px;
+  border-radius: 7px;
+  border: 2px dashed #AAB4BF;
+}
+main .notifications .tab-pane .dragzone .message {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  transform: translateY(-50%);
+}
+main .notifications .tab-pane .dragzone .message strong,
+main .notifications .tab-pane .dragzone .message span {
+  font: 600 20px 'Montserrat', sans-serif;
+  display: block;
+  color: #AAB4BF;
+}
+main .notifications .tab-pane .dragzone .message strong {
+  margin: 15px 0 5px;
+}
+main .notifications .tab-pane .dragzone .message span {
+  font-size: 14px;
+}
+main .notifications .tab-pane ul {
+  display: block;
+  margin: 0 -15px;
+  padding: 0;
+}
+main .notifications .tab-pane ul li {
+  display: block;
+  list-style: none;
+  padding: 0 15px 20px;
+}
+main .notifications .tab-pane ul li:after {
+  display: table;
+  content: '';
+  clear: both;
+}
+main .notifications .tab-pane ul li.complete .icon svg path {
+  fill: #4686FF;
+}
+main .notifications .tab-pane ul li + li {
+  padding: 20px 15px;
+  border-top: 1px solid #F2F3F6;
+}
+main .notifications .tab-pane ul li .icon {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  float: left;
+  background: #F2F3F6;
+  border-radius: 50%;
+}
+main .notifications .tab-pane ul li .icon svg {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  transform: translateY(-50%);
+}
+main .notifications .tab-pane ul li .introtext {
+  overflow: hidden;
+  padding: 2px 0 0 15px;
+}
+main .notifications .tab-pane ul li .introtext strong {
+  font: 500 16px 'Open Sans', sans-serif;
+  display: block;
+}
+main .notifications .tab-pane ul li .introtext small {
+  font: 12px 'Open Sans', sans-serif;
+  color: #AAB4BF;
 }
 main .notifications-empty {
   padding: 30px 15px;

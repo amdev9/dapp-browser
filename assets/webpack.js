@@ -9,6 +9,7 @@ import header  from '../views/app-header.vue'
 import aside   from '../views/app-aside.vue'
 import card    from '../views/app-card.vue'
 import modal   from '../views/app-modal.vue'
+import loader  from '../views/app-loader.vue'
 import notify  from '../views/app-notify.vue'
 import logger  from '../views/app-logger.vue'
 import qrcode  from '../views/app-qrcode.vue'
@@ -32,6 +33,7 @@ const apps = {
     'app-card': card,
     'app-modal': modal,
     'app-notify': notify,
+    'app-loader': loader,
     'app-logger': logger,
     'app-qrcode': qrcode,
     'app-opened': opened,
@@ -48,7 +50,7 @@ const views = {
 
 const options = {
     title: 'Home', aside: {}, market: null, search: null,
-    frames: {}, remote: {}, offset: 0, notify: false,
+    frames: {}, remote: {}, offset: 0, notify: false, loader: false,
     context: null, viewapp: false, loading: true, setting: {},
     response: null, apptitle: null, pagetitle: 'Home', preventView: null,
     currentView: 'view-index', currentFrame: null

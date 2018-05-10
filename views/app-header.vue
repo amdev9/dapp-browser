@@ -121,6 +121,10 @@
                             <button type="button" class="notify" @click="notify">
                                 <img src="/images/icons/notification.svg" class="svg">
                             </button>
+
+                            <button type="button" class="notify" @click="loader">
+                                <img src="/images/icons/cloud.svg" class="svg">
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -154,6 +158,11 @@ export default {
         },
         notify () {
             this.$root.notify = !this.$root.notify
+            this.$root.loader = false
+        },
+        loader () {
+            this.$root.loader = !this.$root.loader
+            this.$root.notify = false
         },
         setting () {
             this._reset()
