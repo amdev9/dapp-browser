@@ -11,7 +11,7 @@
         </div>
     
         <div class="row">
-            <app-card v-for="item in userapps" :key="item.key" :id="item.key" :src="item.index" :tags="item.tags" :thumb="item.thumb" :icon="item.icon" :name="item.name | capitalize">{{ item.name | capitalize }}</app-card>
+            <app-card v-for="item in userapps" :key="item.hash" :id="item.hash" :src="item.index" :tags="item.tags" :thumb="item.thumb" :icon="item.icon" :name="item.name | capitalize">{{ item.name | capitalize }}</app-card>
         </div>
     </div>
 </template>
@@ -42,15 +42,14 @@ export default {
             let data = response.body
 
             this.userapps = data.userapps
-            this.$root.market = data.market ? data.market.key : null
-            this.$root.search = data.search ? data.search.key : null
+            this.$root.system = data.system || {}
 
             data.setting.forEach(item => this.$root.setting[item.group] = item)
 
             let pins = {}
 
             data.pins.forEach(app => {
-                pins[app.key] = {
+                pins[app.hash] = {
                     src: app.index,
                     icon: app.icon,
                     name: app.name,

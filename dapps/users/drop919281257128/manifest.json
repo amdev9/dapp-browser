@@ -1,7 +1,7 @@
 {
     "version": "1.0",
   
-    "key": "drop919281257128",
+    "hash": "drop919281257128",
     "name": "Drop Files",
     "unic": "dropfs",
     "tags": ["tools"],
@@ -12,6 +12,8 @@
 
     "description": "This is a sample dapp app-13",
 
+    "keywords": [],
+    
     "permissions": [
         "web", "log"
     ]

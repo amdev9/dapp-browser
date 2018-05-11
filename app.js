@@ -21,7 +21,7 @@ global.__uniq = uniqid()
 
 co(function * () {
 	global.sqlite = yield sqlite3( 'database/search.db' )
-	yield sqlite.run( 'CREATE TABLE IF NOT EXISTS results (key VARCHAR, name VARCHAR, value VARCHAR, url TEXT, icon TEXT)' )
+	yield sqlite.run( 'CREATE TABLE IF NOT EXISTS results (hash VARCHAR, name VARCHAR, value VARCHAR, url TEXT, icon TEXT)' )
 })
 
 const app = express()

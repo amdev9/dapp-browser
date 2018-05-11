@@ -35,7 +35,7 @@
                 </div>
 
                 <div class="row">
-                    <div v-for="item in value.items" :key="item.key" @click="preview(item)" class="col-md-6 col-lg-4 col-xl-3 apps-item">
+                    <div v-for="item in value.items" :key="item.hash" @click="preview(item)" class="col-md-6 col-lg-4 col-xl-3 apps-item">
                         <div class="apps-item-header" :style="{backgroundImage: 'url(' + item.thumb + ')'}"></div>
                                     
                         <div class="apps-item-body">
@@ -75,7 +75,7 @@ export default {
         this.$root.apptitle = null
 
         this.$http.post('/web', {message_type: 'market'}, {
-            headers: {'Allow-Origin': this.$root.market}
+            headers: {'Allow-Origin': this.$root.system.MrkCtrl}
         }).then(response => {
             let items = response.body.response
 

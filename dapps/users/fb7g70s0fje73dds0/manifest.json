@@ -1,7 +1,7 @@
 {
     "version": "1.0",
   
-    "key": "fb7g70s0fje73dds0",
+    "hash": "fb7g70s0fje73dds0",
     "name": "Contact Book",
     "tags": ["tools"],
     "icon": "favicon.png",
@@ -10,6 +10,8 @@
     "main" : "main.js",
 
     "description": "This is a sample dapp app-13",
+
+    "keywords": [],
 
     "permissions": [
         "web", "log"

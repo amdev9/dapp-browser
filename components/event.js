@@ -12,7 +12,7 @@ class EventBus {
 
     * publish (to, message_type, payload) {
         let object = {
-            from: this.data.key,
+            from: this.data.hash,
             message_type: payload.message_type,
             payload: payload
         }
@@ -22,13 +22,13 @@ class EventBus {
     }
 
     subscribe (message_type, func) {
-        Events.on(message_type + this.data.key, function * ( message ) {
+        Events.on(message_type + this.data.hash, function * ( message ) {
             yield func( message )
         })
     }
 
     everytime ( func ) {
-        Events.on(this.data.key, message => {
+        Events.on(this.data.hash, message => {
             func( message )
         })
     }

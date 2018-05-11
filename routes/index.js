@@ -25,25 +25,17 @@ const getHeaders = headers => {
 
 router.post('/', coexp(function * (request, response, next) {
 	const userapps = userLoader.items
-	const sysapps = systemLoader.items
 
 	const database = codb( db.setting )
 	const result = yield database.find({})
 
 	let setting = []
-	let market = {}
-	let search = {}
 	let pins = []
-
-	for (let i = 0; i < sysapps.length; i++) {
-		if ( sysapps[i].key == system.MrkCtrl ) market = sysapps[i]
-		if ( sysapps[i].key == system.SrcCtrl ) search = sysapps[i]
-	}
 
 	result.forEach(item => {
 		if ( item.type == 'pin' ) {
 			for (let i = 0; i < userapps.length; i++) {
-				if ( item.key == userapps[i].key ) pins.push( userapps[i] )
+				if ( item.hash == userapps[i].hash ) pins.push( userapps[i] )
 			}
 		}
 
@@ -54,8 +46,7 @@ router.post('/', coexp(function * (request, response, next) {
 
 	response.send({
 		pins: pins,
-		market: market,
-		search: search,
+		system: system,
 		setting: setting,
 		userapps: userapps
 	})
@@ -66,7 +57,7 @@ router.post('/setting.pin', coexp(function * (request, response, next) {
 	
 	if ( target.trim().length ) return response.send({status: false})
 
-	const object = {type: 'pin', key: request.body.key}
+	const object = {type: 'pin', hash: request.body.hash}
 
 	const database = codb( db.setting )
 	const result = yield database.find( object )

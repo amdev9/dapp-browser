@@ -254,16 +254,24 @@
         min-width: 100%;
         border-radius: 6px;
         background: @white;
-		box-shadow: 0 2px 3px rgba(32, 32, 73, .05);
+        box-shadow: 0 2px 3px rgba(32, 32, 73, .05);
+        
+        &.align {
+            &-right {
+                left: auto;
+                right: 0
+            }
+        }
     }
 
-    &-item {
+    &-item, &-point {
         font: 12px @font-opensans;
         color: @dgray;
         position: relative;
         cursor: default;
         padding: 7px 20px;
         background: none;
+        white-space: nowrap;
         text-transform: uppercase;
         .selection();
          

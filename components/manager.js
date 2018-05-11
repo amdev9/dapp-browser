@@ -41,9 +41,9 @@ class DappManager {
             }
 
             if ( object.unic == name ) {
-                let url = 'users/' + object.key + '/'
+                let url = 'users/' + object.hash + '/'
 
-                data.id = object.key
+                data.id = object.hash
                 data.name = object.name
                 data.icon = url + object.icon
                 data.src = url + object.index

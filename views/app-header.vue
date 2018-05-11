@@ -44,11 +44,11 @@
 
                         <div class="col navbar-user-search">
                             <form>
-                                <div class="input-group">
+                                <div class="input-group" @click="search = true">
                                     <input type="text" class="form-control" :class="{'visible': search}" @keyup="query" ref="query">
 
                                     <div class="input-group-append">
-                                        <button type="button" @click="search = !search">
+                                        <button type="button">
                                             <div :class="{'d-none': search}"><img src="/images/icons/search.svg" class="svg"></div>
                                             <div :class="{'d-none': !search}"><img src="/images/icons/close.svg" class="svg"></div>
                                         </button>
@@ -67,7 +67,11 @@
                                         </a>
                                     </div>
 
-                                    <div class="input-result-name"><span>Market</span></div>
+                                    <div class="row input-result-item" v-if="!result.dapps.length">
+                                        <div class="item-name col-12">No Results</div>
+                                    </div>
+
+                                    <!-- <div class="input-result-name"><span>Market</span></div>
 
                                     <div class="input-result-item row align-items-center">
                                         <div class="item-name col-12 col-lg-auto pr-0">
@@ -85,7 +89,7 @@
                                         </div>
                                         <div class="item-uri col pl-lg-0"><span>- anni://wallet/?sendto=address2</span></div>
                                         <div class="item-type col-3 text-right"><span>mainnet</span></div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </form>
                         </div>
@@ -171,7 +175,7 @@ export default {
         },
         query ( value ) {
             this.$http.post('/web', {message_type: 'query', message: this.$refs.query.value}, {
-                headers: {'Allow-Origin': this.$root.search}
+                headers: {'Allow-Origin': this.$root.system.SrcCtrl}
             }).then(response => {
                 this.result.dapps = response.body.response
             })
@@ -217,6 +221,13 @@ export default {
             this.$root.preventView = null
             this.$root.currentFrame = null
         }
+    },
+    mounted () {
+        let target;
+
+        document.addEventListener('mousedown', event => target = event.target)
+        
+        this.$refs.query.addEventListener('blur', () => this.search = false)
     },
     watch: {
         search ( value ) {

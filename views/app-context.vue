@@ -23,7 +23,7 @@ export default {
         change () {
             this.data.type == 'app' ? this.pin() : this.app()
 
-            this.$http.post('/setting.pin', {key: this.data.id})
+            this.$http.post('/setting.pin', {hash: this.data.id})
         },
         close () {
             let frames = Object.assign({}, this.$root.frames)

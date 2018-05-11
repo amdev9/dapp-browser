@@ -1,8 +1,9 @@
 {
     "version": "1.0",
   
-    "key": "ad7as87f6f8a8f444",
+    "hash": "ad7as87f6f8a8f444",
     "name": "Google",
+    "unic": "google",
     "tags": ["work", "tools"],
     "icon": "favicon.png",
     "thumb": "thumb.png",
@@ -10,6 +11,10 @@
     "main" : "main.js",
 
     "description": "This is a sample dapp app-1",
+
+    "keywords": [
+        {"google": "message=Google"}
+    ],
 
     "permissions": [
         "web", "log"

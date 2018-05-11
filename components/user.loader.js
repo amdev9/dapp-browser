@@ -1,4 +1,5 @@
 const child_process = require( 'child_process' )
+const sqlite3 = require( 'co-sqlite3' )
 const EventBus = require( './event' )
 const UseLib = require( './uselib' )
 const { NodeVM } = require( 'vm2' )
@@ -32,6 +33,38 @@ class UserDappsLoader {
         return fs.existsSync( filepath ) ? fs.readFileSync( filepath ).toString() : null
     }
 
+    setKeyWords ( object ) {
+        for (let i = 0; i < object.keywords.length; i++) {
+            const set = object.keywords[i]
+
+            for (let value in set) {
+                let url = 'arr://' + object.unic + ':mainet/?' + set[value]
+                let insert = [object.hash, object.name, value, url, object.icon]
+
+                const into = `INSERT INTO results VALUES (?, ?, ?, ?, ?)`
+                const select = `SELECT value, hash FROM results WHERE hash = '${object.hash}' AND value = '${value}'`
+
+                let exist = []
+                
+                co(function * () {
+                    try {
+                        const sqlite = yield sqlite3( 'database/search.db' )
+                        yield sqlite.run( 'CREATE TABLE IF NOT EXISTS results (hash VARCHAR, name VARCHAR, value VARCHAR, url TEXT, icon TEXT)' )
+                    } catch ( error ) {}
+
+                    yield sqlite.all( select ).then(rows => exist = rows)
+
+                    if ( exist.length ) return
+                    
+                    const prepare = yield sqlite.prepare( into )
+                    yield prepare.run( insert )
+
+                    prepare.finalize()
+                })
+            }
+        }
+    }
+
     runInContext () {
         const dapps = this.getDirSync( __apps + this.source )
 
@@ -60,7 +93,7 @@ class UserDappsLoader {
         this.items.push( object )
 
         const Events = new EventBus()
-        Events.data.key = object.key
+        Events.data.hash = object.hash
 
         const child = child_process.fork( path.join(__dirname, 'helper'), {stdio: [0,1,2, 'ipc']} )
 
@@ -69,6 +102,8 @@ class UserDappsLoader {
         }))
 
         Events.everytime(message => child.send( message ))
+    
+        this.setKeyWords( object )
 
         child.send({init: code})
     }

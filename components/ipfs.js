@@ -8,6 +8,10 @@ const IPFS = require( 'ipfs' )
 const co = require( 'co' )
 const fs = require( 'fs' )
 
+const WStar = require( 'libp2p-webrtc-star' )
+const wrtc = require( 'wrtc' )
+const wstar = new WStar({ wrtc: wrtc })
+
 const Events  = new EventBus()
 const FrontEnd = new Frontend()
 const system  = new UseLib( 'system.id' )
@@ -24,15 +28,23 @@ const ipfs = new IPFS({
 		pubsub: true
 	},
 	config: {
+		Bootstrap: [
+			"/ip4/35.204.17.104/tcp/4001/ipfs/QmWCsxqpvYMKCeCejvXLc7TbWrraLwmAKMxWgcsKQ8xUL3"
+		],
 		Addresses: {
 			Swarm: [
-				// '/ip4/80.209.231.155/tcp/8081/ws'
-				// '/ip4/35.204.17.104/tcp/8081/ws'
-				// '/ip4/35.204.17.104/tcp/9090/ws'
-				// '/ip4/35.204.17.104/tcp/9090/ws/p2p-websocket-star'
-				'/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star'
-				// 'https://ipfs.array.io/ipfs/'
-			]
+				"/ip4/0.0.0.0/tcp/4001",
+				"/ip6/::/tcp/4001",
+				"/dns4/discovery.libp2p.array.io/tcp/9091/wss/p2p-websocket-star/"
+			],
+			API: "/ip4/127.0.0.1/tcp/5001",
+			Gateway: "/ip4/127.0.0.1/tcp/8080"
+		}
+	},
+	libp2p: {
+		modules: {
+			transport: [wstar],
+			discovery: [wstar.discovery]
 		}
 	}
 })

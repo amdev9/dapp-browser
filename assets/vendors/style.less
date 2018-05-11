@@ -142,6 +142,7 @@ header {
 					.input {
 						&-group {
 							height: 100%;
+							cursor: text;
 		
 							.form-control, .form-control:focus {
 								font: 16px @font-montserrat;
@@ -1232,13 +1233,14 @@ main {
 
 				.notifications-name {
 					display: block;
-					margin: 15px -15px;
+					margin: 0 -15px 15px;
 					padding: 7px 15px;
 				}
 
 				.dragzone {
 					position: relative;
 					height: 320px;
+					margin: 0 0 15px;
 					border-radius: 7px;
 					border: 2px dashed @lgray;
 
@@ -1264,17 +1266,26 @@ main {
 							font-size: 14px
 						}
 					}
+
+					&.dragover:after {
+						position: absolute;
+						content: '';
+						top: 0;
+						left: 0;
+						right: 0;
+						bottom: 0;
+						background: fade(@theme, 30%)
+					}
 				}
 
 				ul {
 					display: block;
-					margin: 0 -15px;
-					padding: 0;
+					margin: 0;
+					padding: 0 15px;
 
 					li {
-						display: block;
 						list-style: none;
-						padding: 0 15px 20px;
+						padding-bottom: 20px;
 
 						&:after {
 							display: table;
@@ -1290,10 +1301,15 @@ main {
 									}
 								}
 							}
+
+							&.no-bg .icon {
+								background: none
+							}
 						}
 
 						& + li {
-							padding: 20px 15px;
+							padding-top: 20px;
+							padding-bottom: 20px;
 							border-top: 1px solid @gray
 						}
 
@@ -1301,7 +1317,6 @@ main {
 							position: relative;
 							width: 50px;
 							height: 50px;
-							float: left;
 							background: @gray;
 							border-radius: 50%;
 
@@ -1311,8 +1326,29 @@ main {
 								left: 0;
 								right: 0;
 								margin: 0 auto;
-								.transform(translateY(-50%))
+								.transform(translateY(-50%));
+
+								&.over {
+									margin: -25px auto 0;
+									animation: rotator 1.5s ease-in-out infinite;
+								}
 							}
+
+							.total {
+								position: absolute;
+								font: 500 12px @font-opensans;
+								color: @lgray;
+								top: 50%;
+								left: 0;
+								right: 0;
+								margin: -9px auto 0;
+								text-align: center;
+							}
+
+							@keyframes rotator {
+								0% { transform: rotate( 0deg ) }
+								100% { transform: rotate( 360deg ) }
+						  	}
 						}
 
 						.introtext {
@@ -1322,11 +1358,37 @@ main {
 							strong {
 								font: 500 16px @font-opensans;
 								display: block;
+								white-space: nowrap;
+								overflow: hidden;
+								text-overflow: ellipsis;
 							}
 
 							small {
 								font: 12px @font-opensans;
 								color: @lgray
+							}
+						}
+
+						.action {
+							.dropdown {
+								&-target {
+									display: inline-block;
+									width: 20px;
+									padding: 0 5px;
+									cursor: pointer;
+									text-align: center;
+									margin-right: -15px;
+
+									&:hover {
+										svg path {
+											fill: @theme
+										}
+									}
+								}
+
+								&-menu {
+									right: -5px;
+								}
 							}
 						}
 					}

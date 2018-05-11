@@ -25,7 +25,7 @@ class Search {
     * select ( response ) {
         const target = response.payload.target
 
-        const sql = `SELECT value, url FROM results WHERE key = '${target}'`
+        const sql = `SELECT value, url FROM results WHERE hash = '${target}'`
 
         yield sqlite.all( sql ).then(rows => response.payload.response = rows)
 
@@ -37,7 +37,7 @@ class Search {
         const target = response.payload.target
 
         const remove = [message.value, message.url, target]
-        const sql = `DELETE FROM results WHERE value = ? AND url = ? AND key = ?`
+        const sql = `DELETE FROM results WHERE value = ? AND url = ? AND hash = ?`
 
         const prepare = yield sqlite.prepare( sql )
         yield prepare.run( remove )
@@ -50,7 +50,7 @@ class Search {
     * destroy ( response ) { 
         const target = response.payload.target
 
-        const sql = `DELETE FROM results WHERE key = '${target}'`
+        const sql = `DELETE FROM results WHERE hash = '${target}'`
 
         yield sqlite.run( sql )
 
@@ -72,11 +72,19 @@ class Search {
         const url = 'arr://' + object.unic + ':mainet/?' + message.url
         const icon = 'users/' + target + '/' + object.icon
 
-        const insert = [object.key, object.name, message.value, url, icon]
+        const insert = [object.hash, object.name, message.value, url, icon]
         
-        const sql = `INSERT INTO results VALUES (?, ?, ?, ?, ?)`
+        const into = `INSERT INTO results VALUES (?, ?, ?, ?, ?)`
 
-        const prepare = yield sqlite.prepare( sql )
+        const select = `SELECT value, hash FROM results WHERE hash = '${target}' AND value = '${message.value}'`
+
+        let exist = []
+
+        yield sqlite.all( select ).then(rows => exist = rows)
+
+        if ( exist.length ) return FrontEnd.complete( response.payload )
+
+        const prepare = yield sqlite.prepare( into )
         yield prepare.run( insert )
 
         prepare.finalize()

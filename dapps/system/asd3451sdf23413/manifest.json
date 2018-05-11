@@ -1,7 +1,7 @@
 {
     "version": "1.0",
   
-    "key": "asd3451sdf23413",
+    "hash": "asd3451sdf23413",
     "name": "IPFS Controller",
     "main" : "main.js",
 

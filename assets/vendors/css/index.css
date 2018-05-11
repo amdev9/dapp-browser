@@ -122,6 +122,7 @@ header .navbar-user-search form {
 }
 header .navbar-user-search form .input-group {
   height: 100%;
+  cursor: text;
 }
 header .navbar-user-search form .input-group .form-control,
 header .navbar-user-search form .input-group .form-control:focus {
@@ -979,12 +980,13 @@ main .notifications .tab-pane {
 }
 main .notifications .tab-pane .notifications-name {
   display: block;
-  margin: 15px -15px;
+  margin: 0 -15px 15px;
   padding: 7px 15px;
 }
 main .notifications .tab-pane .dragzone {
   position: relative;
   height: 320px;
+  margin: 0 0 15px;
   border-radius: 7px;
   border: 2px dashed #AAB4BF;
 }
@@ -1008,15 +1010,23 @@ main .notifications .tab-pane .dragzone .message strong {
 main .notifications .tab-pane .dragzone .message span {
   font-size: 14px;
 }
+main .notifications .tab-pane .dragzone.dragover:after {
+  position: absolute;
+  content: '';
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(70, 134, 255, 0.3);
+}
 main .notifications .tab-pane ul {
   display: block;
-  margin: 0 -15px;
-  padding: 0;
+  margin: 0;
+  padding: 0 15px;
 }
 main .notifications .tab-pane ul li {
-  display: block;
   list-style: none;
-  padding: 0 15px 20px;
+  padding-bottom: 20px;
 }
 main .notifications .tab-pane ul li:after {
   display: table;
@@ -1026,15 +1036,18 @@ main .notifications .tab-pane ul li:after {
 main .notifications .tab-pane ul li.complete .icon svg path {
   fill: #4686FF;
 }
+main .notifications .tab-pane ul li.complete.no-bg .icon {
+  background: none;
+}
 main .notifications .tab-pane ul li + li {
-  padding: 20px 15px;
+  padding-top: 20px;
+  padding-bottom: 20px;
   border-top: 1px solid #F2F3F6;
 }
 main .notifications .tab-pane ul li .icon {
   position: relative;
   width: 50px;
   height: 50px;
-  float: left;
   background: #F2F3F6;
   border-radius: 50%;
 }
@@ -1046,6 +1059,28 @@ main .notifications .tab-pane ul li .icon svg {
   margin: 0 auto;
   transform: translateY(-50%);
 }
+main .notifications .tab-pane ul li .icon svg.over {
+  margin: -25px auto 0;
+  animation: rotator 1.5s ease-in-out infinite;
+}
+main .notifications .tab-pane ul li .icon .total {
+  position: absolute;
+  font: 500 12px 'Open Sans', sans-serif;
+  color: #AAB4BF;
+  top: 50%;
+  left: 0;
+  right: 0;
+  margin: -9px auto 0;
+  text-align: center;
+}
+@keyframes rotator {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 main .notifications .tab-pane ul li .introtext {
   overflow: hidden;
   padding: 2px 0 0 15px;
@@ -1053,10 +1088,27 @@ main .notifications .tab-pane ul li .introtext {
 main .notifications .tab-pane ul li .introtext strong {
   font: 500 16px 'Open Sans', sans-serif;
   display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 main .notifications .tab-pane ul li .introtext small {
   font: 12px 'Open Sans', sans-serif;
   color: #AAB4BF;
+}
+main .notifications .tab-pane ul li .action .dropdown-target {
+  display: inline-block;
+  width: 20px;
+  padding: 0 5px;
+  cursor: pointer;
+  text-align: center;
+  margin-right: -15px;
+}
+main .notifications .tab-pane ul li .action .dropdown-target:hover svg path {
+  fill: #4686FF;
+}
+main .notifications .tab-pane ul li .action .dropdown-menu {
+  right: -5px;
 }
 main .notifications-empty {
   padding: 30px 15px;

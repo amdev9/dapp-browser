@@ -1,7 +1,7 @@
 {
     "version": "1.0",
   
-    "key": "bx7as87f6f8a8f444",
+    "hash": "bx7as87f6f8a8f444",
     "name": "Chat",
     "unic": "chat",
     "tags": ["tools"],
@@ -12,6 +12,8 @@
 
     "description": "This is a sample dapp app-13",
 
+    "keywords": [],
+    
     "permissions": [
         "web", "log", "ipfs"
     ]

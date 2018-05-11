@@ -1,7 +1,7 @@
 {
     "version": "1.0",
   
-    "key": "ab5as87f6f8a8f125",
+    "hash": "ab5as87f6f8a8f125",
     "name": "Tic Tac Toe",
     "unic": "tictactoe",
     "tags": ["work", "tools"],
@@ -12,6 +12,8 @@
 
     "description": "This is a sample dapp app-1",
 
+    "keywords": [],
+    
     "permissions": [
         "web", "log"
     ]

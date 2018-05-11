@@ -7,7 +7,6 @@ import MultiLanguage from './js/vue/i18n.js'
 // Components
 import header  from '../views/app-header.vue'
 import aside   from '../views/app-aside.vue'
-import card    from '../views/app-card.vue'
 import modal   from '../views/app-modal.vue'
 import loader  from '../views/app-loader.vue'
 import notify  from '../views/app-notify.vue'
@@ -28,28 +27,27 @@ import i18n_ru from './i18n/ru.js'
 'use strict'
 
 const apps = {
-    'app-header': header,
-    'app-aside': aside,
-    'app-card': card,
-    'app-modal': modal,
-    'app-notify': notify,
-    'app-loader': loader,
-    'app-logger': logger,
-    'app-qrcode': qrcode,
-    'app-opened': opened,
+    'app-header' : header,
+    'app-aside'  : aside,
+    'app-modal'  : modal,
+    'app-notify' : notify,
+    'app-loader' : loader,
+    'app-logger' : logger,
+    'app-qrcode' : qrcode,
+    'app-opened' : opened,
     'app-context': context
 }
 
 const views = {
-    'view-index': index,
-    'view-frame': frame,
-    'view-market': market,
+    'view-index'  : index,
+    'view-frame'  : frame,
+    'view-market' : market,
     'view-setting': setting,
     'view-preview': preview,
 }
 
 const options = {
-    title: 'Home', aside: {}, market: null, search: null,
+    title: 'Home', aside: {}, system: {},
     frames: {}, remote: {}, offset: 0, notify: false, loader: false,
     context: null, viewapp: false, loading: true, setting: {},
     response: null, apptitle: null, pagetitle: 'Home', preventView: null,
