@@ -1,4 +1,4 @@
-(exports => {
+;(exports => {
 
     'use strict'
 
@@ -88,4 +88,4 @@
 
     exports.API = API
 
-})( this )
+})( this );
