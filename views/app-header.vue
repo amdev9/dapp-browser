@@ -43,13 +43,13 @@
                         <div class="navbar-user-uri" v-if="search"><span>uri:</span> </div>
 
                         <div class="col navbar-user-search">
-                            <form>
-                                <div class="input-group" @click="search = true">
-                                    <input type="text" class="form-control" :class="{'visible': search}" @keyup="query" ref="query">
+                            <form @submit.prevent>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" :class="{'focus': search}" @click="search = true" @keyup="query" ref="query">
 
                                     <div class="input-group-append">
                                         <button type="button">
-                                            <div :class="{'d-none': search}"><img src="/images/icons/search.svg" class="svg"></div>
+                                            <div :class="{'d-none': search}" @click="search = true"><img src="/images/icons/search.svg" class="svg"></div>
                                             <div :class="{'d-none': !search}"><img src="/images/icons/close.svg" class="svg"></div>
                                         </button>
                                     </div>
@@ -57,14 +57,14 @@
 
                                 <div class="input-result" v-if="search">
                                     <div v-for="(value, key) in result" :key="key">
-                                        <a v-for="item in value" :key="item.key" :href="item.url" class="input-result-item row align-items-center" >
+                                        <div v-for="item in value" :key="item.key" :data-href="item.url" @mousedown="openapp" class="input-result-item row align-items-center" >
                                             <div class="item-name col-12 col-lg-auto pr-0">
                                                 <img :src="item.icon">
                                                 <span>{{ item.name }}</span>
                                             </div>
                                             <div class="item-uri col pl-lg-0"><span>- {{ item.url }}</span></div>
                                             <div class="item-type col-3 text-right"><span>mainnet</span></div>
-                                        </a>
+                                        </div>
                                     </div>
 
                                     <div class="row input-result-item" v-if="!result.dapps.length">
@@ -192,6 +192,9 @@ export default {
         viber () {
             location.href = 'viber://forward?text=array.io/' + this.$root.apptitle
         },
+        openapp ( event ) {
+            location.href = event.currentTarget.dataset.href
+        },
         copy ( event ) {
             let target = event.currentTarget
             let select = document.createElement( 'textarea' )
@@ -223,17 +226,11 @@ export default {
         }
     },
     mounted () {
-        let target;
-
-        document.addEventListener('mousedown', event => target = event.target)
-        
         this.$refs.query.addEventListener('blur', () => this.search = false)
     },
     watch: {
         search ( value ) {
-            setTimeout(() => this.$refs.query.focus())
-            
-            if ( value ) return
+            if ( value ) return this.$refs.query.focus()
             
             this.$refs.query.value = ''
             

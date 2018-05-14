@@ -144,21 +144,25 @@ header {
 							height: 100%;
 							cursor: text;
 		
-							.form-control, .form-control:focus {
+							.form-control {
 								font: 16px @font-montserrat;
 								border: 0;
 								height: 35px;
 								color: @dark;
 								margin: 12px 0 0;
-								visibility: hidden;
+								opacity: 0;
 								border-radius: 0;
+
+								&.focus {
+									opacity: 1;
+								}
 							}
 		
 							&-append {
 								button {
 									position: relative;
-									width: 30px;
-									height: 30px;
+									width: 25px;
+									height: 25px;
 									border: 0;
 									top: 50%;
 									margin: 1px 0 0;
@@ -217,6 +221,7 @@ header {
 							&-item {
 								padding: 10px 0;
 								margin: 0;
+								cursor: default;
 
 								&:hover {
 									text-decoration: none;
@@ -369,7 +374,7 @@ header {
 					vertical-align: middle;
 
 					.dropdown-menu {
-						left: -15px;
+						left: -30px;
 						top: 50px;
 						margin: 0;
 						box-shadow: 0 0 3px rgba(32, 32, 73, .05);

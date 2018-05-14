@@ -22,7 +22,7 @@ nw.Window.open('connect.html', {
     connect.on('close', () => child.kill())
 })
 
-child.stdout.on('data', event => {
+child.stdout.once('data', event => {
     nw.Window.open('http://localhost:3000/', {
         show: false,
         min_width: 1000,

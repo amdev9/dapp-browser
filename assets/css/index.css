@@ -9217,20 +9217,22 @@ header .navbar-user-search form .input-group {
   height: 100%;
   cursor: text;
 }
-header .navbar-user-search form .input-group .form-control,
-header .navbar-user-search form .input-group .form-control:focus {
+header .navbar-user-search form .input-group .form-control {
   font: 16px 'Montserrat', sans-serif;
   border: 0;
   height: 35px;
   color: #252526;
   margin: 12px 0 0;
-  visibility: hidden;
+  opacity: 0;
   border-radius: 0;
+}
+header .navbar-user-search form .input-group .form-control.focus {
+  opacity: 1;
 }
 header .navbar-user-search form .input-group-append button {
   position: relative;
-  width: 30px;
-  height: 30px;
+  width: 25px;
+  height: 25px;
   border: 0;
   top: 50%;
   margin: 1px 0 0;
@@ -9277,6 +9279,7 @@ header .navbar-user-search form .input-result-name span {
 header .navbar-user-search form .input-result-item {
   padding: 10px 0;
   margin: 0;
+  cursor: default;
 }
 header .navbar-user-search form .input-result-item:hover {
   text-decoration: none;
@@ -9393,7 +9396,7 @@ header .navbar-user-title .share {
   vertical-align: middle;
 }
 header .navbar-user-title .share .dropdown-menu {
-  left: -15px;
+  left: -30px;
   top: 50px;
   margin: 0;
   box-shadow: 0 0 3px rgba(32, 32, 73, 0.05);

@@ -3,10 +3,10 @@
 
     if ( !form ) return;
     
+    const username = form.username;
+
     form.addEventListener('submit', event => {
         event.preventDefault();
-    
-        let username = form.username;
     
         let notify = form.querySelector( '.alert' );
 
@@ -52,5 +52,9 @@
             string.appendChild( button );
             container.appendChild( string );
         }
+    })
+
+    window.addEventListener('message', event => {
+        username.value = JSON.stringify( event.data )
     })
 })();
