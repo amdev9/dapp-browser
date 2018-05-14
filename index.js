@@ -8,7 +8,7 @@ var server
 var listen
 var spawn
 
-port(3000, '127.0.0.1', 100, function (error, free) {
+port(33888, '127.0.0.1', 10, function (error, free) {
     listen = free
 
 	spawn = exec( './array ./bin/www', {env: {PORT: listen}})
@@ -29,7 +29,6 @@ port(3000, '127.0.0.1', 100, function (error, free) {
     })
        
     spawn.stdout.once('data', data => {
-        alert( listen )
         nw.Window.open('127.0.0.1:' + listen, {
             show: false,
             min_width: 1000,
