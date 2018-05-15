@@ -8,6 +8,9 @@ var server
 var listen
 var spawn
 
+const menubar = new nw.Menu({type: 'menubar'})
+menubar.createMacBuiltin( 'Array.IO' )
+
 port(33888, '127.0.0.1', 10, function (error, free) {
     listen = free
 
@@ -23,8 +26,9 @@ port(33888, '127.0.0.1', 10, function (error, free) {
         transparent: true
     }, target => {
         connect = target
+        connect.menu = menubar
+
         connect.show()
-    
         connect.on('close', () => spawn.kill())
     })
        
@@ -35,6 +39,7 @@ port(33888, '127.0.0.1', 10, function (error, free) {
             min_height: 650
         }, target => {
             server = target
+            server.menu = menubar
     
             const manager = new Manager()
             manager.setValue = gui.App.argv

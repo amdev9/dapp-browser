@@ -16,8 +16,9 @@ const object = new NwBuilder({
     files: files,
     platforms: ['osx64'],
     buildDir: './dist',
-    flavor: 'sdk', // normal
-    macPlist: './Info.plist'
+    flavor: 'normal', // normal, sdk
+    macPlist: './Info.plist',
+    macIcns: './app.icns'
 })
 
 object.build(function ( error ) {
