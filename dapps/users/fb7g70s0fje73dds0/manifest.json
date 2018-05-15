@@ -3,9 +3,10 @@
   
     "hash": "fb7g70s0fje73dds0",
     "name": "Contact Book",
+    "unic": "contact_book",
     "tags": ["tools"],
-    "icon": "favicon.png",
-    "thumb": "thumb.png",
+    "icon": "favicon.svg",
+    "thumb": "thumb.svg",
     "index": "index.html",
     "main" : "main.js",
 

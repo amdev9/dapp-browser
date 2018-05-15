@@ -2,7 +2,7 @@
 
     'use strict'
 
-    const socket = io( 'ws://localhost:3310' )
+    const socket = io( 'ws://localhost:33999' )
     const _private = Symbol( 'private' )
 
     var _room = null

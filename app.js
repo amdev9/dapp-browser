@@ -7,7 +7,7 @@ const uniqid = require( 'uniqid' )
 const path = require( 'path' )
 const co = require( 'co' )
 
-global.io = require( 'socket.io' )( 3310 )
+global.io = require( 'socket.io' )( 33999 )
 
 global.db = {
 	access : new Datastore({filename: 'database/access.db',  autoload: true}),

@@ -99,7 +99,10 @@ new Vue({
                 for (const key in this.aside[type]) {
                     this.aside[type][key].active = null
 
-                    if ( key == value ) this.aside[type][key].active = true
+                    if ( key == value ) {
+                        this.aside[type][key].open = true
+                        this.aside[type][key].active = true
+                    }
                 }
             }
         }
@@ -119,7 +122,7 @@ new Vue({
             this.apptitle = object.name.replace(' ', '_').toLowerCase()
 
             if ( !this.aside.pins.hasOwnProperty( object.id ) )
-                this.aside.apps[object.id] = {icon: object.icon, src: object.src, name: object.name, active: true}
+                this.aside.apps[object.id] = {icon: object.icon, src: object.src, name: object.name, open: true, active: true}
         }
     },
     mounted () {

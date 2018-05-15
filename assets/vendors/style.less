@@ -489,13 +489,30 @@ aside {
 	}
 
 	.apps, .pins {
+		padding-top: 8px;
+
 		&-item {
 			position: relative;
-			height: 42px;
-			margin: 15px 0 0;
+			height: 58px;
+			padding: 8px 0;
 			cursor: default;
+
+			&.open {
+				&:after {
+					position: absolute;
+					content: '';
+					height: 3px;
+					width: 3px;
+					top: 50%;
+					left: 4px;
+					border-radius: 50%;
+					background: @theme
+				}
+			}
 				
 			&.active, &.focus {
+				background: @gray;
+
 				&:before {
 					position: absolute;
 					content: '';
@@ -504,6 +521,10 @@ aside {
 					left: 0;
 					bottom: 0;
 					background: @theme
+				}
+
+				&:after {
+					display: none
 				}
 			}
 
@@ -536,6 +557,7 @@ aside {
 				img {
 					display: block;
 					max-width: 100%;
+					margin: 0
 				}
 			}
 
@@ -559,7 +581,7 @@ aside {
 		}
 
 		*:last-child {
-			margin-bottom: 15px
+			margin-bottom: 8px
 		}
 	}
 

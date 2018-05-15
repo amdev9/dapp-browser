@@ -26,11 +26,11 @@
 
 	<app-aside>
 		<div class="pins">
-			<app-opened v-for="(value, key) in aside.pins" :name="value.name" :icon="value.icon" :image="'images/favicon.svg'" :src="value.src" :active="value.active" :id="key"></app-opened>
+			<app-opened v-for="(value, key) in aside.pins" :name="value.name" :icon="value.icon" :image="'images/favicon.svg'" :src="value.src" :open="value.open" :active="value.active" :key="key" :id="key"></app-opened>
 		</div>
 	
 		<div class="apps">
-			<app-opened v-for="(value, key) in aside.apps" :name="value.name" :icon="value.icon" :image="'images/favicon.svg'" :src="value.src" :active="value.active" :id="key"></app-opened>
+			<app-opened v-for="(value, key) in aside.apps" :name="value.name" :icon="value.icon" :image="'images/favicon.svg'" :src="value.src" :open="value.open" :active="value.active" :key="key" :id="key"></app-opened>
 		</div>
 	</app-aside>
 
@@ -38,7 +38,7 @@
 		<app-context v-if="context" :data="context"></app-context>
 
 		<div class="views" :class="{showin: viewapp}">
-			<view-frame v-for="item in frames" :src="item.src" :id="item.id"></view-frame>
+			<view-frame v-for="item in frames" :src="item.src" :key="item.id" :id="item.id"></view-frame>
 		</div>
 		
 		<components :is="currentView"></components>

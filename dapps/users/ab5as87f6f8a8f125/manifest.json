@@ -5,8 +5,8 @@
     "name": "Tic Tac Toe",
     "unic": "tictactoe",
     "tags": ["work", "tools"],
-    "icon": "favicon.png",
-    "thumb": "thumb.png",
+    "icon": "favicon.svg",
+    "thumb": "thumb.svg",
     "index": "index.html",
     "main" : "main.js",
 

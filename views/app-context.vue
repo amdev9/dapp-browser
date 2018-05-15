@@ -26,10 +26,16 @@ export default {
             this.$http.post('/setting.pin', {hash: this.data.id})
         },
         close () {
-            let frames = Object.assign({}, this.$root.frames)
-            delete frames[this.data.id]
+            delete this.$root.frames[this.data.id]
 
-            this.$root.frames = frames
+            circle : for (const type in this.$root.aside) {
+                for (const key in this.$root.aside[type]) {
+                    if ( this.data.id in this.$root.aside[type] ) {
+                        this.$root.aside[type][this.data.id].open = null
+                        break circle
+                    }
+                }
+            }
 
             if ( this.data.id == this.$root.currentFrame ) {
                 this.$root.viewapp = false

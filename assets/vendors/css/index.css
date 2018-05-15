@@ -386,12 +386,33 @@ aside .overflow {
 aside .overflow::-webkit-scrollbar {
   width: 0;
 }
+aside .apps,
+aside .pins {
+  padding-top: 8px;
+}
 aside .apps-item,
 aside .pins-item {
   position: relative;
-  height: 42px;
-  margin: 15px 0 0;
+  height: 58px;
+  padding: 8px 0;
   cursor: default;
+}
+aside .apps-item.open:after,
+aside .pins-item.open:after {
+  position: absolute;
+  content: '';
+  height: 3px;
+  width: 3px;
+  top: 50%;
+  left: 4px;
+  border-radius: 50%;
+  background: #4686FF;
+}
+aside .apps-item.active,
+aside .pins-item.active,
+aside .apps-item.focus,
+aside .pins-item.focus {
+  background: #F2F3F6;
 }
 aside .apps-item.active:before,
 aside .pins-item.active:before,
@@ -404,6 +425,12 @@ aside .pins-item.focus:before {
   left: 0;
   bottom: 0;
   background: #4686FF;
+}
+aside .apps-item.active:after,
+aside .pins-item.active:after,
+aside .apps-item.focus:after,
+aside .pins-item.focus:after {
+  display: none;
 }
 aside .apps-item.focus:before,
 aside .pins-item.focus:before {
@@ -432,6 +459,7 @@ aside .apps-item .icns img,
 aside .pins-item .icns img {
   display: block;
   max-width: 100%;
+  margin: 0;
 }
 aside .apps-item.dragstart,
 aside .pins-item.dragstart {
@@ -453,7 +481,7 @@ aside .pins .dragover {
 }
 aside .apps *:last-child,
 aside .pins *:last-child {
-  margin-bottom: 15px;
+  margin-bottom: 8px;
 }
 aside .pins {
   border-bottom: 1px solid #E9EEF5;

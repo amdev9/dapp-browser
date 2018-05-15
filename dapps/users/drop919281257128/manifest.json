@@ -6,7 +6,7 @@
     "unic": "dropfs",
     "tags": ["tools"],
     "icon": "favicon.svg",
-    "thumb": "thumb.png",
+    "thumb": "thumb.svg",
     "index": "index.html",
     "main" : "main.js",
 

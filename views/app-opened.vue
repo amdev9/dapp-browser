@@ -1,5 +1,5 @@
 <template>
-    <div class="apps-item" :class="{active: active}" @click="click" @contextmenu.prevent="context">
+    <div class="apps-item" :class="{active: active, open: open}" @click="click" @contextmenu.prevent="context">
         <div class="icns">
             <img :src="icon" :icon="image">
         </div>
@@ -8,17 +8,14 @@
 
 <script>
 export default {
-    props: ['id', 'image', 'icon', 'src', 'name', 'active'],
+    props: ['id', 'image', 'icon', 'src', 'name', 'open', 'active'],
     methods: {
-        click () {
-            let frames = Object.assign({}, this.$root.frames)
-            frames[this.id] = {id: this.id, src: this.src}
-
+        click ( event ) {
             this.$root.viewapp = true
-            this.$root.frames = frames
             this.$root.preventView = null
             this.$root.currentFrame = this.id
             this.$root.pagetitle = this.name
+            this.$root.frames[this.id] = {id: this.id, src: this.src}
             this.$root.apptitle = this.name.replace(RegExp(' ', 'g') , '_').toLowerCase()
         },
         context ( event ) {
