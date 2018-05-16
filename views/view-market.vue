@@ -17,17 +17,17 @@
 
                     <div class="col-4 text-right">
                        <div class="sortby">
-                            <span>Sort by:</span>
+                            <span v-lang.market.sortby></span>
                             
                             <div class="dropdown">
-                                <button type="button" class="dropdown-target">Popularity</button>
+                                <button type="button" class="dropdown-target" v-lang.sortby.popular></button>
                                         
-                                <div class="dropdown-menu">
-                                    <div class="dropdown-item"><span>Relevance</span></div>
-                                    <div class="dropdown-item"><span>Popularity</span></div>
-                                    <div class="dropdown-item"><span>Name</span></div>
-                                    <div class="dropdown-item"><span>Price</span></div>
-                                    <div class="dropdown-item"><span>Rating</span></div>
+                                <div class="dropdown-menu align-right">
+                                    <div class="dropdown-item"><span v-lang.sortby.relevance></span></div>
+                                    <div class="dropdown-item"><span v-lang.sortby.popular></span></div>
+                                    <div class="dropdown-item"><span v-lang.sortby.name></span></div>
+                                    <div class="dropdown-item"><span v-lang.sortby.price></span></div>
+                                    <div class="dropdown-item"><span v-lang.sortby.rating></span></div>
                                 </div>
                             </div>
                         </div>

@@ -17,28 +17,28 @@
 
                     <div class="options">
                         <dl class="row">
-                            <dt class="col-auto">Updated:</dt>
+                            <dt class="col-auto" v-lang.app.updated></dt>
                             <dd class="col">{{ data.updated }}</dd>
                         </dl>
 
                         <dl class="row">
-                            <dt class="col-auto">Version:</dt>
+                            <dt class="col-auto" v-lang.app.version></dt>
                             <dd class="col">{{ data.version }}</dd>
                         </dl>
 
                         <dl class="row">
-                            <dt class="col-auto">Size:</dt>
+                            <dt class="col-auto" v-lang.app.size></dt>
                             <dd class="col">{{ data.size }}</dd>
                         </dl>
                     </div>
 
                     <div class="action row">
                         <div class="col">
-                            <button type="button" class="btn btn-primary btn-rounded">Install</button>
+                            <button type="button" class="btn btn-primary btn-rounded" v-lang.app.install></button>
                         </div>
 
                         <div class="col">
-                            <button type="button" class="btn btn-secondary btn-rounded">Donate</button>
+                            <button type="button" class="btn btn-secondary btn-rounded" v-lang.app.donate></button>
                         </div>
                     </div>
                 </figcaption>
@@ -63,6 +63,7 @@
                             </g>
                         </svg>
                     </button>
+
                     <button v-on:click="next">
                         <svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-149.000000, -111.000000)">
@@ -82,7 +83,7 @@
             </div>
 
             <div class="certificate">
-                <h4 class="title">Certified by:</h4>
+                <h4 class="title" v-lang.app.certified></h4>
 
                 <div class="images">
                     <img v-for="item in data.certificate" :src="item" :key="item">
@@ -94,7 +95,7 @@
             <div class="reviews">
                 <div class="reviews-head row">
                     <div class="col-auto">
-                        <h4 class="title">Reviews</h4>
+                        <h4 class="title" v-lang.app.comments></h4>
 
                         <div class="status">
                             <span class="up">72%</span>
@@ -102,7 +103,7 @@
                         </div>
                     </div>
                     <div class="col text-right">
-                        <button type="button" class="btn btn-outline-light btn-rounded">Write a Review</button>
+                        <button type="button" class="btn btn-outline-light btn-rounded" v-lang.app.write></button>
                     </div>
                 </div>
 
@@ -121,7 +122,7 @@
                     </div>
                 </div>
                 
-                <button type="button" class="btn btn-link show-all">See all comments</button>
+                <button type="button" class="btn btn-link show-all" v-lang.app.showall></button>
             </div>
         </div>
     </div>

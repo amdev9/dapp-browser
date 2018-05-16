@@ -130,7 +130,7 @@ new Vue({
         document.addEventListener('click', event => event.target.dropdown())
 
         this.aside = {pins: {}, apps: {}}
-        this.pagetitle = this.translate( 'home' )
+        this.pagetitle = this.translate( 'header' ).home
 
         document.addEventListener('click', event => this.context = null)
 

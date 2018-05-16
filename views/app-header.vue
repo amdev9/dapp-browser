@@ -18,7 +18,7 @@
                             <span class="apptitle" v-if="$root.apptitle" @click="search = true">arr://{{ $root.apptitle }}</span>
                             <span class="pagetitle">{{ $root.pagetitle }}</span>
                             
-                            <span class="share">
+                            <div class="share">
                                 <svg width="18px" height="21px" viewBox="0 0 18 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
                                         <g transform="translate(1.000000, 1.000000)" stroke="#B2BCC9" stroke-width="2">
@@ -30,14 +30,16 @@
                                 </svg>
 
                                 <div class="dropdown-menu">
-                                    <div class="dropdown-item"><span class="share-link" @click="copy">Copy Share link</span></div>
-                                    <div class="dropdown-item"><span class="share-qr" @click="qrcode">See QR code</span></div>
+                                    <div class="dropdown-item" @click="copy"><span class="share-link" v-lang.share.copy></span></div>
+                                    <div class="dropdown-item" @click="qrcode"><span class="share-qr" v-lang.share.qrcode></span></div>
+                                    
                                     <div class="dropdown-divider"></div>
-                                    <div class="dropdown-item"><span class="share-tm" @click="telegram">Share to Telegram</span></div>
-                                    <div class="dropdown-item"><span class="share-viber" @click="viber">Share to Viber</span></div>
-                                    <div class="dropdown-item"><span class="share-email" @click="share">Share to Email</span></div>
+                                    
+                                    <div class="dropdown-item" @click="telegram"><span class="share-tm" v-lang.share.telegram></span></div>
+                                    <div class="dropdown-item" @click="viber"><span class="share-viber" v-lang.share.viber></span></div>
+                                    <div class="dropdown-item" @click="email"><span class="share-email" v-lang.share.email></span></div>
                                 </div>
-                            </span>
+                            </div>
                         </div>
 
                         <div class="navbar-user-uri" v-if="search"><span>uri:</span> </div>
@@ -68,7 +70,7 @@
                                     </div>
 
                                     <div class="row input-result-item" v-if="!result.dapps.length">
-                                        <div class="item-name col-12">No Results</div>
+                                        <div class="item-name col-12" v-lang.header.found></div>
                                     </div>
 
                                     <!-- <div class="input-result-name"><span>Market</span></div>
@@ -153,7 +155,7 @@ export default {
         tohome () { 
             this._reset()
             this.$root.apptitle = null
-            this.$root.pagetitle = this.translate( 'home' )
+            this.$root.pagetitle = this.translate( 'header' ).home
             this.$root.currentView = 'view-index'
         },
         prevent () {
@@ -170,7 +172,7 @@ export default {
         },
         setting () {
             this._reset()
-            this.$root.pagetitle = 'Setting'
+            this.$root.pagetitle = this.translate( 'header' ).setting
             this.$root.currentView = 'view-setting'
         },
         query ( value ) {
@@ -180,7 +182,7 @@ export default {
                 this.result.dapps = response.body.response
             })
         },
-        share () {
+        email () {
             location.href = 'mailto:?subject=' + this.$root.pagetitle
         },
         qrcode ( event ) {
@@ -210,7 +212,7 @@ export default {
                 html: '<div data-notify-text/>'
             })
 
-            $.notify('Link copied to clipboard', {
+            $.notify(this.translate( 'share' ).copytext, {
                 position: 'top center',
                 style: 'copied',
                 className: 'success',

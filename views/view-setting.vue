@@ -2,53 +2,52 @@
     <div class="container-fluid">
         <div class="navigate">
             <ul class="nav justify-content-center">
-                <li class="nav-item"><button type="button" name="general" class="btn btn-link" :class="{'active': view == 'general'}" @click="change">General</button></li>
-                <li class="nav-item"><button type="button" name="access" class="btn btn-link"  :class="{'active': view == 'access'}" @click="change">Access</button></li>
-                <li class="nav-item"><button type="button" name="network" class="btn btn-link" :class="{'active': view == 'network'}" @click="change">Network</button></li>
-                <li class="nav-item"><button type="button" name="devmode" class="btn btn-link" :class="{'active': view == 'devmode'}" @click="change">Dev mode</button></li>
+                <li class="nav-item"><button type="button" name="general" class="btn btn-link" :class="{'active': view == 'general'}" @click="change" v-lang.setting.general></button></li>
+                <li class="nav-item"><button type="button" name="access" class="btn btn-link"  :class="{'active': view == 'access'}" @click="change" v-lang.setting.access></button></li>
+                <li class="nav-item"><button type="button" name="network" class="btn btn-link" :class="{'active': view == 'network'}" @click="change" v-lang.setting.network></button></li>
+                <li class="nav-item"><button type="button" name="devmode" class="btn btn-link" :class="{'active': view == 'devmode'}" @click="change" v-lang.setting.devmode></button></li>
             </ul>
         </div>
 
         <div class="category">
             <div class="row justify-content-center">
                 <div class="col-lg-7">
-                    <div class="item active" v-if="view == 'general'">
-                        <form class="form-settings">
+                    <div class="item" v-show="view == 'general'">
+                        <form @submit.prevent="general" name="general" class="form-settings">
                             <div class="form-group">
-                                <label>Language</label>
-                                <select>
-                                    <option>English</option>
-                                    <option>Russian</option>
-                                    <option>German</option>
+                                <label v-lang.setting.language></label>
+                                <select name="language">
+                                    <option value="en" :selected="lang == 'en'">English</option>
+                                    <option value="ru" :selected="lang == 'ru'">Russian</option>
                                 </select>
                             </div>
 
                             <div class="form-group">
-                                <label>Preffered unit of account</label>
-                                <select>
-                                    <option>BTS</option>
-                                    <option>USD</option>
-                                    <option>RUB</option>
+                                <label v-lang.setting.units></label>
+                                <select name="units">
+                                    <option value="bts">BTS</option>
+                                    <option value="usd">USD</option>
+                                    <option value="rub">RUB</option>
                                 </select>
                             </div>
 
                             <div class="form-group">
-                                <label>Wallet auto-lock time (secound, 0 to disable)</label>
+                                <label v-lang.setting.wallet></label>
                                 <input type="text" class="form-control">
                             </div>
 
                             <div class="form-group text-right">
-                                <button type="button" class="btn btn-light btn-lg">Reset settings</button>
-                                <button type="button" class="btn btn-primary btn-lg">Save</button>
+                                <button type="reset" @click="reset" class="btn btn-light btn-lg" v-lang.setting.reset></button>
+                                <button type="submit" class="btn btn-primary btn-lg" v-lang.setting.save></button>
                             </div>
                         </form>
                     </div>
 
-                    <div class="item" v-if="view == 'access'">
+                    <div class="item" v-show="view == 'access'">
                         <form class="form-settings">
                             <div class="form-group">
-                                <label class="form-title">Active node</label>
-                                
+                                <label class="form-title" v-lang.setting.active></label>
+
                                 <div class="row">
                                     <div class="col-xl-6 pr-2">
                                         <div class="card">
@@ -72,11 +71,11 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="form-title">Available nodes</label>
+                                <label class="form-title" v-lang.setting.available></label>
 
                                 <div class="row">
                                     <div class="col-xl-6 pr-2">
-                                        <button type="button" class="btn btn-primary btn-lg btn-block">Choose closest automatically</button>
+                                        <button type="button" class="btn btn-primary btn-lg btn-block" v-lang.setting.automat></button>
 
                                         <div class="card mt-3">
                                             <ul class="list-group list-group-flush">
@@ -114,7 +113,7 @@
                                     </div>
 
                                     <div class="col-xl-6 pl-2">
-                                        <button type="button" class="btn btn-light btn-lg btn-block">Add new node</button>
+                                        <button type="button" class="btn btn-light btn-lg btn-block" v-lang.setting.newnode></button>
 
                                         <div class="card mt-3">
                                             <ul class="list-group list-group-flush">
@@ -155,28 +154,28 @@
                         </form>
                     </div>
 
-                    <div class="item" v-if="view == 'network'">
-                        <form @submit.prevent="submit" name="network" class="form-settings">
+                    <div class="item" v-show="view == 'network'">
+                        <form @submit.prevent="network" name="network" class="form-settings">
                             <div class="form-group">
                                 <div class="custom-control custom-checkbox">
                                     <input type="hidden" name="proxy" value="false">
                                     <input type="checkbox" name="proxy" value="true" class="custom-control-input" id="input-proxy" :checked="$root.setting.network && $root.setting.network.proxy == 'true'">
-                                    <label class="custom-control-label" for="input-proxy">Use socks proxy</label>
+                                    <label class="custom-control-label" for="input-proxy" v-lang.setting.newnode></label>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label>Host</label>
+                                <label v-lang.setting.host></label>
                                 <input type="text" name="host" :value="$root.setting.network && $root.setting.network.host" class="form-control">
                             </div>
 
                             <div class="form-group">
-                                <label>Port</label>
+                                <label v-lang.setting.port></label>
                                 <input type="text" name="port" :value="$root.setting.network && $root.setting.network.port" class="form-control">
                             </div>
 
                             <div class="form-group">
-                                <label>Public Key</label>
+                                <label v-lang.setting.public></label>
                                 <input type="text" name="public" :value="$root.setting.network && $root.setting.network.public" class="form-control">
                             </div>
 
@@ -199,25 +198,26 @@
                             </div>
 
                             <div class="form-group text-right">
-                                <button type="button" class="btn btn-light btn-lg">Cancel</button>
-                                <button type="submit" class="btn btn-primary btn-lg">Save</button>
+                                <button type="button" class="btn btn-light btn-lg" v-lang.setting.cancel></button>
+                                <button type="submit" class="btn btn-primary btn-lg" v-lang.setting.save></button>
                             </div>
                         </form>
                     </div>
 
-                    <div class="item" v-if="view == 'devmode'">
+                    <div class="item" v-show="view == 'devmode'">
+                        
                         <form class="form-settings">
                             <div class="form-group">
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input" id="input-proxy-1" checked>
-                                    <label class="custom-control-label" for="input-proxy-1">Use socks proxy</label>
+                                    <label class="custom-control-label" for="input-proxy-1">Test 1</label>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input" id="input-proxy-2" checked>
-                                    <label class="custom-control-label" for="input-proxy-2">Use socks proxy</label>
+                                    <label class="custom-control-label" for="input-proxy-2">Test 2</label>
                                 </div>
                             </div>
                         </form>
@@ -232,14 +232,15 @@
 export default {
     data () {
         return {
-            view: 'general'
+            view: 'general',
+            lang: null
         }
     },
     methods: {
         change ( event ) {
             this.view = event.currentTarget.name
         },
-        submit ( event ) {
+        network ( event ) {
             let form = $( event.target ).serialize().split( '&' )
             let name = event.target.name
 
@@ -255,11 +256,33 @@ export default {
             this.$http.post('/setting.setting', {where: {type: 'setting', group: name}, message: serialize}).then(response => {
                 alert( 'Success !' )
             })
+        },
+        general ( event ) {
+            this.lang = event.target.elements.language.value
+            this.language = this.lang
+
+            this.$root.pagetitle = this.translate( 'header' ).setting
+        },
+        reset ( event ) {
+            let parent = event.target.closest( 'form' )
+            let units = parent.elements.units.options
+            let language = parent.elements.language.options
+
+            for (let i = 0; i < language.length; i++) {
+                language[i].selected = language[i].defaultSelected
+            }
+
+            for (let i = 0; i < units.length; i++) {
+                units[i].selected = units[i].defaultSelected
+            }
+
+            $( 'select', parent ).niceSelect( 'update' )
         }
     },
     mounted () {
         this.$root.loading = true
         this.$root.apptitle = null
+        this.lang = this.language
 
         this.$nextTick(function () {
             $( 'select' ).niceSelect()

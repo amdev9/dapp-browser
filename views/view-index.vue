@@ -2,11 +2,11 @@
     <div class="container-fluid">
         <div class="row align-items-center">
             <div class="col-8">
-                <h3 class="title">Your apps</h3>
+                <h3 class="title" v-lang.desktop.apps></h3>
             </div>
 
             <div class="col-4 text-right">
-                <button type="button" class="btn btn-primary btn-rounded" @click="tomarket">Go to market</button>
+                <button type="button" class="btn btn-primary btn-rounded" @click="tomarket" v-lang.desktop.market></button>
             </div>
         </div>
     
