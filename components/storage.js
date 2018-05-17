@@ -1,61 +1,60 @@
 const Frontend = require( './frontend' )
-const Datastore = require( 'nedb' )
-const codb = require( 'co-nedb' )
-const UseLib = require( './uselib' )
 
 const FrontEnd = new Frontend()
-const _private = Symbol( 'private' )
 
 class Storage {
-    * insert ( response ) {
+    async insert ( response ) {
         const object = Object.assign({target: response.from}, response.payload.message || {})
-        const database = codb( db.storage )
 
-        response.payload.response = yield database.insert( object )
+        const output = await new Promise(resolve => {
+            db.storage.insert(object, (error, rows) => resolve( rows ))
+        })
 
-        this[_private]( response.payload )
+        response.payload.response = output
+        FrontEnd.complete( response.payload )
     }
 
-    * find ( response ) {
+    async find ( response ) {
         const object = Object.assign({target: response.from}, response.payload.where || {})
-        const database = codb( db.storage )
+        
+        const output = await new Promise(resolve => {
+            db.storage.find(object, (error, rows) => resolve( rows ))
+        })
 
-        response.payload.response = yield database.find( object )
-
-        this[_private]( response.payload )
+        response.payload.response = output
+        FrontEnd.complete( response.payload )
     }
 
-    * findOne ( response ) {
+    async findOne ( response ) {
         const object = Object.assign({target: response.from}, response.payload.where || {})
-        const database = codb( db.storage )
 
-        response.payload.response = yield database.findOne( object )
+        const output = await new Promise(resolve => {
+            db.storage.findOne(object, (error, result) => resolve( result ))
+        })
 
-        this[_private]( response.payload )
+        response.payload.response = output
+        FrontEnd.complete( response.payload )
     }
 
-    * update ( response ) {
+    async update ( response ) {
         const where = Object.assign({target: response.from}, response.payload.where || {})
         const object = Object.assign({target: response.from}, response.payload.message || {})
-        const database = codb( db.storage )
 
-        yield database.update(where, object, {multi: true})
+        await new Promise(resolve => {
+            db.storage.update(where, object, {multi: true}, resolve)
+        })
 
-        this[_private]( response.payload )
+        FrontEnd.complete( response.payload )
     }
 
-    * remove ( response ) {
+    async remove ( response ) {
         const object = Object.assign({target: response.from}, response.payload.where || {})
-        const database = codb( db.storage )
+        
+        await new Promise(resolve => {
+            db.storage.remove(object, {multi: true}, resolve)
+        })
 
-        yield database.remove(object, {multi: true})
-
-        this[_private]( response.payload )
-    }
-
-    [_private] ( payload ) {
-        db.storage = new Datastore({filename: 'database/storage.db', autoload: true})
-        FrontEnd.complete( payload )
+        FrontEnd.complete( response.payload )
     }
 }
 

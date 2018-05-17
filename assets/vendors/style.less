@@ -254,7 +254,7 @@ header {
 									}
 
 									img {
-										max-width: 42px;
+										width: 42px;
 										margin-right: 10px
 									}
 								}
@@ -489,9 +489,10 @@ aside {
 	}
 
 	.apps, .pins {
+		position: relative;
 		padding-top: 8px;
 
-		&-item {
+		.apps-item {
 			position: relative;
 			height: 58px;
 			padding: 8px 0;
@@ -581,14 +582,22 @@ aside {
 		}
 
 		*:last-child {
-			margin-bottom: 8px
+			margin-bottom: 8px;
 		}
 	}
 
-	.pins {
-		border-bottom: 1px solid #E9EEF5;
+	.pins.total {
+		&:after {
+			position: absolute;
+			content: '';
+			height: 1px;
+			bottom: -8px;
+			left: 0;
+			right: 0;
+			background: #E9EEF5
+		}
 	}
-}
+} 
 
 
 /* Middle

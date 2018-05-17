@@ -1,8 +1,4 @@
 const express = require( 'express' )
-const coexp = require( 'co-express' )
-const codb  = require( 'co-nedb' )
-const Datastore = require( 'nedb' )
-
 const UseLib = require( '../components/uselib' )
 const UserDappsLoader = require( '../components/user.loader' )
 const SystemDappsLoader = require( '../components/system.loader' )
@@ -10,24 +6,25 @@ const SystemDappsLoader = require( '../components/system.loader' )
 const router = express.Router()
 const system = new UseLib( 'system.id' )
 
-const systemLoader = new SystemDappsLoader('manifest.json', 'system')
-systemLoader.runInContext()
+const systemLoader = new SystemDappsLoader( 'system' )
+systemLoader.onStart()
 
-const userLoader = new UserDappsLoader('manifest.json', 'users')
-userLoader.runInContext()
+const userLoader = new UserDappsLoader( 'users' )
+userLoader.onStart()
 
 const getHeaders = headers => {
 	if ( headers['allow-origin'] ) return headers['allow-origin']
 
     let pathname = headers.referer.replace(headers.origin + '/', '')
-    return pathname.replace(/(users\/)|(system\/)/gi, '').split( '/' ).shift()
+    return pathname.replace(/(users\/)|(system\/)/gi, '').split( '/' ).shift().trim()
 }
 
-router.post('/', coexp(function * (request, response, next) {
+router.post('/', async function (request, response, next) {
 	const userapps = userLoader.items
 
-	const database = codb( db.setting )
-	const result = yield database.find({})
+	const result = await new Promise(resolve => {
+		db.setting.find({}, (error, rows) => resolve( rows ))
+	})
 
 	let setting = []
 	let pins = []
@@ -42,57 +39,52 @@ router.post('/', coexp(function * (request, response, next) {
 		if ( item.type == 'setting' ) setting.push( item )
 	})
 
-	db.setting = new Datastore({filename: 'database/setting.db', autoload: true})
-
 	response.send({
 		pins: pins,
 		system: system,
 		setting: setting,
 		userapps: userapps
 	})
-}))
+})
 
-router.post('/setting.pin', coexp(function * (request, response, next) {
-	let target = getHeaders( request.headers )
+router.post('/setting.pin', async function (request, response, next) {
+	const target = getHeaders( request.headers )
 	
-	if ( target.trim().length ) return response.send({status: false})
+	if ( target.length ) return response.send({status: false})
 
 	const object = {type: 'pin', hash: request.body.hash}
 
-	const database = codb( db.setting )
-	const result = yield database.find( object )
-
-	let status = true
-
-	yield (!result.length ? database.insert( object ) : database.remove( object ))
-
-	if ( result.length ) status = false
-
-	db.setting = new Datastore({filename: 'database/setting.db', autoload: true})
+	const status = await new Promise(resolve => {
+		db.setting.find(object, (error, rows) => {
+			if ( !rows.length ) return db.setting.insert(object, () => resolve( true ))
+			db.setting.remove(object, () => resolve( false ))
+		})
+	})
 
 	response.send({status: status})
-}))
+})
 
-router.post('/setting.setting', coexp(function * (request, response, next) {
+router.post('/setting.setting', async function (request, response, next) {
 	let target = getHeaders( request.headers )
 	
-	if ( target.trim().length ) return response.send({status: false})
+	if ( target.length ) return response.send({status: false})
 
 	const where = request.body.where || null
 	const object = Object.assign({}, request.body.message)
 
 	if ( !where ) return response.send({status: false})
 
-	const database = codb( db.setting )
-	const result = yield database.findOne( where )
+	await new Promise(resolve => {
+		db.setting.findOne(where, (error, result) => {
+			if ( !result ) return db.setting.insert(object, resolve)
+				
+			const clone = Object.assign(result, object)
 
-	if ( result ) Object.assign(result, object)
-
-	yield (result ? database.update(where, result) : database.insert( object ))
-
-	db.setting = new Datastore({filename: 'database/setting.db', autoload: true})
+			if ( Object.keys( clone ).length ) db.setting.update(where, clone, {}, resolve)
+		})
+	})
 
 	response.send({status: true})
-}))
+})
 
 module.exports = router

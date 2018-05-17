@@ -5,7 +5,6 @@ const Frontend = require( './frontend' )
 const EventBus = require( './event' )
 const UseLib = require( './uselib' )
 const IPFS = require( 'ipfs' )
-const co = require( 'co' )
 const fs = require( 'fs' )
 
 const WStar = require( 'libp2p-webrtc-star' )
@@ -17,11 +16,6 @@ const FrontEnd = new Frontend()
 const system  = new UseLib( 'system.id' )
 const mapping = new UseLib( 'system.map' )
 const Rooms = {}
-
-const _handler = Symbol( 'handler' )
-const _joined = Symbol( 'joined' )
-const _detached = Symbol( 'detached' )
-const _subscribe = Symbol( 'subscribe' )
 
 const ipfs = new IPFS({
 	EXPERIMENTAL: {
@@ -61,7 +55,7 @@ class IPFSPubSub {
 		this.node = ipfs
 	}
 
-	* create ( response ) {
+	async create ( response ) {
 		const _room_ = response.payload.message.room
 		const _name_ = _room_ + response.payload.target // Room Name
 
@@ -75,12 +69,12 @@ class IPFSPubSub {
 
 		Rooms[_name_] = Room(this.node, _name_)
 
-		yield this[_subscribe]( Rooms[_name_] )
+		this.subscribe( Rooms[_name_] )
 
 		FrontEnd.complete( this.data.payload )
 	}
 
-	* connect ( response ) {
+	async connect ( response ) {
 		const _room_ = response.payload.message.room
 		const _name_ = _room_ + response.payload.target // Room Name
 
@@ -93,7 +87,7 @@ class IPFSPubSub {
 			
 			Rooms[_name_] = Room(this.node, _name_)
 
-			yield this[_subscribe]( Rooms[_name_] )
+			this.subscribe( Rooms[_name_] )
 
 			return FrontEnd.complete( this.data.payload )
 		}
@@ -101,7 +95,7 @@ class IPFSPubSub {
 		FrontEnd.complete( this.data.payload )
 	}
 	
-    * broadcast ( response ) {
+    async broadcast ( response ) {
 		const _room_  = response.payload.message.room
 		const _name_  = _room_ + response.payload.target // Room Name
 		const message = response.payload.message
@@ -121,38 +115,25 @@ class IPFSPubSub {
 		FrontEnd.complete( response.payload )  
 	}
 
-	* [_subscribe] ( room ) {
-		const self = this
-
-		room.on('message', message => co(function * () {
-			console.log( 'message', message )
-			yield self[_handler]( message )
-		}))
-
-		room.on('peer joined', peer => co(function * () {
-			console.log('joined', peer )
-			yield self[_joined]( room.getPeers() )
-		}))
-
-		room.on('peer left', peer => co(function * () {
-			console.log( 'left', peer )
-			yield self[_detached]( room.getPeers() )
-		}))
+	async subscribe ( room ) {
+		room.on('message', message => this.handler( message ))
+		room.on('peer joined', peer => this.joined( room.getPeers() ))
+		room.on('peer left', peer => this.detached( room.getPeers() ))
 	}
 
-	* [_handler] ( message ) {
+	async handler ( message ) {
 		this.data.payload.message = message.data.toString()
-		yield Events.publish(system.WebCtrl, 'broadcast', this.data)
+		Events.publish(system.WebCtrl, 'broadcast', this.data)
 	}
 
-	* [_joined] ( peers ) {
+	async joined ( peers ) {
 		this.data.payload.message.peers = peers
-		yield Events.publish(system.WebCtrl, 'joined', this.data)
+		Events.publish(system.WebCtrl, 'joined', this.data)
 	}
 
-	* [_detached] ( peers ) {
+	async detached ( peers ) {
 		this.data.payload.message.peers = peers
-		yield Events.publish(system.WebCtrl, 'detached', this.data)
+		Events.publish(system.WebCtrl, 'detached', this.data)
 	}
 }
 

@@ -40,7 +40,7 @@ export default {
             if ( this.data.id == this.$root.currentFrame ) {
                 this.$root.viewapp = false
                 this.$root.apptitle = null
-                this.$root.pagetitle = this.translate( 'home' )
+                this.$root.pagetitle = this.translate( 'header' ).home
                 this.$root.currentView = 'view-index'
             }
                     

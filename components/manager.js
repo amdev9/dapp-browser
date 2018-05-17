@@ -8,11 +8,9 @@ class DappManager {
     }
 
     getDirSync ( dirname ) {
-        let items = []
+        const items = []
 
         fs.readdirSync( dirname ).forEach(element => {
-            let object = {}
-
             if ( fs.lstatSync( dirname + '/' + element ).isDirectory() ) {
                 items.push( element )
             }
@@ -41,7 +39,7 @@ class DappManager {
             }
 
             if ( object.unic == name ) {
-                let url = 'users/' + object.hash + '/'
+                const url = 'users/' + object.hash + '/'
 
                 data.id = object.hash
                 data.name = object.name
@@ -56,17 +54,17 @@ class DappManager {
     }
 
     set setValue ( value ) {
-        let string = String( value ).split( '://' ).pop()
-        let array = string.split( '?' )
+        const string = String( value ).split( '://' ).pop()
+        const array = string.split( '?' )
         
-        let argv = array.shift().replace(RegExp('/', 'g') , '')
+        const argv = array.shift().replace(RegExp('/', 'g') , '')
          
         this.argv = argv.split( ':' )
 
         if ( !array.length ) return
 
-        let params = array.shift()
-        let object = params.split( '&' )
+        const params = array.shift()
+        const object = params.split( '&' )
 
         for (let i = 0; i < object.length; i++) {
             let keyval = object[i].split( '=' )

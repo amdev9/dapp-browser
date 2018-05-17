@@ -1,9 +1,6 @@
 const express = require( 'express' )
 const formidable = require( 'formidable' )
 const crypto = require( 'crypto-js' )
-const coexp = require( 'co-express' )
-const codb  = require( 'co-nedb' )
-const Datastore = require( 'nedb' )
 const uniqid = require( 'uniqid' )
 const path = require( 'path' )
 const md5 = require( 'md5' )
@@ -22,20 +19,22 @@ const getHeaders = headers => {
 	if ( headers['allow-origin'] ) return headers['allow-origin']
 
     let pathname = headers.referer.replace(headers.origin + '/', '')
-    return pathname.replace(/(users\/)|(system\/)/gi, '').split( '/' ).shift()
+    return pathname.replace(/(users\/)|(system\/)/gi, '').split( '/' ).shift().trim()
 }
 
-router.post('/web', coexp(function * (request, response, next) {
-	let target = getHeaders(request.headers)
+router.post('/web', async function (request, response, next) {
+	let target = getHeaders( request.headers )
+	const Events = new EventBus()
 	
 	request.body.target = target
 	request.body.unic = uniqid()
 
 	mapping[request.body.unic] = ( body ) => response.send( body )
-	yield new EventBus().publish(target, request.body.message_type, request.body)
-}))
 
-router.post('/transfer', coexp(function * (request, response, next) {
+	Events.publish(target, request.body.message_type, request.body)
+})
+
+router.post('/transfer', async function (request, response, next) {
 	const target = getHeaders( request.headers )
 
 	const form = new formidable.IncomingForm()
@@ -61,7 +60,7 @@ router.post('/transfer', coexp(function * (request, response, next) {
 	form.on('end', () => response.send({ data: array }))
 
 	form.parse( request )
-}))
+})
 
 // const readDataFile = ( source ) => {
 // 	if ( fs.existsSync( source ) ) {

@@ -1,26 +1,21 @@
-const child_process = require( 'child_process' )
-const sqlite3 = require( 'co-sqlite3' )
-const EventBus = require( './event' )
-const UseLib = require( './uselib' )
+const { fork } = require( 'child_process' )
 const { NodeVM } = require( 'vm2' )
+const EventBus = require( './event' )
  
 const path = require( 'path' )
 const fs = require( 'fs' )
-const co = require( 'co' )
 
 class UserDappsLoader {
-    constructor (data, source) {
+    constructor ( source ) {
         this.items = []
-        this.data = data
         this.source = source
+        this.data = 'manifest.json'
     }
 
     getDirSync ( dirname ) {
-        let items = []
+        const items = []
 
         fs.readdirSync( dirname ).forEach(element => {
-            let object = {}
-
             if ( fs.lstatSync( dirname + '/' + element ).isDirectory() ) {
                 items.push( element )
             }
@@ -35,41 +30,60 @@ class UserDappsLoader {
 
     setKeyWords ( object ) {
         for (let i = 0; i < object.keywords.length; i++) {
-            const set = object.keywords[i]
+            const keywords = object.keywords[i]
 
-            for (let value in set) {
-                let url = 'arr://' + object.unic + ':mainet/?' + set[value]
-                let insert = [object.hash, object.name, value, url, object.icon]
+            for (let value in keywords) {
+                const url = 'arr://' + object.unic + ':mainet/?' + keywords[value]
+                const insert = [object.hash, object.name, value, url, object.icon]
 
                 const into = `INSERT INTO results VALUES (?, ?, ?, ?, ?)`
                 const select = `SELECT value, hash FROM results WHERE hash = '${object.hash}' AND value = '${value}'`
 
-                let exist = []
-                
-                co(function * () {
-                    try {
-                        const sqlite = yield sqlite3( 'database/search.db' )
-                        yield sqlite.run( 'CREATE TABLE IF NOT EXISTS results (hash VARCHAR, name VARCHAR, value VARCHAR, url TEXT, icon TEXT)' )
-                    } catch ( error ) {}
+                sqlite.all(select, (error, rows) => {
+                    if ( rows.length ) return
 
-                    yield sqlite.all( select ).then(rows => exist = rows)
+                    const prepare = sqlite.prepare( into )
 
-                    if ( exist.length ) return
-                    
-                    const prepare = yield sqlite.prepare( into )
-                    yield prepare.run( insert )
-
+                    prepare.run( insert )
                     prepare.finalize()
                 })
             }
         }
     }
 
-    runInContext () {
+    sourceCode (_path, dirname, object) {
+        let code = 'Events.data = ' + JSON.stringify( object )
+        code += this.getFileSync(_path + '/' + object.main)
+        
+        const source = this.source + '/' + dirname + '/'
+
+        object.icon  = source + object.icon
+        object.thumb = source + object.thumb
+        object.index = source + object.index
+
+        this.items.push( object )
+
+        const Events = new EventBus()
+        Events.data.hash = object.hash
+
+        const child = fork(path.join(__dirname, 'helper'), {stdio: [0,1,2, 'ipc']})
+
+        child.on('message', message => {
+            Events.publish(message.to, message.message_type, message.payload)
+        })
+
+        Events.everytime(message => child.send( message ))
+    
+        child.send({init: code})
+
+        this.setKeyWords( object )
+    }
+
+    onStart () {
         const dapps = this.getDirSync( __apps + this.source )
 
         dapps.forEach(dirname => {
-            let _path  = __apps + this.source + '/' + dirname
+            const _path  = __apps + this.source + '/' + dirname
             let object = this.getFileSync( _path + '/' + this.data )
 
             try {
@@ -80,32 +94,6 @@ class UserDappsLoader {
 
             this.sourceCode(_path, dirname, object)
         })
-    }
-
-    sourceCode (_path, dirname, object) {
-        let code = 'Events.data = ' + JSON.stringify( object )
-        code += this.getFileSync( _path + '/' + object.main )
-         
-        object.icon  = this.source + '/' + dirname + '/' + object.icon
-        object.thumb = this.source + '/' + dirname + '/' + object.thumb
-        object.index = this.source + '/' + dirname + '/' + object.index
-
-        this.items.push( object )
-
-        const Events = new EventBus()
-        Events.data.hash = object.hash
-
-        const child = child_process.fork( path.join(__dirname, 'helper'), {stdio: [0,1,2, 'ipc']} )
-
-        child.on('message', message => co(function * () {
-            yield Events.publish(message.to, message.message_type, message.payload)
-        }))
-
-        Events.everytime(message => child.send( message ))
-    
-        this.setKeyWords( object )
-
-        child.send({init: code})
     }
 }
 

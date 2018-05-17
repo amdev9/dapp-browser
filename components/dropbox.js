@@ -1,7 +1,6 @@
 const Frontend = require( './frontend' )
 const crypto = require( 'crypto-js' )
 const IPFS = require( './ipfs' )
-const co = require( 'co' )
 const fs = require( 'fs' )
 
 const FrontEnd = new Frontend()
@@ -12,7 +11,7 @@ class Dropbox {
         this.url = 'https://ipfs.array.io/ipfs/' // https://ipfs.io/ipfs/
     }
 
-    * transfer ( response ) {
+    async transfer ( response ) {
         const self = this
 
         const message = response.payload.message
@@ -27,15 +26,15 @@ class Dropbox {
 
         fs.unlinkSync( path )
 
-        stream.on('data', function ( data ) { co(function * () {
+        stream.on('data', data => {
             array.push( self.url + data.hash )
 
             response.payload.response = array
 
-            if ( array.length < message.length ) return yield self.transfer( response )
-        
+            if ( array.length < message.length ) return this.transfer( response )
+
             FrontEnd.complete( response.payload )
-        })})
+        })
 
         stream.write({ content: buffer })
         stream.end()
