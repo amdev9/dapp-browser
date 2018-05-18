@@ -3,9 +3,7 @@
         <div class="container-fluid h-100">
             <div class="row h-100">
                 <div class="col navbar-home">
-                    <div class="navbar-home-link" @click="tohome">
-                        <img src="/images/icons/home.svg" class="svg">
-                    </div>
+                    <div class="navbar-home-link" @click="tohome"><i class="icon-home"></i></div>
                 </div>
 
                 <div class="col navbar-user">
@@ -19,16 +17,8 @@
                             <span class="pagetitle">{{ $root.pagetitle }}</span>
                             
                             <div class="share">
-                                <svg width="18px" height="21px" viewBox="0 0 18 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-                                        <g transform="translate(1.000000, 1.000000)" stroke="#B2BCC9" stroke-width="2">
-                                            <path d="M0,9.5 L0,17.1 C0,18.149341 0.850658975,19 1.9,19 L13.3,19 C14.349341,19 15.2,18.149341 15.2,17.1 L15.2,9.5"></path>
-                                            <polyline points="11.4 3.8 7.6 0 3.8 3.8"></polyline>
-                                            <path d="M7.6,0 L7.6,12.35"></path>
-                                        </g>
-                                    </g>
-                                </svg>
-
+                                <i class="icon-share"></i>
+                               
                                 <div class="dropdown-menu">
                                     <div class="dropdown-item" @click="copy"><span class="share-link" v-lang.share.copy></span></div>
                                     <div class="dropdown-item" @click="qrcode"><span class="share-qr" v-lang.share.qrcode></span></div>
@@ -51,8 +41,8 @@
 
                                     <div class="input-group-append">
                                         <button type="button">
-                                            <div :class="{'d-none': search}" @click="search = true"><img src="/images/icons/search.svg" class="svg"></div>
-                                            <div :class="{'d-none': !search}"><img src="/images/icons/close.svg" class="svg"></div>
+                                            <i class="icon-search" :class="{'d-none': search}" @click="search = true"></i>
+                                            <i class="icon-close" :class="{'d-none': !search}"></i>
                                         </button>
                                     </div>
                                 </div>

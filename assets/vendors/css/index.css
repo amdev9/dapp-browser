@@ -72,20 +72,17 @@ header .navbar-home {
   background: #fff;
 }
 header .navbar-home-link {
+  font-size: 24px;
   display: block;
   height: 100%;
+  color: #4686FF;
   cursor: pointer;
+  line-height: 60px;
   text-align: center;
+  transition: color 0.15s ease-in-out;
 }
-header .navbar-home-link svg {
-  margin: 50% 0 0;
-  transform: translateY(-50%);
-}
-header .navbar-home-link svg path {
-  transition: all 0.15s ease-in-out;
-}
-header .navbar-home-link:hover svg path {
-  fill: #689BFA;
+header .navbar-home-link:hover {
+  color: #689BFA;
 }
 header .navbar-user-back {
   display: inline-block;
@@ -138,28 +135,25 @@ header .navbar-user-search form .input-group .form-control.focus {
 }
 header .navbar-user-search form .input-group-append button {
   position: relative;
-  width: 25px;
-  height: 25px;
+  color: #AAB4BF;
+  width: 30px;
+  height: 30px;
   border: 0;
   top: 50%;
   margin: 1px 0 0;
   cursor: default;
   background: none;
+  transition: color 0.15s ease-in-out;
   transform: translateY(-50%);
 }
-header .navbar-user-search form .input-group-append button svg {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  transform: translateY(-50%);
+header .navbar-user-search form .input-group-append button .icon-search {
+  font-size: 24px;
 }
-header .navbar-user-search form .input-group-append button svg path {
-  transition: all 0.15s ease-in-out;
+header .navbar-user-search form .input-group-append button .icon-close {
+  font-size: 18px;
 }
-header .navbar-user-search form .input-group-append button:hover svg path {
-  fill: #4686FF;
+header .navbar-user-search form .input-group-append button:hover {
+  color: #4686FF;
 }
 header .navbar-user-search form .input-result {
   position: absolute;
@@ -296,11 +290,14 @@ header .navbar-user-title .apptitle {
   transition: all 0.15s ease-in-out;
 }
 header .navbar-user-title .share {
+  font-size: 22px;
+  color: #AAB4BF;
   position: relative;
   display: none;
   margin-left: 15px;
   cursor: pointer;
   vertical-align: middle;
+  transition: color 0.15s ease-in-out;
 }
 header .navbar-user-title .share .dropdown-menu {
   left: -30px;
@@ -341,9 +338,8 @@ header .navbar-user-title .share svg path,
 header .navbar-user-title .share svg polyline {
   transition: all 0.15s ease-in-out;
 }
-header .navbar-user-title .share:hover svg path,
-header .navbar-user-title .share:hover svg polyline {
-  stroke: #4686FF !important;
+header .navbar-user-title .share:hover {
+  color: #4686FF;
 }
 header .navbar-user-title:hover .apptitle {
   display: inline-block;

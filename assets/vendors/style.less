@@ -79,24 +79,17 @@ header {
 			background: @white;
 
 			&-link {
+				font-size: 24px;
 				display: block;
 				height: 100%;
+				color: @theme;
 				cursor: pointer;
+				line-height: 60px;
 				text-align: center;
-				
-				svg {
-					margin: 50% 0 0;
-					.transform(translateY(-50%));
-
-					path {
-						.transition()
-					}
-				}
+				.transition(color);
 
 				&:hover {
-					svg path {
-						fill: #689BFA
-					}
+					color: #689BFA
 				}
 			}
 		}
@@ -161,34 +154,28 @@ header {
 							&-append {
 								button {
 									position: relative;
-									width: 25px;
-									height: 25px;
+									color: @lgray;
+									width: 30px;
+									height: 30px;
 									border: 0;
 									top: 50%;
 									margin: 1px 0 0;
 									cursor: default;
 									background: none;
+									.transition(color);
 									.transform(translateY(-50%));
-	
-									svg {
-										position: absolute;
-										top: 50%;
-										left: 0;
-										right: 0;
-										margin: 0 auto;
-										.transform(translateY(-50%));
-	
-										path {
-											.transition()
+
+									.icon {
+										&-search {
+											font-size: 24px;
+										}
+										&-close {
+											font-size: 18px;
 										}
 									}
 	
 									&:hover {
-										svg {
-											path {
-												fill: @theme
-											}
-										}
+										color: @theme
 									}
 								}
 							}
@@ -367,11 +354,14 @@ header {
 				}
 
 				.share {
+					font-size: 22px;
+					color: @lgray;
 					position: relative;
 					display: none;
 					margin-left: 15px;
 					cursor: pointer;
 					vertical-align: middle;
+					.transition(color);
 
 					.dropdown-menu {
 						left: -30px;
@@ -422,11 +412,7 @@ header {
 					}
 
 					&:hover {
-						svg {
-							path, polyline {
-								stroke: @theme !important
-							}
-						}
+						color: @theme
 					}
 				}
 
