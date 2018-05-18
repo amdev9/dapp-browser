@@ -1,26 +1,30 @@
-const Emitter = require('co-emitter');
+const Events = require( 'events' )
 
-// Events
-const events = new Emitter();
+const Emitter = new Events()
 
 class EventBus {
     constructor () {
         this.data = {}
     }
 
-    * publish (to, message_type, payload) {
-        yield events.emit(message_type + to, {
-            from: this.data.key,
+    async publish (to, message_type, payload) {
+        const object = {
+            from: this.data.hash,
             message_type: payload.message_type,
             payload: payload
-        });
+        }
+
+        Emitter.emit(to, object)
+        Emitter.emit(message_type + to, object)
     }
 
-    subscribe (message_type, func) {
-        events.on(message_type + this.data.key, function * ( message ) {
-            yield func( message )
-        })
+    async subscribe (message_type, func) {
+        Emitter.on(message_type + this.data.hash, message => func( message ))
+    }
+
+    async everytime ( func ) {
+        Emitter.on(this.data.hash, message => func( message ))
     }
 }
 
-module.exports = EventBus;
+module.exports = EventBus

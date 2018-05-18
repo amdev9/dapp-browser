@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Messanger</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+
+    <script src="/module/socket.io.js"></script>
+    <script src="/module/lib.js"></script>
+
+    <!-- Vue -->
+	<link href="assets/vue/app-room.vue"   id="room" rel="import">
+	<link href="assets/vue/app-area.vue"   id="area" rel="import">
+	<link href="assets/vue/app-modal.vue"  id="modal" rel="import">
+	<link href="assets/vue/app-search.vue" id="search" rel="import">
+</head>
+<body>
+<div class="wrapper">
+    <main id="app">
+        <div class="row h-100">
+            <div class="col side-left">
+                <app-search></app-search>
+
+                <div class="rooms">
+                    <div class="overflow">
+                        <div v-if="!Object.keys(rooms).length" class="empty">
+                            <span>Not Found</span>
+                        </div>
+
+                        <app-room v-for="(value, key) in rooms" :key="key" :id="key" :messages="value.messages">
+                            <img class="mr-3" :src="value.image">
+
+                            <div class="media-body">
+                                <div class="media-head row">
+                                    <div class="col"><strong>{{ value.name | truncate(30) }}</strong></div>
+                                </div>
+                    
+                                <div class="media-content">
+                                    <p>{{ value.introtext | truncate(40) || '----' }}</p>
+                                </div>
+                            </div>
+                        </app-room>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="col side-right">
+                <div class="empty" v-if="!target"><div class="content">Empty</div></div>
+                <app-area v-else :data="current"></app-area>
+            </div>
+        </div>
+
+        <app-modal :id="'create'" :title="'Create Room'"></app-modal>
+    </main>
+</div>
+
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/bootstrap.js"></script>
+<script src="assets/js/avatar.js"></script>
+<script src="assets/js/vue.min.js"></script>
+<script src="assets/js/vue.ext.js"></script>
+<script src="assets/js/vue.app.js"></script>
+<script src="assets/js/index.js"></script>
+</body>
+</html>

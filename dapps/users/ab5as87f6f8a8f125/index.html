@@ -8,6 +8,7 @@
     <title>Game</title>
 
     <!-- Style Page -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="assets/css/style.css" rel="stylesheet" type="text/css">
 
     <!-- Module -->
@@ -21,10 +22,52 @@
     <script src="states/boot.js"></script>
     <script src="states/mainmenu.js"></script>
     <script src="states/engine.js"></script>
-
-    <!-- Start -->
-    <script src="assets/js/index.js"></script>
 </head>
 <body>
+    <div class="container pt-5">
+        <h1 class="mb-3">Tic Tac Toe</h1>
+
+        <div class="row ready">
+            <div class="col-6">
+                <form name="create">
+                    <div class="alert alert-danger d-none">Error !</div>
+
+                    <div class="form-group">
+                        <label>Room name</label>
+                        <input type="text" name="message" class="form-control" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Create Room</button>
+                </form>
+            </div>
+
+            <div class="col-6">
+                <form name="connect">
+                    <div class="alert alert-warning d-none">Warning !</div>
+
+                    <div class="form-group">
+                        <label>Room name</label>
+                        <input type="text" name="message" class="form-control" />
+                    </div>
+
+                    <button type="submit" class="btn btn-secondary">Connect Room</button>
+                </form>
+            </div>
+        </div>
+
+        <form name="broadcast" class="d-none">
+            <ul class="list-unstyled" id="message"></ul>
+
+            <div class="form-group">
+                <label>Message</label>
+                <input type="text" name="message" class="form-control" />
+            </div>
+
+            <button type="submit" class="btn btn-success">Send</button>
+        </form>
+    </div>
+</div>
+
+<script src="assets/js/index.js"></script>
 </body>
 </html>

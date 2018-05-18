@@ -1,54 +1,61 @@
-const Datastore = require( 'nedb' );
-const codb = require( 'co-nedb' );
+const Frontend = require( './frontend' )
+
+const FrontEnd = new Frontend()
 
 class Storage {
-    * insert ( response ) {
-        const database = new Datastore({filename: 'database/storage.db',  autoload: true});
-        const storage  = codb( database );
+    async insert ( response ) {
+        const object = Object.assign({target: response.from}, response.payload.message || {})
 
-        const object = Object.assign({target: response.from}, response.payload.message);
-        const items  = yield storage.insert( object );
+        const output = await new Promise(resolve => {
+            db.storage.insert(object, (error, rows) => resolve( rows ))
+        })
 
-        response.payload.items = items;
+        response.payload.response = output
+        FrontEnd.complete( response.payload )
     }
 
-    * find ( response ) {
-        const database = new Datastore({filename: 'database/storage.db',  autoload: true});
-        const storage  = codb( database );
+    async find ( response ) {
+        const object = Object.assign({target: response.from}, response.payload.where || {})
+        
+        const output = await new Promise(resolve => {
+            db.storage.find(object, (error, rows) => resolve( rows ))
+        })
 
-        const object = Object.assign({target: response.from}, response.payload.message);
-        const items  = yield storage.find( object );
-
-        response.payload.items = items;
+        response.payload.response = output
+        FrontEnd.complete( response.payload )
     }
 
-    * findOne ( response ) {
-        const database = new Datastore({filename: 'database/storage.db',  autoload: true});
-        const storage  = codb( database );
+    async findOne ( response ) {
+        const object = Object.assign({target: response.from}, response.payload.where || {})
 
-        const object = Object.assign({target: response.from}, response.payload.message);
-        const items  = yield storage.findOne( object );
+        const output = await new Promise(resolve => {
+            db.storage.findOne(object, (error, result) => resolve( result ))
+        })
 
-        response.payload.items = items;
+        response.payload.response = output
+        FrontEnd.complete( response.payload )
     }
 
-    * update ( response ) {
-        const database = new Datastore({filename: 'database/storage.db',  autoload: true});
-        const storage  = codb( database );
+    async update ( response ) {
+        const where = Object.assign({target: response.from}, response.payload.where || {})
+        const object = Object.assign({target: response.from}, response.payload.message || {})
 
-        const object = Object.assign({target: response.from}, response.payload.message);
+        await new Promise(resolve => {
+            db.storage.update(where, object, {multi: true}, resolve)
+        })
 
-        yield storage.update({target: response.from}, object, {multi: true});
+        FrontEnd.complete( response.payload )
     }
 
-    * remove ( response ) {
-        const database = new Datastore({filename: 'database/storage.db',  autoload: true});
-        const storage  = codb( database );
+    async remove ( response ) {
+        const object = Object.assign({target: response.from}, response.payload.where || {})
+        
+        await new Promise(resolve => {
+            db.storage.remove(object, {multi: true}, resolve)
+        })
 
-        const object = Object.assign({target: response.from}, response.payload.message);
-
-        yield storage.remove(object, {multi: true});
+        FrontEnd.complete( response.payload )
     }
 }
 
-module.exports = Storage;
+module.exports = Storage

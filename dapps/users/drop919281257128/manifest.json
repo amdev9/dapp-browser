@@ -1,0 +1,20 @@
+{
+    "version": "1.0",
+  
+    "hash": "drop919281257128",
+    "name": "Drop Files",
+    "unic": "dropfs",
+    "tags": ["tools"],
+    "icon": "favicon.svg",
+    "thumb": "thumb.svg",
+    "index": "index.html",
+    "main" : "main.js",
+
+    "description": "This is a sample dapp app-13",
+
+    "keywords": [],
+    
+    "permissions": [
+        "web", "log"
+    ]
+}

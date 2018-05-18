@@ -1,51 +1,62 @@
 ;(function () {
-    const form = document.querySelector( 'form' );
+    const form = document.querySelector( 'form' )
 
-    if ( !form ) return;
+    if ( !form ) return
     
+    const username = form.username
+
     form.addEventListener('submit', event => {
-        event.preventDefault();
+        event.preventDefault()
     
-        let username = form.username;
-    
-        let notify = form.querySelector( '.alert' );
+        let notify = form.querySelector( '.alert' )
 
         API.Http.post('/web', {message_type: 'request', message: {username: username.value}}, response => {
-            if ( !response ) return;
+            if ( !response ) return
 
-            let object = JSON.parse( response );
+            let object = JSON.parse( response )
 
-            username.value = object.message.username;
+            username.value = object.message.username
 
-            notify.classList.remove( 'd-none' );
+            notify.classList.remove( 'd-none' )
         })
-    });
+    })
 
-    API.Http.post('/web', {message_type: 'find', message: {}}, response => {
-        let object = JSON.parse( response );
-        let array  = object.items || [];
+    API.Http.post('/web', {message_type: 'find'}, response => {
+        let object = {}
 
-        let container = document.querySelector( '.users' );
+        try {
+            object = JSON.parse( response )
+        } catch ( error ) {}
 
-        if ( !document.contains( container ) ) return;
+        let array = object.response || []
 
-        let string = document.createElement( 'div' );
+        let container = document.querySelector( '.users' )
+
+        if ( !document.contains( container ) ) return
+
+        let string = document.createElement( 'div' )
 
         for (let i = 0; i < array.length; i++) {
-            let string = document.createElement( 'div' );
-            string.innerHTML = array[i].username;
+            let string = document.createElement( 'div' )
+            string.innerHTML = array[i].username
 
-            let button = document.createElement( 'button' );
-            button.innerText = 'x';
+            let button = document.createElement( 'button' )
+            button.innerText = 'x'
             
             button.addEventListener('click', () => {
-                API.Http.post('/web', {message_type: 'remove', message: {username: array[i].username}}, () => {
-                    string.parentNode.removeChild( string );
-                });
-            });
+                API.Http.post('/web', {message_type: 'remove', where: {username: array[i].username}}, () => {
+                    string.parentNode.removeChild( string )
+                })
+            })
 
-            string.appendChild( button );
-            container.appendChild( string );
+            string.appendChild( button )
+            container.appendChild( string )
         }
+    })
+
+    API.Http.post('/web', {message_type: 'connect'})
+
+    window.addEventListener('message', event => {
+        username.value = JSON.stringify( event.data )
     })
 })();

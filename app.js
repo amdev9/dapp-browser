@@ -1,61 +1,51 @@
-const express = require( 'express' );
-const nunjucks = require( 'nunjucks' );
-const path = require( 'path' );
-const logger = require( 'morgan' );
-const cookieParser = require( 'cookie-parser' );
-const bodyParser = require( 'body-parser' );
+const express = require( 'express' )
+const cookieParser = require( 'cookie-parser' )
+const bodyParser = require( 'body-parser' )
+const Datastore = require( 'nedb' )
+const uniqid = require( 'uniqid' )
+const path = require( 'path' )
 
-// Socket IO
-global.io = require( 'socket.io' )( 4040 );
+global.io = require( 'socket.io' )( 33999 )
 
-// Dirname
-global.__public = path.join(__dirname, '/public/');
-global.__apps = path.join(__dirname, '/dapps/');
-global.__logs = path.join(__dirname, '/logs/');
+global.db = {
+	access : new Datastore({filename: 'database/access.db',  autoload: true}),
+	storage: new Datastore({filename: 'database/storage.db', autoload: true}),
+	setting: new Datastore({filename: 'database/setting.db', autoload: true})
+}
 
-// Application
-const app = express();
+global.__apps = path.join(__dirname, 'dapps/')
+global.__logs = path.join(__dirname, 'logs/')
+global.__uniq = uniqid()
 
-// Settings
-app.set('view engine', 'html');
-// app.use(logger( 'dev' ));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
-app.use(express.static( __public ));
-app.use(express.static( __apps ));
+const app = express()
 
-// Template engine
-nunjucks.configure('views', {
-	autoescape: true,
-	express: app,
-	noCache: true,
-	watch: true
-});
+app.set('view engine', 'html')
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(cookieParser())
 
-// Routes
-const index = require( './routes/index' );
-const user = require( './routes/user' );
+app.use(express.static( path.join(__dirname, 'assets/') ))
+app.use(express.static( path.join(__dirname, 'views/') ))
+app.use(express.static( __apps ))
 
-// Route handler
-app.use('/', index);
-app.use('/', user);
+const index = require( './routes/index' )
+const user = require( './routes/user' )
 
-// Catch 404 and forward to error handler
-app.use((request, response, next) => {
-	response.render('layouts/404', {
-		title: '404'
-	});
-});
+app.use('/', index)
+app.use('/', user)
 
-// Error handler
-app.use((err, request, response, next) => {
-	// export NODE_ENV=production
-	response.locals.message = err.message;
-	response.locals.error = request.app.get( 'env' ) === 'development' ? err : {};
+app.get('/', (request, response) => {
+	response.sendFile( path.join(__dirname, 'index.html') )
+})
 
-	response.status(err.status || 500);
-	response.render( 'error' );
-});
+app.use((request, response, next) => response.send( '404' ))
 
-module.exports = app;
+app.use((error, request, response, next) => {
+	response.locals.message = error.message
+	response.locals.error = request.app.get( 'env' ) === 'development' ? error : {}
+
+	response.status(error.status || 500)
+	console.error( error )
+})
+
+module.exports = app

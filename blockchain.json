@@ -1,6 +1,6 @@
 [
     {
-        "key": "f7a7as8gg8s7g8s8dg",
+        "hash": "f7a7as8gg8s7g8s8dg",
         "name": "Application name",
         "rating": 2,
         "preview": "images/preview/image.png",
@@ -38,7 +38,7 @@
             }
         ]
     },{
-        "key": "fg26236h23h263236h2",
+        "hash": "fg26236h23h263236h2",
         "name": "Application name",
         "rating": 3,
         "preview": "images/preview/image.png",
@@ -76,7 +76,7 @@
             }
         ]
     },{
-        "key": "s23236236h23j23622f",
+        "hash": "s23236236h23j23622f",
         "name": "Application name",
         "rating": 1,
         "preview": "images/preview/image.png",
@@ -114,7 +114,7 @@
             }
         ]
     },{
-        "key": "0f0s0d0gs0d0s0dh0sh3",
+        "hash": "0f0s0d0gs0d0s0dh0sh3",
         "name": "Application name",
         "rating": 0,
         "preview": "images/preview/image.png",

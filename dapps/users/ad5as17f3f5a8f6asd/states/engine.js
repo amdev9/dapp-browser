@@ -183,6 +183,10 @@ Game.Engine = function() {
         })
         
 
+        // Cursor
+        // this.input.onDown.add(this.fullscreen, this)
+
+
         // Helper
         // this.helper( this.tilemap )
 

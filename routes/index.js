@@ -1,69 +1,90 @@
-const express = require( 'express' );
-const Datastore = require( 'nedb' );
-const coexp = require( 'co-express' );
-const codb  = require( 'co-nedb' );
-const UseLib = require( '../components/uselib' );
-const UserDappsLoader = require( '../components/user.loader' );
-const SystemDappsLoader = require( '../components/system.loader' );
+const express = require( 'express' )
+const UseLib = require( '../components/uselib' )
+const UserDappsLoader = require( '../components/user.loader' )
+const SystemDappsLoader = require( '../components/system.loader' )
 
-// Router
-const router = express.Router();
+const router = express.Router()
+const system = new UseLib( 'system.id' )
 
-// System Dapps
-const systemLoader = new SystemDappsLoader('manifest.json', 'system');
-systemLoader.runInContext();
+const systemLoader = new SystemDappsLoader( 'system' )
+systemLoader.onStart()
 
-// User Dapps
-const userLoader = new UserDappsLoader('manifest.json', 'users');
-userLoader.runInContext();
+const userLoader = new UserDappsLoader( 'users' )
+userLoader.onStart()
 
-// Request Index Page
-router.get('/', coexp(function * (request, response, next) {
-	const database = new Datastore({filename: 'database/setting.db',  autoload: true});
-	const setting  = codb( database );
+const getHeaders = headers => {
+	if ( headers['allow-origin'] ) return headers['allow-origin']
 
-	const system = new UseLib( 'system.id' );
-	
-	const userapps = userLoader.items;
-	const sysapps  = systemLoader.items;
-	const pins = yield setting.find({type: 'pin'})
+    let pathname = headers.referer.replace(headers.origin + '/', '')
+    return pathname.replace(/(users\/)|(system\/)/gi, '').split( '/' ).shift().trim()
+}
 
-	let market = {}
+router.post('/', async function (request, response, next) {
+	const userapps = userLoader.items
 
-	sysapps.forEach(app => {
-		if ( app.key == system.MrkCtrl ) market = app
+	const result = await new Promise(resolve => {
+		db.setting.find({}, (error, rows) => resolve( rows ))
 	})
-	 
-	pins.forEach((pin, index) => {
-		userapps.forEach(app => {
-			if ( pin.target == app.key ) pins[index] = app
-		})
-	});
-	  
-	response.render('layouts/index', {
-		title: 'Express',
-		pins : pins,
-		market: market,
+
+	let setting = []
+	let pins = []
+
+	result.forEach(item => {
+		if ( item.type == 'pin' ) {
+			for (let i = 0; i < userapps.length; i++) {
+				if ( item.hash == userapps[i].hash ) pins.push( userapps[i] )
+			}
+		}
+
+		if ( item.type == 'setting' ) setting.push( item )
+	})
+
+	response.send({
+		pins: pins,
+		system: system,
+		setting: setting,
 		userapps: userapps
-	});
-}));
+	})
+})
 
-// Request Setting Pin
-router.post('/setting.pin', coexp(function * (request, response, next) {
-	const database = new Datastore({filename: 'database/setting.db',  autoload: true});
-	const setting  = codb( database );
-
-	const object = {type: 'pin', target: request.body.target}
-
-	const pins = yield setting.find( object )
-
-	let status = true;
-
-	yield !pins.length ? setting.insert( object ) : setting.remove( object );
+router.post('/setting.pin', async function (request, response, next) {
+	const target = getHeaders( request.headers )
 	
-	if ( pins.length ) status = false;
+	if ( target.length ) return response.send({status: false})
+
+	const object = {type: 'pin', hash: request.body.hash}
+
+	const status = await new Promise(resolve => {
+		db.setting.find(object, (error, rows) => {
+			if ( !rows.length ) return db.setting.insert(object, () => resolve( true ))
+			db.setting.remove(object, () => resolve( false ))
+		})
+	})
 
 	response.send({status: status})
-}));
+})
 
-module.exports = router;
+router.post('/setting.setting', async function (request, response, next) {
+	let target = getHeaders( request.headers )
+	
+	if ( target.length ) return response.send({status: false})
+
+	const where = request.body.where || null
+	const object = Object.assign({}, request.body.message)
+
+	if ( !where ) return response.send({status: false})
+
+	await new Promise(resolve => {
+		db.setting.findOne(where, (error, result) => {
+			if ( !result ) return db.setting.insert(object, resolve)
+				
+			const clone = Object.assign(result, object)
+
+			if ( Object.keys( clone ).length ) db.setting.update(where, clone, {}, resolve)
+		})
+	})
+
+	response.send({status: true})
+})
+
+module.exports = router

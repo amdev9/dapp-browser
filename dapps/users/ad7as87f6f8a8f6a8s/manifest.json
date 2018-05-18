@@ -1,15 +1,20 @@
 {
     "version": "1.0",
   
-    "key": "ad7as87f6f8a8f6a8s",
+    "hash": "ad7as87f6f8a8f6a8s",
     "name": "Apple",
-    "type": "tools",
+    "unic": "apple",
+    "tags": ["work", "tools"],
     "icon": "favicon.png",
     "thumb": "thumb.png",
     "index": "index.html",
     "main" : "main.js",
 
     "description": "This is a sample dapp app-1",
+
+    "keywords": [
+        {"apple": "message=Apple"}
+    ],
 
     "permissions": [
         "web", "log"

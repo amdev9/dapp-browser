@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="300px" height="120px" viewBox="0 0 300 120" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>thumb</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="300" height="120"></rect>
+        <radialGradient cx="94.9296875%" cy="-0.875%" fx="94.9296875%" fy="-0.875%" r="412.460937%" gradientTransform="translate(0.949297,-0.008750),scale(0.400000,1.000000),translate(-0.949297,0.008750)" id="radialGradient-3">
+            <stop stop-color="#4AFF26" offset="0%"></stop>
+            <stop stop-color="#3FEC2B" offset="15%"></stop>
+            <stop stop-color="#008547" offset="100%"></stop>
+        </radialGradient>
+        <radialGradient cx="94.9529781%" cy="-0.877742947%" fx="94.9529781%" fy="-0.877742947%" r="138.338558%" id="radialGradient-4">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.97" offset="11%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.88" offset="27%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.74" offset="47%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.55" offset="70%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.3" offset="95%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.25" offset="100%"></stop>
+        </radialGradient>
+        <radialGradient cx="8193%" cy="4141%" fx="8193%" fy="4141%" r="12693.7933%" gradientTransform="translate(81.930000,41.410000),scale(0.679466,1.000000),translate(-81.930000,-41.410000)" id="radialGradient-5">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.97" offset="11%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.88" offset="27%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.74" offset="47%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.55" offset="70%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.3" offset="95%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.25" offset="100%"></stop>
+        </radialGradient>
+        <radialGradient cx="9609%" cy="5333%" fx="9609%" fy="5333%" r="2839%" id="radialGradient-6">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.97" offset="11%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.88" offset="27%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.74" offset="47%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.55" offset="70%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.3" offset="95%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.25" offset="100%"></stop>
+        </radialGradient>
+        <radialGradient cx="11447%" cy="5261%" fx="11447%" fy="5261%" r="8964.79984%" gradientTransform="translate(114.470000,52.610000),scale(0.688470,1.000000),translate(-114.470000,-52.610000)" id="radialGradient-7">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.97" offset="11%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.88" offset="27%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.74" offset="47%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.55" offset="70%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.3" offset="95%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.25" offset="100%"></stop>
+        </radialGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="thumb">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <use id="Mask" fill="#D8D8D8" xlink:href="#path-1"></use>
+            <g id="favicon" mask="url(#mask-2)" fill-rule="nonzero">
+                <rect id="Rectangle-path" fill="url(#radialGradient-3)" x="0" y="0" width="300" height="120"></rect>
+                <g id="Group" transform="translate(107.000000, 27.000000)">
+                    <circle id="Oval" fill="url(#radialGradient-4)" cx="31.29" cy="15.98" r="15.95"></circle>
+                    <path d="M31.29,23.51 C15.29,23.51 2.14,39.62 0.18,60.46 C0.074632399,61.8419443 0.547599504,63.2056273 1.48601072,64.2255571 C2.42442194,65.2454868 3.7440796,65.8301515 5.13,65.84 L57.45,65.84 C58.8446256,65.844034 60.1775594,65.2654138 61.1269748,64.2438428 C62.0763902,63.2222718 62.5559978,61.8505975 62.45,60.46 C60.44,39.62 47.26,23.51 31.29,23.51 Z" id="Shape" fill="url(#radialGradient-5)"></path>
+                    <circle id="Oval" fill="url(#radialGradient-6)" cx="65.86" cy="33.77" r="10.26"></circle>
+                    <path d="M65.86,38.61 C56.17,38.61 48.08,47.83 46.14,60.13 C45.9350304,61.5585036 46.3572744,63.0059023 47.2981882,64.1001219 C48.239102,65.1943414 49.6069108,65.8286538 51.05,65.84 L80.68,65.84 C82.1230892,65.8286538 83.490898,65.1943414 84.4318118,64.1001219 C85.3727256,63.0059023 85.7949696,61.5585036 85.59,60.13 C83.65,47.83 75.56,38.61 65.86,38.61 Z" id="Shape" fill="url(#radialGradient-7)"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

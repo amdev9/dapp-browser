@@ -1,0 +1,370 @@
+@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600);
+
+@gray : #e6e6e6;
+@agray: #eceff1;
+@theme: #00b0ff;
+@color: #999999;
+@white: #ffffff;
+@dark : #1a1a1a;
+
+* {
+    outline: none !important;
+    -webkit-font-smoothing: antialiased;
+}
+
+html, body {
+    font: 16px 'Source Sans Pro', sans-serif;
+    height: 100%;
+    color: @dark
+}
+
+.wrapper {
+    height: 100%;
+}
+
+.icon {
+    display: inline-block;
+    height: 100%;
+
+    &-create {
+        width: 15px;
+        background: url('../images/icons/create.png') no-repeat center
+    }
+
+    &-send {
+        width: 16px;
+        background: url('../images/icons/send.png') no-repeat center
+    }
+
+    &-link {
+        width: 20px;
+        background: url('../images/icons/link.png') no-repeat center
+    }
+
+    &-key {
+        width: 21px;
+        background: url('../images/icons/key.png') no-repeat center
+    }
+}
+
+.transition(@property: all, @delay: .15s, @duration: ease-in-out) {
+    transition: @arguments;
+}
+
+.transform(@property: scale(1)) {
+    transform: @property;
+}
+
+main {
+    height: 100%;
+    margin: 0;
+    padding: 0 15px;
+
+    .search {
+        padding: 30px 15px;
+        margin: 0 -15px;
+        border-bottom: 1px solid @gray;
+
+        .form-control {
+            box-shadow: none;
+            border-color: @gray;
+            border-radius: 20px !important;
+
+            &:focus {
+                border-color: @gray
+            }
+        }
+
+        .input {
+            &-group {
+                &-text {
+                    border: 0;
+                    padding: 0 0 0 15px;
+                    background: none;
+
+                    button {
+                        width: 42px;
+                        height: 42px;
+                        border: 0;
+                        cursor: pointer;
+                        border-radius: 50%;
+                        background: @theme;
+
+                        & + button {
+                            margin-left: 15px
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .rooms {
+        position: absolute;
+        top: 103px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        .overflow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            max-height: 100%;
+            overflow-y: auto;
+
+            &::-webkit-scrollbar {
+                width: 0;
+            }
+
+            .empty {
+                text-align: center;
+
+                span {
+                    display: block;
+                    padding: 30px 15px;
+                }
+            }
+
+            .media {
+                padding: 15px;
+                margin: 0 ;
+                color: @color;
+                cursor: pointer;
+                background: transparent;
+                border-bottom: 1px solid @gray;
+
+                &:hover, &.active {
+                    background: @theme;
+                    border-bottom-color: @theme;
+
+                    strong, small, p {
+                        color: @white
+                    }
+                }
+
+                img {
+                    border-radius: 50%
+                }
+
+                strong, small, p {
+                    font-size: 14px;
+                    margin: 0;
+                }
+
+                &-head {
+                    margin-bottom: 5px;
+
+                    strong {
+                        color: @dark
+                    }
+                }  
+            }
+        }
+    }
+
+    .roomname {
+        font-size: 16px;
+        height: 45px;
+        margin: 0 -15px;
+        padding: 12px;
+        background: @agray;
+        border-bottom: 1px solid @gray
+    }
+
+    .messages {
+        position: absolute;
+        top: 45px; 
+        left: 15px; 
+        right: 15px;
+        bottom: 75px;
+
+        .overflow {
+            position: absolute;
+            max-height: 100%;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow-y: auto;
+
+            &::-webkit-scrollbar {
+                width: 0;
+            }
+
+            .content {
+                &:after {
+                    display: table;
+                    content: '';
+                    clear: both;
+                }
+
+                .item {
+                    position: relative;
+                    float: right;
+                    clear: both;
+                    margin: 40px 8px 0;
+                    padding: 12px;
+                    max-width: 80%;
+                    border-radius: 3px;
+                    background: @gray;
+
+                    &:before {
+                        position: absolute;
+                        top: 17px;
+                        right: -3px;
+                        display: block;
+                        width: 10px;
+                        height: 8px;
+                        content: '\00a0';
+                        background: @gray;
+                        -webkit-transform: rotate(29deg) skew(-35deg);
+                        transform: rotate(29deg) skew(-35deg);
+                    }
+
+                    strong {
+                        position: absolute;
+                        bottom: 110%;
+                        right: 0
+                    }
+
+                    &.from {
+                        float: left;
+                        clear: both;
+                        color: @white;
+                        background: @theme;
+
+                        strong {
+                            right: auto;
+                            left: 0;
+                            color: @dark
+                        }
+
+                        &:before {
+                            right: auto;
+                            left: -3px;
+                            background: @theme
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .action {
+        position: absolute;
+        left: 15px;
+        right: 15px;
+        bottom: 15px;
+
+        .form-control {
+            border-color: @gray;
+            border-right: 0;
+            background: @agray;
+
+            &:focus {
+                box-shadow: none
+            }
+        }
+
+        .input-group {
+            &-text {
+                padding: 0;
+                border-color: @gray;
+                background: @agray;
+
+                button {
+                    width: 50px;
+                    height: 40px;
+                    border: 0;
+                    cursor: pointer;
+                    background: none;
+                }
+            }
+        }
+    }
+
+    .side {
+        &-left, &-right {
+            position: relative;
+            height: 100%;
+            overflow: auto
+        }
+
+        &-left {
+            max-width: 400px;
+            min-width: 400px;
+            border-right: 1px solid @gray;
+        }
+
+        &-right .empty {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: @white;
+
+            .content {
+                position: absolute;
+                font-size: 30px;
+                top: 50%;
+                left: 0;
+                right: 0;
+                color: @gray;
+                text-align: center
+            }
+        }
+    }
+
+    .modal {
+        &-content {
+            border: 0;
+            border-radius: 0
+        }
+
+        &-body {
+            .input-group {
+                .form-control {
+                    border-color: @gray;
+                    box-shadow: none;
+
+                    &:focus {
+                        border-color: @gray;
+                    }
+                }
+
+                &-text {
+                    border-color: @gray;
+                    padding-right: 0;
+                    background: none;
+
+                    .icon {
+                        height: 28px;
+                    }
+                }
+            }
+        }
+
+        &-footer {
+            .btn {
+                border: 0;
+                min-width: 100px;
+                border-radius: 20px;
+                 
+                &:active, &:focus {
+                    box-shadow: none !important
+                }
+
+                &-primary, &-primary:active {
+                    background: @theme !important
+                }
+
+                &-dark, &-dark:active {
+                    background: @color !important
+                }
+            }
+        }
+    }
+}

@@ -1,22 +1,24 @@
-const fs = require( 'fs' );
+const Frontend = require( './frontend' )
+const fs = require( 'fs' )
+
+const FrontEnd = new Frontend()
 
 class Network {
     constructor () {
         this.source = 'blockchain.json'
     }
 
-    * getJson ( response ) {
-        const string = fs.readFileSync( this.source ).toString();
-        let object = {}
+    async getJson ( response ) {
+        const string = fs.readFileSync( this.source ).toString()
 
         try {
-            object = JSON.parse( string )
+            response.payload.response = JSON.parse( string )
         } catch ( error ) {
             console.error( error.name + ': ' + error.message )
         }
 
-        response.payload.message.items = object;
+        FrontEnd.complete( response.payload )
     }
 }
 
-module.exports = Network;
+module.exports = Network
