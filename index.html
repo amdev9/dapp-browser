@@ -25,7 +25,7 @@
 	<app-header></app-header>
 
 	<app-aside>
-		<div class="pins" :class="{total: Object.keys( aside.pins ).length}">
+		<div class="pins" :class="{total: Object.values(aside).length && Object.keys( aside.pins ).length}">
 			<app-opened v-for="(value, key) in aside.pins" :name="value.name" :icon="value.icon" :image="'images/favicon.svg'" :src="value.src" :open="value.open" :active="value.active" :key="key" :id="key"></app-opened>
 		</div>
 	

@@ -21,4 +21,6 @@
     window.addEventListener('message', event => {
         message.value = JSON.stringify( event.data )
     })
+
+    API.Http.post('/web', {message_type: 'connect'})
 })();

@@ -28,7 +28,7 @@ export default {
             this.$root.pagetitle = this.name
             this.$root.apptitle = this.name.replace(RegExp(' ', 'g') , '_').toLowerCase()
 
-            if ( !this.$root.aside.pins.hasOwnProperty( this.id ) )
+            if ( !(this.id in this.$root.aside.pins))
                 this.$root.aside.apps[this.id] = {icon: this.icon, src: this.src, name: this.name, active: true}
         }
     }

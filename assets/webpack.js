@@ -47,7 +47,7 @@ const views = {
 }
 
 const options = {
-    title: 'Home', aside: {}, system: {},
+    title: 'Home', aside: {}, system: {}, status: {},
     frames: {}, remote: {}, offset: 0, notify: false, loader: false,
     context: null, viewapp: false, loading: true, setting: {},
     response: null, apptitle: null, pagetitle: 'Home', preventView: null,

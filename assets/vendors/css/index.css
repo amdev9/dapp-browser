@@ -842,28 +842,10 @@ main .view-code {
 main .view-code-indicator {
   position: absolute;
   left: 22px;
-  top: 15px;
+  top: 10px;
   cursor: pointer;
   width: 15px;
   margin: 0 auto;
-}
-main .view-code-indicator .shape-right {
-  animation: pulse 1.5s infinite;
-}
-main .view-code-indicator svg path {
-  transition: all 0.15s ease-in-out;
-}
-main .view-code-indicator:hover svg path {
-  fill: #4686FF;
-}
-main .view-code-indicator svg.destroy {
-  display: none;
-}
-main .view-code-indicator.showall svg.destroy {
-  display: block;
-}
-main .view-code-indicator.showall svg.status {
-  display: none;
 }
 main .view-code-panel {
   position: relative;
@@ -907,15 +889,6 @@ main .view-code-panel svg {
   display: inline-block;
   margin: 0 10px 0 0;
   vertical-align: middle;
-}
-main .view-code-panel svg .line-1 {
-  animation: coords 1.5s infinite;
-}
-main .view-code-panel svg .line-2 {
-  animation: coords 1s infinite;
-}
-main .view-code-panel svg .line-3 {
-  animation: coords .5s infinite;
 }
 main .view-code-console {
   height: 0;

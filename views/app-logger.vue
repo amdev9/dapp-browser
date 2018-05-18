@@ -1,15 +1,15 @@
 <template>
     <div class="view-code" ref="code">
-        <div class="view-code-indicator" @click="showall" :class="{showall: show}">
-            <img src="/images/icons/indicator.svg" class="svg status">
-            <img src="/images/icons/close.svg" class="svg destroy">
+        <div class="view-code-indicator" @click="showall" v-if="Object.keys( $root.status ).length">
+            <img src="/images/icons/indicator.svg" class="svg" v-show="!show">
+            <img src="/images/icons/close.svg" class="svg" v-show="show">
         </div>
 
-        <div class="view-code-panel" @click="toogle" :class="{showall: show}" ref="panel">
-            <div class="row">
+        <div class="view-code-panel" @click="toogle" :class="{showall: show}" ref="panel">       
+            <div v-for="(value, key) in $root.status" :key="key" class="row">
                 <div class="col-auto">
                     <span>Berlin, Germany:</span> <small>connecting</small>
-                    <small class="url">arr://chat/@olga</small>
+                    <small class="url">{{ value.target }}</small>
                 </div>
 
                 <div class="col-auto">
@@ -24,29 +24,13 @@
 
                 <div class="col-auto">
                     <img src="/images/icons/clock.svg" class="svg">
-                    <span>25s</span> <small>/ 10 min</small>
+                    <span>{{ value.time }}</span> <small>/ 10 min</small>
                 </div>
             </div>
 
-            <div class="row">
+            <div v-if="!Object.keys( $root.status ).length" class="row">
                 <div class="col-auto">
-                    <span>Berlin, Germany:</span> <small>connecting</small>
-                    <small class="url">arr://chat/@olga</small>
-                </div>
-
-                <div class="col-auto">
-                    <img src="/images/icons/indicator.svg" class="svg">
-                    <span>385</span> <small>/ 54 658</small>
-                </div>
-
-                <div class="col-auto">
-                    <img src="/images/icons/peers.svg" class="svg">
-                    <span>21 peers</span>
-                </div>
-
-                <div class="col-auto">
-                    <img src="/images/icons/clock.svg" class="svg">
-                    <span>25s</span> <small>/ 10 min</small>
+                    <small>Console</small>
                 </div>
             </div>
 
@@ -101,6 +85,13 @@ export default {
             
             this.$refs.console.appendChild( string )
             this.$refs.console.scrollTop = this.$refs.console.scrollHeight
+        })
+
+        API.Socket.subscribe('status', response => {
+            const object = Object.assign({}, this.$root.status)
+
+            object[response.target] = response
+            this.$root.status = object
         })
     }
 }

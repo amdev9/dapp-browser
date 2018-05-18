@@ -46,6 +46,11 @@ export default {
                     
             if ( this.data.type == 'app' ) 
                 delete this.$root.aside.apps[this.data.id]
+
+            const status = Object.assign({}, this.$root.status)
+            delete status[this.data.id]
+
+            this.$root.status = status
         }
     },
     mounted () {

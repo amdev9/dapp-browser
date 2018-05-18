@@ -16,3 +16,7 @@ Events.subscribe('remove', function ( response ) {
 Events.subscribe('update', function ( response ) {
 	Events.publish(system.StrCtrl, 'update', response.payload)
 })
+
+Events.subscribe('connect', function ( response ) {
+	Events.publish(system.StatCtrl, 'connect', response.payload)
+})

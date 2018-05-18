@@ -1055,44 +1055,10 @@ main {
 		&-indicator {
 			position: absolute;
 			left: 22px;
-			top: 15px;
+			top: 10px;
 			cursor: pointer;
 			width: 15px;
 			margin: 0 auto;
-	
-			.shape-right {
-				animation: pulse 1.5s infinite;
-			}
-
-			svg {
-				path {
-					.transition()
-				}
-			}
-
-			&:hover {
-				svg {
-					path {
-						fill: @theme
-					}
-				}
-			}
-
-			svg.destroy {
-				display: none;
-			}
-
-			&.showall {
-				svg.destroy {
-					display: block
-				}
-
-				svg.status {
-					display: none
-				}
-			}
-
-			 
 		}
 			
 		&-panel {
@@ -1144,18 +1110,6 @@ main {
 				display: inline-block;
 				margin: 0 10px 0 0;
 				vertical-align: middle;
-
-				.line-1 {
-					animation: coords 1.5s infinite;
-				}
-
-				.line-2 {
-					animation: coords 1s infinite;
-				}
-
-				.line-3 {
-					animation: coords .5s infinite;
-				}
 			}
 		}
 
