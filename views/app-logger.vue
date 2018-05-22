@@ -1,8 +1,8 @@
 <template>
     <div class="view-code" ref="code">
         <div class="view-code-indicator" @click="showall" v-if="Object.keys( $root.status ).length">
-            <img src="/images/icons/indicator.svg" class="svg" v-show="!show">
-            <img src="/images/icons/close.svg" class="svg" v-show="show">
+            <img src="/images/icons/indicator.svg" v-show="!show">
+            <i class="icon-close" v-show="show"></i>
         </div>
 
         <div class="view-code-panel" @click="toogle" :class="{showall: show}" ref="panel">       
@@ -13,17 +13,17 @@
                 </div>
 
                 <div class="col-auto">
-                    <img src="/images/icons/indicator.svg" class="svg">
+                    <img src="/images/icons/indicator.svg" class="icon">
                     <span>385</span> <small>/ 54 658</small>
                 </div>
 
                 <div class="col-auto">
-                    <img src="/images/icons/peers.svg" class="svg">
+                    <img src="/images/icons/peers.svg" class="icon">
                     <span>21 peers</span>
                 </div>
 
                 <div class="col-auto">
-                    <img src="/images/icons/clock.svg" class="svg">
+                    <i class="icon-clock"></i>
                     <span>{{ value.time }}</span> <small>/ 10 min</small>
                 </div>
             </div>
@@ -62,19 +62,8 @@ export default {
             this._offset()  
         },
         _offset () {
-            setTimeout(() => {
-                let panel = this.$refs.panel.clientHeight - 45
-                let size = panel + 250
-
-                this.$root.offset = this.open ? size : panel
-
-                setTimeout(() => {
-                    let frame = document.getElementById( this.$root.currentFrame )
-
-                    if ( !frame ) return
-
-                    frame.contentWindow.scrollBy(0, 1000 * 1000)
-                })
+            this.$nextTick(function () {
+                this.$root.offset = this.$refs.code.clientHeight - this.$refs.panel.clientHeight
             })
         }
     },

@@ -2,23 +2,23 @@
     <div class="notifications" :class="{'visible': $root.notify}">
         <div class="notifications-title">
             <strong>Notifications</strong>
-            <button type="button"><img src="/images/icons/filter.svg" class="svg"></button>
+            <button type="button"><i class="icon-filter"></i></button>
         </div>
 
         <div class="notifications-body">
             <div class="notifications-content">
                 <div class="notifications-name">
                     <span>today</span>
-                    <button type="button" @click="destroy"><img src="/images/icons/close.svg" class="svg"></button>
+                    <button type="button" @click="destroy"><i class="icon-close"></i></button>
                 </div>
                 
                 <div class="notifications-item">
                     <div class="notifications-item-title row">
-                        <div class="item-name col-auto">
-                            <img src="/images/notify/4.png">
+                        <div class="item-name col">
+                            <img src="/images/notify/4.svg">
                             <span>Tic Tac Toe</span>
                         </div>
-                        <div class="item-time col text-right">
+                        <div class="item-time col-auto text-right">
                             <small>2 min ago</small>
                         </div>
                     </div>
@@ -30,11 +30,11 @@
         
                 <div class="notifications-item">
                     <div class="notifications-item-title row">
-                        <div class="item-name col-auto">
-                            <img src="/images/notify/1.png">
-                            <span>The Dragon</span>
+                        <div class="item-name col">
+                            <img src="/images/notify/1.svg">
+                            <span>Contact Book</span>
                         </div>
-                        <div class="item-time col text-right">
+                        <div class="item-time col-auto text-right">
                             <small>2 min ago</small>
                         </div>
                     </div>
@@ -46,11 +46,27 @@
         
                 <div class="notifications-item">
                     <div class="notifications-item-title row">
-                        <div class="item-name col-auto">
-                            <img src="/images/notify/3.png">
-                            <span>Google</span>
+                        <div class="item-name col">
+                            <img src="/images/notify/3.svg">
+                            <span>Chat</span>
                         </div>
-                        <div class="item-time col text-right">
+                        <div class="item-time col-auto text-right">
+                            <small>2 min ago</small>
+                        </div>
+                    </div>
+        
+                    <div class="notifications-item-body">
+                        <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed</span>
+                    </div>
+                </div>
+
+                <div class="notifications-item">
+                    <div class="notifications-item-title row">
+                        <div class="item-name col">
+                            <img src="/images/notify/2.svg">
+                            <span>Drop Files</span>
+                        </div>
+                        <div class="item-time col-auto text-right">
                             <small>2 min ago</small>
                         </div>
                     </div>
@@ -64,36 +80,52 @@
             <div class="notifications-content">
                 <div class="notifications-name">
                     <span>yesteday</span>
-                    <button type="button" @click="destroy"><img src="/images/icons/close.svg" class="svg"></button>
+                    <button type="button" @click="destroy"><i class="icon-close"></i></button>
                 </div>
                 
                 <div class="notifications-item">
                     <div class="notifications-item-title row">
-                        <div class="item-name col-auto">
-                            <img src="/images/notify/4.png">
+                        <div class="item-name col">
+                            <img src="/images/notify/4.svg">
                             <span>Tic Tac Toe</span>
                         </div>
-                        <div class="item-time col text-right">
+                        <div class="item-time col-auto text-right">
                             <small>2 min ago</small>
                         </div>
                     </div>
-
+        
                     <div class="notifications-item-body">
                         <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed</span>
                     </div>
                 </div>
-                
+        
                 <div class="notifications-item">
                     <div class="notifications-item-title row">
-                        <div class="item-name col-auto">
-                            <img src="/images/notify/2.png">
-                            <span>Apple</span>
+                        <div class="item-name col">
+                            <img src="/images/notify/1.svg">
+                            <span>Contact Book</span>
                         </div>
-                        <div class="item-time col text-right">
+                        <div class="item-time col-auto text-right">
                             <small>2 min ago</small>
                         </div>
                     </div>
-
+        
+                    <div class="notifications-item-body">
+                        <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed</span>
+                    </div>
+                </div>
+        
+                <div class="notifications-item">
+                    <div class="notifications-item-title row">
+                        <div class="item-name col">
+                            <img src="/images/notify/3.svg">
+                            <span>Chat</span>
+                        </div>
+                        <div class="item-time col-auto text-right">
+                            <small>2 min ago</small>
+                        </div>
+                    </div>
+        
                     <div class="notifications-item-body">
                         <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed</span>
                     </div>
@@ -101,15 +133,15 @@
 
                 <div class="notifications-item">
                     <div class="notifications-item-title row">
-                        <div class="item-name col-auto">
-                            <img src="/images/notify/3.png">
-                            <span>Google</span>
+                        <div class="item-name col">
+                            <img src="/images/notify/2.svg">
+                            <span>Drop Files</span>
                         </div>
-                        <div class="item-time col text-right">
+                        <div class="item-time col-auto text-right">
                             <small>2 min ago</small>
                         </div>
                     </div>
-
+        
                     <div class="notifications-item-body">
                         <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed</span>
                     </div>

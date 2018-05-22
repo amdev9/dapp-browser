@@ -9,7 +9,7 @@
                 <div class="col navbar-user">
                     <div class="row h-100 align-items-center">
                         <div class="navbar-user-back" v-if="$root.preventView" @click="prevent">
-                            <button type="button"><img src="/images/icons/back.svg" class="svg"></button>    
+                            <button type="button"><i class="icon-arrow-left"></i></button>    
                         </div>
 
                         <div class="col-auto navbar-user-title" v-if="!search" ref="pagetitle">
@@ -20,14 +20,14 @@
                                 <i class="icon-share"></i>
                                
                                 <div class="dropdown-menu">
-                                    <div class="dropdown-item" @click="copy"><span class="share-link" v-lang.share.copy></span></div>
-                                    <div class="dropdown-item" @click="qrcode"><span class="share-qr" v-lang.share.qrcode></span></div>
+                                    <div class="dropdown-item" @click="copy"><i class="icon-link"></i> <span v-lang.share.copy></span></div>
+                                    <div class="dropdown-item" @click="qrcode"><i class="icon-qr-code"></i> <span v-lang.share.qrcode></span></div>
                                     
                                     <div class="dropdown-divider"></div>
                                     
-                                    <div class="dropdown-item" @click="telegram"><span class="share-tm" v-lang.share.telegram></span></div>
-                                    <div class="dropdown-item" @click="viber"><span class="share-viber" v-lang.share.viber></span></div>
-                                    <div class="dropdown-item" @click="email"><span class="share-email" v-lang.share.email></span></div>
+                                    <div class="dropdown-item" @click="telegram"><i class="icon-telegram"></i> <span v-lang.share.telegram></span></div>
+                                    <div class="dropdown-item" @click="viber"><i class="icon-viber"></i> <span v-lang.share.viber></span></div>
+                                    <div class="dropdown-item" @click="email"><i class="icon-mail"></i> <span v-lang.share.email></span></div>
                                 </div>
                             </div>
                         </div>
@@ -49,7 +49,7 @@
 
                                 <div class="input-result" v-if="search">
                                     <div v-for="(value, key) in result" :key="key">
-                                        <div v-for="item in value" :key="item.key" :data-href="item.url" @mousedown="openapp" class="input-result-item row align-items-center" >
+                                        <div v-for="item in value" :key="item.key" :data-href="item.url" class="input-result-item row align-items-center" >
                                             <div class="item-name col-12 col-lg-auto pr-0">
                                                 <img :src="item.icon">
                                                 <span>{{ item.name }}</span>
@@ -106,20 +106,20 @@
                             </div>
 
                             <button type="button" class="inverse">
-                                <img src="/images/icons/key.svg" class="svg">
+                                <div class="icon"><i class="icon-key"></i></div>
                                 <span>wallet.dat</span>
                             </button>
 
-                            <button type="button" @click="setting">
-                                <img src="/images/icons/settings.svg" class="svg">
+                            <button type="button" class="setting" @click="setting">
+                                <i class="icon-setting"></i>
                             </button>
 
                             <button type="button" class="notify" @click="notify">
-                                <img src="/images/icons/notification.svg" class="svg">
+                                <i class="icon-bell"></i>
                             </button>
 
-                            <button type="button" class="notify" @click="loader">
-                                <img src="/images/icons/cloud.svg" class="svg">
+                            <button type="button" class="loader" @click="loader">
+                                <i class="icon-cloud"></i>
                             </button>
                         </div>
                     </div>
@@ -166,6 +166,8 @@ export default {
             this.$root.currentView = 'view-setting'
         },
         query ( value ) {
+            if ( !this.$refs.query.value.trim() ) return this.result.dapps = []
+
             this.$http.post('/web', {message_type: 'query', message: this.$refs.query.value}, {
                 headers: {'Allow-Origin': this.$root.system.SrcCtrl}
             }).then(response => {
@@ -183,9 +185,6 @@ export default {
         },
         viber () {
             location.href = 'viber://forward?text=array.io/' + this.$root.apptitle
-        },
-        openapp ( event ) {
-            location.href = event.currentTarget.dataset.href
         },
         copy ( event ) {
             let target = event.currentTarget
@@ -217,8 +216,17 @@ export default {
             this.$root.currentFrame = null
         }
     },
-    mounted () {
-        this.$refs.query.addEventListener('blur', () => this.search = false)
+    mounted ( event ) {
+        let target = document.body
+
+        document.addEventListener('mousedown', event => {
+            target = event.target.closest( '.input-result-item' )
+        })
+
+        this.$refs.query.addEventListener('blur', () => {
+            if ( target ) location.href = target.dataset.href
+            this.search = false
+        })
     },
     watch: {
         search ( value ) {

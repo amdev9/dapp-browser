@@ -100,13 +100,20 @@ header {
 				vertical-align: middle;
 				
 				button {
+					font-size: 24px;
 					height: 35px;
+					color: @lgray;
 					cursor: pointer;
 					line-height: 32px;
 					background: none;
-					padding: 0 15px;
+					padding: 0 5px;
 					border: 0;
 					border-right: 1px solid lighten(@lgray, 20%);
+					.transition(color);
+
+					&:hover {
+						color: @dgray
+					}
 				}
 			}
 
@@ -283,19 +290,51 @@ header {
 					border: 0;
 					cursor: default;
 					background: none;
+					text-align: center;
 					vertical-align: middle;
 
-					&.notify {
+					& + button {
+						margin-left: 5px;
+					}
+
+					[class^="icon-"] {
+						color: @lgray;
+						.transition(color);
+
+						&:hover {
+							color: @theme
+						}
+					}
+
+					&.notify, &.loader {
 						&:before {
 							position: absolute;
 							content: '';
 							width: 8px;
 							height: 8px;
-							top: 0;
-							right: 0;
+							top: 3px;
+							right: 7px;
 							border-radius: 50%;
 							background: @theme;
 							box-shadow: 0 0 4px fade(@theme, 55%)
+						}
+					}
+
+					&.setting, &.notify {
+						font-size: 24px;
+					}
+
+					&.loader {
+						font-size: 20px;
+
+						&:before {
+							right: 0
+						}
+
+						[class^="icon-"] {
+							&:before {
+								width: 30px
+							}
 						}
 					}
 
@@ -305,38 +344,40 @@ header {
 						vertical-align: middle
 					}
 
-					svg {
-						display: inline-block;
-						vertical-align: middle;
-
-						path, circle {
-							.transition()
-						}
-					}
-
-					&:hover {
-						svg {
-							path {
-								fill: @theme
-							}
-						}
-					}
-
 					&.inverse {
+						margin-right: 5px;
+
+						.icon {
+							position: relative;
+							display: inline-block;
+							height: 28px;
+							width: 28px;
+							margin: 0 5px 0 0;
+							border-radius: 50%;
+							background: #DFEAFF;
+							vertical-align: middle;
+							.transition(background);
+
+							&-key {
+								position: absolute;
+								font-size: 11px;
+								color: @theme;
+								top: 49%;
+								left: 3px;
+								.transform(translateY(-50%));
+								.transition(color)
+							}
+						}
+
 						&:hover {
-							svg {
-								circle {
-									fill: @theme
-								}
-								path {
-									fill: @white
+							.icon {
+								background: @theme;
+
+								&-key {
+									color: @white
 								}
 							}
 						}
-					}
-					
-					& + button {
-						margin-left: 15px;
 					}
 				}
 			}
@@ -367,7 +408,7 @@ header {
 						left: -30px;
 						top: 50px;
 						margin: 0;
-						box-shadow: 0 0 3px rgba(32, 32, 73, .05);
+						box-shadow: 0 2px 10px rgba(32, 32, 73, .2);
 					}
 
 					.dropdown-item {
@@ -376,30 +417,29 @@ header {
 						text-transform: none;
 
 						span {
-							padding-left: 25px;
+							padding-left: 10px;
 						}
-					}
 
-					&-link {
-						background: url('../images/icons/share-link.svg') no-repeat left center
-					}
-
-					&-qr {
-						background: url('../images/icons/share-qr-code.svg') no-repeat left center
-					}
-
-					&-email {
-						background: url('../images/icons/share-email.svg') no-repeat left center
-					}
-
-					&-tm {
-						background: url('../images/icons/share-tm.svg') no-repeat left center;
-						background-size: auto 17px
-					}
-
-					&-viber {
-						background: url('../images/icons/share-viber.svg') no-repeat left center;
-						background-size: auto 17px
+						[class^="icon-"] {
+							font-size: 13px;
+						}
+	
+						.icon {
+							&-telegram {
+								font-size: 14px;
+								color: #37AEE2
+							}
+	
+							&-viber {
+								font-size: 14px;
+								color: #7D3DAF
+							}
+	
+							&-mail {
+								font-size: 10px;
+								margin-right: 5px
+							}
+						}
 					}
 
 					svg {
@@ -753,9 +793,10 @@ main {
 					display: inline-block;
 					vertical-align: middle;
 
-					img {
+					[class^="icon-"] {
 						display: inline-block;
 						margin: 0 0 0 10px;
+						color: @theme;
 						vertical-align: middle
 					}
 				}
@@ -830,8 +871,6 @@ main {
 				margin: 40px 0 30px;
 			}
 
-			 
-
 			&-nav {
 				position: absolute;
 				top: 50%;
@@ -841,6 +880,7 @@ main {
 
 				button {
 					position: absolute;
+					font-size: 30px;
 					display: block;
 					height: 32px;
 					width: 32px;
@@ -848,30 +888,30 @@ main {
 					left: 15px;
 					border: 0;
 					z-index: 1;
+					color: @white;
 					cursor: pointer;
+					text-align: center;
+					border: 2px solid @white;
 					background: none;
-
-					svg {
-						path, circle {
-							.transition()
-						}
-					}
+					border-radius: 50%;
+					.transition();
 
 					& + button {
 						left: auto;
 						right: 15px;
 					}
 
-					&:hover {
-						svg {
-							path {
-								fill: @dark
-							}
+					[class^="icon-"] {
+						position: absolute;
+						top: 48%;
+						left: -6px;
+						text-align: center;
+						.transform(translateY(-50%))
+					}
 
-							circle {
-								stroke: @dark
-							}
-						}
+					&:hover {
+						color: @dark;
+						border-color: @dark
 					}
 				}
 			}
@@ -926,29 +966,16 @@ main {
 
 				.status {
 					font: 15px @font-opensans;
-					color: @dgray;
+					color: @lgray;
 					display: inline-block;
 					vertical-align: middle;
 
 					.up, .down {
 						position: relative;
-						padding-left: 30px;
-						margin-left: 20px;
+						margin-left: 15px;
 
-						&:after {
-							position: absolute;
-							content: '';
-							top: 0;
-							left: 0;
-							height: 18px;
-							width: 18px;
-							background: url('../images/icons/dir.svg') no-repeat center;
-						}
-					}
-
-					.down {
-						&:after {
-							.transform(rotate(-180deg))
+						&:before {
+							margin-right: 5px
 						}
 					}
 				}
@@ -972,18 +999,18 @@ main {
 
 						&:after {
 							position: absolute;
-							content: '';
-							top: 0;
+							font: 13px 'Icons';
+							content: '\e810';
+							color: @lgray;
+							top: 3px;
 							right: 0;
 							height: 18px;
 							width: 18px;
-							background: url('../images/icons/dir.svg') no-repeat center;
-							.transform(scale(.75))
 						}
 
 						&.false {
 							&:after {
-								transform: scale(.75) rotate(-180deg);
+								content: '\e80d';
 							}
 						}
 					}
@@ -1040,11 +1067,17 @@ main {
 
 		&-indicator {
 			position: absolute;
+			font-size: 14px;
+			color: @lgray;
 			left: 22px;
 			top: 10px;
 			cursor: pointer;
 			width: 15px;
 			margin: 0 auto;
+			
+			&:hover {
+				color: @theme
+			}
 		}
 			
 		&-panel {
@@ -1092,10 +1125,9 @@ main {
 				color: @dgray
 			}
 
-			svg {
-				display: inline-block;
-				margin: 0 10px 0 0;
-				vertical-align: middle;
+			.icon, [class^="icon-"] {
+				color: @lgray;
+				margin: 0 10px 0 0
 			}
 		}
 
@@ -1228,6 +1260,11 @@ main {
 						text-align: center;
 						.transform(translateY(-50%));
 
+						[class^="icon-"] {
+							font-size: 35px;
+							color: @lgray
+						}
+
 						strong, span {
 							font: 600 20px @font-montserrat;
 							display: block;
@@ -1271,10 +1308,10 @@ main {
 
 						&.complete {
 							.icon {
-								svg {
-									path {
-										fill: @theme
-									}
+								[class^="icon-"] {
+									font-size: 20px;
+									color: @theme;
+									.transform(translateY(-50%))
 								}
 							}
 
@@ -1295,6 +1332,18 @@ main {
 							height: 50px;
 							background: @gray;
 							border-radius: 50%;
+
+							[class^="icon-"] {
+								position: absolute;
+								font-size: 20px;
+								top: 48%;
+								left: 0;
+								right: 0;
+								margin: 0 auto;
+								color: @lgray;
+								text-align: center;
+								.transform(translateY(-50%))
+							}
 
 							svg {
 								position: absolute;
@@ -1350,20 +1399,19 @@ main {
 								&-target {
 									display: inline-block;
 									width: 20px;
+									color: @lgray;
 									padding: 0 5px;
 									cursor: pointer;
 									text-align: center;
 									margin-right: -15px;
 
 									&:hover {
-										svg path {
-											fill: @theme
-										}
+										color: @theme
 									}
 								}
 
 								&-menu {
-									right: -5px;
+									right: -15px;
 								}
 							}
 						}
@@ -1398,19 +1446,17 @@ main {
 				width: 100%;
 				border: 0;
 				background: none;
+				color: @lgray;
+				.transition(color);
 
-				svg {
-					path {
-						.transition()
+				[class^="icon-"] {
+					&:before {
+						width: 24px
 					}
 				}
 
 				&:hover {
-					svg {
-						path {
-							fill: @dgray
-						}
-					}
+					color: @dgray
 				}
 			}
 		}
@@ -1433,22 +1479,15 @@ main {
 			}
 
 			button {
+				font-size: 12px;
 				border: 0;
+				color: @lgray;
+				margin: -4px 0 0;
 				background: none;
-
-				svg {
-					width: 11px;
-					path {
-						.transition();
-					}
-				}
+				.transition(color);
 
 				&:hover {
-					svg {
-						path {
-							fill: @dgray
-						}
-					}
+					color: @dgray
 				}
 			}
 		}
