@@ -1,5 +1,8 @@
+const Finder = require( './finder' )
 const path = require( 'path' )
 const fs = require( 'fs' )
+
+const Find = new Finder()
 
 class DappManager {
     constructor ( proto ) {

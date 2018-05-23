@@ -1,31 +1,18 @@
 const { fork } = require( 'child_process' )
 const { NodeVM } = require( 'vm2' )
+const Finder = require( './finder' )
 const EventBus = require( './event' )
  
 const path = require( 'path' )
 const fs = require( 'fs' )
 
+const Find = new Finder( 'dapps/users/' )
+
 class UserDappsLoader {
-    constructor ( source ) {
+    constructor () {
         this.items = []
-        this.source = source
-        this.data = 'manifest.json'
-    }
-
-    getDirSync ( dirname ) {
-        const items = []
-
-        fs.readdirSync( dirname ).forEach(element => {
-            if ( fs.lstatSync( dirname + '/' + element ).isDirectory() ) {
-                items.push( element )
-            }
-        })
-
-        return items
-    }
-
-    getFileSync ( filepath ) {
-        return fs.existsSync( filepath ) ? fs.readFileSync( filepath ).toString() : null
+        this.dapps = Find.getDirs()
+        this.data  = 'manifest.json'
     }
 
     setKeyWords ( object ) {
@@ -51,15 +38,15 @@ class UserDappsLoader {
         }
     }
 
-    sourceCode (_path, dirname, object) {
+    sourceCode (dirname, object) {
         let code = 'Events.data = ' + JSON.stringify( object )
-        code += this.getFileSync(_path + '/' + object.main)
+        code += Find.readFile(dirname + '/' + object.main)
         
-        const source = this.source + '/' + dirname + '/'
+        const _path = 'users/' + dirname + '/'
 
-        object.icon  = source + object.icon
-        object.thumb = source + object.thumb
-        object.index = source + object.index
+        object.icon  = _path + object.icon
+        object.thumb = _path + object.thumb
+        object.index = _path + object.index
 
         this.items.push( object )
 
@@ -80,20 +67,18 @@ class UserDappsLoader {
     }
 
     onStart () {
-        const dapps = this.getDirSync( __apps + this.source )
-
-        dapps.forEach(dirname => {
-            const _path  = __apps + this.source + '/' + dirname
-            let object = this.getFileSync( _path + '/' + this.data )
+        for (let i = 0; i < this.dapps.length; i++) {
+            const string = Find.readFile( this.dapps[i] + '/' + this.data )
 
             try {
-                object = JSON.parse( object )
+                var object = JSON.parse( string )
             } catch ( error ) {
                 console.error( error.name + ': ' + error.message )
+                break
             }
 
-            this.sourceCode(_path, dirname, object)
-        })
+            this.sourceCode(this.dapps[i], object)
+        }
     }
 }
 

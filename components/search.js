@@ -60,7 +60,7 @@ class Search {
         const message = response.payload.message
         const target = response.payload.target
 
-        const data = Find.getFileSync( target )
+        const data = Find.readFile( target + '/manifest.json' )
 
         try {
             var object = JSON.parse( data )

@@ -1,4 +1,7 @@
-/node_modules
-/database/*.db
-/logs/*.log
+/node_modules 
+/database/*.db 
+/logs/*.log 
+/dist
+/cache
 .DS_Store
+.vscode

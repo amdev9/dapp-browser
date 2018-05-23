@@ -6,11 +6,11 @@ const SystemDappsLoader = require( '../components/system.loader' )
 const router = express.Router()
 const system = new UseLib( 'system.id' )
 
-const systemLoader = new SystemDappsLoader( 'system' )
-systemLoader.onStart()
+const systems = new SystemDappsLoader()
+systems.onStart()
 
-const userLoader = new UserDappsLoader( 'users' )
-userLoader.onStart()
+const users = new UserDappsLoader()
+users.onStart()
 
 const getHeaders = headers => {
 	if ( headers['allow-origin'] ) return headers['allow-origin']
@@ -20,8 +20,6 @@ const getHeaders = headers => {
 }
 
 router.post('/', async function (request, response, next) {
-	const userapps = userLoader.items
-
 	const result = await new Promise(resolve => {
 		db.setting.find({}, (error, rows) => resolve( rows ))
 	})
@@ -31,8 +29,8 @@ router.post('/', async function (request, response, next) {
 
 	result.forEach(item => {
 		if ( item.type == 'pin' ) {
-			for (let i = 0; i < userapps.length; i++) {
-				if ( item.hash == userapps[i].hash ) pins.push( userapps[i] )
+			for (let i = 0; i < users.items.length; i++) {
+				if ( item.hash == users.items[i].hash ) pins.push( users.items[i] )
 			}
 		}
 
@@ -43,7 +41,7 @@ router.post('/', async function (request, response, next) {
 		pins: pins,
 		system: system,
 		setting: setting,
-		userapps: userapps
+		userapps: users.items
 	})
 })
 

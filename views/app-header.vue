@@ -49,7 +49,7 @@
 
                                 <div class="input-result" v-if="search">
                                     <div v-for="(value, key) in result" :key="key">
-                                        <div v-for="item in value" :key="item.key" :data-href="item.url" class="input-result-item row align-items-center" >
+                                        <div v-for="item in value" :key="item.key" :data-href="item.url" @mousedown="openapp" class="input-result-item row align-items-center" >
                                             <div class="item-name col-12 col-lg-auto pr-0">
                                                 <img :src="item.icon">
                                                 <span>{{ item.name }}</span>
@@ -186,6 +186,10 @@ export default {
         viber () {
             location.href = 'viber://forward?text=array.io/' + this.$root.apptitle
         },
+        openapp ( event ) {
+            alert( 'URL: ' + event.currentTarget.dataset.href )
+            location.href = event.currentTarget.dataset.href
+        },
         copy ( event ) {
             let target = event.currentTarget
             let select = document.createElement( 'textarea' )
@@ -217,16 +221,7 @@ export default {
         }
     },
     mounted ( event ) {
-        let target = document.body
-
-        document.addEventListener('mousedown', event => {
-            target = event.target.closest( '.input-result-item' )
-        })
-
-        this.$refs.query.addEventListener('blur', () => {
-            if ( target ) location.href = target.dataset.href
-            this.search = false
-        })
+        this.$refs.query.addEventListener('blur', () => this.search = false)
     },
     watch: {
         search ( value ) {

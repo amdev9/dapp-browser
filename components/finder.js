@@ -5,23 +5,38 @@ class Finder {
         this.source = source
     }
 
-    getDirSync () {
-        let items = []
+    getDirs ( path = '' ) {
+        const items = []
 
-        fs.readdirSync( this.source ).forEach(element => {
-            let object = {}
-
-            if ( fs.lstatSync( this.source + element ).isDirectory() ) {
-                items.push( element )
-            }
+        this.readDir( path ).forEach(item => {
+            if ( this.isDir( path + item ) ) items.push( item )
         })
 
         return items
     }
 
-    getFileSync ( dir ) {
-        const _path = this.source + dir + '/manifest.json'
-        return fs.existsSync( _path ) ? fs.readFileSync( _path ).toString() : null
+    readFile ( path = '' ) {
+        return this.exists( path ) ? fs.readFileSync( this.source + path ).toString() : null
+    }
+
+    readDir ( path = '' ) {
+        return fs.readdirSync( this.source + path )
+    }
+
+    writeFile (path = '', content = '') {
+        fs.writeFileSync(this.source + path, content)
+    }
+
+    mkdir ( path = '' ) {
+        fs.mkdirSync( this.source + path )
+    }
+
+    isDir ( path = '' ) {
+        return fs.lstatSync( this.source + path ).isDirectory()
+    }
+
+    exists ( path = '') {
+        return fs.existsSync( this.source + path )
     }
 }
 

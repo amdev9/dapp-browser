@@ -5,6 +5,7 @@ const Storage = require( './storage' )
 const Frontend = require( './frontend' )
 const Network = require( './network' )
 const Search = require( './search' )
+const Finder = require( './finder' )
 const Status = require( './status' )
 const EventBus = require( './event' )
 const UseLib   = require( './uselib' )
@@ -29,17 +30,43 @@ const sandbox = {
 }
 
 const vm = new NodeVM({sandbox: sandbox})
+const Find = new Finder( 'dapps/system/' )
 
 class SystemDappsLoader extends UserDappsLoader {
-    sourceCode (_path, dirname, object) {
-        let code = 'Events.data = ' + JSON.stringify( object )
-        code += this.getFileSync( _path + '/' + object.main )
+    constructor () {
+        super()
 
-        object.index = object.index ? this.source + '/' + dirname + '/' + object.index : null
+        this.items = []
+        this.dapps = Find.getDirs()
+        this.data  = 'manifest.json'
+    }
+
+    sourceCode (dirname, object) {
+        let code = 'Events.data = ' + JSON.stringify( object )
+        code += Find.readFile( dirname + '/' + object.main )
+
+        const _path = 'system/' + dirname + '/'
+
+        object.index = object.index ? _path + object.index : null
 
         this.items.push( object )
 
         vm.run( code )
+    }
+
+    onStart () {
+        for (let i = 0; i < this.dapps.length; i++) {
+            const string = Find.readFile( this.dapps[i] + '/' + this.data )
+
+            try {
+                var object = JSON.parse( string )
+            } catch ( error ) {
+                console.error( error.name + ': ' + error.message )
+                break
+            }
+
+            this.sourceCode(this.dapps[i], object)
+        }
     }
 }
 

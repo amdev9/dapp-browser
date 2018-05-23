@@ -1,8 +1,10 @@
 const datetime = require( 'node-datetime' )
 const Frontend = require( './frontend' )
+const Finder = require( './finder' )
 const fs = require( 'fs' )
 
 const FrontEnd = new Frontend()
+const Find = new Finder( 'logs/' )
 
 class Logger {
     async write (response, type) {
@@ -11,15 +13,17 @@ class Logger {
         
         const time = datetime.create().format( 'd-m-Y H:M:S' )
 
-        const logfile = __logs + target+ '.log'
-        let logmsg = time + ' : ' + type + ' : ' + JSON.stringify( message )
+        if ( !Find.exists() ) Find.mkdir()
 
-        if ( fs.existsSync( logfile ) ) {
-            const string = fs.readFileSync( logfile ).toString()
-            logmsg += '\n' + string
+        const filename = target + '.log'
+        let string = time + ' : ' + type + ' : ' + JSON.stringify( message )
+
+        if ( Find.exists( filename ) ) {
+            const content = Find.readFile( filename )
+            string += '\n' + content
         }
 
-        fs.writeFileSync(logfile, logmsg)
+        Find.writeFile(filename, string)
         io.emit('console', {type: type, time: time, target: target, message: JSON.stringify( message )})
 
         FrontEnd.complete( response.payload )  
