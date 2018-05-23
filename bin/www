@@ -18,6 +18,8 @@ async function onStart () {
 	
 	const port = await normalizePort(process.env.PORT || 33888)
 
+	console.log( port )
+
 	const app = require( '../app' )
 	app.set('port', port)
 

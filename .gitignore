@@ -1,7 +1,9 @@
 /node_modules 
 /database/*.db 
+/assets/js/index.js
 /logs/*.log 
 /dist
 /cache
+package-lock.json
 .DS_Store
 .vscode
