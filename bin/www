@@ -18,8 +18,6 @@ async function onStart () {
 	
 	const port = await normalizePort(process.env.PORT || 33888)
 
-	console.log( port )
-
 	const app = require( '../app' )
 	app.set('port', port)
 
@@ -29,7 +27,7 @@ async function onStart () {
 	server.on('error', onError)
 	server.on('listening', () => onListening( server ))
 }
- 
+
 async function normalizePort ( value ) {
   	var port = parseInt(value, 10)
 

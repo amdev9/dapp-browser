@@ -187,7 +187,6 @@ export default {
             location.href = 'viber://forward?text=array.io/' + this.$root.apptitle
         },
         openapp ( event ) {
-            alert( 'URL: ' + event.currentTarget.dataset.href )
             location.href = event.currentTarget.dataset.href
         },
         copy ( event ) {

@@ -1,15 +1,10 @@
-const getHeaders = headers => {
-	if ( headers['allow-origin'] ) return headers['allow-origin']
-
-    let pathname = headers.referer.replace(headers.origin + '/', '')
-    return pathname.replace(/(users\/)|(system\/)/gi, '').split( '/' ).shift().trim()
-}
+const URLCut = require( './urlcut' )
 
 class Connect {
     constructor () {
         io.on('connection', socket => {
             socket.on('room', room => {
-                const target = getHeaders( socket.handshake.headers )
+                const target = URLCut( socket.handshake.headers )
                 socket.join(room + target)
             })
         })

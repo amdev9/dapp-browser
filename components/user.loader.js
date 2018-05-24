@@ -27,9 +27,6 @@ class UserDappsLoader {
                 const select = `SELECT value, hash FROM results WHERE hash = '${object.hash}' AND value = '${value}'`
 
                 sqlite.all(select, (error, rows) => {
-                    console.log( 'Rows: ', rows )
-                    console.log( 'Error: ', error )
-                    
                     if ( rows.length ) return
 
                     const prepare = sqlite.prepare( into )

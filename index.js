@@ -5,16 +5,13 @@ const gui = require( 'nw.gui' )
 
 var connect
 var server
-var listen
 var spawn
 
 const menubar = new nw.Menu({type: 'menubar'})
 menubar.createMacBuiltin( 'Array.IO' )
 
-port(33888, '127.0.0.1', 10, function (error, free) {
-    listen = free
-
-	spawn = exec( './array ./bin/www', {env: {PORT: listen}})
+port(33888, '127.0.0.1', 100, function (error, free) {
+	spawn = exec( './array ./bin/www', {env: {PORT: free}})
     spawn.on('close', () => gui.App.quit())
 
     nw.Window.open('connect.html', {
@@ -33,7 +30,7 @@ port(33888, '127.0.0.1', 10, function (error, free) {
     })
        
     spawn.stdout.once('data', data => {
-        nw.Window.open('127.0.0.1:' + listen, {
+        nw.Window.open('127.0.0.1:' + free, {
             show: false,
             min_width: 1000,
             min_height: 650

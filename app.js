@@ -1,11 +1,12 @@
-const express = require( 'express' )
 const cookieParser = require( 'cookie-parser' )
 const bodyParser = require( 'body-parser' )
+const socket = require( 'socket.io' )
+const express = require( 'express' )
 const Datastore = require( 'nedb' )
 const uniqid = require( 'uniqid' )
 const path = require( 'path' )
 
-global.io = require( 'socket.io' )( 33999 )
+global.io = socket( 33999 )
 
 global.db = {
 	access : new Datastore({filename: 'database/access.db',  autoload: true}),
@@ -28,11 +29,8 @@ app.use(express.static( path.join(__dirname, 'assets/') ))
 app.use(express.static( path.join(__dirname, 'views/') ))
 app.use(express.static( __apps ))
 
-const index = require( './routes/index' )
-const user = require( './routes/user' )
-
-app.use('/', index)
-app.use('/', user)
+app.use('/', require( './routes/index' ))
+app.use('/', require( './routes/user' ))
 
 app.get('/', (request, response) => {
 	response.sendFile( path.join(__dirname, 'index.html') )

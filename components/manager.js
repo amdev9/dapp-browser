@@ -2,38 +2,20 @@ const Finder = require( './finder' )
 const path = require( 'path' )
 const fs = require( 'fs' )
 
-const Find = new Finder()
+const Find = new Finder( 'dapps/users/' )
 
 class DappManager {
     constructor ( proto ) {
         this.argv = []
         this.params = {}
+        this.dapps = Find.getDirs()
     }
 
-    getDirSync ( dirname ) {
-        const items = []
+    getData ( name ) {
+        const data  = {}
 
-        fs.readdirSync( dirname ).forEach(element => {
-            if ( fs.lstatSync( dirname + '/' + element ).isDirectory() ) {
-                items.push( element )
-            }
-        })
-
-        return items
-    }
-
-    getFileSync ( filepath ) {
-        return fs.existsSync( filepath ) ? fs.readFileSync( filepath ).toString() : null
-    }
-
-    findOneData ( name ) {
-        const _path = path.join(__dirname, '../dapps/users/')
-        const dapps = this.getDirSync( _path )
-        
-        const data = {}
-
-        for (let i = 0; i < dapps.length; i++) {
-            let object = this.getFileSync(_path + dapps[i] + '/manifest.json')
+        for (let i = 0; i < this.dapps.length; i++) {
+            let object = Find.readFile(this.dapps[i] + '/manifest.json')
 
             try {
                 object = JSON.parse( object )
@@ -42,12 +24,12 @@ class DappManager {
             }
 
             if ( object.unic == name ) {
-                const url = 'users/' + object.hash + '/'
+                const _path = 'users/' + object.hash + '/'
 
                 data.id = object.hash
                 data.name = object.name
-                data.icon = url + object.icon
-                data.src = url + object.index
+                data.icon = _path + object.icon
+                data.src  = _path + object.index
                 
                 break
             }
@@ -81,7 +63,7 @@ class DappManager {
         const name = this.argv.shift()
         const network = this.argv.shift()
 
-        const data = this.findOneData( name )
+        const data = this.getData( name )
         data.network = network
         data.params = this.params
 

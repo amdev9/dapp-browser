@@ -7,6 +7,7 @@ const md5 = require( 'md5' )
 const fs = require( 'fs' )
 const os = require( 'os' )
 
+const URLCut = require( '../components/urlcut' )
 const UseLib = require( '../components/uselib' )
 const EventBus = require( '../components/event' )
 
@@ -15,15 +16,8 @@ const router = express.Router()
 const system = new UseLib( 'system.id' )
 const mapping = new UseLib( 'system.map' )
 
-const getHeaders = headers => {
-	if ( headers['allow-origin'] ) return headers['allow-origin']
-
-    let pathname = headers.referer.replace(headers.origin + '/', '')
-    return pathname.replace(/(users\/)|(system\/)/gi, '').split( '/' ).shift().trim()
-}
-
 router.post('/web', async function (request, response, next) {
-	let target = getHeaders( request.headers )
+	const target = URLCut( request.headers )
 	const Events = new EventBus()
 	
 	request.body.target = target
@@ -35,7 +29,7 @@ router.post('/web', async function (request, response, next) {
 })
 
 router.post('/transfer', async function (request, response, next) {
-	const target = getHeaders( request.headers )
+	const target = URLCut( request.headers )
 
 	const form = new formidable.IncomingForm()
 	const array = []
@@ -48,7 +42,7 @@ router.post('/transfer', async function (request, response, next) {
 	if ( !fs.existsSync( form.uploadDir ) ) fs.mkdirSync( form.uploadDir )
 
 	form.on('file', (field, file) => {
-		let uploadPath = path.join(form.uploadDir, file.name)
+		const uploadPath = path.join(form.uploadDir, file.name)
 
 		fs.renameSync(file.path, uploadPath)
 

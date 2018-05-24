@@ -1,4 +1,5 @@
 const express = require( 'express' )
+const URLCut = require( '../components/urlcut' )
 const UseLib = require( '../components/uselib' )
 const UserDappsLoader = require( '../components/user.loader' )
 const SystemDappsLoader = require( '../components/system.loader' )
@@ -12,20 +13,13 @@ systems.onStart()
 const users = new UserDappsLoader()
 users.onStart()
 
-const getHeaders = headers => {
-	if ( headers['allow-origin'] ) return headers['allow-origin']
-
-    let pathname = headers.referer.replace(headers.origin + '/', '')
-    return pathname.replace(/(users\/)|(system\/)/gi, '').split( '/' ).shift().trim()
-}
-
 router.post('/', async function (request, response, next) {
 	const result = await new Promise(resolve => {
 		db.setting.find({}, (error, rows) => resolve( rows ))
 	})
 
-	let setting = []
-	let pins = []
+	const setting = []
+	const pins = []
 
 	result.forEach(item => {
 		if ( item.type == 'pin' ) {
@@ -46,7 +40,7 @@ router.post('/', async function (request, response, next) {
 })
 
 router.post('/setting.pin', async function (request, response, next) {
-	const target = getHeaders( request.headers )
+	const target = URLCut( request.headers )
 	
 	if ( target.length ) return response.send({status: false})
 
@@ -63,7 +57,7 @@ router.post('/setting.pin', async function (request, response, next) {
 })
 
 router.post('/setting.setting', async function (request, response, next) {
-	let target = getHeaders( request.headers )
+	const target = URLCut( request.headers )
 	
 	if ( target.length ) return response.send({status: false})
 

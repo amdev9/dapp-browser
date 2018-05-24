@@ -5,13 +5,13 @@ const gui = require( 'nw.gui' )
 
 var connect
 var server
-var listen
 var spawn
 
-port(3000, '127.0.0.1', 100, function (error, free) {
-    listen = free
+const menubar = new nw.Menu({type: 'menubar'})
+menubar.createMacBuiltin( 'Array.IO' )
 
-	spawn = exec( 'array.exe bin/www', {env: {PORT: listen}})
+port(33888, '127.0.0.1', 100, function (error, free) {
+	spawn = exec( 'array.exe ./bin/www', {env: {PORT: free}})
     spawn.on('close', () => gui.App.quit())
 
     nw.Window.open('connect.html', {
@@ -23,19 +23,20 @@ port(3000, '127.0.0.1', 100, function (error, free) {
         transparent: true
     }, target => {
         connect = target
+        connect.menu = menubar
+
         connect.show()
-    
         connect.on('close', () => spawn.kill())
     })
        
     spawn.stdout.once('data', data => {
-        alert( listen )
-        nw.Window.open('127.0.0.1:' + listen, {
+        nw.Window.open('127.0.0.1:' + free, {
             show: false,
             min_width: 1000,
             min_height: 650
         }, target => {
             server = target
+            server.menu = menubar
     
             const manager = new Manager()
             manager.setValue = gui.App.argv

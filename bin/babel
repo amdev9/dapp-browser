@@ -1,0 +1,11 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+require( 'babel-register' ) ({
+    presets: [ 'es2015' ]
+})
+
+module.exports = require( '../app' )
