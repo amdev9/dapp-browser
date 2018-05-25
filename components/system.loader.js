@@ -12,6 +12,7 @@ const UseLib   = require( './uselib' )
 const Connect  = require( './connect' )
 const Keychain = require( './keychain' )
 const IPFSPubSub = require( './ipfs' )
+const NetworkAPI = require( './networkAPI' )
 const { NodeVM } = require( 'vm2' )
 
 const sandbox = {
@@ -27,6 +28,7 @@ const sandbox = {
     system  : new UseLib( 'system.id' ),
     Keychain : new Keychain(),
     IPFSPubSub: new IPFSPubSub(),
+    NetworkAPI: new NetworkAPI(),
     FrontEnd  : new Frontend(),
     console   : console
 }
