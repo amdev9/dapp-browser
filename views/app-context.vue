@@ -23,7 +23,9 @@ export default {
         change () {
             this.data.type == 'app' ? this.pin() : this.app()
 
-            this.$http.post('/setting.pin', {hash: this.data.id})
+            const data = {_id: this.data.id, type: 'pin'}
+
+            this.$http.post('/setting.pin', {message: data})
         },
         close () {
             delete this.$root.frames[this.data.id]

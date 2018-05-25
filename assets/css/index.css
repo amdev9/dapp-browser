@@ -9136,7 +9136,9 @@ a.text-dark:hover {
   border-radius: 4px;
 }
 .custom-checkbox .custom-control-input:checked + .custom-control-label:before {
-  background: url('../images/icons/check.svg') no-repeat center !important;
+  font-family: 'Icons';
+  content: '\e807';
+  color: #4686FF;
 }
 .custom-radio .custom-control-label {
   vertical-align: middle;

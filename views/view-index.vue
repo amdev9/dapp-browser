@@ -38,15 +38,15 @@ export default {
     mounted () {
         this.$root.loading = true
 
-        this.$http.post('/').then(response => {
-            let data = response.body
+        this.$http.post( '/' ).then(response => {
+            const data = response.body
 
             this.userapps = data.userapps
             this.$root.system = data.system || {}
 
-            data.setting.forEach(item => this.$root.setting[item.group] = item)
+            data.setting.forEach(item => this.$root.setting[item._id] = item)
 
-            let pins = {}
+            const pins = {}
 
             data.pins.forEach(app => {
                 pins[app.hash] = {

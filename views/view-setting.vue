@@ -13,7 +13,7 @@
             <div class="row justify-content-center">
                 <div class="col-lg-7">
                     <div class="item" v-show="view == 'general'">
-                        <form @submit.prevent="general" name="general" class="form-settings">
+                        <form @submit.prevent="general" class="form-settings">
                             <div class="form-group">
                                 <label v-lang.setting.language></label>
                                 <select name="language">
@@ -155,12 +155,12 @@
                     </div>
 
                     <div class="item" v-show="view == 'network'">
-                        <form @submit.prevent="network" name="network" class="form-settings">
+                        <form @submit.prevent="network" class="form-settings">
                             <div class="form-group">
                                 <div class="custom-control custom-checkbox">
                                     <input type="hidden" name="proxy" value="false">
                                     <input type="checkbox" name="proxy" value="true" class="custom-control-input" id="input-proxy" :checked="$root.setting.network && $root.setting.network.proxy == 'true'">
-                                    <label class="custom-control-label" for="input-proxy" v-lang.setting.newnode></label>
+                                    <label class="custom-control-label" for="input-proxy" v-lang.setting.proxy></label>
                                 </div>
                             </div>
 
@@ -205,7 +205,6 @@
                     </div>
 
                     <div class="item" v-show="view == 'devmode'">
-                        
                         <form class="form-settings">
                             <div class="form-group">
                                 <div class="custom-control custom-checkbox">
@@ -241,19 +240,15 @@ export default {
             this.view = event.currentTarget.name
         },
         network ( event ) {
-            let form = $( event.target ).serialize().split( '&' )
-            let name = event.target.name
-
-            let serialize = {}
+            const form = $( event.target ).serialize().split( '&' )
+            const data = {_id: 'network', type: 'setting'}
 
             for (let i = 0; i < form.length; i++) {
                 let value = form[i].split( '=' )
-                serialize[value.shift()] = value.shift()
+                data[value.shift()] = value.shift()
             }
 
-            serialize = Object.assign({type: 'setting', group: name}, serialize)
-
-            this.$http.post('/setting.setting', {where: {type: 'setting', group: name}, message: serialize}).then(response => {
+            this.$http.post('/setting.setting', {message: data}).then(response => {
                 alert( 'Success !' )
             })
         },

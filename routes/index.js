@@ -14,21 +14,22 @@ const users = new UserDappsLoader()
 users.onStart()
 
 router.post('/', async function (request, response, next) {
-	const result = await new Promise(resolve => {
-		db.setting.find({}, (error, rows) => resolve( rows ))
+	const pins = await new Promise(resolve => {
+		db.setting.find({
+			selector: {type: 'pin'}
+		}).then(response => resolve( response.docs ))
+	})
+	
+	const setting = await new Promise(resolve => {
+		db.setting.find({
+			selector: {type: 'setting'}
+		}).then(response => resolve( response.docs ))
 	})
 
-	const setting = []
-	const pins = []
-
-	result.forEach(item => {
-		if ( item.type == 'pin' ) {
-			for (let i = 0; i < users.items.length; i++) {
-				if ( item.hash == users.items[i].hash ) pins.push( users.items[i] )
-			}
-		}
-
-		if ( item.type == 'setting' ) setting.push( item )
+	pins.forEach((item, index) => {
+		for (let i = 0; i < users.items.length; i++) {
+			if ( item._id == users.items[i].hash ) pins.splice(index, 1, users.items[i])
+		}		
 	})
 
 	response.send({
@@ -41,40 +42,32 @@ router.post('/', async function (request, response, next) {
 
 router.post('/setting.pin', async function (request, response, next) {
 	const target = URLCut( request.headers )
+	const object = request.body.message
 	
-	if ( target.length ) return response.send({status: false})
+	if ( target.length || !('_id' in object) ) return response.send({status: false})
 
-	const object = {type: 'pin', hash: request.body.hash}
-
-	const status = await new Promise(resolve => {
-		db.setting.find(object, (error, rows) => {
-			if ( !rows.length ) return db.setting.insert(object, () => resolve( true ))
-			db.setting.remove(object, () => resolve( false ))
-		})
+	await new Promise((resolve, reject) => {
+		db.setting.get( object._id ).then( resolve ).catch( reject )
+	}).then(doc => {
+		db.setting.remove( doc )
+	}).catch(error => {
+		db.setting.put( object )
 	})
 
-	response.send({status: status})
+	response.send({status: true})
 })
 
 router.post('/setting.setting', async function (request, response, next) {
 	const target = URLCut( request.headers )
+	const object = request.body.message
 	
-	if ( target.length ) return response.send({status: false})
+	if ( target.length || !('_id' in object) ) return response.send({status: false})
 
-	const where = request.body.where || null
-	const object = Object.assign({}, request.body.message)
+	await new Promise((resolve, reject) => {
+		db.setting.get( object._id ).then( resolve ).catch( reject )
+	}).then(doc => object._rev = doc._rev).catch(error => {})
 
-	if ( !where ) return response.send({status: false})
-
-	await new Promise(resolve => {
-		db.setting.findOne(where, (error, result) => {
-			if ( !result ) return db.setting.insert(object, resolve)
-				
-			const clone = Object.assign(result, object)
-
-			if ( Object.keys( clone ).length ) db.setting.update(where, clone, {}, resolve)
-		})
-	})
+	db.setting.put( object )
 
 	response.send({status: true})
 })

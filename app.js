@@ -6,13 +6,23 @@ const Datastore = require( 'nedb' )
 const uniqid = require( 'uniqid' )
 const path = require( 'path' )
 
+const PouchDB = require( 'pouchdb' )
+PouchDB.plugin( require( 'pouchdb-find' ) )
+PouchDB.plugin( require( 'pouchdb-adapter-memory' ) )
+PouchDB.plugin( require( 'pouchdb-adapter-node-websql' ) )
+
 global.io = socket( 33999 )
 
 global.db = {
-	access : new Datastore({filename: 'database/access.db',  autoload: true}),
+	// access : new PouchDB('database/access', {adapter: 'leveldb'}),
 	storage: new Datastore({filename: 'database/storage.db', autoload: true}),
-	setting: new Datastore({filename: 'database/setting.db', autoload: true})
+	setting: new PouchDB('database/setting', {adapter: 'leveldb'})
 }
+
+db.setting.createIndex({index: {
+	name: 'setting',
+	fields: ['type']
+}})
 
 global.__apps = path.join(__dirname, 'dapps/')
 global.__logs = path.join(__dirname, 'logs/')
