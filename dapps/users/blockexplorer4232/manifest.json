@@ -1,0 +1,17 @@
+{
+    "version": "1.0",
+  
+    "hash": "blockexplorer4232",
+    "name": "Block explorer",
+    "type": "tools",
+    "icon": "favicon.png",
+    "thumb": "thumb.png",
+    "index": "index.html",
+    "main" : "main.js",
+
+    "description": "This is a sample dapp app-1",
+
+    "permissions": [
+        "web", "log"
+    ]
+}

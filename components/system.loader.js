@@ -11,6 +11,7 @@ const EventBus = require( './event' )
 const UseLib   = require( './uselib' )
 const Connect  = require( './connect' )
 const IPFSPubSub = require( './ipfs' )
+const NetworkAPI = require( './networkAPI' )
 const { NodeVM } = require( 'vm2' )
 
 const sandbox = {
@@ -25,6 +26,7 @@ const sandbox = {
     mapping : new UseLib( 'system.map' ),
     system  : new UseLib( 'system.id' ),
     IPFSPubSub: new IPFSPubSub(),
+    NetworkAPI: new NetworkAPI(),
     FrontEnd  : new Frontend(),
     console   : console
 }
