@@ -3,6 +3,7 @@
   
     "hash": "blockexplorer4232",
     "name": "Block explorer",
+    "unic": "blockexplorer",
     "type": "tools",
     "icon": "favicon.png",
     "thumb": "thumb.png",
@@ -10,6 +11,8 @@
     "main" : "main.js",
 
     "description": "This is a sample dapp app-1",
+
+    "keywords": [],
 
     "permissions": [
         "web", "log"
