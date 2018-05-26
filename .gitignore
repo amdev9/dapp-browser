@@ -1,5 +1,5 @@
 /node_modules 
-/database/*.db 
+/database/*
 /assets/js/index.js
 /logs/*.log 
 /dist

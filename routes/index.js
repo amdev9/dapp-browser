@@ -26,11 +26,19 @@ router.post('/', async function (request, response, next) {
 		}).then(response => resolve( response.docs ))
 	})
 
+	for (let i = 0; i < setting.length; i++) {
+		for (const key in setting[i]) {
+			setting[i][key] = decodeURIComponent( setting[i][key] )
+		}
+	}
+
 	pins.forEach((item, index) => {
 		for (let i = 0; i < users.items.length; i++) {
 			if ( item._id == users.items[i].hash ) pins.splice(index, 1, users.items[i])
 		}		
 	})
+
+	console.log( setting )
 
 	response.send({
 		pins: pins,
