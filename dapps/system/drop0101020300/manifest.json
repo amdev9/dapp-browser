@@ -1,11 +1,11 @@
 {
-    "version": "1.0",
-  
-    "hash": "drop0101020300",
-    "name": "Dropbox",
-    "main" : "main.js",
+  "version": "1.0",
 
-    "description": "This is Dropbox",
+  "hash": "drop0101020300",
+  "name": "Dropbox",
+  "main": "main.js",
 
-    "permissions": []
+  "description": "This is Dropbox",
+
+  "permissions": []
 }

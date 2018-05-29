@@ -1,11 +1,11 @@
 {
-    "version": "1.0",
-  
-    "hash": "search5s8d4g8s",
-    "name": "Market",
-    "main" : "main.js",
+  "version": "1.0",
 
-    "description": "This is Market Place",
+  "hash": "search5s8d4g8s",
+  "name": "Market",
+  "main": "main.js",
 
-    "permissions": []
+  "description": "This is Market Place",
+
+  "permissions": []
 }

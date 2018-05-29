@@ -1,11 +1,11 @@
 {
-    "version": "1.0",
-  
-    "hash": "status412512126",
-    "name": "Status",
-    "main" : "main.js",
+  "version": "1.0",
 
-    "description": "This is Info Connection",
+  "hash": "status412512126",
+  "name": "Status",
+  "main": "main.js",
 
-    "permissions": []
+  "description": "This is Info Connection",
+
+  "permissions": []
 }

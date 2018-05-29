@@ -1,61 +1,79 @@
-const Frontend = require( './frontend' )
+const Frontend = require("./frontend");
 
-const FrontEnd = new Frontend()
+const FrontEnd = new Frontend();
 
 class Storage {
-    async insert ( response ) {
-        const object = Object.assign({target: response.from}, response.payload.message || {})
+  async insert(response) {
+    const object = Object.assign(
+      { target: response.from },
+      response.payload.message || {}
+    );
 
-        const output = await new Promise(resolve => {
-            db.storage.insert(object, (error, rows) => resolve( rows ))
-        })
+    const output = await new Promise(resolve => {
+      db.storage.insert(object, (error, rows) => resolve(rows));
+    });
 
-        response.payload.response = output
-        FrontEnd.complete( response.payload )
-    }
+    response.payload.response = output;
+    FrontEnd.complete(response.payload);
+  }
 
-    async find ( response ) {
-        const object = Object.assign({target: response.from}, response.payload.where || {})
-        
-        const output = await new Promise(resolve => {
-            db.storage.find(object, (error, rows) => resolve( rows ))
-        })
+  async find(response) {
+    const object = Object.assign(
+      { target: response.from },
+      response.payload.where || {}
+    );
 
-        response.payload.response = output
-        FrontEnd.complete( response.payload )
-    }
+    const output = await new Promise(resolve => {
+      db.storage.find(object, (error, rows) => resolve(rows));
+    });
 
-    async findOne ( response ) {
-        const object = Object.assign({target: response.from}, response.payload.where || {})
+    response.payload.response = output;
+    FrontEnd.complete(response.payload);
+  }
 
-        const output = await new Promise(resolve => {
-            db.storage.findOne(object, (error, result) => resolve( result ))
-        })
+  async findOne(response) {
+    const object = Object.assign(
+      { target: response.from },
+      response.payload.where || {}
+    );
 
-        response.payload.response = output
-        FrontEnd.complete( response.payload )
-    }
+    const output = await new Promise(resolve => {
+      db.storage.findOne(object, (error, result) => resolve(result));
+    });
 
-    async update ( response ) {
-        const where = Object.assign({target: response.from}, response.payload.where || {})
-        const object = Object.assign({target: response.from}, response.payload.message || {})
+    response.payload.response = output;
+    FrontEnd.complete(response.payload);
+  }
 
-        await new Promise(resolve => {
-            db.storage.update(where, object, {multi: true}, resolve)
-        })
+  async update(response) {
+    const where = Object.assign(
+      { target: response.from },
+      response.payload.where || {}
+    );
+    const object = Object.assign(
+      { target: response.from },
+      response.payload.message || {}
+    );
 
-        FrontEnd.complete( response.payload )
-    }
+    await new Promise(resolve => {
+      db.storage.update(where, object, { multi: true }, resolve);
+    });
 
-    async remove ( response ) {
-        const object = Object.assign({target: response.from}, response.payload.where || {})
-        
-        await new Promise(resolve => {
-            db.storage.remove(object, {multi: true}, resolve)
-        })
+    FrontEnd.complete(response.payload);
+  }
 
-        FrontEnd.complete( response.payload )
-    }
+  async remove(response) {
+    const object = Object.assign(
+      { target: response.from },
+      response.payload.where || {}
+    );
+
+    await new Promise(resolve => {
+      db.storage.remove(object, { multi: true }, resolve);
+    });
+
+    FrontEnd.complete(response.payload);
+  }
 }
 
-module.exports = Storage
+module.exports = Storage;

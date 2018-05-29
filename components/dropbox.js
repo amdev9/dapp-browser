@@ -1,44 +1,44 @@
-const Frontend = require( './frontend' )
-const crypto = require( 'crypto-js' )
-const IPFS = require( './ipfs' )
-const fs = require( 'fs' )
+const Frontend = require("./frontend");
+const crypto = require("crypto-js");
+const IPFS = require("./ipfs");
+const fs = require("fs");
 
-const FrontEnd = new Frontend()
-const ipfs = new IPFS()
+const FrontEnd = new Frontend();
+const ipfs = new IPFS();
 
 class Dropbox {
-    constructor () {
-        this.url = 'https://ipfs.array.io/ipfs/' // https://ipfs.io/ipfs/
-    }
+  constructor() {
+    this.url = "https://ipfs.array.io/ipfs/"; // https://ipfs.io/ipfs/
+  }
 
-    async transfer ( response ) {
-        const self = this
+  async transfer(response) {
+    const self = this;
 
-        const message = response.payload.message
-        const array = response.payload.response || []
-        const keygen = message[array.length]
-       
-        let bytes = crypto.AES.decrypt(keygen, __uniq)
-        let path = bytes.toString( crypto.enc.Utf8 )
+    const message = response.payload.message;
+    const array = response.payload.response || [];
+    const keygen = message[array.length];
 
-        const buffer = fs.readFileSync( path )
-        const stream = ipfs.node.files.addReadableStream()
+    let bytes = crypto.AES.decrypt(keygen, __uniq);
+    let path = bytes.toString(crypto.enc.Utf8);
 
-        fs.unlinkSync( path )
+    const buffer = fs.readFileSync(path);
+    const stream = ipfs.node.files.addReadableStream();
 
-        stream.on('data', data => {
-            array.push( self.url + data.hash )
+    fs.unlinkSync(path);
 
-            response.payload.response = array
+    stream.on("data", data => {
+      array.push(self.url + data.hash);
 
-            if ( array.length < message.length ) return this.transfer( response )
+      response.payload.response = array;
 
-            FrontEnd.complete( response.payload )
-        })
+      if (array.length < message.length) return this.transfer(response);
 
-        stream.write({ content: buffer })
-        stream.end()
-    }
+      FrontEnd.complete(response.payload);
+    });
+
+    stream.write({ content: buffer });
+    stream.end();
+  }
 }
 
-module.exports = Dropbox
+module.exports = Dropbox;

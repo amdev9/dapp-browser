@@ -1,11 +1,11 @@
 {
-    "version": "1.0",
-  
-    "hash": "8gsh76asd757000",
-    "name": "Log Controller",
-    "main" : "main.js",
+  "version": "1.0",
 
-    "description": "This is Log Controller",
+  "hash": "8gsh76asd757000",
+  "name": "Log Controller",
+  "main": "main.js",
 
-    "permissions": []
+  "description": "This is Log Controller",
+
+  "permissions": []
 }

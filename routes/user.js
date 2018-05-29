@@ -1,59 +1,59 @@
-const express = require( 'express' )
-const formidable = require( 'formidable' )
-const crypto = require( 'crypto-js' )
-const uniqid = require( 'uniqid' )
-const path = require( 'path' )
-const md5 = require( 'md5' )
-const fs = require( 'fs' )
-const os = require( 'os' )
+const express = require("express");
+const formidable = require("formidable");
+const crypto = require("crypto-js");
+const uniqid = require("uniqid");
+const path = require("path");
+const md5 = require("md5");
+const fs = require("fs");
+const os = require("os");
 
-const URLCut = require( '../components/urlcut' )
-const UseLib = require( '../components/uselib' )
-const EventBus = require( '../components/event' )
+const URLCut = require("../components/urlcut");
+const UseLib = require("../components/uselib");
+const EventBus = require("../components/event");
 
-const router = express.Router()
+const router = express.Router();
 
-const system = new UseLib( 'system.id' )
-const mapping = new UseLib( 'system.map' )
+const system = new UseLib("system.id");
+const mapping = new UseLib("system.map");
 
-router.post('/web', async function (request, response, next) {
-	const target = URLCut( request.headers )
-	const Events = new EventBus()
-	
-	request.body.target = target
-	request.body.unic = uniqid()
+router.post("/web", async function(request, response, next) {
+  const target = URLCut(request.headers);
+  const Events = new EventBus();
 
-	mapping[request.body.unic] = ( body ) => response.send( body )
+  request.body.target = target;
+  request.body.unic = uniqid();
 
-	Events.publish(target, request.body.message_type, request.body)
-})
+  mapping[request.body.unic] = body => response.send(body);
 
-router.post('/transfer', async function (request, response, next) {
-	const target = URLCut( request.headers )
+  Events.publish(target, request.body.message_type, request.body);
+});
 
-	const form = new formidable.IncomingForm()
-	const array = []
+router.post("/transfer", async function(request, response, next) {
+  const target = URLCut(request.headers);
 
-	form.multiples = true
-	form.hash = 'sha1'
-	form.maxFileSize = 500 * 1024 * 1024 // 500 MB
-	form.uploadDir = path.join(os.tmpdir(), target)
+  const form = new formidable.IncomingForm();
+  const array = [];
 
-	if ( !fs.existsSync( form.uploadDir ) ) fs.mkdirSync( form.uploadDir )
+  form.multiples = true;
+  form.hash = "sha1";
+  form.maxFileSize = 500 * 1024 * 1024; // 500 MB
+  form.uploadDir = path.join(os.tmpdir(), target);
 
-	form.on('file', (field, file) => {
-		const uploadPath = path.join(form.uploadDir, file.name)
+  if (!fs.existsSync(form.uploadDir)) fs.mkdirSync(form.uploadDir);
 
-		fs.renameSync(file.path, uploadPath)
+  form.on("file", (field, file) => {
+    const uploadPath = path.join(form.uploadDir, file.name);
 
-		let secure = crypto.AES.encrypt(uploadPath, __uniq)
-		array.push( secure.toString() )
-	})
+    fs.renameSync(file.path, uploadPath);
 
-	form.on('error', error => console.log('ERROR: \n' + error))
-	form.on('end', () => response.send({ data: array }))
+    let secure = crypto.AES.encrypt(uploadPath, __uniq);
+    array.push(secure.toString());
+  });
 
-	form.parse( request )
-})
+  form.on("error", error => console.log("ERROR: \n" + error));
+  form.on("end", () => response.send({ data: array }));
 
-module.exports = router
+  form.parse(request);
+});
+
+module.exports = router;

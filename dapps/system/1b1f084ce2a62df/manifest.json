@@ -1,11 +1,11 @@
 {
-    "version": "1.0",
-  
-    "hash": "1b1f084ce2a62df",
-    "name": "Keychain",
-    "main" : "main.js",
+  "version": "1.0",
 
-    "description": "This is Keychain",
+  "hash": "1b1f084ce2a62df",
+  "name": "Keychain",
+  "main": "main.js",
 
-    "permissions": []
+  "description": "This is Keychain",
+
+  "permissions": []
 }

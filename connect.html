@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Connect</title>
-    
+
     <style>
-        html, body {
+        html,
+        body {
             margin: 0;
             padding: 0;
         }
@@ -33,22 +35,24 @@
         }
     </style>
 </head>
+
 <body>
     <div class="preloader">
         <div id="animate"></div>
     </div>
 
-<script src="/assets/js/lib/lottie.min.js"></script>
-<script>
-    const animate = document.getElementById( 'animate' )
+    <script src="/assets/js/lib/lottie.min.js"></script>
+    <script>
+        const animate = document.getElementById('animate')
 
-    bodymovin.loadAnimation({
-        container: animate,
-        renderer: 'svg',
-        loop: true,
-        autoplay: true,
-        path: '/assets/json/animate.svg.json'
-    })
-</script>
+        bodymovin.loadAnimation({
+            container: animate,
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            path: '/assets/json/animate.svg.json'
+        })
+    </script>
 </body>
+
 </html>

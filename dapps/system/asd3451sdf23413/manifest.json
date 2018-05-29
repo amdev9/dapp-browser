@@ -1,11 +1,11 @@
 {
-    "version": "1.0",
-  
-    "hash": "asd3451sdf23413",
-    "name": "IPFS Controller",
-    "main" : "main.js",
+  "version": "1.0",
 
-    "description": "This is IPFSPubSub Controller",
+  "hash": "asd3451sdf23413",
+  "name": "IPFS Controller",
+  "main": "main.js",
 
-    "permissions": []
+  "description": "This is IPFSPubSub Controller",
+
+  "permissions": []
 }

@@ -55,62 +55,71 @@
 
 <script>
 export default {
-    data () {
-        return {
-            data: {}
-        }
+  data() {
+    return {
+      data: {}
+    };
+  },
+  methods: {
+    change(name) {
+      for (const key in this.data) this.data[key].active = false;
+      this.data[name].active = true;
     },
-    methods: {
-        change ( name ) {
-            for (const key in this.data) this.data[key].active = false
-            this.data[name].active = true
-        },
-        preview ( data ) {
-            this.$root.response = data
-            this.$root.currentView = 'view-preview'
-        }
-    },
-    mounted () {
-        this.$root.loading = true
-        this.$root.apptitle = null
-
-        this.$http.post('/web', {message_type: 'market'}, {
-            headers: {'Allow-Origin': this.$root.system.MrkCtrl}
-        }).then(response => {
-            let items = response.body.response
-
-            let object = {}
-
-            object['all'] = {name: 'all', active: true, items: []}
-
-            for (let i = 0; i < items.length; i++) {
-                for (let t = 0; t < items[i].tags.length; t++) {
-                    object[items[i].tags[t]] = {name: items[i].tags[t], active: false}
-                }
-
-                object.all.items.push( items[i] )
-            }
-
-            for (const key in object) {
-                for (let i = 0; i < items.length; i++) {
-                    if ( !object[key].hasOwnProperty( 'items' ) ) object[key].items = []
-                    
-                    for (let t = 0; t < items[i].tags.length; t++) {
-                        if ( key == items[i].tags[t] ) {
-                            object[key].items.push( items[i] )
-                        }
-                    }
-                }
-            }
-
-            this.data = object
-            this.$root.pagetitle = 'Market'
-            this.$root.preventView = null
-
-            this.$nextTick(function () {
-                this.$root.loading = false
-            })
-        })
+    preview(data) {
+      this.$root.response = data;
+      this.$root.currentView = "view-preview";
     }
-}
+  },
+  mounted() {
+    this.$root.loading = true;
+    this.$root.apptitle = null;
+
+    this.$http
+      .post(
+        "/web",
+        { message_type: "market" },
+        {
+          headers: { "Allow-Origin": this.$root.system.MrkCtrl }
+        }
+      )
+      .then(response => {
+        let items = response.body.response;
+
+        let object = {};
+
+        object["all"] = { name: "all", active: true, items: [] };
+
+        for (let i = 0; i < items.length; i++) {
+          for (let t = 0; t < items[i].tags.length; t++) {
+            object[items[i].tags[t]] = {
+              name: items[i].tags[t],
+              active: false
+            };
+          }
+
+          object.all.items.push(items[i]);
+        }
+
+        for (const key in object) {
+          for (let i = 0; i < items.length; i++) {
+            if (!object[key].hasOwnProperty("items")) object[key].items = [];
+
+            for (let t = 0; t < items[i].tags.length; t++) {
+              if (key == items[i].tags[t]) {
+                object[key].items.push(items[i]);
+              }
+            }
+          }
+        }
+
+        this.data = object;
+        this.$root.pagetitle = "Market";
+        this.$root.preventView = null;
+
+        this.$nextTick(function() {
+          this.$root.loading = false;
+        });
+      });
+  }
+};
 </script>

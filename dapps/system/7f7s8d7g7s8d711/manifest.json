@@ -1,11 +1,11 @@
 {
-    "version": "1.0",
-  
-    "hash": "7f7s8d7g7s8d711",
-    "name": "Storage Controller",
-    "main" : "main.js",
+  "version": "1.0",
 
-    "description": "This is Storage Controller",
+  "hash": "7f7s8d7g7s8d711",
+  "name": "Storage Controller",
+  "main": "main.js",
 
-    "permissions": []
+  "description": "This is Storage Controller",
+
+  "permissions": []
 }

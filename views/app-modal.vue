@@ -20,31 +20,32 @@
 
 <script>
 export default {
-    data () {
-        return {
-            title: null,
-            content: null,
-            visible: false
-        }
+  data() {
+    return {
+      title: null,
+      content: null,
+      visible: false
+    };
+  },
+  props: ["type"],
+  methods: {
+    cancel() {
+      this.visible = false;
     },
-    props: ['type'],
-    methods: {
-        cancel () {
-            this.visible = false
-        },
-        accept () {
-            this.visible = false
-        }
-    },
-    mounted () {
-        API.Socket.subscribe('access', response => {
-            let items = response.rows
-            for (let i = 0; i < items.length; i++) items[i] = '<b>' + items[i] +'</b>'
-
-            this.title = 'Access'
-            this.content = '<p>' + response.message +'</p>' + items.join( ', ' )
-            this.visible = true
-        })
+    accept() {
+      this.visible = false;
     }
-}
+  },
+  mounted() {
+    API.Socket.subscribe("access", response => {
+      let items = response.rows;
+      for (let i = 0; i < items.length; i++)
+        items[i] = "<b>" + items[i] + "</b>";
+
+      this.title = "Access";
+      this.content = "<p>" + response.message + "</p>" + items.join(", ");
+      this.visible = true;
+    });
+  }
+};
 </script>
