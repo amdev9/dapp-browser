@@ -1,7 +1,6 @@
 /node_modules 
-/database/**
-/database/*
 /assets/js/index.js
+/database
 /logs/*.log 
 /dist
 /cache
@@ -9,3 +8,4 @@ package-lock.json
 .DS_Store
 .vscode
 .idea
+.git

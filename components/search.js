@@ -8,10 +8,11 @@ const Find = new Finder( 'dapps/users/' )
 class Search {
     async query ( response ) {
         const message = response.payload.message
-        const sql = `SELECT * FROM results WHERE value LIKE '%${message}%'`
 
         response.payload.response = await new Promise(resolve => {
-            sqlite.all(sql, (error, rows) => resolve( rows ))
+            db.search.find({
+                selector: {value: {'$regex': message}}
+            }).then(response => resolve( response.docs ))
         })
 
         FrontEnd.complete( response.payload )
@@ -19,10 +20,12 @@ class Search {
 
     async select ( response ) {
         const target = response.payload.target
-        const sql = `SELECT value, url FROM results WHERE hash = '${target}'`
 
         response.payload.response = await new Promise(resolve => {
-            sqlite.all(sql, (error, rows) => resolve( rows ))
+            db.search.find({
+                selector: {hash: target},
+                fields: ['value', 'url']
+            }).then(response => resolve( response.docs ))
         })
 
         FrontEnd.complete( response.payload )
@@ -32,61 +35,64 @@ class Search {
         const message = response.payload.message
         const target = response.payload.target
 
-        const remove = [message.value, message.url, target]
-        const sql = `DELETE FROM results WHERE value = ? AND url = ? AND hash = ?`
-
-        await new Promise(resolve => {
-            const prepare = sqlite.prepare( sql )
-
-            prepare.run( remove )
-            prepare.finalize()
-            
-            resolve()
+        const data = await new Promise(resolve => {
+            db.search.find({
+                selector: {hash: target, value: message.value, url: message.url}
+            }).then( resolve )
         })
+
+        data.docs.forEach(item => db.search.remove( item ))
 
         FrontEnd.complete( response.payload )
     }
 
     async destroy ( response ) { 
         const target = response.payload.target
-        const sql = `DELETE FROM results WHERE hash = '${target}'`
 
-        await new Promise(resolve => sqlite.run(sql, resolve))
+        const data = await new Promise(resolve => {
+            db.search.find({
+                selector: {hash: target}
+            }).then( resolve )
+        })
+
+        data.docs.forEach(item => db.search.remove( item ))
 
         FrontEnd.complete( response.payload )
     }
 
     async insert ( response ) {
-        const message = response.payload.message
         const target = response.payload.target
+        const query = response.payload.message.url
+        const value = response.payload.message.value
 
-        const data = Find.readFile( target + '/manifest.json' )
+        const string = Find.readFile(target + '/manifest.json')
 
         try {
-            var object = JSON.parse( data )
+            var object = JSON.parse( string )
         } catch ( error ) {
             return FrontEnd.complete( response.payload )
         }
 
-        const url = 'arr://' + object.unic + ':mainet/?' + message.url
+        const data = await new Promise(resolve => {
+            db.search.find({
+                selector: {hash: object.hash, value: value}
+            }).then(response => resolve( response.docs ))
+        })
+
+        if ( data.length ) return FrontEnd.complete( response.payload )
+
+        const url = 'arr://' + object.unic + ':mainet/?' + query
         const icon = 'users/' + target + '/' + object.icon
 
-        const insert = [object.hash, object.name, message.value, url, icon]
-        
-        const into = `INSERT INTO results VALUES (?, ?, ?, ?, ?)`
-        const select = `SELECT value, hash FROM results WHERE hash = '${target}' AND value = '${message.value}'`
-
         await new Promise(resolve => {
-            sqlite.all(select, (error, rows) => {
-                if ( rows.length ) return resolve()
-                
-                const prepare = sqlite.prepare( into )
-
-                prepare.run( insert )
-                prepare.finalize()
-
-                resolve()
-            })
+            db.search.post({
+                url: url,
+                query: query,
+                value: value,
+                hash: object.hash,
+                name: object.name,
+                icon: icon
+            }).then( resolve )
         })
 
         FrontEnd.complete( response.payload )

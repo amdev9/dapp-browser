@@ -15,30 +15,35 @@ class UserDappsLoader {
         this.data  = 'manifest.json'
     }
 
-    setKeyWords ( object ) {
+    async setKeyWords ( object ) {
         for (let i = 0; i < object.keywords.length; i++) {
-            const keywords = object.keywords[i]
+            const query = object.keywords[i].query
+            const value = object.keywords[i].value
 
-            for (let value in keywords) {
-                const url = 'arr://' + object.unic + ':mainet/?' + keywords[value]
-                const insert = [object.hash, object.name, value, url, object.icon]
+            const data = await new Promise(resolve => {
+                db.search.find({
+                    selector: {hash: object.hash, value: value}
+                }).then(response => resolve( response.docs ))
+            })
 
-                const into = `INSERT INTO results VALUES (?, ?, ?, ?, ?)`
-                const select = `SELECT value, hash FROM results WHERE hash = '${object.hash}' AND value = '${value}'`
+            if ( data.length ) return
 
-                sqlite.all(select, (error, rows) => {
-                    if ( rows.length ) return
+            const url = 'arr://' + object.unic + ':mainet/?' + query
 
-                    const prepare = sqlite.prepare( into )
-
-                    prepare.run( insert )
-                    prepare.finalize()
-                })
-            }
+            await new Promise(resolve => {
+                db.search.post({
+                    url: url,
+                    query: query,
+                    value: value,
+                    hash: object.hash,
+                    name: object.name,
+                    icon: object.icon
+                }).then( resolve )
+            })
         }
     }
 
-    sourceCode (dirname, object) {
+    async sourceCode (dirname, object) {
         let code = 'Events.data = ' + JSON.stringify( object )
         code += Find.readFile(dirname + '/' + object.main)
         
@@ -63,21 +68,21 @@ class UserDappsLoader {
     
         child.send({init: code})
 
-        this.setKeyWords( object )
+        await this.setKeyWords( object )
     }
 
-    onStart () {
+    async onStart () {
         for (let i = 0; i < this.dapps.length; i++) {
-            const string = Find.readFile( this.dapps[i] + '/' + this.data )
+            const string = Find.readFile(this.dapps[i] + '/' + this.data)
 
             try {
                 var object = JSON.parse( string )
             } catch ( error ) {
-                console.error( error.name + ': ' + error.message )
+                console.error(error.name + ': ' + error.message)
                 break
             }
 
-            this.sourceCode(this.dapps[i], object)
+            await this.sourceCode(this.dapps[i], object)
         }
     }
 }

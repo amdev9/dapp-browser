@@ -13,7 +13,10 @@
     "description": "This is a sample dapp app-1",
 
     "keywords": [
-        {"google": "message=Google"}
+        {
+            "query": "message=Google",
+            "value": "google"
+        }
     ],
 
     "permissions": [

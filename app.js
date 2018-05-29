@@ -5,16 +5,21 @@ const express = require( 'express' )
 const Datastore = require( 'nedb' )
 const uniqid = require( 'uniqid' )
 const path = require( 'path' )
+const fs = require( 'fs' )
 
 const PouchDB = require( 'pouchdb' )
 PouchDB.plugin( require( 'pouchdb-find' ) )
 PouchDB.plugin( require( 'pouchdb-adapter-memory' ) )
 PouchDB.plugin( require( 'pouchdb-adapter-node-websql' ) )
 
+const pathDB = path.join(__dirname, 'database')
+
+if ( !fs.existsSync( pathDB ) ) fs.mkdirSync( pathDB )
+
 global.io = socket( 33999 )
 
 global.db = {
-	// access : new PouchDB('database/access', {adapter: 'leveldb'}),
+	search : new PouchDB('database/search', {adapter: 'leveldb'}),
 	storage: new Datastore({filename: 'database/storage.db', autoload: true}),
 	setting: new PouchDB('database/setting', {adapter: 'leveldb'})
 }
@@ -22,6 +27,11 @@ global.db = {
 db.setting.createIndex({index: {
 	name: 'setting',
 	fields: ['type']
+}})
+
+db.search.createIndex({index: {
+	name: 'search',
+	fields: ['value']
 }})
 
 global.__apps = path.join(__dirname, 'dapps/')

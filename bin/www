@@ -4,46 +4,55 @@
  * Module dependencies.
  */
 
-const sqlite3 = require( 'sqlite3' )
+const app = require( '../app' )
 const debug = require( 'debug' )( 'express:server' )
 const http = require( 'http' )
 
-async function onStart () {
-	global.sqlite = await new Promise(resolve => {
-		const db = new sqlite3.Database( 'database/search.db' )
-		const sql = 'CREATE TABLE IF NOT EXISTS results (hash VARCHAR, name VARCHAR, value VARCHAR, url TEXT, icon TEXT)'
+/**
+ * Get port from environment and store in Express.
+ */
 
-		db.serialize(() => db.run(sql, () => resolve( db )))
-	})
-	
-	const port = await normalizePort(process.env.PORT || 33888)
+const port = normalizePort(process.env.PORT || 33888)
+app.set('port', port)
 
-	const app = require( '../app' )
-	app.set('port', port)
+/**
+ * Create HTTP server.
+ */
 
-	const server = http.createServer( app )
+const server = http.createServer( app )
 
-	server.listen( port )
-	server.on('error', onError)
-	server.on('listening', () => onListening( server ))
-}
+/**
+ * Listen on provided port, on all network interfaces.
+ */
 
-async function normalizePort ( value ) {
-  	var port = parseInt(value, 10)
+server.listen( port )
+server.on('error', onError)
+server.on('listening', onListening)
 
-	if ( isNaN( port ) ) return value
-	if ( port >= 0 ) return port
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort ( value ) {
+  	const port = parseInt(value, 10)
+
+	if ( isNaN( port ) ) return value // named pipe
+	if ( port >= 0 ) return port      // port number
 	
 	return false
 }
 
-async function onError ( error ) {
+/**
+ * Event listener for HTTP server "error" event.
+ */
+function onError ( error ) {
 	if ( error.syscall !== 'listen' ) throw error
 	
-	var bind = typeof port === 'string'
+	const bind = typeof port === 'string'
 		? 'Pipe ' + port
 		: 'Port ' + port
 
+	// handle specific listen errors with friendly messages
 	switch ( error.code ) {
 		case 'EACCES':
 			console.error( bind + ' requires elevated privileges' )
@@ -57,13 +66,15 @@ async function onError ( error ) {
 	}
 }
 
-async function onListening ( server ) {
-  	var addr = server.address()
-  	var bind = typeof addr === 'string'
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening () {
+	const addr = server.address()
+	const bind = typeof addr === 'string'
     	? 'pipe ' + addr
     	: 'port ' + addr.port
 	  
 	debug( 'Listening on ' + bind )
 }
-
-onStart()

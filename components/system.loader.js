@@ -45,7 +45,7 @@ class SystemDappsLoader extends UserDappsLoader {
         this.data  = 'manifest.json'
     }
 
-    sourceCode (dirname, object) {
+    async sourceCode (dirname, object) {
         let code = 'Events.data = ' + JSON.stringify( object )
         code += Find.readFile( dirname + '/' + object.main )
 
@@ -58,7 +58,7 @@ class SystemDappsLoader extends UserDappsLoader {
         vm.run( code )
     }
 
-    onStart () {
+    async onStart () {
         for (let i = 0; i < this.dapps.length; i++) {
             const string = Find.readFile( this.dapps[i] + '/' + this.data )
 
@@ -69,7 +69,7 @@ class SystemDappsLoader extends UserDappsLoader {
                 break
             }
 
-            this.sourceCode(this.dapps[i], object)
+            await this.sourceCode(this.dapps[i], object)
         }
     }
 }

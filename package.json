@@ -30,7 +30,6 @@
     "pouchdb-adapter-node-websql": "^6.4.3",
     "pouchdb-find": "^6.4.3",
     "socket.io": "^2.1.0",
-    "sqlite3": "^4.0.0",
     "uniqid": "^4.1.1",
     "username": "^3.0.0",
     "vm2": "^3.5.2",

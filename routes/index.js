@@ -38,8 +38,6 @@ router.post('/', async function (request, response, next) {
 		}		
 	})
 
-	console.log( setting )
-
 	response.send({
 		pins: pins,
 		system: system,
