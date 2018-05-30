@@ -107,39 +107,39 @@
 
 <script>
 export default {
-  data() {
-    return {
-      data: {},
-      slider: null
-    };
-  },
-  methods: {
-    next() {
-      this.slider.trigger("next.owl.carousel");
+    data () {
+        return {
+            data: {},
+            slider: null
+        }
     },
-    prev() {
-      this.slider.trigger("prev.owl.carousel");
+    methods: {
+        next () {
+            this.slider.trigger( 'next.owl.carousel' )
+        },
+        prev () {
+            this.slider.trigger( 'prev.owl.carousel' )
+        }
+    },
+    mounted () {
+        this.$root.loading = true
+        this.$root.apptitle = null
+
+        this.data = this.$root.response
+        
+        this.$nextTick(function () {
+            this.slider = $( '.carousel-init' ).owlCarousel({
+                nav : false,
+                loop: false,
+                dots: false,
+                items : 3,
+                margin: 15,
+            })
+
+            this.$root.pagetitle = this.data.name
+            this.$root.preventView = 'view-market'
+            this.$root.loading = false
+        })
     }
-  },
-  mounted() {
-    this.$root.loading = true;
-    this.$root.apptitle = null;
-
-    this.data = this.$root.response;
-
-    this.$nextTick(function() {
-      this.slider = $(".carousel-init").owlCarousel({
-        nav: false,
-        loop: false,
-        dots: false,
-        items: 3,
-        margin: 15
-      });
-
-      this.$root.pagetitle = this.data.name;
-      this.$root.preventView = "view-market";
-      this.$root.loading = false;
-    });
-  }
-};
+}
 </script>

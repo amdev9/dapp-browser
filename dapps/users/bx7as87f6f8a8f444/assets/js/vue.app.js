@@ -46,37 +46,61 @@
             }
         },
         mounted () {
-            API.Http.post('/web', {message_type: 'find'}, response => {
-                let object = JSON.parse( response )
-                let rooms = Object.assign({}, this.rooms)
-                
-                for (let i = 0; i < object.response.length; i++) {
-                    rooms[object.response[i].key] = object.response[i]
+            this.$nextTick(async function () {
+                const rooms = await new Promise(resolve => {
+                    API.Http.post('/web', {message_type: 'find', where: {type: 'room'}}, response => {
+                        const object = JSON.parse( response )
+                        const rooms = Object.assign({}, this.rooms)
+                        
+                        for (let i = 0; i < object.response.length; i++) {
+                            object.response[i].messages = []
+                            rooms[object.response[i].key] = object.response[i]
+                        }
+
+                        resolve( rooms )
+                    })
+                })
+
+                const messages = await new Promise(resolve => {
+                    API.Http.post('/web', {message_type: 'find', where: {type: 'message'}}, response => {
+                        const object = JSON.parse( response )
+                        const output = object.response.sort((a, b) => a.time - b.time)
+
+                        resolve( output )
+                    })
+                })
+
+                for (const key in rooms) {
+                    for (let i = 0; i < messages.length; i++) {
+                        if ( key == messages[i].key ) rooms[key].messages.push( messages[i] )
+                    }
+
+                    const array = rooms[key].messages
+                    const value = array[array.length - 1]
+                    
+                    rooms[key].introtext = value ? value.content : '----'
                 }
 
                 this.rooms = rooms
-            }, true)
+    
+                API.Room.message(response => {
+                    const object = JSON.parse( response )
 
-            API.Room.message(response => {
-                let object = JSON.parse( response )
-                let message = object.message
-                
-                message.from = message.unic != this.unic 
-                message.datetime = object.datetime
-                message.username = object.username
+                    object.type = 'message'
+                    object.time = Date.now()
+                    object.from = object.unic != this.unic
 
-                this.current.introtext = message.content
-                this.current.messages.push( message )
-
-                for (let i = 0; i < this.current.messages.length; i++) {
-                    delete this.current.messages[i].unic
-                }
-                
-                API.Http.post('/web', {message_type: 'update', where: {key: this.current.key}, message: this.current})
-            })
-
-            window.addEventListener('message', event => {
-                this.getroom( event.data )
+                    delete object.unic
+                    
+                    this.current.introtext = object.content
+                    this.$root.current.messages.push( object )
+                    
+                    API.Http.post('/web', {message_type: 'insert', message: object})
+                })
+    
+                window.addEventListener('message', event => {
+                    this.getroom( event.data )
+                })
             })
         }
     })

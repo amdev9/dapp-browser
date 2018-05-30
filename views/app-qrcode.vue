@@ -15,22 +15,22 @@
 
 <script>
 export default {
-  data() {
-    return {
-      visible: false
-    };
-  },
-  methods: {
-    cancel() {
-      this.visible = false;
-      this.$refs.body.innerHTML = "";
+    data () {
+        return {
+            visible: false
+        }
+    },
+    methods: {
+        cancel () {
+            this.visible = false
+            this.$refs.body.innerHTML = ''
+        }
+    },
+    mounted () {
+        document.addEventListener('qrcode', () => {
+            new QRCode(this.$refs.body, 'array.io/' + this.$root.apptitle)
+            this.visible = true
+        })
     }
-  },
-  mounted() {
-    document.addEventListener("qrcode", () => {
-      new QRCode(this.$refs.body, "array.io/" + this.$root.apptitle);
-      this.visible = true;
-    });
-  }
-};
+}
 </script>

@@ -4,14 +4,14 @@
 
 <script>
 export default {
-  props: ["id", "src"],
-  mounted() {
-    this.$root.loading = true;
+    props: ['id', 'src'],
+    mounted () {
+        this.$root.loading = true
 
-    this.$nextTick(function() {
-      this.$root.loading = false;
-      this.$el.loaded = true;
-    });
-  }
-};
+        this.$nextTick(function () {
+            this.$root.loading = false
+            this.$el.loaded = true
+        })
+    }
+}
 </script>

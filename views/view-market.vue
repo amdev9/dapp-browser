@@ -55,71 +55,62 @@
 
 <script>
 export default {
-  data() {
-    return {
-      data: {}
-    };
-  },
-  methods: {
-    change(name) {
-      for (const key in this.data) this.data[key].active = false;
-      this.data[name].active = true;
+    data () {
+        return {
+            data: {}
+        }
     },
-    preview(data) {
-      this.$root.response = data;
-      this.$root.currentView = "view-preview";
-    }
-  },
-  mounted() {
-    this.$root.loading = true;
-    this.$root.apptitle = null;
-
-    this.$http
-      .post(
-        "/web",
-        { message_type: "market" },
-        {
-          headers: { "Allow-Origin": this.$root.system.MrkCtrl }
+    methods: {
+        change ( name ) {
+            for (const key in this.data) this.data[key].active = false
+            this.data[name].active = true
+        },
+        preview ( data ) {
+            this.$root.response = data
+            this.$root.currentView = 'view-preview'
         }
-      )
-      .then(response => {
-        let items = response.body.response;
+    },
+    mounted () {
+        this.$root.loading = true
+        this.$root.apptitle = null
 
-        let object = {};
+        this.$http.post('/web', {message_type: 'market'}, {
+            headers: {'Allow-Origin': this.$root.system.MrkCtrl}
+        }).then(response => {
+            let items = response.body.response
 
-        object["all"] = { name: "all", active: true, items: [] };
+            let object = {}
 
-        for (let i = 0; i < items.length; i++) {
-          for (let t = 0; t < items[i].tags.length; t++) {
-            object[items[i].tags[t]] = {
-              name: items[i].tags[t],
-              active: false
-            };
-          }
+            object['all'] = {name: 'all', active: true, items: []}
 
-          object.all.items.push(items[i]);
-        }
+            for (let i = 0; i < items.length; i++) {
+                for (let t = 0; t < items[i].tags.length; t++) {
+                    object[items[i].tags[t]] = {name: items[i].tags[t], active: false}
+                }
 
-        for (const key in object) {
-          for (let i = 0; i < items.length; i++) {
-            if (!object[key].hasOwnProperty("items")) object[key].items = [];
-
-            for (let t = 0; t < items[i].tags.length; t++) {
-              if (key == items[i].tags[t]) {
-                object[key].items.push(items[i]);
-              }
+                object.all.items.push( items[i] )
             }
-          }
-        }
 
-        this.data = object;
-        this.$root.pagetitle = "Market";
-        this.$root.preventView = null;
+            for (const key in object) {
+                for (let i = 0; i < items.length; i++) {
+                    if ( !object[key].hasOwnProperty( 'items' ) ) object[key].items = []
+                    
+                    for (let t = 0; t < items[i].tags.length; t++) {
+                        if ( key == items[i].tags[t] ) {
+                            object[key].items.push( items[i] )
+                        }
+                    }
+                }
+            }
 
-        this.$nextTick(function() {
-          this.$root.loading = false;
-        });
-      });
-  }
-};
+            this.data = object
+            this.$root.pagetitle = 'Market'
+            this.$root.preventView = null
+
+            this.$nextTick(function () {
+                this.$root.loading = false
+            })
+        })
+    }
+}
 </script>

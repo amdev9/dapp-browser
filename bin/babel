@@ -4,8 +4,8 @@
  * Module dependencies.
  */
 
-require("babel-register")({
-  presets: ["es2015"]
-});
+require( 'babel-register' ) ({
+    presets: [ 'es2015' ]
+})
 
-module.exports = require("../app");
+module.exports = require( '../app' )

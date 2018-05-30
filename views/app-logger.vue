@@ -43,55 +43,45 @@
 
 <script>
 export default {
-  data() {
-    return {
-      open: false,
-      show: false,
-      content: ""
-    };
-  },
-  methods: {
-    showall() {
-      this.show = !this.show;
-      this._offset();
+    data () {
+        return {
+            open: false,
+            show: false,
+            content: ''
+        }
     },
-    toogle() {
-      this.open = !this.open;
-      this.$refs.console.scrollTop = this.$refs.console.scrollHeight;
+    methods: {
+        showall () {
+            this.show = !this.show
+            this._offset()
+        },
+        toogle () {
+            this.open = !this.open
+            this.$refs.console.scrollTop = this.$refs.console.scrollHeight
 
-      this._offset();
+            this._offset()  
+        },
+        _offset () {
+            this.$nextTick(function () {
+                this.$root.offset = this.$refs.code.clientHeight - this.$refs.panel.clientHeight
+            })
+        }
     },
-    _offset() {
-      this.$nextTick(function() {
-        this.$root.offset =
-          this.$refs.code.clientHeight - this.$refs.panel.clientHeight;
-      });
+    mounted () {
+        API.Socket.subscribe('console', response => {
+            let string = document.createElement( 'p' )
+            string.innerHTML = response.time + ' : ' + response.target + ' : <span class="' + response.type.toLowerCase() + '">' + response.type + '</span> : ' + JSON.stringify( response.message )
+            
+            this.$refs.console.appendChild( string )
+            this.$refs.console.scrollTop = this.$refs.console.scrollHeight
+        })
+
+        API.Socket.subscribe('status', response => {
+            const object = Object.assign({}, this.$root.status)
+
+            object[response.target] = response
+            this.$root.status = object
+        })
     }
-  },
-  mounted() {
-    API.Socket.subscribe("console", response => {
-      let string = document.createElement("p");
-      string.innerHTML =
-        response.time +
-        " : " +
-        response.target +
-        ' : <span class="' +
-        response.type.toLowerCase() +
-        '">' +
-        response.type +
-        "</span> : " +
-        JSON.stringify(response.message);
-
-      this.$refs.console.appendChild(string);
-      this.$refs.console.scrollTop = this.$refs.console.scrollHeight;
-    });
-
-    API.Socket.subscribe("status", response => {
-      const object = Object.assign({}, this.$root.status);
-
-      object[response.target] = response;
-      this.$root.status = object;
-    });
-  }
-};
+}
 </script>

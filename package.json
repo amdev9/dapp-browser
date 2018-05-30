@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./bin/www",
-    "debug": "DEBUG=express:* node ./bin/www",
     "dist": "node build.js",
     "build": "webpack"
   },
@@ -24,12 +23,9 @@
     "levelup": "^2.0.2",
     "libp2p-webrtc-star": "^0.14.0",
     "md5": "^2.2.1",
-    "morgan": "^1.9.0",
-    "nedb": "^1.8.0",
     "node-datetime": "^2.0.6",
     "pouchdb": "^6.4.3",
     "pouchdb-adapter-memory": "^6.4.3",
-    "pouchdb-adapter-node-websql": "^6.4.3",
     "pouchdb-find": "^6.4.3",
     "socket.io": "^2.1.0",
     "uniqid": "^4.1.1",

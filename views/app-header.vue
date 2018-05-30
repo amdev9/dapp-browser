@@ -131,117 +131,106 @@
 
 <script>
 export default {
-  data() {
-    return {
-      search: false,
-      string: String(),
-      result: {
-        dapps: [],
-        market: []
-      }
-    };
-  },
-  methods: {
-    tohome() {
-      this._reset();
-      this.$root.apptitle = null;
-      this.$root.pagetitle = this.translate("header").home;
-      this.$root.currentView = "view-index";
+    data () {
+        return {
+            search: false,
+            string: String(),
+            result: {
+                dapps : [],
+                market: []
+            }
+        }
     },
-    prevent() {
-      this.$root.currentView = this.$root.preventView;
-      this.$root.preventView = null;
-    },
-    notify() {
-      this.$root.notify = !this.$root.notify;
-      this.$root.loader = false;
-    },
-    loader() {
-      this.$root.loader = !this.$root.loader;
-      this.$root.notify = false;
-    },
-    setting() {
-      this._reset();
-      this.$root.pagetitle = this.translate("header").setting;
-      this.$root.currentView = "view-setting";
-    },
-    query(value) {
-      if (!this.$refs.query.value.trim()) return (this.result.dapps = []);
+    methods: {
+        tohome () { 
+            this._reset()
+            this.$root.apptitle = null
+            this.$root.pagetitle = this.translate( 'header' ).home
+            this.$root.currentView = 'view-index'
+        },
+        prevent () {
+            this.$root.currentView = this.$root.preventView
+            this.$root.preventView = null
+        },
+        notify () {
+            this.$root.notify = !this.$root.notify
+            this.$root.loader = false
+        },
+        loader () {
+            this.$root.loader = !this.$root.loader
+            this.$root.notify = false
+        },
+        setting () {
+            this._reset()
+            this.$root.pagetitle = this.translate( 'header' ).setting
+            this.$root.currentView = 'view-setting'
+        },
+        query ( value ) {
+            if ( !this.$refs.query.value.trim() ) return this.result.dapps = []
 
-      this.$http
-        .post(
-          "/web",
-          { message_type: "query", message: this.$refs.query.value },
-          {
-            headers: { "Allow-Origin": this.$root.system.SrcCtrl }
-          }
-        )
-        .then(response => {
-          this.result.dapps = response.body.response;
-        });
-    },
-    email() {
-      location.href = "mailto:?subject=" + this.$root.pagetitle;
-    },
-    qrcode(event) {
-      document.dispatchEvent(new CustomEvent("qrcode"));
-    },
-    telegram() {
-      window.open(
-        "https://t.me/share/url?url=array.io/" +
-          this.$root.apptitle +
-          "&text=" +
-          this.$root.pagetitle
-      );
-    },
-    viber() {
-      location.href = "viber://forward?text=array.io/" + this.$root.apptitle;
-    },
-    openapp(event) {
-      location.href = event.currentTarget.dataset.href;
-    },
-    copy(event) {
-      let target = event.currentTarget;
-      let select = document.createElement("textarea");
-      select.value = "arr://" + this.$root.apptitle;
+            this.$http.post('/web', {message_type: 'query', message: this.$refs.query.value}, {
+                headers: {'Allow-Origin': this.$root.system.SrcCtrl}
+            }).then(response => {
+                this.result.dapps = response.body.response
+            })
+        },
+        email () {
+            location.href = 'mailto:?subject=' + this.$root.pagetitle
+        },
+        qrcode ( event ) {
+            document.dispatchEvent( new CustomEvent( 'qrcode' ) )
+        },
+        telegram () {
+            window.open( 'https://t.me/share/url?url=array.io/' + this.$root.apptitle + '&text=' + this.$root.pagetitle )
+        },
+        viber () {
+            location.href = 'viber://forward?text=array.io/' + this.$root.apptitle
+        },
+        openapp ( event ) {
+            location.href = event.currentTarget.dataset.href
+        },
+        copy ( event ) {
+            let target = event.currentTarget
+            let select = document.createElement( 'textarea' )
+            select.value = 'arr://' + this.$root.apptitle
 
-      document.body.appendChild(select);
-      select.select();
+            document.body.appendChild( select )
+            select.select()
 
-      document.execCommand("Copy");
-      select.parentNode.removeChild(select);
+            document.execCommand( 'Copy' )
+            select.parentNode.removeChild( select )
 
-      $.notify.addStyle("copied", {
-        html: "<div data-notify-text/>"
-      });
+            $.notify.addStyle('copied', {
+                html: '<div data-notify-text/>'
+            })
 
-      $.notify(this.translate("share").copytext, {
-        position: "top center",
-        style: "copied",
-        className: "success",
-        showAnimation: "fadeIn",
-        hideAnimation: "fadeOut",
-        autoHideDelay: 1000
-      });
+            $.notify(this.translate( 'share' ).copytext, {
+                position: 'top center',
+                style: 'copied',
+                className: 'success',
+                showAnimation: 'fadeIn',
+                hideAnimation: 'fadeOut',
+                autoHideDelay: 1000
+            })
+        },
+        _reset () {
+            this.$root.viewapp = false
+            this.$root.preventView = null
+            this.$root.currentFrame = null
+        }
     },
-    _reset() {
-      this.$root.viewapp = false;
-      this.$root.preventView = null;
-      this.$root.currentFrame = null;
+    mounted ( event ) {
+        this.$refs.query.addEventListener('blur', () => this.search = false)
+    },
+    watch: {
+        search ( value ) {
+            if ( value ) return this.$refs.query.focus()
+            
+            this.$refs.query.value = ''
+            
+            this.result.dapps = []
+            this.result.market = []
+        }
     }
-  },
-  mounted(event) {
-    this.$refs.query.addEventListener("blur", () => (this.search = false));
-  },
-  watch: {
-    search(value) {
-      if (value) return this.$refs.query.focus();
-
-      this.$refs.query.value = "";
-
-      this.result.dapps = [];
-      this.result.market = [];
-    }
-  }
-};
+}
 </script>
