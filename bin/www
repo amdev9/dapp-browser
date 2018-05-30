@@ -1,37 +1,19 @@
-#!/usr/bin/env node
-
-/**
- * Module dependencies.
- */
-
 const app = require("../app");
 const debug = require("debug")("express:server");
 const http = require("http");
-
-/**
- * Get port from environment and store in Express.
- */
+const logger = require("morgan");
 
 const port = normalizePort(process.env.PORT || 33888);
 app.set("port", port);
-
-/**
- * Create HTTP server.
- */
-
+app.use(logger('dev'));
+ 
 const server = http.createServer(app);
 
-/**
- * Listen on provided port, on all network interfaces.
- */
-
-server.listen(port);
 server.on("error", onError);
 server.on("listening", onListening);
-
-/**
- * Normalize a port into a number, string, or false.
- */
+server.listen(port, () => {
+  console.log("Start listenning server");
+});
 
 function normalizePort(value) {
   const port = parseInt(value, 10);
@@ -42,9 +24,6 @@ function normalizePort(value) {
   return false;
 }
 
-/**
- * Event listener for HTTP server "error" event.
- */
 function onError(error) {
   if (error.syscall !== "listen") throw error;
 
@@ -64,10 +43,6 @@ function onError(error) {
       throw error;
   }
 }
-
-/**
- * Event listener for HTTP server "listening" event.
- */
 
 function onListening() {
   const addr = server.address();
