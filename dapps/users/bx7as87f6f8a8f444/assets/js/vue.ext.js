@@ -29,8 +29,8 @@
             keyup ( event ) {
                 this.data = this._search()
 
-                let value = event.target.value.toLowerCase().trim()
-                let object = {}
+                const value = event.target.value.toLowerCase().trim()
+                const object = {}
 
                 for (const key in this.data) {
                     if ( !this.data[key] ) continue
@@ -45,7 +45,7 @@
                     this.$root.rooms[this.$root.target] = this.$root.current
             },
             _search() {
-                let object = this.data ? this.data : this.$root.rooms
+                const object = this.data ? this.data : this.$root.rooms
 
                 for (const ak in this.$root.rooms) {
                     for (const bk in object) {
@@ -68,7 +68,7 @@
                 API.Room.connect( this.id )
 
                 this.$root.$nextTick(function () {
-                    let container = document.getElementById( 'overflow' )
+                    const container = document.getElementById( 'overflow' )
                     container.scrollTop = container.scrollHeight
                 })
             }
@@ -80,18 +80,12 @@
         props: ['data'],
         methods: {
             submit () {
-                let message = strip( this.$refs.message.value )
-                
-                let object = {
-                    unic: this.$root.unic,
-                    content: message
-                }
-
-                API.Room.broadcast({message: object}, () => this.$refs.message.value = '')
+                const content = strip( this.$refs.message.value )
+                API.Room.broadcast({content: content, key: this.$root.target, unic: this.$root.unic}, () => this.$refs.message.value = '')
             }
         },
         updated () {
-            let container = document.getElementById( 'overflow' )
+            const container = document.getElementById( 'overflow' )
             container.scrollTop = container.scrollHeight
         }
     })
@@ -101,34 +95,33 @@
         props: ['id', 'title'],
         methods: {
             submit () {
-                let key = this.$refs.key.value.trim()
-                let name = this.$refs.name.value.trim()
-                let object = Object.assign({}, this.$root.rooms)
+                const key = this.$refs.key.value.trim()
+                const name = this.$refs.name.value.trim()
+                const rooms = Object.assign({}, this.$root.rooms)
 
-                if ( object[key] || !name.length ) return
+                if ( key in rooms || !name.length ) return
 
-                let avatar = blockies.create({size: 15, scale: 3}).toDataURL()
+                const avatar = blockies.create({size: 15, scale: 3}).toDataURL()
 
-                object[key] = {
+                rooms[key] = {
                     key: key,
+                    type: 'room',
                     name: name,
                     image: avatar,
-                    introtext: String(),
-                    messages: []
+                    messages: [],
+                    introtext: '---'
                 }
 
                 API.Room.create(key, () => {
-                    let room = Object.assign({key: key}, object[key])
-                    
-                    API.Http.post('/web', {message_type: 'insert', message: room}, () => {
-                        this.$root.rooms = object
+                    API.Http.post('/web', {message_type: 'insert', message: rooms[key]}, () => {
+                        this.$root.rooms = rooms
                         $( '#' + this.id ).modal( 'hide' )
                     })
 
-                    API.Http.post('/web', {message_type: 'index', message: {
-                        value: object[key].name,
-                        url: 'room=' + object[key].name
-                    }})
+                    // API.Http.post('/web', {message_type: 'index', message: {
+                    //     value: object[key].name,
+                    //     url: 'room=' + object[key].name
+                    // }})
                 })
             }
         }

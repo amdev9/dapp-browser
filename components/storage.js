@@ -4,55 +4,49 @@ const FrontEnd = new Frontend()
 
 class Storage {
     async insert ( response ) {
-        const object = Object.assign({target: response.from}, response.payload.message || {})
+        const object = Object.assign({hash: response.from}, response.payload.message || {})
 
-        const output = await new Promise(resolve => {
-            db.storage.insert(object, (error, rows) => resolve( rows ))
+        await new Promise(resolve => {
+            db.storage.post( object ).then( resolve )
         })
 
-        response.payload.response = output
+        response.payload.response = object
         FrontEnd.complete( response.payload )
     }
 
     async find ( response ) {
-        const object = Object.assign({target: response.from}, response.payload.where || {})
-        
-        const output = await new Promise(resolve => {
-            db.storage.find(object, (error, rows) => resolve( rows ))
+        const object = Object.assign({hash: response.from}, response.payload.where || {})
+
+        response.payload.response = await new Promise(resolve => {
+            db.storage.find({selector: object}).then(response => resolve( response.docs ))
         })
 
-        response.payload.response = output
-        FrontEnd.complete( response.payload )
-    }
-
-    async findOne ( response ) {
-        const object = Object.assign({target: response.from}, response.payload.where || {})
-
-        const output = await new Promise(resolve => {
-            db.storage.findOne(object, (error, result) => resolve( result ))
-        })
-
-        response.payload.response = output
         FrontEnd.complete( response.payload )
     }
 
     async update ( response ) {
-        const where = Object.assign({target: response.from}, response.payload.where || {})
-        const object = Object.assign({target: response.from}, response.payload.message || {})
+        const object = Object.assign({hash: response.from}, response.payload.where || {})
+        const message = response.payload.message
 
-        await new Promise(resolve => {
-            db.storage.update(where, object, {multi: true}, resolve)
+        const data = await new Promise(resolve => {
+            db.storage.find({selector: object}).then(response => resolve( response.docs ))
+        })
+
+        data.forEach(item => {
+            db.storage.put(Object.assign(item, message))
         })
 
         FrontEnd.complete( response.payload )
     }
 
     async remove ( response ) {
-        const object = Object.assign({target: response.from}, response.payload.where || {})
+        const object = Object.assign({hash: response.from}, response.payload.where || {})
         
-        await new Promise(resolve => {
-            db.storage.remove(object, {multi: true}, resolve)
+        const data = await new Promise(resolve => {
+            db.storage.find({selector: object}).then(response => resolve( response.docs ))
         })
+
+        data.forEach(item => db.storage.remove( item ))
 
         FrontEnd.complete( response.payload )
     }

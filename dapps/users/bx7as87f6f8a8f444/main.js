@@ -24,6 +24,6 @@ Events.subscribe('broadcast', function ( response ) {
 	Events.publish(system.IPFSCtrl, 'broadcast', response.payload)
 })
 
-Events.subscribe('index', function ( response ) {
-	Events.publish(system.SrcCtrl, 'insert', response.payload)
-})
+// Events.subscribe('index', function ( response ) {
+// 	Events.publish(system.SrcCtrl, 'insert', response.payload)
+// })
