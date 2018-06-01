@@ -83,7 +83,7 @@ router.post('/setting.setting', async function(request, response, next) {
     db.setting.get(object._id).then(resolve).catch(reject)
   }).then(doc => object._rev = doc._rev).catch(error => {})
 
-  db.setting.put(object)
+  db.setting.put(object) // change to async behaviour
 
   response.send({
     status: true

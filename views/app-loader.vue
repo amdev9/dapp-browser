@@ -100,81 +100,92 @@
 
 <script>
 export default {
-    data () {
-        return {
-            uploads: [],
-            uploaded: []
-        }
+  data() {
+    return {
+      uploads: [],
+      uploaded: []
+    };
+  },
+  methods: {
+    dragover(event) {
+      event.preventDefault();
+      event.currentTarget.classList.add("dragover");
     },
-    methods: {
-        dragover ( event ) {
-            event.preventDefault()
-            event.currentTarget.classList.add( 'dragover' )
-        },
-        dragleave ( event ) {
-            event.currentTarget.classList.remove( 'dragover' )
-        },
-        drop ( event ) {
-            event.preventDefault()
-            event.currentTarget.classList.remove( 'dragover' )
+    dragleave(event) {
+      event.currentTarget.classList.remove("dragover");
+    },
+    drop(event) {
+      event.preventDefault();
+      event.currentTarget.classList.remove("dragover");
 
-            const files = event.dataTransfer.files
+      const files = event.dataTransfer.files;
 
-            for (let i = 0; i < files.length; i++) {
-                let item = {name: files[i].name, size: this.toSize( files[i].size ), total: 0, length: 0}
+      for (let i = 0; i < files.length; i++) {
+        let item = {
+          name: files[i].name,
+          size: this.toSize(files[i].size),
+          total: 0,
+          length: 0
+        };
 
-                const data = new FormData()
-                data.append('choose', files[i])
+        const data = new FormData();
+        data.append("choose", files[i]);
 
-                this.uploads.push( item )
-                this.upload(item, data)
-            }
-        },
-        upload (item, data) {
-            const xhr  = new XMLHttpRequest()
+        this.uploads.push(item);
+        this.upload(item, data);
+      }
+    },
+    upload(item, data) {
+      const xhr = new XMLHttpRequest();
 
-            xhr.open('post', '/transfer')
+      xhr.open("post", "/transfer");
 
-            xhr.upload.addEventListener('progress', function ( event ) {
-                let total = parseInt(event.loaded / event.total * 100)
+      xhr.upload.addEventListener("progress", function(event) {
+        let total = parseInt(event.loaded / event.total * 100);
 
-                item.length = total * 138 / 100 + ',' + 138
-                item.total = total
-            })
+        item.length = total * 138 / 100 + "," + 138;
+        item.total = total;
+      });
 
-            xhr.onreadystatechange = () => {
-                if ( xhr.readyState == 4 && xhr.status == 200 ) {
-                    let object = JSON.parse( xhr.response )
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          let object = JSON.parse(xhr.response);
 
-                    this.$http.post('/web', {message_type: 'transfer', message: object.data}, {
-                        headers: {'Allow-Origin': this.$root.system.DropCtrl}
-                    }).then(response => {
-                        let array = response.body.response
-                        item.url = array.shift()
+          this.$http
+            .post(
+              "/web",
+              { message_type: "transfer", message: object.data },
+              {
+                headers: { "Allow-Origin": this.$root.system.DropCtrl }
+              }
+            )
+            .then(response => {
+              let array = response.body.response;
+              item.url = array.shift();
 
-                        if ( this.uploads.includes( item ) ) {
-                            let index = this.uploads.indexOf( item )
-                            let value = this.uploads.splice(index, 1)
-                            
-                            this.uploaded.push( value.shift() )
-                        }
-                    })
-                }
-            }
+              if (this.uploads.includes(item)) {
+                let index = this.uploads.indexOf(item);
+                let value = this.uploads.splice(index, 1);
 
-            xhr.send( data )
-        },
-        toSize ( bytes ) {
-            const sizes = ['byte', 'kb', 'mb', 'gb', 'tb']
-
-            if ( bytes === 0 ) return 'n/a'
-
-            const value = parseInt( Math.floor( Math.log( bytes ) / Math.log( 1024 ) ), 10 )
-
-            if ( value === 0 ) return `${bytes} ${sizes[value]})`
-
-            return `${(bytes / (1024 ** value)).toFixed( 1 )} ${sizes[value]}`
+                this.uploaded.push(value.shift());
+              }
+            });
         }
+      };
+
+      xhr.send(data);
+    },
+    toSize(bytes) {
+      const sizes = ["byte", "kb", "mb", "gb", "tb"];
+
+      if (bytes === 0) return "n/a";
+
+      const value = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10);
+
+      if (value === 0) return `${bytes} ${sizes[value]})`;
+
+      return `${(bytes / 1024 ** value).toFixed(1)} ${sizes[value]}`;
     }
-}
+  }
+};
 </script>

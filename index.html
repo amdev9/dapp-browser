@@ -1,58 +1,61 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<meta charset="utf-8" />
-	<title>Array.IO</title>
+  <meta charset="utf-8" />
+  <title>Array.IO</title>
 
-	<!-- Styles -->
-	<link rel="stylesheet" href="/css/index.css" />
+  <!-- Styles -->
+  <link rel="stylesheet" href="/css/index.css" />
 
-	<!-- Module -->
-	<script src="/module/socket.io.js"></script>
-	<script src="/module/lib.js"></script>
+  <!-- Module -->
+  <script src="/module/socket.io.js"></script>
+  <script src="/module/lib.js"></script>
 
-	<!-- Library -->
-	<script src="/js/lib/jquery.js"></script>
-	<script src="/js/lib/qrcode.js"></script>
-	<script src="/js/lib/notify.js"></script>
-	<script src="/js/lib/select.js"></script>
-	<script src="/js/lib/slider.js"></script>
-	<script src="/js/lib/bootstrap.js"></script>
+  <!-- Library -->
+  <script src="/js/lib/jquery.js"></script>
+  <script src="/js/lib/qrcode.js"></script>
+  <script src="/js/lib/notify.js"></script>
+  <script src="/js/lib/select.js"></script>
+  <script src="/js/lib/slider.js"></script>
+  <script src="/js/lib/bootstrap.js"></script>
 </head>
+
 <body>
 
-<div id="app" :class="{loading: loading}" @contextmenu.prevent>
-	<app-header></app-header>
+  <div id="app" :class="{loading: loading}" @contextmenu.prevent>
+    <app-header></app-header>
 
-	<app-aside>
-		<div class="pins" :class="{total: Object.values(aside).length && Object.keys( aside.pins ).length}">
-			<app-opened v-for="(value, key) in aside.pins" :name="value.name" :icon="value.icon" :image="'images/favicon.svg'" :src="value.src" :open="value.open" :active="value.active" :key="key" :id="key"></app-opened>
-		</div>
-	
-		<div class="apps">
-			<app-opened v-for="(value, key) in aside.apps" :name="value.name" :icon="value.icon" :image="'images/favicon.svg'" :src="value.src" :open="value.open" :active="value.active" :key="key" :id="key"></app-opened>
-		</div>
-	</app-aside>
+    <app-aside>
+      <div class="pins" :class="{total: Object.values(aside).length && Object.keys( aside.pins ).length}">
+        <app-opened v-for="(value, key) in aside.pins" :name="value.name" :icon="value.icon" :image="'images/favicon.svg'" :src="value.src" :open="value.open" :active="value.active" :key="key" :id="key"></app-opened>
+      </div>
 
-	<main :class="{viewapp: viewapp}" :style="{'margin-bottom': offset + 'px'}">
-		<app-context v-if="context" :data="context"></app-context>
+      <div class="apps">
+        <app-opened v-for="(value, key) in aside.apps" :name="value.name" :icon="value.icon" :image="'images/favicon.svg'" :src="value.src" :open="value.open" :active="value.active" :key="key" :id="key"></app-opened>
+      </div>
+    </app-aside>
 
-		<div class="views" :class="{showin: viewapp}">
-			<view-frame v-for="item in frames" :src="item.src" :key="item.id" :id="item.id"></view-frame>
-		</div>
-		
-		<components :is="currentView"></components>
+    <main :class="{viewapp: viewapp}" :style="{'margin-bottom': offset + 'px'}">
+      <app-context v-if="context" :data="context"></app-context>
 
-		<app-logger></app-logger>
-		<app-notify></app-notify>
-		<app-loader></app-loader>
-	</main>
+      <div class="views" :class="{showin: viewapp}">
+        <view-frame v-for="item in frames" :src="item.src" :key="item.id" :id="item.id"></view-frame>
+      </div>
 
-	<app-modal :type="'access'"></app-modal>
-	<app-qrcode></app-qrcode>
-</div>
+      <components :is="currentView"></components>
 
-<!-- Main -->
-<script src="/js/index.js"></script>
+      <app-logger></app-logger>
+      <app-notify></app-notify>
+      <app-loader></app-loader>
+    </main>
+
+    <app-modal :type="'access'"></app-modal>
+    <app-qrcode></app-qrcode>
+  </div>
+
+  <!-- Main -->
+  <script src="/js/index.js"></script>
 </body>
+
 </html>
