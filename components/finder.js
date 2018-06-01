@@ -1,43 +1,43 @@
-const fs = require( 'fs' )
+const fs = require('fs');
 
-class Finder {
-    constructor ( source ) {
-        this.source = source
-    }
+class Finder { // deprecated, sync -> change to async / delete from components folder
+  constructor(source) {
+    this.source = source;
+  }
 
-    getDirs ( path = '' ) {
-        const items = []
+  getDirs(path = '') {
+    const items = []
 
-        this.readDir( path ).forEach(item => {
-            if ( this.isDir( path + item ) ) items.push( item )
-        })
+    this.readDir(path).forEach(item => {
+      if (this.isDir(path + item)) items.push(item)
+    })
 
-        return items
-    }
+    return items
+  }
 
-    readFile ( path = '' ) {
-        return this.exists( path ) ? fs.readFileSync( this.source + path ).toString() : null
-    }
+  readFile(path = '') {
+    return this.exists(path) ? fs.readFileSync(this.source + path).toString() : null
+  }
 
-    readDir ( path = '' ) {
-        return fs.readdirSync( this.source + path )
-    }
+  readDir(path = '') {
+    return fs.readdirSync(this.source + path)
+  }
 
-    writeFile (path = '', content = '') {
-        fs.writeFileSync(this.source + path, content)
-    }
+  writeFile(path = '', content = '') {
+    fs.writeFileSync(this.source + path, content)
+  }
 
-    mkdir ( path = '' ) {
-        fs.mkdirSync( this.source + path )
-    }
+  mkdir(path = '') {
+    fs.mkdirSync(this.source + path)
+  }
 
-    isDir ( path = '' ) {
-        return fs.lstatSync( this.source + path ).isDirectory()
-    }
+  isDir(path = '') {
+    return fs.lstatSync(this.source + path).isDirectory()
+  }
 
-    exists ( path = '') {
-        return fs.existsSync( this.source + path )
-    }
+  exists(path = '') {
+    return fs.existsSync(this.source + path)
+  }
 }
 
 module.exports = Finder
