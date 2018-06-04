@@ -1,0 +1,101 @@
+/*
+  Informative comments provided by https://www.blackhat.com/docs/us-17/thursday/us-17-Carettoni-Electronegativity-A-Study-Of-Electron-Security-wp.pdf
+
+  Uses process.stdout.write instead of console.log so we can cleanly catch the output in the parent process.
+*/
+
+const { app, BrowserWindow, BrowserView } = require('electron');
+const path = require('path');
+
+const RENDERER_PATH = path.join(__dirname, 'renderer');
+const VIEW_PATH = path.join(__dirname, 'browserview');
+
+let win, view, view2;
+app.on('ready', () => {
+  win = new BrowserWindow({
+    webPreferences: {
+      nodeIntegration: false,
+      sandbox: true,
+      contextIsolation: true,
+      preload: path.join(RENDERER_PATH, 'preload-extended.js')
+    }
+  })
+  win.loadURL('file://' + path.join(RENDERER_PATH, 'index.html'));
+
+  // create multiple view and keep them around the memory, detached from the window
+  // then switching workspaces is just and additional call to setBrowserView
+  view = new BrowserView({
+    webPreferences: {
+      nodeIntegration: false,
+      sandbox: true,
+      contextIsolation: true,
+      preload: path.join(VIEW_PATH, 'preload-extended.js')
+    }
+  });
+  view.setBounds({ x: 0, y: 200, width: 300, height: 300 });
+  view.webContents.loadURL('file://' + path.join(VIEW_PATH, 'index.html'));
+
+  view2 = new BrowserView({
+    webPreferences: {
+      nodeIntegration: false,
+      sandbox: true,
+      contextIsolation: true,
+      preload: path.join(VIEW_PATH, 'preload-extended.js')
+    }
+  });
+  view2.setBounds({ x: 0, y: 200, width: 300, height: 300 });
+  view2.webContents.loadURL('file://' + path.join(VIEW_PATH, 'index2.html'));
+
+
+  win.setBrowserView(view);
+
+  process.stdout.write("BrowserView identificator: " + view.id + " > " + view2.id);
+
+
+});
+
+process.stdout.write("Main initialized");
+
+// In main process.
+const ipcMain = require('electron').ipcMain;
+
+ipcMain.on('rpc-communicate', function (event, rpc, arg) {
+  process.stdout.write("RPC REQUEST: " + rpc + " " + arg);
+  view.webContents.send('rpc-communicate', arg);
+});
+
+ipcMain.on('rpc-switch', function (event, rpc, arg) {
+  process.stdout.write("RPC REQUEST: " + rpc + " " + arg);
+  switch (+rpc) {
+    case 1:
+      win.setBrowserView(view);
+      break;
+    case 2:
+      win.setBrowserView(view2);
+      break;
+    default:
+      win.setBrowserView(view);
+  }
+});
+
+
+ipcMain.on('rpc-start', function (event, rpc, arg) {
+  process.stdout.write("other-value: " + rpc + " " + arg);
+  event.returnValue =
+    `
+  {
+   "status": "started rpc succesfully"
+  }
+  `;
+});
+
+
+ipcMain.on('rpc-request', function (event, rpc, arg) {
+  process.stdout.write("RPC REQUEST: " + rpc + " " + arg);
+  event.returnValue =
+    `
+  {
+   "address": "pUYofdfsgasdpsdpfsaddressrofl"
+  }
+  `;
+});

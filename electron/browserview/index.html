@@ -1,0 +1,33 @@
+<body style="background-color:powderblue;">
+	<script>
+		 
+		var s = window.ipc;
+		s.on('rpc-communicate', (event, text) => {
+			document.getElementById("messageId").value = text;
+		});
+
+		function sendValidIpcMessage() {
+			// start the rpc
+			var firstTest = s.sendSync('rpc-start', 'from view 1', 'browserview');
+			alert(firstTest);
+		}
+
+		function sendEvilIpcMessage() {
+			s.sendSync('ELECTRON_BROWSER_GET_BUILTIN', 'app');
+			/* evil channel, blocked */
+		}
+
+	</script>
+
+	<h1>BrowserView1</h1>
+	<!-- Let's trigger a nice whitelisted channel :) -->
+	<input type="button" value="Send whitelisted message :) !" onclick="sendValidIpcMessage()" />
+
+	<br />
+	<br />
+	<!-- Let's trigger a nasty internal channel -->
+	<input type="button" value="Send evil message :( !" onclick="sendEvilIpcMessage()" />
+
+	<textarea id="messageId"></textarea>
+
+</body>
