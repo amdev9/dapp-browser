@@ -4,15 +4,28 @@
   Uses process.stdout.write instead of console.log so we can cleanly catch the output in the parent process.
 */
 
-const { app, BrowserWindow, BrowserView } = require('electron');
+const {
+  app,
+  BrowserWindow,
+  BrowserView
+} = require('electron');
 const path = require('path');
 
 const RENDERER_PATH = path.join(__dirname, 'renderer');
 const VIEW_PATH = path.join(__dirname, 'browserview');
 
 let win, view, view2;
+let bounds = {
+  x: 300,
+  y: 0,
+  width: 300,
+  height: 300
+};
+
 app.on('ready', () => {
   win = new BrowserWindow({
+    x: 0,
+    y: 0,
     webPreferences: {
       nodeIntegration: false,
       sandbox: true,
@@ -32,7 +45,9 @@ app.on('ready', () => {
       preload: path.join(VIEW_PATH, 'preload-extended.js')
     }
   });
-  view.setBounds({ x: 0, y: 200, width: 300, height: 300 });
+
+  win.setBrowserView(view);
+  view.setBounds(bounds);
   view.webContents.loadURL('file://' + path.join(VIEW_PATH, 'index.html'));
 
   view2 = new BrowserView({
@@ -43,15 +58,10 @@ app.on('ready', () => {
       preload: path.join(VIEW_PATH, 'preload-extended.js')
     }
   });
-  view2.setBounds({ x: 0, y: 200, width: 300, height: 300 });
   view2.webContents.loadURL('file://' + path.join(VIEW_PATH, 'index2.html'));
 
-
-  win.setBrowserView(view);
-
+   
   process.stdout.write("BrowserView identificator: " + view.id + " > " + view2.id);
-
-
 });
 
 process.stdout.write("Main initialized");
@@ -65,19 +75,20 @@ ipcMain.on('rpc-communicate', function (event, rpc, arg) {
 });
 
 ipcMain.on('rpc-switch', function (event, rpc, arg) {
-  process.stdout.write("RPC REQUEST: " + rpc + " " + arg);
+  process.stdout.write("RPC REQUEST: " + rpc);
   switch (+rpc) {
     case 1:
       win.setBrowserView(view);
+      view.setBounds(bounds);
       break;
     case 2:
       win.setBrowserView(view2);
+      view2.setBounds(bounds);
       break;
     default:
-      win.setBrowserView(view);
+      alert("No such browserview");
   }
 });
-
 
 ipcMain.on('rpc-start', function (event, rpc, arg) {
   process.stdout.write("other-value: " + rpc + " " + arg);
@@ -88,7 +99,6 @@ ipcMain.on('rpc-start', function (event, rpc, arg) {
   }
   `;
 });
-
 
 ipcMain.on('rpc-request', function (event, rpc, arg) {
   process.stdout.write("RPC REQUEST: " + rpc + " " + arg);
