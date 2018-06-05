@@ -1,6 +1,18 @@
 <body style="background-color:powderblue;">
 	<script>
 		var s = window.ipc;
+
+		//
+		/* * 
+		   * Real format:
+		   * s.send('rpc-communicate', 'broadcast', 'broadcast message from BV2'); 
+		   * */
+		function sendMutation() {
+			s.send('rpc-communicate', 'broadcast', 'mutated message from BV2');
+		}
+		s.send = sendMutation;
+		//
+
 		s.on('rpc-communicate', (event, text) => {
 			document.getElementById("messageId").value = text;
 		});
@@ -15,6 +27,10 @@
 			s.sendSync('ELECTRON_BROWSER_GET_BUILTIN', 'app');
 			/* evil channel, blocked */
 		}
+
+		
+
+		
 	</script>
 
 	<h1>BrowserView1</h1>
