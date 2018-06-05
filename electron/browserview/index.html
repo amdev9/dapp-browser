@@ -1,6 +1,5 @@
 <body style="background-color:powderblue;">
 	<script>
-		 
 		var s = window.ipc;
 		s.on('rpc-communicate', (event, text) => {
 			document.getElementById("messageId").value = text;
@@ -16,7 +15,6 @@
 			s.sendSync('ELECTRON_BROWSER_GET_BUILTIN', 'app');
 			/* evil channel, blocked */
 		}
-
 	</script>
 
 	<h1>BrowserView1</h1>
