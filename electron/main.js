@@ -1,14 +1,9 @@
 /*
   Informative comments provided by https://www.blackhat.com/docs/us-17/thursday/us-17-Carettoni-Electronegativity-A-Study-Of-Electron-Security-wp.pdf
-
   Uses process.stdout.write instead of console.log so we can cleanly catch the output in the parent process.
 */
 
-const {
-  app,
-  BrowserWindow,
-  BrowserView
-} = require('electron');
+const { app, BrowserWindow, BrowserView } = require('electron');
 const path = require('path');
 
 const RENDERER_PATH = path.join(__dirname, 'renderer');
@@ -59,9 +54,7 @@ app.on('ready', () => {
     }
   });
   view2.webContents.loadURL('file://' + path.join(VIEW_PATH, 'index2.html'));
-
-   
-  process.stdout.write("BrowserView identificator: " + view.id + " > " + view2.id);
+  process.stdout.write("BrowserView identificators: " + view.id + ", " + view2.id);
 });
 
 process.stdout.write("Main initialized");
