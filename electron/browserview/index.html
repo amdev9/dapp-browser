@@ -2,15 +2,15 @@
 	<script>
 		var s = window.ipc;
 
-		// SECURITY TEST
-		/* * 
-		   * Real format:
-		   * s.send('rpc-communicate', 'broadcast', 'broadcast message from BV2'); 
-		   * */
-		function sendMutation() {
-			s.send('rpc-communicate', 'broadcast', 'mutated message from BV2');
-		}
-		s.send = sendMutation;
+		// // SECURITY TEST
+		// /* * 
+		//    * Real format:
+		//    * s.send('rpc-communicate', 'broadcast', 'broadcast message from BV2'); 
+		//    * */
+		// function sendMutation() {
+		// 	s.send('rpc-communicate', 'broadcast', 'mutated message from BV2');
+		// }
+		// s.send = sendMutation;
 		//
 
 		s.on('rpc-communicate', (event, text) => {
@@ -43,6 +43,7 @@
 	<input type="button" value="Send evil message :( !" onclick="sendEvilIpcMessage()" />
 	<br />
 	<br />
-	<textarea id="messageId"></textarea>
-
+	<textarea id="messageId" rows="25" cols="80"></textarea>
+	<br />
+	<button onclick="var t = document.getElementById('messageId'); try { t.value = eval(t.value) } catch(e) { t.value = 'ERROR:' + e }">eval</button>
 </body>
