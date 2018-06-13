@@ -27,7 +27,7 @@ const configureStore =  electron.remote.require('./store/configureStore');
  
 
 const initialState = getInitialStateRenderer(); // ???
-// rewrite electron redux without Object.defineProperty. https://github.com/electron/electron/issues/7351#issuecomment-251331639
+// !rewrite electron redux without Object.defineProperty. https://github.com/electron/electron/issues/7351#issuecomment-251331639
 const store = configureStore(initialState, 'renderer');
 
 //
