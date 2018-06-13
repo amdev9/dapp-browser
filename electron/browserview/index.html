@@ -24,7 +24,8 @@
 		}
 
 		function sendEvilIpcMessage() {
-			s.sendSync('ELECTRON_BROWSER_GET_BUILTIN', 'app');
+			document.getElementById("messageId").value = JSON.stringify(s.storeState.getState());
+			// s.sendSync('ELECTRON_BROWSER_GET_BUILTIN', 'app');
 			/* evil channel, blocked */
 		}
 
@@ -45,5 +46,4 @@
 	<br />
 	<textarea id="messageId" rows="25" cols="80"></textarea>
 	<br />
-	<button onclick="var t = document.getElementById('messageId'); try { t.value = eval(t.value) } catch(e) { t.value = 'ERROR:' + e }">eval</button>
 </body>

@@ -32,7 +32,7 @@ app.on('ready', () => {
 
   // create multiple view and keep them around the memory, detached from the window
   // then switching workspaces is just and additional call to setBrowserView
-  view = new BrowserView({
+  view = new BrowserWindow({
     webPreferences: {
       nodeIntegration: false,
       sandbox: true,
@@ -41,11 +41,11 @@ app.on('ready', () => {
     }
   });
 
-  win.setBrowserView(view);
-  view.setBounds(bounds);
+  // win.setBrowserView(view);
+  // view.setBounds(bounds);
   view.webContents.loadURL('file://' + path.join(VIEW_PATH, 'index.html'));
 
-  view2 = new BrowserView({
+  view2 = new BrowserWindow({
     webPreferences: {
       nodeIntegration: false,
       sandbox: true,
@@ -71,12 +71,12 @@ ipcMain.on('rpc-switch', function (event, rpc, arg) {
   process.stdout.write("RPC REQUEST: " + rpc);
   switch (+rpc) {
     case 1:
-      win.setBrowserView(view);
-      view.setBounds(bounds);
+      // win.setBrowserView(view);
+      // view.setBounds(bounds);
       break;
     case 2:
-      win.setBrowserView(view2);
-      view2.setBounds(bounds);
+      // win.setBrowserView(view2);
+      // view2.setBounds(bounds);
       break;
     default:
       alert("No such browserview");

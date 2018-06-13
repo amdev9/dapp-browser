@@ -1,27 +1,22 @@
-
-const electron = require('electron');
-const ipcRenderer = electron.ipcRenderer;
-
+const { ipcRenderer } = require('electron');
 //
- 
-var redux = electron.remote.require('redux'); //equire('redux');
-var createStore = redux.createStore;
+// var assert = require('assert');
+var redux = require('redux');
+// var createStore = redux.createStore;
 
-var reducer = function(state, action) {
-  if (!state) state = 0;
-  if (action.type === 'INC') return state + 1;
-  return state;
-}
-var store = createStore(reducer);
+// var reducer = function(state, action) {
+//   if (!state) state = 0;
+//   if (action.type === 'INC') return state + 1;
+//   return state;
+// }
 
-const unsubscribe = store.subscribe(() =>
-  console.log('CONSOLE>LOG', store.getState())
-);
+// var store = createStore(reducer);
 
+// assert.equal(store.getState(), 0)
 
-store.dispatch({type: 'INC'});
+// store.dispatch({type: 'INC'});
 
- 
+// assert.equal(store.getState(), 1);
 
 
 //
@@ -58,4 +53,4 @@ window.ipc = new SafeIpcRenderer([
   "rpc-communicate"
 ]);
 
-window.storeState = store; //.getState();
+// window.storeState = store.getState();
