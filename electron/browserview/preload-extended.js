@@ -2,29 +2,35 @@
 const electron = require('electron');
 const ipcRenderer = electron.ipcRenderer;
 
-//
+/*****/
+// var redux = electron.remote.require('redux'); //equire('redux');
+// var createStore = redux.createStore;
+
+// var reducer = function(state, action) {
+//   if (!state) state = 0;
+//   if (action.type === 'INC') return state + 1;
+//   return state;
+// }
+// var store = createStore(reducer);
+
+// const unsubscribe = store.subscribe(() =>
+//   console.log('CONSOLE>LOG', store.getState())
+// );
+
+
+// store.dispatch({type: 'INC'});
+/****/
+
+
+const getInitialStateRenderer = electron.remote.require('electron-redux').getInitialStateRenderer;
+const configureStore =  electron.remote.require('./store/configureStore');
  
-var redux = electron.remote.require('redux'); //equire('redux');
-var createStore = redux.createStore;
 
-var reducer = function(state, action) {
-  if (!state) state = 0;
-  if (action.type === 'INC') return state + 1;
-  return state;
-}
-var store = createStore(reducer);
-
-const unsubscribe = store.subscribe(() =>
-  console.log('CONSOLE>LOG', store.getState())
-);
-
-
-store.dispatch({type: 'INC'});
-
- 
-
+const initialState = getInitialStateRenderer(); // ???
+// const store = configureStore(initialState, 'renderer');
 
 //
+
 require = null;
 const flatten = (obj) => Object.keys(obj)
   .reduce((acc, key) => {

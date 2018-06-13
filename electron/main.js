@@ -6,6 +6,8 @@
 const { app, BrowserWindow, BrowserView } = require('electron');
 const path = require('path');
 
+const configureStore = require('./store/configureStore');
+
 const RENDERER_PATH = path.join(__dirname, 'renderer');
 const VIEW_PATH = path.join(__dirname, 'browserview');
 
@@ -18,6 +20,21 @@ let bounds = {
 };
 
 app.on('ready', () => {
+
+  const store = configureStore(global.state, 'main');
+
+  store.subscribe(async () => {
+    // persist store changes
+    // TODO: should this be blocking / wait? _.throttle?
+
+    console.log('state: ', store.getState());
+    // const dataPath =  storage.getDataPath();
+    // console.log(dataPath);
+
+    // await storage.set('state', store.getState());
+  });
+
+  
   win = new BrowserWindow({
     x: 0,
     y: 0,
