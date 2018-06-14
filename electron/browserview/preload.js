@@ -24,6 +24,8 @@ class ElectronManager {
     this.replayActionRenderer = replayActionRenderer;
     this.getGlobalState = getGlobalState;
     this.sendActionMain = sendActionMain;
+
+    this.send = 
   }
 }
 
