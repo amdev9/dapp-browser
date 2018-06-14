@@ -21,10 +21,10 @@ const configureStore = (initialState, scope = 'main') => {
   }
 
   if (scope === 'main') {
-    middleware.push(triggerAlias, forwardToRenderer);
+    middleware.push(triggerAlias, forwardToRenderer); // add middleware for permissions verifications
   }
 
-  const enhanced = [applyMiddleware(...middleware, router)]; // add middleware for permissions verifications
+  const enhanced = [applyMiddleware(...middleware, router)]; 
   const enhancer = compose(...enhanced);
   const store = createStore(rootReducer, initialState, enhancer);
 
