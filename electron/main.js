@@ -64,16 +64,16 @@ app.on('ready', () => {
   // view.setBounds(bounds);
   view.webContents.loadURL('file://' + path.join(VIEW_PATH, 'index.html'));
 
-  view2 = new BrowserWindow({
-    webPreferences: {
-      nodeIntegration: false,
-      sandbox: true,
-      contextIsolation: true,
-      preload: path.join(VIEW_PATH, 'preload.js')
-    }
-  });
-  view2.webContents.loadURL('file://' + path.join(VIEW_PATH, 'index2.html'));
-  process.stdout.write("BrowserView identificators: " + view.id + ", " + view2.id);
+  // view2 = new BrowserWindow({
+  //   webPreferences: {
+  //     nodeIntegration: false,
+  //     sandbox: true,
+  //     contextIsolation: true,
+  //     preload: path.join(VIEW_PATH, 'preload.js')
+  //   }
+  // });
+  // view2.webContents.loadURL('file://' + path.join(VIEW_PATH, 'index2.html'));
+  // process.stdout.write("BrowserView identificators: " + view.id + ", " + view2.id);
 });
 
 process.stdout.write("Main initialized");

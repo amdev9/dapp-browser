@@ -84,7 +84,7 @@ const initStore = () => {
 }
 
 const renderState = () => {
-  console.log(JSON.stringify(store.getState().counter));
+  // console.log(JSON.stringify(store.getState().counter));
   document.getElementById('value').innerHTML = store.getState().counter;
 }
 
