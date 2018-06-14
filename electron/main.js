@@ -27,12 +27,15 @@ app.on('ready', () => {
     // persist store changes
     // TODO: should this be blocking / wait? _.throttle?
 
-    console.log('state: ', store.getState());
+    process.stdout.write('state: ', store.getState());
     // const dataPath =  storage.getDataPath();
     // console.log(dataPath);
 
     // await storage.set('state', store.getState());
   });
+
+  process.stdout.write(JSON.stringify(store.getState()) );
+  process.stdout.write(global.getReduxState());
 
   
   win = new BrowserWindow({
@@ -54,7 +57,7 @@ app.on('ready', () => {
       nodeIntegration: false,
       sandbox: true,
       contextIsolation: true,
-      preload: path.join(VIEW_PATH, 'preload-extended.js')
+      preload: path.join(VIEW_PATH, 'preload.js')
     }
   });
 
@@ -67,7 +70,7 @@ app.on('ready', () => {
       nodeIntegration: false,
       sandbox: true,
       contextIsolation: true,
-      preload: path.join(VIEW_PATH, 'preload-extended.js')
+      preload: path.join(VIEW_PATH, 'preload.js')
     }
   });
   view2.webContents.loadURL('file://' + path.join(VIEW_PATH, 'index2.html'));

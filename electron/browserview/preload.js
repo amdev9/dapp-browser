@@ -20,18 +20,20 @@ const ipcRenderer = electron.ipcRenderer;
 
 // store.dispatch({type: 'INC'});
 /****/
+
+const getInitialStateRenderer = electron.remote.require('/home/pidgin/job/boilerplate/electron-redux/packages/electron-redux').getInitialStateRenderer;
+const configureStore = electron.remote.require('./store/configureStore'); //
  
-const getInitialStateRenderer = electron.remote.require('electron-redux').getInitialStateRenderer;
-const configureStore =  electron.remote.require('./store/configureStore');
- 
+// !rewrite electron redux without Object.defineProperty. https://github.com/electron/electron/issues/7351#issuecomment-251331639
+
+// TODO put it into function - init on window ready
 
 // const initialState = getInitialStateRenderer(); // ???
-// !rewrite electron redux without Object.defineProperty. https://github.com/electron/electron/issues/7351#issuecomment-251331639
-// const store = configureStore(initialState, 'renderer');
+// const store = configureStore({}, 'renderer');
 
 //
 
-require = null;
+require = null; 
 const flatten = (obj) => Object.keys(obj)
   .reduce((acc, key) => {
     const val = obj[key];
@@ -57,6 +59,7 @@ class SafeIpcRenderer {
     this.send = protect(ipcRenderer.send);
     this.sendSync = protect(ipcRenderer.sendSync);
     this.sendToHost = protect(ipcRenderer.sendToHost);
+    this.remoteStore = electron.remote.getGlobal('getReduxState');
   }
 }
 
@@ -64,4 +67,4 @@ window.ipc = new SafeIpcRenderer([
   "rpc-communicate"
 ]);
 
-window.storeState = store; //.getState();
+// window.storeState = store; //.getState();
