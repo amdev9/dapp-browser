@@ -44,7 +44,7 @@ app.on('ready', () => {
       nodeIntegration: false,
       sandbox: true,
       contextIsolation: true,
-      preload: path.join(RENDERER_PATH, 'preload-extended.js')
+      preload: path.join(VIEW_PATH, 'preload.js') //path.join(RENDERER_PATH, 'preload-extended.js')
     }
   })
   win.loadURL('file://' + path.join(RENDERER_PATH, 'index.html'));

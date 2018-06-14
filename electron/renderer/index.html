@@ -1,39 +1,49 @@
 <script>
-	function sendValidIpcMessage() {
-		var s = window.ipc;
+	// function sendValidIpcMessage() {
+	// 	var s = window.ipc;
 
-		// start the rpc
-		var firstTest = s.sendSync('rpc-start', 'oneleftundefined');
-		alert(firstTest);
+	// 	// start the rpc
+	// 	var firstTest = s.sendSync('rpc-start', 'oneleftundefined');
+	// 	alert(firstTest);
 
-		// do a request to the rpc
-		var secondTest = s.sendSync('rpc-request', 'getnewaddress', 'kewde');
-		alert(secondTest);
-	}
+	// 	// do a request to the rpc
+	// 	var secondTest = s.sendSync('rpc-request', 'getnewaddress', 'kewde');
+	// 	alert(secondTest);
+	// }
 
-	function sendEvilIpcMessage() {
-		var s = window.ipc;
-		s.sendSync('ELECTRON_BROWSER_GET_BUILTIN', 'app');
-		/* evil channel, blocked */
-	}
+	// function sendEvilIpcMessage() {
+	// 	var s = window.ipc;
+	// 	s.sendSync('ELECTRON_BROWSER_GET_BUILTIN', 'app');
+	// 	/* evil channel, blocked */
+	// }
 
-	function setBrowserViewTo(value) {
-		var s = window.ipc;
-		s.send('rpc-switch', value);
-	}
+	// function setBrowserViewTo(value) {
+	// 	var s = window.ipc;
+	// 	s.send('rpc-switch', value);
+	// }
 </script>
 
 <h1>BrowserWindow</h1>
 
-<!-- Let's trigger a nice whitelisted channel :) -->
-<input type="button" value="Send whitelisted message :) !" onclick="sendValidIpcMessage()" />
+ 
+<!-- <input type="button" value="Send whitelisted message :) !" onclick="sendValidIpcMessage()" />
 
 <br />
 <br />
-<!-- Let's trigger a nasty internal channel -->
-<input type="button" value="Send evil message :( !" onclick="sendEvilIpcMessage()" />
+ 
+<input type="button" value="Send evil message :( !" onclick="sendEvilIpcMessage()" /> -->
 
 <br />
 <br />
 <input type="button" value="BrowserView1" onclick="setBrowserViewTo(1)" />
 <input type="button" value="BrowserView2" onclick="setBrowserViewTo(2)" />
+
+<br />
+<p>
+	Clicked: <span id="value">0</span> times
+	<button id="increment">+</button>
+	<button id="decrement">-</button>
+ 
+</p>
+
+<script src="../browserview/bundle.js"></script>
