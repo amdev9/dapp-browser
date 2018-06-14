@@ -25,8 +25,7 @@ app.on('ready', () => {
 
   store.subscribe(async () => {
     // persist store changes
-    // TODO: should this be blocking / wait? _.throttle?
-
+    
     process.stdout.write('state: ', store.getState());
     // const dataPath =  storage.getDataPath();
     // console.log(dataPath);

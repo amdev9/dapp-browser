@@ -128,7 +128,8 @@ class SafeIpcRenderer {
         applyMiddleware(...middleware),
       ];
       const enhancer = compose(...enhanced);
-    
+      
+      console.log(redux.createStore);
       console.log(typeof rootReducer, initialState, typeof enhancer);
       const store = createStore(rootReducer, initialState, enhancer);  // ?
        
@@ -142,8 +143,8 @@ class SafeIpcRenderer {
       const initialState = JSON.parse(states());//getInitialStateRenderer(); // ???
        
       const store = configureStore(initialState);
-      // return store;
-    }
+      return store;
+    } // change to browserify
 
     this.on = protect(ipcRenderer.on);
     this.once = protect(ipcRenderer.once);
