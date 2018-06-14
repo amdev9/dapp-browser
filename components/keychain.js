@@ -9,15 +9,17 @@ const RESPOSNE_TIMEOUT = 1000;
 const KEYCHAIN_CMD = (platform => {
     switch (platform) {
         case 'linux':
-            return './keychain'
+            return './keychain.ubuntu.16.04'
         case 'darwin':
-            return './keychain.dms'
-        case 'win32':
+	        return './keychain.macos'
+	    case 'win32':
             return 'keychain.exe'
         default:
             throw Error(`platform unsupported: ${platform}`)
     }
 })(platform())
+
+const DEFAULT_KEY_PARAMS = { encrypted: true, algo: "CIPHER_AES256", curve: "CURVE_SECP256K1" }
 
 class TaskQueue {
     constructor(concurrency) {
@@ -32,7 +34,7 @@ class TaskQueue {
     }
 
     next() {
-        while (this.running < this.concurrency && this.queue.length) {
+        while (this.running < this.concurrency && this.queue && this.queue.length) {
             const task = this.queue.shift();
             task.then(() => {
                 this.running--;
@@ -106,6 +108,27 @@ class Keychain {
 
         response.payload.response = output
         FrontEnd.complete(response.payload)
+    }
+
+    async getList() {
+        const request = JSON.stringify({
+            command: 'CMD_LIST'
+        });
+
+        const {result} = await interact(request);
+
+        return result;
+
+    }
+
+    async createKey(name) {
+        const request = JSON.stringify({
+	        command: "CMD_CREATE", params: { keyname: name, ...DEFAULT_KEY_PARAMS }
+        });
+
+	    const {result} = await interact(request);
+
+        return result || false;
     }
 }
 

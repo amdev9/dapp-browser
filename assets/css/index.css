@@ -2946,6 +2946,7 @@ tbody.collapse.show {
   position: relative;
 }
 .dropdown-toggle::after {
+  font-size: 20px;
   display: inline-block;
   width: 0;
   height: 0;
@@ -5029,6 +5030,7 @@ button.close {
   -ms-flex: 1 1 auto;
   flex: 1 1 auto;
   padding: 1rem;
+  padding-top: 5em;
 }
 .modal-footer {
   display: -webkit-box;

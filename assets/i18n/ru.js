@@ -2,7 +2,13 @@ export default {
 	header: {
 		home   : 'Главная',
 		setting: 'Настройки',
-		found  : 'Ничего не найдено'
+		found  : 'Ничего не найдено',
+		create_key: 'Создать новый',
+		add_key:  'Добавить',
+		create_key_popup: {
+			title: 'Выберите имя',
+			key_name_placeholder: 'Введите имя для ключа'
+		}
 	},
 	share: {
 		copy    : 'Копировать ссылку',
