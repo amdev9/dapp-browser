@@ -37,6 +37,8 @@ const { combineReducers, createStore, applyMiddleware, compose } = electron.remo
 const thunk = electron.remote.require('redux-thunk').default;
 const { hashHistory } = electron.remote.require('react-router');
 const { routerMiddleware } = electron.remote.require('react-router-redux');
+const { isFSA } = electron.remote.require('flux-standard-action');
+
 
 // require = null; 
 const flatten = (obj) => Object.keys(obj)
@@ -58,8 +60,41 @@ class SafeIpcRenderer {
       };
     };
 
+    const validateAction = (action) => {
+      if (!isFSA(action)) {
+        // log('WARNING! Action not FSA-compliant', action);
     
-    function counter(state = 0, action) {
+        return false;
+      }
+    
+      return true;
+    }
+
+
+    const forwardToMain = store => next => (action) => { // eslint-disable-line no-unused-vars
+      if (!validateAction(action)) return next(action);
+    
+      if (
+        action.type.substr(0, 2) !== '@@'
+        && action.type.substr(0, 10) !== 'redux-form'
+        && (
+          !action.meta
+          || !action.meta.scope
+          || action.meta.scope !== 'local'
+        )
+      ) {
+        ipcRenderer.send('redux-action', action);
+    
+        // stop action in-flight
+        // eslint-disable-next-line consistent-return
+        return;
+      }
+    
+      // eslint-disable-next-line consistent-return
+      return next(action);
+    };
+
+    const counter = (state = 0, action) => {
       switch (action.type) {
         case 'INCREMENT_COUNTER':
           return state + 1;
@@ -75,7 +110,7 @@ class SafeIpcRenderer {
       // routing
     });
 
-    function replayActionRenderer(store) {
+    const replayActionRenderer = (store) => {
       ipcRenderer.on('redux-action', (event, payload) => {
         store.dispatch(payload);
       });
