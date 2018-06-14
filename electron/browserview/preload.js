@@ -26,7 +26,7 @@ const configureStore = electron.remote.require('./store/configureStore'); //
  
 // !rewrite electron redux without Object.defineProperty. https://github.com/electron/electron/issues/7351#issuecomment-251331639
 
-// TODO put it into function - init on window ready
+// TODO put it into function - init on window [ready => return store => dispatch] 
 
 // const initialState = getInitialStateRenderer(); // ???
 // const store = configureStore({}, 'renderer');
