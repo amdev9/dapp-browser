@@ -1,33 +1,18 @@
-// *** working with redux, get and post data to ipc through
-
-// var assert = require('assert');
-// var redux = require('redux');
-// var createStore = redux.createStore;
-
-// var reducer = function(state, action) {
-//   if (!state) state = 0;
-//   if (action.type === 'INC') return state + 1;
-//   return state;
-// }
-
-// var store = createStore(reducer);
-
-// assert.equal(store.getState(), 0)
-
-// store.dispatch({type: 'INC'});
-
-// assert.equal(store.getState(), 1);
-
-// if (global.document) {
-//   document.write('My number is ' + store.getState());
-// }
-
-//***** define redux, redux-thunk with browserify */
-const { combineReducers, createStore, applyMiddleware, compose } = require('redux');
+ //***** define redux, redux-thunk with browserify */
+const {
+  combineReducers,
+  createStore,
+  applyMiddleware,
+  compose
+} = require('redux');
 const thunk = require('redux-thunk').default;
 // const { hashHistory } = electron.remote.require('react-router');
 // const { routerMiddleware } = electron.remote.require('react-router-redux');
-const { isFSA } = require('flux-standard-action');
+const {
+  isFSA
+} = require('flux-standard-action');
+
+const electronManager = window.ipc;
 
 const validateAction = (action) => {
   if (!isFSA(action)) {
@@ -52,38 +37,20 @@ const rootReducer = combineReducers({
   counter
 });
 
-const configureStore = (initialState) => {
-
-  const middleware = [thunk, forwardToMain];
-  const enhanced = [
-    applyMiddleware(...middleware),
-  ];
-  const enhancer = compose(...enhanced);
-  
-  console.log(redux.createStore);
-  console.log(typeof rootReducer, initialState, typeof enhancer);
-  const store = createStore(rootReducer, initialState, enhancer);  
-   
-  // replayActionRenderer(store); // window.ipc
-
-  return store;
-};
-
-const forwardToMain = store => next => (action) => {  
+const forwardToMain = store => next => (action) => {
   if (!validateAction(action)) return next(action);
 
   if (
-    action.type.substr(0, 2) !== '@@'
-    && action.type.substr(0, 10) !== 'redux-form'
-    && (
-      !action.meta
-      || !action.meta.scope
-      || action.meta.scope !== 'local'
+    action.type.substr(0, 2) !== '@@' &&
+    action.type.substr(0, 10) !== 'redux-form' &&
+    (!action.meta ||
+      !action.meta.scope ||
+      action.meta.scope !== 'local'
     )
   ) {
 
-    // sendToMainAction(action); // window.ipc  /**** access from preload script */ 
-      
+    electronManager.sendActionMain(action); // window.ipc  /**** access from preload script */ 
+
     // stop action in-flight
     // eslint-disable-next-line consistent-return
     return;
@@ -93,11 +60,57 @@ const forwardToMain = store => next => (action) => {
   return next(action);
 };
 
+const configureStore = (initialState) => {
+
+  const middleware = [thunk, forwardToMain];
+  const enhanced = [
+    applyMiddleware(...middleware),
+  ];
+  const enhancer = compose(...enhanced);
+
+  console.log(typeof rootReducer, initialState, typeof enhancer);
+  const store = createStore(rootReducer, initialState, enhancer);
+
+  electronManager.replayActionRenderer(store); // window.ipc
+
+  return store;
+};
+
+
 const enableStore = () => {
-  
-  // const states = getGlobalState(); // window.ipc 
-  const initialState = JSON.parse(states());//getInitialStateRenderer(); // ???
-   
+
+  const states = electronManager.getGlobalState(); // window.ipc 
+  const initialState = JSON.parse(states()); // getInitialStateRenderer();  
+
   const store = configureStore(initialState);
   return store;
 }
+
+const renderState = () => {
+  const valueEl = document.getElementById('value');
+  valueEl.innerHTML = store.getState().toString();
+}
+
+const initUi = () => {
+  renderState();
+
+  store.subscribe(renderState);
+
+  document.getElementById('increment').addEventListener('click', () => {
+    store.dispatch({
+      type: 'INCREMENT'
+    }); // dispatch API endpoints
+  });
+
+  document.getElementById('decrement').addEventListener('click', () => {
+    store.dispatch({
+      type: 'DECREMENT'
+    }); // dispatch API endpoints
+  });
+
+}
+
+
+// main
+enableStore();
+initUi();

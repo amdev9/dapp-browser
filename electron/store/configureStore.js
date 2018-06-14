@@ -11,7 +11,7 @@ const {
   replayActionRenderer
 } = require('electron-redux');
 const rootReducer = require('../reducers');
-  
+
 const configureStore = (initialState, scope = 'main') => {
   const middleware = [];
   middleware.push(thunk);
@@ -23,7 +23,7 @@ const configureStore = (initialState, scope = 'main') => {
   if (scope === 'main') {
     middleware.push(triggerAlias, forwardToRenderer);
   }
- 
+
   const enhanced = [applyMiddleware(...middleware, router)];
   const enhancer = compose(...enhanced);
   const store = createStore(rootReducer, initialState, enhancer);

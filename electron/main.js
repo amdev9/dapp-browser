@@ -25,17 +25,17 @@ app.on('ready', () => {
 
   store.subscribe(async () => {
     // persist store changes
-    
+
     process.stdout.write('state: ', store.getState());
     // const dataPath =  storage.getDataPath();
     // console.log(dataPath);
 
     // await storage.set('state', store.getState());
   });
- 
-  process.stdout.write( global.getReduxState());
 
-  
+  process.stdout.write(global.getReduxState());
+
+
   win = new BrowserWindow({
     x: 0,
     y: 0,
