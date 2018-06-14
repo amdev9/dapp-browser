@@ -24,10 +24,10 @@
 
 //***** define redux, redux-thunk with browserify */
 const { combineReducers, createStore, applyMiddleware, compose } = require('redux');
-const thunk = electron.remote.require('redux-thunk').default;
+const thunk = require('redux-thunk').default;
 // const { hashHistory } = electron.remote.require('react-router');
 // const { routerMiddleware } = electron.remote.require('react-router-redux');
-const { isFSA } = electron.remote.require('flux-standard-action');
+const { isFSA } = require('flux-standard-action');
 
 const validateAction = (action) => {
   if (!isFSA(action)) {

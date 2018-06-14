@@ -15,8 +15,6 @@ const ipcRenderer = electron.ipcRenderer;
 
 // const rootReducer = electron.remote.require('../reducers');
 
-
-
 // require = null; 
 const flatten = (obj) => Object.keys(obj)
   .reduce((acc, key) => {
