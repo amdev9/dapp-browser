@@ -20,15 +20,14 @@ const ipcRenderer = electron.ipcRenderer;
 
 // store.dispatch({type: 'INC'});
 /****/
-
-
+ 
 const getInitialStateRenderer = electron.remote.require('electron-redux').getInitialStateRenderer;
 const configureStore =  electron.remote.require('./store/configureStore');
  
 
-const initialState = getInitialStateRenderer(); // ???
+// const initialState = getInitialStateRenderer(); // ???
 // !rewrite electron redux without Object.defineProperty. https://github.com/electron/electron/issues/7351#issuecomment-251331639
-const store = configureStore(initialState, 'renderer');
+// const store = configureStore(initialState, 'renderer');
 
 //
 
