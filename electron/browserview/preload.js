@@ -35,8 +35,8 @@ const ipcRenderer = electron.ipcRenderer;
 
 const { combineReducers, createStore, applyMiddleware, compose } = electron.remote.require('redux');
 const thunk = electron.remote.require('redux-thunk').default;
-const { hashHistory } = electron.remote.require('react-router');
-const { routerMiddleware } = electron.remote.require('react-router-redux');
+// const { hashHistory } = electron.remote.require('react-router');
+// const { routerMiddleware } = electron.remote.require('react-router-redux');
 const { isFSA } = electron.remote.require('flux-standard-action');
 
 
@@ -119,14 +119,13 @@ class SafeIpcRenderer {
     const configureStore = (initialState, scope = 'main') => {
       const middleware = [];
       middleware.push(thunk);
-      const router = routerMiddleware(hashHistory);
-      if (scope === 'renderer') {
-        middleware.push(forwardToMain, router);
-      }
-    
-      const enhanced = [applyMiddleware(...middleware, router)];
+      // const router = routerMiddleware(hashHistory);
+       
+      middleware.push(forwardToMain);
+      
+      const enhanced = [applyMiddleware(...middleware)];
       const enhancer = compose(...enhanced);
-      const store = createStore(rootReducer, initialState, enhancer);
+      const store = createStore(rootReducer, initialState, enhancer); 
  
       replayActionRenderer(store);
     
