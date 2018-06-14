@@ -23,12 +23,7 @@
 // }
 
 //***** define redux, redux-thunk with browserify */
-const redux = electron.remote.require('redux');
-const combineReducers = redux.combineReducers;
-const createStore = redux.createStore;
-const applyMiddleware = redux.applyMiddleware;
-const compose = redux.compose;
-// { combineReducers, createStore, applyMiddleware, compose } 
+const { combineReducers, createStore, applyMiddleware, compose } = require('redux');
 const thunk = electron.remote.require('redux-thunk').default;
 // const { hashHistory } = electron.remote.require('react-router');
 // const { routerMiddleware } = electron.remote.require('react-router-redux');
@@ -37,7 +32,6 @@ const { isFSA } = electron.remote.require('flux-standard-action');
 const validateAction = (action) => {
   if (!isFSA(action)) {
     // log('WARNING! Action not FSA-compliant', action);
-
     return false;
   }
   return true;
