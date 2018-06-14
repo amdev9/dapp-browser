@@ -29,7 +29,7 @@ const configureStore = (initialState, scope = 'main') => {
   const store = createStore(rootReducer, initialState, enhancer);
 
   if (scope === 'main') {
-    replayActionMain(store);
+    replayActionMain(store); // verification for payload, use custom electron-redux like decision
   } else {
     replayActionRenderer(store);
   }
