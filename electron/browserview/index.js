@@ -94,13 +94,13 @@ const initUi = () => {
 
   document.getElementById('increment').addEventListener('click', () => {
     store.dispatch({
-      type: 'INCREMENT'
+      type: 'INCREMENT_COUNTER'
     }); // dispatch API endpoints
   });
 
   document.getElementById('decrement').addEventListener('click', () => {
     store.dispatch({
-      type: 'DECREMENT'
+      type: 'DECREMENT_COUNTER'
     }); // dispatch API endpoints
   });
 
