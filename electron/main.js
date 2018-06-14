@@ -27,6 +27,7 @@ app.on('ready', () => {
     // persist store changes
 
     process.stdout.write('state: ', store.getState());
+    process.stdout.write(global.getReduxState());
     // const dataPath =  storage.getDataPath();
     // console.log(dataPath);
 

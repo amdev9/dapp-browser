@@ -10,6 +10,7 @@ const {
 
 const electronManager = window.ipc;
 
+
 const validateAction = (action) => {
   if (!isFSA(action)) {
     // log('WARNING! Action not FSA-compliant', action);
@@ -65,7 +66,7 @@ const configureStore = (initialState) => {
   const enhancer = compose(...enhanced);
 
   console.log(typeof rootReducer, initialState, typeof enhancer);
-  const store = createStore(rootReducer, initialState, enhancer);
+  store = createStore(rootReducer, initialState, enhancer);
 
   electronManager.replayActionRenderer(store); // window.ipc
 
@@ -73,7 +74,7 @@ const configureStore = (initialState) => {
 };
 
 
-const enableStore = () => {
+const initStore = () => {
 
   const states = electronManager.getGlobalState(); // window.ipc 
   const initialState = JSON.parse(states()); // getInitialStateRenderer();  
@@ -83,8 +84,8 @@ const enableStore = () => {
 }
 
 const renderState = () => {
-  const valueEl = document.getElementById('value');
-  valueEl.innerHTML = store.getState().toString();
+  console.log(JSON.stringify(store.getState().counter));
+  document.getElementById('value').innerHTML = store.getState().counter;
 }
 
 const initUi = () => {
@@ -108,7 +109,7 @@ const initUi = () => {
 
 
 // main
-enableStore();
+store = initStore();
 initUi();
 },{"flux-standard-action":2,"redux":16,"redux-thunk":15}],2:[function(require,module,exports){
 'use strict';
