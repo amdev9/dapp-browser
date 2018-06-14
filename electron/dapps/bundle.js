@@ -44,6 +44,7 @@ const validateAction = (action) => {
   return true;
 }
 
+
 const forwardToMain = store => next => (action) => {
   if (!validateAction(action)) return next(action);
 

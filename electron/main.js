@@ -8,8 +8,8 @@ const path = require('path');
 
 const configureStore = require('./store/configureStore');
 
-const RENDERER_PATH = path.join(__dirname, 'renderer');
-const VIEW_PATH = path.join(__dirname, 'browserview');
+const RENDERER_PATH = path.join(__dirname, 'client');
+const VIEW_PATH = path.join(__dirname, 'dapps');
 
 let win, view, view2;
 let bounds = {
