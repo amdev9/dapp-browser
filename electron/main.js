@@ -34,7 +34,7 @@ app.on('ready', () => {
     // await storage.set('state', store.getState());
   });
  
-  process.stdout.write('global init state: ', global.getReduxState());
+  process.stdout.write( global.getReduxState());
 
   
   win = new BrowserWindow({

@@ -33,7 +33,12 @@ const ipcRenderer = electron.ipcRenderer;
 // const rootReducer = electron.remote.require('../reducers');
 
 
-const { combineReducers, createStore, applyMiddleware, compose } = electron.remote.require('redux');
+const redux = electron.remote.require('redux');
+const combineReducers = redux.combineReducers;
+const createStore = redux.createStore;
+const applyMiddleware = redux.applyMiddleware;
+const compose = redux.compose;
+// { combineReducers, createStore, applyMiddleware, compose } 
 const thunk = electron.remote.require('redux-thunk').default;
 // const { hashHistory } = electron.remote.require('react-router');
 // const { routerMiddleware } = electron.remote.require('react-router-redux');
@@ -116,27 +121,28 @@ class SafeIpcRenderer {
       });
     }
 
-    const configureStore = (initialState, scope = 'main') => {
-      const middleware = [];
-      middleware.push(thunk);
-      // const router = routerMiddleware(hashHistory);
-       
-      middleware.push(forwardToMain);
-      
-      const enhanced = [applyMiddleware(...middleware)];
+    const configureStore = (initialState) => {
+
+      const middleware = [thunk, forwardToMain];
+      const enhanced = [
+        applyMiddleware(...middleware),
+      ];
       const enhancer = compose(...enhanced);
-      const store = createStore(rootReducer, initialState, enhancer); 
- 
+    
+      console.log(typeof rootReducer, initialState, typeof enhancer);
+      const store = createStore(rootReducer, initialState, enhancer);  // ?
+       
       replayActionRenderer(store);
     
       return store;
     };
 
     const enableStore = () => {
-      const state = electron.remote.getGlobal('getReduxState');
-      const initialState = JSON.parse(state());//getInitialStateRenderer(); // ???
-      const store = configureStore(initialState, 'renderer');
-      return store;
+      const states = electron.remote.getGlobal('getReduxState');
+      const initialState = JSON.parse(states());//getInitialStateRenderer(); // ???
+       
+      const store = configureStore(initialState);
+      // return store;
     }
 
     this.on = protect(ipcRenderer.on);

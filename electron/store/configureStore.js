@@ -9,7 +9,7 @@ const {
   triggerAlias,
   replayActionMain,
   replayActionRenderer
-} = require('/home/pidgin/job/boilerplate/electron-redux/packages/electron-redux');
+} = require('electron-redux');
 const rootReducer = require('../reducers');
   
 const configureStore = (initialState, scope = 'main') => {
