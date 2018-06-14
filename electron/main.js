@@ -89,3 +89,8 @@ ipcMain.on('rpc-switch', function (event, rpc, arg) {
       alert("No such browserview");
   }
 });
+
+// ipc identification and communication between renderers through actions
+// https://electronjs.org/docs/api/browser-window
+// https://electronjs.org/docs/api/ipc-main
+
