@@ -43,7 +43,7 @@ app.on('ready', () => {
 
   // create multiple view and keep them around the memory, detached from the window
   // then switching workspaces is just and additional call to setBrowserView
-  view = new BrowserView({
+  view = new BrowserWindow({
     webPreferences: {
       nodeIntegration: false,
       sandbox: true,
@@ -52,20 +52,20 @@ app.on('ready', () => {
     }
   });
 
-  win.setBrowserView(view);
-  view.setBounds(bounds);
+  // win.setBrowserView(view);
+  // view.setBounds(bounds);
   view.webContents.loadURL('file://' + path.join(VIEW_PATH, 'index.html'));
 
-  view2 = new BrowserView({
-    webPreferences: {
-      nodeIntegration: false,
-      sandbox: true,
-      contextIsolation: true,
-      preload: path.join(VIEW_PATH, 'preload.js')
-    }
-  });
-  view2.webContents.loadURL('file://' + path.join(VIEW_PATH, 'index2.html'));
-  process.stdout.write("BrowserView identificators: " + view.id + ", " + view2.id);
+  // view2 = new BrowserView({
+  //   webPreferences: {
+  //     nodeIntegration: false,
+  //     sandbox: true,
+  //     contextIsolation: true,
+  //     preload: path.join(VIEW_PATH, 'preload.js')
+  //   }
+  // });
+  // view2.webContents.loadURL('file://' + path.join(VIEW_PATH, 'index2.html'));
+  // process.stdout.write("BrowserView identificators: " + view.id + ", " + view2.id);
 });
 
 process.stdout.write("Main initialized");
