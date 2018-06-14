@@ -23,20 +23,12 @@ app.on('ready', () => {
 
   const store = configureStore(global.state, 'main');
 
-  store.subscribe(async () => {
-    // persist store changes
-
-    process.stdout.write('state: ', store.getState());
-    process.stdout.write(global.getReduxState());
-    // const dataPath =  storage.getDataPath();
-    // console.log(dataPath);
-
-    // await storage.set('state', store.getState());
+  process.stdout.write(JSON.stringify(store.getState()));
+  
+  store.subscribe( () => {
+    process.stdout.write(JSON.stringify(store.getState()));
   });
-
-  process.stdout.write(global.getReduxState());
-
-
+  
   win = new BrowserWindow({
     x: 0,
     y: 0,
