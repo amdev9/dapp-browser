@@ -33,6 +33,7 @@ const ipcRenderer = electron.ipcRenderer;
 // const rootReducer = electron.remote.require('../reducers');
 
 
+//***** define redux, redux-thunk with browserify */
 const redux = electron.remote.require('redux');
 const combineReducers = redux.combineReducers;
 const createStore = redux.createStore;
@@ -88,7 +89,7 @@ class SafeIpcRenderer {
           || action.meta.scope !== 'local'
         )
       ) {
-        ipcRenderer.send('redux-action', action);
+        ipcRenderer.send('redux-action', action); /**** access from preload script */
     
         // stop action in-flight
         // eslint-disable-next-line consistent-return
@@ -115,7 +116,7 @@ class SafeIpcRenderer {
       // routing
     });
 
-    const replayActionRenderer = (store) => {
+    const replayActionRenderer = (store) => { //*** define in preload script */
       ipcRenderer.on('redux-action', (event, payload) => {
         store.dispatch(payload);
       });
