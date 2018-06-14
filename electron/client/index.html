@@ -19,7 +19,7 @@
 
 	function setBrowserViewTo(value) {
 		var s = window.ipc;
-		s.send('rpc-switch', value);
+		s.send('rpc-switch', value); // change to redux action dispatch
 	}
 </script>
 
