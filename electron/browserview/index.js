@@ -1,6 +1,9 @@
  //***** define redux, redux-thunk with browserify */
 const { combineReducers, createStore, applyMiddleware, compose } = require('redux');
 const thunk = require('redux-thunk').default;
+
+const rootReducer = require('../reducers');
+
 // const { hashHistory } = electron.remote.require('react-router');
 // const { routerMiddleware } = electron.remote.require('react-router-redux');
 const {
@@ -17,21 +20,6 @@ const validateAction = (action) => {
   }
   return true;
 }
-
-const counter = (state = 0, action) => {
-  switch (action.type) {
-    case 'INCREMENT_COUNTER':
-      return state + 1;
-    case 'DECREMENT_COUNTER':
-      return state - 1;
-    default:
-      return state;
-  }
-}
-
-const rootReducer = combineReducers({
-  counter
-});
 
 const forwardToMain = store => next => (action) => {
   if (!validateAction(action)) return next(action);
