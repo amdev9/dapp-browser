@@ -144,7 +144,7 @@ class SafeIpcRenderer {
        
       const store = configureStore(initialState);
       return store;
-    } // change to browserify
+    } // change to browserify - not load correct redux
 
     this.on = protect(ipcRenderer.on);
     this.once = protect(ipcRenderer.once);
