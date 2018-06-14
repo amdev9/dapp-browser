@@ -1,10 +1,5 @@
  //***** define redux, redux-thunk with browserify */
-const {
-  combineReducers,
-  createStore,
-  applyMiddleware,
-  compose
-} = require('redux');
+const { combineReducers, createStore, applyMiddleware, compose } = require('redux');
 const thunk = require('redux-thunk').default;
 // const { hashHistory } = electron.remote.require('react-router');
 // const { routerMiddleware } = electron.remote.require('react-router-redux');
