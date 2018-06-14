@@ -33,8 +33,7 @@ app.on('ready', () => {
 
     // await storage.set('state', store.getState());
   });
-
-  process.stdout.write(JSON.stringify(store.getState()) );
+ 
   process.stdout.write(global.getReduxState());
 
   
