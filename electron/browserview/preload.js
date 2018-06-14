@@ -72,7 +72,6 @@ class SafeIpcRenderer {
     
         return false;
       }
-    
       return true;
     }
 
