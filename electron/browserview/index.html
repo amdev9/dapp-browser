@@ -2,15 +2,24 @@
 	<script src="bundle.js"></script>
 
 	<h1>BrowserView1</h1>
-	<!-- Let's trigger a nice whitelisted channel :) -->
-	<input type="button" value="Send whitelisted message :) !" onclick="sendValidIpcMessage()" />
+	 
+	<!-- <input type="button" value="Send whitelisted message :) !" onclick="sendValidIpcMessage()" />
 
 	<br />
 	<br />
-	<!-- Let's trigger a nasty internal channel -->
+	 
 	<input type="button" value="Send evil message :( !" onclick="sendEvilIpcMessage()" />
 	<br />
+	<br /> -->
+	<textarea id="messageId"></textarea>
 	<br />
-	<textarea id="messageId" rows="25" cols="80"></textarea>
 	<br />
+	<br />
+	<p>
+		Clicked: <span id="value">0</span> times
+		<button id="increment">+</button>
+		<button id="decrement">-</button>
+	 
+	</p>
+
 </body>
