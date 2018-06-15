@@ -29,6 +29,7 @@ app.on('ready', () => {
     process.stdout.write(JSON.stringify(store.getState()));
   });
 
+  // change to createClient
   win = new BrowserWindow({
     x: 0,
     y: 0,
