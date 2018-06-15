@@ -39,14 +39,14 @@ app.on('ready', () => {
     }
   });
   
-  // const uuidClient = uuidv4(); // ⇨ '45db52e1-f95c-4b5f-99a2-8b8d978c99b4'
+  const uuidClient = uuidv4();  
 
-  // app.on('activate', () => {
-  //   // On OS X it's common to re-create a window in the app when the
-  //   // dock icon is clicked and there are no other windows open.
-  //   clientWindow = createClientWindow(uuidClient);
-  // });
-  clientWindow = createClientWindow(); // uuidClient
+  app.on('activate', () => {
+    // On OS X it's common to re-create a window in the app when the
+    // dock icon is clicked and there are no other windows open.
+    clientWindow = createClientWindow(uuidClient);
+  });
+  clientWindow = createClientWindow(uuidClient);  
 
   // create multiple view and keep them around the memory, detached from the window
   // then switching workspaces is just and additional call to setBrowserView
