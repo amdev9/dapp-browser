@@ -3,6 +3,11 @@ const electron = require('electron');
 const ipcRenderer = electron.ipcRenderer;
 
  
+window.onload = () => {
+  ipcRenderer.send('answer', process.argv);
+};
+
+
 class ElectronManager {
   constructor() {
 
