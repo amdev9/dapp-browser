@@ -10,6 +10,12 @@ window.onload = () => {
 
 class ElectronManager {
   constructor() {
+    
+    const uuidRendererParam = process.argv.filter(function(param) {
+      return param.indexOf('--uuid-renderer') >= 0;
+    });  
+    const uuidRenderer = uuidRendererParam[0].split('=')[1];
+    console.log(uuidRenderer);
 
     const replayActionRenderer = (store) => { 
       ipcRenderer.on('redux-action', (event, payload) => {

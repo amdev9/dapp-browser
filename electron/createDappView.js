@@ -13,7 +13,7 @@ function createDappView(clientWindow, uuid) {
             sandbox: true,
             contextIsolation: true,
             preload: path.join(VIEW_PATH, 'preload.js'),
-            additionalArguments: ['testId', "checkthisout"]
+            additionalArguments: [ '--uuid-renderer='.concat(uuid) ]
         }
     });
 

@@ -15,7 +15,7 @@ function createClientWindow(uuid) {
       sandbox: true,
       contextIsolation: true,
       preload: path.join(VIEW_PATH, 'preload.js'), //path.join(RENDERER_PATH, 'preload-extended.js')
-      additionalArguments: ['testId', 'newstring']
+      additionalArguments: [ '--uuid-renderer='.concat(uuid) ]
     }
   })
   clientWindow.loadURL('file://' + path.join(RENDERER_PATH, 'index.html'));
