@@ -39,6 +39,7 @@ app.use(express.static( __apps ))
 
 app.use('/', require( './routes/index' ))
 app.use('/', require( './routes/user' ))
+app.use('/keys', require('./routes/keys'))
 
 app.get('/', (request, response) => {
 	response.sendFile( path.join(__dirname, 'index.html') )

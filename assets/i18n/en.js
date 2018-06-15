@@ -2,7 +2,13 @@ export default {
 	header: {
 		home   : 'Home',
 		setting: 'Setting',
-		found  : 'Not found'
+		found  : 'Not found',
+		create_key: 'Create New',
+		add_key:  'Add',
+		create_key_popup: {
+			title: 'Choose name for new key',
+			key_name_placeholder: 'Enter key name'
+		}
 	},
 	share: {
 		copy    : 'Copy Share link',

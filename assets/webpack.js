@@ -1,11 +1,15 @@
 // Modules
 import Vue from './js/vue/vue.js'
+import Vuex, {mapActions} from "vuex";
 import SVG from './js/vue/svg.js'
 import Resource from './js/vue/res.js'
 import MultiLanguage from './js/vue/i18n.js'
 
+import { Dropdown, Modal, FormInput } from 'bootstrap-vue/es/components';
+import store from '../store';
+
 // Components
-import header  from '../views/app-header.vue'
+import header  from '../views/header/app-header.vue'
 import aside   from '../views/app-aside.vue'
 import modal   from '../views/app-modal.vue'
 import loader  from '../views/app-loader.vue'
@@ -23,6 +27,7 @@ import preview from '../views/view-preview.vue'
 
 import i18n_en from './i18n/en.js'
 import i18n_ru from './i18n/ru.js'
+import keys from "../store/modules/keys";
 
 'use strict'
 
@@ -54,22 +59,23 @@ const options = {
     currentView: 'view-index', currentFrame: null
 }
 
-Element.prototype.dropdown = function () {
-    let closest = this.closest( '.dropdown' )
-    let item = this.closest( '.dropdown-item' )
-
-    document.querySelectorAll( '.dropdown' ).forEach(element => {
-        if ( element != closest ) element.classList.remove( 'show' )
-    })
-
-    if ( !closest ) return
-
-    let target = closest.querySelector( '.dropdown-target' )
-
-    if ( item ) target.innerText = item.firstChild.innerText
-    
-    closest.classList[closest.classList.contains( 'show' ) ? 'remove' : 'add']( 'show' )
-}
+// Element.prototype.dropdown = function () {
+//     let closest = this.closest( '.dropdown' )
+//     let item = this.closest( '.dropdown-item' )
+//
+//     document.querySelectorAll( '.dropdown' ).forEach(element => {
+//         if ( element != closest ) element.classList.remove( 'show' )
+//     })
+//
+//     if ( !closest ) return
+//
+//     let target = closest.querySelector( '.dropdown-target' )
+//
+//     if ( item ) target.innerText = item.firstChild.innerText
+//
+//     closest.classList[closest.classList.contains( 'show' ) ? 'remove' : 'add']( 'show' )
+// }
+Vue.use(Vuex);
 
 Vue.use(MultiLanguage, {
     default: 'en',
@@ -86,9 +92,14 @@ Vue.filter('capitalize', function (value) {
     return value.charAt( 0 ).toUpperCase() + value.slice( 1 )
 })
 
+Vue.use(Dropdown);
+Vue.use(Modal);
+Vue.use(FormInput);
+
 new Vue({
     el: '#app',
     data: Object.assign({}, options),
+    store: new Vuex.Store(store),
     components: Object.assign(apps, views),
     watch: {
         viewapp ( value ) {
@@ -108,6 +119,9 @@ new Vue({
         }
     },
     methods: {
+        ...mapActions('keys', {
+	        getKeyList: 'getList'
+        }),
         sidebar ( object ) {
             if ( !object.id ) return
             
@@ -127,7 +141,8 @@ new Vue({
     },
     mounted () {
         document.addEventListener('DOMContentLoaded', SVG)
-        document.addEventListener('click', event => event.target.dropdown())
+        // document.addEventListener('click', event => event.target.dropdown())
+        this.getKeyList()
 
         this.aside = {pins: {}, apps: {}}
         this.pagetitle = this.translate( 'header' ).home
