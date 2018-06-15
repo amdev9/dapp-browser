@@ -23,7 +23,7 @@ let bounds = {
 };
 
 app.on('ready', () => {
-  const store = configureStore(global.state, 'main');
+  const store = configureStore(global.state);
 
   process.stdout.write(JSON.stringify(store.getState()));
   

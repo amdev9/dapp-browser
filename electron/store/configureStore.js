@@ -12,28 +12,19 @@ const {
 } = require('electron-redux');
 const rootReducer = require('../reducers');
 
-const configureStore = (initialState, scope = 'main') => {
+const configureStore = (initialState) => {
   const middleware = [];
   middleware.push(thunk);
   const router = routerMiddleware(hashHistory);
-  if (scope === 'renderer') {
-    middleware.push(forwardToMain, router);
-  }
-
-  if (scope === 'main') {
-    middleware.push(triggerAlias, forwardToRenderer); // add middleware for permissions verifications
-  }
+ 
+  middleware.push(triggerAlias, forwardToRenderer); // add middleware for permissions verifications
 
   const enhanced = [applyMiddleware(...middleware, router)]; 
   const enhancer = compose(...enhanced);
   const store = createStore(rootReducer, initialState, enhancer);
 
-  if (scope === 'main') {
-    replayActionMain(store); // verification for payload, use custom electron-redux like decision
-  } else {
-    replayActionRenderer(store);
-  }
-
+  replayActionMain(store); // verification for payload, use custom electron-redux like decision
+   
   return store;
 };
 
