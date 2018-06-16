@@ -64,7 +64,9 @@ const configureStore = (initialState) => {
 
 const initStore = () => {
 
+  console.log('initStore');
   const states = electronManager.getGlobalState(); // window.ipc 
+  console.log(states);
   const initialState = JSON.parse(states()); // getInitialStateRenderer();  
 
   const store = configureStore(initialState);

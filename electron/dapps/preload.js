@@ -17,6 +17,9 @@ class ElectronManager {
     const uuidRenderer = uuidRendererParam[0].split('=')[1];
     console.log(uuidRenderer);
 
+    console.log(electron.remote.getGlobal('getReduxState')());
+
+
     const replayActionRenderer = (store) => { 
       ipcRenderer.on('redux-action', (event, payload) => {
         store.dispatch(payload);
@@ -24,6 +27,7 @@ class ElectronManager {
     }
 
     const getGlobalState = () => {
+      
       const globalState = electron.remote.getGlobal('getReduxState'); 
       return globalState;
     }

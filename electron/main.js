@@ -55,6 +55,7 @@ app.on('ready', () => {
   process.stdout.write(uuidDapp);
   dappView = createDappView(clientWindow, uuidDapp);
 
+  // SAVE UUID to map
 });
 
 process.stdout.write("Main initialized");
