@@ -22,17 +22,17 @@ function createClientWindow(uuid) {
 
   // @TODO: Use 'ready-to-show' event
   //        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event
-  clientWindow.webContents.on('did-finish-load', () => {
-    if (!clientWindow) {
-      throw new Error('"clientWindow" is not defined');
-    }
-    clientWindow.show();
-    clientWindow.focus();
-  });
+  // clientWindow.webContents.on('did-finish-load', () => {
+  //   if (!clientWindow) {
+  //     throw new Error('"clientWindow" is not defined');
+  //   }
+  //   clientWindow.show();
+  //   clientWindow.focus();
+  // });
 
-  clientWindow.on('closed', () => {
-    clientWindow = null;
-  });
+  // clientWindow.on('closed', () => {
+  //   clientWindow = null;
+  // });
 
   return clientWindow;
 }
