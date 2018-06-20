@@ -13,7 +13,7 @@ function createClientWindow(uuid) {
     webPreferences: {
       nodeIntegration: false,
       sandbox: true,
-      contextIsolation: true,
+      // contextIsolation: true,
       preload: path.join(VIEW_PATH, 'preload.js'), //path.join(RENDERER_PATH, 'preload-extended.js')
       additionalArguments: [ '--uuid-renderer='.concat(uuid) ]
     }
