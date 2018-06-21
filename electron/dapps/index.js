@@ -84,6 +84,7 @@ const initUi = () => {
   store.subscribe(renderState);
 
   document.getElementById('increment').addEventListener('click', () => {
+    // fix to sendActionMain?
     store.dispatch({
       type: 'INCREMENT_COUNTER'
     }); // dispatch API endpoints
