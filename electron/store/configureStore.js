@@ -4,14 +4,17 @@ const thunk = require('redux-thunk').default;
 const { hashHistory } = require('react-router');
 const { routerMiddleware } = require('react-router-redux');
 const { isFSA } = require('flux-standard-action');
-
-
-const {
-  forwardToRenderer,
-  triggerAlias,
-  replayActionMain
-} = require('electron-redux');
+const { forwardToRenderer, triggerAlias } = require('electron-redux');
 const rootReducer = require('../reducers');
+
+const replayActionMain = (store) => {
+  
+  global.getReduxState = () => JSON.stringify(store.getState());
+
+  ipcMain.on('redux-action', (event, uuid, payload) => {
+    store.dispatch(payload);
+  });
+}
 
 const configureStore = (initialState) => {
   const middleware = [];
@@ -27,7 +30,7 @@ const configureStore = (initialState) => {
   const store = createStore(rootReducer, initialState, enhancer);
 
   replayActionMain(store); // verification for payload, use custom electron-redux like decision
- 
+  
   return store;
 };
 
