@@ -1,13 +1,17 @@
 const { BrowserWindow } = require('electron');
 const path = require('path');
+const uuidv4 = require('uuid/v4');
  
 
 let clientWindow = null;
 const RENDERER_PATH = path.join(__dirname, 'client');
 const VIEW_PATH = path.join(__dirname, 'dapps');
 
-function createClientWindow(uuid) {  
-  
+function createClientWindow(globalUUID) {  
+
+  const uuidClient = uuidv4();
+  globalUUID[uuidClient] = { status: 'client' };
+
   clientWindow = new BrowserWindow({
     x: 0,
     y: 0,
@@ -16,7 +20,7 @@ function createClientWindow(uuid) {
       sandbox: true,
       // contextIsolation: true,
       preload: path.join(VIEW_PATH, 'preload.js'), //path.join(RENDERER_PATH, 'preload-extended.js')
-      additionalArguments: [ '--uuid-renderer='.concat(uuid) ]
+      additionalArguments: [ '--uuid-renderer='.concat(uuidClient) ]
     }
   })
   clientWindow.loadURL('file://' + path.join(RENDERER_PATH, 'index.html'));

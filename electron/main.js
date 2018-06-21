@@ -5,7 +5,6 @@
 
 const { app, BrowserWindow, BrowserView, dialog } = require('electron');
 const path = require('path');
-const uuidv4 = require('uuid/v4');
 
 const configureStore = require('./store/configureStore');
 const createClientWindow = require('./createClientWindow');
@@ -22,8 +21,7 @@ let bounds = {
   height: 600
 };
 
-var globalUUID = {};
-
+const globalUUID = {};
 
 app.on('ready', () => {
   const store = configureStore(global.state, globalUUID);
@@ -42,28 +40,17 @@ app.on('ready', () => {
     }
   });
   
-
-  
-  const uuidClient = uuidv4();  
-
-  globalUUID[uuidClient] = { status: 'client' };
-
   app.on('activate', () => {
     // On OS X it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
-    clientWindow = createClientWindow(uuidClient);
+    clientWindow = createClientWindow(globalUUID);
   });
-  clientWindow = createClientWindow(uuidClient);  
+  clientWindow = createClientWindow(globalUUID);  
 
   // create multiple view and keep them around the memory, detached from the window
   // then switching workspaces is just and additional call to setBrowserView
   
-  const uuidDapp = uuidv4();
-  // process.stdout.write(uuidDapp);
-
-  globalUUID[uuidDapp] = { status: 'dapp' };
-
-  dappView = createDappView(clientWindow, uuidDapp);
+  dappView = createDappView(clientWindow, globalUUID);
 
   process.stdout.write(JSON.stringify(globalUUID) );
   // SAVE UUID to map
