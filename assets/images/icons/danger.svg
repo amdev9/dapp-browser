@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="23px" height="19px" viewBox="0 0 23 19" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.1 (51147) - http://www.bohemiancoding.com/sketch -->
+    <title>Triangle_icn 1</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="UC01_1_Home_page" transform="translate(-365.000000, -92.000000)">
+            <g id="alert_pop_up" transform="translate(346.000000, 80.000000)">
+                <g id="Triangle_icn" transform="translate(20.000000, 12.000000)">
+                    <polygon id="Triangle" stroke="#CD3B3B" stroke-width="1" fill="#CD3B3B" stroke-linejoin="round" points="10.5 0 21 18 0 18"></polygon>
+                    <path d="M10.5,6 C10.7761424,6 11,6.22385763 11,6.5 L11,12.5 C11,12.7761424 10.7761424,13 10.5,13 C10.2238576,13 10,12.7761424 10,12.5 L10,6.5 C10,6.22385763 10.2238576,6 10.5,6 Z M10.5,14 C10.7761424,14 11,14.2238576 11,14.5 L11,15.5 C11,15.7761424 10.7761424,16 10.5,16 C10.2238576,16 10,15.7761424 10,15.5 L10,14.5 C10,14.2238576 10.2238576,14 10.5,14 Z" id="Combined-Shape" fill="#FFFFFF"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
