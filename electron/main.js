@@ -46,6 +46,7 @@ app.on('ready', () => {
   // then switching workspaces is just and additional call to setBrowserView
   
   dappView = createDappView(clientWindow, globalUUID);
+  //TODO map dappView to name, globalUUID mapped to the same object??
 
   process.stdout.write(JSON.stringify(globalUUID) );
   // SAVE UUID to map

@@ -142,7 +142,14 @@ const { SWITCH_DAPP } = require('../actions/client');
 function client(state = 0, action) {
   switch (action.type) {
     case SWITCH_DAPP:
-      return state - 1;
+
+      const dappId = action.payload.targetDappId; // dapp id
+      return {
+        ...state,
+        activeDapp: dappId 
+      }
+
+      // return state - 1;
     default:
       return state;
   }
@@ -173,9 +180,6 @@ const client = require('./client');
 const rootReducer = combineReducers({
   counter,
   client
-  // routing
-
-  //TODO add client state reducer
 });
 
 module.exports = rootReducer;
