@@ -22,8 +22,11 @@ let bounds = {
   height: 600
 };
 
+var globalUUID = {};
+
+
 app.on('ready', () => {
-  const store = configureStore(global.state);
+  const store = configureStore(global.state, globalUUID);
 
   process.stdout.write(JSON.stringify(store.getState()));
   
@@ -39,7 +42,11 @@ app.on('ready', () => {
     }
   });
   
+
+  
   const uuidClient = uuidv4();  
+
+  globalUUID[uuidClient] = { status: 'client' };
 
   app.on('activate', () => {
     // On OS X it's common to re-create a window in the app when the
@@ -52,9 +59,13 @@ app.on('ready', () => {
   // then switching workspaces is just and additional call to setBrowserView
   
   const uuidDapp = uuidv4();
-  process.stdout.write(uuidDapp);
+  // process.stdout.write(uuidDapp);
+
+  globalUUID[uuidDapp] = { status: 'dapp' };
+
   dappView = createDappView(clientWindow, uuidDapp);
 
+  process.stdout.write(JSON.stringify(globalUUID) );
   // SAVE UUID to map
 });
 
@@ -93,4 +104,4 @@ ipcMain.on('rpc-switch', function (event, rpc, arg) {
 // ipc identification and communication between renderers through actions
 // https://electronjs.org/docs/api/browser-window
 // https://electronjs.org/docs/api/ipc-main
-
+ 

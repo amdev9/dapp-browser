@@ -7,6 +7,7 @@ const RENDERER_PATH = path.join(__dirname, 'client');
 const VIEW_PATH = path.join(__dirname, 'dapps');
 
 function createClientWindow(uuid) {  
+  
   clientWindow = new BrowserWindow({
     x: 0,
     y: 0,

@@ -8,20 +8,29 @@ const { forwardToRenderer, triggerAlias } = require('electron-redux');
 const rootReducer = require('../reducers');
 const validatePermissionAction = require('./validatePermissionAction');
 
-const replayActionMain = (store) => {
+ 
+
+const replayActionMain = (store, globalId) => {
   
   global.getReduxState = () => JSON.stringify(store.getState());
 
   ipcMain.on('redux-action', (event, uuid, payload) => { 
     
-    // 1 validate spoofing uuid checker 
-    // 2 indentify process (client or dapp)
-    // 3 pass action to redux middleware to check permissions
-    store.dispatch(payload);                             // verification for payload 
+    if (Object.keys(globalId).includes(uuid)) {
+      console.log("Validated: ", globalId[uuid].status)
+    
+      // + validate spoofing uuid checker 
+      // + indentify process (client or dapp)
+      // + pass action to redux middleware to check permissions
+      store.dispatch(payload);                             // verification for payload 
+    } else {
+      console.log("Spoofing detected")
+    }
+   
   });
 }
 
-const configureStore = (initialState) => {
+const configureStore = (initialState, globalId) => {
   const middleware = [];
   middleware.push(thunk);
   const router = routerMiddleware(hashHistory);
@@ -32,7 +41,7 @@ const configureStore = (initialState) => {
   const enhancer = compose(...enhanced);
   const store = createStore(rootReducer, initialState, enhancer);
 
-  replayActionMain(store); 
+  replayActionMain(store, globalId); 
   
   return store;
 };
