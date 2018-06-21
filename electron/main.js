@@ -3,9 +3,7 @@
   Uses process.stdout.write instead of console.log so we can cleanly catch the output in the parent process.
 */
 
-const { app, BrowserWindow, BrowserView, dialog } = require('electron');
-const path = require('path');
-
+const { app } = require('electron');
 const configureStore = require('./store/configureStore');
 const createClientWindow = require('./createClientWindow');
 const createDappView = require('./createDappView');
