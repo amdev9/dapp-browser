@@ -1,4 +1,17 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+const SWITCH_DAPP = 'SWITCH_DAPP';
+ 
+function switchDapp() {
+  return {
+    type: SWITCH_DAPP
+  };
+}
+ 
+module.exports = {
+  switchDapp,
+  SWITCH_DAPP
+}
+},{}],2:[function(require,module,exports){
 const INCREMENT_COUNTER = 'INCREMENT_COUNTER';
 const DECREMENT_COUNTER = 'DECREMENT_COUNTER';
 
@@ -20,7 +33,7 @@ module.exports = {
   INCREMENT_COUNTER,
   DECREMENT_COUNTER
 }
-},{}],2:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 //***** define redux, redux-thunk with browserify */
 const { combineReducers, createStore, applyMiddleware, compose } = require('redux');
 const thunk = require('redux-thunk').default;
@@ -110,11 +123,12 @@ const initUi = () => {
     });
 
     document.getElementById('switch_tab').addEventListener('click', () => {
+         
         store.dispatch({
-        type: 'SWITCH_DAPP',
-        payload: { 
-            targetDappId: '8g1hf08r1gub' //TODO fix to name of dapp
-        }
+            type: 'SWITCH_DAPP',
+            payload: { 
+                targetDappId: '8g1hf08r1gub' //TODO fix to name of dapp
+            }
         }); // dispatch API endpoints
     });
 }
@@ -123,7 +137,20 @@ const initUi = () => {
 // main
 store = initStore();
 initUi();
-},{"../reducers":4,"flux-standard-action":5,"redux":19,"redux-thunk":18}],3:[function(require,module,exports){
+},{"../reducers":6,"flux-standard-action":7,"redux":21,"redux-thunk":20}],4:[function(require,module,exports){
+const { SWITCH_DAPP } = require('../actions/client');
+
+function client(state = 0, action) {
+  switch (action.type) {
+    case SWITCH_DAPP:
+      return state - 1;
+    default:
+      return state;
+  }
+}
+
+module.exports = client;
+},{"../actions/client":1}],5:[function(require,module,exports){
 const { INCREMENT_COUNTER, DECREMENT_COUNTER } = require('../actions/counter');
 
 function counter(state = 0, action) {
@@ -138,13 +165,15 @@ function counter(state = 0, action) {
 }
 
 module.exports = counter;
-},{"../actions/counter":1}],4:[function(require,module,exports){
+},{"../actions/counter":2}],6:[function(require,module,exports){
 const { combineReducers } = require('redux');
 
 const counter = require('./counter');
+const client = require('./client');
 
 const rootReducer = combineReducers({
-  counter
+  counter,
+  client
   // routing
 
   //TODO add client state reducer
@@ -152,7 +181,7 @@ const rootReducer = combineReducers({
 
 module.exports = rootReducer;
 
-},{"./counter":3,"redux":19}],5:[function(require,module,exports){
+},{"./client":4,"./counter":5,"redux":21}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -183,7 +212,7 @@ function isError(action) {
 function isValidKey(key) {
   return ['type', 'payload', 'error', 'meta'].indexOf(key) > -1;
 }
-},{"lodash/isPlainObject":16,"lodash/isString":17}],6:[function(require,module,exports){
+},{"lodash/isPlainObject":18,"lodash/isString":19}],8:[function(require,module,exports){
 var root = require('./_root');
 
 /** Built-in value references. */
@@ -191,7 +220,7 @@ var Symbol = root.Symbol;
 
 module.exports = Symbol;
 
-},{"./_root":13}],7:[function(require,module,exports){
+},{"./_root":15}],9:[function(require,module,exports){
 var Symbol = require('./_Symbol'),
     getRawTag = require('./_getRawTag'),
     objectToString = require('./_objectToString');
@@ -221,7 +250,7 @@ function baseGetTag(value) {
 
 module.exports = baseGetTag;
 
-},{"./_Symbol":6,"./_getRawTag":10,"./_objectToString":11}],8:[function(require,module,exports){
+},{"./_Symbol":8,"./_getRawTag":12,"./_objectToString":13}],10:[function(require,module,exports){
 (function (global){
 /** Detect free variable `global` from Node.js. */
 var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
@@ -229,7 +258,7 @@ var freeGlobal = typeof global == 'object' && global && global.Object === Object
 module.exports = freeGlobal;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],9:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 var overArg = require('./_overArg');
 
 /** Built-in value references. */
@@ -237,7 +266,7 @@ var getPrototype = overArg(Object.getPrototypeOf, Object);
 
 module.exports = getPrototype;
 
-},{"./_overArg":12}],10:[function(require,module,exports){
+},{"./_overArg":14}],12:[function(require,module,exports){
 var Symbol = require('./_Symbol');
 
 /** Used for built-in method references. */
@@ -285,7 +314,7 @@ function getRawTag(value) {
 
 module.exports = getRawTag;
 
-},{"./_Symbol":6}],11:[function(require,module,exports){
+},{"./_Symbol":8}],13:[function(require,module,exports){
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
 
@@ -309,7 +338,7 @@ function objectToString(value) {
 
 module.exports = objectToString;
 
-},{}],12:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 /**
  * Creates a unary function that invokes `func` with its argument transformed.
  *
@@ -326,7 +355,7 @@ function overArg(func, transform) {
 
 module.exports = overArg;
 
-},{}],13:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 var freeGlobal = require('./_freeGlobal');
 
 /** Detect free variable `self`. */
@@ -337,7 +366,7 @@ var root = freeGlobal || freeSelf || Function('return this')();
 
 module.exports = root;
 
-},{"./_freeGlobal":8}],14:[function(require,module,exports){
+},{"./_freeGlobal":10}],16:[function(require,module,exports){
 /**
  * Checks if `value` is classified as an `Array` object.
  *
@@ -365,7 +394,7 @@ var isArray = Array.isArray;
 
 module.exports = isArray;
 
-},{}],15:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 /**
  * Checks if `value` is object-like. A value is object-like if it's not `null`
  * and has a `typeof` result of "object".
@@ -396,7 +425,7 @@ function isObjectLike(value) {
 
 module.exports = isObjectLike;
 
-},{}],16:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 var baseGetTag = require('./_baseGetTag'),
     getPrototype = require('./_getPrototype'),
     isObjectLike = require('./isObjectLike');
@@ -460,7 +489,7 @@ function isPlainObject(value) {
 
 module.exports = isPlainObject;
 
-},{"./_baseGetTag":7,"./_getPrototype":9,"./isObjectLike":15}],17:[function(require,module,exports){
+},{"./_baseGetTag":9,"./_getPrototype":11,"./isObjectLike":17}],19:[function(require,module,exports){
 var baseGetTag = require('./_baseGetTag'),
     isArray = require('./isArray'),
     isObjectLike = require('./isObjectLike');
@@ -492,7 +521,7 @@ function isString(value) {
 
 module.exports = isString;
 
-},{"./_baseGetTag":7,"./isArray":14,"./isObjectLike":15}],18:[function(require,module,exports){
+},{"./_baseGetTag":9,"./isArray":16,"./isObjectLike":17}],20:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -516,7 +545,7 @@ var thunk = createThunkMiddleware();
 thunk.withExtraArgument = createThunkMiddleware;
 
 exports['default'] = thunk;
-},{}],19:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -1119,7 +1148,7 @@ exports.compose = compose;
 exports.__DO_NOT_USE__ActionTypes = ActionTypes;
 
 }).call(this,require('_process'))
-},{"_process":22,"symbol-observable":20}],20:[function(require,module,exports){
+},{"_process":24,"symbol-observable":22}],22:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -1151,7 +1180,7 @@ if (typeof self !== 'undefined') {
 var result = (0, _ponyfill2['default'])(root);
 exports['default'] = result;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./ponyfill.js":21}],21:[function(require,module,exports){
+},{"./ponyfill.js":23}],23:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1175,7 +1204,7 @@ function symbolObservablePonyfill(root) {
 
 	return result;
 };
-},{}],22:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -1361,4 +1390,4 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}]},{},[2]);
+},{}]},{},[3]);

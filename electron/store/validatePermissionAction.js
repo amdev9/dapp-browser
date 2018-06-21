@@ -7,6 +7,10 @@ const validatePermissionAction = () => next => (action) => {
   } else if (action.type == 'DECREMENT_COUNTER') {
     console.log(action);
     return next(action);
+
+  } else if (action.type == 'SWITCH_DAPP') {
+      console.log(action);
+      return next(action);
   } else {
     // restrict unknown action
     console.log('Canceled');
