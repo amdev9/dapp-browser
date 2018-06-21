@@ -1,7 +1,8 @@
 const { BrowserWindow } = require('electron');
 const path = require('path');
 const uuidv4 = require('uuid/v4');
- 
+
+const openDevTool = require('./helpers/devtools');
 
 let clientWindow = null;
 const RENDERER_PATH = path.join(__dirname, 'client');
@@ -38,7 +39,9 @@ function createClientWindow(globalUUID) {
     clientWindow = null;
   });
 
+  openDevTool(clientWindow, true);
   return clientWindow;
 }
+
 
 module.exports = createClientWindow;

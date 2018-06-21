@@ -2,6 +2,8 @@ const { BrowserWindow } = require('electron');
 const path = require('path');
 const uuidv4 = require('uuid/v4');
 
+const openDevTool = require('./helpers/devtools');
+
 let dappView = null;
  
 const VIEW_PATH = path.join(__dirname, 'dapps');
@@ -34,6 +36,7 @@ function createDappView(clientWindow, globalUUID) {
     // dappView.setBounds(bounds);
     dappView.webContents.loadURL('file://' + path.join(VIEW_PATH, 'index.html'));
 
+    openDevTool(dappView, true);
     return dappView;
 }
 
