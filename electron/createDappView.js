@@ -11,7 +11,7 @@ function createDappView(clientWindow, uuid) {
         webPreferences: {
             nodeIntegration: false,
             sandbox: true,
-            contextIsolation: true,
+            // contextIsolation: true,
             preload: path.join(VIEW_PATH, 'preload.js'),
             additionalArguments: [ '--uuid-renderer='.concat(uuid) ]
         }
