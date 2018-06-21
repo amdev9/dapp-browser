@@ -3,7 +3,7 @@ const path = require('path');
 const uuidv4 = require('uuid/v4');
 
 let dappView = null;
-const RENDERER_PATH = path.join(__dirname, 'client');
+ 
 const VIEW_PATH = path.join(__dirname, 'dapps');
 
 function createDappView(clientWindow, globalUUID) {
