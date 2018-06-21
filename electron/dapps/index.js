@@ -84,7 +84,7 @@ const initUi = () => {
   store.subscribe(renderState);
 
   document.getElementById('increment').addEventListener('click', () => {
-    // fix to sendActionMain?
+ 
     store.dispatch({
       type: 'INCREMENT_COUNTER'
     }); // dispatch API endpoints
@@ -95,6 +95,16 @@ const initUi = () => {
       type: 'DECREMENT_COUNTER'
     }); // dispatch API endpoints
   });
+
+  document.getElementById('switch_tab').addEventListener('click', () => {
+    store.dispatch({
+      type: 'SWITCH_DAPP',
+      payload: { 
+        targetDappId: '8g1hf08r1gub' //TODO fix to name of dapp
+      }
+    }); // dispatch API endpoints
+  });
+
 
 }
 

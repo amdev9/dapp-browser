@@ -5,7 +5,6 @@ const uuidv4 = require('uuid/v4');
 
 let clientWindow = null;
 const RENDERER_PATH = path.join(__dirname, 'client');
-const VIEW_PATH = path.join(__dirname, 'dapps');
 
 function createClientWindow(globalUUID) {  
 
@@ -19,7 +18,7 @@ function createClientWindow(globalUUID) {
       nodeIntegration: false,
       sandbox: true,
       // contextIsolation: true,
-      preload: path.join(VIEW_PATH, 'preload.js'), //path.join(RENDERER_PATH, 'preload-extended.js')
+      preload: path.join(__dirname, 'preload.js'), //path.join(RENDERER_PATH, 'preload-extended.js')
       additionalArguments: [ '--uuid-renderer='.concat(uuidClient) ]
     }
   })

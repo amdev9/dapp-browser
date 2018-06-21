@@ -67,7 +67,7 @@ ipcMain.once('answer', (event, argv) => {
 });
 
 
-ipcMain.on('rpc-switch', function (event, rpc, arg) {
+ipcMain.on('rpc-switch', function (event, rpc, arg) { //TODO handle with client reducer instead
   process.stdout.write("RPC REQUEST: " + rpc);
   switch (+rpc) {
     case 1:

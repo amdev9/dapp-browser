@@ -18,7 +18,7 @@ function createDappView(clientWindow, globalUUID) {
             nodeIntegration: false,
             sandbox: true,
             // contextIsolation: true,
-            preload: path.join(VIEW_PATH, 'preload.js'),
+            preload: path.join(__dirname, 'preload.js'),
             additionalArguments: [ '--uuid-renderer='.concat(uuidDapp) ]
         }
     });
