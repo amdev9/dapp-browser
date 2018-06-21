@@ -3,16 +3,10 @@
   Uses process.stdout.write instead of console.log so we can cleanly catch the output in the parent process.
 */
 
-const { app, BrowserWindow, BrowserView, dialog } = require('electron');
-const path = require('path');
-const uuidv4 = require('uuid/v4');
-
+const { app } = require('electron');
 const configureStore = require('./store/configureStore');
 const createClientWindow = require('./createClientWindow');
 const createDappView = require('./createDappView');
-
-const RENDERER_PATH = path.join(__dirname, 'client');
-const VIEW_PATH = path.join(__dirname, 'dapps');
 
 let win, view, view2;
 let bounds = {
@@ -22,8 +16,10 @@ let bounds = {
   height: 600
 };
 
+const globalUUID = {};
+
 app.on('ready', () => {
-  const store = configureStore(global.state);
+  const store = configureStore(global.state, globalUUID);
 
   process.stdout.write(JSON.stringify(store.getState()));
   
@@ -39,22 +35,19 @@ app.on('ready', () => {
     }
   });
   
-  const uuidClient = uuidv4();  
-
   app.on('activate', () => {
     // On OS X it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
-    clientWindow = createClientWindow(uuidClient);
+    clientWindow = createClientWindow(globalUUID);
   });
-  clientWindow = createClientWindow(uuidClient);  
+  clientWindow = createClientWindow(globalUUID);  
 
   // create multiple view and keep them around the memory, detached from the window
   // then switching workspaces is just and additional call to setBrowserView
   
-  const uuidDapp = uuidv4();
-  process.stdout.write(uuidDapp);
-  dappView = createDappView(clientWindow, uuidDapp);
+  dappView = createDappView(clientWindow, globalUUID);
 
+  process.stdout.write(JSON.stringify(globalUUID) );
   // SAVE UUID to map
 });
 
@@ -74,7 +67,7 @@ ipcMain.once('answer', (event, argv) => {
 });
 
 
-ipcMain.on('rpc-switch', function (event, rpc, arg) {
+ipcMain.on('rpc-switch', function (event, rpc, arg) { //TODO handle with client reducer instead
   process.stdout.write("RPC REQUEST: " + rpc);
   switch (+rpc) {
     case 1:
@@ -93,4 +86,4 @@ ipcMain.on('rpc-switch', function (event, rpc, arg) {
 // ipc identification and communication between renderers through actions
 // https://electronjs.org/docs/api/browser-window
 // https://electronjs.org/docs/api/ipc-main
-
+ 

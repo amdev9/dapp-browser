@@ -1,19 +1,27 @@
 const { BrowserWindow } = require('electron');
 const path = require('path');
- 
+const uuidv4 = require('uuid/v4');
+
+const openDevTool = require('./helpers/devtools');
 
 let dappView = null;
-const RENDERER_PATH = path.join(__dirname, 'client');
+ 
 const VIEW_PATH = path.join(__dirname, 'dapps');
 
-function createDappView(clientWindow, uuid) {
+function createDappView(clientWindow, globalUUID) {
+
+    const uuidDapp = uuidv4();
+    // process.stdout.write(uuidDapp);
+  
+    globalUUID[uuidDapp] = { status: 'dapp' };
+
     dappView = new BrowserWindow({
         webPreferences: {
             nodeIntegration: false,
             sandbox: true,
-            //contextIsolation: true,
-            preload: path.join(VIEW_PATH, 'preload.js'),
-            additionalArguments: [ '--uuid-renderer='.concat(uuid) ]
+            // contextIsolation: true,
+            preload: path.join(__dirname, 'preload.js'),
+            additionalArguments: [ '--uuid-renderer='.concat(uuidDapp) ]
         }
     });
 
@@ -28,6 +36,7 @@ function createDappView(clientWindow, uuid) {
     // dappView.setBounds(bounds);
     dappView.webContents.loadURL('file://' + path.join(VIEW_PATH, 'index.html'));
 
+    openDevTool(dappView, true);
     return dappView;
 }
 

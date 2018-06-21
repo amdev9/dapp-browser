@@ -12,7 +12,6 @@ const {
 
 const electronManager = window.ipc;
 
-
 const validateAction = (action) => {
   if (!isFSA(action)) {
     // log('WARNING! Action not FSA-compliant', action);
@@ -20,7 +19,6 @@ const validateAction = (action) => {
   }
   return true;
 }
-
 
 const forwardToMain = store => next => (action) => {
   if (!validateAction(action)) return next(action);
@@ -47,7 +45,7 @@ const forwardToMain = store => next => (action) => {
 
 const configureStore = (initialState) => {
 
-  const middleware = [thunk, forwardToMain];
+  const middleware = [forwardToMain, thunk];
   const enhanced = [
     applyMiddleware(...middleware),
   ];
@@ -84,6 +82,7 @@ const initUi = () => {
   store.subscribe(renderState);
 
   document.getElementById('increment').addEventListener('click', () => {
+ 
     store.dispatch({
       type: 'INCREMENT_COUNTER'
     }); // dispatch API endpoints
