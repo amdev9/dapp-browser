@@ -11,8 +11,8 @@ const replayActionMain = (store) => {
   
   global.getReduxState = () => JSON.stringify(store.getState());
 
-  ipcMain.on('redux-action', (event, uuid, payload) => {
-    store.dispatch(payload);
+  ipcMain.on('redux-action', (event, uuid, payload) => { // todo middleware uuid checker 
+    store.dispatch(payload);                             // verification for payload 
   });
 }
 
@@ -20,16 +20,14 @@ const configureStore = (initialState) => {
   const middleware = [];
   middleware.push(thunk);
   const router = routerMiddleware(hashHistory);
- 
-   
+    
   middleware.push(triggerAlias, forwardToRenderer); // add middleware for permissions verifications
   
-
   const enhanced = [applyMiddleware(...middleware, router)]; 
   const enhancer = compose(...enhanced);
   const store = createStore(rootReducer, initialState, enhancer);
 
-  replayActionMain(store); // verification for payload, use custom electron-redux like decision
+  replayActionMain(store); 
   
   return store;
 };
