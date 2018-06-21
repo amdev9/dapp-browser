@@ -26,7 +26,7 @@ const configureStore = (initialState) => {
   middleware.push(thunk);
   const router = routerMiddleware(hashHistory);
     
-  middleware.push(triggerAlias, forwardToRenderer, validatePermissionAction); // add middleware for permissions verifications
+  middleware.push(triggerAlias, validatePermissionAction, forwardToRenderer); // add middleware for permissions verifications
   
   const enhanced = [applyMiddleware(...middleware, router)]; 
   const enhancer = compose(...enhanced);

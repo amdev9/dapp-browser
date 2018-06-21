@@ -70,7 +70,7 @@ const forwardToMain = store => next => (action) => {
 
 const configureStore = (initialState) => {
 
-  const middleware = [thunk, forwardToMain];
+  const middleware = [forwardToMain, thunk];
   const enhanced = [
     applyMiddleware(...middleware),
   ];
@@ -107,6 +107,7 @@ const initUi = () => {
   store.subscribe(renderState);
 
   document.getElementById('increment').addEventListener('click', () => {
+    // fix to sendActionMain?
     store.dispatch({
       type: 'INCREMENT_COUNTER'
     }); // dispatch API endpoints
@@ -124,34 +125,7 @@ const initUi = () => {
 // main
 store = initStore();
 initUi();
-},{"../reducers":4,"flux-standard-action":5,"redux":19,"redux-thunk":18}],3:[function(require,module,exports){
-const { INCREMENT_COUNTER, DECREMENT_COUNTER } = require('../actions/counter');
-
-function counter(state = 0, action) {
-  switch (action.type) {
-    case INCREMENT_COUNTER:
-      return state + 1;
-    case DECREMENT_COUNTER:
-      return state - 1;
-    default:
-      return state;
-  }
-}
-
-module.exports = counter;
-},{"../actions/counter":1}],4:[function(require,module,exports){
-const { combineReducers } = require('redux');
-
-const counter = require('./counter');
-
-const rootReducer = combineReducers({
-  counter
-  // routing
-});
-
-module.exports = rootReducer;
-
-},{"./counter":3,"redux":19}],5:[function(require,module,exports){
+},{"../reducers":21,"flux-standard-action":3,"redux":17,"redux-thunk":16}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -182,7 +156,7 @@ function isError(action) {
 function isValidKey(key) {
   return ['type', 'payload', 'error', 'meta'].indexOf(key) > -1;
 }
-},{"lodash/isPlainObject":16,"lodash/isString":17}],6:[function(require,module,exports){
+},{"lodash/isPlainObject":14,"lodash/isString":15}],4:[function(require,module,exports){
 var root = require('./_root');
 
 /** Built-in value references. */
@@ -190,7 +164,7 @@ var Symbol = root.Symbol;
 
 module.exports = Symbol;
 
-},{"./_root":13}],7:[function(require,module,exports){
+},{"./_root":11}],5:[function(require,module,exports){
 var Symbol = require('./_Symbol'),
     getRawTag = require('./_getRawTag'),
     objectToString = require('./_objectToString');
@@ -220,7 +194,7 @@ function baseGetTag(value) {
 
 module.exports = baseGetTag;
 
-},{"./_Symbol":6,"./_getRawTag":10,"./_objectToString":11}],8:[function(require,module,exports){
+},{"./_Symbol":4,"./_getRawTag":8,"./_objectToString":9}],6:[function(require,module,exports){
 (function (global){
 /** Detect free variable `global` from Node.js. */
 var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
@@ -228,7 +202,7 @@ var freeGlobal = typeof global == 'object' && global && global.Object === Object
 module.exports = freeGlobal;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],9:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 var overArg = require('./_overArg');
 
 /** Built-in value references. */
@@ -236,7 +210,7 @@ var getPrototype = overArg(Object.getPrototypeOf, Object);
 
 module.exports = getPrototype;
 
-},{"./_overArg":12}],10:[function(require,module,exports){
+},{"./_overArg":10}],8:[function(require,module,exports){
 var Symbol = require('./_Symbol');
 
 /** Used for built-in method references. */
@@ -284,7 +258,7 @@ function getRawTag(value) {
 
 module.exports = getRawTag;
 
-},{"./_Symbol":6}],11:[function(require,module,exports){
+},{"./_Symbol":4}],9:[function(require,module,exports){
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
 
@@ -308,7 +282,7 @@ function objectToString(value) {
 
 module.exports = objectToString;
 
-},{}],12:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 /**
  * Creates a unary function that invokes `func` with its argument transformed.
  *
@@ -325,7 +299,7 @@ function overArg(func, transform) {
 
 module.exports = overArg;
 
-},{}],13:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 var freeGlobal = require('./_freeGlobal');
 
 /** Detect free variable `self`. */
@@ -336,7 +310,7 @@ var root = freeGlobal || freeSelf || Function('return this')();
 
 module.exports = root;
 
-},{"./_freeGlobal":8}],14:[function(require,module,exports){
+},{"./_freeGlobal":6}],12:[function(require,module,exports){
 /**
  * Checks if `value` is classified as an `Array` object.
  *
@@ -364,7 +338,7 @@ var isArray = Array.isArray;
 
 module.exports = isArray;
 
-},{}],15:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 /**
  * Checks if `value` is object-like. A value is object-like if it's not `null`
  * and has a `typeof` result of "object".
@@ -395,7 +369,7 @@ function isObjectLike(value) {
 
 module.exports = isObjectLike;
 
-},{}],16:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 var baseGetTag = require('./_baseGetTag'),
     getPrototype = require('./_getPrototype'),
     isObjectLike = require('./isObjectLike');
@@ -459,7 +433,7 @@ function isPlainObject(value) {
 
 module.exports = isPlainObject;
 
-},{"./_baseGetTag":7,"./_getPrototype":9,"./isObjectLike":15}],17:[function(require,module,exports){
+},{"./_baseGetTag":5,"./_getPrototype":7,"./isObjectLike":13}],15:[function(require,module,exports){
 var baseGetTag = require('./_baseGetTag'),
     isArray = require('./isArray'),
     isObjectLike = require('./isObjectLike');
@@ -491,7 +465,7 @@ function isString(value) {
 
 module.exports = isString;
 
-},{"./_baseGetTag":7,"./isArray":14,"./isObjectLike":15}],18:[function(require,module,exports){
+},{"./_baseGetTag":5,"./isArray":12,"./isObjectLike":13}],16:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -515,7 +489,7 @@ var thunk = createThunkMiddleware();
 thunk.withExtraArgument = createThunkMiddleware;
 
 exports['default'] = thunk;
-},{}],19:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -1118,7 +1092,7 @@ exports.compose = compose;
 exports.__DO_NOT_USE__ActionTypes = ActionTypes;
 
 }).call(this,require('_process'))
-},{"_process":22,"symbol-observable":20}],20:[function(require,module,exports){
+},{"_process":25,"symbol-observable":18}],18:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -1150,7 +1124,7 @@ if (typeof self !== 'undefined') {
 var result = (0, _ponyfill2['default'])(root);
 exports['default'] = result;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./ponyfill.js":21}],21:[function(require,module,exports){
+},{"./ponyfill.js":19}],19:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1174,7 +1148,40 @@ function symbolObservablePonyfill(root) {
 
 	return result;
 };
-},{}],22:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
+const { INCREMENT_COUNTER, DECREMENT_COUNTER } = require('../actions/counter');
+
+function counter(state = 0, action) {
+  switch (action.type) {
+    case INCREMENT_COUNTER:
+      return state + 1;
+    case DECREMENT_COUNTER:
+      return state - 1;
+    default:
+      return state;
+  }
+}
+
+module.exports = counter;
+},{"../actions/counter":1}],21:[function(require,module,exports){
+const { combineReducers } = require('redux');
+
+const counter = require('./counter');
+
+const rootReducer = combineReducers({
+  counter
+  // routing
+});
+
+module.exports = rootReducer;
+
+},{"./counter":20,"redux":22}],22:[function(require,module,exports){
+arguments[4][17][0].apply(exports,arguments)
+},{"_process":25,"dup":17,"symbol-observable":23}],23:[function(require,module,exports){
+arguments[4][18][0].apply(exports,arguments)
+},{"./ponyfill.js":24,"dup":18}],24:[function(require,module,exports){
+arguments[4][19][0].apply(exports,arguments)
+},{"dup":19}],25:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 

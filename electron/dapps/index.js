@@ -47,7 +47,7 @@ const forwardToMain = store => next => (action) => {
 
 const configureStore = (initialState) => {
 
-  const middleware = [thunk, forwardToMain];
+  const middleware = [forwardToMain, thunk];
   const enhanced = [
     applyMiddleware(...middleware),
   ];
