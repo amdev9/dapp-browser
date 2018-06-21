@@ -96,16 +96,6 @@ const initUi = () => {
     }); // dispatch API endpoints
   });
 
-  document.getElementById('switch_tab').addEventListener('click', () => {
-    store.dispatch({
-      type: 'SWITCH_DAPP',
-      payload: { 
-        targetDappId: '8g1hf08r1gub' //TODO fix to name of dapp
-      }
-    }); // dispatch API endpoints
-  });
-
-
 }
 
 

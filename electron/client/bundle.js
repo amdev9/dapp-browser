@@ -21,111 +21,138 @@ module.exports = {
   DECREMENT_COUNTER
 }
 },{}],2:[function(require,module,exports){
- //***** define redux, redux-thunk with browserify */
+//***** define redux, redux-thunk with browserify */
 const { combineReducers, createStore, applyMiddleware, compose } = require('redux');
 const thunk = require('redux-thunk').default;
-
 const rootReducer = require('../reducers');
-
-// const { hashHistory } = electron.remote.require('react-router');
-// const { routerMiddleware } = electron.remote.require('react-router-redux');
-const {
-  isFSA
-} = require('flux-standard-action');
+const { isFSA } = require('flux-standard-action');
 
 const electronManager = window.ipc;
 
-
 const validateAction = (action) => {
-  if (!isFSA(action)) {
-    // log('WARNING! Action not FSA-compliant', action);
-    return false;
-  }
-  return true;
+    if (!isFSA(action)) {
+        // log('WARNING! Action not FSA-compliant', action);
+        return false;
+    }
+    return true;
 }
 
-
 const forwardToMain = store => next => (action) => {
-  if (!validateAction(action)) return next(action);
+    if (!validateAction(action)) return next(action);
 
-  if (
-    action.type.substr(0, 2) !== '@@' &&
-    action.type.substr(0, 10) !== 'redux-form' &&
-    (!action.meta ||
-      !action.meta.scope ||
-      action.meta.scope !== 'local'
-    )
-  ) {
+    if (
+        action.type.substr(0, 2) !== '@@' &&
+        action.type.substr(0, 10) !== 'redux-form' &&
+        (!action.meta ||
+        !action.meta.scope ||
+        action.meta.scope !== 'local'
+        )
+    ) {
 
-    electronManager.sendActionMain(action); // window.ipc  /**** access from preload script */ 
+        electronManager.sendActionMain(action); // window.ipc  /**** access from preload script */ 
 
-    // stop action in-flight
+        // stop action in-flight
+        // eslint-disable-next-line consistent-return
+        return;
+    }
+
     // eslint-disable-next-line consistent-return
-    return;
-  }
-
-  // eslint-disable-next-line consistent-return
-  return next(action);
+    return next(action);
 };
 
 const configureStore = (initialState) => {
 
-  const middleware = [forwardToMain, thunk];
-  const enhanced = [
-    applyMiddleware(...middleware),
-  ];
-  const enhancer = compose(...enhanced);
+    const middleware = [forwardToMain, thunk];
+    const enhanced = [
+        applyMiddleware(...middleware),
+    ];
+    const enhancer = compose(...enhanced);
 
-  console.log(typeof rootReducer, initialState, typeof enhancer);
-  store = createStore(rootReducer, initialState, enhancer);
+    console.log(typeof rootReducer, initialState, typeof enhancer);
+    store = createStore(rootReducer, initialState, enhancer);
 
-  electronManager.replayActionRenderer(store); // window.ipc
+    electronManager.replayActionRenderer(store); // window.ipc
 
-  return store;
+    return store;
 };
 
 
 const initStore = () => {
 
-  console.log('initStore');
-  const states = electronManager.getGlobalState(); // window.ipc 
-  console.log(states);
-  const initialState = JSON.parse(states()); // getInitialStateRenderer();  
+    console.log('initStore');
+    const states = electronManager.getGlobalState(); // window.ipc 
+    console.log(states);
+    const initialState = JSON.parse(states()); // getInitialStateRenderer();  
 
-  const store = configureStore(initialState);
-  return store;
+    const store = configureStore(initialState);
+    return store;
 }
 
 const renderState = () => {
-  // console.log(JSON.stringify(store.getState().counter));
-  document.getElementById('value').innerHTML = store.getState().counter;
+    // console.log(JSON.stringify(store.getState().counter));
+    document.getElementById('value').innerHTML = store.getState().counter;
 }
 
 const initUi = () => {
-  renderState();
+    renderState();
+    store.subscribe(renderState);
 
-  store.subscribe(renderState);
+    document.getElementById('increment').addEventListener('click', () => {
+        store.dispatch({
+        type: 'INCREMENT_COUNTER'
+        }); // dispatch API endpoints
+    });
 
-  document.getElementById('increment').addEventListener('click', () => {
- 
-    store.dispatch({
-      type: 'INCREMENT_COUNTER'
-    }); // dispatch API endpoints
-  });
+    document.getElementById('decrement').addEventListener('click', () => {
+        store.dispatch({
+        type: 'DECREMENT_COUNTER'
+        }); // dispatch API endpoints
+    });
 
-  document.getElementById('decrement').addEventListener('click', () => {
-    store.dispatch({
-      type: 'DECREMENT_COUNTER'
-    }); // dispatch API endpoints
-  });
-
+    document.getElementById('switch_tab').addEventListener('click', () => {
+        store.dispatch({
+        type: 'SWITCH_DAPP',
+        payload: { 
+            targetDappId: '8g1hf08r1gub' //TODO fix to name of dapp
+        }
+        }); // dispatch API endpoints
+    });
 }
 
 
 // main
 store = initStore();
 initUi();
-},{"../reducers":21,"flux-standard-action":3,"redux":17,"redux-thunk":16}],3:[function(require,module,exports){
+},{"../reducers":4,"flux-standard-action":5,"redux":19,"redux-thunk":18}],3:[function(require,module,exports){
+const { INCREMENT_COUNTER, DECREMENT_COUNTER } = require('../actions/counter');
+
+function counter(state = 0, action) {
+  switch (action.type) {
+    case INCREMENT_COUNTER:
+      return state + 1;
+    case DECREMENT_COUNTER:
+      return state - 1;
+    default:
+      return state;
+  }
+}
+
+module.exports = counter;
+},{"../actions/counter":1}],4:[function(require,module,exports){
+const { combineReducers } = require('redux');
+
+const counter = require('./counter');
+
+const rootReducer = combineReducers({
+  counter
+  // routing
+
+  //TODO add client state reducer
+});
+
+module.exports = rootReducer;
+
+},{"./counter":3,"redux":19}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -156,7 +183,7 @@ function isError(action) {
 function isValidKey(key) {
   return ['type', 'payload', 'error', 'meta'].indexOf(key) > -1;
 }
-},{"lodash/isPlainObject":14,"lodash/isString":15}],4:[function(require,module,exports){
+},{"lodash/isPlainObject":16,"lodash/isString":17}],6:[function(require,module,exports){
 var root = require('./_root');
 
 /** Built-in value references. */
@@ -164,7 +191,7 @@ var Symbol = root.Symbol;
 
 module.exports = Symbol;
 
-},{"./_root":11}],5:[function(require,module,exports){
+},{"./_root":13}],7:[function(require,module,exports){
 var Symbol = require('./_Symbol'),
     getRawTag = require('./_getRawTag'),
     objectToString = require('./_objectToString');
@@ -194,7 +221,7 @@ function baseGetTag(value) {
 
 module.exports = baseGetTag;
 
-},{"./_Symbol":4,"./_getRawTag":8,"./_objectToString":9}],6:[function(require,module,exports){
+},{"./_Symbol":6,"./_getRawTag":10,"./_objectToString":11}],8:[function(require,module,exports){
 (function (global){
 /** Detect free variable `global` from Node.js. */
 var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
@@ -202,7 +229,7 @@ var freeGlobal = typeof global == 'object' && global && global.Object === Object
 module.exports = freeGlobal;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],7:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 var overArg = require('./_overArg');
 
 /** Built-in value references. */
@@ -210,7 +237,7 @@ var getPrototype = overArg(Object.getPrototypeOf, Object);
 
 module.exports = getPrototype;
 
-},{"./_overArg":10}],8:[function(require,module,exports){
+},{"./_overArg":12}],10:[function(require,module,exports){
 var Symbol = require('./_Symbol');
 
 /** Used for built-in method references. */
@@ -258,7 +285,7 @@ function getRawTag(value) {
 
 module.exports = getRawTag;
 
-},{"./_Symbol":4}],9:[function(require,module,exports){
+},{"./_Symbol":6}],11:[function(require,module,exports){
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
 
@@ -282,7 +309,7 @@ function objectToString(value) {
 
 module.exports = objectToString;
 
-},{}],10:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 /**
  * Creates a unary function that invokes `func` with its argument transformed.
  *
@@ -299,7 +326,7 @@ function overArg(func, transform) {
 
 module.exports = overArg;
 
-},{}],11:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 var freeGlobal = require('./_freeGlobal');
 
 /** Detect free variable `self`. */
@@ -310,7 +337,7 @@ var root = freeGlobal || freeSelf || Function('return this')();
 
 module.exports = root;
 
-},{"./_freeGlobal":6}],12:[function(require,module,exports){
+},{"./_freeGlobal":8}],14:[function(require,module,exports){
 /**
  * Checks if `value` is classified as an `Array` object.
  *
@@ -338,7 +365,7 @@ var isArray = Array.isArray;
 
 module.exports = isArray;
 
-},{}],13:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 /**
  * Checks if `value` is object-like. A value is object-like if it's not `null`
  * and has a `typeof` result of "object".
@@ -369,7 +396,7 @@ function isObjectLike(value) {
 
 module.exports = isObjectLike;
 
-},{}],14:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 var baseGetTag = require('./_baseGetTag'),
     getPrototype = require('./_getPrototype'),
     isObjectLike = require('./isObjectLike');
@@ -433,7 +460,7 @@ function isPlainObject(value) {
 
 module.exports = isPlainObject;
 
-},{"./_baseGetTag":5,"./_getPrototype":7,"./isObjectLike":13}],15:[function(require,module,exports){
+},{"./_baseGetTag":7,"./_getPrototype":9,"./isObjectLike":15}],17:[function(require,module,exports){
 var baseGetTag = require('./_baseGetTag'),
     isArray = require('./isArray'),
     isObjectLike = require('./isObjectLike');
@@ -465,7 +492,7 @@ function isString(value) {
 
 module.exports = isString;
 
-},{"./_baseGetTag":5,"./isArray":12,"./isObjectLike":13}],16:[function(require,module,exports){
+},{"./_baseGetTag":7,"./isArray":14,"./isObjectLike":15}],18:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -489,7 +516,7 @@ var thunk = createThunkMiddleware();
 thunk.withExtraArgument = createThunkMiddleware;
 
 exports['default'] = thunk;
-},{}],17:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -1092,7 +1119,7 @@ exports.compose = compose;
 exports.__DO_NOT_USE__ActionTypes = ActionTypes;
 
 }).call(this,require('_process'))
-},{"_process":25,"symbol-observable":18}],18:[function(require,module,exports){
+},{"_process":22,"symbol-observable":20}],20:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -1124,7 +1151,7 @@ if (typeof self !== 'undefined') {
 var result = (0, _ponyfill2['default'])(root);
 exports['default'] = result;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./ponyfill.js":19}],19:[function(require,module,exports){
+},{"./ponyfill.js":21}],21:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1148,42 +1175,7 @@ function symbolObservablePonyfill(root) {
 
 	return result;
 };
-},{}],20:[function(require,module,exports){
-const { INCREMENT_COUNTER, DECREMENT_COUNTER } = require('../actions/counter');
-
-function counter(state = 0, action) {
-  switch (action.type) {
-    case INCREMENT_COUNTER:
-      return state + 1;
-    case DECREMENT_COUNTER:
-      return state - 1;
-    default:
-      return state;
-  }
-}
-
-module.exports = counter;
-},{"../actions/counter":1}],21:[function(require,module,exports){
-const { combineReducers } = require('redux');
-
-const counter = require('./counter');
-
-const rootReducer = combineReducers({
-  counter
-  // routing
-
-  //TODO add client state reducer
-});
-
-module.exports = rootReducer;
-
-},{"./counter":20,"redux":22}],22:[function(require,module,exports){
-arguments[4][17][0].apply(exports,arguments)
-},{"_process":25,"dup":17,"symbol-observable":23}],23:[function(require,module,exports){
-arguments[4][18][0].apply(exports,arguments)
-},{"./ponyfill.js":24,"dup":18}],24:[function(require,module,exports){
-arguments[4][19][0].apply(exports,arguments)
-},{"dup":19}],25:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
