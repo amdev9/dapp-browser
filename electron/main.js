@@ -8,7 +8,7 @@ const configureStore = require('./redux/store/configureStore');
 const createClientWindow = require('./createClientWindow');
 const createDappView = require('./createDappView');
 
-let win, view, view2;
+ 
 let bounds = {
   x: 300,
   y: 0,
@@ -20,7 +20,6 @@ const globalUUIDList = [];
 
 app.on('ready', () => {
   const store = configureStore(global.state, globalUUIDList);
-
   process.stdout.write(JSON.stringify(store.getState()));
   
   store.subscribe( () => {
@@ -32,12 +31,9 @@ app.on('ready', () => {
     if (nameObj) {
       // console.log('nameObj', nameObj);
       let view = BrowserView.fromId(nameObj.viewId);
-      
       clientWindow.setBrowserView(view);
-      view.setBounds(bounds);
-      
+      view.setBounds(bounds); 
     }
-     
   });
 
   app.on('window-all-closed', () => {
@@ -58,17 +54,12 @@ app.on('ready', () => {
 
   // create multiple view and keep them around the memory, detached from the window
   // then switching workspaces is just and additional call to setBrowserView
-  
-
   const dappsIndexes = ['index.html', 'index2.html'];
   for (dappInd of dappsIndexes) {
     dappView = createDappView(clientWindow, globalUUIDList, dappInd);
   }
   
- 
-
   process.stdout.write(JSON.stringify(globalUUIDList) );
-  // SAVE UUID to map
 });
 
 process.stdout.write("Main initialized");
@@ -86,8 +77,4 @@ ipcMain.once('answer', (event, argv) => {
   // });
 });
 
- 
-// ipc identification and communication between renderers through actions
-// https://electronjs.org/docs/api/browser-window
-// https://electronjs.org/docs/api/ipc-main
- 
+  

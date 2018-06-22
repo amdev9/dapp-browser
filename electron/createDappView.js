@@ -1,7 +1,6 @@
 const { BrowserWindow, BrowserView } = require('electron');
 const path = require('path');
 const uuidv4 = require('uuid/v4');
-
 const openDevTool = require('./helpers/devtools');
 
 let dappView = null;
@@ -11,9 +10,6 @@ const DAPPS_PATH = path.join(__dirname, 'dapps');
 function createDappView(clientWindow, globalUUIDList, entryPath) {
 
     const uuidDapp = uuidv4();
-    // process.stdout.write(uuidDapp);
-  
-
     dappView = new BrowserView({
         webPreferences: {
             nodeIntegration: false,
@@ -49,16 +45,3 @@ function createDappView(clientWindow, globalUUIDList, entryPath) {
 }
 
 module.exports = createDappView;
-
-
-
-// view2 = new BrowserView({
-//   webPreferences: {
-//     nodeIntegration: false,
-//     sandbox: true,
-//     contextIsolation: true,
-//     preload: path.join(VIEW_PATH, 'preload.js')
-//   }
-// });
-// view2.webContents.loadURL('file://' + path.join(VIEW_PATH, 'index2.html'));
-// process.stdout.write("BrowserView identificators: " + view.id + ", " + view2.id);

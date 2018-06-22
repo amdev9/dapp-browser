@@ -50,5 +50,4 @@ function createClientWindow(globalUUIDList) {
   return clientWindow;
 }
 
-
 module.exports = createClientWindow;

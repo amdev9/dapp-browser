@@ -1,23 +1,13 @@
  //***** define redux, redux-thunk with browserify */
 const { combineReducers, createStore, applyMiddleware, compose } = require('redux');
 const thunk = require('redux-thunk').default;
-
 const rootReducer = require('./redux/reducers');  
-
-// const { hashHistory } = electron.remote.require('react-router');
-// const { routerMiddleware } = electron.remote.require('react-router-redux');
-const {
-  isFSA
-} = require('flux-standard-action');
+const { isFSA } = require('flux-standard-action');
 
 const electronManager = window.ipc;
 
 const validateAction = (action) => {
-  if (!isFSA(action)) {
-    // log('WARNING! Action not FSA-compliant', action);
-    return false;
-  }
-  return true;
+  return isFSA(action);
 }
 
 const forwardToMain = store => next => (action) => {
@@ -31,7 +21,6 @@ const forwardToMain = store => next => (action) => {
       action.meta.scope !== 'local'
     )
   ) {
-
     electronManager.sendActionMain(action); // window.ipc  /**** access from preload script */ 
 
     // stop action in-flight
@@ -61,8 +50,7 @@ const configureStore = (initialState) => {
 
 
 const initStore = () => {
-
-  console.log('initStore');
+  // console.log('initStore');
   const states = electronManager.getGlobalState(); // window.ipc 
   console.log(states);
   const initialState = JSON.parse(states()); // getInitialStateRenderer();  
@@ -78,11 +66,8 @@ const renderState = () => {
 
 const initUi = () => {
   renderState();
-
   store.subscribe(renderState);
-
   document.getElementById('increment').addEventListener('click', () => {
- 
     store.dispatch({
       type: 'INCREMENT_COUNTER'
     }); // dispatch API endpoints
@@ -93,9 +78,7 @@ const initUi = () => {
       type: 'DECREMENT_COUNTER'
     }); // dispatch API endpoints
   });
-
 }
-
 
 // main
 store = initStore();
