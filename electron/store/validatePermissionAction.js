@@ -1,5 +1,7 @@
 // validate permissions for actions
 const validatePermissionAction = () => next => (action) => {
+
+  //TODO validate action status
   if (action.type == 'INCREMENT_COUNTER') {
     console.log(action);
     // action.type = 'DECREMENT_COUNTER';

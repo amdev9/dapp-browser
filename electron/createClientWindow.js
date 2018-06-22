@@ -40,6 +40,10 @@ function createClientWindow(globalUUID) {
   });
 
   openDevTool(clientWindow, true);
+  
+  globalUUID[uuidClient].win = clientWindow;
+  globalUUID[uuidClient].name = 'main';
+
   return clientWindow;
 }
 

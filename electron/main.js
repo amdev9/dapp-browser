@@ -25,6 +25,9 @@ app.on('ready', () => {
   
   store.subscribe( () => {
     process.stdout.write(JSON.stringify(store.getState()));
+
+    process.stdout.write(store.getState().client.activeDapp);
+    //TODO find by name in array of objects => get View id => setBrowserView by view id
   });
 
   app.on('window-all-closed', () => {
@@ -41,12 +44,13 @@ app.on('ready', () => {
     clientWindow = createClientWindow(globalUUID);
   });
   clientWindow = createClientWindow(globalUUID);  
+  console.log(clientWindow);
 
   // create multiple view and keep them around the memory, detached from the window
   // then switching workspaces is just and additional call to setBrowserView
   
   dappView = createDappView(clientWindow, globalUUID);
-  //TODO map dappView to name, globalUUID mapped to the same object??
+  //TODO dappView id put to globalUUID
 
   process.stdout.write(JSON.stringify(globalUUID) );
   // SAVE UUID to map

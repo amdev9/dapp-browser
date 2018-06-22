@@ -16,17 +16,27 @@ const replayActionMain = (store, globalId) => {
 
   ipcMain.on('redux-action', (event, uuid, payload) => { 
     
-    if (Object.keys(globalId).includes(uuid)) {
+
+    // let arr = [
+    //   { name:"string 1", value:"this", other: "that" },
+    //   { name:"string 2", value:"this", other: "that" }
+    // ];
+    // let obj = arr.find(o => o.name === 'string 1');
+    // console.log(obj);
+    
+    if (Object.keys(globalId).includes(uuid)) { //TODO search by id in globalUUID, check if id exists
       console.log("Validated: ", globalId[uuid].status)
     
       // + validate spoofing uuid checker 
       // + indentify process (client or dapp)
       // + pass action to redux middleware to check permissions
+
+      //TODO pass status to payload
       store.dispatch(payload);                             // verification for payload 
     } else {
       console.log("Spoofing detected")
     }
-   
+  
   });
 }
 
