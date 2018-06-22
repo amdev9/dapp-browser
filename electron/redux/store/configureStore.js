@@ -27,7 +27,13 @@ const replayActionMain = (store, globalId) => {
 
     let uuidObj = globalId.find(renObj => renObj.id === uuid);
     if (uuidObj) {
-      console.log("Validated: ", JSON.stringify(uuidObj));
+      // console.log("Validated: ", JSON.stringify(uuidObj));
+
+
+      // console.log('payload', payload);
+      const statusObj = { status: uuidObj.status };
+      payload.payload = (payload.payload) ? Object.assign(payload.payload, statusObj) : statusObj;
+      
       // payload.status = uuidObj.status;
 
  
@@ -36,7 +42,7 @@ const replayActionMain = (store, globalId) => {
       // + indentify process (client or dapp)
       // + pass action to redux middleware to check permissions
 
-      //TODO pass status to payload
+      
       store.dispatch(payload);                             // verification for payload 
     } else {
       console.log("Spoofing detected")

@@ -27,10 +27,10 @@ app.on('ready', () => {
     process.stdout.write(JSON.stringify(store.getState()));
 
     let activeDappName = store.getState().client.activeDapp;
-    console.log('activeDappName', activeDappName);
+    // console.log('activeDappName', activeDappName);
     let nameObj = globalUUIDList.find(renObj => renObj.name === activeDappName);
     if (nameObj) {
-      console.log('nameObj', nameObj);
+      // console.log('nameObj', nameObj);
       let view = BrowserView.fromId(nameObj.viewId);
       
       clientWindow.setBrowserView(view);
