@@ -3,7 +3,7 @@ const { combineReducers, createStore, applyMiddleware, compose } = require('redu
 const thunk = require('redux-thunk').default;
 const logger = require('redux-logger').default;
 const { isFSA } = require('flux-standard-action');
-const rootReducer = require('../reducers');
+const rootReducer = require('../redux/reducers');
 
 const electronManager = window.ipc;
 

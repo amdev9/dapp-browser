@@ -2,7 +2,7 @@
 const { combineReducers, createStore, applyMiddleware, compose } = require('redux');
 const thunk = require('redux-thunk').default;
 
-const rootReducer = require('../reducers'); //TODO use only dapps related reducers
+const rootReducer = require('./redux/reducers');  
 
 // const { hashHistory } = electron.remote.require('react-router');
 // const { routerMiddleware } = electron.remote.require('react-router-redux');

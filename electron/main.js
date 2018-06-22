@@ -4,7 +4,7 @@
 */
 
 const { app, BrowserView } = require('electron');
-const configureStore = require('./store/configureStore');
+const configureStore = require('./redux/store/configureStore');
 const createClientWindow = require('./createClientWindow');
 const createDappView = require('./createDappView');
 
@@ -32,7 +32,7 @@ app.on('ready', () => {
     if (nameObj) {
       console.log('nameObj', nameObj);
       let view = BrowserView.fromId(nameObj.viewId);
-      console.log(view);
+      
       clientWindow.setBrowserView(view);
       view.setBounds(bounds);
       
