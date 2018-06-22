@@ -7,11 +7,9 @@ const openDevTool = require('./helpers/devtools');
 let clientWindow = null;
 const RENDERER_PATH = path.join(__dirname, 'client');
 
-function createClientWindow(globalUUID) {  
+function createClientWindow(globalUUIDList) {  
 
   const uuidClient = uuidv4();
-  globalUUID[uuidClient] = { status: 'client' };
-
   clientWindow = new BrowserWindow({
     x: 0,
     y: 0,
@@ -41,8 +39,13 @@ function createClientWindow(globalUUID) {
 
   openDevTool(clientWindow, true);
   
-  globalUUID[uuidClient].win = clientWindow;
-  globalUUID[uuidClient].name = 'main';
+  rendererObj = {
+    id: uuidClient,
+    status: 'client',
+    winId: clientWindow.id,
+    name: 'clientname128729'
+  };
+  globalUUIDList.push(rendererObj);
 
   return clientWindow;
 }

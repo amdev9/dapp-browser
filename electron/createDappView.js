@@ -1,4 +1,4 @@
-const { BrowserWindow } = require('electron');
+const { BrowserWindow, BrowserView } = require('electron');
 const path = require('path');
 const uuidv4 = require('uuid/v4');
 
@@ -6,16 +6,15 @@ const openDevTool = require('./helpers/devtools');
 
 let dappView = null;
  
-const VIEW_PATH = path.join(__dirname, 'dapps');
+const DAPPS_PATH = path.join(__dirname, 'dapps');
 
-function createDappView(clientWindow, globalUUID) {
+function createDappView(clientWindow, globalUUIDList, entryPath) {
 
     const uuidDapp = uuidv4();
     // process.stdout.write(uuidDapp);
   
-    globalUUID[uuidDapp] = { status: 'dapp' };
 
-    dappView = new BrowserWindow({
+    dappView = new BrowserView({
         webPreferences: {
             nodeIntegration: false,
             sandbox: true,
@@ -32,11 +31,20 @@ function createDappView(clientWindow, globalUUID) {
         height: 300
     };
       
-    // clientWindow.setBrowserView(dappView);
-    // dappView.setBounds(bounds);
-    dappView.webContents.loadURL('file://' + path.join(VIEW_PATH, 'index.html'));
+    clientWindow.setBrowserView(dappView);
+    dappView.setBounds(bounds);
+    dappView.webContents.loadURL('file://' + path.join(DAPPS_PATH, entryPath));
 
-    openDevTool(dappView, true);
+    // openDevTool(dappView, true);
+
+    rendererObj = {
+        id: uuidDapp,
+        status: 'dapp',
+        viewId: dappView.id,
+        name: 'dappname128729'.concat(entryPath.split('.')[0]) // load from dapp
+    }
+    globalUUIDList.push(rendererObj);
+
     return dappView;
 }
 

@@ -3,7 +3,7 @@
   Uses process.stdout.write instead of console.log so we can cleanly catch the output in the parent process.
 */
 
-const { app } = require('electron');
+const { app, BrowserView } = require('electron');
 const configureStore = require('./store/configureStore');
 const createClientWindow = require('./createClientWindow');
 const createDappView = require('./createDappView');
@@ -16,17 +16,27 @@ let bounds = {
   height: 600
 };
 
-const globalUUID = {};
+const globalUUIDList = [];
 
 app.on('ready', () => {
-  const store = configureStore(global.state, globalUUID);
+  const store = configureStore(global.state, globalUUIDList);
 
   process.stdout.write(JSON.stringify(store.getState()));
   
   store.subscribe( () => {
     process.stdout.write(JSON.stringify(store.getState()));
 
-    process.stdout.write(store.getState().client.activeDapp);
+    let activeDappName = store.getState().client.activeDapp;
+    console.log('activeDappName', activeDappName);
+    let nameObj = globalUUIDList.find(renObj => renObj.name === activeDappName);
+    if (nameObj) {
+      console.log('nameObj', nameObj);
+      let view = BrowserView.fromId(nameObj.viewId);
+      console.log(view);
+      clientWindow.setBrowserView(view);
+      view.setBounds(bounds);
+      
+    }
     //TODO find by name in array of objects => get View id => setBrowserView by view id
   });
 
@@ -41,18 +51,23 @@ app.on('ready', () => {
   app.on('activate', () => {
     // On OS X it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
-    clientWindow = createClientWindow(globalUUID);
+    clientWindow = createClientWindow(globalUUIDList);
   });
-  clientWindow = createClientWindow(globalUUID);  
+  clientWindow = createClientWindow(globalUUIDList);  
   console.log(clientWindow);
 
   // create multiple view and keep them around the memory, detached from the window
   // then switching workspaces is just and additional call to setBrowserView
   
-  dappView = createDappView(clientWindow, globalUUID);
+
+  const dappsIndexes = ['index.html', 'index2.html'];
+  for (dappInd of dappsIndexes) {
+    dappView = createDappView(clientWindow, globalUUIDList, dappInd);
+  }
+  
   //TODO dappView id put to globalUUID
 
-  process.stdout.write(JSON.stringify(globalUUID) );
+  process.stdout.write(JSON.stringify(globalUUIDList) );
   // SAVE UUID to map
 });
 

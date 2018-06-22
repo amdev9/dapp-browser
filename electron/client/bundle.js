@@ -128,7 +128,7 @@ const initUi = () => {
         store.dispatch({
             type: 'SWITCH_DAPP',
             payload: { 
-                targetDappId: '8g1hf08r1gub' 
+                targetDappId: 'dappname128729index'  
             }
         }); // dispatch API endpoints
     });
