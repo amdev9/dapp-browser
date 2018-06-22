@@ -11,9 +11,20 @@ const createDappView = require('./createDappView');
 //todo
 // interaction between dapps / data passing:
 // 1. static reactive +
-// (1) SEND_MESSAGE from one dapp to another
+// (1) SEND_MESSAGE from one dapp to another, dappIdFrom, dappIdTo => check permissions => init connection / pass message
+
+  // case INIT_IPC_CONNECTION between dappIdFrom to dappIdTo: (dappIdFrom -> main -> dappIdTo) convert to abstraction
+
+  // //Send the 'SEND_MESSAGE' action down the websocket to the server
+  // case WEBSOCKET_SEND: //'SEND_CHAT_MESSAGE':
+  //   store.dispatch(actions.sending());
+  //   socket.send(JSON.stringify(action)); // change to ipc
+  //   break;
+    
 // 2. pub-sub
-// (2) GET_LOCAL_STORAGE (emulate with foo function)
+// (2) GET_LOCAL_STORAGE (emulate with foo function), payload: data for foo input, dappId where foo placed.
+  // => check for permission => subcribe for event calculated: false, change state => sync with renderer store => get result
+
 // - subscribe to event when result is available - observable
 // - one dapp has heavy method foo() to run and return some value
 // others dapp want to run this method and do it simultaniously
