@@ -9,8 +9,10 @@ const createClientWindow = require('./createClientWindow');
 const createDappView = require('./createDappView');
 
  
-//todo 
-// one dapp has heavy method foo() to run and return some value
+//todo
+// 1 interaction between dapps
+// 2 subscribe to event when result is available
+// 3 one dapp has heavy method foo() to run and return some value
 // others dapp want to run this method and do it simultaniously
 
 let bounds = {
