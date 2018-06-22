@@ -96,6 +96,15 @@ const initUi = () => {
             }
         }); // dispatch API endpoints
     });
+    document.getElementById('switch_tab2').addEventListener('click', () => {
+         
+        store.dispatch({
+            type: 'SWITCH_DAPP',
+            payload: { 
+                targetDappId: 'dappname128729index2'  
+            }
+        }); // dispatch API endpoints
+    });
 }
 
 
