@@ -30,9 +30,7 @@ const replayActionMain = (store, globalId) => {
       console.log("Validated: ", JSON.stringify(uuidObj));
       // payload.status = uuidObj.status;
 
-
-    // if (Object.keys(globalId).includes(uuid)) { //TODO search by id in globalUUID, check if id exists
-    //   console.log("Validated: ", globalId[uuid].status)
+ 
     
       // + validate spoofing uuid checker 
       // + indentify process (client or dapp)

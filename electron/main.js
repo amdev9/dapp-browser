@@ -12,8 +12,8 @@ let win, view, view2;
 let bounds = {
   x: 300,
   y: 0,
-  width: 600,
-  height: 600
+  width: 300,
+  height: 300
 };
 
 const globalUUIDList = [];
@@ -37,7 +37,7 @@ app.on('ready', () => {
       view.setBounds(bounds);
       
     }
-    //TODO find by name in array of objects => get View id => setBrowserView by view id
+     
   });
 
   app.on('window-all-closed', () => {
@@ -65,7 +65,7 @@ app.on('ready', () => {
     dappView = createDappView(clientWindow, globalUUIDList, dappInd);
   }
   
-  //TODO dappView id put to globalUUID
+ 
 
   process.stdout.write(JSON.stringify(globalUUIDList) );
   // SAVE UUID to map
@@ -86,23 +86,7 @@ ipcMain.once('answer', (event, argv) => {
   // });
 });
 
-
-ipcMain.on('rpc-switch', function (event, rpc, arg) { //TODO handle with client reducer instead
-  process.stdout.write("RPC REQUEST: " + rpc);
-  switch (+rpc) {
-    case 1:
-      win.setBrowserView(view);
-      view.setBounds(bounds);
-      break;
-    case 2:
-      win.setBrowserView(view2);
-      view2.setBounds(bounds);
-      break;
-    default:
-      alert("No such browserview");
-  }
-});
-
+ 
 // ipc identification and communication between renderers through actions
 // https://electronjs.org/docs/api/browser-window
 // https://electronjs.org/docs/api/ipc-main
