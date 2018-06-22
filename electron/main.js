@@ -8,11 +8,14 @@ const configureStore = require('./redux/store/configureStore');
 const createClientWindow = require('./createClientWindow');
 const createDappView = require('./createDappView');
 
- 
 //todo
-// 1 interaction between dapps
-// 2 subscribe to event when result is available
-// 3 one dapp has heavy method foo() to run and return some value
+// interaction between dapps / data passing:
+// 1. static reactive +
+// (1) SEND_MESSAGE from one dapp to another
+// 2. pub-sub
+// (2) GET_LOCAL_STORAGE (emulate with foo function)
+// - subscribe to event when result is available - observable
+// - one dapp has heavy method foo() to run and return some value
 // others dapp want to run this method and do it simultaniously
 
 let bounds = {

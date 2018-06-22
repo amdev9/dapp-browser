@@ -51,8 +51,7 @@ const configureStore = (initialState) => {
 
 
 const initStore = () => {
-
-  console.log('initStore');
+  // console.log('initStore');
   const states = electronManager.getGlobalState(); // window.ipc 
   console.log(states);
   const initialState = JSON.parse(states()); // getInitialStateRenderer();  
@@ -80,6 +79,17 @@ const initUi = () => {
       type: 'DECREMENT_COUNTER'
     }); // dispatch API endpoints
   });
+
+  document.getElementById('ping').addEventListener('click', () => {
+    store.dispatch({
+      type: 'SEND_PING_MESSAGE',
+      payload: { 
+        message: 'this is a ping message',
+        dappIdReceiver: 'dappname128729index'
+      }
+    }); // dispatch API endpoints
+  });
+
 }
 
 // main
@@ -88,6 +98,7 @@ initUi();
 },{"./redux/reducers":4,"flux-standard-action":5,"redux":19,"redux-thunk":18}],2:[function(require,module,exports){
 const INCREMENT_COUNTER = 'INCREMENT_COUNTER';
 const DECREMENT_COUNTER = 'DECREMENT_COUNTER';
+const SEND_PING_MESSAGE = 'SEND_PING_MESSAGE';
 
 function increment() {
   return {
@@ -101,14 +112,22 @@ function decrement() {
   };
 }
 
+function sendPingMessage() {
+  return {
+    type: SEND_PING_MESSAGE
+  };
+}
+ 
 module.exports = {
   decrement,
   increment,
+  sendPingMessage,
   INCREMENT_COUNTER,
-  DECREMENT_COUNTER
+  DECREMENT_COUNTER,
+  SEND_PING_MESSAGE
 }
 },{}],3:[function(require,module,exports){
-const { INCREMENT_COUNTER, DECREMENT_COUNTER } = require('../actions/counter');
+const { INCREMENT_COUNTER, DECREMENT_COUNTER, SEND_PING_MESSAGE } = require('../actions/counter');
 
 function counter(state = 0, action) {
   switch (action.type) {
@@ -116,6 +135,8 @@ function counter(state = 0, action) {
       return state + 1;
     case DECREMENT_COUNTER:
       return state - 1;
+    case SEND_PING_MESSAGE:
+      return state;
     default:
       return state;
   }

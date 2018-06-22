@@ -1,34 +1,5 @@
 <body style="background-color:LIGHTCORAL;">
-	<script>
-		var s = window.ipc;
-
-		function sendValidIpcMessage() {
-
-			// start the rpc
-			var firstTest = s.sendSync('rpc-start', 'from view 2', 'browserview');
-			alert(firstTest);
-
-		}
-
-		function sendEvilIpcMessage() {
-
-			s.sendSync('ELECTRON_BROWSER_GET_BUILTIN', 'app');
-			/* evil channel, blocked */
-		}
-
-		function sendMessage() {
-			s.send('rpc-communicate', 'broadcast', 'broadcast message from BV23');
-		}
-	</script>
-
 	<h1>BrowserView2</h1>
-	<!-- Let's trigger a nice whitelisted channel :) -->
-	<input type="button" value="Send whitelisted message :) !" onclick="sendValidIpcMessage()" />
-
-	<br />
-	<br />
-	<input type="button" value="Send evil message :( !" onclick="sendEvilIpcMessage()" />
-	<br />
-	<br />
-	<input type="button" value="Send message to BV1" onclick="sendMessage()" />
+	 
+	<button id="ping">Send ping message</button>
 </body>

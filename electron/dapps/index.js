@@ -78,6 +78,17 @@ const initUi = () => {
       type: 'DECREMENT_COUNTER'
     }); // dispatch API endpoints
   });
+
+  document.getElementById('ping').addEventListener('click', () => {
+    store.dispatch({
+      type: 'SEND_PING_MESSAGE',
+      payload: { 
+        message: 'this is a ping message',
+        dappIdReceiver: 'dappname128729index' //TODO change to ipcSendDataMiddleware like in socketMiddleware.js .. static
+      }
+    }); // dispatch API endpoints
+  });
+
 }
 
 // main
