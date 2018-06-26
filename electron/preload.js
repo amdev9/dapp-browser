@@ -39,7 +39,7 @@ class ElectronManager {
     this.getGlobalState = getGlobalState;
     this.sendActionMain = sendActionMain;
 
-    this.send = ipcRenderer.send; // for switch
+    // this.send = ipcRenderer.send; // for switch
   }
 }
 
