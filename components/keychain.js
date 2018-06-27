@@ -40,29 +40,16 @@ class TaskQueue {
   }
 
   next() {
-    while (this.running < this.concurrency && this.queue.length) {
-      const task = this.queue.shift();
-      task.then(() => {
-        this.running--;
-        this.next();
-      })
-      this.running++;
-    }
-<<<<<<< HEAD
+      while (this.running < this.concurrency && this.queue && this.queue.length) {
+          const task = this.queue.shift();
+          task.then(() => {
+              this.running--;
+              this.next();
+          })
+          this.running++;
+      }
   }
-=======
 
-    next() {
-        while (this.running < this.concurrency && this.queue && this.queue.length) {
-            const task = this.queue.shift();
-            task.then(() => {
-                this.running--;
-                this.next();
-            })
-            this.running++;
-        }
-    }
->>>>>>> master
 };
 
 var keychain = runKeychain();
@@ -122,18 +109,6 @@ function interact(request) {
 }
 
 class Keychain {
-<<<<<<< HEAD
-  async sign(response) {
-    const request = JSON.stringify({
-      command: "CMD_SIGN",
-      params: response.payload.message
-    });
-    var output = await interact(request);
-
-    response.payload.response = output;
-    FrontEnd.complete(response.payload)
-  }
-=======
     async sign(response) {
         const request = JSON.stringify({
             command: "CMD_SIGN",
@@ -165,7 +140,6 @@ class Keychain {
 
         return result || false;
     }
->>>>>>> master
 }
 
 module.exports = Keychain;
