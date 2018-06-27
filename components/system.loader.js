@@ -33,45 +33,47 @@ const sandbox = {
     console   : console
 }
 
-const vm = new NodeVM({sandbox: sandbox})
-const Find = new Finder( 'dapps/system/' )
+const vm = new NodeVM({
+  sandbox: sandbox
+})
+const Find = new Finder('dapps/system/')
 
 class SystemDappsLoader extends UserDappsLoader {
-    constructor () {
-        super()
+  constructor() {
+    super()
 
-        this.items = []
-        this.dapps = Find.getDirs()
-        this.data  = 'manifest.json'
+    this.items = []
+    this.dapps = Find.getDirs()
+    this.data = 'manifest.json'
+  }
+
+  async sourceCode(dirname, object) {
+    let code = 'Events.data = ' + JSON.stringify(object)
+    code += Find.readFile(dirname + '/' + object.main)
+
+    const _path = 'system/' + dirname + '/'
+
+    object.index = object.index ? _path + object.index : null
+
+    this.items.push(object)
+
+    vm.run(code)
+  }
+
+  async onStart() {
+    for (let i = 0; i < this.dapps.length; i++) {
+      const string = Find.readFile(this.dapps[i] + '/' + this.data)
+
+      try {
+        var object = JSON.parse(string)
+      } catch (error) {
+        console.error(error.name + ': ' + error.message)
+        break
+      }
+
+      await this.sourceCode(this.dapps[i], object)
     }
-
-    async sourceCode (dirname, object) {
-        let code = 'Events.data = ' + JSON.stringify( object )
-        code += Find.readFile( dirname + '/' + object.main )
-
-        const _path = 'system/' + dirname + '/'
-
-        object.index = object.index ? _path + object.index : null
-
-        this.items.push( object )
-
-        vm.run( code )
-    }
-
-    async onStart () {
-        for (let i = 0; i < this.dapps.length; i++) {
-            const string = Find.readFile( this.dapps[i] + '/' + this.data )
-
-            try {
-                var object = JSON.parse( string )
-            } catch ( error ) {
-                console.error( error.name + ': ' + error.message )
-                break
-            }
-
-            await this.sourceCode(this.dapps[i], object)
-        }
-    }
+  }
 }
 
 module.exports = SystemDappsLoader

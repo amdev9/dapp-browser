@@ -15,16 +15,16 @@
                         <div class="col-auto navbar-user-title" v-if="!search" ref="pagetitle">
                             <span class="apptitle" v-if="$root.apptitle" @click="search = true">arr://{{ $root.apptitle }}</span>
                             <span class="pagetitle">{{ $root.pagetitle }}</span>
-                            
+
                             <div class="share">
                                 <i class="icon-share"></i>
-                               
+
                                 <div class="dropdown-menu">
                                     <div class="dropdown-item" @click="copy"><i class="icon-link"></i> <span v-lang.share.copy></span></div>
                                     <div class="dropdown-item" @click="qrcode"><i class="icon-qr-code"></i> <span v-lang.share.qrcode></span></div>
-                                    
+
                                     <div class="dropdown-divider"></div>
-                                    
+
                                     <div class="dropdown-item" @click="telegram"><i class="icon-telegram"></i> <span v-lang.share.telegram></span></div>
                                     <div class="dropdown-item" @click="viber"><i class="icon-viber"></i> <span v-lang.share.viber></span></div>
                                     <div class="dropdown-item" @click="email"><i class="icon-mail"></i> <span v-lang.share.email></span></div>
@@ -132,96 +132,100 @@ export default {
             currentNet: 'Mainnet',
         }
     },
-    methods: {
-        tohome () { 
-            this._reset()
-            this.$root.apptitle = null
-            this.$root.pagetitle = this.translate( 'header' ).home
-            this.$root.currentView = 'view-index'
-        },
-        prevent () {
-            this.$root.currentView = this.$root.preventView
-            this.$root.preventView = null
-        },
-        notify () {
-            this.$root.notify = !this.$root.notify
-            this.$root.loader = false
-        },
-        loader () {
-            this.$root.loader = !this.$root.loader
-            this.$root.notify = false
-        },
-        setting () {
-            this._reset()
-            this.$root.pagetitle = this.translate( 'header' ).setting
-            this.$root.currentView = 'view-setting'
-        },
-        query ( value ) {
-            if ( !this.$refs.query.value.trim() ) return this.result.dapps = []
-
-            this.$http.post('/web', {message_type: 'query', message: this.$refs.query.value}, {
-                headers: {'Allow-Origin': this.$root.system.SrcCtrl}
-            }).then(response => {
-                this.result.dapps = response.body.response
-            })
-        },
-        email () {
-            location.href = 'mailto:?subject=' + this.$root.pagetitle
-        },
-        qrcode ( event ) {
-            document.dispatchEvent( new CustomEvent( 'qrcode' ) )
-        },
-        telegram () {
-            window.open( 'https://t.me/share/url?url=array.io/' + this.$root.apptitle + '&text=' + this.$root.pagetitle )
-        },
-        viber () {
-            location.href = 'viber://forward?text=array.io/' + this.$root.apptitle
-        },
-        openapp ( event ) {
-            location.href = event.currentTarget.dataset.href
-        },
-        copy ( event ) {
-            let target = event.currentTarget
-            let select = document.createElement( 'textarea' )
-            select.value = 'arr://' + this.$root.apptitle
-
-            document.body.appendChild( select )
-            select.select()
-
-            document.execCommand( 'Copy' )
-            select.parentNode.removeChild( select )
-
-            $.notify.addStyle('copied', {
-                html: '<div data-notify-text/>'
-            })
-
-            $.notify(this.translate( 'share' ).copytext, {
-                position: 'top center',
-                style: 'copied',
-                className: 'success',
-                showAnimation: 'fadeIn',
-                hideAnimation: 'fadeOut',
-                autoHideDelay: 1000
-            })
-        },
-        _reset () {
-            this.$root.viewapp = false
-            this.$root.preventView = null
-            this.$root.currentFrame = null
-        }
+    prevent() {
+      this.$root.currentView = this.$root.preventView;
+      this.$root.preventView = null;
     },
-    mounted ( event ) {
-        this.$refs.query.addEventListener('blur', () => this.search = false)
+    notify() {
+      this.$root.notify = !this.$root.notify;
+      this.$root.loader = false;
     },
-    watch: {
-        search ( value ) {
-            if ( value ) return this.$refs.query.focus()
-            
-            this.$refs.query.value = ''
-            
-            this.result.dapps = []
-            this.result.market = []
-        }
+    loader() {
+      this.$root.loader = !this.$root.loader;
+      this.$root.notify = false;
+    },
+    setting() {
+      this._reset();
+      this.$root.pagetitle = this.translate("header").setting;
+      this.$root.currentView = "view-setting";
+    },
+    query(value) {
+      if (!this.$refs.query.value.trim()) return (this.result.dapps = []);
+
+      this.$http
+        .post(
+          "/web",
+          { message_type: "query", message: this.$refs.query.value },
+          {
+            headers: { "Allow-Origin": this.$root.system.SrcCtrl }
+          }
+        )
+        .then(response => {
+          this.result.dapps = response.body.response;
+        });
+    },
+    email() {
+      location.href = "mailto:?subject=" + this.$root.pagetitle;
+    },
+    qrcode(event) {
+      document.dispatchEvent(new CustomEvent("qrcode"));
+    },
+    telegram() {
+      window.open(
+        "https://t.me/share/url?url=array.io/" +
+          this.$root.apptitle +
+          "&text=" +
+          this.$root.pagetitle
+      );
+    },
+    viber() {
+      location.href = "viber://forward?text=array.io/" + this.$root.apptitle;
+    },
+    openapp(event) {
+      location.href = event.currentTarget.dataset.href;
+    },
+    copy(event) {
+      let target = event.currentTarget;
+      let select = document.createElement("textarea");
+      select.value = "arr://" + this.$root.apptitle;
+
+      document.body.appendChild(select);
+      select.select();
+
+      document.execCommand("Copy");
+      select.parentNode.removeChild(select);
+
+      $.notify.addStyle("copied", {
+        html: "<div data-notify-text/>"
+      });
+
+      $.notify(this.translate("share").copytext, {
+        position: "top center",
+        style: "copied",
+        className: "success",
+        showAnimation: "fadeIn",
+        hideAnimation: "fadeOut",
+        autoHideDelay: 1000
+      });
+    },
+    _reset() {
+      this.$root.viewapp = false;
+      this.$root.preventView = null;
+      this.$root.currentFrame = null;
     }
-}
+  },
+  mounted(event) {
+    this.$refs.query.addEventListener("blur", () => (this.search = false));
+  },
+  watch: {
+    search(value) {
+      if (value) return this.$refs.query.focus();
+
+      this.$refs.query.value = "";
+
+      this.result.dapps = [];
+      this.result.market = [];
+    }
+  }
+};
 </script>

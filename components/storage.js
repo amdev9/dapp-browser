@@ -1,4 +1,4 @@
-const Frontend = require( './frontend' )
+const Frontend = require('./frontend')
 
 const FrontEnd = new Frontend()
 
@@ -36,12 +36,14 @@ class Storage {
             db.storage.put(Object.assign(item, message))
         })
 
-        FrontEnd.complete( response.payload )
-    }
+  async remove(response) {
+    const object = Object.assign({
+      hash: response.from
+    }, response.payload.where || {})
 
     async remove ( response ) {
         const object = Object.assign({hash: response.from}, response.payload.where || {})
-        
+
         const data = await new Promise(resolve => {
             db.storage.find({selector: object}).then(response => resolve( response.docs ))
         })
@@ -52,4 +54,4 @@ class Storage {
     }
 }
 
-module.exports = Storage
+module.exports = Storage;

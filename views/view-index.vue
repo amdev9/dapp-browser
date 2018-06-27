@@ -17,52 +17,52 @@
 </template>
 
 <script>
-import card from './app-card.vue'
+import card from "./app-card.vue";
 
 export default {
-    data () {
-        return {
-            market: {},
-            userapps: []
-        }
-    },
-    components: {
-        'app-card': card
-    },
-    methods: {
-        tomarket () {
-            this.$root.viewapp = false
-            this.$root.currentView = 'view-market'
-        }
-    },
-    mounted () {
-        this.$root.loading = true
-
-        this.$http.post( '/' ).then(response => {
-            const data = response.body
-
-            this.userapps = data.userapps
-            this.$root.system = data.system || {}
-
-            data.setting.forEach(item => this.$root.setting[item._id] = item)
-
-            const pins = {}
-
-            data.pins.forEach(app => {
-                pins[app.hash] = {
-                    src: app.index,
-                    icon: app.icon,
-                    name: app.name,
-                    active: false
-                }
-            })
-
-            this.$root.aside.pins = pins
-
-            this.$nextTick(function () {
-                this.$root.loading = false
-            })
-        })
+  data() {
+    return {
+      market: {},
+      userapps: []
+    };
+  },
+  components: {
+    "app-card": card
+  },
+  methods: {
+    tomarket() {
+      this.$root.viewapp = false;
+      this.$root.currentView = "view-market";
     }
-}
+  },
+  mounted() {
+    this.$root.loading = true;
+
+    this.$http.post("/").then(response => {
+      const data = response.body;
+
+      this.userapps = data.userapps;
+      this.$root.system = data.system || {};
+
+      data.setting.forEach(item => (this.$root.setting[item._id] = item));
+
+      const pins = {};
+
+      data.pins.forEach(app => {
+        pins[app.hash] = {
+          src: app.index,
+          icon: app.icon,
+          name: app.name,
+          active: false
+        };
+      });
+
+      this.$root.aside.pins = pins;
+
+      this.$nextTick(function() {
+        this.$root.loading = false;
+      });
+    });
+  }
+};
 </script>

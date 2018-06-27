@@ -229,64 +229,66 @@
 
 <script>
 export default {
-    data () {
-        return {
-            view: 'general',
-            lang: null
-        }
+  data() {
+    return {
+      view: "general",
+      lang: null
+    };
+  },
+  methods: {
+    change(event) {
+      this.view = event.currentTarget.name;
     },
-    methods: {
-        change ( event ) {
-            this.view = event.currentTarget.name
-        },
-        network ( event ) {
-            const form = $( event.target ).serialize().split( '&' )
-            const data = {_id: 'network', type: 'setting'}
+    network(event) {
+      const form = $(event.target)
+        .serialize()
+        .split("&");
+      const data = { _id: "network", type: "setting" };
 
-            for (let i = 0; i < form.length; i++) {
-                let value = form[i].split( '=' )
-                data[value.shift()] = value.shift()
-            }
+      for (let i = 0; i < form.length; i++) {
+        let value = form[i].split("=");
+        data[value.shift()] = value.shift();
+      }
 
-            this.$http.post('/setting.setting', {message: data}).then(response => {
-                alert( 'Success !' )
-            })
-        },
-        general ( event ) {
-            this.lang = event.target.elements.language.value
-            this.language = this.lang
-
-            this.$root.pagetitle = this.translate( 'header' ).setting
-        },
-        reset ( event ) {
-            let parent = event.target.closest( 'form' )
-            let units = parent.elements.units.options
-            let language = parent.elements.language.options
-
-            for (let i = 0; i < language.length; i++) {
-                language[i].selected = language[i].defaultSelected
-            }
-
-            for (let i = 0; i < units.length; i++) {
-                units[i].selected = units[i].defaultSelected
-            }
-
-            $( 'select', parent ).niceSelect( 'update' )
-        }
+      this.$http.post("/setting.setting", { message: data }).then(response => {
+        alert("Success !");
+      });
     },
-    mounted () {
-        this.$root.loading = true
-        this.$root.apptitle = null
-        this.lang = this.language
+    general(event) {
+      this.lang = event.target.elements.language.value;
+      this.language = this.lang;
 
-        this.$nextTick(function () {
-            $( 'select' ).niceSelect()
-
-            this.$root.loading = false
-        })
+      this.$root.pagetitle = this.translate("header").setting;
     },
-    updated () {
-        $( 'select' ).niceSelect()
+    reset(event) {
+      let parent = event.target.closest("form");
+      let units = parent.elements.units.options;
+      let language = parent.elements.language.options;
+
+      for (let i = 0; i < language.length; i++) {
+        language[i].selected = language[i].defaultSelected;
+      }
+
+      for (let i = 0; i < units.length; i++) {
+        units[i].selected = units[i].defaultSelected;
+      }
+
+      $("select", parent).niceSelect("update");
     }
-}
+  },
+  mounted() {
+    this.$root.loading = true;
+    this.$root.apptitle = null;
+    this.lang = this.language;
+
+    this.$nextTick(function() {
+      $("select").niceSelect();
+
+      this.$root.loading = false;
+    });
+  },
+  updated() {
+    $("select").niceSelect();
+  }
+};
 </script>
