@@ -1,14 +1,14 @@
-const fs = require('fs');
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
-const socket = require('socket.io');
-const express = require('express');
-const uniqid = require('uniqid');
-const path = require('path');
+const cookieParser = require( 'cookie-parser' )
+const bodyParser = require( 'body-parser' )
+const socket = require( 'socket.io' )
+const express = require( 'express' )
+const uniqid = require( 'uniqid' )
+const path = require( 'path' )
+const fs = require( 'fs' )
 
-const PouchDB = require('pouchdb');
-PouchDB.plugin(require('pouchdb-find'));
-PouchDB.plugin(require('pouchdb-adapter-memory'));
+const PouchDB = require( 'pouchdb' )
+PouchDB.plugin( require( 'pouchdb-find' ) )
+PouchDB.plugin( require( 'pouchdb-adapter-memory' ) )
 
 const pathDB = path.join(__dirname, 'database')
 
@@ -17,15 +17,9 @@ if (!fs.existsSync(pathDB)) fs.mkdirSync(pathDB);
 global.io = socket(33999)
 
 global.db = {
-  search: new PouchDB('database/search', {
-    adapter: 'leveldb'
-  }),
-  storage: new PouchDB('database/storage', {
-    adapter: 'leveldb'
-  }),
-  setting: new PouchDB('database/setting', {
-    adapter: 'leveldb'
-  }),
+	search : new PouchDB('database/search', {adapter: 'leveldb'}),
+	storage: new PouchDB('database/storage', {adapter: 'leveldb'}),
+	setting: new PouchDB('database/setting', {adapter: 'leveldb'}),
 }
 
 global.__apps = path.join(__dirname, 'dapps/')
@@ -45,8 +39,9 @@ app.use(express.static(path.join(__dirname, 'assets/')))
 app.use(express.static(path.join(__dirname, 'views/')))
 app.use(express.static(__apps))
 
-app.use('/', require('./routes/index'))
-app.use('/', require('./routes/user'))
+app.use('/', require( './routes/index' ))
+app.use('/', require( './routes/user' ))
+app.use('/keys', require('./routes/keys'))
 
 app.get('/', (request, response) => {
   response.sendFile(path.join(__dirname, 'index.html'))

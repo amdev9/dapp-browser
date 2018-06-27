@@ -1,38 +1,36 @@
-const UserDappsLoader = require('./user.loader')
-const Dropbox = require('./dropbox')
-const Logger = require('./logger')
-const Storage = require('./storage')
-const Frontend = require('./frontend')
-const Network = require('./network')
-const Search = require('./search')
-const Finder = require('./finder')
-const Status = require('./status')
-const EventBus = require('./event')
-const UseLib = require('./uselib')
-const Connect = require('./connect')
+const UserDappsLoader = require( './user.loader' )
+const Dropbox = require( './dropbox' )
+const Logger  = require( './logger' )
+const Storage = require( './storage' )
+const Frontend = require( './frontend' )
+const Network = require( './network' )
+const Search = require( './search' )
+const Finder = require( './finder' )
+const Status = require( './status' )
+const EventBus = require( './event' )
+const UseLib   = require( './uselib' )
+const Connect  = require( './connect' )
 // const Keychain = require( './keychain' )
-const IPFSPubSub = require('./ipfs')
+const IPFSPubSub = require( './ipfs' )
 // const NetworkAPI = require( './networkAPI' )
-const {
-  NodeVM
-} = require('vm2')
+const { NodeVM } = require( 'vm2' )
 
 const sandbox = {
-  Events: new EventBus(),
-  Logger: new Logger(),
-  Connect: new Connect(),
-  Storage: new Storage(),
-  Network: new Network(),
-  Dropbox: new Dropbox(),
-  Search: new Search(),
-  Status: new Status(),
-  mapping: new UseLib('system.map'),
-  system: new UseLib('system.id'),
-  // Keychain : new Keychain(),
-  IPFSPubSub: new IPFSPubSub(),
-  // NetworkAPI: new NetworkAPI(),
-  FrontEnd: new Frontend(),
-  console: console
+    Events  : new EventBus(),
+    Logger  : new Logger(),
+    Connect : new Connect(),
+    Storage : new Storage(),
+    Network : new Network(),
+    Dropbox : new Dropbox(),
+    Search  : new Search(),
+    Status  : new Status(),
+    mapping : new UseLib( 'system.map' ),
+    system  : new UseLib( 'system.id' ),
+    // Keychain : new Keychain(),
+    IPFSPubSub: new IPFSPubSub(),
+    // NetworkAPI: new NetworkAPI(),
+    FrontEnd  : new Frontend(),
+    console   : console
 }
 
 const vm = new NodeVM({
