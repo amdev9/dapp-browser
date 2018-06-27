@@ -9,7 +9,7 @@ let sandbox = {
   Events: new ProcessBus(),
   system: new UseLib('system.id')
 }
-
+// initialized by sandbox global.process
 process.on('message', function(message) {
   if (message.init) return new NodeVM({
     sandbox: sandbox

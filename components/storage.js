@@ -1,4 +1,5 @@
 const Frontend = require('./frontend')
+const Facade = require('./global')
 
 const FrontEnd = new Frontend()
 
@@ -7,7 +8,7 @@ class Storage {
         const object = Object.assign({hash: response.from}, response.payload.message || {})
 
         await new Promise(resolve => {
-            db.storage.post( object ).then( resolve )
+            Facade.db().storage.post( object ).then( resolve )
         })
 
         response.payload.response = object
@@ -18,7 +19,7 @@ class Storage {
         const object = Object.assign({hash: response.from}, response.payload.where || {})
 
         response.payload.response = await new Promise(resolve => {
-            db.storage.find({selector: object}).then(response => resolve( response.docs ))
+            Facade.db().storage.find({selector: object}).then(response => resolve( response.docs ))
         })
 
         FrontEnd.complete( response.payload )
@@ -29,26 +30,28 @@ class Storage {
         const message = response.payload.message
 
         const data = await new Promise(resolve => {
-            db.storage.find({selector: object}).then(response => resolve( response.docs ))
+            Facade.db().storage.find({selector: object}).then(response => resolve(response.docs))
         })
 
         data.forEach(item => {
-            db.storage.put(Object.assign(item, message))
+            Facade.db().storage.put(Object.assign(item, message))
         })
+    }
 
-  async remove(response) {
-    const object = Object.assign({
-      hash: response.from
-    }, response.payload.where || {})
+    async remove(response) {
+        const object = Object.assign({
+            hash: response.from
+        }, response.payload.where || {})
+    }
 
     async remove ( response ) {
         const object = Object.assign({hash: response.from}, response.payload.where || {})
 
         const data = await new Promise(resolve => {
-            db.storage.find({selector: object}).then(response => resolve( response.docs ))
+            Facade.db().storage.find({selector: object}).then(response => resolve( response.docs ))
         })
 
-        data.forEach(item => db.storage.remove( item ))
+        data.forEach(item => Facade.db().storage.remove( item ))
 
         FrontEnd.complete( response.payload )
     }

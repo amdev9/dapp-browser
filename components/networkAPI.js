@@ -2,6 +2,7 @@ const Apis = require('bitsharesjs-ws').Apis;
 const {
   ChainStore
 } = require('bitsharesjs');
+const Facade = require('./global');
 
 let dynamicGlobal;
 let globalWS;
@@ -93,7 +94,7 @@ class NetworkAPI {
 
   async broadcast(updateObject) {
     const data = await getSerializedData();
-    io.emit('network:getBlock', data);
+    Facade.io().emit('network:getBlock', data);
   }
 }
 
