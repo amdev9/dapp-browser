@@ -6,6 +6,7 @@ class ProcessBus {
   }
 
   async publish(to, message_type, payload) {
+    // initialized by sandbox global.process
     process.send({
       to: to,
       message_type: message_type,

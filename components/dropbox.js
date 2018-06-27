@@ -1,8 +1,8 @@
-
 const fs = require('fs');
 const crypto = require('crypto-js');
 const Frontend = require('./frontend');
 const IPFS = require('./ipfs');
+const Facade = require('./global');
 
 const FrontEnd = new Frontend();
 const ipfs = new IPFS();
@@ -19,7 +19,7 @@ class Dropbox {
     const array = response.payload.response || [];
     const keygen = message[array.length];
 
-    let bytes = crypto.AES.decrypt(keygen, __uniq)
+    let bytes = crypto.AES.decrypt(keygen, Facade.__uniq())
     let path = bytes.toString(crypto.enc.Utf8)
 
     const buffer = fs.readFileSync(path)

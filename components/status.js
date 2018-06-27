@@ -1,5 +1,6 @@
 const datetime = require('node-datetime')
 const Frontend = require('./frontend')
+const Facade = require('./global')
 
 const FrontEnd = new Frontend()
 
@@ -8,7 +9,7 @@ class Status {
     const target = response.payload.target
     const time = datetime.create().format('H:M:S')
 
-    io.emit('status', {
+    Facade.io().emit('status', {
       target: target,
       time: time
     })

@@ -2,6 +2,7 @@ const datetime = require('node-datetime')
 const Frontend = require('./frontend')
 const Finder = require('./finder')
 const fs = require('fs')
+const Facade = require('./global');
 
 const FrontEnd = new Frontend()
 const Find = new Finder('logs/')
@@ -24,7 +25,7 @@ class Logger {
     }
 
     Find.writeFile(filename, string)
-    io.emit('console', {
+    Facade.io().emit('console', {
       type: type,
       time: time,
       target: target,

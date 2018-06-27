@@ -1,6 +1,7 @@
 const fs = require('fs');
 const Frontend = require('./frontend');
 const Finder = require('./finder');
+const Facade = require('./global');
 
 
 const FrontEnd = new Frontend()
@@ -11,7 +12,7 @@ class Search { // rewrite https://pouchdb.com/2015/03/05/taming-the-async-beast-
     const message = response.payload.message
 
     response.payload.response = await new Promise(resolve => {
-      db.search.find({
+      Facade.db().search.find({
         selector: {
           value: {
             '$regex': message
@@ -27,7 +28,7 @@ class Search { // rewrite https://pouchdb.com/2015/03/05/taming-the-async-beast-
     const target = response.payload.target
 
     response.payload.response = await new Promise(resolve => {
-      db.search.find({
+      Facade.db().search.find({
         selector: {
           hash: target
         },
@@ -43,7 +44,7 @@ class Search { // rewrite https://pouchdb.com/2015/03/05/taming-the-async-beast-
     const target = response.payload.target
 
     const data = await new Promise(resolve => { // await db.search.find
-      db.search.find({
+      Facade.db().search.find({
         selector: {
           hash: target,
           value: message.value,
@@ -52,7 +53,7 @@ class Search { // rewrite https://pouchdb.com/2015/03/05/taming-the-async-beast-
       }).then(resolve)
     })
 
-    data.docs.forEach(item => db.search.remove(item))
+    data.docs.forEach(item => Facade.db().search.remove(item))
 
     FrontEnd.complete(response.payload)
   }
@@ -61,14 +62,14 @@ class Search { // rewrite https://pouchdb.com/2015/03/05/taming-the-async-beast-
     const target = response.payload.target
 
     const data = await new Promise(resolve => {
-      db.search.find({
+      Facade.db().search.find({
         selector: {
           hash: target
         }
       }).then(resolve)
     })
 
-    data.docs.forEach(item => db.search.remove(item))
+    data.docs.forEach(item => Facade.db().search.remove(item))
 
     FrontEnd.complete(response.payload)
   }
@@ -87,7 +88,7 @@ class Search { // rewrite https://pouchdb.com/2015/03/05/taming-the-async-beast-
     }
 
     const data = await new Promise(resolve => {
-      db.search.find({
+      Facade.db().search.find({
         selector: {
           hash: object.hash,
           value: value
@@ -101,7 +102,7 @@ class Search { // rewrite https://pouchdb.com/2015/03/05/taming-the-async-beast-
     const icon = 'users/' + target + '/' + object.icon
 
     await new Promise(resolve => {
-      db.search.post({
+      Facade.db().search.post({
         url: url,
         query: query,
         value: value,

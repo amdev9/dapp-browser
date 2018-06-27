@@ -5,6 +5,7 @@ const express = require( 'express' )
 const uniqid = require( 'uniqid' )
 const path = require( 'path' )
 const fs = require( 'fs' )
+const Facade = require('./components/global')
 
 const PouchDB = require( 'pouchdb' )
 PouchDB.plugin( require( 'pouchdb-find' ) )
@@ -14,17 +15,19 @@ const pathDB = path.join(__dirname, 'database')
 
 if (!fs.existsSync(pathDB)) fs.mkdirSync(pathDB);
 
-global.io = socket(33999)
-
-global.db = {
-	search : new PouchDB('database/search', {adapter: 'leveldb'}),
-	storage: new PouchDB('database/storage', {adapter: 'leveldb'}),
-	setting: new PouchDB('database/setting', {adapter: 'leveldb'}),
-}
-
-global.__apps = path.join(__dirname, 'dapps/')
-global.__logs = path.join(__dirname, 'logs/')
-global.__uniq = uniqid()
+Facade.publishIO(socket(33999))
+Facade.publishDB(
+    {
+        search: new PouchDB('database/search', {adapter: 'leveldb'}),
+        storage: new PouchDB('database/storage', {adapter: 'leveldb'}),
+        setting: new PouchDB('database/setting', {adapter: 'leveldb'}),
+    }
+)
+Facade.publishDirs(
+    path.join(__dirname, 'dapps/'),
+    path.join(__dirname, 'logs/')
+)
+Facade.publishUniq(uniqid())
 
 const app = express()
 
@@ -37,7 +40,7 @@ app.use(cookieParser())
 
 app.use(express.static(path.join(__dirname, 'assets/')))
 app.use(express.static(path.join(__dirname, 'views/')))
-app.use(express.static(__apps))
+app.use(express.static(Facade.__apps()))
 
 app.use('/', require( './routes/index' ))
 app.use('/', require( './routes/user' ))
