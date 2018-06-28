@@ -1,8 +1,8 @@
 const { webContents, ipcMain } = require('electron');
 const { combineReducers, createStore, applyMiddleware, compose } = require('redux');
 const thunk = require('redux-thunk').default;
-const { hashHistory } = require('react-router');
-const { routerMiddleware } = require('react-router-redux');
+// const { hashHistory } = require('react-router');
+// const { routerMiddleware } = require('react-router-redux');
 const { isFSA } = require('flux-standard-action');
 const { forwardToRenderer, triggerAlias } = require('electron-redux');
 const rootReducer = require('../reducers');
@@ -54,11 +54,11 @@ const replayActionMain = (store, globalId) => {
 const configureStore = (initialState, globalId) => {
   const middleware = [];
   middleware.push(thunk);
-  const router = routerMiddleware(hashHistory);
+  // const router = routerMiddleware(hashHistory);
     
   middleware.push(triggerAlias, validatePermissionAction, forwardToRenderer); // add middleware for permissions verifications
   
-  const enhanced = [applyMiddleware(...middleware, router)]; 
+  const enhanced = [applyMiddleware(...middleware)]; 
   const enhancer = compose(...enhanced);
   const store = createStore(rootReducer, initialState, enhancer);
 

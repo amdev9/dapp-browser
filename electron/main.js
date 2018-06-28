@@ -39,22 +39,7 @@ let bounds = {
 const globalUUIDList = [];
 
 app.on('ready', () => {
-  const store = configureStore(global.state, globalUUIDList);
-  process.stdout.write(JSON.stringify(store.getState()));
   
-  store.subscribe( () => {
-    process.stdout.write(JSON.stringify(store.getState()));
-
-    let activeDappName = store.getState().client.activeDapp;
-    // console.log('activeDappName', activeDappName);
-    let nameObj = globalUUIDList.find(renObj => renObj.name === activeDappName);
-    if (nameObj) {
-      // console.log('nameObj', nameObj);
-      let view = BrowserView.fromId(nameObj.viewId);
-      clientWindow.setBrowserView(view);
-      view.setBounds(bounds); 
-    }
-  });
 
   app.on('window-all-closed', () => {
     // Respect the OSX convention of having the application in memory even
@@ -76,9 +61,36 @@ app.on('ready', () => {
   // then switching workspaces is just and additional call to setBrowserView
   const dappsIndexes = ['index.html', 'index2.html'];
   for (dappInd of dappsIndexes) {
-    dappView = createDappView(clientWindow, globalUUIDList, dappInd);
+    // dappView = 
+    createDappView(clientWindow, globalUUIDList, dappInd);
   }
   
+  // process.stdout.write('length from main ' + BrowserView.getAllViews().length);
+  let view = BrowserView.fromId(1);
+  // console.log('----->', view);
+  clientWindow.setBrowserView(view);
+  // view.setBounds(bounds); 
+
+  const store = configureStore(global.state, globalUUIDList);
+  process.stdout.write(JSON.stringify(store.getState()));
+  
+  store.subscribe( () => {
+    process.stdout.write(JSON.stringify(store.getState()));
+
+    let activeDappName = store.getState().client.activeDapp;
+    // console.log('activeDappName', activeDappName);
+    let nameObj = globalUUIDList.find(renObj => renObj.name === activeDappName);
+    if (nameObj) {
+      // console.log('>>>> nameObj', nameObj);
+      // console.log('>>> length', BrowserView.getAllViews().length);
+      let view = BrowserView.fromId(nameObj.viewId);
+        // console.log('----->', view);
+        clientWindow.setBrowserView(view);
+        // view.setBounds(bounds); 
+    }
+  });
+
+
   process.stdout.write(JSON.stringify(globalUUIDList) );
 });
 

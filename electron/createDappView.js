@@ -27,7 +27,7 @@ function createDappView(clientWindow, globalUUIDList, entryPath) {
         height: 300
     };
       
-    clientWindow.setBrowserView(dappView);
+    // clientWindow.setBrowserView(dappView);
     dappView.setBounds(bounds);
     dappView.webContents.loadURL('file://' + path.join(DAPPS_PATH, entryPath));
 
@@ -41,7 +41,8 @@ function createDappView(clientWindow, globalUUIDList, entryPath) {
     }
     globalUUIDList.push(rendererObj);
 
-    return dappView;
+    console.log('length', BrowserView.getAllViews().length);
+    // return dappView;
 }
 
 module.exports = createDappView;

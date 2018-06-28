@@ -13,6 +13,8 @@ function createClientWindow(globalUUIDList) {
   clientWindow = new BrowserWindow({
     x: 0,
     y: 0,
+    width: 1200,
+    height: 800,
     webPreferences: {
       nodeIntegration: false,
       sandbox: true,
