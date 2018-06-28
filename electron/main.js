@@ -69,7 +69,7 @@ app.on('ready', () => {
   let view = BrowserView.fromId(1);
   // console.log('----->', view);
   clientWindow.setBrowserView(view);
-  // view.setBounds(bounds); 
+  view.setBounds(bounds); 
 
   const store = configureStore(global.state, globalUUIDList);
   process.stdout.write(JSON.stringify(store.getState()));
@@ -86,7 +86,7 @@ app.on('ready', () => {
       let view = BrowserView.fromId(nameObj.viewId);
         // console.log('----->', view);
         clientWindow.setBrowserView(view);
-        // view.setBounds(bounds); 
+        view.setBounds(bounds); 
     }
   });
 
