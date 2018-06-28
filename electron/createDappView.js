@@ -10,7 +10,7 @@ const DAPPS_PATH = path.join(__dirname, 'dapps');
 function createDappView(globalUUIDList, entryPath) {
 
     const uuidDapp = uuidv4();
-    dappView = new BrowserView({
+    dappView = new BrowserWindow({ // BrowserView
         webPreferences: {
             nodeIntegration: false,
             sandbox: true,
@@ -27,7 +27,9 @@ function createDappView(globalUUIDList, entryPath) {
         height: 300
     };
  
-    dappView.setBounds(bounds);
+    /* * BrowserView
+     * dappView.setBounds(bounds); 
+     * */
     dappView.webContents.loadURL('file://' + path.join(DAPPS_PATH, entryPath));
 
     // openDevTool(dappView, true);
