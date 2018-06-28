@@ -62,7 +62,7 @@ app.on('ready', () => {
   const dappsIndexes = ['index.html', 'index2.html'];
   for (dappInd of dappsIndexes) {
     // dappView = 
-    createDappView(clientWindow, globalUUIDList, dappInd);
+    createDappView(globalUUIDList, dappInd);
   }
   
   // process.stdout.write('length from main ' + BrowserView.getAllViews().length);
