@@ -9,7 +9,8 @@ function client(state = {}, action) {
         activeDapp: dappId 
       }
     
-    case SEND_PING_MESSAGE: // HANDLE_MESSAGE_SEND -> OPEN_BINDED_CHANNEL + SENDING_PING_MESSAGE 
+    case SEND_PING_MESSAGE: //todo HANDLE_MESSAGE_SEND -> INTENT_OPEN_CHANNELS: [name of app] (resolve id of dapp, send push event) - if(ok) -> OPEN_CHANNELS -> BIND_OPEN_CHANNELS -> CHANNELS_OPENED 
+      //+ SENDING_PING_MESSAGE 
       return state;
 
     default:

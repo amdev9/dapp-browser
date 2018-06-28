@@ -1,4 +1,5 @@
-//todo
+NOTES (BLACKNOTES)
+
 // interaction between dapps / data passing:
 // 1. static reactive +
 // (1) SEND_MESSAGE from one dapp to another, dappIdFrom, dappIdTo => check permissions => init connection / pass message
