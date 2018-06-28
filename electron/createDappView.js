@@ -32,7 +32,7 @@ function createDappView(globalUUIDList, entryPath) {
      * */
     dappView.webContents.loadURL('file://' + path.join(DAPPS_PATH, entryPath));
 
-    // openDevTool(dappView, true);
+    openDevTool(dappView, true);
 
     rendererObj = {
         id: uuidDapp,

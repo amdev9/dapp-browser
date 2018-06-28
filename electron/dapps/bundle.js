@@ -61,8 +61,10 @@ const initStore = () => {
 }
 
 const renderState = () => {
-  // console.log(JSON.stringify(store.getState().counter));
-  document.getElementById('value').innerHTML = store.getState().counter;
+  // console.log(JSON.stringify(store.getState()));
+  if (document.getElementById('value')) {
+    document.getElementById('value').innerHTML = store.getState().counter;
+  }
 }
 
 const initUi = () => {

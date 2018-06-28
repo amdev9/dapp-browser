@@ -1,6 +1,6 @@
 const { SWITCH_DAPP } = require('../actions/client');
 
-function client(state = 0, action) {
+function client(state = {}, action) {
   switch (action.type) {
     case SWITCH_DAPP:
 
