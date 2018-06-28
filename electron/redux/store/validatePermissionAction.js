@@ -1,10 +1,9 @@
 // validate permissions for actions
 
-const { SWITCH_DAPP } = require('../actions/client');
+const { SWITCH_DAPP, SEND_PING_MESSAGE } = require('../actions/client');
 const { INCREMENT_COUNTER, DECREMENT_COUNTER } = require('../actions/counter');
  
 const validatePermissionAction = () => next => (action) => {
-
 
   if (action.payload.status === 'dapp') {
     switch (action.type) {
@@ -12,6 +11,9 @@ const validatePermissionAction = () => next => (action) => {
         console.log(action);
         return next(action);
       case DECREMENT_COUNTER:
+        console.log(action);
+        return next(action);
+      case SEND_PING_MESSAGE:
         console.log(action);
         return next(action);
       default:

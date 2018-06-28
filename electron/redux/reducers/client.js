@@ -1,19 +1,20 @@
-const { SWITCH_DAPP } = require('../actions/client');
+const { SWITCH_DAPP, SEND_PING_MESSAGE } = require('../actions/client');
 
 function client(state = {}, action) {
   switch (action.type) {
     case SWITCH_DAPP:
-
       const dappId = action.payload.targetDappId; // dapp id
       return {
         ...state,
         activeDapp: dappId 
       }
+    
+    case SEND_PING_MESSAGE: // HANDLE_MESSAGE_SEND -> OPEN_BINDED_CHANNEL + SENDING_PING_MESSAGE 
+      return state;
 
-      // return state - 1;
     default:
       return state;
   }
 }
 
-module.exports = client;
+module.exports = client;  

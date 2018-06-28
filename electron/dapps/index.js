@@ -84,13 +84,13 @@ const initUi = () => {
   document.getElementById('ping').addEventListener('click', () => {
 
     console.log('click on ping');
-    // store.dispatch({
-    //   type: 'SEND_PING_MESSAGE',
+    store.dispatch({
+      type: 'SEND_PING_MESSAGE'
     //   payload: { 
     //     message: 'this is a ping message',
     //     dappIdReceiver: 'dappname128729index' //TODO change to ipcSendDataMiddleware like in socketMiddleware.js .. static
-    //   }
-    // }); // dispatch API endpoints
+    // }
+    }); // dispatch API endpoints
   });
 
 }
