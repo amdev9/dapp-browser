@@ -21,7 +21,7 @@ async function getWitnessByID(id) {
     result = await Apis.instance()
       .db_api()
       .exec('get_full_accounts', [
-        [witness[0].witness_account], console.log()
+        [witness[0].witness_account], function () {}
       ]);
   } catch (error) {
     console.log(error);
@@ -51,7 +51,7 @@ async function getBlock(height = 1000) {
       .db_api()
       .exec('get_block', [height]);
   } catch (error) {
-    console.log(error);
+    console.log(`Get Blocks error: ${error}`);
     return;
   }
   witness = await getWitnessByID(block.witness);

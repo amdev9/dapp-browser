@@ -11,6 +11,7 @@ const Frontend = require('./frontend');
 
 const FrontEnd = new Frontend();
 
+const MAX_RETRIES = 3;
 const RESPONSE_TIMEOUT = 1000;
 const KEYCHAIN_CMD = (platform => {
     switch (platform) {
@@ -54,13 +55,21 @@ class TaskQueue {
 var keychain = runKeychain();
 var taskQueue = new TaskQueue(1);
 
+var retries = MAX_RETRIES;
+
 function runKeychain() {
   return (function(p) {
     p.on('close', (code, signal) => {
       if (code !== null) {
-        console.error(`keychain process exited with code: ${code}`);
+        retries--;
+        console.error(`keychain process exited with code (retry ${MAX_RETRIES - retries}): ${code}`);
       } else {
         console.error(`keychain process abnormally terminated by signal: ${signal}`);
+        retries = 0;
+      }
+      if (!retries) {
+          console.error(`Keychain component stopped!!!`);
+          return
       }
       keychain = runKeychain();
     });
