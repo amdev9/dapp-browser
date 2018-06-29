@@ -5,6 +5,10 @@ const thunk = require('redux-thunk').default;
 // const { routerMiddleware } = require('react-router-redux');
 const { isFSA } = require('flux-standard-action');
 const { forwardToRenderer, triggerAlias } = require('electron-redux');
+
+const { createEpicMiddleware } = require('redux-observable');
+const { rootEpic } = require('../epics');
+
 const rootReducer = require('../reducers');
 const validatePermissionAction = require('./validatePermissionAction');
 
@@ -37,12 +41,10 @@ const replayActionMain = (store, globalId) => {
       // payload.status = uuidObj.status;
 
  
-    
       // + validate spoofing uuid checker 
       // + indentify process (client or dapp)
       // + pass action to redux middleware to check permissions
 
-      
       store.dispatch(payload);                             // verification for payload 
     } else {
       console.log("Spoofing detected")
@@ -52,11 +54,15 @@ const replayActionMain = (store, globalId) => {
 }
 
 const configureStore = (initialState, globalId) => {
+
+  
   const middleware = [];
   middleware.push(thunk);
+  
+  const epicMiddleware = createEpicMiddleware(rootEpic);
   // const router = routerMiddleware(hashHistory);
     
-  middleware.push(triggerAlias, validatePermissionAction, forwardToRenderer); // add middleware for permissions verifications
+  middleware.push(epicMiddleware, triggerAlias, validatePermissionAction, forwardToRenderer); // add middleware for permissions verifications
   
   const enhanced = [applyMiddleware(...middleware)]; 
   const enhancer = compose(...enhanced);
