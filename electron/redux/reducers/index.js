@@ -1,10 +1,11 @@
 const { combineReducers } = require('redux');
 
-const counter = require('./counter');
+const { counter, countdown } = require('./counter');
 const client = require('./client');
 
 const rootReducer = combineReducers({
   counter,
+  countdown,
   client
 });
 
