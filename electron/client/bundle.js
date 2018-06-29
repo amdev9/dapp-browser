@@ -91,6 +91,12 @@ const initUi = () => {
             }
         }); // dispatch API endpoints
     });
+
+    document.getElementById('countdown').addEventListener('click', () => {
+        store.dispatch({
+            type: 'START_COUNTDOWN'
+        }); // dispatch API endpoints
+    });
 }
 
 
@@ -1127,20 +1133,37 @@ function symbolObservablePonyfill(root) {
 };
 },{}],20:[function(require,module,exports){
 const SWITCH_DAPP = 'SWITCH_DAPP';
- 
+const SEND_PING_MESSAGE = 'SEND_PING_MESSAGE';
+
 function switchDapp() {
   return {
     type: SWITCH_DAPP
   };
 }
- 
+
+function increment() {
+  return {
+    type: SEND_PING_MESSAGE
+  };
+}
+
 module.exports = {
   switchDapp,
-  SWITCH_DAPP
+  increment,
+  SWITCH_DAPP,
+  SEND_PING_MESSAGE
 }
 },{}],21:[function(require,module,exports){
 const INCREMENT_COUNTER = 'INCREMENT_COUNTER';
 const DECREMENT_COUNTER = 'DECREMENT_COUNTER';
+
+
+const START_COUNTDOWN = 'START_COUNTDOWN';
+const INCREMENT_ASYNC = 'INCREMENT_ASYNC';
+const CANCEL_INCREMENT_ASYNC = 'CANCEL_INCREMENT_ASYNC';
+const COUNTDOWN_TERMINATED = 'COUNTDOWN_TERMINATED';
+
+// START_COUNTDOWN, INCREMENT_ASYNC, CANCEL_INCREMENT_ASYNC
 
 function increment() {
   return {
@@ -1158,30 +1181,57 @@ module.exports = {
   decrement,
   increment,
   INCREMENT_COUNTER,
-  DECREMENT_COUNTER
+  DECREMENT_COUNTER,
+
+  START_COUNTDOWN,
+  INCREMENT_ASYNC,
+  CANCEL_INCREMENT_ASYNC,
+  COUNTDOWN_TERMINATED
+
 }
 },{}],22:[function(require,module,exports){
-const { SWITCH_DAPP } = require('../actions/client');
+const { SWITCH_DAPP, SEND_PING_MESSAGE } = require('../actions/client');
 
-function client(state = 0, action) {
+function client(state = {}, action) {
   switch (action.type) {
     case SWITCH_DAPP:
-
       const dappId = action.payload.targetDappId; // dapp id
       return {
         ...state,
         activeDapp: dappId 
       }
+    
+    case SEND_PING_MESSAGE: //todo HANDLE_MESSAGE_SEND -> INTENT_OPEN_CHANNELS: [name of app] (resolve id of dapp, send push event) - if(ok) -> OPEN_CHANNELS -> BIND_OPEN_CHANNELS -> CHANNELS_OPENED 
+      //+ SENDING_PING_MESSAGE 
+      return state;
 
-      // return state - 1;
     default:
       return state;
   }
 }
 
-module.exports = client;
+module.exports = client;  
 },{"../actions/client":20}],23:[function(require,module,exports){
-const { INCREMENT_COUNTER, DECREMENT_COUNTER } = require('../actions/counter');
+const { 
+  INCREMENT_COUNTER, 
+  DECREMENT_COUNTER,
+  START_COUNTDOWN,
+  INCREMENT_ASYNC,
+  CANCEL_INCREMENT_ASYNC,
+  COUNTDOWN_TERMINATED 
+} = require('../actions/counter');
+
+function countdown(state = 0, action) {
+  switch (action.type) {
+    case INCREMENT_ASYNC:
+      return action.value
+    case COUNTDOWN_TERMINATED:
+    case CANCEL_INCREMENT_ASYNC:
+      return 0;
+    default:
+      return state
+  }
+}
 
 function counter(state = 0, action) {
   switch (action.type) {
@@ -1194,15 +1244,19 @@ function counter(state = 0, action) {
   }
 }
 
-module.exports = counter;
+module.exports = {
+  counter,
+  countdown
+};
 },{"../actions/counter":21}],24:[function(require,module,exports){
 const { combineReducers } = require('redux');
 
-const counter = require('./counter');
+const { counter, countdown } = require('./counter');
 const client = require('./client');
 
 const rootReducer = combineReducers({
   counter,
+  countdown,
   client
 });
 

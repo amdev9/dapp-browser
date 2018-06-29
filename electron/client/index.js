@@ -90,6 +90,12 @@ const initUi = () => {
             }
         }); // dispatch API endpoints
     });
+
+    document.getElementById('countdown').addEventListener('click', () => {
+        store.dispatch({
+            type: 'START_COUNTDOWN'
+        }); // dispatch API endpoints
+    });
 }
 
 
