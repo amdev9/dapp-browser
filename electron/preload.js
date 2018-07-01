@@ -11,8 +11,10 @@ window.onload = () => {
 class ElectronManager {
   constructor() {
     
-    //todo add restriction for unknown channels, granted channels parse from process argv
-    
+    //todo add restriction for unknown channels 
+    // https://github.com/kewde/electron-sandbox-boilerplate/blob/master/sandbox-preload-extended/electron/renderer/preload-extended.js, 
+    // granted channels parse from process argv
+
     const uuidRendererParam = process.argv.filter( (param) => {
       return param.indexOf('--uuid-renderer') >= 0;
     });  
