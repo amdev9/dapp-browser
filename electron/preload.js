@@ -11,7 +11,9 @@ window.onload = () => {
 class ElectronManager {
   constructor() {
     
-    const uuidRendererParam = process.argv.filter(function(param) {
+    //todo add restriction for unknown channels, granted channels parse from process argv
+    
+    const uuidRendererParam = process.argv.filter( (param) => {
       return param.indexOf('--uuid-renderer') >= 0;
     });  
     const uuidRenderer = uuidRendererParam[0].split('=')[1];
@@ -34,11 +36,25 @@ class ElectronManager {
       console.log(uuidRenderer);
       ipcRenderer.send('redux-action', uuidRenderer, action);
     }
-  
+
+    const sendDataChannel = (channelName, data) => {
+      // switch by channelName, find channelId passed to preload script
+      ipcRenderer.send(channelId, uuidRenderer, data);
+    }
+    
+    const receiveDataChannel = (channelName, callbackData) => {
+      // switch by channelName, find channelId passed to preload script
+      ipcRenderer.on(channelId, (event, payload) => {
+        callbackData(payload);
+      });
+    }
+
     this.replayActionRenderer = replayActionRenderer;
     this.getGlobalState = getGlobalState;
     this.sendActionMain = sendActionMain;
 
+    this.sendDataChannel = sendDataChannel;
+    this.receiveDataChannel = receiveDataChannel;
     // this.send = ipcRenderer.send; // for switch
   }
 }

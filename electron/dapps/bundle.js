@@ -89,7 +89,7 @@ const initUi = () => {
       type: 'SEND_PING_MESSAGE'
     //   payload: { 
     //     message: 'this is a ping message',
-    //     dappIdReceiver: 'dappname128729index' //TODO change to ipcSendDataMiddleware like in socketMiddleware.js .. static
+    //     dappIdReceiver: 'dappname128729index'  
     // }
     }); // dispatch API endpoints
   });

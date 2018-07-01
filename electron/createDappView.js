@@ -16,7 +16,7 @@ function createDappView(globalUUIDList, entryPath) {
             sandbox: true,
             // contextIsolation: true,
             preload: path.join(__dirname, 'preload.js'),
-            additionalArguments: [ '--uuid-renderer='.concat(uuidDapp) ]
+            additionalArguments: [ '--uuid-renderer='.concat(uuidDapp) ] //todo add grantedChannels list
         }
     });
 

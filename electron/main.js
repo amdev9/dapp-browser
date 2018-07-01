@@ -3,7 +3,7 @@
   Uses process.stdout.write instead of console.log so we can cleanly catch the output in the parent process.
 */
 
-const { app, BrowserView } = require('electron');
+const { app, BrowserView, ipcMain } = require('electron');
 const configureStore = require('./redux/store/configureStore');
 const createClientWindow = require('./createClientWindow');
 const createDappView = require('./createDappView');
@@ -66,14 +66,22 @@ app.on('ready', () => {
     }
   });
   process.stdout.write(JSON.stringify(globalUUIDList) );
+
+  //todo send and receive on both sides of binded channel
+  let bindedView, channelIdSender, channelIdReceiver; 
+  ipcMain.on(channelIdSender, (event, uuid, payload) => {
+    // 1. check channelId permissions granted
+    // 2. check uuid relate to channelId
+    // define bindedView view to send data, id receiver
+    bindedView.webContents.send(channelIdReceiver, uuid, payload);
+  });
+
 });
 
 process.stdout.write("Main initialized");
 
 // In main process.
-const ipcMain = require('electron').ipcMain;
+ 
 ipcMain.once('answer', (event, argv) => {
   console.log(argv);
 });
-
-  
