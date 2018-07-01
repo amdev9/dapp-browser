@@ -1,13 +1,13 @@
 {
-  "name": "sandbox-preload-extended",
-  "version": "1.0.0",
+  "name": "array-io-client",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Kewde",
+  "author": "cypherpunk99",
   "license": "MIT",
   "devDependencies": {},
   "dependencies": {
