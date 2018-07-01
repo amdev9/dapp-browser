@@ -1,7 +1,7 @@
 // validate permissions for actions
 
 const { SWITCH_DAPP, SEND_PING_MESSAGE } = require('../actions/client');
-const { INCREMENT_COUNTER, DECREMENT_COUNTER, START_COUNTDOWN } = require('../actions/counter');
+const { INCREMENT_COUNTER, DECREMENT_COUNTER, START_COUNTDOWN, INCREMENT_ASYNC, CANCEL_INCREMENT_ASYNC } = require('../actions/counter');
  
 const validatePermissionAction = () => next => (action) => {
 
@@ -31,6 +31,12 @@ const validatePermissionAction = () => next => (action) => {
         console.log(action);
         return next(action);
       case START_COUNTDOWN:
+        console.log(action);
+        return next(action);
+      case INCREMENT_ASYNC:
+        console.log(action);
+        return next(action);
+      case CANCEL_INCREMENT_ASYNC:
         console.log(action);
         return next(action);
       default:

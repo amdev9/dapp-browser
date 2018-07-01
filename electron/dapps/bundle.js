@@ -86,7 +86,8 @@ const initUi = () => {
 
     console.log('click on ping');
     store.dispatch({
-      type: 'SEND_PING_MESSAGE'
+      type: 'SEND_PING_MESSAGE' //todo pass name of dapp, which receive message
+
     //   payload: { 
     //     message: 'this is a ping message',
     //     dappIdReceiver: 'dappname128729index'  
