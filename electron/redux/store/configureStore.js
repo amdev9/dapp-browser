@@ -6,8 +6,8 @@ const thunk = require('redux-thunk').default;
 const { isFSA } = require('flux-standard-action');
 const { forwardToRenderer, triggerAlias } = require('electron-redux');
 
-const { createEpicMiddleware } = require('redux-observable');
-const { rootEpic } = require('../epics');
+// const { createEpicMiddleware } = require('redux-observable');
+// const { rootEpic } = require('../epics');
 
 const rootReducer = require('../reducers');
 const validatePermissionAction = require('./validatePermissionAction');
@@ -59,10 +59,10 @@ const configureStore = (initialState, globalId) => {
   const middleware = [];
   middleware.push(thunk);
   
-  const epicMiddleware = createEpicMiddleware(rootEpic);
+  // const epicMiddleware = createEpicMiddleware(rootEpic);
   // const router = routerMiddleware(hashHistory);
     
-  middleware.push(epicMiddleware, triggerAlias, validatePermissionAction, forwardToRenderer); // add middleware for permissions verifications
+  middleware.push(triggerAlias, validatePermissionAction, forwardToRenderer); // epicMiddleware
   
   const enhanced = [applyMiddleware(...middleware)]; 
   const enhancer = compose(...enhanced);
