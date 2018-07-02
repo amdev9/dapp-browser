@@ -43,7 +43,7 @@ const configureStore = (initialState) => {
     ];
     const enhancer = compose(...enhanced);
     console.log(typeof rootReducer, initialState, typeof enhancer);
-    store = createStore(rootReducer, initialState, enhancer);
+    const store = createStore(rootReducer, initialState, enhancer);
     electronManager.replayActionRenderer(store); // window.ipc
     return store;
 };
@@ -106,5 +106,5 @@ const initUi = () => {
 
 
 // main
-store = initStore();
+const store = initStore();
 initUi();
