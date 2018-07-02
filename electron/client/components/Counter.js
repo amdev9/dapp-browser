@@ -27,7 +27,7 @@ function Counter({counter, countdown, congratulate, dispatch}) {
   };
 
   const onClickTodo = () => {
-    dispatch(switchDapp('dappname128729index'))
+    dispatch(switchDapp('dappname128729index')) // pass as a param
   };
 
   return (
