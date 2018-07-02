@@ -26,15 +26,17 @@ function Counter({counter, countdown, congratulate, dispatch}) {
     value ? dispatch({type, value}) : dispatch({type})
   };
 
+  const onClickTodo = () => {
+    dispatch(switchDapp('dappname128729index'))
+  };
+
   return (
     <div>
       {' '}
-      <button onClick={dispatch(switchDapp('dappname128729index2'))}>BV1</button> 
-      {/* <button onClick={ }>BV2</button> 
-    
-     fix click
-    */}
-      
+      <button onClick={onClickTodo}>BV1</button> 
+      <button onClick={onClickTodo}>BV2</button> 
+      {/* create component */}
+
       {' '}
       Clicked: {counter} times
       {' '}
