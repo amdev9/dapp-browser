@@ -115,6 +115,8 @@ const initUi = () => {
 const store = initStore();
 // initUi();
 
+
+//todo send state changes to main store
 render(
     <Provider store={store}>
       <Counter />
