@@ -20,31 +20,12 @@ const replayActionMain = (store, globalId) => {
 
   ipcMain.on('redux-action', (event, uuid, payload) => { 
     
-
-    // let arr = [
-    //   { name:"string 1", value:"this", other: "that" },
-    //   { name:"string 2", value:"this", other: "that" }
-    // ];
-    // let obj = arr.find(o => o.name === 'string 1');
-    // console.log(obj);
-    
-
     let uuidObj = globalId.find(renObj => renObj.id === uuid);
     if (uuidObj) {
       // console.log("Validated: ", JSON.stringify(uuidObj));
-
-
-      // console.log('payload', payload);
       const statusObj = { status: uuidObj.status };
       payload.payload = (payload.payload) ? Object.assign(payload.payload, statusObj) : statusObj;
       
-      // payload.status = uuidObj.status;
-
- 
-      // + validate spoofing uuid checker 
-      // + indentify process (client or dapp)
-      // + pass action to redux middleware to check permissions
-
       store.dispatch(payload);                             // verification for payload 
     } else {
       console.log("Spoofing detected")

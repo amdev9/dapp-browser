@@ -4,8 +4,8 @@ const thunk = require('redux-thunk').default;
 const logger = require('redux-logger').default;
 const { isFSA } = require('flux-standard-action');
 const { createEpicMiddleware } = require('redux-observable');
-const { rootEpic } = require('../redux/epics');
-const rootReducer = require('../redux/reducers');
+const { rootEpic } = require('./redux/epics');
+const rootReducer = require('./redux/reducers');
 
 const electronManager = window.ipc;
 

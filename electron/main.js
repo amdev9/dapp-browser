@@ -4,7 +4,7 @@
 */
 
 const { app, BrowserView, ipcMain } = require('electron');
-const configureStore = require('./redux/store/configureStore');
+const configureStore = require('./helpers/store/configureStore');
 const createClientWindow = require('./createClientWindow');
 const createDappView = require('./createDappView');
 

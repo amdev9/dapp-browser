@@ -5,8 +5,8 @@ const thunk = require('redux-thunk').default;
 const logger = require('redux-logger').default;
 const { isFSA } = require('flux-standard-action');
 const { createEpicMiddleware } = require('redux-observable');
-const { rootEpic } = require('../redux/epics');
-const rootReducer = require('../redux/reducers');
+const { rootEpic } = require('./redux/epics');
+const rootReducer = require('./redux/reducers');
 
 const electronManager = window.ipc;
 
@@ -109,7 +109,7 @@ const initUi = () => {
 // main
 store = initStore();
 initUi();
-},{"../redux/epics":227,"../redux/reducers":230,"flux-standard-action":2,"redux":24,"redux-logger":15,"redux-observable":20,"redux-thunk":23}],2:[function(require,module,exports){
+},{"./redux/epics":227,"./redux/reducers":230,"flux-standard-action":2,"redux":24,"redux-logger":15,"redux-observable":20,"redux-thunk":23}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -687,7 +687,7 @@ function createEpicMiddleware() {
   return epicMiddleware;
 }
 }).call(this,require('_process'))
-},{"./ActionsObservable":16,"./StateObservable":17,"./utils/console":22,"_process":439,"rxjs":25,"rxjs/operators":222}],20:[function(require,module,exports){
+},{"./ActionsObservable":16,"./StateObservable":17,"./utils/console":22,"_process":231,"rxjs":25,"rxjs/operators":222}],20:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1432,7 +1432,7 @@ exports.compose = compose;
 exports.__DO_NOT_USE__ActionTypes = ActionTypes;
 
 }).call(this,require('_process'))
-},{"_process":439,"symbol-observable":223}],25:[function(require,module,exports){
+},{"_process":231,"symbol-observable":223}],25:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var Observable_1 = require("./internal/Observable");
@@ -11485,7 +11485,6 @@ const { combineEpics } = require('redux-observable');
 
 const { INCREMENT_COUNTER, START_COUNTDOWN, INCREMENT_ASYNC, CANCEL_INCREMENT_ASYNC } = require('../actions/counter'); 
  
-
 const startCountdownEpic = (action$) => {
   /*
    * This action does not exist in the corresponding redux saga example: it's used to isolate
@@ -11544,7 +11543,7 @@ module.exports = rootEpic;
 
 
 
-},{"../actions/counter":226,"redux-observable":235,"rxjs":239}],228:[function(require,module,exports){
+},{"../actions/counter":226,"redux-observable":20,"rxjs":25}],228:[function(require,module,exports){
 const { SWITCH_DAPP, SEND_PING_MESSAGE } = require('../actions/client');
 
 function client(state = {}, action) {
@@ -11617,423 +11616,7 @@ const rootReducer = combineReducers({
 
 module.exports = rootReducer;
 
-},{"./client":228,"./counter":229,"redux":238}],231:[function(require,module,exports){
-arguments[4][16][0].apply(exports,arguments)
-},{"./operators":236,"dup":16,"rxjs":239}],232:[function(require,module,exports){
-arguments[4][17][0].apply(exports,arguments)
-},{"dup":17,"rxjs":239}],233:[function(require,module,exports){
-arguments[4][18][0].apply(exports,arguments)
-},{"dup":18,"rxjs":239}],234:[function(require,module,exports){
-arguments[4][19][0].apply(exports,arguments)
-},{"./ActionsObservable":231,"./StateObservable":232,"./utils/console":237,"_process":439,"dup":19,"rxjs":239,"rxjs/operators":436}],235:[function(require,module,exports){
-arguments[4][20][0].apply(exports,arguments)
-},{"./ActionsObservable":231,"./StateObservable":232,"./combineEpics":233,"./createEpicMiddleware":234,"./operators":236,"dup":20}],236:[function(require,module,exports){
-arguments[4][21][0].apply(exports,arguments)
-},{"dup":21,"rxjs/operators":436}],237:[function(require,module,exports){
-arguments[4][22][0].apply(exports,arguments)
-},{"dup":22}],238:[function(require,module,exports){
-arguments[4][24][0].apply(exports,arguments)
-},{"_process":439,"dup":24,"symbol-observable":437}],239:[function(require,module,exports){
-arguments[4][25][0].apply(exports,arguments)
-},{"./internal/AsyncSubject":240,"./internal/BehaviorSubject":241,"./internal/Notification":243,"./internal/Observable":244,"./internal/ReplaySubject":247,"./internal/Scheduler":248,"./internal/Subject":249,"./internal/Subscriber":251,"./internal/Subscription":252,"./internal/config":253,"./internal/observable/ConnectableObservable":254,"./internal/observable/bindCallback":256,"./internal/observable/bindNodeCallback":257,"./internal/observable/combineLatest":258,"./internal/observable/concat":259,"./internal/observable/defer":260,"./internal/observable/empty":261,"./internal/observable/forkJoin":262,"./internal/observable/from":263,"./internal/observable/fromEvent":265,"./internal/observable/fromEventPattern":266,"./internal/observable/generate":270,"./internal/observable/iif":271,"./internal/observable/interval":272,"./internal/observable/merge":273,"./internal/observable/never":274,"./internal/observable/of":275,"./internal/observable/onErrorResumeNext":276,"./internal/observable/pairs":277,"./internal/observable/race":278,"./internal/observable/range":279,"./internal/observable/throwError":281,"./internal/observable/timer":282,"./internal/observable/using":283,"./internal/observable/zip":284,"./internal/operators/groupBy":320,"./internal/scheduler/VirtualTimeScheduler":397,"./internal/scheduler/animationFrame":398,"./internal/scheduler/asap":399,"./internal/scheduler/async":400,"./internal/scheduler/queue":401,"./internal/symbol/observable":403,"./internal/util/ArgumentOutOfRangeError":405,"./internal/util/EmptyError":406,"./internal/util/ObjectUnsubscribedError":408,"./internal/util/TimeoutError":409,"./internal/util/UnsubscriptionError":410,"./internal/util/identity":413,"./internal/util/isObservable":422,"./internal/util/noop":425,"./internal/util/pipe":427,"dup":25}],240:[function(require,module,exports){
-arguments[4][26][0].apply(exports,arguments)
-},{"./Subject":249,"./Subscription":252,"dup":26}],241:[function(require,module,exports){
-arguments[4][27][0].apply(exports,arguments)
-},{"./Subject":249,"./util/ObjectUnsubscribedError":408,"dup":27}],242:[function(require,module,exports){
-arguments[4][28][0].apply(exports,arguments)
-},{"./Subscriber":251,"dup":28}],243:[function(require,module,exports){
-arguments[4][29][0].apply(exports,arguments)
-},{"./observable/empty":261,"./observable/of":275,"./observable/throwError":281,"dup":29}],244:[function(require,module,exports){
-arguments[4][30][0].apply(exports,arguments)
-},{"../internal/symbol/observable":403,"./config":253,"./util/pipe":427,"./util/toSubscriber":434,"dup":30}],245:[function(require,module,exports){
-arguments[4][31][0].apply(exports,arguments)
-},{"./config":253,"./util/hostReportError":412,"dup":31}],246:[function(require,module,exports){
-arguments[4][32][0].apply(exports,arguments)
-},{"./Subscriber":251,"dup":32}],247:[function(require,module,exports){
-arguments[4][33][0].apply(exports,arguments)
-},{"./Subject":249,"./SubjectSubscription":250,"./Subscription":252,"./operators/observeOn":335,"./scheduler/queue":401,"./util/ObjectUnsubscribedError":408,"dup":33}],248:[function(require,module,exports){
-arguments[4][34][0].apply(exports,arguments)
-},{"dup":34}],249:[function(require,module,exports){
-arguments[4][35][0].apply(exports,arguments)
-},{"../internal/symbol/rxSubscriber":404,"./Observable":244,"./SubjectSubscription":250,"./Subscriber":251,"./Subscription":252,"./util/ObjectUnsubscribedError":408,"dup":35}],250:[function(require,module,exports){
-arguments[4][36][0].apply(exports,arguments)
-},{"./Subscription":252,"dup":36}],251:[function(require,module,exports){
-arguments[4][37][0].apply(exports,arguments)
-},{"../internal/symbol/rxSubscriber":404,"./Observer":245,"./Subscription":252,"./config":253,"./util/hostReportError":412,"./util/isFunction":417,"dup":37}],252:[function(require,module,exports){
-arguments[4][38][0].apply(exports,arguments)
-},{"./util/UnsubscriptionError":410,"./util/errorObject":411,"./util/isArray":414,"./util/isFunction":417,"./util/isObject":421,"./util/tryCatch":435,"dup":38}],253:[function(require,module,exports){
-arguments[4][39][0].apply(exports,arguments)
-},{"dup":39}],254:[function(require,module,exports){
-arguments[4][40][0].apply(exports,arguments)
-},{"../Observable":244,"../Subject":249,"../Subscriber":251,"../Subscription":252,"../operators/refCount":346,"dup":40}],255:[function(require,module,exports){
-arguments[4][41][0].apply(exports,arguments)
-},{"../Observable":244,"../scheduler/asap":399,"../util/isNumeric":420,"dup":41}],256:[function(require,module,exports){
-arguments[4][42][0].apply(exports,arguments)
-},{"../AsyncSubject":240,"../Observable":244,"../operators/map":324,"../util/isArray":414,"../util/isScheduler":424,"dup":42}],257:[function(require,module,exports){
-arguments[4][43][0].apply(exports,arguments)
-},{"../AsyncSubject":240,"../Observable":244,"../operators/map":324,"../util/isArray":414,"../util/isScheduler":424,"dup":43}],258:[function(require,module,exports){
-arguments[4][44][0].apply(exports,arguments)
-},{"../OuterSubscriber":246,"../util/isArray":414,"../util/isScheduler":424,"../util/subscribeToResult":433,"./fromArray":264,"dup":44}],259:[function(require,module,exports){
-arguments[4][45][0].apply(exports,arguments)
-},{"../operators/concatAll":296,"../util/isScheduler":424,"./from":263,"./of":275,"dup":45}],260:[function(require,module,exports){
-arguments[4][46][0].apply(exports,arguments)
-},{"../Observable":244,"./empty":261,"./from":263,"dup":46}],261:[function(require,module,exports){
-arguments[4][47][0].apply(exports,arguments)
-},{"../Observable":244,"dup":47}],262:[function(require,module,exports){
-arguments[4][48][0].apply(exports,arguments)
-},{"../Observable":244,"../OuterSubscriber":246,"../operators/map":324,"../util/isArray":414,"../util/subscribeToResult":433,"./empty":261,"dup":48}],263:[function(require,module,exports){
-arguments[4][49][0].apply(exports,arguments)
-},{"../Observable":244,"../util/isArrayLike":415,"../util/isInteropObservable":418,"../util/isIterable":419,"../util/isPromise":423,"../util/subscribeTo":428,"./fromArray":264,"./fromIterable":267,"./fromObservable":268,"./fromPromise":269,"dup":49}],264:[function(require,module,exports){
-arguments[4][50][0].apply(exports,arguments)
-},{"../Observable":244,"../Subscription":252,"../util/subscribeToArray":429,"dup":50}],265:[function(require,module,exports){
-arguments[4][51][0].apply(exports,arguments)
-},{"../Observable":244,"../operators/map":324,"../util/isArray":414,"../util/isFunction":417,"dup":51}],266:[function(require,module,exports){
-arguments[4][52][0].apply(exports,arguments)
-},{"../Observable":244,"../operators/map":324,"../util/isArray":414,"../util/isFunction":417,"dup":52}],267:[function(require,module,exports){
-arguments[4][53][0].apply(exports,arguments)
-},{"../Observable":244,"../Subscription":252,"../symbol/iterator":402,"../util/subscribeToIterable":430,"dup":53}],268:[function(require,module,exports){
-arguments[4][54][0].apply(exports,arguments)
-},{"../Observable":244,"../Subscription":252,"../symbol/observable":403,"../util/subscribeToObservable":431,"dup":54}],269:[function(require,module,exports){
-arguments[4][55][0].apply(exports,arguments)
-},{"../Observable":244,"../Subscription":252,"../util/subscribeToPromise":432,"dup":55}],270:[function(require,module,exports){
-arguments[4][56][0].apply(exports,arguments)
-},{"../Observable":244,"../util/identity":413,"../util/isScheduler":424,"dup":56}],271:[function(require,module,exports){
-arguments[4][57][0].apply(exports,arguments)
-},{"./defer":260,"./empty":261,"dup":57}],272:[function(require,module,exports){
-arguments[4][58][0].apply(exports,arguments)
-},{"../Observable":244,"../scheduler/async":400,"../util/isNumeric":420,"dup":58}],273:[function(require,module,exports){
-arguments[4][59][0].apply(exports,arguments)
-},{"../Observable":244,"../operators/mergeAll":329,"../util/isScheduler":424,"./fromArray":264,"dup":59}],274:[function(require,module,exports){
-arguments[4][60][0].apply(exports,arguments)
-},{"../Observable":244,"../util/noop":425,"dup":60}],275:[function(require,module,exports){
-arguments[4][61][0].apply(exports,arguments)
-},{"../util/isScheduler":424,"./empty":261,"./fromArray":264,"./scalar":280,"dup":61}],276:[function(require,module,exports){
-arguments[4][62][0].apply(exports,arguments)
-},{"../Observable":244,"../util/isArray":414,"./empty":261,"./from":263,"dup":62}],277:[function(require,module,exports){
-arguments[4][63][0].apply(exports,arguments)
-},{"../Observable":244,"../Subscription":252,"dup":63}],278:[function(require,module,exports){
-arguments[4][64][0].apply(exports,arguments)
-},{"../OuterSubscriber":246,"../util/isArray":414,"../util/subscribeToResult":433,"./fromArray":264,"dup":64}],279:[function(require,module,exports){
-arguments[4][65][0].apply(exports,arguments)
-},{"../Observable":244,"dup":65}],280:[function(require,module,exports){
-arguments[4][66][0].apply(exports,arguments)
-},{"../Observable":244,"dup":66}],281:[function(require,module,exports){
-arguments[4][67][0].apply(exports,arguments)
-},{"../Observable":244,"dup":67}],282:[function(require,module,exports){
-arguments[4][68][0].apply(exports,arguments)
-},{"../Observable":244,"../scheduler/async":400,"../util/isNumeric":420,"../util/isScheduler":424,"dup":68}],283:[function(require,module,exports){
-arguments[4][69][0].apply(exports,arguments)
-},{"../Observable":244,"./empty":261,"./from":263,"dup":69}],284:[function(require,module,exports){
-arguments[4][70][0].apply(exports,arguments)
-},{"../../internal/symbol/iterator":402,"../OuterSubscriber":246,"../Subscriber":251,"../util/isArray":414,"../util/subscribeToResult":433,"./fromArray":264,"dup":70}],285:[function(require,module,exports){
-arguments[4][71][0].apply(exports,arguments)
-},{"../OuterSubscriber":246,"../util/errorObject":411,"../util/subscribeToResult":433,"../util/tryCatch":435,"dup":71}],286:[function(require,module,exports){
-arguments[4][72][0].apply(exports,arguments)
-},{"../observable/timer":282,"../scheduler/async":400,"./audit":285,"dup":72}],287:[function(require,module,exports){
-arguments[4][73][0].apply(exports,arguments)
-},{"../OuterSubscriber":246,"../util/subscribeToResult":433,"dup":73}],288:[function(require,module,exports){
-arguments[4][74][0].apply(exports,arguments)
-},{"../Subscriber":251,"dup":74}],289:[function(require,module,exports){
-arguments[4][75][0].apply(exports,arguments)
-},{"../Subscriber":251,"../scheduler/async":400,"../util/isScheduler":424,"dup":75}],290:[function(require,module,exports){
-arguments[4][76][0].apply(exports,arguments)
-},{"../OuterSubscriber":246,"../Subscription":252,"../util/subscribeToResult":433,"dup":76}],291:[function(require,module,exports){
-arguments[4][77][0].apply(exports,arguments)
-},{"../OuterSubscriber":246,"../Subscription":252,"../util/errorObject":411,"../util/subscribeToResult":433,"../util/tryCatch":435,"dup":77}],292:[function(require,module,exports){
-arguments[4][78][0].apply(exports,arguments)
-},{"../OuterSubscriber":246,"../util/subscribeToResult":433,"dup":78}],293:[function(require,module,exports){
-arguments[4][79][0].apply(exports,arguments)
-},{"../observable/combineLatest":258,"dup":79}],294:[function(require,module,exports){
-arguments[4][80][0].apply(exports,arguments)
-},{"../observable/combineLatest":258,"../observable/from":263,"../util/isArray":414,"dup":80}],295:[function(require,module,exports){
-arguments[4][81][0].apply(exports,arguments)
-},{"../observable/concat":259,"dup":81}],296:[function(require,module,exports){
-arguments[4][82][0].apply(exports,arguments)
-},{"./mergeAll":329,"dup":82}],297:[function(require,module,exports){
-arguments[4][83][0].apply(exports,arguments)
-},{"./mergeMap":330,"dup":83}],298:[function(require,module,exports){
-arguments[4][84][0].apply(exports,arguments)
-},{"./concatMap":297,"dup":84}],299:[function(require,module,exports){
-arguments[4][85][0].apply(exports,arguments)
-},{"../Subscriber":251,"dup":85}],300:[function(require,module,exports){
-arguments[4][86][0].apply(exports,arguments)
-},{"../OuterSubscriber":246,"../util/subscribeToResult":433,"dup":86}],301:[function(require,module,exports){
-arguments[4][87][0].apply(exports,arguments)
-},{"../Subscriber":251,"../scheduler/async":400,"dup":87}],302:[function(require,module,exports){
-arguments[4][88][0].apply(exports,arguments)
-},{"../Subscriber":251,"dup":88}],303:[function(require,module,exports){
-arguments[4][89][0].apply(exports,arguments)
-},{"../Notification":243,"../Subscriber":251,"../scheduler/async":400,"../util/isDate":416,"dup":89}],304:[function(require,module,exports){
-arguments[4][90][0].apply(exports,arguments)
-},{"../Observable":244,"../OuterSubscriber":246,"../Subscriber":251,"../util/subscribeToResult":433,"dup":90}],305:[function(require,module,exports){
-arguments[4][91][0].apply(exports,arguments)
-},{"../Subscriber":251,"dup":91}],306:[function(require,module,exports){
-arguments[4][92][0].apply(exports,arguments)
-},{"../OuterSubscriber":246,"../util/subscribeToResult":433,"dup":92}],307:[function(require,module,exports){
-arguments[4][93][0].apply(exports,arguments)
-},{"../Subscriber":251,"../util/errorObject":411,"../util/tryCatch":435,"dup":93}],308:[function(require,module,exports){
-arguments[4][94][0].apply(exports,arguments)
-},{"./distinctUntilChanged":307,"dup":94}],309:[function(require,module,exports){
-arguments[4][95][0].apply(exports,arguments)
-},{"../util/ArgumentOutOfRangeError":405,"./defaultIfEmpty":302,"./filter":315,"./take":367,"./throwIfEmpty":374,"dup":95}],310:[function(require,module,exports){
-arguments[4][96][0].apply(exports,arguments)
-},{"../observable/concat":259,"../observable/empty":261,"../observable/fromArray":264,"../observable/scalar":280,"../util/isScheduler":424,"dup":96}],311:[function(require,module,exports){
-arguments[4][97][0].apply(exports,arguments)
-},{"../Subscriber":251,"dup":97}],312:[function(require,module,exports){
-arguments[4][98][0].apply(exports,arguments)
-},{"../OuterSubscriber":246,"../util/subscribeToResult":433,"dup":98}],313:[function(require,module,exports){
-arguments[4][99][0].apply(exports,arguments)
-},{"../OuterSubscriber":246,"../observable/from":263,"../util/subscribeToResult":433,"./map":324,"dup":99}],314:[function(require,module,exports){
-arguments[4][100][0].apply(exports,arguments)
-},{"../OuterSubscriber":246,"../util/errorObject":411,"../util/subscribeToResult":433,"../util/tryCatch":435,"dup":100}],315:[function(require,module,exports){
-arguments[4][101][0].apply(exports,arguments)
-},{"../Subscriber":251,"dup":101}],316:[function(require,module,exports){
-arguments[4][102][0].apply(exports,arguments)
-},{"../Subscriber":251,"../Subscription":252,"dup":102}],317:[function(require,module,exports){
-arguments[4][103][0].apply(exports,arguments)
-},{"../Subscriber":251,"dup":103}],318:[function(require,module,exports){
-arguments[4][104][0].apply(exports,arguments)
-},{"../operators/find":317,"dup":104}],319:[function(require,module,exports){
-arguments[4][105][0].apply(exports,arguments)
-},{"../util/EmptyError":406,"../util/identity":413,"./defaultIfEmpty":302,"./filter":315,"./take":367,"./throwIfEmpty":374,"dup":105}],320:[function(require,module,exports){
-arguments[4][106][0].apply(exports,arguments)
-},{"../Observable":244,"../Subject":249,"../Subscriber":251,"../Subscription":252,"dup":106}],321:[function(require,module,exports){
-arguments[4][107][0].apply(exports,arguments)
-},{"../Subscriber":251,"dup":107}],322:[function(require,module,exports){
-arguments[4][108][0].apply(exports,arguments)
-},{"../Subscriber":251,"dup":108}],323:[function(require,module,exports){
-arguments[4][109][0].apply(exports,arguments)
-},{"../util/EmptyError":406,"../util/identity":413,"./defaultIfEmpty":302,"./filter":315,"./takeLast":368,"./throwIfEmpty":374,"dup":109}],324:[function(require,module,exports){
-arguments[4][110][0].apply(exports,arguments)
-},{"../Subscriber":251,"dup":110}],325:[function(require,module,exports){
-arguments[4][111][0].apply(exports,arguments)
-},{"../Subscriber":251,"dup":111}],326:[function(require,module,exports){
-arguments[4][112][0].apply(exports,arguments)
-},{"../Notification":243,"../Subscriber":251,"dup":112}],327:[function(require,module,exports){
-arguments[4][113][0].apply(exports,arguments)
-},{"./reduce":345,"dup":113}],328:[function(require,module,exports){
-arguments[4][114][0].apply(exports,arguments)
-},{"../observable/merge":273,"dup":114}],329:[function(require,module,exports){
-arguments[4][115][0].apply(exports,arguments)
-},{"../util/identity":413,"./mergeMap":330,"dup":115}],330:[function(require,module,exports){
-arguments[4][116][0].apply(exports,arguments)
-},{"../OuterSubscriber":246,"../observable/from":263,"../util/subscribeToResult":433,"./map":324,"dup":116}],331:[function(require,module,exports){
-arguments[4][117][0].apply(exports,arguments)
-},{"./mergeMap":330,"dup":117}],332:[function(require,module,exports){
-arguments[4][118][0].apply(exports,arguments)
-},{"../OuterSubscriber":246,"../util/errorObject":411,"../util/subscribeToResult":433,"../util/tryCatch":435,"dup":118}],333:[function(require,module,exports){
-arguments[4][119][0].apply(exports,arguments)
-},{"./reduce":345,"dup":119}],334:[function(require,module,exports){
-arguments[4][120][0].apply(exports,arguments)
-},{"../observable/ConnectableObservable":254,"dup":120}],335:[function(require,module,exports){
-arguments[4][121][0].apply(exports,arguments)
-},{"../Notification":243,"../Subscriber":251,"dup":121}],336:[function(require,module,exports){
-arguments[4][122][0].apply(exports,arguments)
-},{"../OuterSubscriber":246,"../observable/from":263,"../util/isArray":414,"../util/subscribeToResult":433,"dup":122}],337:[function(require,module,exports){
-arguments[4][123][0].apply(exports,arguments)
-},{"../Subscriber":251,"dup":123}],338:[function(require,module,exports){
-arguments[4][124][0].apply(exports,arguments)
-},{"../util/not":426,"./filter":315,"dup":124}],339:[function(require,module,exports){
-arguments[4][125][0].apply(exports,arguments)
-},{"./map":324,"dup":125}],340:[function(require,module,exports){
-arguments[4][126][0].apply(exports,arguments)
-},{"../Subject":249,"./multicast":334,"dup":126}],341:[function(require,module,exports){
-arguments[4][127][0].apply(exports,arguments)
-},{"../BehaviorSubject":241,"./multicast":334,"dup":127}],342:[function(require,module,exports){
-arguments[4][128][0].apply(exports,arguments)
-},{"../AsyncSubject":240,"./multicast":334,"dup":128}],343:[function(require,module,exports){
-arguments[4][129][0].apply(exports,arguments)
-},{"../ReplaySubject":247,"./multicast":334,"dup":129}],344:[function(require,module,exports){
-arguments[4][130][0].apply(exports,arguments)
-},{"../observable/race":278,"../util/isArray":414,"dup":130}],345:[function(require,module,exports){
-arguments[4][131][0].apply(exports,arguments)
-},{"../util/pipe":427,"./defaultIfEmpty":302,"./scan":353,"./takeLast":368,"dup":131}],346:[function(require,module,exports){
-arguments[4][132][0].apply(exports,arguments)
-},{"../Subscriber":251,"dup":132}],347:[function(require,module,exports){
-arguments[4][133][0].apply(exports,arguments)
-},{"../Subscriber":251,"../observable/empty":261,"dup":133}],348:[function(require,module,exports){
-arguments[4][134][0].apply(exports,arguments)
-},{"../OuterSubscriber":246,"../Subject":249,"../util/errorObject":411,"../util/subscribeToResult":433,"../util/tryCatch":435,"dup":134}],349:[function(require,module,exports){
-arguments[4][135][0].apply(exports,arguments)
-},{"../Subscriber":251,"dup":135}],350:[function(require,module,exports){
-arguments[4][136][0].apply(exports,arguments)
-},{"../OuterSubscriber":246,"../Subject":249,"../util/errorObject":411,"../util/subscribeToResult":433,"../util/tryCatch":435,"dup":136}],351:[function(require,module,exports){
-arguments[4][137][0].apply(exports,arguments)
-},{"../OuterSubscriber":246,"../util/subscribeToResult":433,"dup":137}],352:[function(require,module,exports){
-arguments[4][138][0].apply(exports,arguments)
-},{"../Subscriber":251,"../scheduler/async":400,"dup":138}],353:[function(require,module,exports){
-arguments[4][139][0].apply(exports,arguments)
-},{"../Subscriber":251,"dup":139}],354:[function(require,module,exports){
-arguments[4][140][0].apply(exports,arguments)
-},{"../Subscriber":251,"../util/errorObject":411,"../util/tryCatch":435,"dup":140}],355:[function(require,module,exports){
-arguments[4][141][0].apply(exports,arguments)
-},{"../Subject":249,"./multicast":334,"./refCount":346,"dup":141}],356:[function(require,module,exports){
-arguments[4][142][0].apply(exports,arguments)
-},{"../ReplaySubject":247,"dup":142}],357:[function(require,module,exports){
-arguments[4][143][0].apply(exports,arguments)
-},{"../Subscriber":251,"../util/EmptyError":406,"dup":143}],358:[function(require,module,exports){
-arguments[4][144][0].apply(exports,arguments)
-},{"../Subscriber":251,"dup":144}],359:[function(require,module,exports){
-arguments[4][145][0].apply(exports,arguments)
-},{"../Subscriber":251,"../util/ArgumentOutOfRangeError":405,"dup":145}],360:[function(require,module,exports){
-arguments[4][146][0].apply(exports,arguments)
-},{"../OuterSubscriber":246,"../util/subscribeToResult":433,"dup":146}],361:[function(require,module,exports){
-arguments[4][147][0].apply(exports,arguments)
-},{"../Subscriber":251,"dup":147}],362:[function(require,module,exports){
-arguments[4][148][0].apply(exports,arguments)
-},{"../observable/concat":259,"../observable/empty":261,"../observable/fromArray":264,"../observable/scalar":280,"../util/isScheduler":424,"dup":148}],363:[function(require,module,exports){
-arguments[4][149][0].apply(exports,arguments)
-},{"../observable/SubscribeOnObservable":255,"dup":149}],364:[function(require,module,exports){
-arguments[4][150][0].apply(exports,arguments)
-},{"../util/identity":413,"./switchMap":365,"dup":150}],365:[function(require,module,exports){
-arguments[4][151][0].apply(exports,arguments)
-},{"../OuterSubscriber":246,"../observable/from":263,"../util/subscribeToResult":433,"./map":324,"dup":151}],366:[function(require,module,exports){
-arguments[4][152][0].apply(exports,arguments)
-},{"./switchMap":365,"dup":152}],367:[function(require,module,exports){
-arguments[4][153][0].apply(exports,arguments)
-},{"../Subscriber":251,"../observable/empty":261,"../util/ArgumentOutOfRangeError":405,"dup":153}],368:[function(require,module,exports){
-arguments[4][154][0].apply(exports,arguments)
-},{"../Subscriber":251,"../observable/empty":261,"../util/ArgumentOutOfRangeError":405,"dup":154}],369:[function(require,module,exports){
-arguments[4][155][0].apply(exports,arguments)
-},{"../OuterSubscriber":246,"../util/subscribeToResult":433,"dup":155}],370:[function(require,module,exports){
-arguments[4][156][0].apply(exports,arguments)
-},{"../Subscriber":251,"dup":156}],371:[function(require,module,exports){
-arguments[4][157][0].apply(exports,arguments)
-},{"../Subscriber":251,"../util/isFunction":417,"../util/noop":425,"dup":157}],372:[function(require,module,exports){
-arguments[4][158][0].apply(exports,arguments)
-},{"../OuterSubscriber":246,"../util/subscribeToResult":433,"dup":158}],373:[function(require,module,exports){
-arguments[4][159][0].apply(exports,arguments)
-},{"../Subscriber":251,"../scheduler/async":400,"./throttle":372,"dup":159}],374:[function(require,module,exports){
-arguments[4][160][0].apply(exports,arguments)
-},{"../util/EmptyError":406,"./tap":371,"dup":160}],375:[function(require,module,exports){
-arguments[4][161][0].apply(exports,arguments)
-},{"../observable/defer":260,"../scheduler/async":400,"./map":324,"./scan":353,"dup":161}],376:[function(require,module,exports){
-arguments[4][162][0].apply(exports,arguments)
-},{"../observable/throwError":281,"../scheduler/async":400,"../util/TimeoutError":409,"./timeoutWith":377,"dup":162}],377:[function(require,module,exports){
-arguments[4][163][0].apply(exports,arguments)
-},{"../OuterSubscriber":246,"../scheduler/async":400,"../util/isDate":416,"../util/subscribeToResult":433,"dup":163}],378:[function(require,module,exports){
-arguments[4][164][0].apply(exports,arguments)
-},{"../scheduler/async":400,"./map":324,"dup":164}],379:[function(require,module,exports){
-arguments[4][165][0].apply(exports,arguments)
-},{"./reduce":345,"dup":165}],380:[function(require,module,exports){
-arguments[4][166][0].apply(exports,arguments)
-},{"../OuterSubscriber":246,"../Subject":249,"../util/subscribeToResult":433,"dup":166}],381:[function(require,module,exports){
-arguments[4][167][0].apply(exports,arguments)
-},{"../Subject":249,"../Subscriber":251,"dup":167}],382:[function(require,module,exports){
-arguments[4][168][0].apply(exports,arguments)
-},{"../Subject":249,"../Subscriber":251,"../scheduler/async":400,"../util/isNumeric":420,"../util/isScheduler":424,"dup":168}],383:[function(require,module,exports){
-arguments[4][169][0].apply(exports,arguments)
-},{"../OuterSubscriber":246,"../Subject":249,"../Subscription":252,"../util/errorObject":411,"../util/subscribeToResult":433,"../util/tryCatch":435,"dup":169}],384:[function(require,module,exports){
-arguments[4][170][0].apply(exports,arguments)
-},{"../OuterSubscriber":246,"../Subject":249,"../util/errorObject":411,"../util/subscribeToResult":433,"../util/tryCatch":435,"dup":170}],385:[function(require,module,exports){
-arguments[4][171][0].apply(exports,arguments)
-},{"../OuterSubscriber":246,"../util/subscribeToResult":433,"dup":171}],386:[function(require,module,exports){
-arguments[4][172][0].apply(exports,arguments)
-},{"../observable/zip":284,"dup":172}],387:[function(require,module,exports){
-arguments[4][173][0].apply(exports,arguments)
-},{"../observable/zip":284,"dup":173}],388:[function(require,module,exports){
-arguments[4][174][0].apply(exports,arguments)
-},{"../Subscription":252,"dup":174}],389:[function(require,module,exports){
-arguments[4][175][0].apply(exports,arguments)
-},{"./AsyncAction":393,"dup":175}],390:[function(require,module,exports){
-arguments[4][176][0].apply(exports,arguments)
-},{"./AsyncScheduler":394,"dup":176}],391:[function(require,module,exports){
-arguments[4][177][0].apply(exports,arguments)
-},{"../util/Immediate":407,"./AsyncAction":393,"dup":177}],392:[function(require,module,exports){
-arguments[4][178][0].apply(exports,arguments)
-},{"./AsyncScheduler":394,"dup":178}],393:[function(require,module,exports){
-arguments[4][179][0].apply(exports,arguments)
-},{"./Action":388,"dup":179}],394:[function(require,module,exports){
-arguments[4][180][0].apply(exports,arguments)
-},{"../Scheduler":248,"dup":180}],395:[function(require,module,exports){
-arguments[4][181][0].apply(exports,arguments)
-},{"./AsyncAction":393,"dup":181}],396:[function(require,module,exports){
-arguments[4][182][0].apply(exports,arguments)
-},{"./AsyncScheduler":394,"dup":182}],397:[function(require,module,exports){
-arguments[4][183][0].apply(exports,arguments)
-},{"./AsyncAction":393,"./AsyncScheduler":394,"dup":183}],398:[function(require,module,exports){
-arguments[4][184][0].apply(exports,arguments)
-},{"./AnimationFrameAction":389,"./AnimationFrameScheduler":390,"dup":184}],399:[function(require,module,exports){
-arguments[4][185][0].apply(exports,arguments)
-},{"./AsapAction":391,"./AsapScheduler":392,"dup":185}],400:[function(require,module,exports){
-arguments[4][186][0].apply(exports,arguments)
-},{"./AsyncAction":393,"./AsyncScheduler":394,"dup":186}],401:[function(require,module,exports){
-arguments[4][187][0].apply(exports,arguments)
-},{"./QueueAction":395,"./QueueScheduler":396,"dup":187}],402:[function(require,module,exports){
-arguments[4][188][0].apply(exports,arguments)
-},{"dup":188}],403:[function(require,module,exports){
-arguments[4][189][0].apply(exports,arguments)
-},{"dup":189}],404:[function(require,module,exports){
-arguments[4][190][0].apply(exports,arguments)
-},{"dup":190}],405:[function(require,module,exports){
-arguments[4][191][0].apply(exports,arguments)
-},{"dup":191}],406:[function(require,module,exports){
-arguments[4][192][0].apply(exports,arguments)
-},{"dup":192}],407:[function(require,module,exports){
-arguments[4][193][0].apply(exports,arguments)
-},{"dup":193}],408:[function(require,module,exports){
-arguments[4][194][0].apply(exports,arguments)
-},{"dup":194}],409:[function(require,module,exports){
-arguments[4][195][0].apply(exports,arguments)
-},{"dup":195}],410:[function(require,module,exports){
-arguments[4][196][0].apply(exports,arguments)
-},{"dup":196}],411:[function(require,module,exports){
-arguments[4][197][0].apply(exports,arguments)
-},{"dup":197}],412:[function(require,module,exports){
-arguments[4][198][0].apply(exports,arguments)
-},{"dup":198}],413:[function(require,module,exports){
-arguments[4][199][0].apply(exports,arguments)
-},{"dup":199}],414:[function(require,module,exports){
-arguments[4][200][0].apply(exports,arguments)
-},{"dup":200}],415:[function(require,module,exports){
-arguments[4][201][0].apply(exports,arguments)
-},{"dup":201}],416:[function(require,module,exports){
-arguments[4][202][0].apply(exports,arguments)
-},{"dup":202}],417:[function(require,module,exports){
-arguments[4][203][0].apply(exports,arguments)
-},{"dup":203}],418:[function(require,module,exports){
-arguments[4][204][0].apply(exports,arguments)
-},{"../symbol/observable":403,"dup":204}],419:[function(require,module,exports){
-arguments[4][205][0].apply(exports,arguments)
-},{"../symbol/iterator":402,"dup":205}],420:[function(require,module,exports){
-arguments[4][206][0].apply(exports,arguments)
-},{"./isArray":414,"dup":206}],421:[function(require,module,exports){
-arguments[4][207][0].apply(exports,arguments)
-},{"dup":207}],422:[function(require,module,exports){
-arguments[4][208][0].apply(exports,arguments)
-},{"../Observable":244,"dup":208}],423:[function(require,module,exports){
-arguments[4][209][0].apply(exports,arguments)
-},{"dup":209}],424:[function(require,module,exports){
-arguments[4][210][0].apply(exports,arguments)
-},{"dup":210}],425:[function(require,module,exports){
-arguments[4][211][0].apply(exports,arguments)
-},{"dup":211}],426:[function(require,module,exports){
-arguments[4][212][0].apply(exports,arguments)
-},{"dup":212}],427:[function(require,module,exports){
-arguments[4][213][0].apply(exports,arguments)
-},{"./noop":425,"dup":213}],428:[function(require,module,exports){
-arguments[4][214][0].apply(exports,arguments)
-},{"../Observable":244,"../symbol/iterator":402,"../symbol/observable":403,"./isArrayLike":415,"./isObject":421,"./isPromise":423,"./subscribeToArray":429,"./subscribeToIterable":430,"./subscribeToObservable":431,"./subscribeToPromise":432,"dup":214}],429:[function(require,module,exports){
-arguments[4][215][0].apply(exports,arguments)
-},{"dup":215}],430:[function(require,module,exports){
-arguments[4][216][0].apply(exports,arguments)
-},{"../symbol/iterator":402,"dup":216}],431:[function(require,module,exports){
-arguments[4][217][0].apply(exports,arguments)
-},{"../symbol/observable":403,"dup":217}],432:[function(require,module,exports){
-arguments[4][218][0].apply(exports,arguments)
-},{"./hostReportError":412,"dup":218}],433:[function(require,module,exports){
-arguments[4][219][0].apply(exports,arguments)
-},{"../InnerSubscriber":242,"./subscribeTo":428,"dup":219}],434:[function(require,module,exports){
-arguments[4][220][0].apply(exports,arguments)
-},{"../Observer":245,"../Subscriber":251,"../symbol/rxSubscriber":404,"dup":220}],435:[function(require,module,exports){
-arguments[4][221][0].apply(exports,arguments)
-},{"./errorObject":411,"dup":221}],436:[function(require,module,exports){
-arguments[4][222][0].apply(exports,arguments)
-},{"../internal/operators/audit":285,"../internal/operators/auditTime":286,"../internal/operators/buffer":287,"../internal/operators/bufferCount":288,"../internal/operators/bufferTime":289,"../internal/operators/bufferToggle":290,"../internal/operators/bufferWhen":291,"../internal/operators/catchError":292,"../internal/operators/combineAll":293,"../internal/operators/combineLatest":294,"../internal/operators/concat":295,"../internal/operators/concatAll":296,"../internal/operators/concatMap":297,"../internal/operators/concatMapTo":298,"../internal/operators/count":299,"../internal/operators/debounce":300,"../internal/operators/debounceTime":301,"../internal/operators/defaultIfEmpty":302,"../internal/operators/delay":303,"../internal/operators/delayWhen":304,"../internal/operators/dematerialize":305,"../internal/operators/distinct":306,"../internal/operators/distinctUntilChanged":307,"../internal/operators/distinctUntilKeyChanged":308,"../internal/operators/elementAt":309,"../internal/operators/endWith":310,"../internal/operators/every":311,"../internal/operators/exhaust":312,"../internal/operators/exhaustMap":313,"../internal/operators/expand":314,"../internal/operators/filter":315,"../internal/operators/finalize":316,"../internal/operators/find":317,"../internal/operators/findIndex":318,"../internal/operators/first":319,"../internal/operators/groupBy":320,"../internal/operators/ignoreElements":321,"../internal/operators/isEmpty":322,"../internal/operators/last":323,"../internal/operators/map":324,"../internal/operators/mapTo":325,"../internal/operators/materialize":326,"../internal/operators/max":327,"../internal/operators/merge":328,"../internal/operators/mergeAll":329,"../internal/operators/mergeMap":330,"../internal/operators/mergeMapTo":331,"../internal/operators/mergeScan":332,"../internal/operators/min":333,"../internal/operators/multicast":334,"../internal/operators/observeOn":335,"../internal/operators/onErrorResumeNext":336,"../internal/operators/pairwise":337,"../internal/operators/partition":338,"../internal/operators/pluck":339,"../internal/operators/publish":340,"../internal/operators/publishBehavior":341,"../internal/operators/publishLast":342,"../internal/operators/publishReplay":343,"../internal/operators/race":344,"../internal/operators/reduce":345,"../internal/operators/refCount":346,"../internal/operators/repeat":347,"../internal/operators/repeatWhen":348,"../internal/operators/retry":349,"../internal/operators/retryWhen":350,"../internal/operators/sample":351,"../internal/operators/sampleTime":352,"../internal/operators/scan":353,"../internal/operators/sequenceEqual":354,"../internal/operators/share":355,"../internal/operators/shareReplay":356,"../internal/operators/single":357,"../internal/operators/skip":358,"../internal/operators/skipLast":359,"../internal/operators/skipUntil":360,"../internal/operators/skipWhile":361,"../internal/operators/startWith":362,"../internal/operators/subscribeOn":363,"../internal/operators/switchAll":364,"../internal/operators/switchMap":365,"../internal/operators/switchMapTo":366,"../internal/operators/take":367,"../internal/operators/takeLast":368,"../internal/operators/takeUntil":369,"../internal/operators/takeWhile":370,"../internal/operators/tap":371,"../internal/operators/throttle":372,"../internal/operators/throttleTime":373,"../internal/operators/throwIfEmpty":374,"../internal/operators/timeInterval":375,"../internal/operators/timeout":376,"../internal/operators/timeoutWith":377,"../internal/operators/timestamp":378,"../internal/operators/toArray":379,"../internal/operators/window":380,"../internal/operators/windowCount":381,"../internal/operators/windowTime":382,"../internal/operators/windowToggle":383,"../internal/operators/windowWhen":384,"../internal/operators/withLatestFrom":385,"../internal/operators/zip":386,"../internal/operators/zipAll":387,"dup":222}],437:[function(require,module,exports){
-arguments[4][223][0].apply(exports,arguments)
-},{"./ponyfill.js":438,"dup":223}],438:[function(require,module,exports){
-arguments[4][224][0].apply(exports,arguments)
-},{"dup":224}],439:[function(require,module,exports){
+},{"./client":228,"./counter":229,"redux":24}],231:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 

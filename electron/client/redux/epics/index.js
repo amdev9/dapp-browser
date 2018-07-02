@@ -4,7 +4,6 @@ const { combineEpics } = require('redux-observable');
 
 const { INCREMENT_COUNTER, START_COUNTDOWN, INCREMENT_ASYNC, CANCEL_INCREMENT_ASYNC } = require('../actions/counter'); 
  
-
 const startCountdownEpic = (action$) => {
   /*
    * This action does not exist in the corresponding redux saga example: it's used to isolate
