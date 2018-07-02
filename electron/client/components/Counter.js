@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import { 
+  increment,
   INCREMENT_COUNTER, 
   DECREMENT_COUNTER,
   START_COUNTDOWN,
@@ -19,13 +20,21 @@ import {
 
 
 function Counter({counter, countdown, congratulate, dispatch}) {
-  const action = (type, value) => () => dispatch({type}); //, value
+  const action = (type, value) => () => {
+    value ? dispatch({type, value}) : dispatch({type})
+  };
 
   return (
     <div>
+      {' '}
+      {/* <button onClick={ }>BV1</button>
+      <button onClick={ }>BV2</button> */}
+ 
+      {' '}
       Clicked: {counter} times
       {' '}
       <button onClick={action(INCREMENT_COUNTER)}>+</button>
+      {/* action(INCREMENT_COUNTER) */}
       {' '}
       <button onClick={action(DECREMENT_COUNTER)}>-</button>
       {' '}
