@@ -1,4 +1,10 @@
-//***** define redux, redux-thunk with browserify */
+import "babel-polyfill"
+import React from 'react'
+import { render } from 'react-dom'
+import { Provider, ReactRedux } from 'react-redux'
+import Counter from './components/Counter'
+
+
 const { combineReducers, createStore, applyMiddleware, compose } = require('redux');
 const thunk = require('redux-thunk').default;
 const logger = require('redux-logger').default;
@@ -107,4 +113,12 @@ const initUi = () => {
 
 // main
 const store = initStore();
-initUi();
+// initUi();
+
+render(
+    <Provider store={store}>
+      <Counter />
+    </Provider>,
+    document.getElementById('root')
+);
+  

@@ -3,15 +3,20 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import {
-  INCREMENT,
-  DECREMENT,
-  INCREMENT_IF_ODD,
+import { 
+  INCREMENT_COUNTER, 
+  DECREMENT_COUNTER,
+  START_COUNTDOWN,
   INCREMENT_ASYNC,
   CANCEL_INCREMENT_ASYNC,
-  HIDE_CONGRATULATION,
-  START_COUNTDOWN
-} from '../actionTypes'
+  COUNTDOWN_TERMINATED 
+} from '../redux/actions/counter';
+
+import { 
+  SWITCH_DAPP, 
+  SEND_PING_MESSAGE
+} from '../redux/actions/client';
+
 
 function Counter({counter, countdown, congratulate, dispatch}) {
   const action = (type, value) => () => dispatch({type, value});
@@ -20,11 +25,11 @@ function Counter({counter, countdown, congratulate, dispatch}) {
     <div>
       Clicked: {counter} times
       {' '}
-      <button onClick={action(INCREMENT)}>+</button>
+      <button onClick={action(INCREMENT_COUNTER)}>+</button>
       {' '}
-      <button onClick={action(DECREMENT)}>-</button>
+      <button onClick={action(DECREMENT_COUNTER)}>-</button>
       {' '}
-      <button onClick={action(INCREMENT_IF_ODD)}>Increment if odd</button>
+      {/* <button onClick={action(INCREMENT_IF_ODD)}>Increment if odd</button> */}
       {' '}
       <button
         onClick={countdown ? action(CANCEL_INCREMENT_ASYNC) : action(START_COUNTDOWN)}
