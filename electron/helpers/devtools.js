@@ -1,5 +1,3 @@
-
-
 function openDevTool(win, isOpen) {
     if (isOpen) {
       win.webContents.openDevTools()

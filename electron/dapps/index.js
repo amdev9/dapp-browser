@@ -1,8 +1,8 @@
  //***** define redux, redux-thunk with browserify */
 const { combineReducers, createStore, applyMiddleware, compose } = require('redux');
 const thunk = require('redux-thunk').default;
-const rootReducer = require('./redux/reducers');  
 const { isFSA } = require('flux-standard-action');
+const rootReducer = require('./redux/reducers'); 
 
 const electronManager = window.ipc;
 
