@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 
 import { 
   increment,
+
   INCREMENT_COUNTER, 
   DECREMENT_COUNTER,
   START_COUNTDOWN,
@@ -14,6 +15,7 @@ import {
 } from '../redux/actions/counter';
 
 import { 
+  switchDapp,
   SWITCH_DAPP, 
   SEND_PING_MESSAGE
 } from '../redux/actions/client';
@@ -27,9 +29,12 @@ function Counter({counter, countdown, congratulate, dispatch}) {
   return (
     <div>
       {' '}
-      {/* <button onClick={ }>BV1</button>
-      <button onClick={ }>BV2</button> */}
- 
+      <button onClick={dispatch(switchDapp('dappname128729index2'))}>BV1</button> 
+      {/* <button onClick={ }>BV2</button> 
+    
+     fix click
+    */}
+      
       {' '}
       Clicked: {counter} times
       {' '}
