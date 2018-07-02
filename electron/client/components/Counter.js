@@ -19,7 +19,7 @@ import {
 
 
 function Counter({counter, countdown, congratulate, dispatch}) {
-  const action = (type, value) => () => dispatch({type, value});
+  const action = (type, value) => () => dispatch({type}); //, value
 
   return (
     <div>
