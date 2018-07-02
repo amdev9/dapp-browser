@@ -13,6 +13,8 @@ const { createEpicMiddleware } = require('redux-observable');
 const { rootEpic } = require('./redux/epics');
 const rootReducer = require('./redux/reducers');
 
+const epicMiddleware = createEpicMiddleware(rootEpic);
+
 const electronManager = window.ipc;
 
 const validateAction = (action) => {
@@ -39,11 +41,7 @@ const forwardToMain = store => next => (action) => {
 };
 
 const configureStore = (initialState) => {
-
-    const epicMiddleware = createEpicMiddleware(rootEpic);
-     
-
-    const middleware = [forwardToMain, logger, epicMiddleware]; // thunk
+    const middleware = [forwardToMain, epicMiddleware, logger]; // thunk
     const enhanced = [
         applyMiddleware(...middleware),
     ];

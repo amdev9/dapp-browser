@@ -13,7 +13,11 @@ const startCountdownEpic = (action$) => {
 
     const start = 5;
 
-    /*
+    /*    
+    
+    https://medium.com/kevin-salters-blog/epic-middleware-in-redux-e4385b6ff7c6
+
+
      * A countdown generates a 5,4,3,2,1,0,-1 series of events,
      * where all are separated by 1 second but the last one (-1), that is only
      * 10 milliseconds away from 0.
