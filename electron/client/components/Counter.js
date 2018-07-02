@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 
 import { 
   increment,
-
   INCREMENT_COUNTER, 
   DECREMENT_COUNTER,
   START_COUNTDOWN,
@@ -32,11 +31,14 @@ function Counter({counter, countdown, congratulate, dispatch}) {
 
   return (
     <div>
-      {' '}
+      <br />
+      <br />
+      {/* create component navigate between dapps */}
       <button onClick={onClickTodo}>BV1</button> 
+      {' '}
       <button onClick={onClickTodo}>BV2</button> 
-      {/* create component */}
-
+      <br />
+      <br />
       {' '}
       Clicked: {counter} times
       {' '}
@@ -50,7 +52,6 @@ function Counter({counter, countdown, congratulate, dispatch}) {
       <button
         onClick={countdown ? action(CANCEL_INCREMENT_ASYNC) : action(START_COUNTDOWN)}
         style={{color: countdown ? 'red' : 'black'}}>
-
         {countdown ? `Cancel increment (${countdown})` : 'increment after 5s'}
       </button>
     </div>
