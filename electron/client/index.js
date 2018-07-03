@@ -61,14 +61,14 @@ const initStore = () => {
 }
 
 // // electron-redux store
-// const store = initStore();
+const store = initStore();
  
-const middleware = [epicMiddleware, logger]; 
-const enhanced = [
-    applyMiddleware(...middleware),
-];
-const enhancer = compose(...enhanced);
-const store = createStore(rootReducer, {}, enhancer);
+// const middleware = [epicMiddleware, logger]; 
+// const enhanced = [
+//     applyMiddleware(...middleware),
+// ];
+// const enhancer = compose(...enhanced);
+// const store = createStore(rootReducer, {}, enhancer);
 
 render(
     <Provider store={store}>
