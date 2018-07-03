@@ -11,8 +11,8 @@ import Counter from './components/Counter'
 import { rootEpic } from './redux/epics';
 import rootReducer from './redux/reducers';
 
-const epicMiddleware = createEpicMiddleware(rootEpic);
-// `createEpicMiddleware(rootEpic)` is no longer supported, instead use `epicMiddleware.run(rootEpic)`
+const epicMiddleware = createEpicMiddleware(rootEpic); // `createEpicMiddleware(rootEpic)` is no longer supported, instead use `epicMiddleware.run(rootEpic)`
+
 
 const electronManager = window.ipc;
 
@@ -40,7 +40,7 @@ const forwardToMain = store => next => (action) => {
 };
 
 const configureStore = (initialState) => {
-    const middleware = [forwardToMain, epicMiddleware, logger]; // thunk
+    const middleware = [forwardToMain, logger]; // epicMiddleware
     const enhanced = [
         applyMiddleware(...middleware),
     ];

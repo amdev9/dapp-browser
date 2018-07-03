@@ -3,8 +3,13 @@ const { combineReducers, createStore, applyMiddleware, compose } = require('redu
 // const thunk = require('redux-thunk').default; 
 const { isFSA } = require('flux-standard-action');
 const { forwardToRenderer, triggerAlias } = require('electron-redux');
+const { createEpicMiddleware } = require('redux-observable');
 const rootReducer = require('../reducers');
 const validatePermissionAction = require('./validatePermissionAction');
+
+const rootEpic = require('../epics');
+
+const epicMiddleware = createEpicMiddleware(rootEpic);
 
 const replayActionMain = (store, globalId) => {
   global.getReduxState = () => JSON.stringify(store.getState());
@@ -23,7 +28,7 @@ const replayActionMain = (store, globalId) => {
 
 const configureStore = (initialState, globalId) => {
   const middleware = [];
-  middleware.push(triggerAlias, validatePermissionAction, forwardToRenderer); // thunk,
+  middleware.push(epicMiddleware, triggerAlias, validatePermissionAction, forwardToRenderer); // 
   const enhanced = [applyMiddleware(...middleware)]; 
   const enhancer = compose(...enhanced);
   const store = createStore(rootReducer, initialState, enhancer);
