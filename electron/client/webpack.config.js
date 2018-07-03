@@ -1,9 +1,7 @@
 var path = require('path');
 var webpack = require('webpack');
 module.exports = {
-// use the following for redux saga.
-// entry: './js/mainWithSaga.js',
-entry: './index.js',
+    entry: './index.js',
     output: {
         path: path.resolve(__dirname, 'build'),
         filename: 'app.bundle.js'

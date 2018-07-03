@@ -9,10 +9,7 @@ import {
 } from '../actions/counter'; 
  
 const startCountdownEpic = (action$) => {
-  /*
-   * This action does not exist in the corresponding redux saga example: it's used to isolate
-   * better a single countdown worflow.
-   */
+ 
   return action$.ofType(START_COUNTDOWN).switchMap(q => {
 
     const start = 5;
@@ -61,11 +58,6 @@ const startCountdownEpic = (action$) => {
  * there is only one epic.
  */
 
-const rootEpic = combineEpics(
-    startCountdownEpic
+export const rootEpic = combineEpics(
+  startCountdownEpic
 );
-
-module.exports = rootEpic;
-
-
-

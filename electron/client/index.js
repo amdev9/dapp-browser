@@ -11,7 +11,8 @@ import Counter from './components/Counter'
 import { rootEpic } from './redux/epics';
 import rootReducer from './redux/reducers';
 
-const epicMiddleware = createEpicMiddleware(rootEpic);
+const epicMiddleware = createEpicMiddleware();
+// `createEpicMiddleware(rootEpic)` is no longer supported, instead use `epicMiddleware.run(rootEpic)`
 
 const electronManager = window.ipc;
 
@@ -68,7 +69,7 @@ const enhanced = [
 ];
 const enhancer = compose(...enhanced);
 const store = createStore(rootReducer, {}, enhancer);
- 
+epicMiddleware.run(rootEpic);
 
 render(
     <Provider store={store}>
