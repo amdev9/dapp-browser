@@ -107,7 +107,7 @@ class SafeIpcRenderer {
 */
 window.ipcSafe = new SafeIpcRenderer([
   "rpc-start",
-  "rpc-request"
+  "rpc-request" //todo list from process argv
 ]);
 
 window.ipc = new ElectronManager();
