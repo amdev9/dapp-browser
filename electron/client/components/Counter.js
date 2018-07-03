@@ -22,6 +22,7 @@ import {
 
 function Counter({counter, countdown, congratulate, dispatch}) {
   const action = (type, value) => () => {
+    console.log('TYPE', type);
     value ? dispatch({type, value}) : dispatch({type})
   };
 

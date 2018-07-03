@@ -1,17 +1,15 @@
-import "babel-polyfill"
-import React from 'react'
-import { render } from 'react-dom'
-import { Provider, ReactRedux } from 'react-redux'
+import "babel-polyfill";
+import React from 'react';
+import { render } from 'react-dom';
+import { Provider, ReactRedux } from 'react-redux';
+import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
+import { createEpicMiddleware } from 'redux-observable';
+import { logger } from 'redux-logger';
+import { isFSA } from 'flux-standard-action';
+
 import Counter from './components/Counter'
-
-
-const { combineReducers, createStore, applyMiddleware, compose } = require('redux');
-const thunk = require('redux-thunk').default;
-const logger = require('redux-logger').default;
-const { isFSA } = require('flux-standard-action');
-const { createEpicMiddleware } = require('redux-observable');
-const { rootEpic } = require('./redux/epics');
-const rootReducer = require('./redux/reducers');
+import { rootEpic } from './redux/epics';
+import rootReducer from './redux/reducers';
 
 const epicMiddleware = createEpicMiddleware(rootEpic);
 
@@ -61,60 +59,17 @@ const initStore = () => {
     return store;
 }
 
-const renderState = () => {
-    // console.log(JSON.stringify(store.getState().counter));
-    document.getElementById('value').innerHTML = store.getState().counter;
-}
+// // electron-redux store
+// const store = initStore();
+ 
+const middleware = [epicMiddleware, logger]; 
+const enhanced = [
+    applyMiddleware(...middleware),
+];
+const enhancer = compose(...enhanced);
+const store = createStore(rootReducer, {}, enhancer);
+ 
 
-const initUi = () => {
-    renderState();
-    store.subscribe(renderState);
-
-    document.getElementById('increment').addEventListener('click', () => {
-        store.dispatch({
-        type: 'INCREMENT_COUNTER'
-        }); // dispatch API endpoints
-    });
-
-    document.getElementById('decrement').addEventListener('click', () => {
-        store.dispatch({
-        type: 'DECREMENT_COUNTER'
-        }); // dispatch API endpoints
-    });
-
-    document.getElementById('switch_tab').addEventListener('click', () => {
-         
-        store.dispatch({
-            type: 'SWITCH_DAPP',
-            payload: { 
-                targetDappId: 'dappname128729index'  
-            }
-        }); // dispatch API endpoints
-    });
-    document.getElementById('switch_tab2').addEventListener('click', () => {
-         
-        store.dispatch({
-            type: 'SWITCH_DAPP',
-            payload: { 
-                targetDappId: 'dappname128729index2'  
-            }
-        }); // dispatch API endpoints
-    });
-
-    document.getElementById('countdown').addEventListener('click', () => {
-        store.dispatch({
-            type: 'START_COUNTDOWN'
-        }); // dispatch API endpoints
-    });
-}
-
-
-// main
-const store = initStore();
-// initUi();
-
-
-//todo send state changes to main store
 render(
     <Provider store={store}>
       <Counter />

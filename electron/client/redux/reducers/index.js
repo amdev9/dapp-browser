@@ -1,6 +1,5 @@
-const { combineReducers } = require('redux');
-
-const { counter, countdown } = require('./counter');
+import { combineReducers } from 'redux';
+import { counter, countdown } from './counter';
 const client = require('./client');
 
 const rootReducer = combineReducers({
@@ -9,4 +8,4 @@ const rootReducer = combineReducers({
   client
 });
 
-module.exports = rootReducer;
+export default rootReducer;

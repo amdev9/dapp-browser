@@ -36,13 +36,17 @@ app.on('ready', () => {
 
   // create multiple view and keep them around the memory, detached from the window
   // then switching workspaces is just and additional call to setBrowserView
-  const dappsIndexes = ['index.html', 'index2.html'];
-  for (dappInd of dappsIndexes) {
-    createDappView(globalUUIDList, dappInd);
-  }
+  
   
   /* BrowserView
    *
+   * 
+   * 
+    const dappsIndexes = ['index.html', 'index2.html'];
+    for (dappInd of dappsIndexes) {
+      createDappView(globalUUIDList, dappInd);
+    }
+    
     let view = BrowserView.fromId(1);
     clientWindow.setBrowserView(view);
     view.setBounds(bounds); 

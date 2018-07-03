@@ -36,6 +36,7 @@
     "redux-saga": "^0.15.6",
     "redux-thunk": "^2.3.0",
     "rxjs": "^6.2.1",
+    "rxjs-compat": "^6.2.1",
     "webpack": "^3.4.1"
   }
 }

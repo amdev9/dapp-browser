@@ -1,8 +1,12 @@
-const rxjs = require('rxjs');
-const Observable = rxjs.Observable; // 'rxjs/Observable';
-const { combineEpics } = require('redux-observable');
-
-const { INCREMENT_COUNTER, START_COUNTDOWN, INCREMENT_ASYNC, CANCEL_INCREMENT_ASYNC } = require('../actions/counter'); 
+import 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { combineEpics } from 'redux-observable';
+import { 
+  START_COUNTDOWN, 
+  INCREMENT_COUNTER,
+  INCREMENT_ASYNC, 
+  CANCEL_INCREMENT_ASYNC 
+} from '../actions/counter'; 
  
 const startCountdownEpic = (action$) => {
   /*
