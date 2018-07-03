@@ -11,7 +11,7 @@ const replayActionMain = (store, globalId) => {
   ipcMain.on('redux-action', (event, uuid, payload) => {
     let uuidObj = globalId.find(renObj => renObj.id === uuid);
     if (uuidObj) {
-      // console.log("Validated: ", JSON.stringify(uuidObj));
+      console.log("Validated: ", JSON.stringify(uuidObj));
       const statusObj = { status: uuidObj.status };
       payload.payload = (payload.payload) ? Object.assign(payload.payload, statusObj) : statusObj;
       store.dispatch(payload);                             // verification for payload 

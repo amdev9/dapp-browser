@@ -1,10 +1,11 @@
 import { combineReducers } from 'redux';
 import { counter, countdown } from './counter';
-// const client = require('./client');
+import { client } from './client';
 
 const rootReducer = combineReducers({
   counter,
-  countdown 
+  countdown,
+  client 
 });
-//,client
+
 export default rootReducer;

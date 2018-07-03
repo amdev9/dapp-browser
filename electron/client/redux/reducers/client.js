@@ -1,6 +1,6 @@
-const { SWITCH_DAPP, SEND_PING_MESSAGE } = require('../actions/client');
+import { SWITCH_DAPP, SEND_PING_MESSAGE } from '../actions/client';
 
-function client(state = {}, action) {
+export function client(state = {}, action) {
   switch (action.type) {
     case SWITCH_DAPP:
       const dappId = action.payload.targetDappId; // dapp id
@@ -17,5 +17,3 @@ function client(state = {}, action) {
       return state;
   }
 }
-
-module.exports = client;  
