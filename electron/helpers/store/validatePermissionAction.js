@@ -5,7 +5,7 @@ const { INCREMENT_COUNTER, DECREMENT_COUNTER, START_COUNTDOWN, INCREMENT_ASYNC, 
  
 const validatePermissionAction = () => next => (action) => {
 
-  console.log(action);
+  console.log(action); //todo fix permissions
   return next(action);
 
   // if (action.payload.status === 'dapp') {
