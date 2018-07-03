@@ -1,6 +1,6 @@
 const { webContents, ipcMain } = require('electron');
 const { combineReducers, createStore, applyMiddleware, compose } = require('redux');
-const thunk = require('redux-thunk').default; 
+// const thunk = require('redux-thunk').default; 
 const { isFSA } = require('flux-standard-action');
 const { forwardToRenderer, triggerAlias } = require('electron-redux');
 const rootReducer = require('../reducers');
@@ -23,7 +23,7 @@ const replayActionMain = (store, globalId) => {
 
 const configureStore = (initialState, globalId) => {
   const middleware = [];
-  middleware.push(thunk, triggerAlias, validatePermissionAction, forwardToRenderer); 
+  middleware.push(triggerAlias, validatePermissionAction, forwardToRenderer); // thunk,
   const enhanced = [applyMiddleware(...middleware)]; 
   const enhancer = compose(...enhanced);
   const store = createStore(rootReducer, initialState, enhancer);
