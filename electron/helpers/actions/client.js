@@ -1,11 +1,13 @@
 const SWITCH_DAPP = 'SWITCH_DAPP';
 const SEND_PING_MESSAGE = 'SEND_PING_MESSAGE';
 
-function switchDapp() {
+function switchDapp() { // fix
   return {
     type: SWITCH_DAPP
   };
 }
+
+//todo add openChannel action with channelId params
 
 function increment() {
   return {

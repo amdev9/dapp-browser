@@ -72,7 +72,9 @@ app.on('ready', () => {
   });
   process.stdout.write(JSON.stringify(globalUUIDList) );
 
-  //todo send and receive on both sides of binded channel
+
+  //todo move to store.subscribe, getState for channels to open,
+  // send and receive on both sides of binded channel
   let bindedView, channelIdSender, channelIdReceiver; 
   ipcMain.on(channelIdSender, (event, uuid, payload) => {
     // 1. check channelId permissions granted
