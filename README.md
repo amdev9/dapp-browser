@@ -14,7 +14,7 @@ npm i -g browserify
 cd sandboxed-electron && yarn install
 cd electron/client && npm install && npm run webpack
 ```
-*Spawn another shell window and go to root folder *
+_Spawn another shell window and go to root folder_
 ```
 cd electron/dapps && yarn run build && cd ../..
 
