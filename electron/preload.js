@@ -46,7 +46,8 @@ class ElectronManager {
       ipcRenderer.send('redux-action', uuidRenderer, action);
     }
 
-    const sendDataChannel = (channelId, data) => { // building ipcCommunicator with sendDataChannel, receiveDataChannel & BIND_CHANNELS_OPENED action triggered
+    // building ipcCommunicator with sendDataChannel, receiveDataChannel & BIND_OPEN_CHANNELS_DONE action triggered
+    const sendDataChannel = (channelId, data) => { 
       ipcRenderer.send(channelId, uuidRenderer, data);
     }
     
@@ -59,10 +60,8 @@ class ElectronManager {
     this.replayActionRenderer = replayActionRenderer;
     this.getGlobalState = getGlobalState;
     this.sendActionMain = sendActionMain;
-
     this.sendDataChannel = sendDataChannel;
     this.receiveDataChannel = receiveDataChannel;
-    // this.send = ipcRenderer.send; // for switch
   }
 }
 
@@ -77,7 +76,7 @@ const flatten = (obj) => Object.keys(obj)
 
 
 /**
- * SafeIpcRenderer //todo integrate with ElectronManager
+ * SafeIpcRenderer //next todo integrate with ElectronManager
  *
  * This class wraps electron's ipcRenderer an prevents
  * invocations to channels passed to the constructor. The instance methods
@@ -110,6 +109,6 @@ class SafeIpcRenderer {
 /*
    Modify the whitefilter here.
 */
-window.ipcSafe = new SafeIpcRenderer(authChannels); 
+window.ipcSafe = new SafeIpcRenderer([...authChannels, "redux-action"]); 
 
 window.ipc = new ElectronManager();

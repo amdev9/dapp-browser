@@ -78,7 +78,7 @@ app.on('ready', () => {
         let bindedView = BrowserView.fromId(channelIdSendObj.viewId);
         bindedView.webContents.send(channelIdReceiveObj.channel, uuid, payload);
       });
-      // channels now opened BIND_CHANNELS_OPENED
+      // channels now opened store.dispatch BIND_OPEN_CHANNELS_DONE
     }
   });
   process.stdout.write(JSON.stringify(globalUUIDList));

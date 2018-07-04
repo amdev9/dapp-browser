@@ -1,13 +1,15 @@
 
 
-// add epic INTENT_OPEN_CHANNELS (nameOfDappReceive, channelProposal) (resolve id of dapp, send push event) 
+//todo add epic INTENT_OPEN_CHANNELS (nameOfDappReceive, channelProposal) (resolve id of dapp, send push event) 
 // - if resonse from subscribed dapp == OK
 // - at main find channelIdSend, channelIdReceive
 // - -> OPEN_CHANNEL(channelIdSend), OPEN_CHANNEL(channelIdReceive) -> when both opened succesfully -> BIND_OPEN_CHANNELS(channelIdSend, channelIdReceive)
-// - -> BIND_CHANNELS_OPENED (action signal for ipcCommunicator object start accept data transfer
+// - -> BIND_OPEN_CHANNELS_DONE (action signal for ipcCommunicator object start accept data transfer
 // - takeUntil CANCEL_OPENED_CHANNEL if one of channels going down
 
 
+//todo simplify: dapp receiver OK by default
+ 
 require('rxjs');
 const { Observable } = require('rxjs/Observable');
 const { combineEpics } = require('redux-observable');
