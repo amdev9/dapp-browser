@@ -6,9 +6,7 @@
 // - -> OPEN_CHANNEL(channelIdSend), OPEN_CHANNEL(channelIdReceive) -> when both opened succesfully -> BIND_OPEN_CHANNELS(channelIdSend, channelIdReceive)
 // - -> BIND_OPEN_CHANNELS_DONE (action signal for ipcCommunicator object start accept data transfer
 // - takeUntil CANCEL_OPENED_CHANNEL if one of channels going down
-
-
-//todo simplify: dapp receiver OK by default
+// * simplify for first version: dapp receiver OK by default
  
 require('rxjs');
 const { Observable } = require('rxjs/Observable');
@@ -21,7 +19,10 @@ const {
 } = require('../actions/counter');; 
  
 const startCountdownEpic = (action$) => {
- 
+  
+  // INTENT_OPEN_CHANNELS
+  // payload = define channelIds by nameofapp === inject globalUUIDList into epic 
+  // https://redux-observable.js.org/docs/recipes/InjectingDependenciesIntoEpics.html
   return action$.ofType(START_COUNTDOWN).switchMap(q => {
 
     const start = 5;
