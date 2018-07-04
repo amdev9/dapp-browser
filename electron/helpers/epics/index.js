@@ -1,10 +1,11 @@
 
 
-// add epic INTENT_OPEN_CHANNELS: [name of app] (resolve id of dapp, send push event) 
+// add epic INTENT_OPEN_CHANNELS (nameOfDappReceive, channelProposal) (resolve id of dapp, send push event) 
 // - if resonse from subscribed dapp == OK
-// - -> OPEN_CHANNELS -> when opened succesfully -> BIND_OPEN_CHANNELS
-// - -> CHANNELS_OPENED (action signal for ipcCommunicator object start accept data transfer
-// - takeUntil CANCEL_OPEN_CHANNEL if one of channels going down
+// - at main find channelIdSend, channelIdReceive
+// - -> OPEN_CHANNEL(channelIdSend), OPEN_CHANNEL(channelIdReceive) -> when both opened succesfully -> BIND_OPEN_CHANNELS(channelIdSend, channelIdReceive)
+// - -> BIND_CHANNELS_OPENED (action signal for ipcCommunicator object start accept data transfer
+// - takeUntil CANCEL_OPENED_CHANNEL if one of channels going down
 
 
 require('rxjs');
@@ -25,7 +26,7 @@ const startCountdownEpic = (action$) => {
 
     /*    
 
-    //todo move to redux-observable 1.0.0
+    //next todo move to redux-observable 1.0.0
     // https://github.com/redux-observable/redux-observable/blob/master/MIGRATION.md
     
     https://medium.com/kevin-salters-blog/epic-middleware-in-redux-e4385b6ff7c6

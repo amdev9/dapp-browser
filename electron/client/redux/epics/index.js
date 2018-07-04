@@ -16,7 +16,7 @@ const startCountdownEpic = (action$) => {
 
     /*    
 
-    //todo move to redux-observable 1.0.0
+    //next todo move to redux-observable 1.0.0
     // https://github.com/redux-observable/redux-observable/blob/master/MIGRATION.md
     
     https://medium.com/kevin-salters-blog/epic-middleware-in-redux-e4385b6ff7c6

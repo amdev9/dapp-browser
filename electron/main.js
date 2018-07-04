@@ -69,20 +69,19 @@ app.on('ready', () => {
       // view.setBounds(bounds); 
       */
     }
+    
+    let bindedChannel = store.getState().main.channel;
+    if (bindedChannel) { // when got action that channels is just binded
+      let channelIdSendObj = globalUUIDList.find(renObj => renObj.channel === bindedChannel.sender);
+      let channelIdReceiveObj = globalUUIDList.find(renObj => renObj.channel === bindedChannel.receiver);
+      ipcMain.on(channelIdSendObj.channel, (event, uuid, payload) => {
+        let bindedView = BrowserView.fromId(channelIdSendObj.viewId);
+        bindedView.webContents.send(channelIdReceiveObj.channel, uuid, payload);
+      });
+      // channels now opened BIND_CHANNELS_OPENED
+    }
   });
-  process.stdout.write(JSON.stringify(globalUUIDList) );
-
-
-  //todo move to store.subscribe, getState for channels to open,
-  // send and receive on both sides of binded channel
-  let bindedView, channelIdSender, channelIdReceiver; 
-  ipcMain.on(channelIdSender, (event, uuid, payload) => {
-    // 1. check channelId permissions granted
-    // 2. check uuid relate to channelId
-    // define bindedView view to send data, id receiver
-    bindedView.webContents.send(channelIdReceiver, uuid, payload);
-  });
-
+  process.stdout.write(JSON.stringify(globalUUIDList));
 });
 
 process.stdout.write("Main initialized");

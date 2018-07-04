@@ -10,6 +10,7 @@ const RENDERER_PATH = path.join(__dirname, 'client');
 function createClientWindow(globalUUIDList) {  
 
   const uuidClient = uuidv4();
+  const authorizedChannelsList = ['channelId1', 'channelId2']; //next todo get channels list from dapp manifest
   clientWindow = new BrowserWindow({
     x: 0,
     y: 0,
@@ -20,7 +21,10 @@ function createClientWindow(globalUUIDList) {
       sandbox: true,
       // contextIsolation: true,
       preload: path.join(__dirname, 'preload.js'), //path.join(RENDERER_PATH, 'preload-extended.js')
-      additionalArguments: [ '--uuid-renderer='.concat(uuidClient) ]
+      additionalArguments: [
+        '--uuid-renderer='.concat(uuidClient),
+        '--channels='.concat(authorizedChannelsList.join(";"))
+      ]
     }
   })
   clientWindow.loadURL('file://' + path.join(RENDERER_PATH, 'index.html'));

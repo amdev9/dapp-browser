@@ -11,15 +11,22 @@ window.onload = () => {
 class ElectronManager {
   constructor() {
     
-    //todo add restriction for unknown channels 
     // https://github.com/kewde/electron-sandbox-boilerplate/blob/master/sandbox-preload-extended/electron/renderer/preload-extended.js, 
     // granted channels parse from process argv
+
+
+    const channelsParam = process.argv.filter( (param) => {
+      return param.indexOf('--channels') >= 0;
+    });
 
     const uuidRendererParam = process.argv.filter( (param) => {
       return param.indexOf('--uuid-renderer') >= 0;
     });  
-    const uuidRenderer = uuidRendererParam[0].split('=')[1];
+    const uuidRenderer = uuidRendererParam[0].split("=")[1];
     console.log(uuidRenderer);
+
+    const authChannels = channelsParam[0].split("=").split(";");
+    console.log(authChannels);
 
     console.log(electron.remote.getGlobal('getReduxState')());
 
@@ -39,13 +46,11 @@ class ElectronManager {
       ipcRenderer.send('redux-action', uuidRenderer, action);
     }
 
-    const sendDataChannel = (channelName, data) => {
-      // switch by channelName, find channelId passed to preload script
+    const sendDataChannel = (channelId, data) => { // building ipcCommunicator with sendDataChannel, receiveDataChannel & BIND_CHANNELS_OPENED action triggered
       ipcRenderer.send(channelId, uuidRenderer, data);
     }
     
-    const receiveDataChannel = (channelName, callbackData) => {
-      // switch by channelName, find channelId passed to preload script
+    const receiveDataChannel = (channelId, callbackData) => {
       ipcRenderer.on(channelId, (event, payload) => {
         callbackData(payload);
       });
@@ -105,9 +110,6 @@ class SafeIpcRenderer {
 /*
    Modify the whitefilter here.
 */
-window.ipcSafe = new SafeIpcRenderer([
-  "rpc-start",
-  "rpc-request" //todo list from process argv
-]);
+window.ipcSafe = new SafeIpcRenderer(authChannels); 
 
 window.ipc = new ElectronManager();

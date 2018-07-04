@@ -61,7 +61,7 @@ const initStore = () => {
 
 const renderState = () => {
 
-  //todo library object dapp will emit events on store pub-sub actions in: `dapp.emit('event-name', ...)`
+  //next todo library object dapp will emit events on store pub-sub actions in: `dapp.emit('event-name', ...)`
 
   // console.log(JSON.stringify(store.getState()));
   if (document.getElementById('value')) {
@@ -88,7 +88,7 @@ const initUi = () => {
 
     console.log('click on ping');
     store.dispatch({
-      type: 'SEND_PING_MESSAGE' //todo pass name of dapp, which receive message
+      type: 'SEND_PING_MESSAGE'  
 
     //   payload: { 
     //     message: 'this is a ping message',

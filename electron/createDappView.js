@@ -10,13 +10,17 @@ const DAPPS_PATH = path.join(__dirname, 'dapps');
 function createDappView(globalUUIDList, entryPath) {
 
     const uuidDapp = uuidv4();
+    const authorizedChannelsList = ['channelId1', 'channelId2']; //next todo get channels list from dapp manifest
     dappView = new BrowserWindow({ // BrowserView
         webPreferences: {
             nodeIntegration: false,
             sandbox: true,
             // contextIsolation: true,
             preload: path.join(__dirname, 'preload.js'),
-            additionalArguments: [ '--uuid-renderer='.concat(uuidDapp) ] //todo add grantedChannels list
+            additionalArguments: [ 
+                '--uuid-renderer='.concat(uuidDapp),
+                '--channels='.concat(authorizedChannelsList.join(";"))
+            ]
         }
     });
 
