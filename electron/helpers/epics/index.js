@@ -1,6 +1,6 @@
 
 
-//todo add epic INTENT_OPEN_CHANNELS (nameOfDappReceive, channelProposal) (resolve id of dapp, send push event) 
+//todoCHANNEL add epic INTENT_OPEN_CHANNELS (nameOfDappReceive, channelProposal) (resolve id of dapp, send push event) 
 // - if resonse from subscribed dapp == OK
 // - at main find channelIdSend, channelIdReceive
 // - -> OPEN_CHANNEL(channelIdSend), OPEN_CHANNEL(channelIdReceive) -> when both opened succesfully -> BIND_OPEN_CHANNELS(channelIdSend, channelIdReceive)
