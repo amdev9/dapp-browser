@@ -44,12 +44,12 @@ const forwardToRendererWrapper = (globalId) => {
     // }
 
     allWebContents.forEach((contents) => { 
-      //todoELECTRON_REDUX 
+   
       // On dispatch action with propose answer dispatch openchannel(channelId) -> replayToRenderer reply only to renderer with given id
       // fix to filter by passed UUID_RECEIVER_RENDERER - globalUUIDList map UUID_RECEIVER_RENDERER to webcontents id
       // ex: action { type: OPEN_CHANNEL, payload: { channelId: '[CHANNEL_ID]', uuid: '[UUID_RECEIVER_RENDERER]'} 
       // ex.2: action { type: BIND_OPEN_CHANNELS, payload: { channelIds: ['[CHANNEL_ID_1]', '[CHANNEL_ID_2]'] } 
-      // ex.3: action { type: BIND_OPEN_CHANNELS_DONE, payload: { uuid: ['[UUID_1]', '[UUID_2]'] }  
+      // ex.3: action { type: BIND_OPEN_CHANNELS_DONE, payload: { bindChannelId: '[BIND_CHANNLE_ID]', uuid: ['[UUID_RECEIVER_RENDERER_1]', '[UUID_RECEIVER_RENDERER_2]'] }  
       // ex.4: action { type: CANCEL_OPENED_CHANNEL }
       // ex.5: action { type: INTENT_OPEN_CHANNELS, channelProposal: "[PERMISSION/PROPOSAL]", targetDapp: "[TARGET_DAPP_NAME]" }
       //next todo use for local redux client staff

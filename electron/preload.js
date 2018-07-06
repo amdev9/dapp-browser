@@ -31,8 +31,11 @@ class ElectronManager {
     console.log(electron.remote.getGlobal('getReduxState')());
 
     const replayActionRenderer = (store) => { 
-      ipcRenderer.on('redux-action', (event, payload) => { //todoELECTRON_REDUX listen only with payload passed uuid?
-        store.dispatch(payload);
+      ipcRenderer.on('redux-action', (event, payload) => { 
+        // additional check for uuid received
+        if( !payload.uuid || (payload.uuid && payload.uuid.includes(uuidRenderer)) ) {
+          store.dispatch(payload);
+        }
       });
     }
 
