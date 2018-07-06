@@ -15,9 +15,9 @@ class ElectronManager {
     // granted channels parse from process argv
 
 
-    const channelsParam = process.argv.filter( (param) => {
-      return param.indexOf('--channels') >= 0;
-    });
+    // const channelsParam = process.argv.filter( (param) => {
+    //   return param.indexOf('--channels') >= 0;
+    // });
 
     const uuidRendererParam = process.argv.filter( (param) => {
       return param.indexOf('--uuid-renderer') >= 0;
@@ -25,8 +25,8 @@ class ElectronManager {
     const uuidRenderer = uuidRendererParam[0].split("=")[1];
     console.log(uuidRenderer);
 
-    const authChannels = channelsParam[0].split("=").split(";");
-    console.log(authChannels);
+    // const authChannels = channelsParam[0].split("=").split(";");
+    // console.log(authChannels);
 
     console.log(electron.remote.getGlobal('getReduxState')());
 
@@ -109,6 +109,6 @@ class SafeIpcRenderer {
 /*
    Modify the whitefilter here.
 */
-window.ipcSafe = new SafeIpcRenderer([...authChannels, "redux-action"]); 
+window.ipcSafe = new SafeIpcRenderer([ "redux-action"]);  // ...authChannels,
 
 window.ipc = new ElectronManager();

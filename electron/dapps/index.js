@@ -1,6 +1,6 @@
  //***** define redux, redux-thunk with browserify */
 const { combineReducers, createStore, applyMiddleware, compose } = require('redux');
-const thunk = require('redux-thunk').default;
+// const thunk = require('redux-thunk').default;
 const { isFSA } = require('flux-standard-action');
 const rootReducer = require('./redux/reducers'); 
 
@@ -34,7 +34,7 @@ const forwardToMain = store => next => (action) => {
 
 const configureStore = (initialState) => {
 
-  const middleware = [forwardToMain, thunk];
+  const middleware = [forwardToMain];
   const enhanced = [
     applyMiddleware(...middleware),
   ];
