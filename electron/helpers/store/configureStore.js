@@ -36,11 +36,12 @@ const forwardToRendererWrapper = (globalId) => {
     };
 
     const allWebContents = webContents.getAllWebContents();
-    //todoELECTRON_REDUX send ONLY to payload passed uuid
-    // On dispatch action with propose answer dispatch openchannel(channelId) 
-    // -> replayToRenderer fix to reply only renderer with given id
-
-    allWebContents.forEach((contents) => { //todoELECTRON_REDUX fix to filter by passed uuid - globalUUIDList map uuid to webcontents id
+    allWebContents.forEach((contents) => { 
+      //todoELECTRON_REDUX 
+      // On dispatch action with propose answer dispatch openchannel(channelId) -> replayToRenderer reply only to renderer with given id
+      // fix to filter by passed UUID_RECEIVER_RENDERER - globalUUIDList map UUID_RECEIVER_RENDERER to webcontents id
+      // ex: action { type: OPEN_CHANNEL, payload: { channelId: '[CHANNEL_ID]', uuid: '[UUID_RECEIVER_RENDERER]'} 
+      
       console.log('---> contents id: ', contents.id);
       contents.send('redux-action', rendererAction);
     });
