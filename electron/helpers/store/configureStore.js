@@ -16,34 +16,38 @@ const validateAction = (action) => {
   return isFSA(action);
 }
 
-const forwardToRenderer = () => next => (action) => {
-  // console.log('forwardToRenderer param: ', param);
+const forwardToRendererWrapper = (globalId) => {
+  
+  return () => next => (action) => {
+    console.log('globalId', globalId);
+     
 
-  if (!validateAction(action)) return next(action);
-  if (action.meta && action.meta.scope === 'local') return next(action);
+    if (!validateAction(action)) return next(action);
+    if (action.meta && action.meta.scope === 'local') return next(action);
 
-  // change scope to avoid endless-loop
+    // change scope to avoid endless-loop
 
-  const rendererAction = {
-    ...action,
-    meta: {
-      ...action.meta,
-      scope: 'local',
-    },
+    const rendererAction = {
+      ...action,
+      meta: {
+        ...action.meta,
+        scope: 'local',
+      },
+    };
+
+    const allWebContents = webContents.getAllWebContents();
+    //todoELECTRON_REDUX send ONLY to payload passed uuid
+    // On dispatch action with propose answer dispatch openchannel(channelId) 
+    // -> replayToRenderer fix to reply only renderer with given id
+
+    allWebContents.forEach((contents) => { //todoELECTRON_REDUX fix to filter by passed uuid - globalUUIDList map uuid to webcontents id
+      console.log('---> contents id: ', contents.id);
+      contents.send('redux-action', rendererAction);
+    });
+
+    return next(action);
   };
-
-  const allWebContents = webContents.getAllWebContents();
-  //todoELECTRON_REDUX send ONLY to payload passed uuid
-  // On dispatch action with propose answer dispatch openchannel(channelId) 
-  // -> replayToRenderer fix to reply only renderer with given id
-
-  allWebContents.forEach((contents) => { //todoELECTRON_REDUX fix to filter by passed uuid - globalUUIDList map uuid to webcontents id
-    console.log('---> contents id: ', contents.id);
-    contents.send('redux-action', rendererAction);
-  });
-
-  return next(action);
-};
+}
 
 const replayActionMain = (store, globalId) => {
   global.getReduxState = () => JSON.stringify(store.getState());
@@ -62,7 +66,7 @@ const replayActionMain = (store, globalId) => {
 
 const configureStore = (initialState, globalId) => {
   const middleware = [];
-  middleware.push(epicMiddleware, triggerAlias, validatePermissionAction, forwardToRenderer); // 
+  middleware.push(epicMiddleware, triggerAlias, validatePermissionAction, forwardToRendererWrapper(globalId)); // 
   const enhanced = [applyMiddleware(...middleware)]; 
   const enhancer = compose(...enhanced);
   const store = createStore(rootReducer, initialState, enhancer);
