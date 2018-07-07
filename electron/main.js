@@ -83,7 +83,7 @@ app.on('ready', () => {
     // save to main listenArray, check each action if it is in listenArray 
     // when triggered on main side send action to pass data to renderer
     // renderer answer in action
-    // start data passing if ansewer=='ok', reply if 'reply', hold in waitQueue if 'error'
+    // start data passing if answer=='ok', reply if 'reply', hold in waitQueue if 'error'
 
     // let bindedChannel = store.getState().main.channel;
     // if (bindedChannel) { // when got action that channels is just binded
