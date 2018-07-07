@@ -70,6 +70,14 @@ app.on('ready', () => {
       */
     }
     
+    //todoCHANNEL 
+    // ask for permission before renderer process starts, add map { channelProposal: '[PERMISSION/PROPOSAL]', channelId: '[CHANNEL_ID]'}
+    // When renderer init data sending through channel he pass action, preload script add payload:
+    // ex.: { type: INTENT_CHANNEL_DATA_PASS, payload: { uuid: '[UUID_RECEIVER_RENDERER]', channelProposal: '[PERMISSION/PROPOSAL]' } } 
+    // Main process validate uuid and resolve CHANNEL_ID, pub action: 
+    // ex.: { type: 'ACCEPT_CHANNEL_DATA_PASS', payload: { channelId: '[CHANNEL_ID]', uuid: '[UUID_RECEIVER_RENDERER]' } }
+    // Renderer pass data through given '[CHANNEL_ID]'
+ 
     // let bindedChannel = store.getState().main.channel;
     // if (bindedChannel) { // when got action that channels is just binded
     //   let channelIdSendObj = globalUUIDList.find(renObj => renObj.channel === bindedChannel.sender);
