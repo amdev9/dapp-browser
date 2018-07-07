@@ -77,7 +77,14 @@ app.on('ready', () => {
     // Main process validate uuid and resolve CHANNEL_ID, pub action: 
     // ex.: { type: 'ACCEPT_CHANNEL_DATA_PASS', payload: { channelId: '[CHANNEL_ID]', uuid: '[UUID_RECEIVER_RENDERER]' } }
     // Renderer pass data through given '[CHANNEL_ID]'
- 
+    
+    //todoEVENTS
+    // ask for permission, pass event api params to listen (when pass data action init, also init event when localStorage complete operation)
+    // save to main listenArray, check each action if it is in listenArray 
+    // when triggered on main side send action to pass data to renderer
+    // renderer answer in action
+    // start data passing if ansewer=='ok', reply if 'reply', hold in waitQueue if 'error'
+
     // let bindedChannel = store.getState().main.channel;
     // if (bindedChannel) { // when got action that channels is just binded
     //   let channelIdSendObj = globalUUIDList.find(renObj => renObj.channel === bindedChannel.sender);
