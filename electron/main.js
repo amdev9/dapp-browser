@@ -79,12 +79,14 @@ app.on('ready', () => {
     // Renderer pass data through given '[CHANNEL_ID]'
     
     //todoEVENTS
-    // ask for permission, pass event api params to listen (when pass data action init, also init event when localStorage complete operation)
-    // save to main listenArray, check each action if it is in listenArray 
-    // when triggered on main side send action to pass data to renderer
-    // renderer answer in action
-    // start data passing if answer=='ok', reply if 'reply', hold in waitQueue if 'error'
-
+    // Local Storage roadmap:
+    // ask for permission before renderer process starts, add map { channelProposal: '[PERMISSION/PROPOSAL]', channelId: '[CHANNEL_ID]'}
+    // Renderer init subscription ex: { type: 'INIT_EVENT_SUBSCRIPTION', payload: { channelProposal: '[PERMISSION/PROPOSAL]', additionalParams: {...} } }
+    // Main process add event trigger condition to own side map (eventMap), check if action passed through main contains in eventMap.
+    // Event triggered action: { type: 'EVENT_TRIGGERED', payload: { channelProposal: '[PERMISSION/PROPOSAL]', triggered: { type: { 'LOCAL_STORAGE_SET_SUCCESS', payload: {...} } } } }
+    // Renderer answer: { type: 'EVENT_RECEIVED', payload: channelProposal: '[PERMISSION/PROPOSAL]', additionalParams: {...} }
+    // Render can init now opening channel for data passing, etc.
+  
     // let bindedChannel = store.getState().main.channel;
     // if (bindedChannel) { // when got action that channels is just binded
     //   let channelIdSendObj = globalUUIDList.find(renObj => renObj.channel === bindedChannel.sender);
