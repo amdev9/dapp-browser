@@ -107,14 +107,11 @@ Example
   })
 ```
 
-https://electronjs.org/docs/api/app
-https://github.com/electron/electron/search?q=continue-activity&unscoped_q=continue-activity
+Links:
 
-
-events api
-https://web3js.readthedocs.io/en/1.0/callbacks-promises-events.html?highlight=eventEmitter
-https://web3js.readthedocs.io/en/1.0/web3-eth-subscribe.html?highlight=eventEmitter
-
-
-
-https://github.com/ethereum/web3.js/blob/develop/lib/web3.js
+* [Electron app](https://electronjs.org/docs/api/app)
+* [Electron source code](https://github.com/electron/electron/search?q=continue-activity&unscoped_q=continue-activity)
+* web3 events api:
+>>> https://web3js.readthedocs.io/en/1.0/callbacks-promises-events.html?highlight=eventEmitter
+>>> https://web3js.readthedocs.io/en/1.0/web3-eth-subscribe.html?highlight=eventEmitter
+>>> https://github.com/ethereum/web3.js/blob/develop/lib/web3.js
