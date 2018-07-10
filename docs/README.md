@@ -24,7 +24,7 @@ Each dispatched action before it reaches target dapp go to main process and vali
 
 ### Actions roadmap
 
-On dispatch action with propose answer dispatch openchannel(channelId). [UUID target store resolver](#UUID) is used to pass action to the right renderer process. Then we bind opened channels to provide `ipcCommunicator` communication abstraction.
+On dispatch action with propose answer dispatch openchannel(channelId). [UUID target store resolver](#uuid-target-store-resolver) is used to pass action to the right renderer process. Then we bind opened channels to provide `ipcCommunicator` communication abstraction.
 
 
 - openChannelIntent 
