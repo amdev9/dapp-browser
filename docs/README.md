@@ -18,10 +18,11 @@ Events API protocol:
 
 ![alt text](./diagrams/eventsMechanizm.png?raw=true "Events mechanizm")
 
-Resolve CHANNEL_ID for dapp renderer process to get data from **main process component** (ex. LocalStorage, BitShares, etc.). Each component will have a channel through which data will be sent:
+Resolve CHANNEL_ID for dapp renderer process to get data from **main process component** (ex. LocalStorage, BitShares, etc.):
 
 ![alt text](./diagrams/channelIdResolve.png?raw=true "Resolve channelId")
 
+Each component will have a channel through which data will be sent. We use separate channels for security reasons. Before dapp process starts we check component access permissions in manifest file, create and pass channelIds to preload script. By this we add security layer on renderer side.
 
 #### Links
 > https://www.i2b2.org/software/projects/datarepo/CRC_Architecture_10.pdf
