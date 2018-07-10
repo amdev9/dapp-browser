@@ -1,8 +1,24 @@
 # Architecture technical documentation
 
-https://www.i2b2.org/software/projects/datarepo/CRC_Architecture_10.pdf
 
 
+Redux middleware for permission check diagram:
+![alt text](./diagrams/permissionMiddleware.png "Permission middleware")
+
+UUID target store resolver diagram:
+![alt text](./diagrams/forwardToRendererWrapper.png "forwardToRendererWrapper middleware mechanizm")
+
+Dapp communication protocol:
+![alt text](./diagrams/DappCommunication.png "Dapp communication")
+
+Resolve CHANNEL_ID before dapp communication starts:
+![alt text](./diagrams/channelIdResolve.png "Resolve channelId")
+
+Events API protocol:
+![alt text](./diagrams/eventsMechanizm.png "Events mechanizm")
+
+#### Links
+> https://www.i2b2.org/software/projects/datarepo/CRC_Architecture_10.pdf
 
 # Array library documentation
 
