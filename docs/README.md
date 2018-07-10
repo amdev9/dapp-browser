@@ -3,19 +3,26 @@
 
 
 Redux middleware for permission check diagram:
+
 ![alt text](./diagrams/permissionMiddleware.png?raw=true "Permission middleware")
 
 UUID target store resolver diagram:
+
 ![alt text](./diagrams/forwardToRendererWrapper.png?raw=true "forwardToRendererWrapper middleware mechanizm")
 
 Dapp communication protocol:
+
 ![alt text](./diagrams/DappCommunication.png?raw=true "Dapp communication")
 
-Resolve CHANNEL_ID before dapp communication starts:
+Events API protocol:
+
+![alt text](./diagrams/eventsMechanizm.png?raw=true "Events mechanizm")
+
+Resolve CHANNEL_ID for dapp renderer process to get data from main process (ex. LocalStorage, BitShares, etc. related channels):
+
 ![alt text](./diagrams/channelIdResolve.png?raw=true "Resolve channelId")
 
-Events API protocol:
-![alt text](./diagrams/eventsMechanizm.png?raw=true "Events mechanizm")
+
 
 #### Links
 > https://www.i2b2.org/software/projects/datarepo/CRC_Architecture_10.pdf
