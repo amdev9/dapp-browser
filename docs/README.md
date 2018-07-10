@@ -18,10 +18,9 @@ Events API protocol:
 
 ![alt text](./diagrams/eventsMechanizm.png?raw=true "Events mechanizm")
 
-Resolve CHANNEL_ID for dapp renderer process to get data from main process (ex. LocalStorage, BitShares, etc. related channels):
+Resolve CHANNEL_ID for dapp renderer process to get data from **main process component** (ex. LocalStorage, BitShares, etc.). Each component will have a channel through which data will be sent:
 
 ![alt text](./diagrams/channelIdResolve.png?raw=true "Resolve channelId")
-
 
 
 #### Links
