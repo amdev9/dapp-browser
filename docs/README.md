@@ -2,27 +2,97 @@
 
 
 
+UUID target store resolver diagram:
+
+![alt text](./diagrams/forwardToRendererWrapper.png?raw=true "forwardToRendererWrapper middleware mechanizm")
+
+Each created renderer process (client, dapp) has own uniq identificator `UUID` passed to process `additionalParams`. So we can identify and map each process with uniq token id.
+
+
 Redux middleware for permission check diagram:
 
 ![alt text](./diagrams/permissionMiddleware.png?raw=true "Permission middleware")
 
-UUID target store resolver diagram:
-
-![alt text](./diagrams/forwardToRendererWrapper.png?raw=true "forwardToRendererWrapper middleware mechanizm")
+Each dispatched action before it reaches target dapp go to main process and validate in `validatePermissionAction` middleware. Main process due to UUID identificators checks if action is passed by client or dapp and apply own validation rules for each group in a separate way.
 
 Dapp communication protocol:
 
 ![alt text](./diagrams/DappCommunication.png?raw=true "Dapp communication")
 
+On dispatch action with propose answer dispatch openchannel(channelId) -> replayToRenderer reply only to renderer with given id. Fix to filter by passed UUID_RECEIVER_RENDERER - globalUUIDList map UUID_RECEIVER_RENDERER to webcontents id:
+ 
+Actions:
+
+```javascript
+{ type: OPEN_CHANNEL, payload: { channelId: '[CHANNEL_ID]', uuid: '[UUID_RECEIVER_RENDERER]'}
+
+{ type: BIND_OPEN_CHANNELS, payload: { channelIds: ['[CHANNEL_ID_1]', '[CHANNEL_ID_2]'] }
+
+{ type: BIND_OPEN_CHANNELS_DONE, payload: { bindChannelId: '[BIND_CHANNLE_ID]', uuid: ['[UUID_RECEIVER_RENDERER_1]', '[UUID_RECEIVER_RENDERER_2]'] }
+
+{ type: CANCEL_OPENED_CHANNEL }
+
+{ type: INTENT_OPEN_CHANNELS, channelProposal: "[PERMISSION/PROPOSAL]", targetDapp: "[TARGET_DAPP_NAME]" }
+```
+ 
+
+
 Events API protocol:
 
 ![alt text](./diagrams/eventsMechanizm.png?raw=true "Events mechanizm")
 
-Resolve CHANNEL_ID for dapp renderer process to get data from **main process component** (ex. LocalStorage, BitShares, etc.):
+Local Storage roadmap:
+- ask for permission before renderer process starts, add map:
+
+```javascript
+{ channelProposal: '[PERMISSION/PROPOSAL]', channelId: '[CHANNEL_ID]'}
+```
+
+- Renderer init subscription ex: 
+
+```javascript 
+{ type: 'INIT_EVENT_SUBSCRIPTION', payload: { channelProposal: '[PERMISSION/PROPOSAL]', additionalParams: {...} } }
+```
+
+- Main process add event trigger condition to own side map (`eventMap`), check if action passed through main contains in `eventMap`.
+
+- Event triggered action: 
+
+```javascript
+{ type: 'EVENT_TRIGGERED', payload: { channelProposal: '[PERMISSION/PROPOSAL]', triggered: { type: { 'LOCAL_STORAGE_SET_SUCCESS', payload: {...} } } } }
+```
+
+
+- Renderer answer: 
+
+```javascript
+{ type: 'EVENT_RECEIVED', payload: channelProposal: '[PERMISSION/PROPOSAL]', additionalParams: {...} }
+```
+- Render can init now opening channel for data passing, etc.
+
+
+Resolve `CHANNEL_ID` for dapp renderer process to get data from **main process component** (ex. LocalStorage, BitShares, etc.):
 
 ![alt text](./diagrams/channelIdResolve.png?raw=true "Resolve channelId")
 
 Each component will have a channel through which data will be sent. We use separate channels for security reasons. Before dapp process starts we check component access permissions in manifest file, create and pass channelIds to preload script. By this we add security layer on renderer side.
+
+   
+- ask for permission before renderer process starts, add map:
+```javascript
+{ channelProposal: 'PERMISSION/PROPOSAL', channelId: 'CHANNEL_ID'}
+```
+- When renderer init data sending through channel he pass action, preload script add payload:
+```javascript
+{ type: INTENT_CHANNEL_DATA_PASS, payload: { uuid: '[UUID_RECEIVER_RENDERER]', channelProposal: '[PERMISSION/PROPOSAL]' } }
+```
+
+- Main process validate uuid and resolve CHANNEL_ID, pub action: 
+```javascript
+  { type: 'ACCEPT_CHANNEL_DATA_PASS', payload: { channelId: '[CHANNEL_ID]', uuid: '[UUID_RECEIVER_RENDERER]' } }
+```
+- Renderer pass data through given `CHANNEL_ID`
+
 
 #### Links
 > https://www.i2b2.org/software/projects/datarepo/CRC_Architecture_10.pdf
