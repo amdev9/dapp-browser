@@ -3,19 +3,19 @@
 
 
 Redux middleware for permission check diagram:
-![alt text](./diagrams/permissionMiddleware.png "Permission middleware")
+![alt text](./diagrams/permissionMiddleware.png?raw=true "Permission middleware")
 
 UUID target store resolver diagram:
-![alt text](./diagrams/forwardToRendererWrapper.png "forwardToRendererWrapper middleware mechanizm")
+![alt text](./diagrams/forwardToRendererWrapper.png?raw=true "forwardToRendererWrapper middleware mechanizm")
 
 Dapp communication protocol:
-![alt text](./diagrams/DappCommunication.png "Dapp communication")
+![alt text](./diagrams/DappCommunication.png?raw=true "Dapp communication")
 
 Resolve CHANNEL_ID before dapp communication starts:
-![alt text](./diagrams/channelIdResolve.png "Resolve channelId")
+![alt text](./diagrams/channelIdResolve.png?raw=true "Resolve channelId")
 
 Events API protocol:
-![alt text](./diagrams/eventsMechanizm.png "Events mechanizm")
+![alt text](./diagrams/eventsMechanizm.png?raw=true "Events mechanizm")
 
 #### Links
 > https://www.i2b2.org/software/projects/datarepo/CRC_Architecture_10.pdf
@@ -88,6 +88,16 @@ Example
         if(success) { console.log('Successfully unsubscribed!'); }
     });
 ```
+## Callbacks Promises Events (experimental)
+
+To help array integrate into all kind of projects with different standards we provide multiple ways to act on asynchronous functions.
+
+Most array.js objects allow a callback as the last parameter, as well as returning promises to chain functions.
+
+Promise combined with an event emitter allow acting on different stages of action.
+
+PromiEvents work like a normal promises with added on, once and off functions. This way developers can watch for additional events.
+
 
 # array.ipcCommunicator
 Communicate asynchronously from the your dapp process to another dapp.
