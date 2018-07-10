@@ -15,7 +15,7 @@ Resolve CHANNEL_ID before dapp communication starts:
 ![alt text](./diagrams/channelIdResolve.png "Resolve channelId")
 
 Events API protocol:
-![alt text](./diagrams/eventsMechanizm.png "Events mechanizm")
+![alt text](./diagrams/eventsMechanizm.png "Events mechanizm"){:class="img-responsive"}
 
 #### Links
 > https://www.i2b2.org/software/projects/datarepo/CRC_Architecture_10.pdf
