@@ -1,27 +1,28 @@
 # Architecture technical documentation
 
-
-
-UUID target store resolver diagram:
+## UUID target store resolver diagram:
 
 ![alt text](./diagrams/forwardToRendererWrapper.png?raw=true "forwardToRendererWrapper middleware mechanizm")
 
 Each created renderer process (client, dapp) has own uniq identificator `UUID` passed to process `additionalParams`. So we can identify and map each process with uniq token id.
 
+-------------------------
 
-Redux middleware for permission check diagram:
+## Redux middleware for permission check diagram:
 
 ![alt text](./diagrams/permissionMiddleware.png?raw=true "Permission middleware")
 
 Each dispatched action before it reaches target dapp go to main process and validate in `validatePermissionAction` middleware. Main process due to UUID identificators checks if action is passed by client or dapp and apply own validation rules for each group in a separate way.
 
-Dapp communication protocol:
+-------------------------
+
+## Dapp communication protocol:
 
 ![alt text](./diagrams/DappCommunication.png?raw=true "Dapp communication")
 
 On dispatch action with propose answer dispatch openchannel(channelId) -> replayToRenderer reply only to renderer with given id. Fix to filter by passed UUID_RECEIVER_RENDERER - globalUUIDList map UUID_RECEIVER_RENDERER to webcontents id:
  
-Actions:
+### Actions:
 
 ```javascript
 { type: OPEN_CHANNEL, payload: { channelId: '[CHANNEL_ID]', uuid: '[UUID_RECEIVER_RENDERER]'}
@@ -36,12 +37,13 @@ Actions:
 ```
  
 
+-------------------------
 
-Events API protocol:
+## Events API protocol:
 
 ![alt text](./diagrams/eventsMechanizm.png?raw=true "Events mechanizm")
 
-Local Storage roadmap:
+### Local Storage roadmap:
 - ask for permission before renderer process starts, add map:
 
 ```javascript
@@ -62,7 +64,6 @@ Local Storage roadmap:
 { type: 'EVENT_TRIGGERED', payload: { channelProposal: '[PERMISSION/PROPOSAL]', triggered: { type: { 'LOCAL_STORAGE_SET_SUCCESS', payload: {...} } } } }
 ```
 
-
 - Renderer answer: 
 
 ```javascript
@@ -70,6 +71,9 @@ Local Storage roadmap:
 ```
 - Render can init now opening channel for data passing, etc.
 
+-------------------------
+
+## Component-channel resolver
 
 Resolve `CHANNEL_ID` for dapp renderer process to get data from **main process component** (ex. LocalStorage, BitShares, etc.):
 
@@ -77,7 +81,7 @@ Resolve `CHANNEL_ID` for dapp renderer process to get data from **main process c
 
 Each component will have a channel through which data will be sent. We use separate channels for security reasons. Before dapp process starts we check component access permissions in manifest file, create and pass channelIds to preload script. By this we add security layer on renderer side.
 
-   
+### Roadmap:
 - ask for permission before renderer process starts, add map:
 ```javascript
 { channelProposal: 'PERMISSION/PROPOSAL', channelId: 'CHANNEL_ID'}
@@ -93,6 +97,7 @@ Each component will have a channel through which data will be sent. We use separ
 ```
 - Renderer pass data through given `CHANNEL_ID`
 
+------------------------
 
 #### Links
 > https://www.i2b2.org/software/projects/datarepo/CRC_Architecture_10.pdf
