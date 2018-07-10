@@ -1,14 +1,14 @@
 # Architecture technical documentation
 
-## UUID target store resolver diagram:
+## UUID target store resolver
 
 ![alt text](./diagrams/forwardToRendererWrapper.png?raw=true "forwardToRendererWrapper middleware mechanizm")
 
-Each created renderer process (client, dapp) has own uniq identificator `UUID` passed to process `additionalParams`. So we can identify and map each process with uniq token id.
+Each created renderer process (client, dapp) has own uniq identificator `UUID` passed to process `additionalParams`. So we can identify and map each process with uniq token id. `replayToRenderer` reply only to renderer with given id. Filter by passed `UUID_RECEIVER_RENDERER` - `globalUUIDList` map `UUID_RECEIVER_RENDERER` to webcontents id.
 
 -------------------------
 
-## Redux middleware for permission check diagram:
+## Redux middleware for permission check
 
 ![alt text](./diagrams/permissionMiddleware.png?raw=true "Permission middleware")
 
@@ -16,35 +16,49 @@ Each dispatched action before it reaches target dapp go to main process and vali
 
 -------------------------
 
-## Dapp communication protocol:
+## Dapp communication protocol
 
 ![alt text](./diagrams/DappCommunication.png?raw=true "Dapp communication")
 
-On dispatch action with propose answer dispatch openchannel(channelId) -> replayToRenderer reply only to renderer with given id. Fix to filter by passed UUID_RECEIVER_RENDERER - globalUUIDList map UUID_RECEIVER_RENDERER to webcontents id:
- 
-### Actions:
 
+
+### Actions roadmap
+
+On dispatch action with propose answer dispatch openchannel(channelId). [UUID target store resolver](#UUID) is used to pass action to the right renderer process. Then we bind opened channels to provide `ipcCommunicator` communication abstraction.
+
+
+- openChannelIntent 
 ```javascript
-{ type: OPEN_CHANNEL, payload: { channelId: '[CHANNEL_ID]', uuid: '[UUID_RECEIVER_RENDERER]'}
-
-{ type: BIND_OPEN_CHANNELS, payload: { channelIds: ['[CHANNEL_ID_1]', '[CHANNEL_ID_2]'] }
-
-{ type: BIND_OPEN_CHANNELS_DONE, payload: { bindChannelId: '[BIND_CHANNLE_ID]', uuid: ['[UUID_RECEIVER_RENDERER_1]', '[UUID_RECEIVER_RENDERER_2]'] }
-
-{ type: CANCEL_OPENED_CHANNEL }
-
-{ type: INTENT_OPEN_CHANNELS, channelProposal: "[PERMISSION/PROPOSAL]", targetDapp: "[TARGET_DAPP_NAME]" }
+{ type: 'INTENT_OPEN_CHANNELS', channelProposal: "[PERMISSION/PROPOSAL]", targetDapp: "[TARGET_DAPP_NAME]" }
 ```
- 
+- openChannel
+```javascript
+{ type: 'OPEN_CHANNEL', payload: { channelId: '[CHANNEL_ID]', uuid: '[UUID_RECEIVER_RENDERER]'}
+```
+
+- bindChannels
+```javascript
+{ type: 'BIND_OPEN_CHANNELS', payload: { channelIds: ['[CHANNEL_ID_1]', '[CHANNEL_ID_2]'] }
+```
+- bindChannelsSuccess (bind channels successfully done)
+```javascript
+{ type: 'BIND_OPEN_CHANNELS_DONE', payload: { bindChannelId: '[BIND_CHANNLE_ID]', uuid: ['[UUID_RECEIVER_RENDERER_1]', '[UUID_RECEIVER_RENDERER_2]'] }
+```
+- bindChannelsFailure (failed to bind channels)
+
+- cancelChannel trigger on dapp close, unsubscribe, etc.
+```javascript
+{ type: 'CANCEL_OPENED_CHANNEL' }
+```
 
 -------------------------
 
-## Events API protocol:
+## Events API protocol
 
 ![alt text](./diagrams/eventsMechanizm.png?raw=true "Events mechanizm")
 
-### Local Storage roadmap:
-- ask for permission before renderer process starts, add map:
+### Local Storage actions roadmap
+- ask for permission before renderer process starts, add map to main process:
 
 ```javascript
 { channelProposal: '[PERMISSION/PROPOSAL]', channelId: '[CHANNEL_ID]'}
@@ -81,17 +95,17 @@ Resolve `CHANNEL_ID` for dapp renderer process to get data from **main process c
 
 Each component will have a channel through which data will be sent. We use separate channels for security reasons. Before dapp process starts we check component access permissions in manifest file, create and pass channelIds to preload script. By this we add security layer on renderer side.
 
-### Roadmap:
-- ask for permission before renderer process starts, add map:
+### Actions roadmap
+- ask for permission before renderer process starts, add map to main process:
 ```javascript
 { channelProposal: 'PERMISSION/PROPOSAL', channelId: 'CHANNEL_ID'}
 ```
 - When renderer init data sending through channel he pass action, preload script add payload:
 ```javascript
-{ type: INTENT_CHANNEL_DATA_PASS, payload: { uuid: '[UUID_RECEIVER_RENDERER]', channelProposal: '[PERMISSION/PROPOSAL]' } }
+{ type: 'INTENT_CHANNEL_DATA_PASS', payload: { uuid: '[UUID_RECEIVER_RENDERER]', channelProposal: '[PERMISSION/PROPOSAL]' } }
 ```
 
-- Main process validate uuid and resolve CHANNEL_ID, pub action: 
+- Main process validate `UUID` and resolve `CHANNEL_ID`, publish action: 
 ```javascript
   { type: 'ACCEPT_CHANNEL_DATA_PASS', payload: { channelId: '[CHANNEL_ID]', uuid: '[UUID_RECEIVER_RENDERER]' } }
 ```
