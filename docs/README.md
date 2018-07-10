@@ -98,7 +98,7 @@ The `ipcCommunicator` module is an instance of the `EventEmitter` class. It prov
 Parameters
 ----------
 
-1. ``String`` - Dapp communication receiver name, you want talk to, `null` for handle messages.
+1. ``String`` - Dapp communication receiver name, you want talk to, `null` to handle messages only.
 
 Returns
 -------
