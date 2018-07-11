@@ -19,7 +19,7 @@ const validateAction = (action) => {
 const forwardToRendererWrapper = (globalId) => {
   
   return () => next => (action) => {
-    console.log('globalId', globalId);
+    // console.log('globalId', globalId);
      
 
     if (!validateAction(action)) return next(action);
@@ -35,38 +35,26 @@ const forwardToRendererWrapper = (globalId) => {
       },
     };
 
-    const allWebContents = webContents.getAllWebContents();
-
-    //todo1 loop through all action uuid's passed in payload
-    
-    // if (action.payload && action.payload.uuid) {
-      // let uuidObj = globalId.find(renObj => renObj.id === action.payload.uuid); 
-      // if (uuidObj) {
-      //   webcontents.fromId(uuidObj.windowId).send('redux-action', rendererAction);
+    //todo1 
+    if (action.payload && action.payload.uuid) {
+      // loop through all action uuid's passed in payload {
+      let uuidObj = globalId.find(renObj => renObj.id === action.payload.uuid); 
+      if (uuidObj) {
+        webContents.fromId(uuidObj.winId).send('redux-action', rendererAction);
+      }
       // }
-    // }
+      return next(action);
+    } else {
+      return next(action);
+    }
 
-
-    allWebContents.forEach((contents) => { 
-   
-      // On dispatch action with propose answer dispatch openchannel(channelId) -> replayToRenderer reply only to renderer with given id
-      // fix to filter by passed UUID_RECEIVER_RENDERER - globalUUIDList map UUID_RECEIVER_RENDERER to webcontents id
-      // ex: action { type: OPEN_CHANNEL, payload: { channelId: '[CHANNEL_ID]', uuid: '[UUID_RECEIVER_RENDERER]'} 
-      // ex.2: action { type: BIND_OPEN_CHANNELS, payload: { channelIds: ['[CHANNEL_ID_1]', '[CHANNEL_ID_2]'] } 
-      // ex.3: action { type: BIND_OPEN_CHANNELS_DONE, payload: { bindChannelId: '[BIND_CHANNLE_ID]', uuid: ['[UUID_RECEIVER_RENDERER_1]', '[UUID_RECEIVER_RENDERER_2]'] }  
-      // ex.4: action { type: CANCEL_OPENED_CHANNEL }
-      // ex.5: action { type: INTENT_OPEN_CHANNELS, channelProposal: "[PERMISSION/PROPOSAL]", targetDapp: "[TARGET_DAPP_NAME]" }
-      
-      //next use for local redux client staff
-      // meta: {
-      //   scope: 'local',
-      // },
-
-      // console.log('---> contents id: ', contents.id);
-      contents.send('redux-action', rendererAction);
-    });
-
-    return next(action);
+    // console.log('>>>>>> configure: ', action);
+    // const allWebContents = webContents.getAllWebContents();
+    // allWebContents.forEach((contents) => { 
+    //   // console.log('---> contents id: ', contents.id);
+    //   contents.send('redux-action', rendererAction);
+    // });
+    // return next(action);
   };
 }
 
@@ -75,9 +63,16 @@ const replyActionMain = (store, globalId) => {
   ipcMain.on('redux-action', (event, uuid, payload) => {
     let uuidObj = globalId.find(renObj => renObj.id === uuid);
     if (uuidObj) {
-      console.log("Validated: ", JSON.stringify(uuidObj));
+      // console.log("Validated: ", JSON.stringify(uuidObj));
       const statusObj = { status: uuidObj.status };
       payload.payload = (payload.payload) ? Object.assign(payload.payload, statusObj) : statusObj;
+
+      // pass by default to dappname128729index2
+      let uuidTargetObj = globalId.find(renObj => renObj.name === 'dappname128729index2');
+      const payloadUuidObj = { uuid: uuidTargetObj.id };
+      payload.payload = Object.assign(payload.payload, payloadUuidObj) 
+
+
       store.dispatch(payload);                             // verification for payload 
     } else {
       console.log("Spoofing detected")

@@ -39,6 +39,7 @@ const forwardToMain = store => next => (action) => {
     return next(action);
 };
 
+
 const configureStore = (initialState) => {
     const middleware = [forwardToMain, logger]; // epicMiddleware
     const enhanced = [
@@ -59,6 +60,7 @@ const initStore = () => {
     const store = configureStore(initialState);
     return store;
 }
+
 
 // // electron-redux store
 const store = initStore();

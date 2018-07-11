@@ -41,7 +41,7 @@ function createDappView(globalUUIDList, entryPath) {
     rendererObj = {
         id: uuidDapp,
         status: 'dapp',
-        viewId: dappView.id,
+        winId: dappView.id,
         name: 'dappname128729'.concat(entryPath.split('.')[0]) // load from dapp
     }
     globalUUIDList.push(rendererObj);
