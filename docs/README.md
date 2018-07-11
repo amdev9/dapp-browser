@@ -135,7 +135,7 @@ array
 |         |-- subscribe
 |         |-- putFile
 |         |-- getFile
-|         |-- ... other methods to work with components // todo
+|         |-- ... other methods to work with components // todo orbitdb, bitshares, network, ipfs/p2p, keychain, localstorage 
 | 
 |- ipcCommunicator
 ```
