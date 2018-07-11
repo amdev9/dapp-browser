@@ -1,6 +1,6 @@
 
 
-//todoCHANNEL add epic INTENT_OPEN_CHANNELS (targetDapp, channelProposal) (resolve id of dapp, send push event) 
+//todo2 add epic INTENT_OPEN_CHANNELS (targetDapp, channelProposal) (resolve id of dapp, send push event) 
 // - if resonse from subscribed dapp == OK
 // - at main find channelIdSend, channelIdReceive
 // - -> OPEN_CHANNEL(channelIdSend), OPEN_CHANNEL(channelIdReceive) -> when both opened succesfully -> BIND_OPEN_CHANNELS(channelIdSend, channelIdReceive)
@@ -29,7 +29,7 @@ const startCountdownEpic = (action$) => {
 
     /*    
 
-    //next todo move to redux-observable 1.0.0
+    //next move to redux-observable 1.0.0
     // https://github.com/redux-observable/redux-observable/blob/master/MIGRATION.md
     
     https://medium.com/kevin-salters-blog/epic-middleware-in-redux-e4385b6ff7c6

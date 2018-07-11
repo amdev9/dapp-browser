@@ -37,11 +37,15 @@ const forwardToRendererWrapper = (globalId) => {
 
     const allWebContents = webContents.getAllWebContents();
 
-    //todoELECTRON_REDUX loop through all action uuid's passed in payload
-    // let uuidObj = globalId.find(renObj => renObj.id === uuid); // uuid from action
-    // if (uuidObj) {
-    //   webcontents.fromId(uuidObj.windowId).send('redux-action', rendererAction);
+    //todo1 loop through all action uuid's passed in payload
+    
+    // if (action.payload && action.payload.uuid) {
+      // let uuidObj = globalId.find(renObj => renObj.id === action.payload.uuid); 
+      // if (uuidObj) {
+      //   webcontents.fromId(uuidObj.windowId).send('redux-action', rendererAction);
+      // }
     // }
+
 
     allWebContents.forEach((contents) => { 
    
@@ -52,12 +56,13 @@ const forwardToRendererWrapper = (globalId) => {
       // ex.3: action { type: BIND_OPEN_CHANNELS_DONE, payload: { bindChannelId: '[BIND_CHANNLE_ID]', uuid: ['[UUID_RECEIVER_RENDERER_1]', '[UUID_RECEIVER_RENDERER_2]'] }  
       // ex.4: action { type: CANCEL_OPENED_CHANNEL }
       // ex.5: action { type: INTENT_OPEN_CHANNELS, channelProposal: "[PERMISSION/PROPOSAL]", targetDapp: "[TARGET_DAPP_NAME]" }
-      //next todo use for local redux client staff
+      
+      //next use for local redux client staff
       // meta: {
       //   scope: 'local',
       // },
 
-      console.log('---> contents id: ', contents.id);
+      // console.log('---> contents id: ', contents.id);
       contents.send('redux-action', rendererAction);
     });
 
@@ -65,7 +70,7 @@ const forwardToRendererWrapper = (globalId) => {
   };
 }
 
-const replayActionMain = (store, globalId) => {
+const replyActionMain = (store, globalId) => {
   global.getReduxState = () => JSON.stringify(store.getState());
   ipcMain.on('redux-action', (event, uuid, payload) => {
     let uuidObj = globalId.find(renObj => renObj.id === uuid);
@@ -87,7 +92,7 @@ const configureStore = (initialState, globalId) => {
   const enhancer = compose(...enhanced);
   const store = createStore(rootReducer, initialState, enhancer);
 
-  replayActionMain(store, globalId); 
+  replyActionMain(store, globalId); 
   
   return store;
 };

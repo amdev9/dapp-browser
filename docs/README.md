@@ -133,7 +133,10 @@ Each component will have a channel through which data will be sent. We use separ
 array
 |- dapp - |
 |         |-- subscribe
-|
+|         |-- putFile
+|         |-- getFile
+|         |-- ... other methods to work with components // todo
+| 
 |- ipcCommunicator
 ```
 

@@ -1,8 +1,7 @@
 const SWITCH_DAPP = 'SWITCH_DAPP';
 const SEND_PING_MESSAGE = 'SEND_PING_MESSAGE';
 
-
-//todoCHANNEL add openChannel action with channelId params
+//todo2 add openChannel action with channelId params
 function openChannel(channelId, rendererId) { // fix
   return {
     type: OPEN_CHANNEL,

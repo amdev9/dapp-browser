@@ -70,7 +70,7 @@ app.on('ready', () => {
       */
     }
     
-    //todoCHANNEL 
+    //todo3
     // ask for permission before renderer process starts, add map { channelProposal: '[PERMISSION/PROPOSAL]', channelId: '[CHANNEL_ID]'}
     // When renderer init data sending through channel he pass action, preload script add payload:
     // ex.: { type: INTENT_CHANNEL_DATA_PASS, payload: { uuid: '[UUID_RECEIVER_RENDERER]', channelProposal: '[PERMISSION/PROPOSAL]' } } 
@@ -78,7 +78,7 @@ app.on('ready', () => {
     // ex.: { type: 'ACCEPT_CHANNEL_DATA_PASS', payload: { channelId: '[CHANNEL_ID]', uuid: '[UUID_RECEIVER_RENDERER]' } }
     // Renderer pass data through given '[CHANNEL_ID]'
     
-    //todoEVENTS
+    //todo4
     // Local Storage roadmap:
     // ask for permission before renderer process starts, add map { channelProposal: '[PERMISSION/PROPOSAL]', channelId: '[CHANNEL_ID]'}
     // Renderer init subscription ex: { type: 'INIT_EVENT_SUBSCRIPTION', payload: { channelProposal: '[PERMISSION/PROPOSAL]', additionalParams: {...} } }
