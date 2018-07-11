@@ -35,7 +35,7 @@ const forwardToRendererWrapper = (globalId) => {
       },
     };
 
-    //todo1 
+ 
     if (action.payload && action.payload.uuid) {
       // loop through all action uuid's passed in payload {
       let uuidObj = globalId.find(renObj => renObj.id === action.payload.uuid); 
@@ -68,12 +68,12 @@ const replyActionMain = (store, globalId) => {
       payload.payload = (payload.payload) ? Object.assign(payload.payload, statusObj) : statusObj;
 
       // pass by default to dappname128729index2
-      let uuidTargetObj = globalId.find(renObj => renObj.name === 'dappname128729index2');
+      let uuidTargetObj = globalId.find(renObj => renObj.name === payload.payload.targetDapp); // for OPEN_CHANNEL 'dappname128729index2' 
       const payloadUuidObj = { uuid: uuidTargetObj.id };
       payload.payload = Object.assign(payload.payload, payloadUuidObj) 
 
 
-      store.dispatch(payload);                             // verification for payload 
+      store.dispatch(payload);   
     } else {
       console.log("Spoofing detected")
     }

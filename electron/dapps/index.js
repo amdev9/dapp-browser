@@ -21,7 +21,7 @@ const forwardToMain = store => next => (action) => {
       action.meta.scope !== 'local'
     )
   ) {
-    electronManager.sendActionMain(action); // window.ipc  /**** access from preload script */ 
+    electronManager.sendActionMain(action);  
 
     // stop action in-flight
     // eslint-disable-next-line consistent-return
@@ -43,15 +43,14 @@ const configureStore = (initialState) => {
   console.log(typeof rootReducer, initialState, typeof enhancer);
   store = createStore(rootReducer, initialState, enhancer);
 
-  electronManager.replyActionRenderer(store); // window.ipc
+  electronManager.replyActionRenderer(store);  
 
   return store;
 };
 
 
 const initStore = () => {
-  // console.log('initStore');
-  const states = electronManager.getGlobalState(); // window.ipc 
+  const states = electronManager.getGlobalState();  
   console.log(states);
   const initialState = JSON.parse(states()); // getInitialStateRenderer();  
 
@@ -84,16 +83,12 @@ const initUi = () => {
     }); // dispatch API endpoints
   });
 
-  document.getElementById('ping').addEventListener('click', () => {
-
-    console.log('click on ping');
+  document.getElementById('communicate').addEventListener('click', () => {
     store.dispatch({
-      type: 'SEND_PING_MESSAGE'  
-
-    //   payload: { 
-    //     message: 'this is a ping message',
-    //     dappIdReceiver: 'dappname128729index'  
-    // }
+      type: 'INTENT_OPEN_CHANNELS',
+      payload: {
+        targetDapp: 'dappname128729index2'
+      }
     }); // dispatch API endpoints
   });
 

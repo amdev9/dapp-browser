@@ -1,6 +1,6 @@
 
 
-//todo2 add epic INTENT_OPEN_CHANNELS (targetDapp, channelProposal) (resolve id of dapp, send push event) 
+// add epic INTENT_OPEN_CHANNELS (targetDapp, channelProposal) (resolve id of dapp, send push event) 
 // - if resonse from subscribed dapp == OK
 // - at main find channelIdSend, channelIdReceive
 // - -> OPEN_CHANNEL(channelIdSend), OPEN_CHANNEL(channelIdReceive) -> when both opened succesfully -> BIND_OPEN_CHANNELS(channelIdSend, channelIdReceive)
@@ -16,14 +16,18 @@ const {
   INCREMENT_COUNTER,
   INCREMENT_ASYNC, 
   CANCEL_INCREMENT_ASYNC 
-} = require('../actions/counter');; 
+} = require('../actions/counter');
  
+const { OPEN_CHANNEL, INTENT_OPEN_CHANNELS } = require('../actions/channel');
+
 const startCountdownEpic = (action$) => {
   
   // INTENT_OPEN_CHANNELS
   // payload = define channelIds by nameofapp === inject globalUUIDList into epic 
   // https://redux-observable.js.org/docs/recipes/InjectingDependenciesIntoEpics.html
-  return action$.ofType(START_COUNTDOWN).switchMap(q => {
+
+
+  return action$.ofType(START_COUNTDOWN).switchMap(q => { // todo fix to INTENT_OPEN_CHANNELS
 
     const start = 5;
 
@@ -60,7 +64,7 @@ const startCountdownEpic = (action$) => {
       .map(seconds => {
         // actual increment action
         if (seconds === -1) {
-          return { type: INCREMENT_COUNTER }
+          return { type: INCREMENT_COUNTER } // todo fix to OPEN_CHANNEL
         }
         // increment async action
         else {

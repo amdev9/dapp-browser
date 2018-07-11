@@ -22,7 +22,7 @@ const forwardToMain = store => next => (action) => {
       action.meta.scope !== 'local'
     )
   ) {
-    electronManager.sendActionMain(action); // window.ipc  /**** access from preload script */ 
+    electronManager.sendActionMain(action);  
 
     // stop action in-flight
     // eslint-disable-next-line consistent-return
@@ -44,15 +44,14 @@ const configureStore = (initialState) => {
   console.log(typeof rootReducer, initialState, typeof enhancer);
   store = createStore(rootReducer, initialState, enhancer);
 
-  electronManager.replyActionRenderer(store); // window.ipc
+  electronManager.replyActionRenderer(store);  
 
   return store;
 };
 
 
 const initStore = () => {
-  // console.log('initStore');
-  const states = electronManager.getGlobalState(); // window.ipc 
+  const states = electronManager.getGlobalState();  
   console.log(states);
   const initialState = JSON.parse(states()); // getInitialStateRenderer();  
 
@@ -85,16 +84,12 @@ const initUi = () => {
     }); // dispatch API endpoints
   });
 
-  document.getElementById('ping').addEventListener('click', () => {
-
-    console.log('click on ping');
+  document.getElementById('communicate').addEventListener('click', () => {
     store.dispatch({
-      type: 'SEND_PING_MESSAGE'  
-
-    //   payload: { 
-    //     message: 'this is a ping message',
-    //     dappIdReceiver: 'dappname128729index'  
-    // }
+      type: 'INTENT_OPEN_CHANNELS',
+      payload: {
+        targetDapp: 'dappname128729index2'
+      }
     }); // dispatch API endpoints
   });
 
@@ -103,7 +98,33 @@ const initUi = () => {
 // main
 store = initStore();
 initUi();
-},{"./redux/reducers":4,"flux-standard-action":5,"redux":23}],2:[function(require,module,exports){
+},{"./redux/reducers":6,"flux-standard-action":7,"redux":25}],2:[function(require,module,exports){
+// Dapp communication protocol
+const INTENT_OPEN_CHANNELS = 'INTENT_OPEN_CHANNELS';
+const OPEN_CHANNEL = 'OPEN_CHANNEL';
+const OPEN_CHANNEL_SUCCESS = 'OPEN_CHANNEL_SUCCESS';
+const BIND_OPEN_CHANNELS_DONE = 'BIND_OPEN_CHANNELS_DONE';
+
+// Events API protocol
+const INIT_EVENT_SUBSCRIPTION = 'INIT_EVENT_SUBSCRIPTION';
+const EVENT_TRIGGERED = 'EVENT_TRIGGERED';
+const EVENT_RECEIVED = 'EVENT_RECEIVED';
+ 
+// Component-channel resolver
+const INTENT_CHANNEL_DATA_PASS = 'INTENT_CHANNEL_DATA_PASS';
+const ACCEPT_CHANNEL_DATA_PASS = 'ACCEPT_CHANNEL_DATA_PASS';
+
+function openChannelIntent() {
+  return {
+    type: INTENT_OPEN_CHANNELS
+  };
+}
+
+module.exports = {
+  openChannelIntent,
+  INTENT_OPEN_CHANNELS
+}
+},{}],3:[function(require,module,exports){
 const INCREMENT_COUNTER = 'INCREMENT_COUNTER';
 const DECREMENT_COUNTER = 'DECREMENT_COUNTER';
 const SEND_PING_MESSAGE = 'SEND_PING_MESSAGE';
@@ -134,7 +155,20 @@ module.exports = {
   DECREMENT_COUNTER,
   SEND_PING_MESSAGE
 }
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
+const { INTENT_OPEN_CHANNELS } = require('../actions/channel');
+
+function channel(state = 0, action) {
+  switch (action.type) {
+    case INTENT_OPEN_CHANNELS:
+ 
+    default:
+      return state;
+  }
+}
+
+module.exports = channel;
+},{"../actions/channel":2}],5:[function(require,module,exports){
 const { INCREMENT_COUNTER, DECREMENT_COUNTER, SEND_PING_MESSAGE } = require('../actions/counter');
 
 function counter(state = 0, action) {
@@ -152,19 +186,20 @@ function counter(state = 0, action) {
 }
 
 module.exports = counter;
-},{"../actions/counter":2}],4:[function(require,module,exports){
+},{"../actions/counter":3}],6:[function(require,module,exports){
 const { combineReducers } = require('redux');
 
+const channel = require('./channel');
 const counter = require('./counter');
  
-
 const rootReducer = combineReducers({
-  counter
+  counter,
+  channel
 });
 
 module.exports = rootReducer;
 
-},{"./counter":3,"redux":23}],5:[function(require,module,exports){
+},{"./channel":4,"./counter":5,"redux":25}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -195,7 +230,7 @@ function isError(action) {
 function isValidKey(key) {
   return ['type', 'payload', 'error', 'meta'].indexOf(key) > -1;
 }
-},{"lodash/isPlainObject":16,"lodash/isString":17}],6:[function(require,module,exports){
+},{"lodash/isPlainObject":18,"lodash/isString":19}],8:[function(require,module,exports){
 var root = require('./_root');
 
 /** Built-in value references. */
@@ -203,7 +238,7 @@ var Symbol = root.Symbol;
 
 module.exports = Symbol;
 
-},{"./_root":13}],7:[function(require,module,exports){
+},{"./_root":15}],9:[function(require,module,exports){
 var Symbol = require('./_Symbol'),
     getRawTag = require('./_getRawTag'),
     objectToString = require('./_objectToString');
@@ -233,7 +268,7 @@ function baseGetTag(value) {
 
 module.exports = baseGetTag;
 
-},{"./_Symbol":6,"./_getRawTag":10,"./_objectToString":11}],8:[function(require,module,exports){
+},{"./_Symbol":8,"./_getRawTag":12,"./_objectToString":13}],10:[function(require,module,exports){
 (function (global){
 /** Detect free variable `global` from Node.js. */
 var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
@@ -241,7 +276,7 @@ var freeGlobal = typeof global == 'object' && global && global.Object === Object
 module.exports = freeGlobal;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],9:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 var overArg = require('./_overArg');
 
 /** Built-in value references. */
@@ -249,7 +284,7 @@ var getPrototype = overArg(Object.getPrototypeOf, Object);
 
 module.exports = getPrototype;
 
-},{"./_overArg":12}],10:[function(require,module,exports){
+},{"./_overArg":14}],12:[function(require,module,exports){
 var Symbol = require('./_Symbol');
 
 /** Used for built-in method references. */
@@ -297,7 +332,7 @@ function getRawTag(value) {
 
 module.exports = getRawTag;
 
-},{"./_Symbol":6}],11:[function(require,module,exports){
+},{"./_Symbol":8}],13:[function(require,module,exports){
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
 
@@ -321,7 +356,7 @@ function objectToString(value) {
 
 module.exports = objectToString;
 
-},{}],12:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 /**
  * Creates a unary function that invokes `func` with its argument transformed.
  *
@@ -338,7 +373,7 @@ function overArg(func, transform) {
 
 module.exports = overArg;
 
-},{}],13:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 var freeGlobal = require('./_freeGlobal');
 
 /** Detect free variable `self`. */
@@ -349,7 +384,7 @@ var root = freeGlobal || freeSelf || Function('return this')();
 
 module.exports = root;
 
-},{"./_freeGlobal":8}],14:[function(require,module,exports){
+},{"./_freeGlobal":10}],16:[function(require,module,exports){
 /**
  * Checks if `value` is classified as an `Array` object.
  *
@@ -377,7 +412,7 @@ var isArray = Array.isArray;
 
 module.exports = isArray;
 
-},{}],15:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 /**
  * Checks if `value` is object-like. A value is object-like if it's not `null`
  * and has a `typeof` result of "object".
@@ -408,7 +443,7 @@ function isObjectLike(value) {
 
 module.exports = isObjectLike;
 
-},{}],16:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 var baseGetTag = require('./_baseGetTag'),
     getPrototype = require('./_getPrototype'),
     isObjectLike = require('./isObjectLike');
@@ -472,7 +507,7 @@ function isPlainObject(value) {
 
 module.exports = isPlainObject;
 
-},{"./_baseGetTag":7,"./_getPrototype":9,"./isObjectLike":15}],17:[function(require,module,exports){
+},{"./_baseGetTag":9,"./_getPrototype":11,"./isObjectLike":17}],19:[function(require,module,exports){
 var baseGetTag = require('./_baseGetTag'),
     isArray = require('./isArray'),
     isObjectLike = require('./isObjectLike');
@@ -504,7 +539,7 @@ function isString(value) {
 
 module.exports = isString;
 
-},{"./_baseGetTag":7,"./isArray":14,"./isObjectLike":15}],18:[function(require,module,exports){
+},{"./_baseGetTag":9,"./isArray":16,"./isObjectLike":17}],20:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -563,7 +598,7 @@ function applyMiddleware() {
     };
   };
 }
-},{"./compose":21}],19:[function(require,module,exports){
+},{"./compose":23}],21:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -615,7 +650,7 @@ function bindActionCreators(actionCreators, dispatch) {
   }
   return boundActionCreators;
 }
-},{}],20:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -761,7 +796,7 @@ function combineReducers(reducers) {
   };
 }
 }).call(this,require('_process'))
-},{"./createStore":22,"./utils/warning":24,"_process":27,"lodash/isPlainObject":16}],21:[function(require,module,exports){
+},{"./createStore":24,"./utils/warning":26,"_process":29,"lodash/isPlainObject":18}],23:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -798,7 +833,7 @@ function compose() {
     };
   });
 }
-},{}],22:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1060,7 +1095,7 @@ var ActionTypes = exports.ActionTypes = {
     replaceReducer: replaceReducer
   }, _ref2[_symbolObservable2['default']] = observable, _ref2;
 }
-},{"lodash/isPlainObject":16,"symbol-observable":25}],23:[function(require,module,exports){
+},{"lodash/isPlainObject":18,"symbol-observable":27}],25:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -1109,7 +1144,7 @@ exports.bindActionCreators = _bindActionCreators2['default'];
 exports.applyMiddleware = _applyMiddleware2['default'];
 exports.compose = _compose2['default'];
 }).call(this,require('_process'))
-},{"./applyMiddleware":18,"./bindActionCreators":19,"./combineReducers":20,"./compose":21,"./createStore":22,"./utils/warning":24,"_process":27}],24:[function(require,module,exports){
+},{"./applyMiddleware":20,"./bindActionCreators":21,"./combineReducers":22,"./compose":23,"./createStore":24,"./utils/warning":26,"_process":29}],26:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1135,7 +1170,7 @@ function warning(message) {
   } catch (e) {}
   /* eslint-enable no-empty */
 }
-},{}],25:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -1167,7 +1202,7 @@ if (typeof self !== 'undefined') {
 var result = (0, _ponyfill2['default'])(root);
 exports['default'] = result;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./ponyfill.js":26}],26:[function(require,module,exports){
+},{"./ponyfill.js":28}],28:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1191,7 +1226,7 @@ function symbolObservablePonyfill(root) {
 
 	return result;
 };
-},{}],27:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
