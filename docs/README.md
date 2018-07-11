@@ -1,6 +1,14 @@
 ## Client documentation
 - [Architecture technical documentation](#architecture-technical-documentation)
+  - [UUID target store resolver](#uuid-target-store-resolver)
+  - [Redux middleware for permission check](#redux-middleware-for-permission-check)
+  - [Dapp communication protocol](#dapp-communication-protocol)
+  - [Events API protocol](#events-api-protocol)
+  - [Component-channel resolver](#component-channel-resolver)
 - [Array library documentation](#array-library-documentation)
+  - [array.dapp](#arraydapp)
+  - [array.dapp.subscribe](#arraydappsubscribe)
+  - [array.ipcCommunicator](#arrayipccommunicator)
 
 # Architecture technical documentation
 
