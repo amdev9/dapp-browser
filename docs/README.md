@@ -1,3 +1,7 @@
+## Client documentation
+- [Architecture technical documentation](#architecture-technical-documentation)
+- [Array library documentation](#array-library-documentation)
+
 # Architecture technical documentation
 
 ## UUID target store resolver
