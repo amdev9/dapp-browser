@@ -70,7 +70,6 @@ app.on('ready', () => {
       */
     }
     
-    
     //todo3
     // ask for permission before renderer process starts, add map { channelProposal: '[PERMISSION/PROPOSAL]', channelId: '[CHANNEL_ID]'}
     // When renderer init data sending through channel he pass action, preload script add payload:
