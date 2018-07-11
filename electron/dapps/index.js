@@ -43,7 +43,7 @@ const configureStore = (initialState) => {
   console.log(typeof rootReducer, initialState, typeof enhancer);
   store = createStore(rootReducer, initialState, enhancer);
 
-  electronManager.replayActionRenderer(store); // window.ipc
+  electronManager.replyActionRenderer(store); // window.ipc
 
   return store;
 };

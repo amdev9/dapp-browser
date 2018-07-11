@@ -30,7 +30,7 @@ class ElectronManager {
 
     console.log(electron.remote.getGlobal('getReduxState')());
 
-    const replayActionRenderer = (store) => { 
+    const replyActionRenderer = (store) => { 
       ipcRenderer.on('redux-action', (event, payload) => { 
         // additional check for uuid received
         if( !payload.uuid || (payload.uuid && payload.uuid.includes(uuidRenderer)) ) {
@@ -60,7 +60,7 @@ class ElectronManager {
       });
     }
 
-    this.replayActionRenderer = replayActionRenderer;
+    this.replyActionRenderer = replyActionRenderer;
     this.getGlobalState = getGlobalState;
     this.sendActionMain = sendActionMain;
     this.sendDataChannel = sendDataChannel;

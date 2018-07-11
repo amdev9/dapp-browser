@@ -4,7 +4,7 @@
 
 ![alt text](./diagrams/forwardToRendererWrapper.png?raw=true "forwardToRendererWrapper middleware mechanizm")
 
-Each created renderer process (client, dapp) has own uniq identificator `UUID` passed to process `additionalParams`. So we can identify and map each process with uniq token id. `replayToRenderer` reply only to renderer with given id. Filter by passed `UUID_RECEIVER_RENDERER` - `globalUUIDList` map `UUID_RECEIVER_RENDERER` to webcontents id.
+Each created renderer process (client, dapp) has own uniq identificator `UUID` passed to process `additionalParams`. So we can identify and map each process with uniq token id. It helps us to deliver action straight to renderer process with `UUID` mapped with dapp name in main process.  It is implemented with simple filter of passed array `globalUUIDList` (given `UUID` mapped to id of renderer and we can get `webContents` via `webContents.fromId(id)` electron method).
 
 -------------------------
 
@@ -24,8 +24,7 @@ Each dispatched action before it reaches target dapp go to main process and vali
 
 ### Actions roadmap
 
-On dispatch action with propose answer dispatch openchannel(channelId). [UUID target store resolver](#uuid-target-store-resolver) is used to pass action to the right renderer process. Then we bind opened channels to provide `ipcCommunicator` communication abstraction.
-
+Sender dapp init communication with receiver dapp (`openChannelIntent` action). Main process propagate signal and dispatch two `openChannel` actions. [UUID target store resolver](#uuid-target-store-resolver) is used to pass action to the certain renderer process. Next we start procedure of bindChannels binding (`bindChannels` action dispatch). On success scenario we bind opened channels together and dispatch `bindChannelsSuccess`. So finally, we ready to provide communication abstraction for dapp developer  - `ipcCommunicator` instance.
 
 - openChannelIntent 
 ```javascript
@@ -83,7 +82,7 @@ On dispatch action with propose answer dispatch openchannel(channelId). [UUID ta
 ```javascript
 { type: 'EVENT_RECEIVED', payload: channelProposal: '[PERMISSION/PROPOSAL]', additionalParams: {...} }
 ```
-- Render can init now opening channel for data passing, etc.
+- Now render can init opening channel for data passing, etc.
 
 -------------------------
 
@@ -93,7 +92,7 @@ Resolve `CHANNEL_ID` for dapp renderer process to get data from **main process c
 
 ![alt text](./diagrams/channelIdResolve.png?raw=true "Resolve channelId")
 
-Each component will have a channel through which data will be sent. We use separate channels for security reasons. Before dapp process starts we check component access permissions in manifest file, create and pass channelIds to preload script. By this we add security layer on renderer side.
+Each component will have a channel through which data will be sent. We use separate channels for security reasons. Before dapp process starts we check component access permissions in manifest file, create and pass channelIds to preload script. By that we add security layer on renderer side.
 
 ### Actions roadmap
 - ask for permission before renderer process starts, add map to main process:
