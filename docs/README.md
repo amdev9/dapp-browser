@@ -8,10 +8,15 @@
 - [Array library documentation](#array-library-documentation)
   - [array.dapp](#arraydapp)
   - [array.dapp.subscribe](#arraydappsubscribe)
-  - [array.Ipc](#arrayipccommunicator)
+  - [array.Ipc](#arrayipc)
+  - ... other components related array.[component].[method]
 
 # Architecture technical documentation
 
+<!-- 
+-   необходимо отразить в описании арх2.  если меняем пермишены на лету. в этом случае, если приложение запущено, то необходимо "догрузить" новые пермишены и соответственно каналы.
+– также не хватает фейловых сценариев для всех случаев взаимодействия
+ -->
 ## UUID target store resolver
 
 ![alt text](./diagrams/forwardToRendererWrapper.png?raw=true "forwardToRendererWrapper middleware mechanizm")
@@ -65,6 +70,12 @@ Sender dapp init communication with receiver dapp (`openChannelIntent` action). 
 -------------------------
 
 ## Events API protocol
+
+Events API protocol used in our architecture only to receive event signals. As a transport for event's data we use channels and [Component-channel resolver](#component-channel-resolver) mechanizm.
+
+As you remember all actions (without `scope: local` electron-redux flag) are firstly dispatched in main process store. Renderer process (dapp) init action `INIT_EVENT_SUBSCRIPTION` with specified in payload actions to subscribe. On the main process side we have variable `eventMap` to store map with subscribed actions.
+
+<!-- Add EVENT_ACCEPT ??? Failure logic -->
 
 ![alt text](./diagrams/eventsMechanizm.png?raw=true "Events mechanizm")
 
@@ -131,14 +142,16 @@ Each component will have a channel through which data will be sent. We use separ
 
 ```
 array
-|- dapp 
+|- dapp -|
+|        |- subscribe
+|
 |- Ipc
 |- LocalStorage -| _methods_
 |- Keychain -----| _methods_
 |- IpfsStorage --| _methods_
 |- OrbitDb ------| _methods_
 |- Network ------| _methods_
-
+|- ...other components
 ```
 
  other methods to work with components // todo orbitdb, bitshares, network, ipfs/p2p, keychain, localstorage  // subscribe
@@ -169,7 +182,7 @@ Returns:
 Emitted when the application is quitting.
 
 
-# array.dapp.subscribe (move to component Network)
+# array.dapp.subscribe 
 The `array.dapp.subscribe` function lets you subscribe to specific events your dapp depends on.
 
 ```
