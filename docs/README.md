@@ -8,7 +8,7 @@
 - [Array library documentation](#array-library-documentation)
   - [array.dapp](#arraydapp)
   - [array.dapp.subscribe](#arraydappsubscribe)
-  - [array.ipcCommunicator](#arrayipccommunicator)
+  - [array.Ipc](#arrayipccommunicator)
 
 # Architecture technical documentation
 
@@ -100,7 +100,7 @@ Sender dapp init communication with receiver dapp (`openChannelIntent` action). 
 
 ## Component-channel resolver
 
-Resolve `CHANNEL_ID` for dapp renderer process to get data from **main process component** (ex. LocalStorage, BitShares, etc.):
+Resolve `CHANNEL_ID` for dapp renderer process to get   data from **main process component** (ex. LocalStorage, BitShares, etc.). Each dapp has own uniq `CHANNEL_ID` even for the same components:
 
 ![alt text](./diagrams/channelIdResolve.png?raw=true "Resolve channelId")
 
@@ -131,14 +131,18 @@ Each component will have a channel through which data will be sent. We use separ
 
 ```
 array
-|- dapp - |
-|         |-- subscribe
-|         |-- putFile
-|         |-- getFile
-|         |-- ... other methods to work with components // todo orbitdb, bitshares, network, ipfs/p2p, keychain, localstorage 
-| 
-|- ipcCommunicator
+|- dapp 
+|- Ipc
+|- LocalStorage -| _methods_
+|- Keychain -----| _methods_
+|- IpfsStorage --| _methods_
+|- OrbitDb ------| _methods_
+|- Network ------| _methods_
+
 ```
+
+ other methods to work with components // todo orbitdb, bitshares, network, ipfs/p2p, keychain, localstorage  // subscribe
+
 
 # array.dapp
 The `array.dapp` object control your decentralized application event lifecycle.
@@ -150,10 +154,10 @@ The `dapp` object emits the following events:
 ### Event: 'will-finish-launching'
 Emitted when the application has finished basic startup.
 
-### Event: 'active'
+### Event: 'foreground'
 Emitted when the application has changed state to foreground. User works with your dapp.
 
-### Event: 'non-active'
+### Event: 'background'
 Emitted when the application has changed state to background. User currently works with another dapp.
 
 ### Event: 'quit'
@@ -165,7 +169,7 @@ Returns:
 Emitted when the application is quitting.
 
 
-# array.dapp.subscribe
+# array.dapp.subscribe (move to component Network)
 The `array.dapp.subscribe` function lets you subscribe to specific events your dapp depends on.
 
 ```
@@ -209,9 +213,9 @@ Promise combined with an event emitter allow acting on different stages of actio
 PromiEvents work like a normal promises with added on, once and off functions. This way developers can watch for additional events.
 
 
-# array.ipcCommunicator
+# array.Ipc
 Communicate asynchronously from the your dapp process to another dapp.
-The `ipcCommunicator` module is an instance of the `EventEmitter` class. It provides a few methods so you can:
+The `Ipc` module is an instance of the `EventEmitter` class. It provides a few methods so you can:
 * send synchronous and asynchronous messages from your dapp to another
 * handle asynchronous and synchronous messages sent from other dapps. Messages sent from other dapp will be emitted to this module.
     
@@ -229,8 +233,8 @@ Example
 -------
 
 ```javascript
-  const { ipcCommunicator } = require('array');
-  var senderDappComm = new ipcCommunicator('receiverDappName');
+  const { Ipc } = require('array');
+  var senderDappComm = new Ipc('receiverDappName');
   
   senderDappComm.on('asynchronous-message', (event, arg) => {
     console.log(arg); // prints "ping"
