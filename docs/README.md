@@ -13,10 +13,10 @@
 
 # Architecture technical documentation
 
-<!-- 
--   необходимо отразить в описании арх2.  если меняем пермишены на лету. в этом случае, если приложение запущено, то необходимо "догрузить" новые пермишены и соответственно каналы.
-– также не хватает фейловых сценариев для всех случаев взаимодействия
- -->
+*TODO: Permission mechanizm*
+
+If we change permissions on the fly. In this case, if the application is running, it is necessary to "load" the new permissions and, accordingly, the channels.
+
 ## UUID target store resolver
 
 ![alt text](./diagrams/forwardToRendererWrapper.png?raw=true "forwardToRendererWrapper middleware mechanizm")
@@ -31,11 +31,16 @@ Each created renderer process (client, dapp) has own uniq identificator `UUID` p
 
 Each dispatched action before it reaches target dapp go to main process and validate in `validatePermissionAction` middleware. Main process due to UUID identificators checks if action is passed by client or dapp and apply own validation rules for each group in a separate way.
 
+![alt text](./diagrams/permissionMiddlewareFailure.png?raw=true "Permission middleware failure")
+
 -------------------------
 
 ## Dapp communication protocol
 
 ![alt text](./diagrams/DappCommunication.png?raw=true "Dapp communication")
+
+![alt text](./diagrams/DappCommunicationFailure.png?raw=true "Dapp communication failure")
+
 
 ### Actions roadmap
 
@@ -77,6 +82,9 @@ As you remember all actions (without `scope: local` electron-redux flag) are fir
 
 ![alt text](./diagrams/eventsMechanizm.png?raw=true "Events mechanizm")
 
+![alt text](./diagrams/eventsMechanizmFailure.png?raw=true "Events mechanizm failure")
+
+
 ### Local Storage actions roadmap
 - ask for permission before renderer process starts, add map to main process:
 
@@ -114,6 +122,9 @@ Resolve `CHANNEL_ID` for dapp renderer process to get   data from **main process
 ![alt text](./diagrams/channelIdResolve.png?raw=true "Resolve channelId")
 
 Each component will have a channel through which data will be sent. We use separate channels for security reasons. Before dapp process starts we check component access permissions in manifest file, create and pass channelIds to preload script. By that we add security layer on renderer side.
+
+![alt text](./diagrams/channelIdResolveFailure.png?raw=true "Resolve channelId failure")
+
 
 ### Actions roadmap
 - ask for permission before renderer process starts, add map to main process:
