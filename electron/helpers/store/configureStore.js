@@ -36,25 +36,25 @@ const forwardToRendererWrapper = (globalId) => {
     };
 
  
-    if (action.payload && action.payload.uuid) {
-      // loop through all action uuid's passed in payload {
-      let uuidObj = globalId.find(renObj => renObj.id === action.payload.uuid); 
-      if (uuidObj) {
-        webContents.fromId(uuidObj.winId).send('redux-action', rendererAction);
-      }
-      // }
-      return next(action);
-    } else {
-      return next(action);
-    }
+    // if (action.payload && action.payload.uuid) {
+    //   // loop through all action uuid's passed in payload {
+    //   let uuidObj = globalId.find(renObj => renObj.id === action.payload.uuid); 
+    //   if (uuidObj) {
+    //     webContents.fromId(uuidObj.winId).send('redux-action', rendererAction);
+    //   }
+    //   // }
+    //   return next(action);
+    // } else {
+    //   return next(action);
+    // }
 
-    // console.log('>>>>>> configure: ', action);
-    // const allWebContents = webContents.getAllWebContents();
-    // allWebContents.forEach((contents) => { 
-    //   // console.log('---> contents id: ', contents.id);
-    //   contents.send('redux-action', rendererAction);
-    // });
-    // return next(action);
+    console.log('>>>>>> configure: ', action);
+    const allWebContents = webContents.getAllWebContents();
+    allWebContents.forEach((contents) => { 
+      // console.log('---> contents id: ', contents.id);
+      contents.send('redux-action', rendererAction);
+    });
+    return next(action);
   };
 }
 
@@ -68,9 +68,9 @@ const replyActionMain = (store, globalId) => {
       payload.payload = (payload.payload) ? Object.assign(payload.payload, statusObj) : statusObj;
 
       // move to forwardToRendererWrapper?
-      let uuidTargetObj = globalId.find(renObj => renObj.name === payload.payload.targetDapp); // for OPEN_CHANNEL 'dappname128729index2' 
-      const payloadUuidObj = { uuid: uuidTargetObj.id };
-      payload.payload = Object.assign(payload.payload, payloadUuidObj) 
+      // let uuidTargetObj = globalId.find(renObj => renObj.name === payload.payload.targetDapp); // for OPEN_CHANNEL 'dappname128729index2' 
+      // const payloadUuidObj = { uuid: uuidTargetObj.id };
+      // payload.payload = Object.assign(payload.payload, payloadUuidObj) 
 
 
       store.dispatch(payload);   
