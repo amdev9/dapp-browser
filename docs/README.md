@@ -9,7 +9,7 @@
   - [array.dapp](#arraydapp)
   - [array.dapp.subscribe](#arraydappsubscribe)
   - [array.Ipc](#arrayipc)
-  - ... other components related array.[component].[method]
+  - *... other components related array.[component].[method]*
 
 # Architecture technical documentation
 
@@ -160,7 +160,7 @@ array
 |- IpfsStorage --| _methods_
 |- OrbitDb ------| _methods_
 |- Network ------| _methods_
-|- ...other components
+|- *...other components*
 ```
 
  other methods to work with components // todo orbitdb, bitshares, network, ipfs/p2p, keychain, localstorage  // subscribe
