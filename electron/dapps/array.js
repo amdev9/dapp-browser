@@ -1,7 +1,7 @@
 import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import { isFSA } from 'flux-standard-action';
 import { createEpicMiddleware } from 'redux-observable';
-import rootEpic from './redux/epics';
+import { rootEpic } from './redux/epics';
 import rootReducer from './redux/reducers'; 
 
 
