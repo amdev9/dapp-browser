@@ -8,15 +8,9 @@ for linux enable sandbox (change value from `0` to `1`):
 
 ```
 git clone https://github.com/cypherpunk99/sandboxed-electron
-
 npm i -g yarn
-npm i -g browserify    
 cd sandboxed-electron && yarn install
-cd electron/client && npm install && npm run webpack
-```
-_Spawn another shell window and go to root folder_
-```
-cd electron/dapps && yarn run build && cd ../..
-
+cd electron/client && npm install && cd ../..
+cd electron/dapps && npm install && cd ../..
 yarn run start
 ```

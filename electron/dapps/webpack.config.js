@@ -23,6 +23,6 @@ module.exports = {
   stats: {
     colors: true
   },
-  devtool: 'source-map',
-  watch: true
+  devtool: 'source-map'
+  // watch: true
 };
