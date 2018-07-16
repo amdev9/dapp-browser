@@ -9,7 +9,7 @@ import { isFSA } from 'flux-standard-action';
 import { rootEpic } from './redux/epics';
 import rootReducer from './redux/reducers';
 
-const epicMiddleware = createEpicMiddleware(rootEpic); // `createEpicMiddleware(rootEpic)` is no longer supported, instead use `epicMiddleware.run(rootEpic)`
+const epicMiddleware = createEpicMiddleware(); 
 
 const electronManager = window.ipc;
 
@@ -38,13 +38,16 @@ const forwardToMain = store => next => (action) => {
 
 
 const configureStore = (initialState) => {
-    const middleware = [forwardToMain, logger]; // epicMiddleware
+    const middleware = [forwardToMain, epicMiddleware, logger]; 
     const enhanced = [
         applyMiddleware(...middleware),
     ];
     const enhancer = compose(...enhanced);
     console.log(typeof rootReducer, initialState, typeof enhancer);
     const store = createStore(rootReducer, initialState, enhancer);
+
+    epicMiddleware.run(rootEpic);
+
     electronManager.replyActionRenderer(store); // window.ipc
     return store;
 };

@@ -1,15 +1,13 @@
 const { webContents, ipcMain } = require('electron');
 const { combineReducers, createStore, applyMiddleware, compose } = require('redux');
-// const thunk = require('redux-thunk').default; 
 const { isFSA } = require('flux-standard-action');
 const { triggerAlias } = require('electron-redux'); //forwardToRenderer,
 const { createEpicMiddleware } = require('redux-observable');
-const rootReducer = require('../reducers');
 const validatePermissionAction = require('./validatePermissionAction');
-
 const rootEpic = require('../epics');
+const rootReducer = require('../reducers');
 
-const epicMiddleware = createEpicMiddleware(rootEpic);
+const epicMiddleware = createEpicMiddleware();
 
 
 const validateAction = (action) => {
@@ -86,6 +84,8 @@ const configureStore = (initialState, globalId) => {
   const enhanced = [applyMiddleware(...middleware)]; 
   const enhancer = compose(...enhanced);
   const store = createStore(rootReducer, initialState, enhancer);
+
+  epicMiddleware.run(rootEpic);
 
   replyActionMain(store, globalId); 
   

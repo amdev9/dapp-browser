@@ -9,8 +9,10 @@
 // * simplify for first version: dapp receiver OK by default
  
 require('rxjs');
-const { Observable } = require('rxjs/Observable');
-const { combineEpics } = require('redux-observable');
+ 
+const { combineEpics, ofType } = require('redux-observable');
+const { delay, mapTo } = require('rxjs/operators');
+
 const { 
   START_COUNTDOWN, 
   INCREMENT_COUNTER,
@@ -20,22 +22,29 @@ const {
  
 const { OPEN_CHANNEL, INTENT_OPEN_CHANNELS } = require('../actions/channel');
 
-const startCountdownEpic = (action$) => {
+// const startCountdownEpic = (action$) => {
   
-  // INTENT_OPEN_CHANNELS
-  // payload = define channelIds by nameofapp === inject globalUUIDList into epic 
-  // https://redux-observable.js.org/docs/recipes/InjectingDependenciesIntoEpics.html
-  /*   
-    //next move to redux-observable 1.0.0
-    // https://github.com/redux-observable/redux-observable/blob/master/MIGRATION.md
+//   // INTENT_OPEN_CHANNELS
+//   // payload = define channelIds by nameofapp === inject globalUUIDList into epic 
+//   // https://redux-observable.js.org/docs/recipes/InjectingDependenciesIntoEpics.html
+//   /*   
+//     //next move to redux-observable 1.0.0
+//     // https://github.com/redux-observable/redux-observable/blob/master/MIGRATION.md
     
-    https://medium.com/kevin-salters-blog/epic-middleware-in-redux-e4385b6ff7c6   */
+//     https://medium.com/kevin-salters-blog/epic-middleware-in-redux-e4385b6ff7c6   */
 
-  return action$.ofType(INTENT_OPEN_CHANNELS).mapTo(action => { //todo add payload https://github.com/redux-observable/redux-observable/blob/master/docs/basics/Epics.md#a-real-world-example
-    return { type: OPEN_CHANNEL, payload: { uuid: action.payload.uuid } } 
-  })
+//   return action$.ofType(INTENT_OPEN_CHANNELS).mapTo(action => { //todo add payload https://github.com/redux-observable/redux-observable/blob/master/docs/basics/Epics.md#a-real-world-example
+//     return { type: OPEN_CHANNEL, payload: { uuid: action.payload.uuid } } 
+//   })
        
-};
+// };
+
+const increment = () => ({ type: INCREMENT_COUNTER });
+const startCountdownEpic = action$ => action$.pipe(
+  ofType(INTENT_OPEN_CHANNELS),
+  delay(1000), // Asynchronously wait 1000ms then continue
+  mapTo(increment())
+);
 
 const rootEpic = combineEpics(
   startCountdownEpic

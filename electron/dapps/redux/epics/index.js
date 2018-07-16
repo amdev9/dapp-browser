@@ -9,18 +9,8 @@ import {
   CANCEL_INCREMENT_ASYNC 
 } from '../actions/counter'; 
  
- 
+
 const { OPEN_CHANNEL, INTENT_OPEN_CHANNELS } = require('../actions/channel');
-
-/*    
-
-//next todo move to redux-observable 1.0.0
-// https://github.com/redux-observable/redux-observable/blob/master/MIGRATION.md
-
-https://medium.com/kevin-salters-blog/epic-middleware-in-redux-e4385b6ff7c6
-
-*/
-
 
 const increment = () => ({ type: INCREMENT_COUNTER });
 const startCountdownEpic = action$ => action$.pipe(

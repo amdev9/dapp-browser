@@ -1,6 +1,11 @@
 import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import { isFSA } from 'flux-standard-action';
+import { createEpicMiddleware } from 'redux-observable';
+import rootEpic from './redux/epics';
 import rootReducer from './redux/reducers'; 
+
+
+const epicMiddleware = createEpicMiddleware();
 
 const electronManager = window.ipc;
 
@@ -32,7 +37,7 @@ const forwardToMain = store => next => (action) => {
 
 const configureStore = (initialState) => {
 
-  const middleware = [forwardToMain];
+  const middleware = [forwardToMain, epicMiddleware];
   const enhanced = [
     applyMiddleware(...middleware),
   ];
@@ -40,6 +45,8 @@ const configureStore = (initialState) => {
 
  
   const store = createStore(rootReducer, initialState, enhancer);
+
+  epicMiddleware.run(rootEpic);
 
   electronManager.replyActionRenderer(store);  
 
