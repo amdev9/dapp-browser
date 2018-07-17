@@ -46,7 +46,7 @@ const forwardToRendererWrapper = (globalId) => {
     //   return next(action);
     // }
 
-    console.log('>>>>>> configure: ', action);
+    // console.log('>>>>>> configure: ', action);
     const allWebContents = webContents.getAllWebContents();
     allWebContents.forEach((contents) => { 
       // console.log('---> contents id: ', contents.id);
@@ -65,11 +65,13 @@ const replyActionMain = (store, globalId) => {
       const statusObj = { status: uuidObj.status };
       payload.payload = (payload.payload) ? Object.assign(payload.payload, statusObj) : statusObj;
 
-      // move to forwardToRendererWrapper?
-      // let uuidTargetObj = globalId.find(renObj => renObj.name === payload.payload.targetDapp); // for OPEN_CHANNEL 'dappname128729index2' 
-      // const payloadUuidObj = { uuid: uuidTargetObj.id };
-      // payload.payload = Object.assign(payload.payload, payloadUuidObj) 
-
+      // uuid resolver // move to forwardToRendererWrapper?
+      let uuidTargetObj = globalId.find(renObj => renObj.name === payload.payload.targetDapp); // for OPEN_CHANNEL 'dappname128729index2' 
+      if (uuidTargetObj) {
+        const payloadUuidObj = { uuid: uuidTargetObj.id };
+        payload.payload = Object.assign(payload.payload, payloadUuidObj) 
+      }
+      
 
       store.dispatch(payload);   
     } else {

@@ -11,11 +11,12 @@
 require('rxjs');
  
 const { combineEpics, ofType } = require('redux-observable');
-const { delay, mapTo } = require('rxjs/operators');
+const { delay, mapTo, map } = require('rxjs/operators');
 
 const { 
   START_COUNTDOWN, 
   INCREMENT_COUNTER,
+  DECREMENT_COUNTER,
   INCREMENT_ASYNC, 
   CANCEL_INCREMENT_ASYNC 
 } = require('../actions/counter');
@@ -39,11 +40,20 @@ const { OPEN_CHANNEL, INTENT_OPEN_CHANNELS } = require('../actions/channel');
        
 // };
 
-const increment = () => ({ type: INCREMENT_COUNTER });
+const increment = () => ({  type: INCREMENT_COUNTER });
 const startCountdownEpic = action$ => action$.pipe(
   ofType(INTENT_OPEN_CHANNELS),
-  delay(1000), // Asynchronously wait 1000ms then continue
-  mapTo(increment())
+  map(action => {
+    if (action.payload.uuid) {
+      return { type: DECREMENT_COUNTER }
+    }
+    else {
+      return { type: INCREMENT_COUNTER }
+    }
+  })
+    
+  // delay(1000), // Asynchronously wait 1000ms then continue
+  // mapTo(increment())
 );
 
 const rootEpic = combineEpics(
