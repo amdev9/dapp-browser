@@ -2,6 +2,8 @@
 const INTENT_OPEN_CHANNELS = 'INTENT_OPEN_CHANNELS';
 const OPEN_CHANNEL = 'OPEN_CHANNEL';
 const OPEN_CHANNEL_SUCCESS = 'OPEN_CHANNEL_SUCCESS';
+const OPEN_CHANNEL_FAILURE = 'OPEN_CHANNEL_FAILURE';
+const BIND_OPEN_CHANNELS = 'BIND_OPEN_CHANNELS';
 const BIND_OPEN_CHANNELS_DONE = 'BIND_OPEN_CHANNELS_DONE';
 
 // Events API protocol
@@ -13,25 +15,12 @@ const EVENT_RECEIVED = 'EVENT_RECEIVED';
 const INTENT_CHANNEL_DATA_PASS = 'INTENT_CHANNEL_DATA_PASS';
 const ACCEPT_CHANNEL_DATA_PASS = 'ACCEPT_CHANNEL_DATA_PASS';
 
-function openChannelIntent() {
-  return {
-    type: INTENT_OPEN_CHANNELS
-  };
-}
-
-function openChannel(channelId, rendererId) {
-  return {
-    type: OPEN_CHANNEL,
-    payload: {
-      channelId: channelId,
-      rendererId: rendererId
-    }
-  };
-}
-
+ 
 module.exports = {
-  openChannel,
-  openChannelIntent,
+  INTENT_OPEN_CHANNELS,
   OPEN_CHANNEL,
-  INTENT_OPEN_CHANNELS
+  OPEN_CHANNEL_SUCCESS, 
+  OPEN_CHANNEL_FAILURE,
+  BIND_OPEN_CHANNELS,
+  BIND_OPEN_CHANNELS_DONE
 }

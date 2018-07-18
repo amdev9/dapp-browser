@@ -46,7 +46,7 @@ const forwardToRendererWrapper = (globalId) => {
     //   return next(action);
     // }
 
-    // console.log('>>>>>> configure: ', action);
+    console.log('>>>>>> configure: ', action);
     const allWebContents = webContents.getAllWebContents();
     allWebContents.forEach((contents) => { 
       // console.log('---> contents id: ', contents.id);
@@ -68,7 +68,10 @@ const replyActionMain = (store, globalId) => {
       // uuid resolver // move to forwardToRendererWrapper?
       let uuidTargetObj = globalId.find(renObj => renObj.name === payload.payload.targetDapp); // for OPEN_CHANNEL 'dappname128729index2' 
       if (uuidTargetObj) {
-        const payloadUuidObj = { uuid: uuidTargetObj.id };
+        const payloadUuidObj = { 
+          uuidRec: uuidTargetObj.id,
+          uuidSend: uuid 
+        };
         payload.payload = Object.assign(payload.payload, payloadUuidObj) 
       }
       
