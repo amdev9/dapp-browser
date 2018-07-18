@@ -27,11 +27,11 @@ Each created renderer process (client, dapp) has own uniq identificator `UUID` p
 
 ## Redux middleware for permission check
 
-![Permission middleware](./diagrams/permissionMiddleware.png?raw=true "Permission middleware")
+![Permission middleware](diagrams/permissionMiddleware.png?raw=true "Permission middleware")
 
 Each dispatched action before it reaches target dapp go to main process and validate in `validatePermissionAction` middleware. Main process due to UUID identificators checks if action is passed by client or dapp and apply own validation rules for each group in a separate way.
 
-![Permission middleware failure](./diagrams/permissionMiddlewareFailure.png?raw=true "Permission middleware failure")
+![Permission middleware failure](diagrams/permissionMIddlewareFailure.png?raw=true "Permission middleware failure")
 
 -------------------------
 
