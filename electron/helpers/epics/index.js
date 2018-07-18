@@ -28,7 +28,7 @@ const openChannelEpic = action$ => action$.pipe(
       of(openChannel(action.payload.uuidRec)), 
       of(openChannel(action.payload.uuidSend))
     ),
-    // listen for receive OPEN_CHANNEL_SUCCESS
+    //todo listen for receive OPEN_CHANNEL_SUCCESS -> takeUntil 2 OPEN_CHANNEL_SUCCESS?
     concat([
       of(bindChannels()),
       of(bindChannelsSuccess())

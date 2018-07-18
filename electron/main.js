@@ -87,6 +87,8 @@ app.on('ready', () => {
     // Renderer answer: { type: 'EVENT_RECEIVED', payload: channelProposal: '[PERMISSION/PROPOSAL]', additionalParams: {...} }
     // Render can init now opening channel for data passing, etc.
   
+
+    //todo on BIND_OPEN_CHANNELS bind channels
     // let bindedChannel = store.getState().main.channel;
     // if (bindedChannel) { // when got action that channels is just binded
     //   let channelIdSendObj = globalUUIDList.find(renObj => renObj.channel === bindedChannel.sender);
