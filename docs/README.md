@@ -19,7 +19,7 @@ If we change permissions on the fly. In this case, if the application is running
 
 ## UUID target store resolver
 
-![alt text](./diagrams/forwardToRendererWrapper.png?raw=true "forwardToRendererWrapper middleware mechanizm")
+![forwardToRendererWrapper middleware mechanizm](./diagrams/forwardToRendererWrapper.png?raw=true "forwardToRendererWrapper middleware mechanizm")
 
 Each created renderer process (client, dapp) has own uniq identificator `UUID` passed to process `additionalParams`. So we can identify and map each process with uniq token id. It helps us to deliver action straight to renderer process with `UUID` mapped with dapp name in main process.  It is implemented with simple filter of passed array `globalUUIDList` (given `UUID` mapped to id of renderer and we can get `webContents` via `webContents.fromId(id)` electron method).
 
@@ -27,19 +27,19 @@ Each created renderer process (client, dapp) has own uniq identificator `UUID` p
 
 ## Redux middleware for permission check
 
-![alt text](./diagrams/permissionMiddleware.png?raw=true "Permission middleware")
+![Permission middleware](./diagrams/permissionMiddleware.png?raw=true "Permission middleware")
 
 Each dispatched action before it reaches target dapp go to main process and validate in `validatePermissionAction` middleware. Main process due to UUID identificators checks if action is passed by client or dapp and apply own validation rules for each group in a separate way.
 
-![alt text](./diagrams/permissionMiddlewareFailure.png?raw=true "Permission middleware failure")
+![Permission middleware failure](./diagrams/permissionMiddlewareFailure.png?raw=true "Permission middleware failure")
 
 -------------------------
 
 ## Dapp communication protocol
 
-![alt text](./diagrams/DappCommunication.png?raw=true "Dapp communication")
+![Dapp communication](./diagrams/DappCommunication.png?raw=true "Dapp communication")
 
-![alt text](./diagrams/DappCommunicationFailure.png?raw=true "Dapp communication failure")
+![Dapp communication failure](./diagrams/DappCommunicationFailure.png?raw=true "Dapp communication failure")
 
 
 ### Actions roadmap
@@ -80,9 +80,9 @@ As you remember all actions (without `scope: local` electron-redux flag) are fir
 
 <!-- Add EVENT_ACCEPT ??? Failure logic -->
 
-![alt text](./diagrams/eventsMechanizm.png?raw=true "Events mechanizm")
+![Events mechanizm](./diagrams/eventsMechanizm.png?raw=true "Events mechanizm")
 
-![alt text](./diagrams/eventsMechanizmFailure.png?raw=true "Events mechanizm failure")
+![Events mechanizm failure](./diagrams/eventsMechanizmFailure.png?raw=true "Events mechanizm failure")
 
 
 ### Local Storage actions roadmap
@@ -119,11 +119,11 @@ As you remember all actions (without `scope: local` electron-redux flag) are fir
 
 Resolve `CHANNEL_ID` for dapp renderer process to get   data from **main process component** (ex. LocalStorage, BitShares, etc.). Each dapp has own uniq `CHANNEL_ID` even for the same components:
 
-![alt text](./diagrams/channelIdResolve.png?raw=true "Resolve channelId")
+![Resolve channelId](./diagrams/channelIdResolve.png?raw=true "Resolve channelId")
 
 Each component will have a channel through which data will be sent. We use separate channels for security reasons. Before dapp process starts we check component access permissions in manifest file, create and pass channelIds to preload script. By that we add security layer on renderer side.
 
-![alt text](./diagrams/channelIdResolveFailure.png?raw=true "Resolve channelId failure")
+![Resolve channelId failure](./diagrams/channelIdResolveFailure.png?raw=true "Resolve channelId failure")
 
 
 ### Actions roadmap
