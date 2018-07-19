@@ -164,7 +164,7 @@ Each component will have a channel through which data will be sent. We use separ
 ------------------------
 
 #### Links
-> https://www.i2b2.org/software/projects/datarepo/CRC_Architecture_10.pdf
+ https://www.i2b2.org/software/projects/datarepo/CRC_Architecture_10.pdf
 
 # Array library documentation
 
@@ -289,11 +289,9 @@ Example
 ```
 
 #### Links
-> [Electron app](https://electronjs.org/docs/api/app)
-
-> [Electron source code](https://github.com/electron/electron/search?q=continue-activity&unscoped_q=continue-activity)
-
-> web3 events api:
->> https://web3js.readthedocs.io/en/1.0/callbacks-promises-events.html?highlight=eventEmitter
->> https://web3js.readthedocs.io/en/1.0/web3-eth-subscribe.html?highlight=eventEmitter
->> https://github.com/ethereum/web3.js/blob/develop/lib/web3.js
+[Electron app](https://electronjs.org/docs/api/app) <br />
+[Electron source code](https://github.com/electron/electron/search?q=continue-activity&unscoped_q=continue-activity) <br />
+web3 events api: <br />
+ https://web3js.readthedocs.io/en/1.0/callbacks-promises-events.html?highlight=eventEmitter
+ https://web3js.readthedocs.io/en/1.0/web3-eth-subscribe.html?highlight=eventEmitter
+ https://github.com/ethereum/web3.js/blob/develop/lib/web3.js
