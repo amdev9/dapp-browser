@@ -25,6 +25,7 @@ A lot of people compare RxJS with promises and callbacks that can be chained tog
 
 *Links*:
 
+Improve your front-end with RxJs https://axxes.com/en/frontend-en/rxjs-reinforcing-your-front-end/ <br />
 Observables in Angular 2: https://angular.io/guide/observables <br />
 RxJS 5 Thinking Reactively https://www.youtube.com/watch?v=3LKMwkuK0ZE <br />
 Netflix JavaScript Talks - RxJS + Redux + React = Amazing! https://www.youtube.com/watch?v=AslncyG8whg <br />
