@@ -1,4 +1,7 @@
 ## Client documentation
+
+- [Client front-end documentation](#client-front-end-documentation)
+  - [External references](#external-references)
 - [Architecture technical documentation](#architecture-technical-documentation)
   - [UUID target store resolver](#uuid-target-store-resolver)
   - [Redux middleware for permission check](#redux-middleware-for-permission-check)
@@ -10,6 +13,22 @@
   - [array.dapp.subscribe](#arraydappsubscribe)
   - [array.Ipc](#arrayipc)
   - *... other components related array.[component].[method]*
+
+# Client front-end documentation
+
+Main reason to use Redux-Observable / RxJs to halt work in the middle of the process (instead of Promise ignore way, witch causes CPU overhead)
+
+```
+A lot of people compare RxJS with promises and callbacks that can be chained together. You can compare them in a way but with the enormous difference promises/callbacks are unstoppable. Once a promise is triggered there is no way to stop them. Once fired they WILL end and call their callback method, if you want it or not, either in a successful way or in an error. Observables though are stoppable and can be called to a halt in the middle of its process.
+```
+## External references
+
+*Links*:
+
+Observables in Angular 2: https://angular.io/guide/observables <br />
+RxJS 5 Thinking Reactively https://www.youtube.com/watch?v=3LKMwkuK0ZE <br />
+Netflix JavaScript Talks - RxJS + Redux + React = Amazing! https://www.youtube.com/watch?v=AslncyG8whg <br />
+Introduction to Redux-Observable https://www.youtube.com/watch?v=zk2bVBZhmcc <br />
 
 # Architecture technical documentation
 
