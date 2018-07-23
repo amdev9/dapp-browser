@@ -5,7 +5,7 @@ import { triggerAlias } from 'electron-redux';
 import { createEpicMiddleware } from 'redux-observable';
 import * as validatePermissionAction from './validatePermissionAction';
 import * as rootEpic from '../epics';
-import * as rootReducer from '../reducers';
+import rootReducer, { RootState } from '../reducers';
 
 const epicMiddleware = createEpicMiddleware();
 
@@ -82,7 +82,7 @@ const replyActionMain = (store, globalId) => {
   });
 }
 
-export const configureStore = (initialState, globalId) => {
+export const configureStore = (initialState?: RootState, globalId) => {
   const middleware = [];
   middleware.push(epicMiddleware, triggerAlias, validatePermissionAction, forwardToRendererWrapper(globalId)); // 
   const enhanced = [applyMiddleware(...middleware)]; 

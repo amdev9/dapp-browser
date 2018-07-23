@@ -32,7 +32,7 @@ app.on('ready', () => {
     clientWindow = createClientWindow(globalUUIDList);
   });
   clientWindow = createClientWindow(globalUUIDList);  
-  console.log(clientWindow);
+  // console.log(clientWindow);
 
   // create multiple view and keep them around the memory, detached from the window
   // then switching workspaces is just and additional call to setBrowserView

@@ -6,7 +6,7 @@ import * as openDevTool from './helpers/devtools';
 let clientWindow: Electron.BrowserWindow = null;
 const RENDERER_PATH: string = path.join(__dirname, 'client');
 
-function createClientWindow(globalUUIDList: object[]) {  
+function createClientWindow(globalUUIDList: string[]) {  
 
   const uuidClient = uuidv4();
   const authorizedChannelsList = ['channelId1', 'channelId2']; //next todo get channels list from dapp manifest
