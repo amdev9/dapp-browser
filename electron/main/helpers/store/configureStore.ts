@@ -1,14 +1,13 @@
-const { webContents, ipcMain } = require('electron');
-const { combineReducers, createStore, applyMiddleware, compose } = require('redux');
-const { isFSA } = require('flux-standard-action');
-const { triggerAlias } = require('electron-redux'); //forwardToRenderer,
-const { createEpicMiddleware } = require('redux-observable');
-const validatePermissionAction = require('./validatePermissionAction');
-const rootEpic = require('../epics');
-const rootReducer = require('../reducers');
+import { webContents, ipcMain } from 'electron';
+import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
+import { isFSA } from 'flux-standard-action';
+import { triggerAlias } from 'electron-redux'; 
+import { createEpicMiddleware } from 'redux-observable';
+import * as validatePermissionAction from './validatePermissionAction';
+import * as rootEpic from '../epics';
+import * as rootReducer from '../reducers';
 
 const epicMiddleware = createEpicMiddleware();
-
 
 const validateAction = (action) => {
   return isFSA(action);
@@ -83,7 +82,7 @@ const replyActionMain = (store, globalId) => {
   });
 }
 
-const configureStore = (initialState, globalId) => {
+export const configureStore = (initialState, globalId) => {
   const middleware = [];
   middleware.push(epicMiddleware, triggerAlias, validatePermissionAction, forwardToRendererWrapper(globalId)); // 
   const enhanced = [applyMiddleware(...middleware)]; 
@@ -97,4 +96,4 @@ const configureStore = (initialState, globalId) => {
   return store;
 };
 
-module.exports = configureStore;
+ 

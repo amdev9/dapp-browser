@@ -17,7 +17,7 @@ function decrement() {
   };
 }
 
-module.exports = {
+export {
   decrement,
   increment,
   INCREMENT_COUNTER,

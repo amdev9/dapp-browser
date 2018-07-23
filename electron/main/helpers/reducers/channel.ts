@@ -1,13 +1,15 @@
-const { OPEN_CHANNEL, INTENT_OPEN_CHANNELS } = require('../actions/channel');
+import { ActionType } from 'typesafe-actions';
+import * as channels from '../actions/channel';
+export type ChannelsAction = ActionType<typeof channels>;
 
-function channel(state = {}, action) {
+export function channel(state = {}, action: ChannelsAction) {
   switch (action.type) {
-    case OPEN_CHANNEL:
-    case INTENT_OPEN_CHANNELS:
+    case channels.OPEN_CHANNEL:
+    case channels.INTENT_OPEN_CHANNELS:
 
     default:
       return state;
   }
 }
 
-module.exports = channel;
+ 

@@ -1,9 +1,9 @@
 // validate permissions for actions
 
-const { SWITCH_DAPP, SEND_PING_MESSAGE } = require('../actions/client');
-const { INCREMENT_COUNTER, DECREMENT_COUNTER, START_COUNTDOWN, INCREMENT_ASYNC, CANCEL_INCREMENT_ASYNC } = require('../actions/counter');
+import { SWITCH_DAPP, SEND_PING_MESSAGE } from '../actions/client';
+import { INCREMENT_COUNTER, DECREMENT_COUNTER, START_COUNTDOWN, INCREMENT_ASYNC, CANCEL_INCREMENT_ASYNC } from '../actions/counter';
  
-const validatePermissionAction = () => next => (action) => {
+export const validatePermissionAction = () => next => (action) => {
 
   console.log(action); //next todo fix permissions
   return next(action);
@@ -49,4 +49,4 @@ const validatePermissionAction = () => next => (action) => {
   
 };
 
-module.exports = validatePermissionAction;
+ 

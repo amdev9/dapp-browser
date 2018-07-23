@@ -1,20 +1,20 @@
-const { SWITCH_DAPP, SEND_PING_MESSAGE } = require('../actions/client');
+import { ActionType } from 'typesafe-actions';
+import * as clients from '../actions/client';
+export type ClientsAction = ActionType<typeof clients>;
 
-function client(state = {}, action) {
+export function client(state = {}, action: ClientsAction) {
   switch (action.type) {
-    case SWITCH_DAPP:
+    case clients.SWITCH_DAPP:
       const dappId = action.payload.targetDappId; // dapp id
       return {
         ...state,
         activeDapp: dappId 
       }
     
-    case SEND_PING_MESSAGE:  
+    case clients.SEND_PING_MESSAGE:  
       return state;
 
     default:
       return state;
   }
 }
-
-module.exports = client;  

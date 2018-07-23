@@ -1,14 +1,14 @@
-const { combineReducers } = require('redux');
+import { combineReducers } from 'redux';
 
-const { counter, countdown } = require('./counter');
-const client = require('./client');
-const channel = require('./channel');
+import { counter, countdown } from './counter';
+import * as client from './client';
+import * as channel from './channel';
 
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
   counter,
   countdown,
   client,
   channel
 });
 
-module.exports = rootReducer;
+ 

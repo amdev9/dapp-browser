@@ -13,7 +13,7 @@ function increment() {
   };
 }
 
-module.exports = {
+export {
   switchDapp,
   increment,
   SWITCH_DAPP,
