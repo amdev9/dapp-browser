@@ -9,6 +9,9 @@ window.onload = () => {
 
 
 class ElectronManager {
+  replyActionRenderer: (store: any) => void;
+  getGlobalState: () => any;
+  sendActionMain: (action: any) => void;
   constructor() {
     
     // https://github.com/kewde/electron-sandbox-boilerplate/blob/master/sandbox-preload-extended/electron/renderer/preload-extended.js, 

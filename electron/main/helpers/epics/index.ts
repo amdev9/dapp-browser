@@ -1,48 +1,9 @@
-import 'rxjs'; 
-import { combineEpics, ofType } from 'redux-observable';
-import { delay, mapTo, map, of, merge, flatMap } from 'rxjs/operators';
-import { 
-  START_COUNTDOWN, 
-  INCREMENT_COUNTER,
-  DECREMENT_COUNTER,
-  INCREMENT_ASYNC, 
-  CANCEL_INCREMENT_ASYNC 
-} from '../actions/counter';
+import { combineEpics } from "redux-observable";
 
-import { 
-  INTENT_OPEN_CHANNELS,
-  OPEN_CHANNEL,
-  OPEN_CHANNEL_SUCCESS, 
-  OPEN_CHANNEL_FAILURE,
-  BIND_OPEN_CHANNELS,
-  BIND_OPEN_CHANNELS_DONE
-} from '../actions/channel';
+import openChannelEpic from "./openChannelEpic";
 
-const openChannel = uuid => ({ type: OPEN_CHANNEL, payload: { uuid: uuid } });
-const bindChannels = () => ({ type: BIND_OPEN_CHANNELS });
-const bindChannelsSuccess = () => ({ type: BIND_OPEN_CHANNELS_DONE });
-
-const openChannelEpic = action$ => action$.pipe(
-  ofType(INTENT_OPEN_CHANNELS),
-  flatMap(action => {
-    merge(
-      of(openChannel(action.payload.uuidRec)), 
-      of(openChannel(action.payload.uuidSend))
-    ),
-    //todo listen for receive OPEN_CHANNEL_SUCCESS from sender and receiver
-    concat([
-      of(bindChannels()),
-      //todo listen for successfull channel binding
-      of(bindChannelsSuccess())
-    ]),
-    takeUntil(action$.pipe(
-      ofType(OPEN_CHANNEL_FAILURE)
-    ))
-  })   
+const epics = combineEpics(
+  ...openChannelEpic,
 );
 
-export const rootEpic = combineEpics(
-  openChannelEpic
-);
-
- 
+export default epics;

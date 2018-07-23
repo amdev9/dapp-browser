@@ -5,11 +5,32 @@ const INCREMENT_ASYNC = 'INCREMENT_ASYNC';
 const CANCEL_INCREMENT_ASYNC = 'CANCEL_INCREMENT_ASYNC';
 const COUNTDOWN_TERMINATED = 'COUNTDOWN_TERMINATED';
 
-function increment() {
-  return {
-    type: INCREMENT_COUNTER
-  };
+import { createAction } from "typesafe-actions";
+
+export interface Action {
+  type: string;
+  payload?: {};
+  params?: {};
 }
+
+// export interface WeatherAction extends Action {
+//   params: {
+//     lat: number;
+//     lng: number;
+//   };
+// }
+
+
+export const incrementAction = createAction(INCREMENT_COUNTER, (params = {}) => ({
+  type: INCREMENT_COUNTER,
+  params,
+}));
+
+// function increment() {
+//   return {
+//     type: INCREMENT_COUNTER
+//   };
+// }
 
 function decrement() {
   return {
@@ -19,7 +40,6 @@ function decrement() {
 
 export {
   decrement,
-  increment,
   INCREMENT_COUNTER,
   DECREMENT_COUNTER,
   START_COUNTDOWN,

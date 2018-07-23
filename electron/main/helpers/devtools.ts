@@ -1,4 +1,4 @@
-export function openDevTool(win, isOpen) {
+ export function openDevTool(win: Electron.BrowserWindow, isOpen: boolean) {
     if (isOpen) {
       win.webContents.openDevTools()
     } else {
