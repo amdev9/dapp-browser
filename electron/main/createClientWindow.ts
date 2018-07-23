@@ -1,13 +1,12 @@
-const { BrowserWindow } = require('electron');
-const path = require('path');
-const uuidv4 = require('uuid/v4');
+import { BrowserWindow } from 'electron';
+import * as path from 'path';
+import * as uuidv4 from 'uuid/v4';
+import * as openDevTool from './helpers/devtools';
 
-const openDevTool = require('./helpers/devtools');
+let clientWindow: Electron.BrowserWindow = null;
+const RENDERER_PATH: string = path.join(__dirname, 'client');
 
-let clientWindow = null;
-const RENDERER_PATH = path.join(__dirname, 'client');
-
-function createClientWindow(globalUUIDList) {  
+function createClientWindow(globalUUIDList: object[]) {  
 
   const uuidClient = uuidv4();
   const authorizedChannelsList = ['channelId1', 'channelId2']; //next todo get channels list from dapp manifest
@@ -21,7 +20,7 @@ function createClientWindow(globalUUIDList) {
       sandbox: true,
       // contextIsolation: true,
       preload: path.join(__dirname, 'preload.js'), //path.join(RENDERER_PATH, 'preload-extended.js')
-      additionalArguments: [
+      additionArguments: [
         '--uuid-renderer='.concat(uuidClient),
         '--channels='.concat(authorizedChannelsList.join(";"))
       ]
@@ -45,7 +44,7 @@ function createClientWindow(globalUUIDList) {
 
   openDevTool(clientWindow, true);
   
-  rendererObj = {
+  let rendererObj: object = {
     id: uuidClient,
     status: 'client',
     winId: clientWindow.id,

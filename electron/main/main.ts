@@ -3,10 +3,10 @@
   Uses process.stdout.write instead of console.log so we can cleanly catch the output in the parent process.
 */
 
-const { app, BrowserView, ipcMain } = require('electron');
-const configureStore = require('./helpers/store/configureStore');
-const createClientWindow = require('./createClientWindow');
-const createDappView = require('./createDappView');
+import { app, BrowserView, ipcMain } from 'electron';
+import * as configureStore from './helpers/store/configureStore';
+import * as createClientWindow from './createClientWindow';
+import * as createDappView from './createDappView';
 
 let bounds = {
   x: 300,
@@ -15,7 +15,7 @@ let bounds = {
   height: 300
 };
 
-const globalUUIDList = [];
+const globalUUIDList: string[] = [];
 
 app.on('ready', () => {
   app.on('window-all-closed', () => {
@@ -37,7 +37,8 @@ app.on('ready', () => {
   // create multiple view and keep them around the memory, detached from the window
   // then switching workspaces is just and additional call to setBrowserView
   
-  const dappsIndexes = ['index.html', 'index2.html'];
+  const dappsIndexes: string[] = ['index.html', 'index2.html'];
+  let dappInd: string;
   for (dappInd of dappsIndexes) {
     createDappView(globalUUIDList, dappInd);
   }
@@ -59,9 +60,9 @@ app.on('ready', () => {
   store.subscribe( () => {
     process.stdout.write(JSON.stringify(store.getState()));
 
-    let activeDappName = store.getState().client.activeDapp;
+    let activeDappName: string = store.getState().client.activeDapp;
  
-    let nameObj = globalUUIDList.find(renObj => renObj.name === activeDappName);
+    let nameObj: object = globalUUIDList.find(renObj => renObj.name === activeDappName);
     if (nameObj) {
       /* BrowserView
       // let view = BrowserView.fromId(nameObj.viewId);

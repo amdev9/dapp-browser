@@ -1,13 +1,13 @@
-const { BrowserWindow, BrowserView } = require('electron');
-const path = require('path');
-const uuidv4 = require('uuid/v4');
-const openDevTool = require('./helpers/devtools');
+import { BrowserWindow, BrowserView } from 'electron';
+import * as path from 'path';
+import * as uuidv4 from 'uuid/v4';
+import * as openDevTool from './helpers/devtools';
 
-let dappView = null;
+let dappView: Electron.BrowserWindow = null;
  
-const DAPPS_PATH = path.join(__dirname, 'dapps');
+const DAPPS_PATH: string = path.join(__dirname, 'dapps');
 
-function createDappView(globalUUIDList, entryPath) {
+function createDappView(globalUUIDList: object[], entryPath: string) {
 
     const uuidDapp = uuidv4();
     const authorizedChannelsList = ['channelId1', 'channelId2']; //next todo get channels list from dapp manifest
@@ -17,7 +17,7 @@ function createDappView(globalUUIDList, entryPath) {
             sandbox: true,
             // contextIsolation: true,
             preload: path.join(__dirname, 'preload.js'),
-            additionalArguments: [ 
+            additionArguments: [ 
                 '--uuid-renderer='.concat(uuidDapp),
                 '--channels='.concat(authorizedChannelsList.join(";"))
             ]
@@ -38,7 +38,7 @@ function createDappView(globalUUIDList, entryPath) {
 
     openDevTool(dappView, true);
 
-    rendererObj = {
+    let rendererObj: object = {
         id: uuidDapp,
         status: 'dapp',
         winId: dappView.id,

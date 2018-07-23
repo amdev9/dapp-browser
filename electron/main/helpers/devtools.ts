@@ -1,4 +1,4 @@
-function openDevTool(win, isOpen) {
+export function openDevTool(win, isOpen) {
     if (isOpen) {
       win.webContents.openDevTools()
     } else {
@@ -7,5 +7,3 @@ function openDevTool(win, isOpen) {
       })
     }
 }
-
-module.exports = openDevTool;
