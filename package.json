@@ -9,7 +9,9 @@
   },
   "author": "cypherpunk99",
   "license": "MIT",
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/uuid": "^3.4.3"
+  },
   "dependencies": {
     "assert": "^1.4.1",
     "electron": "^2.0.2",

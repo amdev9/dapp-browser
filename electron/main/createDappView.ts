@@ -1,13 +1,13 @@
 import { BrowserWindow, BrowserView } from 'electron';
 import * as path from 'path';
 import * as uuidv4 from 'uuid/v4';
-import * as openDevTool from './helpers/devtools';
+import { openDevTool } from './helpers/devtools';
 
 let dappView: Electron.BrowserWindow = null;
  
 const DAPPS_PATH: string = path.join(__dirname, 'dapps');
 
-function createDappView(globalUUIDList: object[], entryPath: string) {
+export function createDappView(globalUUIDList: object[], entryPath: string) {
 
     const uuidDapp = uuidv4();
     const authorizedChannelsList = ['channelId1', 'channelId2']; //next todo get channels list from dapp manifest
@@ -50,4 +50,4 @@ function createDappView(globalUUIDList: object[], entryPath: string) {
     // return dappView;
 }
 
-module.exports = createDappView;
+ 

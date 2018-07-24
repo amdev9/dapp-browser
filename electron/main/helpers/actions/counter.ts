@@ -20,7 +20,6 @@ export interface Action {
 //   };
 // }
 
-
 export const incrementAction = createAction(INCREMENT_COUNTER, (params = {}) => ({
   type: INCREMENT_COUNTER,
   params,

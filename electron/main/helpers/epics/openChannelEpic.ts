@@ -18,6 +18,8 @@ import {
   BIND_OPEN_CHANNELS,
   BIND_OPEN_CHANNELS_DONE
 } from '../actions/channel';
+import { Action } from '../../../../node_modules/rxjs/internal/scheduler/Action';
+import { action } from '../../../../node_modules/typesafe-actions';
 
 const openChannel = uuid => ({ type: OPEN_CHANNEL, payload: { uuid: uuid } });
 const bindChannels = () => ({ type: BIND_OPEN_CHANNELS });

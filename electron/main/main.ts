@@ -4,9 +4,9 @@
 */
 
 import { app, BrowserView, ipcMain } from 'electron';
-import * as configureStore from './helpers/store/configureStore';
-import * as createClientWindow from './createClientWindow';
-import * as createDappView from './createDappView';
+import { configureStore } from './helpers/store/configureStore';
+import { createClientWindow } from './createClientWindow';
+import { createDappView } from './createDappView';
 
 let bounds = {
   x: 300,
@@ -15,7 +15,8 @@ let bounds = {
   height: 300
 };
 
-const globalUUIDList: string[] = [];
+const globalUUIDList: object[] = [];
+let clientWindow: Electron.BrowserWindow = null;
 
 app.on('ready', () => {
   app.on('window-all-closed', () => {
@@ -47,8 +48,6 @@ app.on('ready', () => {
    *
    * 
    * 
-    
-    
     let view = BrowserView.fromId(1);
     clientWindow.setBrowserView(view);
     view.setBounds(bounds); 
@@ -108,6 +107,6 @@ process.stdout.write("Main initialized");
 
 // In main process.
  
-ipcMain.once('answer', (event, argv) => {
-  console.log(argv);
-});
+// ipcMain.once('answer', (event, argv) => {
+//   console.log(argv);
+// });
