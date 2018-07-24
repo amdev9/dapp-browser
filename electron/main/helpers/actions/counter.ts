@@ -5,7 +5,7 @@ const INCREMENT_ASYNC = 'INCREMENT_ASYNC';
 const CANCEL_INCREMENT_ASYNC = 'CANCEL_INCREMENT_ASYNC';
 const COUNTDOWN_TERMINATED = 'COUNTDOWN_TERMINATED';
 
-import { createAction } from "typesafe-actions";
+import { createAction, action } from "typesafe-actions";
 
 export interface Action {
   type: string;
@@ -20,25 +20,10 @@ export interface Action {
 //   };
 // }
 
-export const incrementAction = createAction(INCREMENT_COUNTER, (params = {}) => ({
-  type: INCREMENT_COUNTER,
-  params,
-}));
-
-// function increment() {
-//   return {
-//     type: INCREMENT_COUNTER
-//   };
-// }
-
-function decrement() {
-  return {
-    type: DECREMENT_COUNTER
-  };
-}
+export const increment = () => action(INCREMENT_COUNTER); 
+export const decrement = () => action(DECREMENT_COUNTER); 
 
 export {
-  decrement,
   INCREMENT_COUNTER,
   DECREMENT_COUNTER,
   START_COUNTDOWN,
