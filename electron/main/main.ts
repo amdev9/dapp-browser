@@ -8,7 +8,17 @@ import { Store } from 'redux';
 import { configureStore } from './helpers/store/configureStore';
 import { createClientWindow } from './createClientWindow';
 import { createDappView } from './createDappView';
+import { RendereConf } from './createDappView';
 
+//todo
+declare global {
+  interface Global { state: object; }
+}
+
+declare namespace renObj {
+  let name: string;
+}
+//
 
 let bounds = {
   x: 300,
@@ -17,7 +27,7 @@ let bounds = {
   height: 300
 };
 
-const globalUUIDList: object[] = [];
+const globalUUIDList: RendereConf[] = [];
 let clientWindow: Electron.BrowserWindow = null;
 
 app.on('ready', () => {
@@ -57,12 +67,12 @@ app.on('ready', () => {
 
   const store: Store<{}> = configureStore(global.state, globalUUIDList);
   
-  process.stdout.write(JSON.stringify(store.getState()));
-  
   store.subscribe( () => {
-    process.stdout.write(JSON.stringify(store.getState()));
 
-    let activeDappName: string = store.getState().client.activeDapp;
+    let storeState = store.getState();
+    process.stdout.write(JSON.stringify(storeState));
+
+    let activeDappName: string = storeState.client.activeDapp;
 
     let nameObj: object = globalUUIDList.find(renObj => renObj.name === activeDappName);
     if (nameObj) {
@@ -73,7 +83,7 @@ app.on('ready', () => {
       */
     }
     
-    //todo3
+    //next todo3
     // ask for permission before renderer process starts, add map { channelProposal: '[PERMISSION/PROPOSAL]', channelId: '[CHANNEL_ID]'}
     // When renderer init data sending through channel he pass action, preload script add payload:
     // ex.: { type: INTENT_CHANNEL_DATA_PASS, payload: { uuid: '[UUID_RECEIVER_RENDERER]', channelProposal: '[PERMISSION/PROPOSAL]' } } 
@@ -81,7 +91,7 @@ app.on('ready', () => {
     // ex.: { type: 'ACCEPT_CHANNEL_DATA_PASS', payload: { channelId: '[CHANNEL_ID]', uuid: '[UUID_RECEIVER_RENDERER]' } }
     // Renderer pass data through given '[CHANNEL_ID]'
     
-    //todo4
+    //next todo4
     // Local Storage roadmap:
     // ask for permission before renderer process starts, add map { channelProposal: '[PERMISSION/PROPOSAL]', channelId: '[CHANNEL_ID]'}
     // Renderer init subscription ex: { type: 'INIT_EVENT_SUBSCRIPTION', payload: { channelProposal: '[PERMISSION/PROPOSAL]', additionalParams: {...} } }
@@ -91,7 +101,7 @@ app.on('ready', () => {
     // Render can init now opening channel for data passing, etc.
   
 
-    //todo on BIND_OPEN_CHANNELS bind channels
+    //next todo on BIND_OPEN_CHANNELS bind channels
     // let bindedChannel = store.getState().main.channel;
     // if (bindedChannel) { // when got action that channels is just binded
     //   let channelIdSendObj = globalUUIDList.find(renObj => renObj.channel === bindedChannel.sender);

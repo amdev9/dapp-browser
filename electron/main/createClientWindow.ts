@@ -2,11 +2,14 @@ import { BrowserWindow } from 'electron';
 import * as path from 'path';
 import * as uuidv4 from 'uuid/v4';
 import { openDevTool } from './helpers/devtools';
+import { RendereConf } from './createDappView';
 
 let clientWindow: Electron.BrowserWindow = null;
 const RENDERER_PATH: string = path.join(__dirname, 'client');
 
-export function createClientWindow(globalUUIDList: object[]) {  
+
+
+export function createClientWindow(globalUUIDList: RendereConf[]) {  
 
   const uuidClient = uuidv4();
   const authorizedChannelsList = ['channelId1', 'channelId2']; //next todo get channels list from dapp manifest
@@ -44,7 +47,7 @@ export function createClientWindow(globalUUIDList: object[]) {
 
   openDevTool(clientWindow, true);
   
-  let rendererObj: object = {
+  let rendererObj: RendereConf = {
     id: uuidClient,
     status: 'client',
     winId: clientWindow.id,

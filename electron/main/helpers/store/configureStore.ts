@@ -1,12 +1,16 @@
 import { webContents, ipcMain } from 'electron';
 import { combineReducers, createStore, applyMiddleware, compose, Store, Action, Middleware, StoreEnhancer } from 'redux';
+ 
 import { isFSA } from 'flux-standard-action';
  
+
 // import { triggerAlias } from 'electron-redux'; 
 import { createEpicMiddleware } from 'redux-observable';
 import { validatePermissionAction } from './validatePermissionAction';
 import rootEpic from '../epics';
 import { rootReducer, RootState } from '../reducers';
+
+import { RendereConf } from '../../createDappView';
 
 const epicMiddleware = createEpicMiddleware();
 
@@ -14,12 +18,11 @@ const validateAction = (action: Action) => {
   return isFSA(action);
 }
 
-const forwardToRendererWrapper = (globalId: object[]) => {
+const forwardToRendererWrapper = (globalId: RendereConf[]) => {
     
-  return () => next => (action) => {
+  return (): Middleware => next => (action) => {
     // console.log('globalId', globalId);
      
-
     if (!validateAction(action)) return next(action);
     if (action.meta && action.meta.scope === 'local') return next(action);
 
@@ -32,7 +35,6 @@ const forwardToRendererWrapper = (globalId: object[]) => {
         scope: 'local',
       },
     };
-
  
     // if (action.payload && action.payload.uuid) {
     //   // loop through all action uuid's passed in payload {
@@ -56,9 +58,9 @@ const forwardToRendererWrapper = (globalId: object[]) => {
   };
 }
 
-const replyActionMain = (store: Store<{}>, globalId: object[]) => {
+const replyActionMain = (store: Store<{}>, globalId: RendereConf[]) => {
   global.getReduxState = () => JSON.stringify(store.getState());
-  ipcMain.on('redux-action', (event, uuid, payload) => {
+  ipcMain.on('redux-action', (event: Electron.Event, uuid: string, payload: object) => {
     let uuidObj = globalId.find(renObj => renObj.id === uuid);
     if (uuidObj) {
       // console.log("Validated: ", JSON.stringify(uuidObj));

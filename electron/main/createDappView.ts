@@ -7,7 +7,14 @@ let dappView: Electron.BrowserWindow = null;
  
 const DAPPS_PATH: string = path.join(__dirname, 'dapps');
 
-export function createDappView(globalUUIDList: object[], entryPath: string) {
+export interface RendereConf {
+    id: string;
+    name: string;
+    status: string;
+    winId: number;
+}
+
+export function createDappView(globalUUIDList: RendereConf[], entryPath: string) {
 
     const uuidDapp = uuidv4();
     const authorizedChannelsList = ['channelId1', 'channelId2']; //next todo get channels list from dapp manifest
@@ -38,7 +45,7 @@ export function createDappView(globalUUIDList: object[], entryPath: string) {
 
     openDevTool(dappView, true);
 
-    let rendererObj: object = {
+    let rendererObj: RendereConf = {
         id: uuidDapp,
         status: 'dapp',
         winId: dappView.id,

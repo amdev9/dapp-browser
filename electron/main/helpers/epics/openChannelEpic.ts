@@ -36,10 +36,10 @@ const openChannelEpic: Epic<Action> = action$ => action$.pipe(
   //     of(openChannel(action.payload.uuidRec)), 
   //     of(openChannel(action.payload.uuidSend))
   //   ),
-  //   //todo listen for receive OPEN_CHANNEL_SUCCESS from sender and receiver
+  //   //next todo listen for receive OPEN_CHANNEL_SUCCESS from sender and receiver
   //   concat([
   //     of(bindChannels()),
-  //     //todo listen for successfull channel binding
+  //     //next todo listen for successfull channel binding
   //     of(bindChannelsSuccess())
   //   ]),
   //   takeUntil(action$.pipe(
