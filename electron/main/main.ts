@@ -56,6 +56,7 @@ app.on('ready', () => {
   */
 
   const store: Store<{}> = configureStore(global.state, globalUUIDList);
+  
   process.stdout.write(JSON.stringify(store.getState()));
   
   store.subscribe( () => {
