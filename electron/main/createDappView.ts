@@ -49,5 +49,3 @@ export function createDappView(globalUUIDList: object[], entryPath: string) {
     console.log('length', BrowserView.getAllViews().length);
     // return dappView;
 }
-
- 

@@ -5,7 +5,7 @@ import { triggerAlias } from 'electron-redux';
 import { createEpicMiddleware } from 'redux-observable';
 import * as validatePermissionAction from './validatePermissionAction';
 import * as rootEpic from '../epics';
-import rootReducer, { RootState } from '../reducers';
+import { rootReducer, RootState } from '../reducers';
 
 const epicMiddleware = createEpicMiddleware();
 
