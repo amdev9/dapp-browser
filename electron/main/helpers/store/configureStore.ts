@@ -1,20 +1,21 @@
 import { webContents, ipcMain } from 'electron';
-import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
+import { combineReducers, createStore, applyMiddleware, compose, Store, Action, Middleware, StoreEnhancer } from 'redux';
 import { isFSA } from 'flux-standard-action';
-import { triggerAlias } from 'electron-redux'; 
+ 
+// import { triggerAlias } from 'electron-redux'; 
 import { createEpicMiddleware } from 'redux-observable';
-import * as validatePermissionAction from './validatePermissionAction';
-import * as rootEpic from '../epics';
+import { validatePermissionAction } from './validatePermissionAction';
+import rootEpic from '../epics';
 import { rootReducer, RootState } from '../reducers';
 
 const epicMiddleware = createEpicMiddleware();
 
-const validateAction = (action) => {
+const validateAction = (action: Action) => {
   return isFSA(action);
 }
 
-const forwardToRendererWrapper = (globalId) => {
-  
+const forwardToRendererWrapper = (globalId: object[]) => {
+    
   return () => next => (action) => {
     // console.log('globalId', globalId);
      
@@ -55,7 +56,7 @@ const forwardToRendererWrapper = (globalId) => {
   };
 }
 
-const replyActionMain = (store, globalId) => {
+const replyActionMain = (store: Store<{}>, globalId: object[]) => {
   global.getReduxState = () => JSON.stringify(store.getState());
   ipcMain.on('redux-action', (event, uuid, payload) => {
     let uuidObj = globalId.find(renObj => renObj.id === uuid);
@@ -82,12 +83,12 @@ const replyActionMain = (store, globalId) => {
   });
 }
 
-export const configureStore = (initialState?: RootState, globalId) => {
-  const middleware = [];
-  middleware.push(epicMiddleware, triggerAlias, validatePermissionAction, forwardToRendererWrapper(globalId)); // 
+export const configureStore = (initialState?: RootState, globalId?: object[]) => {
+  const middleware: Middleware[] = [];
+  middleware.push(epicMiddleware, validatePermissionAction, forwardToRendererWrapper(globalId)); // epicMiddleware, triggerAlias, validatePermissionAction 
   const enhanced = [applyMiddleware(...middleware)]; 
   const enhancer = compose(...enhanced);
-  const store = createStore(rootReducer, initialState, enhancer);
+  const store: Store<{}> = createStore(rootReducer, initialState, enhancer);
 
   epicMiddleware.run(rootEpic);
 

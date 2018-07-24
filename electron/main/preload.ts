@@ -1,13 +1,14 @@
-
-
 import * as electron from 'electron';
+import { Store } from 'redux';
 const ipcRenderer = electron.ipcRenderer;
-
  
-// window.onload = () => {
-//   ipcRenderer.send('answer', process.argv);
-// };
+declare global {
+  interface Window { ipc: object; }
+}
 
+window.onload = () => {
+  ipcRenderer.send('answer', process.argv);
+};
 
 class ElectronManager {
   replyActionRenderer: (store: any) => void;
@@ -36,7 +37,7 @@ class ElectronManager {
 
     console.log(electron.remote.getGlobal('getReduxState')());
 
-    const replyActionRenderer = (store) => { 
+    const replyActionRenderer = (store: Store<{}>) => { 
       ipcRenderer.on('redux-action', (event: Electron.Event, payload: any) => { 
         // additional check for uuid received
         if( !payload.uuid || (payload.uuid && payload.uuid.includes(uuidRenderer)) ) {
@@ -50,7 +51,7 @@ class ElectronManager {
       return globalState;
     }
 
-    const sendActionMain = (action) => {
+    const sendActionMain = (action: string) => {
       console.log(uuidRenderer);
       ipcRenderer.send('redux-action', uuidRenderer, action);
     }

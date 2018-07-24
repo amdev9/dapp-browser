@@ -4,9 +4,11 @@
 */
 
 import { app, BrowserView, ipcMain } from 'electron';
+import { Store } from 'redux';
 import { configureStore } from './helpers/store/configureStore';
 import { createClientWindow } from './createClientWindow';
 import { createDappView } from './createDappView';
+
 
 let bounds = {
   x: 300,
@@ -53,14 +55,14 @@ app.on('ready', () => {
     view.setBounds(bounds); 
   */
 
-  const store = configureStore(global.state, globalUUIDList);
+  const store: Store<{}> = configureStore(global.state, globalUUIDList);
   process.stdout.write(JSON.stringify(store.getState()));
   
   store.subscribe( () => {
     process.stdout.write(JSON.stringify(store.getState()));
 
     let activeDappName: string = store.getState().client.activeDapp;
- 
+
     let nameObj: object = globalUUIDList.find(renObj => renObj.name === activeDappName);
     if (nameObj) {
       /* BrowserView
