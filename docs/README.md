@@ -22,16 +22,16 @@ Main reason to use Redux-Observable / RxJs to halt work in the middle of the pro
 
 ## External references
 
-*Links*:
-https://github.com/piotrwitek/typesafe-actions
-https://electronjs.org/blog/typescript
-https://github.com/electron/electron-quick-start-typescript
-https://github.com/piotrwitek/react-redux-typescript-guide#action-creators
-https://github.com/mitsuruog/react-redux-observable-typescript-sample
-https://blog.mitsuruog.info/2018/03/react-redux-observable-typescript
-https://www.typescriptlang.org/docs/handbook/classes.html
-https://redux.js.org/
-
+*Links*:<br />
+https://github.com/piotrwitek/typesafe-actions<br />
+https://electronjs.org/blog/typescript<br />
+https://github.com/electron/electron-quick-start-typescript<br />
+https://github.com/piotrwitek/react-redux-typescript-guide#action-creators<br />
+https://github.com/mitsuruog/react-redux-observable-typescript-sample<br />
+https://blog.mitsuruog.info/2018/03/react-redux-observable-typescript<br />
+https://www.typescriptlang.org/docs/handbook/classes.html<br />
+https://redux.js.org/<br />
+<br />
 Improve your front-end with RxJs https://axxes.com/en/frontend-en/rxjs-reinforcing-your-front-end/ <br />
 Observables in Angular 2: https://angular.io/guide/observables <br />
 RxJS 5 Thinking Reactively https://www.youtube.com/watch?v=3LKMwkuK0ZE <br />
