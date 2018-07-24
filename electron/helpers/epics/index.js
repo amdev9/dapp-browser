@@ -20,24 +20,28 @@ const {
 const openChannel = uuid => ({ type: OPEN_CHANNEL, payload: { uuid: uuid } });
 const bindChannels = () => ({ type: BIND_OPEN_CHANNELS });
 const bindChannelsSuccess = () => ({ type: BIND_OPEN_CHANNELS_DONE });
+const increment = () => ({ type: INCREMENT_COUNTER });
 
 const openChannelEpic = action$ => action$.pipe(
   ofType(INTENT_OPEN_CHANNELS),
-  flatMap(action => {
-    merge(
-      of(openChannel(action.payload.uuidRec)), 
-      of(openChannel(action.payload.uuidSend))
-    ),
-    //todo listen for receive OPEN_CHANNEL_SUCCESS from sender and receiver
-    concat([
-      of(bindChannels()),
-      //todo listen for successfull channel binding
-      of(bindChannelsSuccess())
-    ]),
-    takeUntil(action$.pipe(
-      ofType(OPEN_CHANNEL_FAILURE)
-    ))
-  })   
+  delay(1000),
+  mapTo(increment())
+
+  // flatMap(action => {
+  //   merge(
+  //     of(openChannel(action.payload.uuidRec)), 
+  //     of(openChannel(action.payload.uuidSend))
+  //   ),
+  //   //todo listen for receive OPEN_CHANNEL_SUCCESS from sender and receiver
+  //   concat([
+  //     of(bindChannels()),
+  //     //todo listen for successfull channel binding
+  //     of(bindChannelsSuccess())
+  //   ]),
+  //   takeUntil(action$.pipe(
+  //     ofType(OPEN_CHANNEL_FAILURE)
+  //   ))
+  // })   
 );
 
 const rootEpic = combineEpics(
