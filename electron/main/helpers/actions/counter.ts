@@ -5,12 +5,12 @@ const INCREMENT_ASYNC = 'INCREMENT_ASYNC';
 const CANCEL_INCREMENT_ASYNC = 'CANCEL_INCREMENT_ASYNC';
 const COUNTDOWN_TERMINATED = 'COUNTDOWN_TERMINATED';
 
-import { createAction, action } from "typesafe-actions";
+import { action } from "typesafe-actions";
 
 export interface Action {
   type: string;
   payload?: {};
-  params?: {};
+  value?: {};
 }
 
 export const increment = () => action(INCREMENT_COUNTER); 

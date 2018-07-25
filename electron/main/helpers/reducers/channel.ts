@@ -1,7 +1,6 @@
-import { ActionType } from 'typesafe-actions';
 import * as channels from '../actions/channel';
  
-export function channel(state = {}, action: ChannelsAction) {
+export function channel(state = {}, action: channels.Action) {
   switch (action.type) {
     case channels.OPEN_CHANNEL:
     case channels.INTENT_OPEN_CHANNELS:

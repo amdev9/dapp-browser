@@ -1,8 +1,6 @@
-import { ActionType } from 'typesafe-actions';
 import * as counters from '../actions/counter';
  
-
-function countdown(state = 0, action:  ) {
+export function countdown(state = 0, action: counters.Action) {
   switch (action.type) {
     case counters.INCREMENT_ASYNC:
       return action.value
@@ -14,7 +12,7 @@ function countdown(state = 0, action:  ) {
   }
 }
 
-function counter(state = 0, action:  ) {
+export function counter(state = 0, action: counters.Action) {
   switch (action.type) {
     case counters.INCREMENT_COUNTER:
       return state + 1;
@@ -24,8 +22,3 @@ function counter(state = 0, action:  ) {
       return state;
   }
 }
-
-export {
-  counter,
-  countdown
-};

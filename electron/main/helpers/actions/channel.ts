@@ -15,6 +15,11 @@ const EVENT_RECEIVED = 'EVENT_RECEIVED';
 const INTENT_CHANNEL_DATA_PASS = 'INTENT_CHANNEL_DATA_PASS';
 const ACCEPT_CHANNEL_DATA_PASS = 'ACCEPT_CHANNEL_DATA_PASS';
  
+export interface Action {
+  type: string;
+  payload?: {};
+}
+
 export {
   INTENT_OPEN_CHANNELS,
   OPEN_CHANNEL,

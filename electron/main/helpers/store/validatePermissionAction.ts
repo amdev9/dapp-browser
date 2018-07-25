@@ -1,6 +1,6 @@
 // validate permissions for actions
 
-import { SWITCH_DAPP, SEND_PING_MESSAGE } from '../actions/client';
+// import { SWITCH_DAPP, SEND_PING_MESSAGE } from '../actions/client';
 import { INCREMENT_COUNTER, DECREMENT_COUNTER, START_COUNTDOWN, INCREMENT_ASYNC, CANCEL_INCREMENT_ASYNC } from '../actions/counter';
  
 

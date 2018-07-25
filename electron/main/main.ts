@@ -10,15 +10,15 @@ import { createClientWindow } from './createClientWindow';
 import { createDappView } from './createDappView';
 import { RendereConf } from './createDappView';
 
-//todo
-declare global {
-  interface Global { state: object; }
-}
+import { State } from './helpers/store/configureStore';
 
-declare namespace renObj {
-  let name: string;
+declare global {
+  namespace NodeJS {
+    interface Global {
+      state: State
+    }
+  }
 }
-//
 
 let bounds = {
   x: 300,
@@ -69,7 +69,7 @@ app.on('ready', () => {
   
   store.subscribe( () => {
 
-    let storeState = store.getState();
+    let storeState: any = store.getState();
     process.stdout.write(JSON.stringify(storeState));
 
     let activeDappName: string = storeState.client.activeDapp;

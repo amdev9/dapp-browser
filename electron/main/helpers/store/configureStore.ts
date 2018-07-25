@@ -8,9 +8,26 @@ import { isFSA } from 'flux-standard-action';
 import { createEpicMiddleware } from 'redux-observable';
 import { validatePermissionAction } from './validatePermissionAction';
 import rootEpic from '../epics';
-import { rootReducer, RootState } from '../reducers';
-
+import { rootReducer } from '../reducers';
 import { RendereConf } from '../../createDappView';
+
+export type State = {
+  readonly counter: number;
+  readonly countdown: number;
+};
+
+export const initialState: State = {
+  counter: 0,
+  countdown: 0
+}; 
+
+declare global {
+  namespace NodeJS {
+    interface Global {
+      getReduxState: () => string
+    }
+  }
+}
 
 const epicMiddleware = createEpicMiddleware();
 
@@ -60,7 +77,7 @@ const forwardToRendererWrapper = (globalId: RendereConf[]) => {
 
 const replyActionMain = (store: Store<{}>, globalId: RendereConf[]) => {
   global.getReduxState = () => JSON.stringify(store.getState());
-  ipcMain.on('redux-action', (event: Electron.Event, uuid: string, payload: object) => {
+  ipcMain.on('redux-action', (event: Electron.Event, uuid: string, payload: any) => {
     let uuidObj = globalId.find(renObj => renObj.id === uuid);
     if (uuidObj) {
       // console.log("Validated: ", JSON.stringify(uuidObj));
@@ -85,12 +102,12 @@ const replyActionMain = (store: Store<{}>, globalId: RendereConf[]) => {
   });
 }
 
-export const configureStore = (initialState?: RootState, globalId?: object[]) => {
-  const middleware: Middleware[] = [];
+export const configureStore = (initialState?: State, globalId?: RendereConf[]) => {
+  const middleware: any[] = []; //todo
   middleware.push(epicMiddleware, validatePermissionAction, forwardToRendererWrapper(globalId)); // epicMiddleware, triggerAlias, validatePermissionAction 
   const enhanced = [applyMiddleware(...middleware)]; 
-  const enhancer = compose(...enhanced);
-  const store: Store<{}> = createStore(rootReducer, initialState, enhancer);
+  const enhancer: any = compose(...enhanced); //todo
+  const store: Store<{}> = createStore(rootReducer, initialState, enhancer); //todo fix Store<{}>
 
   epicMiddleware.run(rootEpic);
 
