@@ -22,7 +22,7 @@ export function createClientWindow(globalUUIDList: RendereConf[]) {
       nodeIntegration: false,
       sandbox: true,
       // contextIsolation: true,
-      preload: path.join(__dirname, 'preload.js'), //path.join(RENDERER_PATH, 'preload-extended.js')
+      preload: path.join(__dirname, '..', 'preload.js'), //path.join(RENDERER_PATH, 'preload-extended.js')
       additionalArguments: [
         '--uuid-renderer='.concat(uuidClient),
         '--channels='.concat(authorizedChannelsList.join(";"))

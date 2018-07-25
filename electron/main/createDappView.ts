@@ -23,7 +23,7 @@ export function createDappView(globalUUIDList: RendereConf[], entryPath: string)
             nodeIntegration: false,
             sandbox: true,
             // contextIsolation: true,
-            preload: path.join(__dirname, 'preload.js'),
+            preload: path.join(__dirname, '..', 'preload.js'),
             additionalArguments: [ 
                 '--uuid-renderer='.concat(uuidDapp),
                 '--channels='.concat(authorizedChannelsList.join(";"))

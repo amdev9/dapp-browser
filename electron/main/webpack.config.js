@@ -1,6 +1,5 @@
 module.exports = {
   mode: 'production',
-  // context: '.',
   target: 'electron-main',
   entry: "./main.ts",
   output: {
