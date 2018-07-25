@@ -1,7 +1,7 @@
 module.exports = {
-  node: {
-    fs: 'empty'
-  },
+  mode: 'production',
+  // context: '.',
+  target: 'electron-main',
   entry: "./main.ts",
   output: {
     filename: "main.js",
@@ -33,5 +33,10 @@ module.exports = {
   externals: {
     // "react": "React",
     // "react-dom": "ReactDOM"
+  },
+
+  node: {
+    __dirname: false,
+    __filename: false
   }
 };
