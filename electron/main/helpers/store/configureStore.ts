@@ -1,5 +1,5 @@
 import { webContents, ipcMain } from 'electron';
-import { combineReducers, createStore, applyMiddleware, compose, Store, Action, Middleware, StoreEnhancer } from 'redux';
+import { combineReducers, createStore, applyMiddleware, compose, Store, Middleware, StoreEnhancer, Dispatch } from 'redux';
  
 import { isFSA } from 'flux-standard-action';
  
@@ -16,6 +16,14 @@ export type State = {
   readonly countdown: number;
 };
 
+export interface Action {
+  type: string;
+  payload?: {};
+  meta?: {
+    scope?: string
+  };
+}
+
 export const initialState: State = {
   counter: 0,
   countdown: 0
@@ -31,7 +39,7 @@ declare global {
 
 const epicMiddleware = createEpicMiddleware();
 
-const validateAction = (action: any) => {
+const validateAction = (action: Action) => {
   return isFSA(action);
 }
 
@@ -39,13 +47,19 @@ const validateAction = (action: any) => {
   // return () => next => (action) => {
     // console.log('globalId', globalId);
      
-  const forwardToRendererWrapper: Middleware = () => next => (action) => {
+  const forwardToRendererWrapper: Middleware = () => (next: Dispatch<void>) => <A extends Action>(action: A) => {
+    
+    // Middleware = () => next => (action) => {
     if (!validateAction(action)) return next(action);
-    // if (action.meta && action.meta.scope === 'local') return next(action);
+    if (action.meta && action.meta.scope === 'local') return next(action);
 
     // change scope to avoid endless-loop
 
-    const rendererAction = action;
+    const rendererAction = Object.assign({}, action, { meta: {
+        ...action.meta,
+        scope: 'local',
+      }}
+    );
     
     // {
     //   ...action,
