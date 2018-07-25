@@ -5,7 +5,7 @@ import { openDevTool } from './helpers/devtools';
 
 let dappView: Electron.BrowserWindow = null;
  
-const DAPPS_PATH: string = path.join(__dirname, '..', 'dapps');
+const DAPPS_PATH: string = path.join(__dirname, '..', '..', 'dapps');
 
 export interface RendereConf {
     id: string;

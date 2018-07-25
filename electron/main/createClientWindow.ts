@@ -5,7 +5,7 @@ import { openDevTool } from './helpers/devtools';
 import { RendereConf } from './createDappView';
 
 let clientWindow: Electron.BrowserWindow = null;
-const RENDERER_PATH: string = path.join(__dirname, '..', 'client');
+const RENDERER_PATH: string = path.join(__dirname, '..', '..', 'client');
 
 
 

@@ -120,6 +120,6 @@ process.stdout.write("Main initialized");
 
 // In main process.
  
-// ipcMain.once('answer', (event, argv) => {
-//   console.log(argv);
-// });
+ipcMain.once('answer', (event: Electron.Event, argv: any) => {
+  console.log(argv);
+});
