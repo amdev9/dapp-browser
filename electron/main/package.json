@@ -1,19 +1,21 @@
 {
-  "name": "array-io-client",
-  "version": "0.0.1",
+  "name": "main",
+  "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.ts",
   "scripts": {
-    "start": "node index.js",
+    "webpack": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "cypherpunk99",
-  "license": "MIT",
+  "author": "",
+  "license": "ISC",
   "devDependencies": {
     "@types/uuid": "^3.4.3",
     "awesome-typescript-loader": "^5.2.0",
     "source-map-loader": "^0.2.3",
-    "webpack-cli": "^3.1.0"
+    "webpack-cli": "^3.1.0",
+    "webpack": "^4.16.2",
+    "typescript": "^2.9.2"
   },
   "dependencies": {
     "assert": "^1.4.1",
@@ -28,7 +30,6 @@
     "rxjs": "^6.2.2",
     "tslint": "^5.11.0",
     "typesafe-actions": "^2.0.4",
-    "typescript": "^2.9.2",
     "uuid": "^3.2.1"
   }
 }

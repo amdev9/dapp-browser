@@ -4,7 +4,7 @@ const proc = require('child_process')
 console.log("path to electron: " + electron)
 console.log("dirname: " + __dirname)
 
-console.log('proc.spawn should execute: ' + electron + ' --enable-sandbox  ' + __dirname + "/electron/dist/main.js");
+console.log('proc.spawn should execute: ' + electron + ' --enable-sandbox  ' + __dirname + "/electron/main/dist/main.js");
 /*
 	It is CRITICAL that you run electron with the --enable-sandbox on the MAIN process.
 	If you do not do this, then the OS-enforced sandbox is NOT ENABLED.
@@ -12,7 +12,7 @@ console.log('proc.spawn should execute: ' + electron + ' --enable-sandbox  ' + _
 
 	Hence we spawn the process here.
 */
-const child = proc.spawn(electron , ["--enable-sandbox", __dirname + "/electron/dist/main.js"])
+const child = proc.spawn(electron , ["--enable-sandbox", __dirname + "/electron/main/dist/main.js"])
 
 /* Catch the outputs of the electron child process */
 child.stdout.on('data', (data) => {
