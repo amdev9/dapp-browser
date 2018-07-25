@@ -13,13 +13,6 @@ export interface Action {
   params?: {};
 }
 
-// export interface WeatherAction extends Action {
-//   params: {
-//     lat: number;
-//     lng: number;
-//   };
-// }
-
 export const increment = () => action(INCREMENT_COUNTER); 
 export const decrement = () => action(DECREMENT_COUNTER); 
 
