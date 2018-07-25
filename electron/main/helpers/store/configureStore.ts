@@ -31,27 +31,29 @@ declare global {
 
 const epicMiddleware = createEpicMiddleware();
 
-const validateAction = (action: Action) => {
+const validateAction = (action: any) => {
   return isFSA(action);
 }
 
-const forwardToRendererWrapper = (globalId: RendereConf[]) => {
-    
-  return (): Middleware => next => (action) => {
+// const forwardToRendererWrapper = (globalId: RendereConf[]) => {
+  // return () => next => (action) => {
     // console.log('globalId', globalId);
      
+  const forwardToRendererWrapper: Middleware = () => next => (action) => {
     if (!validateAction(action)) return next(action);
-    if (action.meta && action.meta.scope === 'local') return next(action);
+    // if (action.meta && action.meta.scope === 'local') return next(action);
 
     // change scope to avoid endless-loop
 
-    const rendererAction = {
-      ...action,
-      meta: {
-        ...action.meta,
-        scope: 'local',
-      },
-    };
+    const rendererAction = action;
+    
+    // {
+    //   ...action,
+    //   meta: {
+    //     ...action.meta,
+    //     scope: 'local',
+    //   },
+    // };
  
     // if (action.payload && action.payload.uuid) {
     //   // loop through all action uuid's passed in payload {
@@ -73,7 +75,7 @@ const forwardToRendererWrapper = (globalId: RendereConf[]) => {
     });
     return next(action);
   };
-}
+// }
 
 const replyActionMain = (store: Store<{}>, globalId: RendereConf[]) => {
   global.getReduxState = () => JSON.stringify(store.getState());
@@ -104,7 +106,7 @@ const replyActionMain = (store: Store<{}>, globalId: RendereConf[]) => {
 
 export const configureStore = (initialState?: State, globalId?: RendereConf[]) => {
   const middleware: any[] = []; //todo
-  middleware.push(epicMiddleware, validatePermissionAction, forwardToRendererWrapper(globalId)); // epicMiddleware, triggerAlias, validatePermissionAction 
+  middleware.push(epicMiddleware, validatePermissionAction, forwardToRendererWrapper); // 
   const enhanced = [applyMiddleware(...middleware)]; 
   const enhancer: any = compose(...enhanced); //todo
   const store: Store<{}> = createStore(rootReducer, initialState, enhancer); //todo fix Store<{}>
