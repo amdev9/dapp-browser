@@ -1,9 +1,6 @@
 import { webContents, ipcMain } from 'electron';
-import { combineReducers, createStore, applyMiddleware, compose, Store, Middleware, StoreEnhancer, Dispatch } from 'redux';
- 
+import { createStore, applyMiddleware, compose, Store, Middleware, GenericStoreEnhancer, Dispatch } from 'redux';
 import { isFSA } from 'flux-standard-action';
- 
-
 // import { triggerAlias } from 'electron-redux'; 
 import { createEpicMiddleware } from 'redux-observable';
 import { validatePermissionAction } from './validatePermissionAction';
@@ -32,7 +29,8 @@ export const initialState: State = {
 declare global {
   namespace NodeJS {
     interface Global {
-      getReduxState: () => string
+      getReduxState: () => string,
+      state: State
     }
   }
 }
@@ -42,33 +40,21 @@ const epicMiddleware = createEpicMiddleware();
 const validateAction = (action: Action) => {
   return isFSA(action);
 }
-
-// const forwardToRendererWrapper = (globalId: RendereConf[]) => {
-  // return () => next => (action) => {
+  
+const forwardToRendererWrapper = (globalId: RendereConf[]) => {
+  return () => (next: Dispatch<void>) => <A extends Action>(action: A) => {
     // console.log('globalId', globalId);
-     
-  const forwardToRendererWrapper: Middleware = () => (next: Dispatch<void>) => <A extends Action>(action: A) => {
-    
-    // Middleware = () => next => (action) => {
     if (!validateAction(action)) return next(action);
     if (action.meta && action.meta.scope === 'local') return next(action);
 
     // change scope to avoid endless-loop
-
-    const rendererAction = Object.assign({}, action, { meta: {
+    const rendererAction = Object.assign({}, action, { 
+      meta: {
         ...action.meta,
         scope: 'local',
-      }}
-    );
-    
-    // {
-    //   ...action,
-    //   meta: {
-    //     ...action.meta,
-    //     scope: 'local',
-    //   },
-    // };
- 
+      }
+    });
+  
     // if (action.payload && action.payload.uuid) {
     //   // loop through all action uuid's passed in payload {
     //   let uuidObj = globalId.find(renObj => renObj.id === action.payload.uuid); 
@@ -89,7 +75,7 @@ const validateAction = (action: Action) => {
     });
     return next(action);
   };
-// }
+}
 
 const replyActionMain = (store: Store<{}>, globalId: RendereConf[]) => {
   global.getReduxState = () => JSON.stringify(store.getState());
@@ -109,8 +95,7 @@ const replyActionMain = (store: Store<{}>, globalId: RendereConf[]) => {
         };
         payload.payload = Object.assign(payload.payload, payloadUuidObj) 
       }
-      
-
+  
       store.dispatch(payload);   
     } else {
       console.log("Spoofing detected")
@@ -119,17 +104,12 @@ const replyActionMain = (store: Store<{}>, globalId: RendereConf[]) => {
 }
 
 export const configureStore = (initialState?: State, globalId?: RendereConf[]) => {
-  const middleware: any[] = []; //todo
-  middleware.push(epicMiddleware, validatePermissionAction, forwardToRendererWrapper); // 
-  const enhanced = [applyMiddleware(...middleware)]; 
-  const enhancer: any = compose(...enhanced); //todo
-  const store: Store<{}> = createStore(rootReducer, initialState, enhancer); //todo fix Store<{}>
-
+  const middleware: Middleware[] = [];
+  middleware.push(epicMiddleware, validatePermissionAction, forwardToRendererWrapper(globalId));
+  const enhanced = [applyMiddleware(...middleware)];
+  const enhancer: GenericStoreEnhancer = compose(...enhanced);
+  const store = createStore(rootReducer, initialState, enhancer);
   epicMiddleware.run(rootEpic);
-
-  replyActionMain(store, globalId); 
-  
+  replyActionMain(store, globalId);
   return store;
 };
-
- 

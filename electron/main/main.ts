@@ -10,16 +10,6 @@ import { createClientWindow } from './createClientWindow';
 import { createDappView } from './createDappView';
 import { RendereConf } from './createDappView';
 
-import { State } from './helpers/store/configureStore';
-
-declare global {
-  namespace NodeJS {
-    interface Global {
-      state: State
-    }
-  }
-}
-
 let bounds = {
   x: 300,
   y: 0,
@@ -119,7 +109,6 @@ app.on('ready', () => {
 process.stdout.write("Main initialized");
 
 // In main process.
- 
 ipcMain.once('answer', (event: Electron.Event, argv: any) => {
   console.log(argv);
 });
