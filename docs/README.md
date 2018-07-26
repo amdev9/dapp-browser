@@ -8,6 +8,8 @@
   - [Dapp communication protocol](#dapp-communication-protocol)
   - [Events API protocol](#events-api-protocol)
   - [Component-channel resolver](#component-channel-resolver)
+- [System components]()
+  - [Local Storage]()
 - [Array library documentation](#array-library-documentation)
   - [array.dapp](#arraydapp)
   - [array.dapp.subscribe](#arraydappsubscribe)
@@ -174,6 +176,18 @@ Each component will have a channel through which data will be sent. We use separ
 #### Links
  https://www.i2b2.org/software/projects/datarepo/CRC_Architecture_10.pdf
 
+# System components
+# Local Storage
+
+Allow to store local data currently in renderer process browserWindow. Local Storage is useful for applications that store a large amount of data (for example, a catalog of DVDs in a lending library) and applications that don't need persistent internet connectivity to work.
+ 
+After Local Storage permission granted and dapp process started we initialize PouchDb storage with IndexedDb adapter.
+
+## External refferences:
+https://pouchdb.com<br>
+https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Basic_Concepts_Behind_IndexedDB<br/>
+
+
 # Array library documentation
 
 ```
@@ -294,6 +308,31 @@ Example
     console.log(arg); // prints "ping"
     event.returnValue = 'pong';
   })
+```
+  
+# array.LocalStorage
+Local Storage is useful for dapps that want to store data on client side.
+
+The `LocalStorage` module provides methods so you can 
+
+* Create database instance via `localDb = new LocalStorage()` and close it `localDb.close()`
+* Create a document `localDb.post(payload, [callback])`
+* Fetch a document `localDb.get(payloadId, [callback])`
+* Delete a document `localDb.remove(payloadId, [callback])` or `localDb.remove(payload, [callback])`
+
+`callback` are optional. If you don’t specify a `callback`, then the API returns a promise. 
+ 
+Example usage
+-------------
+
+```javascript
+  const { LocalStorage } = require('array');
+  localDb = new LocalStorage();
+  try {
+    var response = await localDb.post({ data: 'save me please!' });
+  } catch (err) {
+    console.log(err);
+  }
 ```
 
 #### Links
