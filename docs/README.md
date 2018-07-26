@@ -181,7 +181,7 @@ Each component will have a channel through which data will be sent. We use separ
 
 Allow to store local data currently in renderer process browserWindow. Local Storage is useful for applications that store a large amount of data (for example, a catalog of DVDs in a lending library) and applications that don't need persistent internet connectivity to work.
  
-After Local Storage permission granted and dapp process started we initialize PouchDb storage with IndexedDb adapter.
+After Local Storage permission granted and dapp process started we provide ready to initialize instance of PouchDb storage with IndexedDb adapter.
 
 ## External refferences:
 https://pouchdb.com<br>
