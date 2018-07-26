@@ -1,13 +1,20 @@
-const { BrowserWindow, BrowserView } = require('electron');
-const path = require('path');
-const uuidv4 = require('uuid/v4');
-const openDevTool = require('./helpers/devtools');
+import { BrowserWindow, BrowserView } from 'electron';
+import * as path from 'path';
+import * as uuidv4 from 'uuid/v4';
+import { openDevTool } from './helpers/devtools';
 
-let dappView = null;
+let dappView: Electron.BrowserWindow = null;
  
-const DAPPS_PATH = path.join(__dirname, 'dapps');
+const DAPPS_PATH: string = path.join(__dirname, '..', '..', 'dapps');
 
-function createDappView(globalUUIDList, entryPath) {
+export interface RendereConf {
+    id: string;
+    name: string;
+    status: string;
+    winId: number;
+}
+
+export function createDappView(globalUUIDList: RendereConf[], entryPath: string) {
 
     const uuidDapp = uuidv4();
     const authorizedChannelsList = ['channelId1', 'channelId2']; //next todo get channels list from dapp manifest
@@ -16,7 +23,7 @@ function createDappView(globalUUIDList, entryPath) {
             nodeIntegration: false,
             sandbox: true,
             // contextIsolation: true,
-            preload: path.join(__dirname, 'preload.js'),
+            preload: path.join(__dirname, '..', 'preload.js'),
             additionalArguments: [ 
                 '--uuid-renderer='.concat(uuidDapp),
                 '--channels='.concat(authorizedChannelsList.join(";"))
@@ -38,7 +45,7 @@ function createDappView(globalUUIDList, entryPath) {
 
     openDevTool(dappView, true);
 
-    rendererObj = {
+    let rendererObj: RendereConf = {
         id: uuidDapp,
         status: 'dapp',
         winId: dappView.id,
@@ -49,5 +56,3 @@ function createDappView(globalUUIDList, entryPath) {
     console.log('length', BrowserView.getAllViews().length);
     // return dappView;
 }
-
-module.exports = createDappView;

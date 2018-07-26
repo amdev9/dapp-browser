@@ -5,21 +5,18 @@ const INCREMENT_ASYNC = 'INCREMENT_ASYNC';
 const CANCEL_INCREMENT_ASYNC = 'CANCEL_INCREMENT_ASYNC';
 const COUNTDOWN_TERMINATED = 'COUNTDOWN_TERMINATED';
 
-function increment() {
-  return {
-    type: INCREMENT_COUNTER
-  };
+import { action } from "typesafe-actions";
+
+export interface Action {
+  type: string;
+  payload?: {};
+  value?: {};
 }
 
-function decrement() {
-  return {
-    type: DECREMENT_COUNTER
-  };
-}
+export const increment = () => action(INCREMENT_COUNTER); 
+export const decrement = () => action(DECREMENT_COUNTER); 
 
-module.exports = {
-  decrement,
-  increment,
+export {
   INCREMENT_COUNTER,
   DECREMENT_COUNTER,
   START_COUNTDOWN,

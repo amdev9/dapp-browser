@@ -1,39 +1,60 @@
-const { webContents, ipcMain } = require('electron');
-const { combineReducers, createStore, applyMiddleware, compose } = require('redux');
-const { isFSA } = require('flux-standard-action');
-const { triggerAlias } = require('electron-redux'); //forwardToRenderer,
-const { createEpicMiddleware } = require('redux-observable');
-const validatePermissionAction = require('./validatePermissionAction');
-const rootEpic = require('../epics');
-const rootReducer = require('../reducers');
+import { webContents, ipcMain } from 'electron';
+import { createStore, applyMiddleware, compose, Store, Middleware, GenericStoreEnhancer, Dispatch } from 'redux';
+import { isFSA } from 'flux-standard-action';
+// import { triggerAlias } from 'electron-redux'; 
+import { createEpicMiddleware } from 'redux-observable';
+import { validatePermissionAction } from './validatePermissionAction';
+import rootEpic from '../epics';
+import { rootReducer } from '../reducers';
+import { RendereConf } from '../../createDappView';
+
+export type State = {
+  readonly counter: number;
+  readonly countdown: number;
+};
+
+export interface Action {
+  type: string;
+  payload?: {};
+  meta?: {
+    scope?: string
+  };
+}
+
+export const initialState: State = {
+  counter: 0,
+  countdown: 0
+}; 
+
+declare global {
+  namespace NodeJS {
+    interface Global {
+      getReduxState: () => string,
+      state: State
+    }
+  }
+}
 
 const epicMiddleware = createEpicMiddleware();
 
-
-const validateAction = (action) => {
+const validateAction = (action: Action) => {
   return isFSA(action);
 }
-
-const forwardToRendererWrapper = (globalId) => {
   
-  return () => next => (action) => {
+const forwardToRendererWrapper = (globalId: RendereConf[]) => {
+  return () => (next: Dispatch<void>) => <A extends Action>(action: A) => {
     // console.log('globalId', globalId);
-     
-
     if (!validateAction(action)) return next(action);
     if (action.meta && action.meta.scope === 'local') return next(action);
 
     // change scope to avoid endless-loop
-
-    const rendererAction = {
-      ...action,
+    const rendererAction = Object.assign({}, action, { 
       meta: {
         ...action.meta,
         scope: 'local',
-      },
-    };
-
- 
+      }
+    });
+  
     // if (action.payload && action.payload.uuid) {
     //   // loop through all action uuid's passed in payload {
     //   let uuidObj = globalId.find(renObj => renObj.id === action.payload.uuid); 
@@ -56,9 +77,9 @@ const forwardToRendererWrapper = (globalId) => {
   };
 }
 
-const replyActionMain = (store, globalId) => {
+const replyActionMain = (store: Store<{}>, globalId: RendereConf[]) => {
   global.getReduxState = () => JSON.stringify(store.getState());
-  ipcMain.on('redux-action', (event, uuid, payload) => {
+  ipcMain.on('redux-action', (event: Electron.Event, uuid: string, payload: any) => {
     let uuidObj = globalId.find(renObj => renObj.id === uuid);
     if (uuidObj) {
       // console.log("Validated: ", JSON.stringify(uuidObj));
@@ -74,8 +95,7 @@ const replyActionMain = (store, globalId) => {
         };
         payload.payload = Object.assign(payload.payload, payloadUuidObj) 
       }
-      
-
+  
       store.dispatch(payload);   
     } else {
       console.log("Spoofing detected")
@@ -83,18 +103,13 @@ const replyActionMain = (store, globalId) => {
   });
 }
 
-const configureStore = (initialState, globalId) => {
-  const middleware = [];
-  middleware.push(epicMiddleware, triggerAlias, validatePermissionAction, forwardToRendererWrapper(globalId)); // 
-  const enhanced = [applyMiddleware(...middleware)]; 
-  const enhancer = compose(...enhanced);
+export const configureStore = (initialState?: State, globalId?: RendereConf[]) => {
+  const middleware: Middleware[] = [];
+  middleware.push(epicMiddleware, validatePermissionAction, forwardToRendererWrapper(globalId));
+  const enhanced = [applyMiddleware(...middleware)];
+  const enhancer: GenericStoreEnhancer = compose(...enhanced);
   const store = createStore(rootReducer, initialState, enhancer);
-
   epicMiddleware.run(rootEpic);
-
-  replyActionMain(store, globalId); 
-  
+  replyActionMain(store, globalId);
   return store;
 };
-
-module.exports = configureStore;

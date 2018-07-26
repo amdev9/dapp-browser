@@ -14,9 +14,13 @@ const EVENT_RECEIVED = 'EVENT_RECEIVED';
 // Component-channel resolver
 const INTENT_CHANNEL_DATA_PASS = 'INTENT_CHANNEL_DATA_PASS';
 const ACCEPT_CHANNEL_DATA_PASS = 'ACCEPT_CHANNEL_DATA_PASS';
-
  
-module.exports = {
+export interface Action {
+  type: string;
+  payload?: {};
+}
+
+export {
   INTENT_OPEN_CHANNELS,
   OPEN_CHANNEL,
   OPEN_CHANNEL_SUCCESS, 

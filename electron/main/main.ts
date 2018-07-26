@@ -3,10 +3,12 @@
   Uses process.stdout.write instead of console.log so we can cleanly catch the output in the parent process.
 */
 
-const { app, BrowserView, ipcMain } = require('electron');
-const configureStore = require('./helpers/store/configureStore');
-const createClientWindow = require('./createClientWindow');
-const createDappView = require('./createDappView');
+import { app, BrowserView, ipcMain } from 'electron';
+import { Store } from 'redux';
+import { configureStore } from './helpers/store/configureStore';
+import { createClientWindow } from './createClientWindow';
+import { createDappView } from './createDappView';
+import { RendereConf } from './createDappView';
 
 let bounds = {
   x: 300,
@@ -15,7 +17,8 @@ let bounds = {
   height: 300
 };
 
-const globalUUIDList = [];
+const globalUUIDList: RendereConf[] = [];
+let clientWindow: Electron.BrowserWindow = null;
 
 app.on('ready', () => {
   app.on('window-all-closed', () => {
@@ -32,12 +35,13 @@ app.on('ready', () => {
     clientWindow = createClientWindow(globalUUIDList);
   });
   clientWindow = createClientWindow(globalUUIDList);  
-  console.log(clientWindow);
+  // console.log(clientWindow);
 
   // create multiple view and keep them around the memory, detached from the window
   // then switching workspaces is just and additional call to setBrowserView
   
-  const dappsIndexes = ['index.html', 'index2.html'];
+  const dappsIndexes: string[] = ['index.html', 'index2.html'];
+  let dappInd: string;
   for (dappInd of dappsIndexes) {
     createDappView(globalUUIDList, dappInd);
   }
@@ -46,22 +50,21 @@ app.on('ready', () => {
    *
    * 
    * 
-    
-    
     let view = BrowserView.fromId(1);
     clientWindow.setBrowserView(view);
     view.setBounds(bounds); 
   */
 
-  const store = configureStore(global.state, globalUUIDList);
-  process.stdout.write(JSON.stringify(store.getState()));
+  const store: Store<{}> = configureStore(global.state, globalUUIDList);
   
   store.subscribe( () => {
-    process.stdout.write(JSON.stringify(store.getState()));
 
-    let activeDappName = store.getState().client.activeDapp;
- 
-    let nameObj = globalUUIDList.find(renObj => renObj.name === activeDappName);
+    let storeState: any = store.getState();
+    process.stdout.write(JSON.stringify(storeState));
+
+    let activeDappName: string = storeState.client.activeDapp;
+
+    let nameObj: object = globalUUIDList.find(renObj => renObj.name === activeDappName);
     if (nameObj) {
       /* BrowserView
       // let view = BrowserView.fromId(nameObj.viewId);
@@ -70,7 +73,7 @@ app.on('ready', () => {
       */
     }
     
-    //todo3
+    //next todo3
     // ask for permission before renderer process starts, add map { channelProposal: '[PERMISSION/PROPOSAL]', channelId: '[CHANNEL_ID]'}
     // When renderer init data sending through channel he pass action, preload script add payload:
     // ex.: { type: INTENT_CHANNEL_DATA_PASS, payload: { uuid: '[UUID_RECEIVER_RENDERER]', channelProposal: '[PERMISSION/PROPOSAL]' } } 
@@ -78,7 +81,7 @@ app.on('ready', () => {
     // ex.: { type: 'ACCEPT_CHANNEL_DATA_PASS', payload: { channelId: '[CHANNEL_ID]', uuid: '[UUID_RECEIVER_RENDERER]' } }
     // Renderer pass data through given '[CHANNEL_ID]'
     
-    //todo4
+    //next todo4
     // Local Storage roadmap:
     // ask for permission before renderer process starts, add map { channelProposal: '[PERMISSION/PROPOSAL]', channelId: '[CHANNEL_ID]'}
     // Renderer init subscription ex: { type: 'INIT_EVENT_SUBSCRIPTION', payload: { channelProposal: '[PERMISSION/PROPOSAL]', additionalParams: {...} } }
@@ -88,7 +91,7 @@ app.on('ready', () => {
     // Render can init now opening channel for data passing, etc.
   
 
-    //todo on BIND_OPEN_CHANNELS bind channels
+    //next todo on BIND_OPEN_CHANNELS bind channels
     // let bindedChannel = store.getState().main.channel;
     // if (bindedChannel) { // when got action that channels is just binded
     //   let channelIdSendObj = globalUUIDList.find(renObj => renObj.channel === bindedChannel.sender);
@@ -106,7 +109,6 @@ app.on('ready', () => {
 process.stdout.write("Main initialized");
 
 // In main process.
- 
-ipcMain.once('answer', (event, argv) => {
+ipcMain.once('answer', (event: Electron.Event, argv: any) => {
   console.log(argv);
 });
