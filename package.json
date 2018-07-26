@@ -8,8 +8,5 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "cypherpunk99",
-  "license": "MIT",
-  "dependencies": {
-    "electron": "3.0.0-beta.3"
-  }
+  "license": "MIT"
 }

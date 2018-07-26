@@ -1,5 +1,6 @@
-const electron = require('electron')
+
 const proc = require('child_process')
+const electron = require('./electron/main/node_modules/electron')
 
 console.log("path to electron: " + electron)
 console.log("dirname: " + __dirname)
