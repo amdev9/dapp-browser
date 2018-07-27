@@ -178,7 +178,7 @@ Each component will have a channel through which data will be sent. We use separ
 
 # System components
 
-System components are isolated for security reasons wrappers of system components, which provide operations with File System, Network, IPFS, Wallet, etc.
+System components are isolated for security reasons wrappers of system components, which provide operations with File System, Network, IPFS, Wallet, Keychain, etc.
 
 # Local Storage
 
@@ -188,8 +188,8 @@ After Local Storage permission granted and dapp process started we provide ready
 
 ## Permissions signal sequence (success scenario)
 1. Dapp user init instance `new LocalStorage()`
-2. Dapp redux store disaptches `-> INTENT_LOCALSTORAGE_DATA_PASS`
-3. Main process orchestrate and accept data passing `<- ACCEPT_LOCALSTORAGE_DATA_PASS`
+2. Dapp redux store disaptches `INTENT_CHANNEL_DATA_PASS(LOCALSTORAGE)`
+3. Main process orchestrate and accept data passing `ACCEPT_CHANNEL_DATA_PASS`
 4. Create wrapper class with corresponding data manipulation methods. Class  `new LocalStorage()` extends `PouchDb` class with `IndexedDb` adapter.
 
 
@@ -208,16 +208,28 @@ Main responsibility of Ipfs Storage component is to store data in IPFS. It provi
  Ipfs Storage is useful for applications that want to store/backup a large amount of data, keep data decentralized at the same time. In other words it is File System for your dapp.
  
 ## Permissions signal sequence (success scenario)
+1. Dapp user init instance `new IpfsStorage()`
+2. Dapp redux store disaptches `INTENT_CHANNEL_DATA_PASS(IPFS)`
+3. Main process orchestrate and accept data passing `ACCEPT_CHANNEL_DATA_PASS(CHANNEL_ID)`
+4. Create proxy class `new IpfsStorage()` with corresponding data manipulation methods. Proxy class resposible to send and listen for events propagated by `IPFS` class at main process. 
+5. Register pool of Ipfs Storage callback-related events to listen on main process side. Ex.: dispatched action `COMPLETE_TRANSFER_PROCESS` will signal to process corresponding `transfer` callback with additional options in payload if needed. 
+ 
 ## External refferences:
 https://github.com/ipfs/ipfs<br/>
  
 # OrbitDb
  
-Simply speaking, OrbitDb component, being a layer of abstraction under IPFS provide sync between stores. We use those possibilites to work with broadcasting channels in IPFS. For example, we can `create` broadcasting channel, subscribe to feed via `connect` method, or propogate messages via `broadcast` method.
+Simply speaking, OrbitDb component, being a layer of abstraction under IPFS provide P2P sync between stores. We use those possibilites to work with broadcasting channels in IPFS. For example, we can `create` broadcasting channel, subscribe to feed via `connect` method, or propogate messages via `broadcast` method.
 
 > OrbitDB is a serverless, distributed, peer-to-peer database. OrbitDB uses [IPFS](https://ipfs.io/) as its data storage and [IPFS Pubsub](https://github.com/ipfs/go-ipfs/blob/master/core/commands/pubsub.go#L23) to automatically sync databases with peers. It's an eventually consistent database that uses CRDTs for conflict-free database merges making OrbitDB an excellent choice for decentralized apps (dApps), blockchain applications and offline-first web applications.
 
 ## Permissions signal sequence (success scenario)
+1. Dapp user init instance `new OrbitDb()`
+2. Dapp redux store disaptches `INTENT_CHANNEL_DATA_PASS(ORBIT)`
+3. Main process orchestrate and accept data passing `ACCEPT_CHANNEL_DATA_PASS(CHANNEL_ID)`
+4. Create proxy class `new OrbitDb()` with corresponding data manipulation methods. Proxy class resposible to send and listen for events propagated by `OrbitDb` class at main process. 
+5. Register pool of Ipfs Storage callback-related events to listen on main process side. Ex.: dispatched action `FEED_EVENT` will signal to process corresponding `feed` callback with additional options in payload if needed. 
+ 
 ## External refferences:
 https://github.com/orbitdb/orbit-db<br/>
 
