@@ -178,7 +178,7 @@ Each component will have a channel through which data will be sent. We use separ
 
 # System components
 
-System components are isolated for security reasons wrappers of system components, which provide operations with File System, Network, IPFS, Wallet, Keychain, etc.
+System components are isolated for security reasons proxy classes (wrapper classes in some cases), which provide operations with File System, Network, IPFS, Wallet, Keychain, etc.
 
 # Local Storage
 
