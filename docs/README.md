@@ -177,16 +177,49 @@ Each component will have a channel through which data will be sent. We use separ
  https://www.i2b2.org/software/projects/datarepo/CRC_Architecture_10.pdf
 
 # System components
+
+System components are isolated for security reasons wrappers of system components, which provide operations with File System, Network, IPFS, Wallet, etc.
+
 # Local Storage
 
 Allow to store local data currently in renderer process browserWindow. Local Storage is useful for applications that store a large amount of data (for example, a catalog of DVDs in a lending library) and applications that don't need persistent internet connectivity to work.
  
 After Local Storage permission granted and dapp process started we provide ready to initialize instance of PouchDb storage with IndexedDb adapter.
 
+## Permissions signal sequence (success scenario)
+1. Dapp user init instance `new LocalStorage()`
+2. Dapp redux store disaptches `-> INTENT_LOCALSTORAGE_DATA_PASS`
+3. Main process orchestrate and accept data passing `<- ACCEPT_LOCALSTORAGE_DATA_PASS`
+4. Create wrapper class with corresponding data manipulation methods. Class  `new LocalStorage()` extends `PouchDb` class with `IndexedDb` adapter.
+
+
 ## External refferences:
 https://pouchdb.com<br>
 https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Basic_Concepts_Behind_IndexedDB<br/>
 
+-------------------------
+
+# Ipfs Storage
+
+Main responsibility of Ipfs Storage component is to store data in IPFS. It provides clean pool of methods to store data.
+
+> IPFS is a distributed file system that seeks to connect all computing devices with the same system of files. In some ways, this is similar to the original aims of the Web, but IPFS is actually more similar to a single bittorrent swarm exchanging git objects. You can read more about its origins in the paper [IPFS - Content Addressed, Versioned, P2P File System](https://github.com/ipfs/ipfs/blob/master/papers/ipfs-cap2pfs/ipfs-p2p-file-system.pdf?raw=true).
+
+ Ipfs Storage is useful for applications that want to store/backup a large amount of data, keep data decentralized at the same time. In other words it is File System for your dapp.
+ 
+## Permissions signal sequence (success scenario)
+## External refferences:
+https://github.com/ipfs/ipfs<br/>
+ 
+# OrbitDb
+ 
+Simply speaking, OrbitDb component, being a layer of abstraction under IPFS provide sync between stores. We use those possibilites to work with broadcasting channels in IPFS. For example, we can `create` broadcasting channel, subscribe to feed via `connect` method, or propogate messages via `broadcast` method.
+
+> OrbitDB is a serverless, distributed, peer-to-peer database. OrbitDB uses [IPFS](https://ipfs.io/) as its data storage and [IPFS Pubsub](https://github.com/ipfs/go-ipfs/blob/master/core/commands/pubsub.go#L23) to automatically sync databases with peers. It's an eventually consistent database that uses CRDTs for conflict-free database merges making OrbitDB an excellent choice for decentralized apps (dApps), blockchain applications and offline-first web applications.
+
+## Permissions signal sequence (success scenario)
+## External refferences:
+https://github.com/orbitdb/orbit-db<br/>
 
 # Array library documentation
 
