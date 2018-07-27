@@ -233,6 +233,23 @@ Simply speaking, OrbitDb component, being a layer of abstraction under IPFS prov
 ## External refferences:
 https://github.com/orbitdb/orbit-db<br/>
 
+# Logger
+
+Logger component provide logging. It intercept main process system errors and save it in `sqlite` database.
+
+## Permissions signal sequence (success scenario)
+1. Dapp user init instance `new Logger()`
+2. Dapp redux store disaptches `INTENT_CHANNEL_DATA_PASS(LOGGER)`
+3. Main process orchestrate and accept data passing `ACCEPT_CHANNEL_DATA_PASS(CHANNEL_ID)`
+4. Create proxy class `new Logger()` with corresponding data manipulation methods. Proxy class resposible to send and listen for events propagated by `Logger` class at main process. 
+5. Register pool of Logger callback-related events to listen on main process side. Ex.: dispatched action `ERRROR_EVENT` will signal to process corresponding `feed` callback with additional options in payload if needed. 
+ 
+ 
+## External refferences:
+ORM for sqlite https://github.com/sequelize/sequelize<br/>
+Winston logger https://github.com/winstonjs/winston
+
+
 # Array library documentation
 
 ```
@@ -246,6 +263,7 @@ array
 |- IpfsStorage --| _methods_
 |- OrbitDb ------| _methods_
 |- Network ------| _methods_
+|- Logger -------| _methods_
 |- *...other components*
 ```
 
@@ -360,7 +378,7 @@ Local Storage is useful for dapps that want to store data on client side.
 
 The `LocalStorage` module provides methods so you can 
 
-* Create database instance via `localDb = new LocalStorage()` and close it `localDb.close()`
+* Create storage instance via `localDb = new LocalStorage()` and close it `localDb.close()`
 * Create a document `localDb.post(payload, [callback])`
 * Fetch a document `localDb.get(payloadId, [callback])`
 * Delete a document `localDb.remove(payloadId, [callback])` or `localDb.remove(payload, [callback])`
@@ -380,6 +398,59 @@ Example usage
   }
 ```
 
+# array.IpfsStorage
+The `IpfsStorage` module provides methods so you can store data in IPFS.
+
+* Create instance via `ipfs = new IpfsStorage()`  
+* Save file in ipfs `ipfs.transfer(filePath, callback)`
+ 
+`ipfs` instance of class that inherits from `EventEmitter`. It helps us to monitor file transfering status through `event`'s triggering.
+
+Example usage
+-------------
+
+```javascript
+const { IpfsStorage } = require('array');
+ipfs = new IpfsStorage();
+let response = ipfs.transfer('./video.avi', function(error, result) {
+  if (!error) { console.log(result); }
+})
+.on("process", function(percent) {
+  console.log(percent);
+}); 
+```
+# array.OrbitDb
+The `OrbitDb` module provides methods to work with broadcasting channels in IPFS. For example, we can `create` broadcasting channel, subscribe to feed via `connect` method, or propogate messages via `broadcast` method.
+
+* Create database instance via `orbit = new OrbitDb()`  
+* `//todo`
+ 
+Example usage
+-------------
+
+```javascript
+  const { OrbitDb } = require('array');
+  ipfs = new OrbitDb();
+  try {
+    var response = await ipfs.transfer('./video.avi'); // add on events for progressbar
+  } catch (err) {
+    console.log(err);
+  }
+```
+# array.Logger
+The `Logger` module provides methods to log `debug`, `info`, `warning`, `error` messages. 
+
+* Create logger instance via `log = new Logger()`  
+* Different logging levels like: `log.info(payload)`
+ 
+Example usage
+-------------
+
+```javascript
+  const { Logger } = require('array');
+  log = new Logger();
+  log.info('Dapp started!');
+```
 #### Links
 [Electron app](https://electronjs.org/docs/api/app) <br />
 [Electron source code](https://github.com/electron/electron/search?q=continue-activity&unscoped_q=continue-activity) <br />
