@@ -1,20 +1,29 @@
 ## Client documentation
 
 - [Client front-end documentation](#client-front-end-documentation)
-  - [External references](#external-references)
 - [Architecture technical documentation](#architecture-technical-documentation)
+  - [Events action signals](#events-action-signals)
   - [UUID target store resolver](#uuid-target-store-resolver)
   - [Redux middleware for permission check](#redux-middleware-for-permission-check)
-  - [Dapp communication protocol](#dapp-communication-protocol)
-  - [Events API protocol](#events-api-protocol)
   - [Component-channel resolver](#component-channel-resolver)
-- [System components]()
-  - [Local Storage]()
+  - [Dapp communication protocol](#dapp-communication-protocol)
+- [System components](#system-components)
+  - [Local Storage](#local-storage)
+  - [Ipfs Storage](#ipfs-storage)
+  - [OrbitDb](#orbitdb)
+  - [Logger](#logger)
+  - [Keychain](#keychain)
 - [Array library documentation](#array-library-documentation)
   - [array.dapp](#arraydapp)
   - [array.dapp.subscribe](#arraydappsubscribe)
   - [array.Ipc](#arrayipc)
-  - *... other components related array.[component].[method]*
+    - [Dapp activity declarations](#dapp-activity-declarations)
+  - [array.LocalStorage](#arraylocalstorage)
+  - [array.IpfsStorage](#arrayipfsstorage)
+  - [array.OrbitDb](#arrayorbitdb)
+  - [array.Logger](#arraylogger)
+  - [array.Keychain](#arraykeychain)
+
 
 # Client front-end documentation
 
@@ -24,7 +33,6 @@ Main reason to use Redux-Observable / RxJs to halt work in the middle of the pro
 
 ## External references
 
-*Links*:<br />
 https://github.com/piotrwitek/typesafe-actions<br />
 https://electronjs.org/blog/typescript<br />
 https://github.com/electron/electron-quick-start-typescript<br />
@@ -42,17 +50,20 @@ Introduction to Redux-Observable https://www.youtube.com/watch?v=zk2bVBZhmcc <br
 
 # Architecture technical documentation
 
-*TODO: Permission mechanizm*
+*TODO: Dynamic permission mechanizm*<br />
+*If we change permissions on the fly. In this case, if the application is running, it is necessary to "load" the new permissions and, accordingly, the channels.*
 
-If we change permissions on the fly. In this case, if the application is running, it is necessary to "load" the new permissions and, accordingly, the channels.
 
+## Events action signals
+
+Events action signals used in our architecture only to receive event signals when no related channels is opened. All component events go through channels `ipcMain`-`ipcRenderer` mechanizm.
+ 
 ## UUID target store resolver
 
 ![forwardToRendererWrapper middleware mechanizm](./diagrams/forwardToRendererWrapper.png?raw=true "forwardToRendererWrapper middleware mechanizm")
 
 Each created renderer process (client, dapp) has own uniq identificator `UUID` passed to process `additionalParams`. So we can identify and map each process with uniq token id. It helps us to deliver action straight to renderer process with `UUID` mapped with dapp name in main process.  It is implemented with simple filter of passed array `globalUUIDList` (given `UUID` mapped to id of renderer and we can get `webContents` via `webContents.fromId(id)` electron method).
 
--------------------------
 
 ## Redux middleware for permission check
 
@@ -62,13 +73,76 @@ Each dispatched action before it reaches target dapp go to main process and vali
 
 ![Permission middleware failure](diagrams/permissionMIddlewareFailure.png?raw=true "Permission middleware failure")
 
--------------------------
+
+## Component-channel resolver
+
+Resolve `CHANNEL_ID` for dapp renderer process to get data from **main process component** (ex. LocalStorage, Network, etc.). Each dapp has own uniq `CHANNEL_ID` even for the same components. 
+
+Component-channel have events identificators to map requests to callbacks.
+
+```
+      Renderer                     |            Main
+-----------------------------------------------------------------------
+                                   |
+  [payload] --> ([payload], id1) --|--> process [payload] --
+                                   |                        |
+  waiting (callback, id1) <--------|--- ([result], id1) ----
+                                   |    
+  (id1 == id1) => callback(result) |
+```
+1. Renderer pass payload
+2. Create and save uniq id on renderer side
+3. Pass (payload, id) map to main
+4. Save id1 and map it to channel, UUID.
+5. Process payload and get result
+6. Retrieve saved id1, pass mapped (result, id1)
+7. Renderer get (result, id1) map and compare with saved identificators.
+8. Pass result to correspond callback function
+
+![Resolve channelId](./diagrams/channelIdResolve.png?raw=true "Resolve channelId")
+
+Each component will have a channel through which data will be sent. We use separate channels for security reasons. Before dapp process starts we check component access permissions in manifest file, create and pass channelIds to preload script. By that we add security layer on renderer side.
+
+![Resolve channelId failure](./diagrams/channelIdResolveFailure.png?raw=true "Resolve channelId failure")
+
+
+### Actions roadmap
+- ask for permission before renderer process starts, add map to main process:
+```javascript
+{ channelProposal: 'PERMISSION/PROPOSAL', channelId: 'CHANNEL_ID'}
+```
+- When renderer init data sending through channel he pass action, preload script add payload:
+```javascript
+{ type: 'INTENT_CHANNEL_DATA_PASS', payload: { uuid: '[UUID_RECEIVER_RENDERER]', channelProposal: '[PERMISSION/PROPOSAL]' } }
+```
+
+- Main process validate `UUID` and resolve `CHANNEL_ID`, publish action: 
+```javascript
+  { type: 'ACCEPT_CHANNEL_DATA_PASS', payload: { channelId: '[CHANNEL_ID]', uuid: '[UUID_RECEIVER_RENDERER]' } }
+```
+- Renderer pass data through given `CHANNEL_ID`
+
 
 ## Dapp communication protocol
 
-![Dapp communication](./diagrams/DappCommunication.png?raw=true "Dapp communication")
+Each dapp can init communication with another dapp. Under the hood sender dapp dispatch `INTENT_OPEN_CHANNELS` action, which will cause handshake processing algorithm on the main side. See the details on the diagrams below.
 
-![Dapp communication failure](./diagrams/DappCommunicationFailure.png?raw=true "Dapp communication failure")
+![Dapp communication success scenario](./diagrams/DappCommunication.png?raw=true "Dapp communication success scenario")
+
+Sender and receiver channels binding:<br/>
+Sender `ipcRenderer` <-`[CHANNEL_ID_SENDER]`-> `ipcMain` <-`[CHANNEL_ID_RECEIVER]`-> Receiver `ipcRenderer`
+```javascript
+
+ipcMain.on('[CHANNEL_ID_SENDER]', (event, payload) => {
+  dappBrowserViewReceiver.webContents.send('[CHANNEL_ID_RECEIVER]', payload)
+})
+
+ipcMain.on('[CHANNEL_ID_RECEIVER]', (event, payload) => {
+  dappBrowserViewSender.webContents.send('[CHANNEL_ID_SENDER]', payload)
+})
+```
+
+![Dapp communication failure scenario](./diagrams/DappCommunicationFailure.png?raw=true "Dapp communication failure scenario")
 
 
 ### Actions roadmap
@@ -98,80 +172,6 @@ Sender dapp init communication with receiver dapp (`openChannelIntent` action). 
 ```javascript
 { type: 'CANCEL_OPENED_CHANNEL' }
 ```
-
--------------------------
-
-## Events API protocol
-
-Events API protocol used in our architecture only to receive event signals. As a transport for event's data we use channels and [Component-channel resolver](#component-channel-resolver) mechanizm.
-
-As you remember all actions (without `scope: local` electron-redux flag) are firstly dispatched in main process store. Renderer process (dapp) init action `INIT_EVENT_SUBSCRIPTION` with specified in payload actions to subscribe. On the main process side we have variable `eventMap` to store map with subscribed actions.
-
-<!-- Add EVENT_ACCEPT ??? Failure logic -->
-
-![Events mechanizm](./diagrams/eventsMechanizm.png?raw=true "Events mechanizm")
-
-![Events mechanizm failure](./diagrams/eventsMechanizmFailure.png?raw=true "Events mechanizm failure")
-
-
-### Local Storage actions roadmap
-- ask for permission before renderer process starts, add map to main process:
-
-```javascript
-{ channelProposal: '[PERMISSION/PROPOSAL]', channelId: '[CHANNEL_ID]'}
-```
-
-- Renderer init subscription ex: 
-
-```javascript 
-{ type: 'INIT_EVENT_SUBSCRIPTION', payload: { channelProposal: '[PERMISSION/PROPOSAL]', additionalParams: {...} } }
-```
-
-- Main process add event trigger condition to own side map (`eventMap`), check if action passed through main contains in `eventMap`.
-
-- Event triggered action: 
-
-```javascript
-{ type: 'EVENT_TRIGGERED', payload: { channelProposal: '[PERMISSION/PROPOSAL]', triggered: { type: { 'LOCAL_STORAGE_SET_SUCCESS', payload: {...} } } } }
-```
-
-- Renderer answer: 
-
-```javascript
-{ type: 'EVENT_RECEIVED', payload: channelProposal: '[PERMISSION/PROPOSAL]', additionalParams: {...} }
-```
-- Now render can init opening channel for data passing, etc.
-
--------------------------
-
-## Component-channel resolver
-
-Resolve `CHANNEL_ID` for dapp renderer process to get   data from **main process component** (ex. LocalStorage, BitShares, etc.). Each dapp has own uniq `CHANNEL_ID` even for the same components:
-
-![Resolve channelId](./diagrams/channelIdResolve.png?raw=true "Resolve channelId")
-
-Each component will have a channel through which data will be sent. We use separate channels for security reasons. Before dapp process starts we check component access permissions in manifest file, create and pass channelIds to preload script. By that we add security layer on renderer side.
-
-![Resolve channelId failure](./diagrams/channelIdResolveFailure.png?raw=true "Resolve channelId failure")
-
-
-### Actions roadmap
-- ask for permission before renderer process starts, add map to main process:
-```javascript
-{ channelProposal: 'PERMISSION/PROPOSAL', channelId: 'CHANNEL_ID'}
-```
-- When renderer init data sending through channel he pass action, preload script add payload:
-```javascript
-{ type: 'INTENT_CHANNEL_DATA_PASS', payload: { uuid: '[UUID_RECEIVER_RENDERER]', channelProposal: '[PERMISSION/PROPOSAL]' } }
-```
-
-- Main process validate `UUID` and resolve `CHANNEL_ID`, publish action: 
-```javascript
-  { type: 'ACCEPT_CHANNEL_DATA_PASS', payload: { channelId: '[CHANNEL_ID]', uuid: '[UUID_RECEIVER_RENDERER]' } }
-```
-- Renderer pass data through given `CHANNEL_ID`
-
-------------------------
 
 #### Links
  https://www.i2b2.org/software/projects/datarepo/CRC_Architecture_10.pdf
@@ -212,7 +212,6 @@ Main responsibility of Ipfs Storage component is to store data in IPFS. It provi
 2. Dapp redux store disaptches `INTENT_CHANNEL_DATA_PASS(IPFS)`
 3. Main process orchestrate and accept data passing `ACCEPT_CHANNEL_DATA_PASS(CHANNEL_ID)`
 4. Create proxy class `new IpfsStorage()` with corresponding data manipulation methods. Proxy class resposible to send and listen for events propagated by `IPFS` class at main process. 
-5. Register pool of Ipfs Storage callback-related events to listen on main process side. Ex.: dispatched action `COMPLETE_TRANSFER_PROCESS` will signal to process corresponding `transfer` callback with additional options in payload if needed. 
  
 ## External refferences:
 https://github.com/ipfs/ipfs<br/>
@@ -228,7 +227,6 @@ Simply speaking, OrbitDb component, being a layer of abstraction under IPFS prov
 2. Dapp redux store disaptches `INTENT_CHANNEL_DATA_PASS(ORBIT)`
 3. Main process orchestrate and accept data passing `ACCEPT_CHANNEL_DATA_PASS(CHANNEL_ID)`
 4. Create proxy class `new OrbitDb()` with corresponding data manipulation methods. Proxy class resposible to send and listen for events propagated by `OrbitDb` class at main process. 
-5. Register pool of Ipfs Storage callback-related events to listen on main process side. Ex.: dispatched action `FEED_EVENT` will signal to process corresponding `feed` callback with additional options in payload if needed. 
  
 ## External refferences:
 https://github.com/orbitdb/orbit-db<br/>
@@ -242,8 +240,20 @@ Logger component provide logging. It intercept main process system errors and sa
 2. Dapp redux store disaptches `INTENT_CHANNEL_DATA_PASS(LOGGER)`
 3. Main process orchestrate and accept data passing `ACCEPT_CHANNEL_DATA_PASS(CHANNEL_ID)`
 4. Create proxy class `new Logger()` with corresponding data manipulation methods. Proxy class resposible to send and listen for events propagated by `Logger` class at main process. 
-5. Register pool of Logger callback-related events to listen on main process side. Ex.: dispatched action `ERRROR_EVENT` will signal to process corresponding `feed` callback with additional options in payload if needed. 
  
+## External refferences:
+ORM for sqlite https://github.com/sequelize/sequelize<br/>
+Winston logger https://github.com/winstonjs/winston
+
+# Keychain
+
+Keychain component provide transaction signing methods. It uses third-party Keychain application for keys manipulations and signing. Client app uses connection bridge to pass data in and out.
+
+## Permissions signal sequence (success scenario)
+1. Dapp user init instance `new Keychain()`
+2. Dapp redux store disaptches `INTENT_CHANNEL_DATA_PASS(KEYCHAIN)`
+3. Main process orchestrate and accept data passing `ACCEPT_CHANNEL_DATA_PASS(CHANNEL_ID)`
+4. Create proxy class `new Keychain()` with corresponding data manipulation methods. Proxy class resposible to send and listen for events propagated by `Keychain` class at main process. 
  
 ## External refferences:
 ORM for sqlite https://github.com/sequelize/sequelize<br/>
@@ -258,13 +268,12 @@ array
 |        |- subscribe
 |
 |- Ipc
-|- LocalStorage -| _methods_
-|- Keychain -----| _methods_
-|- IpfsStorage --| _methods_
-|- OrbitDb ------| _methods_
-|- Network ------| _methods_
-|- Logger -------| _methods_
-|- *...other components*
+|- LocalStorage  
+|- IpfsStorage 
+|- OrbitDb 
+|- Logger
+|- Keychain
+|- Network 
 ```
 
  other methods to work with components // todo orbitdb, bitshares, network, ipfs/p2p, keychain, localstorage  // subscribe
@@ -273,8 +282,8 @@ array
 # array.dapp
 The `array.dapp` object control your decentralized application event lifecycle.
 
-Events
-------
+## Events
+ 
 The `dapp` object emits the following events:
 
 ### Event: 'will-finish-launching'
@@ -296,7 +305,7 @@ Emitted when the application is quitting.
 
 
 # array.dapp.subscribe 
-The `array.dapp.subscribe` function lets you subscribe to specific events your dapp depends on.
+The `array.dapp.subscribe` function lets you subscribe to specific events your dapp depends on. All components classes under the hood use `dapp.subscribe` with certain subscription type.
 
 ```
 array.dapp.subscribe(type [, options] [, callback]);
@@ -328,7 +337,7 @@ Example
         if(success) { console.log('Successfully unsubscribed!'); }
     });
 ```
-## Callbacks Promises Events (experimental)
+## Callbacks Promises Events
 
 To help array integrate into all kind of projects with different standards we provide multiple ways to act on asynchronous functions.
 
@@ -360,19 +369,37 @@ Example
 
 ```javascript
   const { Ipc } = require('array');
-  var senderDappComm = new Ipc('receiverDappName');
+  const dComm = new Ipc('dappName');
   
-  senderDappComm.on('asynchronous-message', (event, arg) => {
+  dComm.on('asynchronous-message', (event, arg) => {
     console.log(arg); // prints "ping"
     event.sender.send('asynchronous-reply', 'pong');
   })
   
-  senderDappComm.on('synchronous-message', (event, arg) => {
+  dComm.on('synchronous-message', (event, arg) => {
     console.log(arg); // prints "ping"
     event.returnValue = 'pong';
   })
 ```
   
+## Dapp activity declarations
+
+To simplify and formalize dapp communication protocol dapp developers able to declare **activities**. So another dapp developers can use those declarations in a clear way.
+
+Example:
+--------
+```javascript
+  const { Ipc } = require('array');
+  const dComm = new Ipc('dappName');
+  const { dFunc1, dFunc2 } = dComm; // 'dappName' dapp activities
+  
+  let res = await dFunc1('12345', 10);
+  let res2 = await dFunc2('Test func 2');
+   
+```
+#### Links
+https://github.com/arrayio/docs.array.io/blob/master/ru_RU/src/components/activity.md
+
 # array.LocalStorage
 Local Storage is useful for dapps that want to store data on client side.
 
@@ -402,7 +429,7 @@ Example usage
 The `IpfsStorage` module provides methods so you can store data in IPFS.
 
 * Create instance via `ipfs = new IpfsStorage()`  
-* Save file in ipfs `ipfs.transfer(filePath, callback)`
+* Save file in ipfs `ipfs.transfer(filePath, kbSize, callback)`
  
 `ipfs` instance of class that inherits from `EventEmitter`. It helps us to monitor file transfering status through `event`'s triggering.
 
@@ -412,11 +439,11 @@ Example usage
 ```javascript
 const { IpfsStorage } = require('array');
 ipfs = new IpfsStorage();
-let response = ipfs.transfer('./video.avi', function(error, result) {
+let response = ipfs.transfer('./video.avi', 1000, function(error, result) {
   if (!error) { console.log(result); }
 })
-.on("process", function(percent) {
-  console.log(percent);
+.on("process", function() {
+  console.log('Yoohoo! Another 1000 KB uploaded successfully!');
 }); 
 ```
 # array.OrbitDb
@@ -431,17 +458,13 @@ Example usage
 ```javascript
   const { OrbitDb } = require('array');
   ipfs = new OrbitDb();
-  try {
-    var response = await ipfs.transfer('./video.avi'); // add on events for progressbar
-  } catch (err) {
-    console.log(err);
-  }
+ 
 ```
 # array.Logger
 The `Logger` module provides methods to log `debug`, `info`, `warning`, `error` messages. 
 
 * Create logger instance via `log = new Logger()`  
-* Different logging levels like: `log.info(payload)`
+* Different logging levels like: `log.info(payload, callback)`
  
 Example usage
 -------------
@@ -449,9 +472,42 @@ Example usage
 ```javascript
   const { Logger } = require('array');
   log = new Logger();
-  log.info('Dapp started!');
+  log.info('Dapp started!', function(error, result) {
+    if (!error) { console.log(result); }
+  });
+```
+
+# array.Keychain
+The `Keychain` module provides methods to work with transaction signing.
+So you can:
+* Create new keys
+* Sign transactions with a key
+* View a list of all available keys
+* View the default for the current DApp key.
+ 
+`Keychain` class instance that inherits from `EventEmitter`. It helps us to monitor file transfering status through `event`'s triggering.
+
+Example usage
+-------------
+
+```javascript
+const { Keychain } = require('array');
+kchain = new Keychain();
+// client usage
+const keyname = "my_awesome_key";
+let createdKey = await kchain.create(key: keyname, algorithm: "AES256", curve: "SECP256K1");
+// dapp usage
+let signed = await kchain.sign(
+  "de5f4d8974715e20f47c8bb609547c9e66b0b9e31d521199b3d8",
+  "871689d060721b5cec5a010080841e00000000000011130065cd1d0000000000000000"
+);
 ```
 #### Links
+https://github.com/arrayio/docs.array.io/blob/master/ru_RU/src/components/keychain.md
+
+
+
+## External references
 [Electron app](https://electronjs.org/docs/api/app) <br />
 [Electron source code](https://github.com/electron/electron/search?q=continue-activity&unscoped_q=continue-activity) <br />
 web3 events api: <br />
