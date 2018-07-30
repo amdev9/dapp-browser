@@ -57,6 +57,4 @@ const openChannelEpic: Epic<Action> = action$ => action$.pipe(
   // })   
 );
 
-export default [
-  openChannelEpic
-];
+export default openChannelEpic;

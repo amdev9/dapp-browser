@@ -67,7 +67,7 @@ const forwardToRendererWrapper = (globalId: RendereConf[]) => {
     //   return next(action);
     // }
 
-    console.log('>>>>>> configure: ', action);
+    // console.log('>>>>>> configure: ', action);
     const allWebContents = webContents.getAllWebContents();
     allWebContents.forEach((contents) => { 
       // console.log('---> contents id: ', contents.id);

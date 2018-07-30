@@ -17,7 +17,7 @@ const increment = () => ({ type: INCREMENT_COUNTER });
 const startCountdownEpic = action$ => action$.pipe(
   ofType(OPEN_CHANNEL),
   delay(1000),
-  mapTo(increment())
+  mapTo(openChannelSuccess())
 );
 
 export const rootEpic = combineEpics(

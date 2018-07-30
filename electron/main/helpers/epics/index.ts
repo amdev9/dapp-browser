@@ -1,9 +1,10 @@
-import { combineEpics } from "redux-observable";
+import { combineEpics } from 'redux-observable';
 
-import openChannelEpic from "./openChannelEpic";
+import openChannelEpic from './openChannelEpic';
+import bindOpenChannelsEpic from './bindOpenChannelsEpic';
 
-const epics = combineEpics(
-  ...openChannelEpic,
+export default combineEpics(
+  openChannelEpic,
+  bindOpenChannelsEpic
 );
-
-export default epics;
+ 
