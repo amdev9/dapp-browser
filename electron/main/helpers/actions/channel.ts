@@ -18,9 +18,11 @@ const ACCEPT_CHANNEL_DATA_PASS = 'ACCEPT_CHANNEL_DATA_PASS';
 export interface Action {
   type: string;
   payload?: {
-    uuidRec: string,
-    uuidSend: string
+    uuid?: string;
+    uuidRec?: string,
+    uuidSend?: string
   };
+  // uuid?: string;
 }
 
 export {

@@ -1,6 +1,7 @@
 import 'rxjs'; 
 import { combineEpics, ofType, Epic } from 'redux-observable';
-import { delay, mapTo, map, merge, flatMap } from 'rxjs/operators';
+import { of } from 'rxjs'; 
+import { merge, concatMap } from 'rxjs/operators';
 import { 
   START_COUNTDOWN, 
   INCREMENT_COUNTER,
@@ -28,8 +29,16 @@ const openChannel = (uuid: string) => ({ type: OPEN_CHANNEL, payload: { uuid: uu
 
 const openChannelEpic: Epic<Action> = action$ => action$.pipe(
   ofType(INTENT_OPEN_CHANNELS),
-  delay(1000),
-  mapTo(increment())  
+  concatMap( (action: Action) => of(openChannel(action.payload.uuidRec)).pipe(merge(of( openChannel(action.payload.uuidSend) )) ) )
+  
+//{ type: OPEN_CHANNEL, payload: { uuid: action.payload.uuidRec } }
+  // .pipe(merge(of({ type: OPEN_CHANNEL, payload: { uuid: action.payload.uuidSend } })))
+
+
+
+
+  // delay(1000),
+  // mapTo(increment())  
 
   // flatMap(action => {
   //   merge(
