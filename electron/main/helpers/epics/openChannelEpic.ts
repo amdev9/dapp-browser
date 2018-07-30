@@ -15,21 +15,21 @@ import {
   OPEN_CHANNEL_SUCCESS, 
   OPEN_CHANNEL_FAILURE,
   BIND_OPEN_CHANNELS,
-  BIND_OPEN_CHANNELS_DONE
+  BIND_OPEN_CHANNELS_DONE,
+  Action
 } from '../actions/channel';
  
 
-import { Action } from 'redux';
 import { increment } from '../actions/counter';
  
-// const openChannel = uuid => ({ type: OPEN_CHANNEL, payload: { uuid: uuid } });
+const openChannel = (uuid: string) => ({ type: OPEN_CHANNEL, payload: { uuid: uuid } });
 // const bindChannels = () => ({ type: BIND_OPEN_CHANNELS });
 // const bindChannelsSuccess = () => ({ type: BIND_OPEN_CHANNELS_DONE });
 
 const openChannelEpic: Epic<Action> = action$ => action$.pipe(
   ofType(INTENT_OPEN_CHANNELS),
   delay(1000),
-  mapTo(increment())
+  mapTo(increment())  
 
   // flatMap(action => {
   //   merge(
