@@ -15,7 +15,9 @@ export type State = {
 
 export interface Action {
   type: string;
-  payload?: {};
+  payload?: {
+    uuid?: string
+  };
   meta?: {
     scope?: string
   };
@@ -55,25 +57,25 @@ const forwardToRendererWrapper = (globalId: RendereConf[]) => {
       }
     });
   
-    // if (action.payload && action.payload.uuid) {
-    //   // loop through all action uuid's passed in payload {
-    //   let uuidObj = globalId.find(renObj => renObj.id === action.payload.uuid); 
-    //   if (uuidObj) {
-    //     webContents.fromId(uuidObj.winId).send('redux-action', rendererAction);
-    //   }
-    //   // }
-    //   return next(action);
-    // } else {
-    //   return next(action);
-    // }
+    if (action.payload && action.payload.uuid) {
+      // loop through all action uuid's passed in payload {
+      let uuidObj = globalId.find(renObj => renObj.id === action.payload.uuid); 
+      if (uuidObj) {
+        webContents.fromId(uuidObj.winId).send('redux-action', rendererAction);
+      }
+      // }
+      return next(action);
+    } else {
+      return next(action);
+    }
 
     // console.log('>>>>>> configure: ', action);
-    const allWebContents = webContents.getAllWebContents();
-    allWebContents.forEach((contents) => { 
-      // console.log('---> contents id: ', contents.id);
-      contents.send('redux-action', rendererAction);
-    });
-    return next(action);
+    // const allWebContents = webContents.getAllWebContents();
+    // allWebContents.forEach((contents) => { 
+    //   // console.log('---> contents id: ', contents.id);
+    //   contents.send('redux-action', rendererAction);
+    // });
+    // return next(action);
   };
 }
 
