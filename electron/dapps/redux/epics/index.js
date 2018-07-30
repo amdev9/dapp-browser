@@ -10,12 +10,13 @@ import {
 } from '../actions/counter'; 
  
 
-const { OPEN_CHANNEL, INTENT_OPEN_CHANNELS } = require('../actions/channel');
+const { OPEN_CHANNEL, INTENT_OPEN_CHANNELS, OPEN_CHANNEL_SUCCESS } = require('../actions/channel');
 
+const openChannelSuccess = () => ({ type: OPEN_CHANNEL_SUCCESS });
 const increment = () => ({ type: INCREMENT_COUNTER });
 const startCountdownEpic = action$ => action$.pipe(
-  ofType(INTENT_OPEN_CHANNELS),
-  delay(1000), // Asynchronously wait 1000ms then continue
+  ofType(OPEN_CHANNEL),
+  delay(1000),
   mapTo(increment())
 );
 

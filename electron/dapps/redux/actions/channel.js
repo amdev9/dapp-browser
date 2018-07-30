@@ -21,5 +21,6 @@ function openChannelIntent() {
 
 module.exports = {
   openChannelIntent,
-  INTENT_OPEN_CHANNELS
+  INTENT_OPEN_CHANNELS,
+  OPEN_CHANNEL_SUCCESS
 }

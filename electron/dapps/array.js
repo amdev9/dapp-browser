@@ -1,6 +1,7 @@
 import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import { isFSA } from 'flux-standard-action';
 import { createEpicMiddleware } from 'redux-observable';
+import { logger } from 'redux-logger';
 import { rootEpic } from './redux/epics';
 import rootReducer from './redux/reducers'; 
 
@@ -37,7 +38,7 @@ const forwardToMain = store => next => (action) => {
 
 const configureStore = (initialState) => {
 
-  const middleware = [forwardToMain, epicMiddleware];
+  const middleware = [forwardToMain, epicMiddleware, logger];
   const enhanced = [
     applyMiddleware(...middleware),
   ];
