@@ -56,9 +56,15 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
       }
     });
   
+
+    if (action.type == 'INTENT_OPEN_CHANNEL') {
+      // add receiverUUID as intent to senderUUID into globalId
+  
+    }
     // console.log('>>>>>> configure: ', action); //todo - add bind to globalid on BIND_OPEN_CHANNELS - register it once
     if (action.type == 'OPEN_CHANNEL') {
       let uuidObj = globalId.find(renObj => renObj.id === action.payload.uuid); 
+      console.log('OPEN_CHANNEL ---> ', uuidObj);
       testChannel(uuidObj.winId);
     }
     

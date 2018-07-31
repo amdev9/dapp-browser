@@ -15,6 +15,7 @@ export interface RendererConf {
   name: string;
   status: string;
   winId: number;
+  intent?: string;
   binded?: BindedListConf
 }
 
