@@ -64,13 +64,23 @@ const initStore = () => {
   return store;
 }
  
-const sendDataChannel = (data) => {
-  electronManager.sendDataChannel('testChannel', data);
+const sendDataChannel1 = (data) => {
+  electronManager.sendDataChannel('testChannel1', data);
+}
+
+const sendDataChannel2 = (data) => {
+  electronManager.sendDataChannel('testChannel2', data);
+}
+
+const receiveDataChannel = (callback) => {
+  electronManager.receiveDataChannel('testChannel2', callback);
 }
 
 const store = initStore();
 
 export { 
   store, 
-  sendDataChannel 
+  sendDataChannel1,
+  sendDataChannel2,
+  receiveDataChannel
 };

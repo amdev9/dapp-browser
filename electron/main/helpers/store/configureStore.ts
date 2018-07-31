@@ -58,7 +58,13 @@ const forwardToRendererWrapper = (globalId: RendereConf[]) => {
     });
   
     // console.log('>>>>>> configure: ', action); //todo - add bind to globalid on BIND_OPEN_CHANNELS - register it once
-    testChannel();
+    if (action.type == 'OPEN_CHANNEL') {
+      let uuidObj = globalId.find(renObj => renObj.id === action.payload.uuid); 
+      testChannel(uuidObj.winId);
+    }
+    
+    
+    
 
     if (action.payload && action.payload.uuid) {
       // loop through all action uuid's passed in payload {
@@ -82,11 +88,17 @@ const forwardToRendererWrapper = (globalId: RendereConf[]) => {
   };
 }
 
-const testChannel = () => {
-  ipcMain.on('testChannel', (event: Electron.Event, payload: object) => {
-    console.log('testChannel', payload);
+const testChannel = (webId: number) => {
+  ipcMain.on('testChannel2', (event: Electron.Event, payload: object) => {
+    console.log('testChannel2', payload);
+  });
+  ipcMain.on('testChannel1', (event: Electron.Event, payload: object) => {
+    console.log('testChannel1', payload);
+    webContents.fromId(webId).send('testChannel2', 'propagate');
   });
 }
+
+ 
 // const bindChannelMain = (senderId: number, receiverId: number, senderChannelId: string, receiverChannelId: string) => {
 //   ipcMain.on(senderChannelId, (event: Electron.Event, payload: Action) => {
 //     webContents.fromId(receiverId).send(receiverChannelId, payload)

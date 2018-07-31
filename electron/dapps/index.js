@@ -1,4 +1,4 @@
-import { store, sendDataChannel } from './array';
+import { store, sendDataChannel1, sendDataChannel2, receiveDataChannel } from './array';
 
 
 const renderState = () => {
@@ -14,6 +14,11 @@ const renderState = () => {
 const initUi = () => {
   renderState();
   store.subscribe(renderState);
+
+  receiveDataChannel((channelData) => {
+    document.getElementById('area').innerHTML = channelData;
+  })
+
   document.getElementById('increment').addEventListener('click', () => {
     store.dispatch({
       type: 'INCREMENT_COUNTER'
@@ -30,13 +35,19 @@ const initUi = () => {
     store.dispatch({
       type: 'INTENT_OPEN_CHANNELS',
       payload: {
-        targetDapp: 'dappname128729index2'
+        targetDapp: 'dappname128729index2' 
       }
     }); // dispatch API endpoints
   });
 
-  document.getElementById('sendchannel').addEventListener('click', () => {
-    sendDataChannel('testdata');
+  
+
+  document.getElementById('sendchannel1').addEventListener('click', () => {
+    sendDataChannel1('testdata 1');
+  });
+
+  document.getElementById('sendchannel2').addEventListener('click', () => {
+    sendDataChannel2('testdata 2');
   });
 }
 
