@@ -16,7 +16,9 @@ export type State = {
 export interface Action {
   type: string;
   payload?: {
-    uuid?: string
+    uuid?: string;
+    uuidSend?: string;
+    uuidRec?: string;
   };
   meta?: {
     scope?: string
@@ -37,6 +39,13 @@ declare global {
   }
 }
 
+interface uuidChannelMap {
+  uuid: string;
+  channel: string;
+};
+let uuidChannelMapList: Array<uuidChannelMap>;
+
+
 const epicMiddleware = createEpicMiddleware();
 
 const validateAction = (action: Action) => {
@@ -56,20 +65,42 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
       }
     });
   
-    if (action.type == 'INTENT_OPEN_CHANNEL') {
-      // add receiverUUID as intent to senderUUID into globalId
+    
+    if (action.type == 'INTENT_OPEN_CHANNELS') { 
+
+      uuidChannelMapList = [
+        {
+          uuid: action.payload.uuidSend,
+          channel: 'testChannel1'
+        },
+        {
+          uuid: action.payload.uuidRec,
+          channel: 'testChannel2'
+        }
+      ];
+
       globalId.forEach(function(renObj, i, arr) { 
         if (renObj.id == action.payload.uuidSend) {
-          arr[i].intent = action.payload.uuidRec; //todo
+          arr[i].intent = action.payload.uuidRec;
+        }
+        if (renObj.id == action.payload.uuidRec) {
+          arr[i].intent = action.payload.uuidSend;
         }
       });
     }
 
     // console.log('>>>>>> configure: ', action); //todo - add bind to globalid on BIND_OPEN_CHANNELS - register it once
     if (action.type == 'OPEN_CHANNEL') {
-      let uuidObj = globalId.find(renObj => renObj.id === action.payload.uuid); 
+      let uuidObj = globalId.find(renObj => renObj.id === action.payload.uuid);
       console.log('OPEN_CHANNEL ---> ', uuidObj);
-      testChannel(uuidObj.winId);
+      let intentObj = globalId.find(renObj => renObj.id === uuidObj.intent);
+      
+      const channelSender = uuidChannelMapList.find(uuidChannelMap => uuidChannelMap.uuid == uuidObj.id).channel;
+      const channelReceiver = uuidChannelMapList.find(uuidChannelMap => uuidChannelMap.uuid == uuidObj.intent).channel;
+      // todo map 
+      // intent uuid -> channelReceiver
+      // id uuid -> channelSender
+      bindChannel(intentObj.winId, channelReceiver, channelSender); //'testChannel2', 'testChannel1'); //
     }
     
     if (action.payload && action.payload.uuid) {
@@ -78,7 +109,7 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
       if (uuidObj) {
         webContents.fromId(uuidObj.winId).send('redux-action', rendererAction);
       }
-      // }
+      // } 
       return next(action);
     } else {
       return next(action);
@@ -86,13 +117,13 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
   };
 }
 
-const testChannel = (webId: number) => {
+const bindChannel = (webId: number, channelReceiver: string, channelSender: string) => {
   // ipcMain.on('testChannel2', (event: Electron.Event, payload: object) => {
   //   console.log('testChannel2', payload);
   // });
-  ipcMain.on('testChannel1', (event: Electron.Event, payload: object) => {
-    console.log('testChannel1', payload);
-    webContents.fromId(webId).send('testChannel2', 'propagate');
+  ipcMain.on(channelSender, (event: Electron.Event, payload: string) => {
+    console.log('on: ' + channelSender, 'send: ' + channelReceiver, 'webId: ' + webId, payload);
+    webContents.fromId(webId).send(channelReceiver, payload);
   });
 }
 
