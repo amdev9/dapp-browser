@@ -1,4 +1,4 @@
-import store from './array';
+import { store, sendDataChannel } from './array';
 
 
 const renderState = () => {
@@ -35,6 +35,9 @@ const initUi = () => {
     }); // dispatch API endpoints
   });
 
+  document.getElementById('sendchannel').addEventListener('click', () => {
+    sendDataChannel('testdata');
+  });
 }
 
  

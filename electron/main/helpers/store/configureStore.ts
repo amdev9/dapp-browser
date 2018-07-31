@@ -57,6 +57,9 @@ const forwardToRendererWrapper = (globalId: RendereConf[]) => {
       }
     });
   
+    // console.log('>>>>>> configure: ', action); //todo - add bind to globalid on BIND_OPEN_CHANNELS - register it once
+    testChannel();
+
     if (action.payload && action.payload.uuid) {
       // loop through all action uuid's passed in payload {
       let uuidObj = globalId.find(renObj => renObj.id === action.payload.uuid); 
@@ -69,7 +72,7 @@ const forwardToRendererWrapper = (globalId: RendereConf[]) => {
       return next(action);
     }
 
-    // console.log('>>>>>> configure: ', action);
+    
     // const allWebContents = webContents.getAllWebContents();
     // allWebContents.forEach((contents) => { 
     //   // console.log('---> contents id: ', contents.id);
@@ -79,9 +82,27 @@ const forwardToRendererWrapper = (globalId: RendereConf[]) => {
   };
 }
 
+const testChannel = () => {
+  ipcMain.on('testChannel', (event: Electron.Event, payload: object) => {
+    console.log('testChannel', payload);
+  });
+}
+// const bindChannelMain = (senderId: number, receiverId: number, senderChannelId: string, receiverChannelId: string) => {
+//   ipcMain.on(senderChannelId, (event: Electron.Event, payload: Action) => {
+//     webContents.fromId(receiverId).send(receiverChannelId, payload)
+//   })
+
+//   ipcMain.on(receiverChannelId, (event: Electron.Event, payload: Action) => {
+//     webContents.fromId(senderId).send(senderChannelId, payload)
+//   })
+// }
+
+
 const replyActionMain = (store: Store<{}>, globalId: RendereConf[]) => {
   global.getReduxState = () => JSON.stringify(store.getState());
   ipcMain.on('redux-action', (event: Electron.Event, uuid: string, payload: any) => {
+
+
     let uuidObj = globalId.find(renObj => renObj.id === uuid);
     if (uuidObj) {
       // console.log("Validated: ", JSON.stringify(uuidObj));

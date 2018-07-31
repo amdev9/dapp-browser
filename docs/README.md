@@ -450,7 +450,7 @@ let response = ipfs.transfer('./video.avi', 1000, function(error, result) {
 The `OrbitDb` module provides methods to work with broadcasting channels in IPFS. For example, we can `create` broadcasting channel, subscribe to feed via `connect` method, or propogate messages via `broadcast` method.
 
 * Create database instance via `orbit = new OrbitDb()`  
-* `//todo`
+* `//next todo`
  
 Example usage
 -------------

@@ -64,6 +64,13 @@ const initStore = () => {
   return store;
 }
  
+const sendDataChannel = (data) => {
+  electronManager.sendDataChannel('testChannel', data);
+}
 
 const store = initStore();
-export default store;
+
+export { 
+  store, 
+  sendDataChannel 
+};
