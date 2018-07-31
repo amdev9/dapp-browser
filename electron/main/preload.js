@@ -49,7 +49,6 @@ class ElectronManager {
       ipcRenderer.send('redux-action', uuidRenderer, action);
     }
 
-    // building ipcCommunicator with sendDataChannel, receiveDataChannel & BIND_OPEN_CHANNELS_DONE action triggered
     const sendDataChannel = (channelId, data) => { 
       ipcRenderer.send(channelId, data);
     }

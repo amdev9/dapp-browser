@@ -8,7 +8,7 @@ import { Store } from 'redux';
 import { configureStore } from './helpers/store/configureStore';
 import { createClientWindow } from './createClientWindow';
 import { createDappView } from './createDappView';
-import { RendereConf } from './createDappView';
+import { RendererConf } from './createDappView';
 
 let bounds = {
   x: 300,
@@ -17,7 +17,7 @@ let bounds = {
   height: 300
 };
 
-const globalUUIDList: RendereConf[] = [];
+const globalUUIDList: RendererConf[] = [];
 let clientWindow: Electron.BrowserWindow = null;
 
 app.on('ready', () => {
@@ -35,11 +35,9 @@ app.on('ready', () => {
     clientWindow = createClientWindow(globalUUIDList);
   });
   clientWindow = createClientWindow(globalUUIDList);  
-  // console.log(clientWindow);
 
   // create multiple view and keep them around the memory, detached from the window
   // then switching workspaces is just and additional call to setBrowserView
-  
   const dappsIndexes: string[] = ['index.html', 'index2.html'];
   let dappInd: string;
   for (dappInd of dappsIndexes) {
@@ -47,9 +45,6 @@ app.on('ready', () => {
   }
   
   /* BrowserView
-   *
-   * 
-   * 
     let view = BrowserView.fromId(1);
     clientWindow.setBrowserView(view);
     view.setBounds(bounds); 
@@ -58,7 +53,6 @@ app.on('ready', () => {
   const store: Store<{}> = configureStore(global.state, globalUUIDList);
   
   store.subscribe( () => {
-
     let storeState: any = store.getState();
     process.stdout.write(JSON.stringify(storeState));
 
@@ -67,41 +61,11 @@ app.on('ready', () => {
     let nameObj: object = globalUUIDList.find(renObj => renObj.name === activeDappName);
     if (nameObj) {
       /* BrowserView
-      // let view = BrowserView.fromId(nameObj.viewId);
-      // clientWindow.setBrowserView(view);
-      // view.setBounds(bounds); 
+        let view = BrowserView.fromId(nameObj.viewId);
+        clientWindow.setBrowserView(view);
+        view.setBounds(bounds); 
       */
     }
-    
-    //next todo3
-    // ask for permission before renderer process starts, add map { channelProposal: '[PERMISSION/PROPOSAL]', channelId: '[CHANNEL_ID]'}
-    // When renderer init data sending through channel he pass action, preload script add payload:
-    // ex.: { type: INTENT_CHANNEL_DATA_PASS, payload: { uuid: '[UUID_RECEIVER_RENDERER]', channelProposal: '[PERMISSION/PROPOSAL]' } } 
-    // Main process validate uuid and resolve CHANNEL_ID, pub action: 
-    // ex.: { type: 'ACCEPT_CHANNEL_DATA_PASS', payload: { channelId: '[CHANNEL_ID]', uuid: '[UUID_RECEIVER_RENDERER]' } }
-    // Renderer pass data through given '[CHANNEL_ID]'
-    
-    //next todo4
-    // Local Storage roadmap:
-    // ask for permission before renderer process starts, add map { channelProposal: '[PERMISSION/PROPOSAL]', channelId: '[CHANNEL_ID]'}
-    // Renderer init subscription ex: { type: 'INIT_EVENT_SUBSCRIPTION', payload: { channelProposal: '[PERMISSION/PROPOSAL]', additionalParams: {...} } }
-    // Main process add event trigger condition to own side map (eventMap), check if action passed through main contains in eventMap.
-    // Event triggered action: { type: 'EVENT_TRIGGERED', payload: { channelProposal: '[PERMISSION/PROPOSAL]', triggered: { type: { 'LOCAL_STORAGE_SET_SUCCESS', payload: {...} } } } }
-    // Renderer answer: { type: 'EVENT_RECEIVED', payload: channelProposal: '[PERMISSION/PROPOSAL]', additionalParams: {...} }
-    // Render can init now opening channel for data passing, etc.
-  
-
-    //next todo on BIND_OPEN_CHANNELS bind channels
-    // let bindedChannel = store.getState().main.channel;
-    // if (bindedChannel) { // when got action that channels is just binded
-    //   let channelIdSendObj = globalUUIDList.find(renObj => renObj.channel === bindedChannel.sender);
-    //   let channelIdReceiveObj = globalUUIDList.find(renObj => renObj.channel === bindedChannel.receiver);
-    //   ipcMain.on(channelIdSendObj.channel, (event, uuid, payload) => {
-    //     let bindedView = BrowserView.fromId(channelIdSendObj.viewId);
-    //     bindedView.webContents.send(channelIdReceiveObj.channel, uuid, payload);
-    //   });
-    //   // channels now opened store.dispatch BIND_OPEN_CHANNELS_DONE
-    // }
   });
   process.stdout.write(JSON.stringify(globalUUIDList));
 });

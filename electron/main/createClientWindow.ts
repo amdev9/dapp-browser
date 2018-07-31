@@ -2,15 +2,12 @@ import { BrowserWindow } from 'electron';
 import * as path from 'path';
 import * as uuidv4 from 'uuid/v4';
 import { openDevTool } from './helpers/devtools';
-import { RendereConf } from './createDappView';
+import { RendererConf } from './createDappView';
 
 let clientWindow: Electron.BrowserWindow = null;
 const RENDERER_PATH: string = path.join(__dirname, '..', '..', 'client');
 
-
-
-export function createClientWindow(globalUUIDList: RendereConf[]) {  
-
+export function createClientWindow(globalUUIDList: RendererConf[]) {
   const uuidClient = uuidv4();
   const authorizedChannelsList = ['channelId1', 'channelId2']; //next todo get channels list from dapp manifest
   clientWindow = new BrowserWindow({
@@ -21,8 +18,7 @@ export function createClientWindow(globalUUIDList: RendereConf[]) {
     webPreferences: {
       nodeIntegration: false,
       sandbox: true,
-      // contextIsolation: true,
-      preload: path.join(__dirname, '..', 'preload.js'), //path.join(RENDERER_PATH, 'preload-extended.js')
+      preload: path.join(__dirname, '..', 'preload.js'),
       additionalArguments: [
         '--uuid-renderer='.concat(uuidClient),
         '--channels='.concat(authorizedChannelsList.join(";"))
@@ -47,13 +43,12 @@ export function createClientWindow(globalUUIDList: RendereConf[]) {
 
   openDevTool(clientWindow, true);
   
-  let rendererObj: RendereConf = {
+  let rendererObj: RendererConf = {
     id: uuidClient,
     status: 'client',
     winId: clientWindow.id,
     name: 'clientname128729'
   };
   globalUUIDList.push(rendererObj);
-
   return clientWindow;
 }

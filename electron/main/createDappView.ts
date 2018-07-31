@@ -7,52 +7,50 @@ let dappView: Electron.BrowserWindow = null;
  
 const DAPPS_PATH: string = path.join(__dirname, '..', '..', 'dapps');
 
-export interface RendereConf {
-    id: string;
-    name: string;
-    status: string;
-    winId: number;
+export type ChannelsConf = Array<string>;
+export type BindedConf = Map<string, ChannelsConf>;
+export type BindedListConf = Array<BindedConf>;
+export interface RendererConf {
+  id: string;
+  name: string;
+  status: string;
+  winId: number;
+  binded?: BindedListConf
 }
 
-export function createDappView(globalUUIDList: RendereConf[], entryPath: string) {
+export function createDappView(globalUUIDList: RendererConf[], entryPath: string) {
 
-    const uuidDapp = uuidv4();
-    const authorizedChannelsList = ['channelId1', 'channelId2']; //next todo get channels list from dapp manifest
-    dappView = new BrowserWindow({ // BrowserView
-        webPreferences: {
-            nodeIntegration: false,
-            sandbox: true,
-            // contextIsolation: true,
-            preload: path.join(__dirname, '..', 'preload.js'),
-            additionalArguments: [ 
-                '--uuid-renderer='.concat(uuidDapp),
-                '--channels='.concat(authorizedChannelsList.join(";"))
-            ]
-        }
-    });
-
-    const bounds = {
-        x: 300,
-        y: 0,
-        width: 300,
-        height: 300
-    };
- 
-    /* * BrowserView
-     * dappView.setBounds(bounds); 
-     * */
-    dappView.webContents.loadURL('file://' + path.join(DAPPS_PATH, entryPath));
-
-    openDevTool(dappView, true);
-
-    let rendererObj: RendereConf = {
-        id: uuidDapp,
-        status: 'dapp',
-        winId: dappView.id,
-        name: 'dappname128729'.concat(entryPath.split('.')[0]) // load from dapp
+  const uuidDapp = uuidv4();
+  const authorizedChannelsList = ['channelId1', 'channelId2']; //next todo get channels list from dapp manifest
+  dappView = new BrowserWindow({ // BrowserView
+    webPreferences: {
+      nodeIntegration: false,
+      sandbox: true,
+      preload: path.join(__dirname, '..', 'preload.js'),
+      additionalArguments: [ 
+        '--uuid-renderer='.concat(uuidDapp),
+        '--channels='.concat(authorizedChannelsList.join(";"))
+      ]
     }
-    globalUUIDList.push(rendererObj);
-
-    console.log('length', BrowserView.getAllViews().length);
-    // return dappView;
+  });
+  
+  const bounds = {
+    x: 300,
+    y: 0,
+    width: 300,
+    height: 300
+  };
+ 
+  /* BrowserView
+      dappView.setBounds(bounds); 
+  */
+  dappView.webContents.loadURL('file://' + path.join(DAPPS_PATH, entryPath));
+  openDevTool(dappView, true);
+  let rendererObj: RendererConf = {
+    id: uuidDapp,
+    status: 'dapp',
+    winId: dappView.id,
+    name: 'dappname128729'.concat(entryPath.split('.')[0]) // load from dapp
+  }
+  globalUUIDList.push(rendererObj);
 }

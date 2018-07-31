@@ -6,7 +6,7 @@ import { createEpicMiddleware } from 'redux-observable';
 import { validatePermissionAction } from './validatePermissionAction';
 import rootEpic from '../epics';
 import { rootReducer } from '../reducers';
-import { RendereConf } from '../../createDappView';
+import { RendererConf } from '../../createDappView';
 
 export type State = {
   readonly counter: number;
@@ -43,9 +43,8 @@ const validateAction = (action: Action) => {
   return isFSA(action);
 }
   
-const forwardToRendererWrapper = (globalId: RendereConf[]) => {
+const forwardToRendererWrapper = (globalId: RendererConf[]) => {
   return () => (next: Dispatch<void>) => <A extends Action>(action: A) => {
-    // console.log('globalId', globalId);
     if (!validateAction(action)) return next(action);
     if (action.meta && action.meta.scope === 'local') return next(action);
 
@@ -63,9 +62,6 @@ const forwardToRendererWrapper = (globalId: RendereConf[]) => {
       testChannel(uuidObj.winId);
     }
     
-    
-    
-
     if (action.payload && action.payload.uuid) {
       // loop through all action uuid's passed in payload {
       let uuidObj = globalId.find(renObj => renObj.id === action.payload.uuid); 
@@ -77,52 +73,30 @@ const forwardToRendererWrapper = (globalId: RendereConf[]) => {
     } else {
       return next(action);
     }
-
-    
-    // const allWebContents = webContents.getAllWebContents();
-    // allWebContents.forEach((contents) => { 
-    //   // console.log('---> contents id: ', contents.id);
-    //   contents.send('redux-action', rendererAction);
-    // });
-    // return next(action);
   };
 }
 
 const testChannel = (webId: number) => {
-  ipcMain.on('testChannel2', (event: Electron.Event, payload: object) => {
-    console.log('testChannel2', payload);
-  });
+  // ipcMain.on('testChannel2', (event: Electron.Event, payload: object) => {
+  //   console.log('testChannel2', payload);
+  // });
   ipcMain.on('testChannel1', (event: Electron.Event, payload: object) => {
     console.log('testChannel1', payload);
     webContents.fromId(webId).send('testChannel2', 'propagate');
   });
 }
 
- 
-// const bindChannelMain = (senderId: number, receiverId: number, senderChannelId: string, receiverChannelId: string) => {
-//   ipcMain.on(senderChannelId, (event: Electron.Event, payload: Action) => {
-//     webContents.fromId(receiverId).send(receiverChannelId, payload)
-//   })
-
-//   ipcMain.on(receiverChannelId, (event: Electron.Event, payload: Action) => {
-//     webContents.fromId(senderId).send(senderChannelId, payload)
-//   })
-// }
-
-
-const replyActionMain = (store: Store<{}>, globalId: RendereConf[]) => {
+const replyActionMain = (store: Store<{}>, globalId: RendererConf[]) => {
   global.getReduxState = () => JSON.stringify(store.getState());
   ipcMain.on('redux-action', (event: Electron.Event, uuid: string, payload: any) => {
 
-
     let uuidObj = globalId.find(renObj => renObj.id === uuid);
     if (uuidObj) {
-      // console.log("Validated: ", JSON.stringify(uuidObj));
       const statusObj = { status: uuidObj.status };
       payload.payload = (payload.payload) ? Object.assign(payload.payload, statusObj) : statusObj;
 
-      // uuid resolver // move to forwardToRendererWrapper?
-      let uuidTargetObj = globalId.find(renObj => renObj.name === payload.payload.targetDapp); // for OPEN_CHANNEL 'dappname128729index2' 
+      // uuid resolver 
+      let uuidTargetObj = globalId.find(renObj => renObj.name === payload.payload.targetDapp); 
       if (uuidTargetObj) {
         const payloadUuidObj = { 
           uuidRec: uuidTargetObj.id,
@@ -138,7 +112,7 @@ const replyActionMain = (store: Store<{}>, globalId: RendereConf[]) => {
   });
 }
 
-export const configureStore = (initialState?: State, globalId?: RendereConf[]) => {
+export const configureStore = (initialState?: State, globalId?: RendererConf[]) => {
   const middleware: Middleware[] = [];
   middleware.push(epicMiddleware, validatePermissionAction, forwardToRendererWrapper(globalId));
   const enhanced = [applyMiddleware(...middleware)];

@@ -30,31 +30,6 @@ const openChannel = (uuid: string) => ({ type: OPEN_CHANNEL, payload: { uuid: uu
 const openChannelEpic: Epic<Action> = action$ => action$.pipe(
   ofType(INTENT_OPEN_CHANNELS),
   concatMap( (action: Action) => of(openChannel(action.payload.uuidRec)).pipe(merge(of( openChannel(action.payload.uuidSend) )) ) )
-  
-//{ type: OPEN_CHANNEL, payload: { uuid: action.payload.uuidRec } }
-  // .pipe(merge(of({ type: OPEN_CHANNEL, payload: { uuid: action.payload.uuidSend } })))
-
-
-
-
-  // delay(1000),
-  // mapTo(increment())  
-
-  // flatMap(action => {
-  //   merge(
-  //     of(openChannel(action.payload.uuidRec)), 
-  //     of(openChannel(action.payload.uuidSend))
-  //   ),
-  //   //next todo listen for receive OPEN_CHANNEL_SUCCESS from sender and receiver
-  //   concat([
-  //     of(bindChannels()),
-  //     //next todo listen for successfull channel binding
-  //     of(bindChannelsSuccess())
-  //   ]),
-  //   takeUntil(action$.pipe(
-  //     ofType(OPEN_CHANNEL_FAILURE)
-  //   ))
-  // })   
 );
 
 export default openChannelEpic;
