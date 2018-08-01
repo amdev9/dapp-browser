@@ -32,14 +32,16 @@ const initUi = () => {
     });
   });
 
-  document.getElementById('communicate').addEventListener('click', () => {
-    store.dispatch({
-      type: 'INTENT_OPEN_CHANNELS',
-      payload: {
-        targetDapp: 'dappname128729index2' 
-      }
-    }); 
-  });
+  if( document.getElementById('communicate') ) {
+    document.getElementById('communicate').addEventListener('click', () => {
+      store.dispatch({
+        type: 'INTENT_OPEN_CHANNELS',
+        payload: {
+          targetDapp: 'dappname128729index2' 
+        }
+      }); 
+    });
+  }
 
    
   if( document.getElementById('sendchannel1') ) {
