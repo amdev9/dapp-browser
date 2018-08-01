@@ -72,8 +72,8 @@ const sendDataChannel2 = (data) => {
   electronManager.sendDataChannel('testChannel2', data);
 }
 
-const receiveDataChannel = (callback) => {
-  electronManager.receiveDataChannel('testChannel2', callback);
+const receiveDataChannel = (channelId, callback) => {
+  electronManager.receiveDataChannel(channelId, callback);
 }
 
 const store = initStore();

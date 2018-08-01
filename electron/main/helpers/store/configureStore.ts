@@ -100,6 +100,7 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
       // todo map 
       // intent uuid -> channelReceiver
       // id uuid -> channelSender
+      console.log(intentObj.winId, channelReceiver, channelSender);
       bindChannel(intentObj.winId, channelReceiver, channelSender); //'testChannel2', 'testChannel1'); //
     }
     

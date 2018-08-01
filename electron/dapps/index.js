@@ -12,8 +12,12 @@ const initUi = () => {
   renderState();
   store.subscribe(renderState);
 
-  receiveDataChannel((channelData) => {
+  receiveDataChannel('testChannel2', (channelData) => {
     document.getElementById('area').innerHTML = channelData;
+  })
+
+  receiveDataChannel('testChannel1', (channelData) => {
+    document.getElementById('messageId').innerHTML = channelData;
   })
 
   document.getElementById('increment').addEventListener('click', () => {
@@ -36,6 +40,8 @@ const initUi = () => {
       }
     }); 
   });
+
+   
 
   document.getElementById('sendchannel1').addEventListener('click', () => {
     sendDataChannel1('testdata 1');
