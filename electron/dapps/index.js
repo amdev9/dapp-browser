@@ -42,15 +42,18 @@ const initUi = () => {
   });
 
    
-
-  document.getElementById('sendchannel1').addEventListener('click', () => {
-    sendDataChannel1('testdata 1');
-  });
-
-  //?
-  document.getElementById('sendchannel2').addEventListener('click', () => {
-    sendDataChannel2('testdata 2');
-  });
+  if( document.getElementById('sendchannel1') ) {
+    document.getElementById('sendchannel1').addEventListener('click', () => {
+      sendDataChannel1('testdata 1');
+    });
+  }
+  
+  if( document.getElementById('sendchannel2') ) {
+    document.getElementById('sendchannel2').addEventListener('click', () => {
+      console.log('>> sendchannel2')
+      sendDataChannel2('testdata 2');
+    });
+  }
 }
 
 initUi();
