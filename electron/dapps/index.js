@@ -20,17 +20,21 @@ const initUi = () => {
     document.getElementById('messageId').innerHTML = channelData;
   })
 
-  document.getElementById('increment').addEventListener('click', () => {
-    store.dispatch({
-      type: 'INCREMENT_COUNTER'
-    }); 
-  });
-
-  document.getElementById('decrement').addEventListener('click', () => {
-    store.dispatch({
-      type: 'DECREMENT_COUNTER'
+  if( document.getElementById('increment') ) {
+    document.getElementById('increment').addEventListener('click', () => {
+      store.dispatch({
+        type: 'INCREMENT_COUNTER'
+      }); 
     });
-  });
+  }
+
+  if( document.getElementById('decrement') ) {
+    document.getElementById('decrement').addEventListener('click', () => {
+      store.dispatch({
+        type: 'DECREMENT_COUNTER'
+      });
+    });
+  }
 
   if( document.getElementById('communicate') ) {
     document.getElementById('communicate').addEventListener('click', () => {
