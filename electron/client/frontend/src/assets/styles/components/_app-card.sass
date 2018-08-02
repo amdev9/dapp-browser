@@ -1,0 +1,58 @@
+.app-card
+  box-shadow: 0px 0px 3px rgba(0,0,0, 0.2)
+  flex-direction: column
+  background: #ffffff
+  border-radius: 8px
+  overflow: hidden
+  display: flex
+  
+  margin: 8px 10px
+  height: 215px
+  width: 270px
+
+  .header
+    background-size: cover
+    height: 140px
+    width: 100%
+
+  .content
+    padding: 12px 14px 10px 14px
+
+    .title
+      color: rgba(0,0,0, 0.9)
+      letter-spacing: 0
+      font-weight: 600
+    
+    .footer
+      +flex(row, space-between, center)
+      margin-top: 8px
+      
+      .tags
+        +flex(row, flex-start, center)
+        .tag
+          padding: 2px 10px 3px 10px
+          background-color: #f6f8fb
+          border-radius: 15px
+          cursor: pointer
+          margin: 0 3px
+
+          &:first-child
+            margin-left: 0px
+
+          span
+            text-transform: uppercase
+            color: rgba(0,0,0, 0.5)
+            font-weight: 500
+            font-size: 13px
+      
+      .action
+        padding: 4px 10px 3px 10px
+        background-color: #dfeaff
+        border-radius: 15px
+        cursor: pointer
+
+        .label
+          text-transform: uppercase
+          font-weight: 500
+          font-size: 13px
+          color: #508dff
