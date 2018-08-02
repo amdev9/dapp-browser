@@ -56,7 +56,6 @@ const initUi = () => {
   
   if( document.getElementById('sendchannel2') ) {
     document.getElementById('sendchannel2').addEventListener('click', () => {
-      console.log('>> sendchannel2')
       sendDataChannel2('testdata 2');
     });
   }

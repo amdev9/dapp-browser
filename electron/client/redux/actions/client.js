@@ -1,11 +1,11 @@
 const SWITCH_DAPP = 'SWITCH_DAPP';
 const SEND_PING_MESSAGE = 'SEND_PING_MESSAGE';
 
-function switchDapp(dappId) {
+function switchDapp(dappName) {
   return {
     type: SWITCH_DAPP,
     payload: { 
-      targetDappId: dappId
+      targetDapp: dappName
     }
   };
 }

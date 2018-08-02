@@ -104,17 +104,26 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
       bindChannel(intentObj.winId, channelReceiver, channelSender); //'testChannel2', 'testChannel1'); //
     }
     
-    if (action.payload && action.payload.uuid) {
-      // loop through all action uuid's passed in payload {
-      let uuidObj = globalId.find(renObj => renObj.id === action.payload.uuid); 
-      if (uuidObj) {
-        webContents.fromId(uuidObj.winId).send('redux-action', rendererAction);
-      }
-      // } 
-      return next(action);
-    } else {
-      return next(action);
-    }
+    // if (action.payload && action.payload.uuid) {
+    //   // loop through all action uuid's passed in payload {
+    //   let uuidObj = globalId.find(renObj => renObj.id === action.payload.uuid); 
+    //   if (uuidObj) {
+    //     webContents.fromId(uuidObj.winId).send('redux-action', rendererAction);
+    //   }
+    //   // } 
+    //   return next(action);
+    // } else {
+    //   return next(action);
+    // }
+
+    console.log('>> ', action.payload);
+    const allWebContents = webContents.getAllWebContents();
+    allWebContents.forEach((contents) => { 
+      // console.log('---> contents id: ', contents.id);
+      contents.send('redux-action', rendererAction);
+    });
+    return next(action);
+
   };
 }
 
