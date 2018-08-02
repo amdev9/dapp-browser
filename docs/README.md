@@ -52,7 +52,7 @@ Introduction to Redux-Observable https://www.youtube.com/watch?v=zk2bVBZhmcc <br
 
 *TODO: Dynamic permission mechanizm*<br />
 *If we change permissions on the fly. In this case, if the application is running, it is necessary to "load" the new permissions and, accordingly, the channels.*
-
+Start-stop channels: https://github.com/MichaelVasseur/electron-ipc-bus
 
 ## Events action signals
 

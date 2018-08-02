@@ -119,9 +119,6 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
 }
 
 const bindChannel = (webId: number, channelReceiver: string, channelSender: string) => {
-  // ipcMain.on('testChannel2', (event: Electron.Event, payload: object) => {
-  //   console.log('testChannel2', payload);
-  // });
   ipcMain.on(channelSender, (event: Electron.Event, payload: string) => {
     console.log('on: ' + channelSender, 'send: ' + channelReceiver, 'webId: ' + webId, payload);
     webContents.fromId(webId).send(channelReceiver, payload);
