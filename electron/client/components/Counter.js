@@ -23,7 +23,7 @@ class Counter extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { activeDapp: undefined };
+    this.state = { activeDapp: null };
 
   
     // this.action = this.action.bind(this)
@@ -36,6 +36,7 @@ class Counter extends Component {
   // }
 
   onClickTodo(dappName) {
+    console.log('state', dappName);
     this.setState({
       activeDapp: dappName
     });
@@ -49,9 +50,9 @@ class Counter extends Component {
         <br />
         <br />
         {/* create component navigate between dapps */}
-        <button onClick={onClickTodo}>BV1</button> 
+        <button onClick={() => this.onClickTodo('dappname128729index')}>BV1</button> 
         {' '}
-        <button onClick={onClickTodo}>BV2</button> 
+        <button onClick={() => this.onClickTodo('dappname128729index2')}>BV2</button> 
         {/* <br />
           <br />
           {' '}
