@@ -25,12 +25,12 @@ if (process.env.NODE_ENV === 'production') {
   sourceMapSupport.install();
 }
 
-if (process.env.NODE_ENV === 'development') {
+// if (process.env.NODE_ENV === 'development') {
   require('electron-debug')(); // eslint-disable-line global-require
   const path = require('path'); // eslint-disable-line
   const p = path.join(__dirname, '..', 'main', 'node_modules'); // eslint-disable-line
   require('module').globalPaths.push(p); // eslint-disable-line
-}
+// }
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -39,7 +39,7 @@ app.on('window-all-closed', () => {
 });
 
 const installExtensions = () => {
-  if (process.env.NODE_ENV === 'development') {
+  // if (process.env.NODE_ENV === 'development') {
     const installer = require('electron-devtools-installer'); // eslint-disable-line global-require
 
     const extensions = [
@@ -48,7 +48,7 @@ const installExtensions = () => {
     ];
     const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
     return Promise.all(extensions.map(name => installer.default(installer[name], forceDownload)));
-  }
+  // }
 
   return Promise.resolve([]);
 };

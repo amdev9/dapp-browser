@@ -4,7 +4,7 @@ var webpack = require('webpack');
 const port = process.env.PORT || 3000;
 
 module.exports = {
-    mode: 'production',
+    mode: 'development',
     // target: 'electron-renderer',
     entry: [
         'react-hot-loader/patch',

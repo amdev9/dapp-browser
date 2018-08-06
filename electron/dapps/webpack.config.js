@@ -2,7 +2,7 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   entry: './index.js',
   output: {
     path: path.resolve(__dirname, 'build'),

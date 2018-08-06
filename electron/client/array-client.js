@@ -37,20 +37,37 @@ const forwardToMain = store => next => (action) => {
 };
 
 
+
 const configureStore = (initialState) => {
     const middleware = [forwardToMain, epicMiddleware, logger]; 
     const enhanced = [
         applyMiddleware(...middleware),
     ];
-    const enhancer = compose(...enhanced);
+    
+    const composeEnhancers =
+    typeof window === 'object' &&
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?   
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+        // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
+    }) : compose;
+
+    
+    const enhancer = composeEnhancers(...enhanced); // compose
     console.log(typeof rootReducer, initialState, typeof enhancer);
     const store = createStore(rootReducer, initialState, enhancer);
+
+    if (module.hot) {
+        module.hot.accept('./redux/reducers', () =>
+          store.replaceReducer(require('./redux/reducers')) // eslint-disable-line global-require
+        );
+    }
 
     epicMiddleware.run(rootEpic);
 
     electronManager.replyActionRenderer(store); // window.ipc
     return store;
 };
+
 
 const initStore = () => {
     console.log('initStore');

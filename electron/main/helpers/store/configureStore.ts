@@ -7,22 +7,7 @@ import { validatePermissionAction } from './validatePermissionAction';
 import rootEpic from '../epics';
 import { rootReducer } from '../reducers';
 import { RendererConf } from '../../createDappView';
-
-import { increment, decrement } from '../actions/counter';
-
-// declare const window: Window & {
-//   __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?(a: any): void;
-// };
-
-declare const module: NodeModule & {
-  hot?: {
-    accept(...args: any[]): any;
-  }
-};
-
-const actionCreators = { increment, decrement };
-
-
+ 
 export type State = {
   readonly counter: number;
   readonly countdown: number;
@@ -49,8 +34,7 @@ declare global {
   namespace NodeJS {
     interface Global {
       getReduxState: () => string,
-      state: State,
-      __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?(a: any): void
+      state: State
     }
   }
 }
@@ -81,7 +65,6 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
       }
     });
   
-    
     if (action.type == 'INTENT_OPEN_CHANNELS') { 
 
       uuidChannelMapList = [
@@ -181,21 +164,8 @@ export const configureStore = (initialState?: State, globalId?: RendererConf[]) 
   middleware.push(epicMiddleware, validatePermissionAction, forwardToRendererWrapper(globalId));
   const enhanced = [applyMiddleware(...middleware)];
 
-  const composeEnhancers: typeof compose = global.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
-  global.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-    // Options: http://zalmoxisus.github.io/redux-devtools-extension/API/Arguments.html
-    actionCreators
-  }) as any :
-  compose;
-
-  const enhancer: GenericStoreEnhancer = composeEnhancers(...enhanced);
+  const enhancer: GenericStoreEnhancer = compose(...enhanced);
   const store = createStore(rootReducer, initialState, enhancer);
-
-  if (module.hot) {
-    module.hot.accept('../reducers', () =>
-      store.replaceReducer(require('../reducers')) // eslint-disable-line global-require
-    );
-  }
 
   epicMiddleware.run(rootEpic);
   replyActionMain(store, globalId);

@@ -13,7 +13,9 @@ console.log('proc.spawn should execute: ' + electron + ' --enable-sandbox  ' + _
 
 	Hence we spawn the process here.
 */
-const child = proc.spawn(electron , ["--enable-sandbox", __dirname + "/electron/main/dist/main.js"])
+
+ 
+const child = proc.spawn(electron , ["--enable-sandbox", __dirname + "/electron/main/dist/main.js"]  )
 
 /* Catch the outputs of the electron child process */
 child.stdout.on('data', (data) => {

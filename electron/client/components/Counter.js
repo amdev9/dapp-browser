@@ -53,6 +53,9 @@ class Counter extends Component {
         <button onClick={() => this.onClickTodo('dappname128729index')}>BV1</button> 
         {' '}
         <button onClick={() => this.onClickTodo('dappname128729index2')}>BV2</button> 
+        {' '}
+        test reload
+        {' '}
         {/* <br />
           <br />
           {' '}
