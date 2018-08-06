@@ -1,12 +1,22 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <meta charset="utf-8">
-</head>
-<body>
-<h1>Client BrowserWindow</h1>
-<div id="root"></div>
-<script src="build/app.bundle.js"></script>
-</body>
+  </head>
+  <body>
+    <h1>Client BrowserWindow</h1>
+    <div id="root"></div>
+    <script>
+      {
+        const script = document.createElement('script');
+        const port = process.env.PORT || 3000;
+        script.src = (process.env.HOT)
+          ? 'http://localhost:' + port + '/build/app.bundle.js'
+          : './build/app.bundle.js';
+        // HACK: Writing the script path should be done with webpack
+        document.body.appendChild(script);
+      }
+    </script>
+  </body>
 </html>
 

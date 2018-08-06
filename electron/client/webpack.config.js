@@ -1,12 +1,23 @@
 var path = require('path');
 var webpack = require('webpack');
+
+const port = process.env.PORT || 3000;
+
 module.exports = {
     mode: 'production',
-    entry: './index.js',
+    entry: [
+        'react-hot-loader/patch',
+        `webpack-hot-middleware/client?path=http://localhost:${port}/__webpack_hmr&reload=true`,
+        './index'
+    ],
     output: {
-        path: path.resolve(__dirname, 'build'),
-        filename: 'app.bundle.js'
+        publicPath: `http://localhost:${port}/build/`
     },
+    // entry: './index.js',
+    // output: {
+    //     path: path.resolve(__dirname, 'build'),
+    //     filename: 'app.bundle.js'
+    // },
     module: {
         rules: [
             {
