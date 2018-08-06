@@ -9,10 +9,11 @@
     <script>
       {
         const script = document.createElement('script');
-        const port = process.env.PORT || 3000;
-        script.src = (process.env.HOT)
-          ? 'http://localhost:' + port + '/build/app.bundle.js'
-          : './build/app.bundle.js';
+        // const port = process.env.PORT || 3000;
+        script.src = 'http://localhost:3000/build/main.js';
+        //(process.env.HOT)
+          // ? 'http://localhost:3000/build/app.bundle.js'
+          // : './build/app.bundle.js';
         // HACK: Writing the script path should be done with webpack
         document.body.appendChild(script);
       }

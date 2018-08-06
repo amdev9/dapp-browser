@@ -5,10 +5,11 @@ const port = process.env.PORT || 3000;
 
 module.exports = {
     mode: 'production',
+    // target: 'electron-renderer',
     entry: [
         'react-hot-loader/patch',
         `webpack-hot-middleware/client?path=http://localhost:${port}/__webpack_hmr&reload=true`,
-        './index'
+        './index.js'
     ],
     output: {
         publicPath: `http://localhost:${port}/build/`
@@ -32,6 +33,13 @@ module.exports = {
     stats: {
         colors: true
     },
-    devtool: 'source-map'
+    devtool: 'source-map',
+    plugins: [
+        // https://webpack.github.io/docs/hot-module-replacement-with-webpack.html
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.LoaderOptionsPlugin({
+            debug: true
+        }),
+    ]
     // watch: true
 };
