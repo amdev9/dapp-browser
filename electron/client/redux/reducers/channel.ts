@@ -1,4 +1,4 @@
-const { OPEN_CHANNEL, INTENT_OPEN_CHANNELS } = require('../actions/channel');
+import { OPEN_CHANNEL, INTENT_OPEN_CHANNELS } from '../constants';
 
 export function channel(state = {}, action) {
   switch (action.type) {

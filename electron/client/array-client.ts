@@ -5,9 +5,26 @@ import { createEpicMiddleware } from 'redux-observable';
 import { logger } from '../../../../Library/Caches/typescript/2.9/node_modules/@types/redux-logger';
 import { isFSA } from 'flux-standard-action';
 
- 
 import { rootEpic } from './redux/epics';
 import rootReducer from './redux/reducers';
+
+import * as counterActions from './redux/actions/counter';
+
+declare const window: Window & {
+  __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?(a: any): void;
+  ipc: Object; // fix
+};
+  
+declare const module: NodeModule & {
+  hot?: {
+    accept(...args: any[]): any;
+  }
+};
+  
+const actionCreators = Object.assign({}, 
+    counterActions,
+    {}
+);
 
 const epicMiddleware = createEpicMiddleware(); 
 
@@ -44,13 +61,12 @@ const configureStore = (initialState) => {
         applyMiddleware(...middleware),
     ];
     
-    const composeEnhancers =
-    typeof window === 'object' &&
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?   
+    const composeEnhancers: typeof compose = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-        // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
-    }) : compose;
-
+      // Options: http://zalmoxisus.github.io/redux-devtools-extension/API/Arguments.html
+      actionCreators
+    }) as any :
+    compose;
     
     const enhancer = composeEnhancers(...enhanced); // compose
     console.log(typeof rootReducer, initialState, typeof enhancer);

@@ -4,10 +4,8 @@ import { AppContainer } from 'react-hot-loader';
 import Root from './containers/Root';
 import './app.global.scss';
 
-const { configureStore } = require('./store/configureStore');
-const store = configureStore();
-
-
+import store from './array-client';
+ 
 render(
   <AppContainer>
     <Root store={store}   />

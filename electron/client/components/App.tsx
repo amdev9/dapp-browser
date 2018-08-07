@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
-import * as CounterActions from '../actions/counter';
+import * as CounterActions from '../redux/actions/counter';
 import { connect } from 'react-redux';
 
  
-import { IState } from '../reducers';
+import { IState } from '../redux/reducers';
 
 interface AppProps {
   counter: number,
