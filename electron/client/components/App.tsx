@@ -19,7 +19,7 @@ class App extends React.Component<AppProps> {
     const { increment, decrement, incrementIfOdd, incrementAsync,  counter } = this.props;
     return (
       <div>
-        <h1>Client BrowserWindow!</h1>
+        <h1>Client BrowserWindow</h1>
         <p>{counter}</p>
         <button onClick={increment}>+</button>
         <button onClick={decrement}>-</button>

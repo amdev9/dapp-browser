@@ -5,6 +5,7 @@
 
 import { app, BrowserView, ipcMain } from 'electron';
 import { Store } from 'redux';
+import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer';
 import { configureStore } from './helpers/store/configureStore';
 import { createClientWindow } from './createClientWindow';
 import { createDappView } from './createDappView';
@@ -25,12 +26,6 @@ if (process.env.NODE_ENV === 'production') {
   sourceMapSupport.install();
 }
 
-// if (process.env.NODE_ENV === 'development') {
-  require('electron-debug')(); // eslint-disable-line global-require
-  const path = require('path'); // eslint-disable-line
-  const p = path.join(__dirname, '..', 'main', 'node_modules'); // eslint-disable-line
-  require('module').globalPaths.push(p); // eslint-disable-line
-// }
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -38,24 +33,13 @@ app.on('window-all-closed', () => {
   }
 });
 
-const installExtensions = () => {
-  // if (process.env.NODE_ENV === 'development') {
-    const installer = require('electron-devtools-installer'); // eslint-disable-line global-require
-
-    const extensions = [
-      'REACT_DEVELOPER_TOOLS',
-      'REDUX_DEVTOOLS'
-    ];
-    const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-    return Promise.all(extensions.map(name => installer.default(installer[name], forceDownload)));
-  // }
-
-  return Promise.resolve([]);
-};
-
 app.on('ready', () => {
-
-  installExtensions().then(() => {
+  installExtension([
+    REACT_DEVELOPER_TOOLS,
+    REDUX_DEVTOOLS
+  ]).then((name) => {
+    console.log(`Added Extension: ${name}`);
+    
     app.on('activate', () => {
       // On OS X it's common to re-create a window in the app when the
       // dock icon is clicked and there are no other windows open.
@@ -95,7 +79,8 @@ app.on('ready', () => {
       }
     });
     process.stdout.write(JSON.stringify(globalUUIDList));
-  });
+  })
+  .catch((err) => console.log('An error occurred: ', err));
 });
 process.stdout.write("Main initialized");
 

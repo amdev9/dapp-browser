@@ -35,7 +35,7 @@ interface ElectronManager {
 
 declare const window: Window & {
   __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?(a: any): void;
-  ipc: ElectronManager; // fix
+  ipc: ElectronManager;
 };
   
 declare const module: NodeModule & {
@@ -84,7 +84,6 @@ const configureStore = (initialState?: State) => {
     
     const composeEnhancers: typeof compose = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-      // Options: http://zalmoxisus.github.io/redux-devtools-extension/API/Arguments.html
       actionCreators
     }) as any :
     compose;
