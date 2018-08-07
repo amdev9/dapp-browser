@@ -10,20 +10,26 @@ const RENDERER_PATH: string = path.join(__dirname, '..', '..', 'client');
 export function createClientWindow(globalUUIDList: RendererConf[]) {
   const uuidClient = uuidv4();
   const authorizedChannelsList = ['channelId1', 'channelId2']; //next todo get channels list from dapp manifest
+
+  let webPrefObj = {
+    nodeIntegration: false,
+    preload: path.join(__dirname, '..', 'preload.js'),
+    additionalArguments: [
+      '--uuid-renderer='.concat(uuidClient),
+      '--channels='.concat(authorizedChannelsList.join(";"))
+    ]
+  };
+
+  if (process.env.NODE_ENV == 'production') {
+    webPrefObj = Object.assign(webPrefObj, { sandbox: true })
+  }
+
   clientWindow = new BrowserWindow({
     x: 0,
     y: 0,
     width: 1200,
     height: 800,
-    webPreferences: {
-      nodeIntegration: false,
-      // sandbox: true,
-      preload: path.join(__dirname, '..', 'preload.js'),
-      additionalArguments: [
-        '--uuid-renderer='.concat(uuidClient),
-        '--channels='.concat(authorizedChannelsList.join(";"))
-      ]
-    }
+    webPreferences: webPrefObj
   })
   clientWindow.loadURL('file://' + path.join(RENDERER_PATH, 'index.html'));
 

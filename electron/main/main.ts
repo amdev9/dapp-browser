@@ -34,14 +34,10 @@ app.on('window-all-closed', () => {
 });
 
 app.on('ready', async () => {
-
-
-  let reactTools = await installExtension(REACT_DEVELOPER_TOOLS) 
-  console.log(`Added Extension: ${reactTools}`);
-  let reduxTools = await installExtension(REDUX_DEVTOOLS);
-  console.log(`Added Extension: ${reduxTools}`);
-   
-   
+  if (process.env.NODE_ENV === 'development') {
+    let devtools = await installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS]);
+    console.log(`Added Extension: ${devtools}`);
+  }
   app.on('activate', () => {
     // On OS X it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.

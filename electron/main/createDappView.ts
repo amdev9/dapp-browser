@@ -23,16 +23,22 @@ export function createDappView(globalUUIDList: RendererConf[], entryPath: string
 
   const uuidDapp = uuidv4();
   const authorizedChannelsList = ['channelId1', 'channelId2']; //next todo get channels list from dapp manifest
+
+  let webPrefObj = {
+    nodeIntegration: false,
+    preload: path.join(__dirname, '..', 'preload.js'),
+    additionalArguments: [ 
+      '--uuid-renderer='.concat(uuidDapp),
+      '--channels='.concat(authorizedChannelsList.join(";"))
+    ]
+  };
+
+  if (process.env.NODE_ENV == 'production') {
+    webPrefObj = Object.assign(webPrefObj, { sandbox: true })
+  }
+
   dappView = new BrowserWindow({ // BrowserView
-    webPreferences: {
-      nodeIntegration: false,
-      // sandbox: true,
-      preload: path.join(__dirname, '..', 'preload.js'),
-      additionalArguments: [ 
-        '--uuid-renderer='.concat(uuidDapp),
-        '--channels='.concat(authorizedChannelsList.join(";"))
-      ]
-    }
+    webPreferences: webPrefObj
   });
   
   const bounds = {
