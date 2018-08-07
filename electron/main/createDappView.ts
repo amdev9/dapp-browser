@@ -26,7 +26,7 @@ export function createDappView(globalUUIDList: RendererConf[], entryPath: string
   dappView = new BrowserWindow({ // BrowserView
     webPreferences: {
       nodeIntegration: false,
-      sandbox: true,
+      // sandbox: true,
       preload: path.join(__dirname, '..', 'preload.js'),
       additionalArguments: [ 
         '--uuid-renderer='.concat(uuidDapp),

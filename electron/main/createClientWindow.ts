@@ -17,7 +17,7 @@ export function createClientWindow(globalUUIDList: RendererConf[]) {
     height: 800,
     webPreferences: {
       nodeIntegration: false,
-      sandbox: true,
+      // sandbox: true,
       preload: path.join(__dirname, '..', 'preload.js'),
       additionalArguments: [
         '--uuid-renderer='.concat(uuidClient),
