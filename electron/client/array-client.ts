@@ -2,7 +2,7 @@ import "babel-polyfill";
  
 import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import { createEpicMiddleware } from 'redux-observable';
-import { logger } from 'redux-logger';
+import { logger } from '../../../../Library/Caches/typescript/2.9/node_modules/@types/redux-logger';
 import { isFSA } from 'flux-standard-action';
 
  

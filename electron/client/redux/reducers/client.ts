@@ -1,4 +1,4 @@
-import { SWITCH_DAPP, SEND_PING_MESSAGE } from '../actions/client';
+import { SWITCH_DAPP } from '../actions/client';
 
 export function client(state = {}, action) {
   switch (action.type) {
@@ -9,9 +9,6 @@ export function client(state = {}, action) {
         activeDapp: dappId 
       }
     
-    case SEND_PING_MESSAGE:  
-      return state;
-
     default:
       return state;
   }
