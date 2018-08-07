@@ -33,54 +33,55 @@ app.on('window-all-closed', () => {
   }
 });
 
-app.on('ready', () => {
-  installExtension([
-    REACT_DEVELOPER_TOOLS,
-    REDUX_DEVTOOLS
-  ]).then((name) => {
-    console.log(`Added Extension: ${name}`);
-    
-    app.on('activate', () => {
-      // On OS X it's common to re-create a window in the app when the
-      // dock icon is clicked and there are no other windows open.
-      clientWindow = createClientWindow(globalUUIDList);
-    });
-    clientWindow = createClientWindow(globalUUIDList);  
+app.on('ready', async () => {
 
-    // create multiple view and keep them around the memory, detached from the window
-    // then switching workspaces is just and additional call to setBrowserView
-    const dappsIndexes: string[] = ['index.html', 'index2.html'];
-    let dappInd: string;
-    for (dappInd of dappsIndexes) {
-      createDappView(globalUUIDList, dappInd);
+
+  let reactTools = await installExtension(REACT_DEVELOPER_TOOLS) 
+  console.log(`Added Extension: ${reactTools}`);
+  let reduxTools = await installExtension(REDUX_DEVTOOLS);
+  console.log(`Added Extension: ${reduxTools}`);
+   
+   
+  app.on('activate', () => {
+    // On OS X it's common to re-create a window in the app when the
+    // dock icon is clicked and there are no other windows open.
+    clientWindow = createClientWindow(globalUUIDList);
+  });
+  clientWindow = createClientWindow(globalUUIDList);  
+
+  // create multiple view and keep them around the memory, detached from the window
+  // then switching workspaces is just and additional call to setBrowserView
+  const dappsIndexes: string[] = ['index.html', 'index2.html'];
+  let dappInd: string;
+  for (dappInd of dappsIndexes) {
+    createDappView(globalUUIDList, dappInd);
+  }
+  
+  /* BrowserView
+    let view = BrowserView.fromId(1);
+    clientWindow.setBrowserView(view);
+    view.setBounds(bounds); 
+  */
+
+  const store: Store<{}> = configureStore(global.state, globalUUIDList);
+  
+  store.subscribe( () => {
+    let storeState: any = store.getState();
+    process.stdout.write(JSON.stringify(storeState));
+
+    let activeDappName: string = storeState.client.activeDapp;
+
+    let nameObj: object = globalUUIDList.find(renObj => renObj.name === activeDappName);
+    if (nameObj) {
+      /* BrowserView
+        let view = BrowserView.fromId(nameObj.viewId);
+        clientWindow.setBrowserView(view);
+        view.setBounds(bounds); 
+      */
     }
-    
-    /* BrowserView
-      let view = BrowserView.fromId(1);
-      clientWindow.setBrowserView(view);
-      view.setBounds(bounds); 
-    */
-
-    const store: Store<{}> = configureStore(global.state, globalUUIDList);
-    
-    store.subscribe( () => {
-      let storeState: any = store.getState();
-      process.stdout.write(JSON.stringify(storeState));
-
-      let activeDappName: string = storeState.client.activeDapp;
-
-      let nameObj: object = globalUUIDList.find(renObj => renObj.name === activeDappName);
-      if (nameObj) {
-        /* BrowserView
-          let view = BrowserView.fromId(nameObj.viewId);
-          clientWindow.setBrowserView(view);
-          view.setBounds(bounds); 
-        */
-      }
-    });
-    process.stdout.write(JSON.stringify(globalUUIDList));
-  })
-  .catch((err) => console.log('An error occurred: ', err));
+  });
+  process.stdout.write(JSON.stringify(globalUUIDList));
+  
 });
 process.stdout.write("Main initialized");
 
