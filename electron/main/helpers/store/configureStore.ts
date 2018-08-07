@@ -93,42 +93,37 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
       let uuidObj = globalId.find(renObj => renObj.id === action.payload.uuid);
       console.log('OPEN_CHANNEL ---> ', uuidObj);
       let intentObj = globalId.find(renObj => renObj.id === uuidObj.intent);
-      
       const channelSender = uuidChannelMapList.find(uuidChannelMap => uuidChannelMap.uuid == uuidObj.id).channel;
       const channelReceiver = uuidChannelMapList.find(uuidChannelMap => uuidChannelMap.uuid == uuidObj.intent).channel;
-      // todo map 
-      // intent uuid -> channelReceiver
-      // id uuid -> channelSender
-      console.log(intentObj.winId, channelReceiver, channelSender);
-      bindChannel(intentObj.winId, channelReceiver, channelSender); //'testChannel2', 'testChannel1'); //
+      bindChannel(intentObj.winId, channelReceiver, channelSender);  
     }
     
-    // if (action.payload && action.payload.uuid) {
-    //   // loop through all action uuid's passed in payload {
-    //   let uuidObj = globalId.find(renObj => renObj.id === action.payload.uuid); 
-    //   if (uuidObj) {
-    //     webContents.fromId(uuidObj.winId).send('redux-action', rendererAction);
-    //   }
-    //   // } 
-    //   return next(action);
-    // } else {
-    //   return next(action);
-    // }
+    if (action.payload && action.payload.uuid) {
+      // loop through all action uuid's passed in payload {
+      let uuidObj = globalId.find(renObj => renObj.id === action.payload.uuid); 
+      if (uuidObj) {
+        webContents.fromId(uuidObj.winId).send('redux-action', rendererAction);
+      }
+      // } 
+      return next(action);
+    } else {
+      return next(action);
+    }
 
-    console.log('>> ', action.payload);
-    const allWebContents = webContents.getAllWebContents();
-    allWebContents.forEach((contents) => { 
-      // console.log('---> contents id: ', contents.id);
-      contents.send('redux-action', rendererAction);
-    });
-    return next(action);
+    // console.log('>> ', action.payload);
+    // const allWebContents = webContents.getAllWebContents();
+    // allWebContents.forEach((contents) => { 
+    //   // console.log('---> contents id: ', contents.id);
+    //   contents.send('redux-action', rendererAction);
+    // });
+    // return next(action);
 
   };
 }
 
 const bindChannel = (webId: number, channelReceiver: string, channelSender: string) => {
   ipcMain.on(channelSender, (event: Electron.Event, payload: string) => {
-    console.log('on: ' + channelSender, 'send: ' + channelReceiver, 'webId: ' + webId, payload);
+    // console.log('on: ' + channelSender, 'send: ' + channelReceiver, 'webId: ' + webId, payload);
     webContents.fromId(webId).send(channelReceiver, payload);
   });
 }
@@ -136,12 +131,10 @@ const bindChannel = (webId: number, channelReceiver: string, channelSender: stri
 const replyActionMain = (store: Store<{}>, globalId: RendererConf[]) => {
   global.getReduxState = () => JSON.stringify(store.getState());
   ipcMain.on('redux-action', (event: Electron.Event, uuid: string, payload: any) => {
-
     let uuidObj = globalId.find(renObj => renObj.id === uuid);
     if (uuidObj) {
       const statusObj = { status: uuidObj.status };
       payload.payload = (payload.payload) ? Object.assign(payload.payload, statusObj) : statusObj;
-
       // uuid resolver 
       let uuidTargetObj = globalId.find(renObj => renObj.name === payload.payload.targetDapp); 
       if (uuidTargetObj) {
@@ -151,7 +144,6 @@ const replyActionMain = (store: Store<{}>, globalId: RendererConf[]) => {
         };
         payload.payload = Object.assign(payload.payload, payloadUuidObj) 
       }
-  
       store.dispatch(payload);   
     } else {
       console.log("Spoofing detected")
@@ -163,10 +155,8 @@ export const configureStore = (initialState?: State, globalId?: RendererConf[]) 
   const middleware: Middleware[] = [];
   middleware.push(epicMiddleware, validatePermissionAction, forwardToRendererWrapper(globalId));
   const enhanced = [applyMiddleware(...middleware)];
-
   const enhancer: GenericStoreEnhancer = compose(...enhanced);
   const store = createStore(rootReducer, initialState, enhancer);
-
   epicMiddleware.run(rootEpic);
   replyActionMain(store, globalId);
   return store;

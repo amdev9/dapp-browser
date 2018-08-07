@@ -11,7 +11,10 @@
       "*": ["node_modules/*"]
     }
   },
+  "files": [
+    "./index.tsx"
+  ],
   "include": [
     "./*"
-  ]
+  ],
 }

@@ -47,10 +47,9 @@ export function createClientWindow(globalUUIDList: RendererConf[]) {
     clientWindow = null;
   });
 
-
-  // if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === 'development') {
     openDevTool(clientWindow, true);
-  // }
+  }  
   
   let rendererObj: RendererConf = {
     id: uuidClient,

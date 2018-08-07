@@ -52,7 +52,11 @@ export function createDappView(globalUUIDList: RendererConf[], entryPath: string
       dappView.setBounds(bounds); 
   */
   dappView.webContents.loadURL('file://' + path.join(DAPPS_PATH, entryPath));
-  openDevTool(dappView, true);
+ 
+  if (process.env.NODE_ENV === 'development') {
+    openDevTool(dappView, true);
+  }  
+
   let rendererObj: RendererConf = {
     id: uuidDapp,
     status: 'dapp',
