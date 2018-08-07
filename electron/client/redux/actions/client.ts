@@ -1,6 +1,6 @@
 export const SWITCH_DAPP = 'SWITCH_DAPP';
  
-export function switchDapp(dappName) {
+export function switchDapp(dappName: string) {
   return {
     type: SWITCH_DAPP,
     payload: { 
@@ -9,4 +9,12 @@ export function switchDapp(dappName) {
   };
 }
  
- 
+export interface Action {
+  type: string;
+  payload?: {
+    uuid?: string;
+    uuidRec?: string,
+    uuidSend?: string
+  };
+  // uuid?: string;
+}

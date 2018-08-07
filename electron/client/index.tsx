@@ -2,13 +2,13 @@ import * as React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import Root from './containers/Root';
-import './app.global.scss';
+//import './app.global.scss';
 
 import store from './array-client';
  
 render(
   <AppContainer>
-    <Root store={store}   />
+    <Root store={store} />
   </AppContainer>,
   document.getElementById('root')
 );

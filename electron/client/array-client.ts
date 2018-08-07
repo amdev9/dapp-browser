@@ -1,18 +1,41 @@
 import "babel-polyfill";
  
-import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
+import { combineReducers, createStore, applyMiddleware, compose, StoreEnhancer, Store, Middleware, GenericStoreEnhancer, Dispatch } from 'redux';
 import { createEpicMiddleware } from 'redux-observable';
-import { logger } from '../../../../Library/Caches/typescript/2.9/node_modules/@types/redux-logger';
+import { logger } from 'redux-logger';
 import { isFSA } from 'flux-standard-action';
-
+ 
 import { rootEpic } from './redux/epics';
 import rootReducer from './redux/reducers';
 
 import * as counterActions from './redux/actions/counter';
 
+type State = {
+    readonly counter: number;
+    readonly countdown: number;
+  };
+
+interface Action {
+    type: string;
+    payload?: {
+      uuid?: string;
+      uuidSend?: string;
+      uuidRec?: string;
+    };
+    meta?: {
+      scope?: string
+    };
+  }
+  
+interface ElectronManager {
+    sendActionMain(action: any): void;
+    replyActionRenderer(store: any): void;
+    getGlobalState(): () => string;
+}
+
 declare const window: Window & {
   __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?(a: any): void;
-  ipc: Object; // fix
+  ipc: ElectronManager; // fix
 };
   
 declare const module: NodeModule & {
@@ -30,11 +53,11 @@ const epicMiddleware = createEpicMiddleware();
 
 const electronManager = window.ipc;
 
-const validateAction = (action) => {
+const validateAction = (action: Action) => {
   return isFSA(action);
 }
 
-const forwardToMain = store => next => (action) => {
+const forwardToMain = (store: Store<any>) => (next: Dispatch<void>) => <A extends Action>(action: A) => {
     if (!validateAction(action)) return next(action);
     if (
         action.type.substr(0, 2) !== '@@' &&
@@ -53,9 +76,7 @@ const forwardToMain = store => next => (action) => {
     return next(action);
 };
 
-
-
-const configureStore = (initialState) => {
+const configureStore = (initialState?: State) => {
     const middleware = [forwardToMain, epicMiddleware, logger]; 
     const enhanced = [
         applyMiddleware(...middleware),
@@ -68,8 +89,8 @@ const configureStore = (initialState) => {
     }) as any :
     compose;
     
-    const enhancer = composeEnhancers(...enhanced); // compose
-    console.log(typeof rootReducer, initialState, typeof enhancer);
+    const enhancer: StoreEnhancer<any> = composeEnhancers(...enhanced); // compose
+ 
     const store = createStore(rootReducer, initialState, enhancer);
 
     if (module.hot) {
