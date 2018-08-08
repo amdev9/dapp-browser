@@ -33,6 +33,7 @@
     "url-loader": "^1.0.1"
   },
   "dependencies": {
+    "@types/rc-tooltip": "^3.4.12",
     "@types/react": "^16.4.8",
     "@types/react-dom": "^16.0.7",
     "@types/react-redux": "^6.0.6",
@@ -49,6 +50,7 @@
     "minimist": "^1.2.0",
     "moment": "^2.22.2",
     "prop-types": "^15.5.10",
+    "rc-dropdown": "^2.2.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-redux": "^5.0.5",
