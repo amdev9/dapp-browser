@@ -1,9 +1,15 @@
 import * as React from "react"
 import { AppItem } from './AppItem';
-export class AppBox extends React.Component { 
+
+interface AppsListProps {
+  icon: string,
+  name: string
+}
+
+export class AppBox extends React.Component<AppsListProps> { 
   public render() {
     return (
-      <AppItem />
+      <AppItem {...this.props}/>
     )
   }
 }

@@ -1,15 +1,20 @@
 import * as React from "react"
 import * as path from 'path';
  
-const icon = require("../../assets/app-icons/chat.svg")
 
-export class AppItem extends React.Component { 
+interface AppsItemProps {
+  icon: string,
+  name: string
+}
+
+export class AppItem extends React.Component<AppsItemProps> { 
   
   public render() {
+    const { icon, name } = this.props
     return (
       <div className="tray item">
         <div className="icon">
-          <img src={icon} alt={'test icon'} />
+          <img src={icon} alt={name} />
         </div>
       </div>
     )
