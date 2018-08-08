@@ -4,9 +4,9 @@ import * as CounterActions from '../redux/actions/counter';
 import { connect } from 'react-redux';
 import { HeaderBar } from "./HeaderBar"
  
+ 
+
 import { IState } from '../redux/reducers';
-
-
 
 interface AppProps {
   counter: number,
@@ -21,17 +21,26 @@ class App extends React.Component<AppProps> {
     const { increment, decrement, incrementIfOdd, incrementAsync,  counter } = this.props;
     return (
       <div>
-        <h1>Client BrowserWindow</h1>
-        <p>{counter}</p>
-        <button onClick={increment}>+</button>
-        <button onClick={decrement}>-</button>
-        <button onClick={incrementIfOdd}>incrementIfOdd</button>
-        <button onClick={() => incrementAsync()}>incrementAsync</button>
         <HeaderBar key="root-headerbar" />
+        <div key="root-content" id="root-container" className="content-zone">
+ 
+          <div className="content" id="content-wrap">
+            <h3>Client BrowserWindow</h3>
+            <p>{counter}</p>
+            <button onClick={increment}>+</button>
+            <button onClick={decrement}>-</button>
+            <button onClick={incrementIfOdd}>incrementIfOdd</button>
+            <button onClick={() => incrementAsync()}>incrementAsync</button>
+            <main className="page-container">
+            </main>
+          </div>
+        </div>
       </div>
-    );
+    )
   }
 }
+
+
 
 function mapStateToProps(state: IState): Partial<AppProps> {
   return {
