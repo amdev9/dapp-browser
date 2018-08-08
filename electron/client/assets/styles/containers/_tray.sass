@@ -1,0 +1,146 @@
+.tray
+  &:not(.item), &:not(.root-item)
+    background-color: $tray-background
+    border-right: 1px solid #EEE
+    flex-direction: column
+    width: $tray-width
+    display: flex
+
+  .bottom
+    border-top: 1px solid rgba(0,0,0, 0.05)    
+    .indicator
+      +flex(row, center, center)
+      width: $tray-width
+      cursor: pointer
+      height: 50px
+      img
+        height: 25px
+        width: auto
+
+  .divider
+    background-color: rgba(0,0,0, 0.03)
+    margin: 5px 0
+    width: 100%
+    height: 1px
+
+  .list
+    list-style-type: none
+    position: relative
+    width: $tray-width
+    list-style: none
+    padding: 0
+    margin: 0
+    flex: 1
+
+  &.root-item
+    height: ($tray-width - 2px)
+    width: $tray-width
+    position: relative
+
+    .actions
+      +flex(column, space-between, center)
+      position: absolute
+      height: 100%
+      z-index: 10
+      width: 18px
+      left: 3px
+      top: 0px
+
+      .close, .pin
+        +flex(row, center, center)
+        background-color: #fafafc
+        border: 1px solid #000
+        border-radius: 50%
+        cursor: pointer
+        height: 18px
+        width: 18px
+
+      .close
+        border-color: #e7545d
+        margin-top: 2px
+      
+      .pin
+        margin-bottom: 3px
+        &.pinned
+          border-color: #b1bbc8
+        &.unpined
+          border-color: #4686ff
+  
+  &.item
+    +flex(column, center, center)
+    position: relative
+    user-select: none
+    cursor: pointer
+    
+    height: ($tray-width - 2px)
+    width: $tray-width
+
+    // Fix scale bug with active item
+    &.non-scale
+      transform: scale(0.7)
+
+    &.disabled
+      .icon
+        opacity: 0.7
+
+    &.running
+      &:before
+        top: calc(50% - #{$tray-active-indicator-size})
+        border-radius: $tray-active-indicator-size
+        height: $tray-active-indicator-size
+        width: $tray-active-indicator-size
+        background-color: #4a89ff
+        position: absolute
+        content: " "
+        left: 3px
+      
+      &.active
+        border-left: $tray-active-border-width solid #4a89ff
+        width: ($tray-width - $tray-active-border-width)
+        background-color: #f1f2f6
+        &:before
+          content: none
+      
+    .icon
+      height: $tray-icon-size
+      width: $tray-icon-size
+      img
+        height: auto
+        width: auto
+    
+    .process-indicator
+      +flex(row, center, center)
+      width: $tray-icon-size
+      height: 7px
+
+      .progress
+        border-radius: 3px
+        margin-top: 3px
+        height: 3px
+    
+    .updating
+      +flex(row, center, center) 
+      background-color: #4a89ff
+      border: 1px solid #ffffff
+      position: absolute
+
+      border-radius: $tray-updating-size
+      height: $tray-updating-size
+      width: $tray-updating-size
+      right: 5px
+      top: 55%
+    
+    .counter
+      +flex(row, center, center)
+      background-color: #4a89ff
+      border: 1px solid #ffffff
+      position: absolute
+
+      border-radius: 40%
+      padding: 2px 3px
+      font-weight: 500
+      font-size: 12px
+      color: #ffffff
+      right: 3px
+      top: 2px
+

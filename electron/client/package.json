@@ -18,14 +18,19 @@
     "babel-loader": "^7.1.1",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
+    "css-loader": "^1.0.0",
     "electron-redux-devtools": "^0.3.4",
+    "file-loader": "^1.1.11",
     "http-server": "^0.10.0",
+    "node-sass": "^4.9.2",
     "react-hot-loader": "^4.3.4",
     "redux-logger": "^3.0.6",
+    "sass-loader": "^7.1.0",
     "source-map-loader": "^0.2.3",
     "style-loader": "^0.21.0",
     "ts-loader": "^4.4.2",
-    "typescript": "^3.0.1"
+    "typescript": "^3.0.1",
+    "url-loader": "^1.0.1"
   },
   "dependencies": {
     "@types/react": "^16.4.8",

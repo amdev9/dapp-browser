@@ -1,0 +1,49 @@
+.settings-tooltip
+  transform: translate(0, 0)
+  transition: all 0.3s ease
+  position: absolute
+  display: block
+  z-index: 1000
+  // right: 15px !important
+  // left: auto !important
+
+  &-slide-enter, &-slide-appear 
+    animation-fill-mode: forwards
+    animation-name: slideInDown
+    animation-duration: 400ms
+    z-index: 1
+    top: 60px
+
+  &-slide-leave
+    animation-fill-mode: forwards
+    animation-name: slideOutUp
+    animation-duration: 400ms
+    z-index: -1
+
+.settings-tooltip-hidden
+  transform: translate(0, -150px)
+  display: none
+
+.settings-menu
+  border: 1px solid rgba(0,0,0, 0.05)
+  border-radius: 0 0 5px 5px
+  background-color: #ffffff
+  margin-right: -15px
+  margin-top: -3px
+  border-top: none
+  width: 120px
+
+  ul
+    list-style: none
+    padding: 0 
+    margin: 0
+    li
+      transition: all 0.1s ease-in
+      color: rgba(0,0,0, 0.75)
+      letter-spacing: 0
+      padding: 7px 10px
+      font-weight: 500
+      font-size: 15px
+      cursor: pointer
+      &:hover
+        background-color: rgba(0,0,0, 0.03)

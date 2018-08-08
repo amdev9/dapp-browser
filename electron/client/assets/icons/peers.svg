@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="15px" height="14px" viewBox="0 0 15 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <rect fill="#D3DAE2" x="0" y="0" width="3" height="14"></rect>
+    <rect fill="#4686FF" x="0" y="0" width="3" height="14">
+        <animate attributeType="XML" attributeName="y" from="0" to="12" dur="1.5s" values="0; 6; 12; 6; 0" repeatCount="indefinite"/>
+    </rect>
+        
+    <rect fill="#D3DAE2" x="6" y="0" width="3" height="14"></rect>
+    <rect fill="#4686FF" x="6" y="6" width="3" height="14">
+        <animate attributeType="XML" attributeName="y" from="0" to="12" dur="1s" values="0; 6; 12; 6; 0" repeatCount="indefinite"/>
+    </rect>
+        
+    <rect fill="#D3DAE2" x="12" y="0" width="3" height="14"></rect>
+    <rect fill="#4686FF" x="12" y="10" width="3" height="14">
+        <animate attributeType="XML" attributeName="y" from="0" to="12" dur="0.5s" values="0; 6; 12; 6; 0" repeatCount="indefinite"/>
+    </rect>
+</svg>

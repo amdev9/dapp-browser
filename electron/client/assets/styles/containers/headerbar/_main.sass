@@ -1,0 +1,60 @@
+\:root
+  --headerbar-title-display: block
+  
+.headerbar
+  border-bottom: $headerbar-border-width solid #EEE
+  background-color: $headerbar-background
+  +flex(row, flex-start, center)
+  height: $headerbar-height
+  width: 100%
+
+  .header, .keychain, .settings, .notifications
+    img.icon
+      height: $headerbar-icon-size
+      width: auto
+
+  .settings, .notifications
+    +flex(row, center, center)
+    height: $headerbar-height
+    width: 50px
+
+  .actions
+    +flex(row, flex-start, center)
+    flex: 1
+    // Fix of search hide animation
+    .unions
+      background-color: $headerbar-background
+      +flex(row, flex-start, center)
+      z-index: 1000
+
+      .network, .keychain
+        margin: 0 8px
+    
+      .network
+        border: 1px solid rgba(0,0,0, 0.1)
+        color: rgba(0,0,0, 0.7)
+        border-radius: 18px
+        padding: 8px 14px
+        font-weight: 500
+        font-size: 14px
+    
+      .keychain
+        +flex(row, center, center)
+        color: rgba(0,0,0, 0.67)
+        font-weight: 500
+        font-size: 14px
+        .icon
+          margin-right: 7px
+
+
+  .header
+    +flex(row, center, center)
+    width: $tray-width
+
+  .title
+    display: var(--headerbar-title-display)
+    font-size: $headerbar-title-size
+    color: rgba(0,0,0, 0.87)
+    padding-left: 14px
+    letter-spacing: 0
+    font-weight: 600

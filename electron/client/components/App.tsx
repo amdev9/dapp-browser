@@ -2,9 +2,11 @@ import * as React from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import * as CounterActions from '../redux/actions/counter';
 import { connect } from 'react-redux';
-
+import { HeaderBar } from "./HeaderBar"
  
 import { IState } from '../redux/reducers';
+
+
 
 interface AppProps {
   counter: number,
@@ -25,6 +27,7 @@ class App extends React.Component<AppProps> {
         <button onClick={decrement}>-</button>
         <button onClick={incrementIfOdd}>incrementIfOdd</button>
         <button onClick={() => incrementAsync()}>incrementAsync</button>
+        <HeaderBar key="root-headerbar" />
       </div>
     );
   }

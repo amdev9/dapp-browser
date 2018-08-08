@@ -1,0 +1,69 @@
+.statusbar
+  transition: all 0.4s ease
+  background-color: #ffffff
+  min-height: 50px
+
+  .bar
+    border-top: 1px solid rgba(0,0,0, 0.05)
+    justify-content: center
+    flex-direction: column
+    display: flex
+    height: 50px
+
+    .info
+      +flex(row, flex-start, center)
+      padding: 0 18px
+
+      .title
+        +flex(row, center, center)
+        margin-right: 15px
+
+        .name
+          letter-spacing: 0
+          font-weight: 500
+          font-size: 15px
+          color: #000000
+
+      .peers
+        +flex(row, center, center)
+        margin: 0 10px
+        width: 100px
+        
+        .icon
+          margin-right: 8px
+          height: 15px
+          img
+            height: 15px
+            width: auto     
+        
+        .count
+          color: rgba(0,0,0, 0.8)
+          letter-spacing: 0
+          font-weight: 500
+          font-size: 15px
+
+      .nodes
+        width: 110px
+
+      .nodes, .times
+        +flex(row, flex-start, center)
+        margin: 0 10px
+
+        .icon
+          margin-right: 8px
+          height: 15px
+          img
+            height: 15px
+            width: auto
+        
+        .count, .total, .separator
+          letter-spacing: 0
+          font-weight: 500
+          font-size: 15px
+        
+        .total, .separator
+          color: #7b8da7
+        .count
+          color: rgba(0,0,0, 0.8)
+        .separator
+          margin: 0 4px

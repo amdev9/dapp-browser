@@ -32,7 +32,25 @@ module.exports = {
                 test: /\.(ts|tsx)$/,
                 loader: 'ts-loader'
             },
-            { enforce: "pre", test: /\.js$/, loader: "source-map-loader" }
+            { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
+            { test: /\.(png|svg|otf)$/, use: 'url-loader?limit=100000' },
+            { test: /\.(jpg|gif)$/, use: 'file-loader' },
+            {
+                test: /\.sass$/,
+                use: [
+                  'style-loader',
+                  {
+                    loader: 'css-loader',
+                    query: {
+                      localIdentName: '[local]',
+                      sourceMap: true,
+                      importLoaders: 1,
+                      modules: true,
+                    }
+                  },
+                  { loader: "sass-loader", options: {} }
+                ]
+            }
         ]
     },
     stats: {
