@@ -3,7 +3,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import * as CounterActions from '../redux/actions/counter';
 import { connect } from 'react-redux';
 import { HeaderBar } from "./HeaderBar"
- 
+import { Tray } from './Tray';
  
 
 import { IState } from '../redux/reducers';
@@ -23,15 +23,15 @@ class App extends React.Component<AppProps> {
       <div>
         <HeaderBar key="root-headerbar" />
         <div key="root-content" id="root-container" className="content-zone">
- 
+          <Tray />
           <div className="content" id="content-wrap">
-            <h3>Client BrowserWindow</h3>
-            <p>{counter}</p>
-            <button onClick={increment}>+</button>
-            <button onClick={decrement}>-</button>
-            <button onClick={incrementIfOdd}>incrementIfOdd</button>
-            <button onClick={() => incrementAsync()}>incrementAsync</button>
             <main className="page-container">
+              <h3>Client BrowserWindow</h3>
+              <p>{counter}</p>
+              <button onClick={increment}>+</button>
+              <button onClick={decrement}>-</button>
+              <button onClick={incrementIfOdd}>incrementIfOdd</button>
+              <button onClick={() => incrementAsync()}>incrementAsync</button>
             </main>
           </div>
         </div>
