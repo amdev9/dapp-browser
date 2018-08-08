@@ -88,7 +88,7 @@ const configureStore = (initialState?: State) => {
     }) as any :
     compose;
     
-    const enhancer: StoreEnhancer<any> = composeEnhancers(...enhanced); // compose
+    const enhancer: GenericStoreEnhancer = composeEnhancers(...enhanced); // compose
  
     const store = createStore(rootReducer, initialState, enhancer);
 

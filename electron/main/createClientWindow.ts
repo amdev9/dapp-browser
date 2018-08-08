@@ -41,22 +41,29 @@ export function createClientWindow(globalUUIDList: RendererConf[]) {
     }
     clientWindow.show();
     clientWindow.focus();
+
+    
   });
 
   clientWindow.on('closed', () => {
     clientWindow = null;
+    // remove from global
   });
 
   if (process.env.NODE_ENV === 'development') {
     openDevTool(clientWindow, true);
   }  
   
-  let rendererObj: RendererConf = {
-    id: uuidClient,
-    status: 'client',
-    winId: clientWindow.id,
-    name: 'clientname128729'
-  };
-  globalUUIDList.push(rendererObj);
+  const renderIdClient = clientWindow.webContents.getProcessId(); //.webContents.getProcessId(); //.id,
+    console.log(renderIdClient);
+
+    let rendererObj: RendererConf = {
+      id: uuidClient,
+      status: 'client',
+      winId: renderIdClient,
+      name: 'clientname128729'
+    };
+    globalUUIDList.push(rendererObj);
+
   return clientWindow;
 }

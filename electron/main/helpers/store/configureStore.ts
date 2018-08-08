@@ -52,6 +52,14 @@ const validateAction = (action: Action) => {
   return isFSA(action);
 }
   
+const targetWebContents = (targetId: number) => { //: (targetId: number) => webContents 
+  const allWebContents = webContents.getAllWebContents();
+  return allWebContents.find(contents => contents.getProcessId() === targetId);
+  // allWebContents.forEach((contents) => { 
+  //   console.log('---> contents id: ', targetId, contents.getProcessId() ); 
+  // });
+}
+
 const forwardToRendererWrapper = (globalId: RendererConf[]) => {
   return () => (next: Dispatch<void>) => <A extends Action>(action: A) => {
     if (!validateAction(action)) return next(action);
@@ -99,10 +107,11 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
     }
     
     if (action.payload && action.payload.uuid) {
+
       // loop through all action uuid's passed in payload {
       let uuidObj = globalId.find(renObj => renObj.id === action.payload.uuid); 
-      if (uuidObj) {
-        webContents.fromId(uuidObj.winId).send('redux-action', rendererAction);
+      if (uuidObj) { 
+        targetWebContents(uuidObj.winId).send('redux-action', rendererAction); 
       }
       // } 
       return next(action);
@@ -124,7 +133,7 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
 const bindChannel = (webId: number, channelReceiver: string, channelSender: string) => {
   ipcMain.on(channelSender, (event: Electron.Event, payload: string) => {
     // console.log('on: ' + channelSender, 'send: ' + channelReceiver, 'webId: ' + webId, payload);
-    webContents.fromId(webId).send(channelReceiver, payload);
+    targetWebContents(webId).send(channelReceiver, payload);
   });
 }
 

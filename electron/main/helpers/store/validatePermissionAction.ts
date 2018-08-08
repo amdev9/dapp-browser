@@ -8,7 +8,7 @@ import { Middleware } from 'redux';
 
 export const validatePermissionAction: Middleware = () => next => (action) => {
 
-  console.log(action); //next todo fix permissions
+  // console.log(action); //next todo fix permissions
   return next(action);
 
   // if (action.payload.status === 'dapp') {

@@ -20,12 +20,12 @@ class ElectronManager {
       return param.indexOf('--uuid-renderer') >= 0;
     });  
     const uuidRenderer = uuidRendererParam[0].split("=")[1];
-    console.log(uuidRenderer);
+    // console.log(uuidRenderer);
 
     // const authChannels = channelsParam[0].split("=").split(";");
     // console.log(authChannels);
 
-    console.log(electron.remote.getGlobal('getReduxState')());
+    // console.log(electron.remote.getGlobal('getReduxState')());
 
     const replyActionRenderer = (store) => { 
       ipcRenderer.on('redux-action', (event, payload) => { 
@@ -42,7 +42,7 @@ class ElectronManager {
     }
 
     const sendActionMain = (action) => {
-      console.log(uuidRenderer);
+      // console.log(uuidRenderer);
       ipcRenderer.send('redux-action', uuidRenderer, action);
     }
 

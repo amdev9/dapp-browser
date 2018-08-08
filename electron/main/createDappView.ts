@@ -53,15 +53,39 @@ export function createDappView(globalUUIDList: RendererConf[], entryPath: string
   */
   dappView.webContents.loadURL('file://' + path.join(DAPPS_PATH, entryPath));
  
+  // @TODO: Use 'ready-to-show' event
+  //        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event
+  dappView.webContents.on('did-finish-load', () => {
+    if (!dappView) {
+      throw new Error('"clientWindow" is not defined');
+    }
+    dappView.show();
+    dappView.focus();
+
+    
+  });
+
+  dappView.on('closed', () => {
+    dappView = null;
+    // remove from global
+  });
+
   if (process.env.NODE_ENV === 'development') {
     openDevTool(dappView, true);
   }  
 
-  let rendererObj: RendererConf = {
-    id: uuidDapp,
-    status: 'dapp',
-    winId: dappView.id,
-    name: 'dappname128729'.concat(entryPath.split('.')[0]) // load from dapp
-  }
-  globalUUIDList.push(rendererObj);
+
+  const renderIdDapp = dappView.webContents.getProcessId(); //.id,
+    console.log(renderIdDapp);
+    
+
+    let rendererObj: RendererConf = {
+      id: uuidDapp,
+      status: 'dapp',
+      winId: renderIdDapp,
+      name: 'dappname128729'.concat(entryPath.split('.')[0]) // load from dapp
+    }
+    globalUUIDList.push(rendererObj);
+
+  
 }
