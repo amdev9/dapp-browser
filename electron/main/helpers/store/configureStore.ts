@@ -52,12 +52,11 @@ const validateAction = (action: Action) => {
   return isFSA(action);
 }
   
-const targetWebContents = (targetId: number) => { //: (targetId: number) => webContents 
+const targetWebContents = (targetId: number) => { 
   const allWebContents = webContents.getAllWebContents();
-  return allWebContents.find(contents => contents.getProcessId() === targetId);
-  // allWebContents.forEach((contents) => { 
-  //   console.log('---> contents id: ', targetId, contents.getProcessId() ); 
-  // });
+  console.log('webContents chrome proc Id\'s: ', allWebContents.map((contents) => contents.getProcessId()) ); 
+  const targetContents = allWebContents.find(contents => contents.getProcessId() === targetId);
+  return targetContents; // if not find
 }
 
 const forwardToRendererWrapper = (globalId: RendererConf[]) => {
@@ -111,7 +110,14 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
       // loop through all action uuid's passed in payload {
       let uuidObj = globalId.find(renObj => renObj.id === action.payload.uuid); 
       if (uuidObj) { 
-        targetWebContents(uuidObj.winId).send('redux-action', rendererAction); 
+        const resolver = targetWebContents(uuidObj.winId);
+        console.log(resolver);
+        if (resolver) {
+          resolver.send('redux-action', rendererAction); 
+        } else {
+          console.log('resolver error: ', 'action message lost');
+          return next(action);
+        }
       }
       // } 
       return next(action);
@@ -133,7 +139,13 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
 const bindChannel = (webId: number, channelReceiver: string, channelSender: string) => {
   ipcMain.on(channelSender, (event: Electron.Event, payload: string) => {
     // console.log('on: ' + channelSender, 'send: ' + channelReceiver, 'webId: ' + webId, payload);
-    targetWebContents(webId).send(channelReceiver, payload);
+    const bindResolver = targetWebContents(webId);
+    if (bindResolver) {
+      bindResolver.send(channelReceiver, payload);
+    } else {
+      console.log('resolver error: ', 'message lost');
+    }
+
   });
 }
 
