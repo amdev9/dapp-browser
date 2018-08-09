@@ -26,12 +26,12 @@ class App extends React.Component<AppProps> {
           <Tray />
           <div className="content" id="content-wrap">
             <main className="page-container">
-              <h3>Client BrowserWindow</h3>
+              {/* <h3>Client BrowserWindow</h3>
               <p>{counter}</p>
               <button onClick={increment}>+</button>
               <button onClick={decrement}>-</button>
               <button onClick={incrementIfOdd}>incrementIfOdd</button>
-              <button onClick={() => incrementAsync()}>incrementAsync</button>
+              <button onClick={() => incrementAsync()}>incrementAsync</button> */}
             </main>
           </div>
         </div>

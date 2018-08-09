@@ -8,8 +8,8 @@ export class AppsList extends React.Component {
   render() {
     return (
       <div className="list">
-        <AppBox icon={iconChat} name={'iconChat'}/>
-        <AppBox icon={iconShare} name={'iconShare'}/>
+        <AppBox icon={iconChat} name={'iconChat'} />
+        <AppBox icon={iconShare} name={'iconShare'} />
       </div>
     )
   }
