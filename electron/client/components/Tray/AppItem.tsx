@@ -1,6 +1,8 @@
 import * as React from "react"
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 
+import './react-contextmenu.css';
+
 interface AppsItemProps {
   icon: string,
   name: string,
@@ -20,7 +22,7 @@ export class AppItem extends React.Component<AppsItemProps> {
   } 
 
   handleClick(e: Event, typeClick: ClickObj) {
-    console.log('clicked', e, typeClick.foo);
+    console.log('clicked');
   }
 
   public render() {

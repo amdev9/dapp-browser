@@ -36,6 +36,21 @@ module.exports = {
             { test: /\.(png|svg|otf)$/, use: 'url-loader?limit=100000' },
             { test: /\.(jpg|gif)$/, use: 'file-loader' },
             {
+                test: /\.css$/,
+                use: [
+                  'style-loader',
+                  {
+                    loader: 'css-loader',
+                    query: {
+                      localIdentName: '[local]',
+                      sourceMap: true,
+                      importLoaders: 1,
+                      modules: true,
+                    }
+                  }
+                ]
+            },
+            {
                 test: /\.sass$/,
                 use: [
                   'style-loader',
