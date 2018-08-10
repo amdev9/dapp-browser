@@ -6,7 +6,7 @@
 
 - [Manifest](manifest.md)
  
-- [Общие Абстракции](/shared/README.md)
+- [Общие Абстракции](shared/README.md)
   - [DApp Window Context](/shared/dapp-window-context.md)
   - [Dependencies](/shared/dependencies.md)
   - [Permissions](/shared/permissions.md)
