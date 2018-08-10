@@ -1,0 +1,15 @@
+{
+  "name": "array-client-declarations",
+  "version": "1.0.0",
+  "description": "Declarations of array.io client arch",
+  "main": "tsconfig.json",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Anton Shramko <antonshramko@yandex.ru>",
+  "license": "ISC",
+  "dependencies": {
+    "@types/ipfs": "git+https://github.com/survirtual/types-ipfs.git",
+    "@types/node": "^10.3.3"
+  }
+}

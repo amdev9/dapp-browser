@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "lib": [
+      "es6",
+      "dom",
+      "es7"
+    ],
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "baseUrl": "../",
+    "typeRoots": [
+      "../"
+    ],
+    "types": [
+      "node"
+    ],
+    "noEmit": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "files": [
+    "activity.d.ts",
+    "ipfs.d.ts",
+    "keychain.d.ts",
+    "p2p.d.ts",
+    "shares.d.ts",
+    "storage.d.ts",
+    "tray.d.ts",
+    "permissions.d.ts",
+    "assets.d.ts",
+    "notification.d.ts",
+    "platform.d.ts"
+  ]
+}
