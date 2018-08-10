@@ -1,0 +1,35 @@
+.feeds
+  flex-direction: column
+  background: #fafafc
+  padding: 35px 50px
+  display: flex
+  height: 100%
+
+  .header
+    +flex(row, space-between, center)
+    height: 60px
+
+    .title
+      color: rgba(0,0,0, 0.9)
+      letter-spacing: 0px
+      font-weight: 800
+      font-size: 21px
+
+    .action
+      background-color: #508dff
+      +flex(row, center, center)
+      border-radius: 16px
+      cursor: pointer
+      height: 34px
+      width: 140px
+
+      span
+        text-transform: uppercase
+        letter-spacing: 0
+        font-weight: 600
+        font-size: 14px
+        color: #ffffff
+  
+  .list
+    flex-wrap: wrap
+    display: flex
