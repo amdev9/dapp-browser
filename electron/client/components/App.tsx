@@ -3,6 +3,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import * as CounterActions from '../redux/actions/counter';
 import { connect } from 'react-redux';
 import { HeaderBar } from "./HeaderBar"
+import { NotificationPanel } from "./NotificationPanel"
 import { Tray } from './Tray';
  
 
@@ -22,6 +23,7 @@ class App extends React.Component<AppProps> {
     return (
       <div>
         <HeaderBar key="root-headerbar" />
+        <NotificationPanel key="root-notifications" />
         <div key="root-content" id="root-container" className="content-zone">
           <Tray />
           <div className="content" id="content-wrap">

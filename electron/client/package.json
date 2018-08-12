@@ -35,6 +35,7 @@
   "dependencies": {
     "@types/rc-tooltip": "^3.4.12",
     "@types/react": "^16.4.8",
+    "@types/react-burger-menu": "^2.2.1",
     "@types/react-dom": "^16.0.7",
     "@types/react-redux": "^6.0.6",
     "@types/redux": "^3.6.0",
@@ -54,6 +55,7 @@
     "react": "^15.6.1",
     "react-contextmenu": "^2.9.3",
     "react-dom": "^15.6.1",
+    "react-perfect-scrollbar": "^1.2.0",
     "react-redux": "^5.0.5",
     "react-sortable-hoc": "^0.8.3",
     "redux": "^3.7.2",

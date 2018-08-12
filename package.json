@@ -10,5 +10,8 @@
   },
   "author": "cypherpunk99",
   "license": "MIT",
-  "dependencies": {}
+  "dependencies": {
+    "react-burger-menu": "^2.5.2",
+    "react-perfect-scrollbar": "^1.2.0"
+  }
 }
