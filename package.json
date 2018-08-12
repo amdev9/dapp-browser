@@ -10,7 +10,5 @@
   },
   "author": "cypherpunk99",
   "license": "MIT",
-  "dependencies": {
- 
-  }
+  "dependencies": {}
 }

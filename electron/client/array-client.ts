@@ -11,9 +11,10 @@ import rootReducer from './redux/reducers';
 import * as counterActions from './redux/actions/counter';
 
 type State = {
-    readonly counter: number;
-    readonly countdown: number;
-  };
+  readonly counter: number;
+  readonly countdown: number;
+  readonly notification: boolean;
+};
 
 interface Action {
     type: string;

@@ -1,7 +1,8 @@
-import * as React from "react"
+import * as React from "react";
  
-const notificationIcon = require("../../assets/icons/notification.svg")
-const homeIcon = require("../../assets/icons/home.svg")
+import { NotificationWidget } from './NotificationWidget';
+ 
+const homeIcon = require("../../assets/icons/home.svg");
  
 export class HeaderBar extends React.Component { 
   public render() {
@@ -26,9 +27,7 @@ export class HeaderBar extends React.Component {
             {/* <Keychain /> */}
             {/* <Settings /> */}
 
-            <div className="notifications">
-              <img className="icon" src={notificationIcon} />
-            </div>
+            <NotificationWidget />
           </div>
         </div>
       </div>

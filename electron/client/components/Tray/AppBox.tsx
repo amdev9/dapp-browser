@@ -20,13 +20,13 @@ export class AppBox extends React.Component<AppBoxProps, AppBoxState> {
   }
 
   handleClick(name: string) {
-    console.log('clicked', name);
+    
     this.setState(prevState => ({
       status: prevState.status.includes('active') ?
         prevState.status.filter((statusFlag) => statusFlag != 'active') : 
           prevState.status.concat(['active'])
     })); 
-    
+    console.log('clicked', name, this.state);
 
     // change state of app 'name' to foreground
     // add class active=foreground 
