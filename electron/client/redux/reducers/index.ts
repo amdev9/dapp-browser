@@ -1,16 +1,12 @@
 import { combineReducers } from 'redux';
- 
-import counter, { TState as TCounterState } from './counter';
-import notification, { TState as TNotificationState } from './notification';
+import counter from './counter';
+import notification from './notification';
+//todo add tray reducer
+import { IState } from './state';
 
-const rootReducer = combineReducers({
+const rootReducer = combineReducers<IState>({
   counter,
   notification
 });
-
-export interface IState {
-  counter: TCounterState;
-  notification: TNotificationState;
-}
 
 export default rootReducer;

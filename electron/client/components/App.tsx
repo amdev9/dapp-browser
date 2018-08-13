@@ -8,7 +8,7 @@ import { NotificationPanel } from "./NotificationPanel"
 import { Tray } from './Tray';
  
 
-import { IState } from '../redux/reducers';
+import { IState } from '../redux/reducers/state';
 
 interface AppProps {
   counter: number,
