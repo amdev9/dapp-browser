@@ -19,6 +19,7 @@ export interface Action {
     uuid?: string;
     uuidSend?: string;
     uuidRec?: string;
+    status?: string;
   };
   meta?: {
     scope?: string
@@ -72,8 +73,7 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
       }
     });
   
-    console.log(action);
-
+    // console.log(action);
     if (action.type == 'INTENT_OPEN_CHANNELS') { 
 
       uuidChannelMapList = [
@@ -107,33 +107,32 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
       bindChannel(intentObj.winId, channelReceiver, channelSender);  
     }
     
-    // if (action.payload && action.payload.uuid) {
+    if (action.payload && action.payload.uuid) {
 
-    //   // loop through all action uuid's passed in payload {
-    //   let uuidObj = globalId.find(renObj => renObj.id === action.payload.uuid); 
-    //   if (uuidObj) { 
-    //     const resolver = targetWebContents(uuidObj.winId);
-    //     console.log(resolver);
-    //     if (resolver) {
-    //       resolver.send('redux-action', rendererAction); 
-    //     } else {
-    //       console.log('resolver error: ', 'action message lost');
-    //       return next(action);
-    //     }
-    //   }
-    //   // } 
-    //   return next(action);
-    // } else {
-    //   return next(action);
-    // }
+      // loop through all action uuid's passed in payload {
+      let uuidObj = globalId.find(renObj => renObj.id === action.payload.uuid); 
+      if (uuidObj) { 
+        const resolver = targetWebContents(uuidObj.winId);
+        // console.log(resolver);
+        if (resolver) {
+          resolver.send('redux-action', rendererAction); 
+        } else {
+          console.log('resolver error: ', 'action message lost');
+          return next(action);
+        }
+      }
+      // } 
+      return next(action);
+    } else {
+      return next(action);
+    }
 
-    //todo resolve to client
-    const allWebContents = webContents.getAllWebContents();
-    allWebContents.forEach((contents) => { 
-      // console.log('---> contents id: ', contents.id);
-      contents.send('redux-action', rendererAction);
-    });
-    return next(action);
+    // const allWebContents = webContents.getAllWebContents();
+    // allWebContents.forEach((contents) => { 
+    //   // console.log('---> contents id: ', contents.id);
+    //   contents.send('redux-action', rendererAction);
+    // });
+    // return next(action);
 
   };
 }
@@ -176,7 +175,7 @@ const replyActionMain = (store: Store<{}>, globalId: RendererConf[]) => {
 
 export const configureStore = (initialState?: State, globalId?: RendererConf[]) => {
   const middleware: Middleware[] = [];
-  middleware.push(epicMiddleware, validatePermissionAction, forwardToRendererWrapper(globalId));
+  middleware.push(epicMiddleware, validatePermissionAction(globalId), forwardToRendererWrapper(globalId));
   const enhanced = [applyMiddleware(...middleware)];
   const enhancer: GenericStoreEnhancer = compose(...enhanced);
   const store = createStore(rootReducer, initialState, enhancer);
