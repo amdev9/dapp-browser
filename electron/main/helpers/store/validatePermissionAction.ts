@@ -53,7 +53,7 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
           //   console.log(action);
           //   return next(action);
   
-          case 'TOGGLE_NATIFICATION_PANEL':
+          case 'TOGGLE_NOTIFICATION_PANEL':
             let clientObj = globalId.find(renObj => renObj.status === 'client');
             if (clientObj) {
               const payloadUuidObj = { 

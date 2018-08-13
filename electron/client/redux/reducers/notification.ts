@@ -5,7 +5,7 @@ export type TState = boolean;
 
 export default function notification(state: boolean = false, action: IAction) {
   switch (action.type) {
-    case 'TOGGLE_NATIFICATION_PANEL': 
+    case 'TOGGLE_NOTIFICATION_PANEL': 
       return !state;
     default: 
       return state;

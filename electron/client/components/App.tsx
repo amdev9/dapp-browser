@@ -29,9 +29,9 @@ class App extends React.Component<AppProps> {
         <HeaderBar isOpen={notification} togglePanel={() => toggle()} key="root-headerbar" />
         <NotificationPanel isOpen={notification} togglePanel={(openStatus) => toggle(openStatus)} key="root-notifications" />
 
-        <p>{counter}</p>
+        {/* <p>{counter}</p>
         <button onClick={increment}>+</button>
-        <button onClick={decrement}>-</button>
+        <button onClick={decrement}>-</button> */}
  
         <div key="root-content" id="root-container" className="content-zone">
           <Tray />
