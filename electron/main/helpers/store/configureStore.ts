@@ -55,7 +55,7 @@ const validateAction = (action: Action) => {
   
 const targetWebContents = (targetId: number) => { 
   const allWebContents = webContents.getAllWebContents();
-  console.log('webContents chrome proc Id\'s: ', allWebContents.map((contents) => contents.getProcessId()) ); 
+  // console.log('webContents chrome proc Id\'s: ', allWebContents.map((contents) => contents.getProcessId()) ); 
   const targetContents = allWebContents.find(contents => contents.getProcessId() === targetId);
   return targetContents; // if not find
 }
@@ -175,7 +175,7 @@ const replyActionMain = (store: Store<{}>, globalId: RendererConf[]) => {
 
 export const configureStore = (initialState?: State, globalId?: RendererConf[]) => {
   const middleware: Middleware[] = [];
-  middleware.push(epicMiddleware, validatePermissionAction(globalId), forwardToRendererWrapper(globalId));
+  middleware.push(epicMiddleware, validatePermissionAction(globalId), forwardToRendererWrapper(globalId)); 
   const enhanced = [applyMiddleware(...middleware)];
   const enhancer: GenericStoreEnhancer = compose(...enhanced);
   const store = createStore(rootReducer, initialState, enhancer);

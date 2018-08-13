@@ -76,7 +76,7 @@ export function createDappView(globalUUIDList: RendererConf[], entryPath: string
 
 
   const renderIdDapp = dappView.webContents.getProcessId(); //.id,
-    console.log(renderIdDapp);
+    // console.log(renderIdDapp);
     
 
     let rendererObj: RendererConf = {
@@ -87,5 +87,4 @@ export function createDappView(globalUUIDList: RendererConf[], entryPath: string
     }
     globalUUIDList.push(rendererObj);
 
-  
 }

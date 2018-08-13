@@ -55,7 +55,7 @@ export function createClientWindow(globalUUIDList: RendererConf[]) {
   }  
   
   const renderIdClient = clientWindow.webContents.getProcessId(); //.webContents.getProcessId(); //.id,
-    console.log(renderIdClient);
+    // console.log(renderIdClient);
 
     let rendererObj: RendererConf = {
       id: uuidClient,

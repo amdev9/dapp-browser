@@ -16,7 +16,6 @@ const openChannelSuccess = () => ({ type: OPEN_CHANNEL_SUCCESS });
 const increment = () => ({ type: INCREMENT_COUNTER });
 const startCountdownEpic = action$ => action$.pipe(
   ofType(OPEN_CHANNEL),
-  delay(1000),
   mapTo(openChannelSuccess())
 );
 
