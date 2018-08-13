@@ -4,7 +4,11 @@ import { NotificationWidget } from './NotificationWidget';
  
 const homeIcon = require("../../assets/icons/home.svg");
  
-export class HeaderBar extends React.Component { 
+interface HeaderBarProps {
+  isOpen?: boolean,
+  togglePanel?(): void
+}
+export class HeaderBar extends React.Component<HeaderBarProps> { 
   public render() {
     return (
       <div className="headerbar">
@@ -27,7 +31,7 @@ export class HeaderBar extends React.Component {
             {/* <Keychain /> */}
             {/* <Settings /> */}
 
-            <NotificationWidget />
+            <NotificationWidget {...this.props} />
           </div>
         </div>
       </div>

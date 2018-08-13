@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import * as CounterActions from '../redux/actions/counter';
+import * as NotificationActions from '../redux/actions/notification';
 import { connect } from 'react-redux';
 import { HeaderBar } from "./HeaderBar"
 import { NotificationPanel } from "./NotificationPanel"
@@ -11,29 +12,32 @@ import { IState } from '../redux/reducers';
 
 interface AppProps {
   counter: number,
+  notification: boolean,
   increment(): void,
   decrement(): void,
-  incrementIfOdd(): void,
-  incrementAsync(): void
+  toggle( openStatus?: boolean): void
 }
 
 class App extends React.Component<AppProps> {
   render() {
-    const { increment, decrement, incrementIfOdd, incrementAsync,  counter } = this.props;
+    const { 
+      increment, decrement, counter, 
+      toggle, notification 
+    } = this.props;
     return (
       <div>
-        <HeaderBar key="root-headerbar" />
-        <NotificationPanel key="root-notifications" />
+        <HeaderBar isOpen={notification} togglePanel={() => toggle()} key="root-headerbar" />
+        <NotificationPanel isOpen={notification} togglePanel={(openStatus) => toggle(openStatus)} key="root-notifications" />
+
+        <p>{counter}</p>
+        <button onClick={increment}>+</button>
+        <button onClick={decrement}>-</button>
+ 
         <div key="root-content" id="root-container" className="content-zone">
           <Tray />
+           
           <div className="content" id="content-wrap">
             <main className="page-container">
-              {/* <h3>Client BrowserWindow</h3>
-              <p>{counter}</p>
-              <button onClick={increment}>+</button>
-              <button onClick={decrement}>-</button>
-              <button onClick={incrementIfOdd}>incrementIfOdd</button>
-              <button onClick={() => incrementAsync()}>incrementAsync</button> */}
             </main>
           </div>
         </div>
@@ -46,12 +50,13 @@ class App extends React.Component<AppProps> {
 
 function mapStateToProps(state: IState): Partial<AppProps> {
   return {
-    counter: state.counter
+    counter: state.counter,
+    notification: state.notification
   };
 }
 
 function mapDispatchToProps(dispatch: Dispatch<IState>): Partial<AppProps> {
-  return bindActionCreators(CounterActions, dispatch);
+  return bindActionCreators(Object.assign({}, NotificationActions, CounterActions), dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

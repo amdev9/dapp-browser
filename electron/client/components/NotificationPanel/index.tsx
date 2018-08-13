@@ -1,11 +1,18 @@
 import * as React from "react";
 import { slide as Menu, Props as MenuProps } from "react-burger-menu"
- 
+
 // assets
 const filterIcon = require("../../assets/icons/filter.svg")
 
-export class NotificationPanel extends React.Component { 
+interface NotificationPanelProps {
+  isOpen?: boolean,
+  togglePanel?(openStatus: boolean): void
+}
+
+export class NotificationPanel extends React.Component<NotificationPanelProps> { 
   render() {
+    const { isOpen, togglePanel } = this.props;
+
     const menuProps: MenuProps = {
       outerContainerId: "root-container",
       pageWrapId: "content-wrap",
@@ -13,7 +20,12 @@ export class NotificationPanel extends React.Component {
       customCrossIcon: false,
       right: true,
       width: 300,
-      isOpen: true
+      isOpen: isOpen,
+      onStateChange: (value) => {
+        if (isOpen !== value.isOpen) {
+          togglePanel(value.isOpen);
+        }
+      },
     }
 
     return (
@@ -30,5 +42,5 @@ export class NotificationPanel extends React.Component {
     )
   }
 }
-
+ 
 

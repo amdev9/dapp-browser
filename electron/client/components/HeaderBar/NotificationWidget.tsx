@@ -2,28 +2,25 @@ import * as React from "react"
  
 const notificationIcon = require("../../assets/icons/notification.svg")
  
-interface NotificationWidgetState {
-  isOpen: boolean;
+interface NotificationWidgetProps {
+  isOpen?: boolean;
+  togglePanel?(): void
 }
-export class NotificationWidget extends React.Component<{}, NotificationWidgetState> {
+export class NotificationWidget extends React.Component<NotificationWidgetProps> {
   constructor(props: {}) {
     super(props);
-    this.state = {
-      isOpen: false
-    };
     this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick( ) {
-    this.setState(prevState => ({
-      isOpen: !prevState.isOpen
-    })); 
-    console.log('clicked notification', this.state);
+  handleClick() {
+    console.log('clicked notification');
+    this.props.togglePanel();
   }
 
   public render() {
+    const { togglePanel } = this.props;
     return (
-      <div className="notifications" onClick={() => this.handleClick()}>
+      <div className="notifications" onClick={this.handleClick}>
         <img className="icon" src={notificationIcon} />
       </div>
     )
