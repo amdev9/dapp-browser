@@ -30,7 +30,7 @@ const openChannel = (uuid: string) => ({ type: OPEN_CHANNEL, payload: { uuid: uu
 const bindOpenChannelsEpic: Epic<Action> = action$ => action$.pipe(
   ofType(OPEN_CHANNEL_SUCCESS),
   mapTo({ type: BIND_OPEN_CHANNELS }), //todo signal to start binding
-  delay(1000),
+  // delay(1000),
   mapTo({ type: BIND_OPEN_CHANNELS_DONE })
 );
 

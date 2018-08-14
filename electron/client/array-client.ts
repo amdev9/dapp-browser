@@ -9,14 +9,12 @@ import { rootEpic } from './redux/epics';
 import rootReducer from './redux/reducers';
 
 import * as counterActions from './redux/actions/counter';
+import * as notificationActions from './redux/actions/notification';
+import * as trayActions from './redux/actions/tray';
 
-// type State = {
-//   readonly counter: number;
-//   readonly countdown: number;
-//   readonly notification: boolean;
-// };
 
 import { IState as State } from './redux/reducers/state';
+ 
 
 interface Action {
     type: string;
@@ -48,7 +46,9 @@ declare const module: NodeModule & {
 };
   
 const actionCreators = Object.assign({}, 
-    counterActions,
+    counterActions, 
+    notificationActions, 
+    trayActions,
     {}
 );
 

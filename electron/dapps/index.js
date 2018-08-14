@@ -41,7 +41,7 @@ const initUi = () => {
       store.dispatch({
         type: 'INTENT_OPEN_CHANNELS',
         payload: {
-          targetDapp: 'dappname128729index2' 
+          targetDapp: 'index2' 
         }
       }); 
     });

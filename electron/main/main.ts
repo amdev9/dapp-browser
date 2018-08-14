@@ -53,27 +53,25 @@ app.on('ready', async () => {
     createDappView(globalUUIDList, dappInd);
   }
   
-  /* BrowserView
-    let view = BrowserView.fromId(1);
-    clientWindow.setBrowserView(view);
-    view.setBounds(bounds); 
-  */
-
   const store: Store<{}> = configureStore(global.state, globalUUIDList);
   
   store.subscribe( () => {
     let storeState: any = store.getState();
     process.stdout.write(JSON.stringify(storeState));
 
-    let activeDappName: string = storeState.client.activeDapp;
+    if(storeState.client.activeDapp) {
+      let activeDappName: string = storeState.client.activeDapp.appName;
 
-    let nameObj: object = globalUUIDList.find(renObj => renObj.name === activeDappName);
-    if (nameObj) {
-      /* BrowserView
+      let nameObj: RendererConf = globalUUIDList.find(renObj => renObj.name === activeDappName);
+      if (nameObj) {
+        process.stdout.write(JSON.stringify( nameObj.viewId) );
+        /* BrowserView */
         let view = BrowserView.fromId(nameObj.viewId);
         clientWindow.setBrowserView(view);
         view.setBounds(bounds); 
-      */
+        /**/
+ 
+      }
     }
   });
   process.stdout.write(JSON.stringify(globalUUIDList));

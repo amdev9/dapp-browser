@@ -31,7 +31,7 @@ export default function tray(state: Tray = initialState, action: TrayAction) {
           return item;
         }
       });
-      console.log(JSON.stringify(newItems) );
+       
       return {
         ...state,
         items: newItems,

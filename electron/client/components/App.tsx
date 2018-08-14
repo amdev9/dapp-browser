@@ -29,13 +29,13 @@ class App extends React.Component<AppProps> {
 
     const appItemTest: AppItem = {
       id: 1,
-      appName: "Share",
+      appName: "index",
       icon: require("../assets/app-icons/share.svg"),
       statusIcon: ["running"]
     };
     const appItemTest2: AppItem = {
       id: 2,
-      appName: "Chat",
+      appName: "index2",
       icon: require("../assets/app-icons/chat.svg"),
       statusIcon: ["running"]
     };

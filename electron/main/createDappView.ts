@@ -3,7 +3,7 @@ import * as path from 'path';
 import * as uuidv4 from 'uuid/v4';
 import { openDevTool } from './helpers/devtools';
 
-let dappView: Electron.BrowserWindow = null;
+let dappView: Electron.BrowserView = null;
  
 const DAPPS_PATH: string = path.join(__dirname, '..', '..', 'dapps');
 
@@ -15,6 +15,7 @@ export interface RendererConf {
   name: string;
   status: string;
   winId: number;
+  viewId?: number; // for dapp BrowserView 
   intent?: string;
   binded?: BindedListConf
 }
@@ -37,7 +38,7 @@ export function createDappView(globalUUIDList: RendererConf[], entryPath: string
     webPrefObj = Object.assign(webPrefObj, { sandbox: true })
   }
 
-  dappView = new BrowserWindow({ // BrowserView
+  dappView = new BrowserView({ // BrowserView
     webPreferences: webPrefObj
   });
   
@@ -51,40 +52,40 @@ export function createDappView(globalUUIDList: RendererConf[], entryPath: string
   /* BrowserView
       dappView.setBounds(bounds); 
   */
+  dappView.setBounds(bounds); 
+
   dappView.webContents.loadURL('file://' + path.join(DAPPS_PATH, entryPath));
  
   // @TODO: Use 'ready-to-show' event
   //        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event
-  dappView.webContents.on('did-finish-load', () => {
-    if (!dappView) {
-      throw new Error('"clientWindow" is not defined');
-    }
-    dappView.show();
-    dappView.focus();
-
-    
-  });
+ 
+    // dappView.webContents.on('did-finish-load', () => {
+    //   if (!dappView) {
+    //     throw new Error('"clientWindow" is not defined');
+    //   }
+    //   dappView.show();
+    //   dappView.focus();
+    // });
+ 
 
   dappView.on('closed', () => {
     dappView = null;
     // remove from global
   });
 
-  if (process.env.NODE_ENV === 'development') {
-    openDevTool(dappView, true);
-  }  
+  // if (process.env.NODE_ENV === 'development') {
+  //   openDevTool(dappView, true);
+  // }  
 
+  const renderIdDapp = dappView.webContents.getProcessId(); 
 
-  const renderIdDapp = dappView.webContents.getProcessId(); //.id,
-    // console.log(renderIdDapp);
-    
-
-    let rendererObj: RendererConf = {
-      id: uuidDapp,
-      status: 'dapp',
-      winId: renderIdDapp,
-      name: 'dappname128729'.concat(entryPath.split('.')[0]) // load from dapp
-    }
-    globalUUIDList.push(rendererObj);
+  let rendererObj: RendererConf = {
+    id: uuidDapp,
+    status: 'dapp',
+    winId: renderIdDapp,
+    viewId: dappView.id,
+    name: entryPath.split('.')[0] // load from dapp
+  }
+  globalUUIDList.push(rendererObj);
 
 }
