@@ -3,7 +3,7 @@ import 'rxjs';
 import { combineEpics, ofType, Epic } from 'redux-observable';
 import { delay, mapTo } from 'rxjs/operators'; 
 import { OPEN_CHANNEL, INTENT_OPEN_CHANNELS, INCREMENT_COUNTER } from '../constants';
-import { Action } from '../actions/client';
+import { Action } from 'redux';
 
 const increment = () => ({ type: INCREMENT_COUNTER });
 const startCountdownEpic: Epic<Action> = action$ => action$.pipe(

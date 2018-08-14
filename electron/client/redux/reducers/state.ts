@@ -1,9 +1,20 @@
-import { TState as TCounterState } from './counter';
-import { TState as TNotificationState } from './notification';
-import { IState as TTrayState } from '../model';
+ 
+import { AppItem, NotifyItem } from '../model';
+
+export interface Tray {
+  items: AppItem[],
+  activeDapp: string,
+  pinned: string[]
+}
+export interface NotificationPanel {
+  items: NotifyItem[],
+  isOpen: boolean
+}
+export type Counter = number;
 
 export interface IState {
-  counter: TCounterState;
-  notification: TNotificationState;
-  tray: TTrayState
+  counter: Counter;
+  notification: NotificationPanel;
+  tray: Tray
 }
+

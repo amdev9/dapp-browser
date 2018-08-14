@@ -1,11 +1,20 @@
-import { Action } from 'redux';
- 
-export type TState = boolean;
+import { TOGGLE_NOTIFICATION_PANEL, NotificationPanelAction } from '../actions/notification';
+import { NotificationPanel } from './state';
 
-export default function notification(state: boolean = false, action: Action) {
+const initialState: NotificationPanel = {
+  items: [],
+  isOpen: false,
+}
+
+export default function notification(state: NotificationPanel = initialState, action: NotificationPanelAction) {
   switch (action.type) {
-    case 'TOGGLE_NOTIFICATION_PANEL': 
-      return !state;
+    case TOGGLE_NOTIFICATION_PANEL:
+      if (action.payload && action.payload.hasOwnProperty('isOpen')) {
+        return { ...state, isOpen: action.payload.isOpen };
+      } else {
+        return { ...state, isOpen: !state.isOpen };
+      }
+  
     default: 
       return state;
   }

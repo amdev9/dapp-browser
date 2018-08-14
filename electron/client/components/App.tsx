@@ -7,31 +7,30 @@ import { HeaderBar } from "./HeaderBar"
 import { NotificationPanel } from "./NotificationPanel"
 import { Tray } from './Tray';
  
-
 import { IState } from '../redux/reducers/state';
 
 interface AppProps {
   counter: number,
   notification: boolean,
-  increment(): void,
-  decrement(): void,
-  toggle( openStatus?: boolean): void
+  onIncrement: () => any,
+  onDecrement: () => any,
+  onToggle: (openStatus?: boolean) => any
 }
 
 class App extends React.Component<AppProps> {
   render() {
     const { 
-      increment, decrement, counter, 
-      toggle, notification 
+      onIncrement, onDecrement, counter, 
+      onToggle, notification 
     } = this.props;
     return (
       <div>
-        <HeaderBar isOpen={notification} togglePanel={() => toggle()} key="root-headerbar" />
-        <NotificationPanel isOpen={notification} togglePanel={(openStatus) => toggle(openStatus)} key="root-notifications" />
+        <HeaderBar isOpen={notification} togglePanel={() => onToggle()} key="root-headerbar" />
+        <NotificationPanel isOpen={notification} togglePanel={(openStatus) => onToggle(openStatus)} key="root-notifications" />
 
         <p>{counter}</p>
-        <button onClick={increment}>+</button>
-        <button onClick={decrement}>-</button>
+        <button onClick={onIncrement}>+</button>
+        <button onClick={onDecrement}>-</button>
  
         <div key="root-content" id="root-container" className="content-zone">
           <Tray />
@@ -46,17 +45,15 @@ class App extends React.Component<AppProps> {
   }
 }
 
+const mapStateToProps = (state: IState) => ({
+  counter: state.counter,
+  notification: state.notification.isOpen
+});
 
-
-function mapStateToProps(state: IState): Partial<AppProps> {
-  return {
-    counter: state.counter,
-    notification: state.notification
-  };
-}
-
-function mapDispatchToProps(dispatch: Dispatch<IState>): Partial<AppProps> {
-  return bindActionCreators(Object.assign({}, NotificationActions, CounterActions), dispatch);
-}
+const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
+  onIncrement: CounterActions.increment,
+  onDecrement: CounterActions.decrement,
+  onToggle: NotificationActions.toggle
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

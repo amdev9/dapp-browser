@@ -1,13 +1,16 @@
-import { Action } from 'redux';
- 
-export type TState = number;
+import { CounterAction, INCREMENT_COUNTER, DECREMENT_COUNTER } from '../actions/counter';
+import { Counter } from './state';
 
-export default function counter(state: number = 0, action: Action) {
+// const initialState: Counter = {
+//   value: 0
+// }
+
+export default function counter(state: Counter = 0, action: CounterAction) {
   switch (action.type) {
-    case 'INCREMENT_COUNTER': 
-      return state + 1;
-    case 'DECREMENT_COUNTER':
-      return state - 1;
+    case INCREMENT_COUNTER: 
+      return state  + 1;
+    case DECREMENT_COUNTER:
+      return state  - 1;
     default: 
       return state;
   }
