@@ -104,31 +104,31 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
       bindChannel(intentObj.winId, channelReceiver, channelSender);  
     }
     
-    if (action.payload && action.payload.uuid) {
-      // loop through all action uuid's passed in payload {
-      let uuidObj = globalId.find(renObj => renObj.id === action.payload.uuid); 
-      if (uuidObj) { 
-        const resolver = targetWebContents(uuidObj.winId);
-        // console.log(resolver);
-        if (resolver) {
-          resolver.send('redux-action', rendererAction); 
-        } else {
-          console.log('resolver error: ', 'action message lost');
-          return next(action);
-        }
-      }
-      // } 
-      return next(action);
-    } else {
-      return next(action);
-    }
+    // if (action.payload && action.payload.uuid) {
+    //   // loop through all action uuid's passed in payload {
+    //   let uuidObj = globalId.find(renObj => renObj.id === action.payload.uuid); 
+    //   if (uuidObj) { 
+    //     const resolver = targetWebContents(uuidObj.winId);
+    //     // console.log(resolver);
+    //     if (resolver) {
+    //       resolver.send('redux-action', rendererAction); 
+    //     } else {
+    //       console.log('resolver error: ', 'action message lost');
+    //       return next(action);
+    //     }
+    //   }
+    //   // } 
+    //   return next(action);
+    // } else {
+    //   return next(action);
+    // }
 
-    // const allWebContents = webContents.getAllWebContents();
-    // allWebContents.forEach((contents) => { 
-    //   // console.log('---> contents id: ', contents.id);
-    //   contents.send('redux-action', rendererAction);
-    // });
-    // return next(action);
+    const allWebContents = webContents.getAllWebContents();
+    allWebContents.forEach((contents) => { 
+      // console.log('---> contents id: ', contents.id);
+      contents.send('redux-action', rendererAction);
+    });
+    return next(action);
 
   };
 }
