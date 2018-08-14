@@ -36,23 +36,13 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
         }
       } else if (action.payload.status == 'client') {
         switch (action.type) {
-          // case INCREMENT_COUNTER: 
-          //   console.log(action);
-          //   return next(action);
-          // case DECREMENT_COUNTER:
-          //   console.log(action);
-          //   return next(action);
+          case INCREMENT_COUNTER: 
+            console.log(action);
+            return next(action);
+          case DECREMENT_COUNTER:
+            console.log(action);
+            return next(action);
     
-          // case START_COUNTDOWN:
-          //   console.log(action);
-          //   return next(action);
-          // case INCREMENT_ASYNC:
-          //   console.log(action);
-          //   return next(action);
-          // case CANCEL_INCREMENT_ASYNC:
-          //   console.log(action);
-          //   return next(action);
-  
           case 'TOGGLE_NOTIFICATION_PANEL':
             let clientObj = globalId.find(renObj => renObj.status === 'client');
             if (clientObj) {

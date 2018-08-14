@@ -46,7 +46,6 @@ interface uuidChannelMap {
 };
 let uuidChannelMapList: Array<uuidChannelMap>;
 
-
 const epicMiddleware = createEpicMiddleware();
 
 const validateAction = (action: Action) => {
@@ -57,7 +56,7 @@ const targetWebContents = (targetId: number) => {
   const allWebContents = webContents.getAllWebContents();
   // console.log('webContents chrome proc Id\'s: ', allWebContents.map((contents) => contents.getProcessId()) ); 
   const targetContents = allWebContents.find(contents => contents.getProcessId() === targetId);
-  return targetContents; // if not find
+  return targetContents;
 }
 
 const forwardToRendererWrapper = (globalId: RendererConf[]) => {
@@ -73,7 +72,6 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
       }
     });
   
-    // console.log(action);
     if (action.type == 'INTENT_OPEN_CHANNELS') { 
 
       uuidChannelMapList = [
@@ -97,7 +95,6 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
       });
     }
 
-    // console.log('>>>>>> configure: ', action); //todo - add bind to globalid on BIND_OPEN_CHANNELS - register it once
     if (action.type == 'OPEN_CHANNEL') {
       let uuidObj = globalId.find(renObj => renObj.id === action.payload.uuid);
       console.log('OPEN_CHANNEL ---> ', uuidObj);
@@ -108,7 +105,6 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
     }
     
     if (action.payload && action.payload.uuid) {
-
       // loop through all action uuid's passed in payload {
       let uuidObj = globalId.find(renObj => renObj.id === action.payload.uuid); 
       if (uuidObj) { 

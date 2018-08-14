@@ -1,5 +1,6 @@
-import { actionCreatorVoid } from './helpers';
+import { action } from 'typesafe-actions';
 
-export const increment = actionCreatorVoid('INCREMENT_COUNTER');
-export const decrement = actionCreatorVoid('DECREMENT_COUNTER');
+export const increment = () => action('INCREMENT_COUNTER');
+export const decrement = () => action('DECREMENT_COUNTER');
+
  
