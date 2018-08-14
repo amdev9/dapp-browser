@@ -1,20 +1,22 @@
 import * as React from "react"
 import { AppBox } from './AppBox'; 
+import { AppItem } from "../../redux/model";
  
-const iconChat = require("../../assets/app-icons/chat.svg");
-const iconShare = require("../../assets/app-icons/share.svg");
+interface AppListProps {
+  items?: AppItem[],
+  toggleSwitch?: (targetDappId?: number, targetDappName?: string) => any
+}
 
-export class AppsList extends React.Component { 
+export class AppsList extends React.Component<AppListProps> { 
   render() {
+    const appItemsList: JSX.Element[] = this.props.items.map((item): JSX.Element => (
+      <AppBox item={item} toggleSwitch={this.props.toggleSwitch}/>
+    ));
+
     return (
       <div className="list">
-        <AppBox icon={iconChat} name={'iconChat'} />
-        <AppBox icon={iconShare} name={'iconShare'} />
+        {appItemsList} 
       </div>
     )
   }
 }
-
-
-
-

@@ -1,4 +1,5 @@
-import { TOGGLE_NOTIFICATION_PANEL, NotificationPanelAction } from '../actions/notification';
+import { TOGGLE_NOTIFICATION_PANEL } from '../constants';
+import { NotificationPanelAction } from '../actions/notification';
 import { NotificationPanel } from './state';
 
 const initialState: NotificationPanel = {

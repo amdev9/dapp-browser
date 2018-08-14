@@ -1,41 +1,21 @@
 import * as React from "react"
 import { AppItem } from './AppItem';
+import { AppItem as AppItemModel } from '../../redux/model';
 
 interface AppBoxProps {
-  icon: string,
-  name: string
+  item?: AppItemModel,
+  toggleSwitch?: (targetDappId?: number, targetDappName?: string) => any
 }
-
-interface AppBoxState {
-  status: Array<string>;
-}
-
-export class AppBox extends React.Component<AppBoxProps, AppBoxState> { 
+ 
+export class AppBox extends React.Component<AppBoxProps> { 
   constructor(props: AppBoxProps) {
     super(props);
-    this.state = {
-      status: ['running']
-    };
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  handleClick(name: string) {
-    
-    this.setState(prevState => ({
-      status: prevState.status.includes('active') ?
-        prevState.status.filter((statusFlag) => statusFlag != 'active') : 
-          prevState.status.concat(['active'])
-    })); 
-    console.log('clicked', name, this.state);
-
-    // change state of app 'name' to foreground
-    // add class active=foreground 
   }
 
   public render() {
-    const { name } = this.props;
+    const { item, toggleSwitch } = this.props;
     return (
-      <AppItem {...this.props} clickItem={() => this.handleClick(name)} statusItem={this.state.status} />
+      <AppItem {...this.props} clickItem={() => toggleSwitch(item.id, item.appName)} />
     )
   }
 }

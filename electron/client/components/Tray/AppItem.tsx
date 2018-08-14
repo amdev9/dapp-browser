@@ -1,13 +1,13 @@
 import * as React from "react"
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 
+import { AppItem as AppItemModel } from '../../redux/model';
+
 import './react-contextmenu.css';
 
 interface AppsItemProps {
-  icon: string,
-  name: string,
-  clickItem?: () => void,
-  statusItem: Array<string>
+  item?: AppItemModel,
+  clickItem?: () => void
 }
 
 interface ClickObj {
@@ -26,15 +26,15 @@ export class AppItem extends React.Component<AppsItemProps> {
   }
 
   public render() {
-    const { icon, name, clickItem, statusItem } = this.props
-
-    const classNameValue = `tray item ${statusItem.join(' ')}`;
+    const { item, clickItem } = this.props
+    
+    const classNameValue = `tray item ${item.statusIcon.join(' ')}`;
     return (
       <div>
         <ContextMenuTrigger id="context-menu">
           <div className={classNameValue}>
             <div className="icon">
-              <img src={icon} alt={name} onClick={clickItem} />
+              <img src={item.icon} alt={item.appName} onClick={clickItem} />
             </div>
           </div>
         </ ContextMenuTrigger>

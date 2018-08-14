@@ -1,9 +1,6 @@
-import { CounterAction, INCREMENT_COUNTER, DECREMENT_COUNTER } from '../actions/counter';
+import { CounterAction } from '../actions/counter';
+import { INCREMENT_COUNTER, DECREMENT_COUNTER } from '../constants';
 import { Counter } from './state';
-
-// const initialState: Counter = {
-//   value: 0
-// }
 
 export default function counter(state: Counter = 0, action: CounterAction) {
   switch (action.type) {

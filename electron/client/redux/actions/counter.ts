@@ -1,10 +1,7 @@
 import { action } from 'typesafe-actions';
 import { Action } from 'redux';
+import { INCREMENT_COUNTER, DECREMENT_COUNTER } from '../constants';
 
-export const INCREMENT_COUNTER = 'INCREMENT_COUNTER';
-export const DECREMENT_COUNTER = 'DECREMENT_COUNTER';
 export interface CounterAction extends Action {}
-export const increment = () => action(INCREMENT_COUNTER);
-export const decrement = () => action(DECREMENT_COUNTER);
-
- 
+export const increment = (): CounterAction => action(INCREMENT_COUNTER);
+export const decrement = (): CounterAction => action(DECREMENT_COUNTER);

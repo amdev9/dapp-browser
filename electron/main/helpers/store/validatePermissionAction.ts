@@ -1,7 +1,7 @@
 // validate permissions for actions
 
 // import { SWITCH_DAPP, SEND_PING_MESSAGE } from '../actions/client';
-import { INCREMENT_COUNTER, DECREMENT_COUNTER, START_COUNTDOWN, INCREMENT_ASYNC, CANCEL_INCREMENT_ASYNC } from '../actions/counter';
+import { INCREMENT_COUNTER, DECREMENT_COUNTER } from '../actions/counter';
 import { Dispatch } from 'redux';
 import { Action } from './configureStore';
 import { RendererConf } from '../../createDappView';
@@ -42,7 +42,12 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
           case DECREMENT_COUNTER:
             console.log(action);
             return next(action);
-    
+          case 'ADD_APP_ITEM':
+            console.log(action);
+            return next(action);
+          case 'SWITCH_DAPP': 
+            console.log(action);
+            return next(action);
           case 'TOGGLE_NOTIFICATION_PANEL':
             let clientObj = globalId.find(renObj => renObj.status === 'client');
             if (clientObj) {

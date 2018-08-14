@@ -1,15 +1,16 @@
- 
-import { AppItem, NotifyItem } from '../model';
+import { AppItem, NotifyItem, ActiveDapp } from '../model';
 
 export interface Tray {
   items: AppItem[],
-  activeDapp: string,
+  activeDapp: ActiveDapp,
   pinned: string[]
 }
+
 export interface NotificationPanel {
   items: NotifyItem[],
   isOpen: boolean
 }
+
 export type Counter = number;
 
 export interface IState {
@@ -17,4 +18,3 @@ export interface IState {
   notification: NotificationPanel;
   tray: Tray
 }
-
