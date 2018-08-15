@@ -25,6 +25,7 @@ export function createClientWindow(globalUUIDList: RendererConf[]) {
   }
 
   clientWindow = new BrowserWindow({
+    show: false,
     x: 0,
     y: 0,
     width: 1200,
