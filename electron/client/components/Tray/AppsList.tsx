@@ -10,7 +10,7 @@ interface AppListProps {
 export class AppsList extends React.Component<AppListProps> { 
   render() {
     const appItemsList: JSX.Element[] = this.props.items.map((item): JSX.Element => (
-      <AppBox item={item} toggleSwitch={this.props.toggleSwitch}/>
+      <AppBox key={`${Math.random() * 1000}-${item.id}-${item.appName}`} item={item} toggleSwitch={this.props.toggleSwitch}/>
     ));
 
     return (

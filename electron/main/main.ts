@@ -64,7 +64,7 @@ app.on('ready', async () => {
 
       let nameObj: RendererConf = globalUUIDList.find(renObj => renObj.name === activeDappName);
       if (nameObj) {
-        process.stdout.write(JSON.stringify( nameObj.viewId) );
+        process.stdout.write(JSON.stringify( nameObj ) );
         /* BrowserView */
         let view = BrowserView.fromId(nameObj.viewId);
         clientWindow.setBrowserView(view);
