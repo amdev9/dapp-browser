@@ -10,4 +10,3 @@ export function channel(state = {}, action) {
   }
 }
 
- 

@@ -1,6 +1,15 @@
 import * as clients from '../actions/client';
+import { Client } from './state';
  
-export function client(state = {}, action: clients.Action) {
+
+const initialState: Client = {
+  activeDapp: {
+    id: 0,
+    appName: null
+  }
+}
+
+export function client(state: Client = initialState, action: clients.Action) {
   switch (action.type) {
     case clients.SWITCH_DAPP:
       const dappId = action.payload.targetDappId; 

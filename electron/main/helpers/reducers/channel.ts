@@ -1,13 +1,12 @@
-import * as channels from '../actions/channel';
- 
-export function channel(state = {}, action: channels.Action) {
+import { OPEN_CHANNEL, INTENT_OPEN_CHANNELS } from '../constants';
+import { ChannelAction } from '../actions/channel';
+
+export function channel(state = {}, action: ChannelAction) {
   switch (action.type) {
-    case channels.OPEN_CHANNEL:
-    case channels.INTENT_OPEN_CHANNELS:
+    case OPEN_CHANNEL:
+    case INTENT_OPEN_CHANNELS:
 
     default:
       return state;
   }
 }
-
- 
