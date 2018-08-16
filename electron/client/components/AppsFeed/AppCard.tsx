@@ -26,10 +26,7 @@ import * as React from "react"
 //   }
 // }
 
-enum Size {
-  Default,
-  Small,
-}
+ 
 
 type DApp = {
   // Dapp name
@@ -43,7 +40,6 @@ type DApp = {
 }
 
 interface AppCardProps {
-  size: Size,
   dapp: DApp
 }
 
