@@ -1,0 +1,15 @@
+{
+  "filetype": "TYPE_KEY",
+  "keyname": "test4",
+  "uid_hash": "uid",
+  "keyinfo": {
+    "format": "FORMAT_ARRAYIO",
+    "encrypted": true,
+    "curve_type": "CURVE_SECP256K1",
+    "data": {
+      "cipher_type": "CIPHER_AES256",
+      "iv": "PykoVicsNPvPwviPQkpUkc3QwfZXcQsQ",
+      "enc_data": "12b34095d35f6cf12bac920dc29d191a15f523eb2d5703daaf4fd2bd9da773d06b0ea52cb7b18b9a651a2b42c9910d7413487ce09889d3e97b66dce236cd7d5c"
+    }
+  }
+}

@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { HeaderBar } from "./HeaderBar"
 import { NotificationPanel } from "./NotificationPanel"
 import { Tray } from './Tray';
- 
+import { AppsFeed } from './AppsFeed';
 import { IState } from '../redux/reducers/state';
 
 interface AppProps {
@@ -62,6 +62,7 @@ class App extends React.Component<AppProps> {
            
           <div className="content" id="content-wrap">
             <main className="page-container">
+              <AppsFeed />
             </main>
           </div>
         </div>
