@@ -19,6 +19,7 @@ export class AppsFeed extends React.Component {
         name: "My Awesome Dapp",
       },
     }
+    
     return (
       <div className="feeds">
         <div className="header">
