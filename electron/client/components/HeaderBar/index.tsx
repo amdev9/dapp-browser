@@ -17,7 +17,7 @@ export class HeaderBar extends React.Component<HeaderBarProps> {
         </div>
 
         <div className="title">
-          HOME
+          Home
         </div>
 
         <div className="actions">
