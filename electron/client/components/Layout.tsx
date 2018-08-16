@@ -58,14 +58,15 @@ class App extends React.Component<AppProps> {
         {/* <button onClick={() => onSwitchDapp('Share')}>switch dapp</button> */}
          
         <div className="content-zone" key="root-content" id="root-container">
-          <Tray items={trayItems} toggleSwitch={onSwitchDapp}/>
-           
-          <div className="content" id="content-wrap">
           
-            <main className="page-container">
+           
+          {/* <div className="content" id="content-wrap"> */}
+            
+            {/* <main className="page-container"> */}
+              <Tray items={trayItems} toggleSwitch={onSwitchDapp}/>
               <AppsFeed />
-            </main>
-          </div>
+            {/* </main> */}
+          {/* </div> */}
         </div>
       </div>
     )
