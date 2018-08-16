@@ -11,7 +11,6 @@ export class AppsFeed extends React.Component {
         name: "My Awesome Dapp",
       },
     }
-
     const cardPropsUpdate = {
       dapp: {
         preview: require("../../assets/app-images/thumb.png"),
