@@ -63,9 +63,8 @@ export class AppCard extends React.Component<AppCardProps>  {
   //   })
   // }
 
-   
-
   private getCategories(): JSX.Element {
+
     const { categories } = this.props.dapp
 
     const items = categories.map((item, index): JSX.Element => (
