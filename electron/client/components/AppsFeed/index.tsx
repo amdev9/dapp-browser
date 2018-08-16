@@ -29,7 +29,7 @@ export class AppsFeed extends React.Component {
       <div className="feeds">
         <div className="header">
           <div className="title">
-            Often Used
+            Your apps
           </div>
 
           <div className="action">
