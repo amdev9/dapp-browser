@@ -1,15 +1,45 @@
 import * as React from "react";
-import { slide as Menu, Props as MenuProps } from "react-burger-menu"
+import { slide as Menu, Props as MenuProps } from "react-burger-menu";
+import { NotifyItem } from "../../redux/model";
+import { NotifyGroup } from "./NotifyGroup";
 
 // assets
 const filterIcon = require("../../assets/icons/filter.svg")
 
 interface NotificationPanelProps {
-  isOpen?: boolean,
-  togglePanel?(openStatus: boolean): void
+  isOpen?: boolean;
+  items?: NotifyItem[];
+  togglePanel?(openStatus: boolean): void;
+  clearNotificationGroup?(groupId: number): void;
 }
 
-export class NotificationPanel extends React.Component<NotificationPanelProps> { 
+export class NotificationPanel extends React.Component<NotificationPanelProps> {
+  constructor(props: NotificationPanelProps) {
+    super(props)
+    this.getList = this.getList.bind(this);
+  }
+
+  private getList(): JSX.Element[] | JSX.Element {
+    const { items } = this.props
+
+    if (!items ) {
+      return (
+        <div className="empty">
+
+        </div>
+      )
+    } else {
+      return items.map((item, index) => (
+        <NotifyGroup
+          key={`${item.created.getTime()}-${index}`}
+          items={items}
+          groupId={index}
+          clearNotificationGroup={this.props.clearNotificationGroup}
+        />
+      ))
+    }
+  }
+
   render() {
     const { isOpen, togglePanel } = this.props;
 
@@ -36,6 +66,9 @@ export class NotificationPanel extends React.Component<NotificationPanelProps> {
             <div className="filter">
               <img src={filterIcon} />
             </div>
+          </div>
+          <div className="groups">
+            {this.getList()}
           </div>
         </div>
       </Menu>

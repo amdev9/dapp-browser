@@ -57,7 +57,9 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
               action.payload = Object.assign(action.payload, payloadUuidObj) 
             }
             return next(action);
-  
+          case 'CLEAR_NOTIFICATION_GROUP':
+            console.log(action);
+            return next(action);
           default:
             console.log("Cancelled for client");
         }

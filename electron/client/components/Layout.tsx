@@ -4,7 +4,7 @@ import * as CounterActions from '../redux/actions/counter';
 import * as NotificationActions from '../redux/actions/notification';
 import * as TrayActions from '../redux/actions/tray';
 
-import { AppItem } from '../redux/model';
+import { AppItem, NotifyItem } from '../redux/model';
 
 import { connect } from 'react-redux';
 import { HeaderBar } from "./HeaderBar"
@@ -17,9 +17,11 @@ interface AppProps {
   counter: number,
   openNotificationPanel: boolean,
   trayItems: AppItem[],
+  notifyItems: NotifyItem[],
   onIncrement: () => any,
   onDecrement: () => any,
   onToggle: (openStatus?: boolean) => any,
+  clearNotificationGroup: (groupId?: number) => void,
   onAddAppItem: (appItem?: AppItem) => any,
   onSwitchDapp: (targetDappId?: number, targetDappName?: string) => any
 }
@@ -42,13 +44,13 @@ class App extends React.Component<AppProps> {
      
     const { 
       onIncrement, onDecrement, counter, 
-      onToggle, openNotificationPanel,
-      onAddAppItem, onSwitchDapp, trayItems
+      onToggle, openNotificationPanel, clearNotificationGroup,
+      onAddAppItem, onSwitchDapp, trayItems, notifyItems
     } = this.props;
     return (
       <div>
         <HeaderBar isOpen={openNotificationPanel} togglePanel={() => onToggle()} key="root-headerbar" />
-        <NotificationPanel isOpen={openNotificationPanel} togglePanel={(openStatus) => onToggle(openStatus)} key="root-notifications" />
+        <NotificationPanel clearNotificationGroup={(groupId: number) => clearNotificationGroup(groupId)} items={notifyItems} isOpen={openNotificationPanel} togglePanel={(openStatus) => onToggle(openStatus)} key="root-notifications" />
 
         <p>{counter}</p>
         <button onClick={onIncrement}>+</button>
@@ -72,16 +74,18 @@ class App extends React.Component<AppProps> {
 
 const mapStateToProps = (state: IState) => ({
   counter: state.counter,
+  notifyItems: state.notification.items,
   openNotificationPanel: state.notification.isOpen,
-  trayItems: state.tray.items
+  trayItems: state.tray.items,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
   onIncrement: CounterActions.increment,
   onDecrement: CounterActions.decrement,
   onToggle: NotificationActions.toggle,
+  clearNotificationGroup: NotificationActions.clearNotificationGroup,
   onAddAppItem: TrayActions.addAppItem,
-  onSwitchDapp: TrayActions.switchDapp
+  onSwitchDapp: TrayActions.switchDapp,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
