@@ -10,7 +10,8 @@ interface NotificationPanelProps {
   isOpen?: boolean;
   items?: NotifyItem[];
   togglePanel?(openStatus: boolean): void;
-  clearNotificationGroup?(groupId: number): void;
+  clearNotification?(groupId: number): void;
+  clearAllNotifications?(): void;
 }
 
 export class NotificationPanel extends React.Component<NotificationPanelProps> {
@@ -22,21 +23,20 @@ export class NotificationPanel extends React.Component<NotificationPanelProps> {
   private getList(): JSX.Element[] | JSX.Element {
     const { items } = this.props
 
-    if (!items ) {
+    if (!items || items.length === 0) {
       return (
         <div className="empty">
 
         </div>
       )
     } else {
-      return items.map((item, index) => (
+      return (
         <NotifyGroup
-          key={`${item.created.getTime()}-${index}`}
           items={items}
-          groupId={index}
-          clearNotificationGroup={this.props.clearNotificationGroup}
+          clearNotification={this.props.clearNotification}
+          clearAllNotifications={this.props.clearAllNotifications}
         />
-      ))
+      )
     }
   }
 

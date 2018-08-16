@@ -11,9 +11,9 @@ import * as React from "react"
 
 namespace NotifyGroup {
   export interface Props {
-    clearNotificationGroup?: (groudId: number) => void,
+    clearNotification?: (notifyId: number) => void,
+    clearAllNotifications?: () => void,
     items: NotifyItem[]
-    groupId: number
   }
 
   export interface State {
@@ -25,13 +25,6 @@ namespace NotifyGroup {
   }
 }
 
-/*const mapStateToProps = (state: RootState): {} => ({})*/
-
-/*const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
-  clearGroup: NotificationsActions.clearGroup,
-}, dispatch)*/
-
-//@connect(mapStateToProps, mapDispatchToProps)
 export class NotifyGroup extends React.Component<NotifyGroup.Props, NotifyGroup.State> {
   private refItems: NotifyGroup.RefMap = {}
 
@@ -51,11 +44,9 @@ export class NotifyGroup extends React.Component<NotifyGroup.Props, NotifyGroup.
   }
 
   private async clearIt() {
-    const { clearNotificationGroup, groupId, items } = this.props
-    const stepDelay = 150
+    const { clearAllNotifications, items } = this.props
+    /*const stepDelay = 150
     let totalDelay = 0
-
-    console.log("clearIt triggered clearGroup: ", clearNotificationGroup);
 
     for (let index = (items.length - 1); index > -1; index--) {
       const itemRef = this.refItems[index]
@@ -64,24 +55,25 @@ export class NotifyGroup extends React.Component<NotifyGroup.Props, NotifyGroup.
         //itemRef.current.hide(totalDelay)
         totalDelay += stepDelay
       }
-    }
+    }*/
 
     //await Promise.delay(totalDelay + stepDelay)
 
-    if (clearNotificationGroup) {
-      clearNotificationGroup(groupId);
+    if (clearAllNotifications()) {
+      clearAllNotifications();
     }
   }
 
   private getList(): JSX.Element[] | null {
-    const { items } = this.props
+    const { items, clearNotification } = this.props
 
     if (items) {
       return items.map((item, index) => (
         <Item
-          key={`${index}-${item.created.getTime()}`}
+          key={item.id}
           ref={this.refItems[index]}
           item={item}
+          clearNotification={clearNotification}
         />
       ))
     } else {
@@ -90,12 +82,7 @@ export class NotifyGroup extends React.Component<NotifyGroup.Props, NotifyGroup.
   }
 
   public render() {
-    //const { groupId } = this.props
-    const groupTime = moment();
-
-    const groupTimeLabel = !groupTime.isSame(moment(), "day")
-      ? groupTime.format("DD.MM.YY")
-      : "TODAY";
+    const groupTimeLabel = "";
 
     const closeStyle = { // haven't managed to use ionicons here. Getting error of wrong export of Ionicon class
       color: "#A8B2BD",

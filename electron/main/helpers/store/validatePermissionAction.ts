@@ -57,7 +57,10 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
               action.payload = Object.assign(action.payload, payloadUuidObj) 
             }
             return next(action);
-          case 'CLEAR_NOTIFICATION_GROUP':
+          case 'CLEAR_NOTIFICATION':
+            console.log(action);
+            return next(action);
+          case 'CLEAR_ALL_NOTIFICATIONS':
             console.log(action);
             return next(action);
           default:

@@ -21,7 +21,8 @@ interface AppProps {
   onIncrement: () => any,
   onDecrement: () => any,
   onToggle: (openStatus?: boolean) => any,
-  clearNotificationGroup: (groupId?: number) => void,
+  clearNotification: (notifyId?: number) => void,
+  clearAllNotifications: () => void,
   onAddAppItem: (appItem?: AppItem) => any,
   onSwitchDapp: (targetDappId?: number, targetDappName?: string) => any
 }
@@ -44,13 +45,13 @@ class App extends React.Component<AppProps> {
      
     const { 
       onIncrement, onDecrement, counter, 
-      onToggle, openNotificationPanel, clearNotificationGroup,
+      onToggle, openNotificationPanel, clearNotification, clearAllNotifications,
       onAddAppItem, onSwitchDapp, trayItems, notifyItems
     } = this.props;
     return (
       <div>
         <HeaderBar isOpen={openNotificationPanel} togglePanel={() => onToggle()} key="root-headerbar" />
-        <NotificationPanel clearNotificationGroup={(groupId: number) => clearNotificationGroup(groupId)} items={notifyItems} isOpen={openNotificationPanel} togglePanel={(openStatus) => onToggle(openStatus)} key="root-notifications" />
+        <NotificationPanel clearAllNotifications={() => clearAllNotifications()} clearNotification={(notifyId: number) => clearNotification(notifyId)} items={notifyItems} isOpen={openNotificationPanel} togglePanel={(openStatus) => onToggle(openStatus)} key="root-notifications" />
 
         <p>{counter}</p>
         <button onClick={onIncrement}>+</button>
@@ -83,7 +84,8 @@ const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
   onIncrement: CounterActions.increment,
   onDecrement: CounterActions.decrement,
   onToggle: NotificationActions.toggle,
-  clearNotificationGroup: NotificationActions.clearNotificationGroup,
+  clearNotification: NotificationActions.clearNotification,
+  clearAllNotifications: NotificationActions.clearAllNotifications,
   onAddAppItem: TrayActions.addAppItem,
   onSwitchDapp: TrayActions.switchDapp,
 }, dispatch);

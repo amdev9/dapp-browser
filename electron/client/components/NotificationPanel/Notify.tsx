@@ -4,7 +4,8 @@ import * as React from "react"
 
 export namespace Notify {
   export interface Props {
-    item: NotifyItem
+    item: NotifyItem,
+    clearNotification?: (notifyId: number) => void,
   }
 
   export interface State {
@@ -16,17 +17,18 @@ export class Notify extends React.Component<Notify.Props, Notify.State> {
   constructor(props: Notify.Props) {
     super(props)
 
-    //this.hide = this.hide.bind(this)
+    this.hide = this.hide.bind(this)
   }
 
   public state: Notify.State = {
     hidden: false,
   }
 
-  /*public async hide(delay: number) {
-    await Promise.delay(delay)
-    this.setState({ hidden: true })
-  }*/
+  private async hide() {
+    // await Promise.delay(delay)
+    //this.setState({ hidden: true })
+    this.props.clearNotification(this.props.item.id);
+  }
 
   public render() {
     const { hidden } = this.state
@@ -40,7 +42,7 @@ export class Notify extends React.Component<Notify.Props, Notify.State> {
       : created.format("DD.MM.YY")
 
     return (
-      <div className={`item ${hiddenClass}`}>
+      <div className={`item ${hiddenClass}`} onClick={this.hide}>
         <div className="title">
           <img src={item.icon} />
           <span className="app">{item.appName}</span>
