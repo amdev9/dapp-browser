@@ -33,7 +33,7 @@ module.exports = {
                 loader: 'ts-loader'
             },
             { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
-            { test: /\.(png|svg|otf)$/, use: 'url-loader?limit=100000' },
+            { test: /\.(png|svg|otf|ttf)$/, use: 'url-loader?limit=100000' },
             { test: /\.(jpg|gif)$/, use: 'file-loader' },
             {
                 test: /\.css$/,

@@ -48,15 +48,17 @@ class App extends React.Component<AppProps> {
     return (
       <div>
         <HeaderBar isOpen={openNotificationPanel} togglePanel={() => onToggle()} key="root-headerbar" />
+     
         <NotificationPanel isOpen={openNotificationPanel} togglePanel={(openStatus) => onToggle(openStatus)} key="root-notifications" />
 
         {/* <p>{counter}</p>
         <button onClick={onIncrement}>+</button>
         <button onClick={onDecrement}>-</button> */}
+        
+        {/* <button onClick={() => onSwitchDapp('Share')}>switch dapp</button> */}
         <button onClick={() => onAddAppItem(appItemTest)}>add tray icon 1</button>
         <button onClick={() => onAddAppItem(appItemTest2)}>add tray icon 2</button> 
-        {/* <button onClick={() => onSwitchDapp('Share')}>switch dapp</button> */}
-         
+
         <div className="content-zone" key="root-content" id="root-container">
           
            
@@ -65,6 +67,7 @@ class App extends React.Component<AppProps> {
             {/* <main className="page-container"> */}
               <Tray items={trayItems} toggleSwitch={onSwitchDapp}/>
               <AppsFeed />
+             
             {/* </main> */}
           {/* </div> */}
         </div>
