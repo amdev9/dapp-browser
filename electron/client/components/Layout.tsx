@@ -27,23 +27,12 @@ interface AppProps {
 class App extends React.Component<AppProps> {
   render() {
 
-    const appItemTest: AppItem = {
-      id: 1,
-      appName: "index",
-      icon: require("../assets/app-icons/share.svg"),
-      statusIcon: ["running"]
-    };
-    const appItemTest2: AppItem = {
-      id: 2,
-      appName: "index2",
-      icon: require("../assets/app-icons/chat.svg"),
-      statusIcon: ["running"]
-    };
+    
      
     const { 
       onIncrement, onDecrement, counter, 
       onToggle, openNotificationPanel,
-      onAddAppItem, onSwitchDapp, trayItems
+       onSwitchDapp, trayItems
     } = this.props;
     return (
       <div>
@@ -56,8 +45,7 @@ class App extends React.Component<AppProps> {
         <button onClick={onDecrement}>-</button> */}
         
         {/* <button onClick={() => onSwitchDapp('Share')}>switch dapp</button> */}
-        <button onClick={() => onAddAppItem(appItemTest)}>add tray icon 1</button>
-        <button onClick={() => onAddAppItem(appItemTest2)}>add tray icon 2</button> 
+       
 
         <div className="content-zone" key="root-content" id="root-container">
           
