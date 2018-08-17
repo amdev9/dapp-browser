@@ -3,7 +3,8 @@ import { AppItem, NotifyItem, ActiveDapp } from '../model';
 export interface Tray {
   items: AppItem[],
   activeDapp: ActiveDapp,
-  pinned: string[]
+  pinned: string[],
+  isHome: boolean
 }
 
 export interface NotificationPanel {

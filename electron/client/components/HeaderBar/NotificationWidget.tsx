@@ -7,20 +7,10 @@ interface NotificationWidgetProps {
   togglePanel?(): void
 }
 export class NotificationWidget extends React.Component<NotificationWidgetProps> {
-  constructor(props: {}) {
-    super(props);
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  handleClick() {
-    console.log('clicked notification');
-    this.props.togglePanel();
-  }
-
   public render() {
     const { togglePanel } = this.props;
     return (
-      <div className="notifications" onClick={this.handleClick}>
+      <div className="notifications" onClick={() => togglePanel()}>
         <img className="icon" src={notificationIcon} />
       </div>
     )

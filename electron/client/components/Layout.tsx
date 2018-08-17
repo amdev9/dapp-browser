@@ -18,7 +18,8 @@ interface AppProps {
   notifyItems: NotifyItem[],
   onIncrement: () => any,
   onDecrement: () => any,
-  onToggle: (openStatus?: boolean) => any,
+  onTogglePanel: (openStatus?: boolean) => any,
+  onToggleHome: (openStatus?: boolean) => any,
   clearNotification: (id?: number) => void,
   clearAllNotifications: () => void,
   onAddAppItem: (appItem?: AppItem) => any,
@@ -28,18 +29,24 @@ interface AppProps {
 class App extends React.Component<AppProps> {
   render() {
     const { 
-      onToggle, openNotificationPanel, clearNotification, clearAllNotifications,
-      onAddAppItem, onSwitchDapp, trayItems, notifyItems
+      onTogglePanel, openNotificationPanel, clearNotification, clearAllNotifications,
+      onAddAppItem, onSwitchDapp, onToggleHome,
+      trayItems, notifyItems
     } = this.props;
     return (
       <div>
-        <HeaderBar isOpen={openNotificationPanel} togglePanel={() => onToggle()} key="root-headerbar" /> 
+        <HeaderBar 
+          isOpen={openNotificationPanel}
+          togglePanel={() => onTogglePanel()}
+          toggleHome={() => onToggleHome(true)}
+          key="root-headerbar" /> 
+        
         <NotificationPanel 
           clearAllNotifications={() => clearAllNotifications()}   
           clearNotification={(id: number) => clearNotification(id)} 
           items={notifyItems} 
           isOpen={openNotificationPanel} 
-          togglePanel={(openStatus) => onToggle(openStatus)} 
+          togglePanel={(openStatus) => onTogglePanel(openStatus)} 
           key="root-notifications" />
         <div className="content-zone" key="root-content" id="root-container">
           {/* <div className="content" id="content-wrap"> */}  
@@ -64,11 +71,12 @@ const mapStateToProps = (state: IState) => ({
 const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
   onIncrement: CounterActions.increment,
   onDecrement: CounterActions.decrement,
-  onToggle: NotificationActions.toggle,
+  onTogglePanel: NotificationActions.toggle,
   clearNotification: NotificationActions.clearNotification,
   clearAllNotifications: NotificationActions.clearAllNotifications,
   onAddAppItem: TrayActions.addAppItem,
   onSwitchDapp: TrayActions.switchDapp,
+  onToggleHome: TrayActions.toggleHome
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

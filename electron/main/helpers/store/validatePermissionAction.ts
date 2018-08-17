@@ -63,6 +63,9 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
           case 'CLEAR_ALL_NOTIFICATIONS':
             console.log(action);
             return next(action);
+          case 'TOGGLE_HOME':
+            console.log(action);
+            return next(action);
           default:
             console.log("Cancelled for client");
         }
