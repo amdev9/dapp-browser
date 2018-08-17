@@ -1,35 +1,25 @@
-import { NotifyItem } from "../../redux/model";
-import * as moment from "moment"
-import * as React from "react"
+import * as React from 'react';
+import * as moment from 'moment';
 
-namespace Notify {
-  export interface Props {
-    item: NotifyItem,
-    clearNotification?: (id: number) => void,
-  }
+import { NotifyItem } from '../../redux/model';
+
+interface NotifyProps {
+  item: NotifyItem,
+  clearNotification?: (id: number) => void
 }
 
-export class Notify extends React.Component<Notify.Props> {
-  constructor(props: Notify.Props) {
-    super(props)
-
-    this.hide = this.hide.bind(this)
-  }
-
-  private async hide() {
-    this.props.clearNotification(this.props.item.id);
-  }
-
+export class Notify extends React.Component<NotifyProps> {
+ 
   public render() {
-    const { item } = this.props
+    const { clearNotification, item } = this.props;
     const created = moment(item.created)
 
     const timeLabel = created.isSame(moment(), "day")
       ? created.fromNow()
       : created.format("DD.MM.YY")
-
+   
     return (
-      <div className="item" onClick={this.hide}>
+      <div className="item" onClick={() => clearNotification(item.id)}>
         <div className="title">
           <img src={item.icon} />
           <span className="app">{item.appName}</span>

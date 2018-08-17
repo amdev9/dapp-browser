@@ -1,32 +1,20 @@
-import { Notify as Item } from "./Notify"
-import { NotifyItem } from "../../redux/model";
-// import { Ionicon } from "react-ionicons"
-import * as React from "react"
+import * as React from 'react';
+import { Notify as Item } from './Notify';
+import { NotifyItem } from '../../redux/model';
+import { IoMdClose } from 'react-icons/io';
 
-namespace NotifyGroup {
-  export interface Props {
-    clearNotification?: (id: number) => void,
-    clearAllNotifications?: () => void,
-    items: NotifyItem[]
-  }
+interface NotifyGroupProps {
+  clearNotification?: (id: number) => void,
+  clearAllNotifications?: () => void,
+  items: NotifyItem[]
 }
 
-export class NotifyGroup extends React.Component<NotifyGroup.Props> {
-  constructor(props: NotifyGroup.Props) {
-    super(props)
-
-    this.getList = this.getList.bind(this)
-    this.clearIt = this.clearIt.bind(this)
+export class NotifyGroup extends React.Component<NotifyGroupProps> {
+  constructor(props: NotifyGroupProps) {
+    super(props);
+    this.getList = this.getList.bind(this);
   }
-
-  private async clearIt() {
-    const { clearAllNotifications } = this.props
-
-    if (clearAllNotifications()) {
-      clearAllNotifications();
-    }
-  }
-
+ 
   private getList(): JSX.Element[] | null {
     const { items, clearNotification } = this.props
 
@@ -45,18 +33,13 @@ export class NotifyGroup extends React.Component<NotifyGroup.Props> {
 
   public render() {
     const groupTimeLabel = "";
-
-    const closeStyle = { // haven't managed to use ionicons here. Getting error of wrong export of Ionicon class
-      color: "#A8B2BD",
-      fontSize: "14px",
-    }
-
+    const { clearAllNotifications } = this.props;
     return (
       <div className="group">
         <div className="title">
           <span>{groupTimeLabel}</span>
-          <div className="clear" onClick={this.clearIt}>
-            <div style={closeStyle}>&#10005;</div>
+          <div className="clear" onClick={() => clearAllNotifications()}>
+            <IoMdClose fontSize="14px" color="#A8B2BD"/>        
           </div>
         </div>
         <div className="items">
