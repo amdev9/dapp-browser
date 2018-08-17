@@ -1,35 +1,35 @@
 .feeds
   flex-direction: column
-  background: #fafafc
+  background: linear-gradient(#f1f2f6, #fafafc)
   padding: 35px 50px
   display: flex
-  height: 100%
+  height: $layout-content-height
+  width: 100%
 
   .header
     +flex(row, space-between, center)
-    height: 60px
 
     .title
       color: rgba(0,0,0, 0.9)
       letter-spacing: 0px
-      font-weight: 800
-      font-size: 21px
+      font-weight: 500
+      font-size: 30px
 
     .action
       background-color: #508dff
       +flex(row, center, center)
-      border-radius: 16px
+      border-radius: 20px
       cursor: pointer
-      height: 34px
-      width: 140px
+      height: 40px
+      width: 150px
 
       span
         text-transform: uppercase
         letter-spacing: 0
-        font-weight: 600
-        font-size: 14px
+        font-size: 13px
         color: #ffffff
   
   .list
     flex-wrap: wrap
     display: flex
+        

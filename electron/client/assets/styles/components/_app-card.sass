@@ -1,15 +1,18 @@
 .app-card
-  box-shadow: 0px 0px 3px rgba(0,0,0, 0.2)
   flex-direction: column
   background: #ffffff
   border-radius: 8px
   overflow: hidden
   display: flex
   
-  margin: 8px 10px
+  margin-right: 20px
+  margin-top: 20px
   height: 215px
   width: 270px
 
+  &:hover 
+    box-shadow: 0px 0px 10px rgba(0,0,0, 0.2)
+    
   .header
     background-size: cover
     height: 140px
@@ -19,9 +22,12 @@
     padding: 12px 14px 10px 14px
 
     .title
-      color: rgba(0,0,0, 0.9)
+      // color: rgba(0,0,0, 0.9)
       letter-spacing: 0
-      font-weight: 600
+      font-family: 'Open Sans'
+      font-weight: 500
+      font-style: normal
+      font-size: 18px
     
     .footer
       +flex(row, space-between, center)
@@ -30,20 +36,21 @@
       .tags
         +flex(row, flex-start, center)
         .tag
-          padding: 2px 10px 3px 10px
+          padding: 0px 12px 3px 12px
           background-color: #f6f8fb
           border-radius: 15px
           cursor: pointer
-          margin: 0 3px
+          margin: 0 5px
+          font-family: 'Open Sans'
 
           &:first-child
             margin-left: 0px
 
           span
             text-transform: uppercase
-            color: rgba(0,0,0, 0.5)
-            font-weight: 500
-            font-size: 13px
+            color: rgba(0,0,0, 0.8)
+            font-weight: 300
+            font-size: 12px
       
       .action
         padding: 4px 10px 3px 10px
@@ -53,6 +60,6 @@
 
         .label
           text-transform: uppercase
-          font-weight: 500
+          font-weight: 400
           font-size: 13px
           color: #508dff

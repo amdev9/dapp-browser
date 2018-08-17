@@ -8,10 +8,7 @@ import rootEpic from '../epics';
 import { rootReducer } from '../reducers';
 import { RendererConf } from '../../createDappView';
  
-export type State = {
-  readonly counter: number;
-  readonly countdown: number;
-};
+import { IState } from '../reducers/state';
 
 export interface Action {
   type: string;
@@ -26,16 +23,22 @@ export interface Action {
   };
 }
 
-export const initialState: State = {
+export const initialState: IState = {
   counter: 0,
-  countdown: 0
-}; 
-
+  channel: {},
+  client: {
+    activeDapp: {
+      id: 0,
+      appName: null
+    }
+  }
+}
+ 
 declare global {
   namespace NodeJS {
     interface Global {
       getReduxState: () => string,
-      state: State
+      state: IState
     }
   }
 }
@@ -169,12 +172,12 @@ const replyActionMain = (store: Store<{}>, globalId: RendererConf[]) => {
   });
 }
 
-export const configureStore = (initialState?: State, globalId?: RendererConf[]) => {
+export const configureStore = (state: IState = initialState, globalId?: RendererConf[]) => {
   const middleware: Middleware[] = [];
   middleware.push(epicMiddleware, validatePermissionAction(globalId), forwardToRendererWrapper(globalId)); 
   const enhanced = [applyMiddleware(...middleware)];
   const enhancer: GenericStoreEnhancer = compose(...enhanced);
-  const store = createStore(rootReducer, initialState, enhancer);
+  const store = createStore(rootReducer, state, enhancer);
   epicMiddleware.run(rootEpic);
   replyActionMain(store, globalId);
   return store;

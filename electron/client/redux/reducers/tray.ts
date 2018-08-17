@@ -3,14 +3,24 @@ import { TrayAction } from '../actions/tray';
 import { Tray } from './state';
 
 const initialState: Tray = {
-  items: [],
+  items: [{
+    id: 1,
+    appName: "index",
+    icon: require("../../assets/app-icons/share.svg"),
+    statusIcon: ["running"]
+  }, {
+    id: 2,
+    appName: "index2",
+    icon: require("../../assets/app-icons/chat.svg"),
+    statusIcon: ["running"]
+  }],
   activeDapp: {
     appName: null, 
     id: 0
   },
   pinned: []
 }
-
+ 
 export default function tray(state: Tray = initialState, action: TrayAction) {
   switch (action.type) {
     case SWITCH_DAPP:
