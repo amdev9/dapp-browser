@@ -30,11 +30,9 @@ export default function notification(state: NotificationPanel = initialState, ac
         return { ...state, isOpen: !state.isOpen };
       }
     case CLEAR_NOTIFICATION:
-      const notifyId = action.payload.notifyId;
-      const index = state.items.findIndex((item) => {
-        return item.id === notifyId;
+      const items = state.items.filter(item => {
+        return item.id !== action.payload.id;
       });
-      const items = [...state.items.slice(0, index), ...state.items.slice(index + 1)];
       return {...state, items};
 
     case CLEAR_ALL_NOTIFICATIONS:

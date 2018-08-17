@@ -21,7 +21,7 @@ interface AppProps {
   onIncrement: () => any,
   onDecrement: () => any,
   onToggle: (openStatus?: boolean) => any,
-  clearNotification: (notifyId?: number) => void,
+  clearNotification: (id?: number) => void,
   clearAllNotifications: () => void,
   onAddAppItem: (appItem?: AppItem) => any,
   onSwitchDapp: (targetDappId?: number, targetDappName?: string) => any
@@ -51,7 +51,7 @@ class App extends React.Component<AppProps> {
     return (
       <div>
         <HeaderBar isOpen={openNotificationPanel} togglePanel={() => onToggle()} key="root-headerbar" />
-        <NotificationPanel clearAllNotifications={() => clearAllNotifications()} clearNotification={(notifyId: number) => clearNotification(notifyId)} items={notifyItems} isOpen={openNotificationPanel} togglePanel={(openStatus) => onToggle(openStatus)} key="root-notifications" />
+        <NotificationPanel clearAllNotifications={() => clearAllNotifications()} clearNotification={(id: number) => clearNotification(id)} items={notifyItems} isOpen={openNotificationPanel} togglePanel={(openStatus) => onToggle(openStatus)} key="root-notifications" />
 
         <p>{counter}</p>
         <button onClick={onIncrement}>+</button>

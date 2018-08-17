@@ -10,7 +10,7 @@ interface NotificationPanelProps {
   isOpen?: boolean;
   items?: NotifyItem[];
   togglePanel?(openStatus: boolean): void;
-  clearNotification?(groupId: number): void;
+  clearNotification?(id: number): void;
   clearAllNotifications?(): void;
 }
 

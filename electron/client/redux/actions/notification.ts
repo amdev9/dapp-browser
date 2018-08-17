@@ -5,10 +5,10 @@ import {CLEAR_ALL_NOTIFICATIONS, CLEAR_NOTIFICATION, TOGGLE_NOTIFICATION_PANEL} 
 export interface NotificationPanelAction extends Action {
   payload?: {
     isOpen?: boolean
-    notifyId?: number, // seems like it's better to extract this into a separate action, but we have only one reducer "notification", which takes NotificationPanelAction interface
+    id?: number, // seems like it's better to extract this into a separate action, but we have only one reducer "notification", which takes NotificationPanelAction interface
   }
 }
 
 export const toggle = (openStatus: boolean): NotificationPanelAction => action(TOGGLE_NOTIFICATION_PANEL, { isOpen: openStatus });
-export const clearNotification = (notifyId: number): NotificationPanelAction => action(CLEAR_NOTIFICATION, {notifyId});
-export const clearAllNotifications = (): NotificationPanelAction => action(CLEAR_ALL_NOTIFICATIONS, null);
+export const clearNotification = (id: number): NotificationPanelAction => action(CLEAR_NOTIFICATION, {id});
+export const clearAllNotifications = (): NotificationPanelAction => action(CLEAR_ALL_NOTIFICATIONS);
