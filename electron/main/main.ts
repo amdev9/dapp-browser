@@ -67,6 +67,8 @@ app.on('ready', async () => {
         process.stdout.write(JSON.stringify( nameObj ) );
         /* BrowserView */
         let view = BrowserView.fromId(nameObj.viewId);
+        process.stdout.write(  JSON.stringify(BrowserView.getAllViews()) );
+        process.stdout.write(JSON.stringify( view ) );
         clientWindow.setBrowserView(view);
         view.setBounds(bounds); 
         /**/
