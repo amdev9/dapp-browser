@@ -73,6 +73,7 @@ app.on('ready', async () => {
           clientWindow.setBrowserView(view);
           view.setBounds(bounds); 
         } else {
+          // clientWindow.setBrowserView(null); // @todo use it when user clicked on Home button
           process.stdout.write('error: view is null');
         }
         
