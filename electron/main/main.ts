@@ -65,12 +65,17 @@ app.on('ready', async () => {
       let nameObj: RendererConf = globalUUIDList.find(renObj => renObj.name === activeDappName);
       if (nameObj) {
         process.stdout.write(JSON.stringify( nameObj ) );
-        /* BrowserView */
+         
         let view = BrowserView.fromId(nameObj.viewId);
         process.stdout.write(  JSON.stringify(BrowserView.getAllViews()) );
-        process.stdout.write(JSON.stringify( view ) );
-        clientWindow.setBrowserView(view);
-        view.setBounds(bounds); 
+        
+        if (view) {
+          clientWindow.setBrowserView(view);
+          view.setBounds(bounds); 
+        } else {
+          process.stdout.write('error: view is null');
+        }
+        
         /**/
  
       }

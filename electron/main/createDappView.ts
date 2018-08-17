@@ -68,10 +68,10 @@ export function createDappView(globalUUIDList: RendererConf[], entryPath: string
     // });
  
 
-  dappView.on('closed', () => {
-    dappView = null;
-    // remove from global
-  });
+  // dappView.on('closed', () => {
+  //   dappView = null;
+  //   // remove from global
+  // });
 
   // if (process.env.NODE_ENV === 'development') {
   //   openDevTool(dappView, true);
