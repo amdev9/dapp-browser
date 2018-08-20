@@ -46,6 +46,7 @@ export default function tray(state: Tray = initialState, action: TrayAction) {
       return {
         ...state,
         items: newItems,
+        isHome: false, 
         activeDapp: { 
           id: dappId, 
           appName: dappName 

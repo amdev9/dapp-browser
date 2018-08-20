@@ -59,7 +59,12 @@ app.on('ready', async () => {
     let storeState: any = store.getState();
     process.stdout.write(JSON.stringify(storeState));
 
-    if(storeState.client.activeDapp) {
+    if (storeState.client.isHome) {
+      console.log('>>> home triggered');
+      clientWindow.setBrowserView(null);
+    }
+
+    if (storeState.client.activeDapp) {
       let activeDappName: string = storeState.client.activeDapp.appName;
 
       let nameObj: RendererConf = globalUUIDList.find(renObj => renObj.name === activeDappName);
