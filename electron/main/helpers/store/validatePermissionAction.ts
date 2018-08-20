@@ -5,14 +5,15 @@ import { INCREMENT_COUNTER, DECREMENT_COUNTER } from '../actions/counter';
 import { Dispatch } from 'redux';
 import { Action } from './configureStore';
 import { RendererConf } from '../../createDappView';
-import { 
+import {
   TOGGLE_NOTIFICATION_PANEL,
   CLEAR_NOTIFICATION,
   CLEAR_ALL_NOTIFICATIONS,
   ADD_APP_ITEM,
   SWITCH_DAPP,
   TOGGLE_HOME,
-  TOGGLE_APP_HOME 
+  TOGGLE_APP_HOME,
+  TOGGLE_STATUS_BAR_PANEL
 } from '../constants';
 
 export const validatePermissionAction = (globalId: RendererConf[]) => {
@@ -54,7 +55,7 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
           case ADD_APP_ITEM:
             console.log(action);
             return next(action);
-          case SWITCH_DAPP: 
+          case SWITCH_DAPP:
             console.log(action);
             return next(action);
           case TOGGLE_NOTIFICATION_PANEL:
@@ -72,13 +73,15 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
           case CLEAR_ALL_NOTIFICATIONS:
             console.log(action);
             return next(action);
+          case TOGGLE_STATUS_BAR_PANEL:
+            console.log(action);
+            return next(action);
           case TOGGLE_HOME:
             console.log(action);
             return next(action);
-          case TOGGLE_APP_HOME: 
+          case TOGGLE_APP_HOME:
             console.log(action);
             return next(action);
-
           default:
             console.log("Cancelled for client");
         }

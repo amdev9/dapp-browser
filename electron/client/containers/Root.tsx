@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as Redux from 'react-redux';
 
 
 import { Store } from 'redux';
