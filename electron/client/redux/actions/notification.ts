@@ -1,6 +1,6 @@
 import { action } from 'typesafe-actions';
 import { Action } from 'redux';
-import {CLEAR_ALL_NOTIFICATIONS, CLEAR_NOTIFICATION, TOGGLE_NOTIFICATION_PANEL} from '../constants';
+import { CLEAR_ALL_NOTIFICATIONS, CLEAR_NOTIFICATION, TOGGLE_NOTIFICATION_PANEL } from '../constants';
  
 export interface NotificationPanelAction extends Action {
   payload?: {

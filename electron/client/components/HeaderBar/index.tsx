@@ -1,21 +1,19 @@
 import * as React from "react";
  
 import { NotificationWidget } from './NotificationWidget';
- 
-const homeIcon = require("../../assets/icons/home.svg");
- 
+import { HomeWidget } from './HomeWidget';
+
 interface HeaderBarProps {
   isOpen?: boolean,
-  togglePanel?(): void
+  togglePanel?(): void,
+  toggleHome?(): void
 }
 export class HeaderBar extends React.Component<HeaderBarProps> { 
   public render() {
+    const { togglePanel, toggleHome, isOpen } = this.props;
     return (
       <div className="headerbar">
-        <div className="header">
-          <img className="icon" src={homeIcon} />
-        </div>
-
+        <HomeWidget toggleHome={toggleHome}/>
         <div className="title">
           Home
         </div>
@@ -31,7 +29,7 @@ export class HeaderBar extends React.Component<HeaderBarProps> {
             {/* <Keychain /> */}
             {/* <Settings /> */}
 
-            <NotificationWidget {...this.props} />
+            <NotificationWidget isOpen togglePanel={togglePanel} />
           </div>
         </div>
       </div>

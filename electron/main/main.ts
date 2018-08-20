@@ -3,7 +3,7 @@
   Uses process.stdout.write instead of console.log so we can cleanly catch the output in the parent process.
 */
 
-import { app, BrowserView, ipcMain } from 'electron';
+import { app, BrowserView, ipcMain, screen } from 'electron';
 import { Store } from 'redux';
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer';
 import { configureStore } from './helpers/store/configureStore';
@@ -11,21 +11,12 @@ import { createClientWindow } from './createClientWindow';
 import { createDappView } from './createDappView';
 import { RendererConf } from './createDappView';
 
-let bounds = {
-  x: 300,
-  y: 0,
-  width: 300,
-  height: 300
-};
-
 const globalUUIDList: RendererConf[] = [];
 let clientWindow: Electron.BrowserWindow = null;
-
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support'); // eslint-disable-line
   sourceMapSupport.install();
 }
-
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -34,6 +25,16 @@ app.on('window-all-closed', () => {
 });
 
 app.on('ready', async () => {
+  const {width, height} = screen.getPrimaryDisplay().workAreaSize;
+  let bounds = {
+    x: 70,
+    y: 60,
+    width: 200,//width - 70,
+    height: height - 60  
+  };
+  // let displays = screen.getAllDisplays();
+  // process.stdout.write(JSON.stringify(displays));
+
   if (process.env.NODE_ENV === 'development') {
     let devtools = await installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS]);
     console.log(`Added Extension: ${devtools}`);
@@ -59,16 +60,28 @@ app.on('ready', async () => {
     let storeState: any = store.getState();
     process.stdout.write(JSON.stringify(storeState));
 
-    if(storeState.client.activeDapp) {
+    if (storeState.client.isHome) {
+      console.log('>>> home triggered');
+      clientWindow.setBrowserView(null);
+    }
+
+    if (storeState.client.activeDapp) {
       let activeDappName: string = storeState.client.activeDapp.appName;
 
       let nameObj: RendererConf = globalUUIDList.find(renObj => renObj.name === activeDappName);
       if (nameObj) {
         process.stdout.write(JSON.stringify( nameObj ) );
-        /* BrowserView */
+         
         let view = BrowserView.fromId(nameObj.viewId);
-        clientWindow.setBrowserView(view);
-        view.setBounds(bounds); 
+        process.stdout.write(  JSON.stringify(BrowserView.getAllViews()) );
+        
+        if (view) {
+          clientWindow.setBrowserView(view); // @todo detach other browserView via setBrowserView()
+          view.setBounds(bounds);  //{width: 0, height: 0, x: 0, y: 0}
+        } else {
+          process.stdout.write('error: view is null');
+        }
+        
         /**/
  
       }

@@ -43,15 +43,12 @@ export function createDappView(globalUUIDList: RendererConf[], entryPath: string
   });
   
   const bounds = {
-    x: 300,
-    y: 0,
+    x: 70,
+    y: 60,
     width: 300,
     height: 300
   };
  
-  /* BrowserView
-      dappView.setBounds(bounds); 
-  */
   dappView.setBounds(bounds); 
 
   dappView.webContents.loadURL('file://' + path.join(DAPPS_PATH, entryPath));
@@ -68,10 +65,10 @@ export function createDappView(globalUUIDList: RendererConf[], entryPath: string
     // });
  
 
-  dappView.on('closed', () => {
-    dappView = null;
-    // remove from global
-  });
+  // dappView.on('closed', () => {
+  //   dappView = null;
+  //   // remove from global
+  // });
 
   // if (process.env.NODE_ENV === 'development') {
   //   openDevTool(dappView, true);

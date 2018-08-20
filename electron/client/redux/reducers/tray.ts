@@ -1,4 +1,4 @@
-import { SWITCH_DAPP, ADD_APP_ITEM } from '../constants';
+import { SWITCH_DAPP, ADD_APP_ITEM, TOGGLE_HOME, TOGGLE_APP_HOME } from '../constants';
 import { TrayAction } from '../actions/tray';
 import { Tray } from './state';
 
@@ -18,7 +18,8 @@ const initialState: Tray = {
     appName: null, 
     id: 0
   },
-  pinned: []
+  pinned: [],
+  isHome: true
 }
  
 export default function tray(state: Tray = initialState, action: TrayAction) {
@@ -45,6 +46,7 @@ export default function tray(state: Tray = initialState, action: TrayAction) {
       return {
         ...state,
         items: newItems,
+        isHome: false, 
         activeDapp: { 
           id: dappId, 
           appName: dappName 
@@ -57,6 +59,16 @@ export default function tray(state: Tray = initialState, action: TrayAction) {
         ...state,
         items: state.items.concat(appItem) 
       }
+    
+    case TOGGLE_HOME:
+      const isHome = action.payload.isHome;
+      return { 
+        ...state, 
+        isHome: isHome
+      };
+    
+    case TOGGLE_APP_HOME:
+      return state;
     
     default:
       return state;

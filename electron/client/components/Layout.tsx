@@ -23,34 +23,42 @@ interface AppProps {
   statusBarToggle: () => void,
   onIncrement: () => any,
   onDecrement: () => any,
-  onToggle: (openStatus?: boolean) => any,
+  onTogglePanel: (openStatus?: boolean) => any,
+  onToggleHome: (openStatus?: boolean) => any,
   clearNotification: (id?: number) => void,
   clearAllNotifications: () => void,
   onAddAppItem: (appItem?: AppItem) => any,
-  onSwitchDapp: (targetDappId?: number, targetDappName?: string) => any
+  onSwitchDapp: (targetDappId?: number, targetDappName?: string) => any,
+  onToggleAppHome: (dappName: string) => any,
 }
 
 class App extends React.Component<AppProps> {
   render() {
-    const { 
-      onToggle, openNotificationPanel, openStatusBarPanel, clearNotification, clearAllNotifications,
-      onAddAppItem, onSwitchDapp, trayItems, notifyItems, statusBarItems, statusBarToggle,
+    const {
+      onTogglePanel, openNotificationPanel, openStatusBarPanel, clearNotification, clearAllNotifications,
+      onAddAppItem, onSwitchDapp, onToggleHome,
+      trayItems, notifyItems, statusBarItems, statusBarToggle,
+      onToggleAppHome
     } = this.props;
     return (
       <div>
-        <HeaderBar isOpen={openNotificationPanel} togglePanel={() => onToggle()} key="root-headerbar" /> 
+        <HeaderBar
+          isOpen={openNotificationPanel}
+          togglePanel={() => onTogglePanel()}
+          toggleHome={() => onToggleHome(true)}
+          key="root-headerbar" />
         <NotificationPanel 
           clearAllNotifications={() => clearAllNotifications()}   
           clearNotification={(id: number) => clearNotification(id)} 
           items={notifyItems} 
           isOpen={openNotificationPanel} 
-          togglePanel={(openStatus) => onToggle(openStatus)} 
+          togglePanel={(openStatus) => onTogglePanel(openStatus)}
           key="root-notifications" />
         <div className="content-zone" key="root-content" id="root-container">
           {/* <div className="content" id="content-wrap"> */}  
             {/* <main className="page-container"> */}
-              <Tray items={trayItems} toggleSwitch={onSwitchDapp} toggleStatusBar={statusBarToggle} statusBarIsOpen={openStatusBarPanel} />
-              <AppsFeed />
+              <Tray items={trayItems} toggleSwitch={onSwitchDapp} toggleStatusBar={statusBarToggle} statusBarIsOpen={openStatusBarPanel}/>
+              <AppsFeed toggleAppHome={onToggleAppHome}/>
             {/* </main> */}
           {/* </div> */}
         </div>
@@ -72,12 +80,14 @@ const mapStateToProps = (state: IState) => ({
 const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
   onIncrement: CounterActions.increment,
   onDecrement: CounterActions.decrement,
-  onToggle: NotificationActions.toggle,
+  onTogglePanel: NotificationActions.toggle,
   clearNotification: NotificationActions.clearNotification,
   clearAllNotifications: NotificationActions.clearAllNotifications,
   statusBarToggle: StatusBarActions.toggle,
   onAddAppItem: TrayActions.addAppItem,
   onSwitchDapp: TrayActions.switchDapp,
+  onToggleHome: TrayActions.toggleHome,
+  onToggleAppHome: TrayActions.toggleAppHome
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

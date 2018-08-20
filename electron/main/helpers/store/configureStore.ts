@@ -30,7 +30,8 @@ export const initialState: IState = {
     activeDapp: {
       id: 0,
       appName: null
-    }
+    },
+    isHome: true
   }
 }
  
