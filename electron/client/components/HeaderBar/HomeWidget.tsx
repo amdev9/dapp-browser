@@ -9,8 +9,13 @@ interface HomeWidgetProps {
 export class HomeWidget extends React.Component<HomeWidgetProps> {
   public render() {
     const { toggleHome } = this.props;
+    function handleClick(e: any) {
+      e.preventDefault();
+      toggleHome();
+    }
+    
     return (
-      <div className="header" onClick={() => toggleHome()}>
+      <div className="header" onClick={handleClick}>
         <img className="icon" src={homeIcon} />
       </div>
     )
