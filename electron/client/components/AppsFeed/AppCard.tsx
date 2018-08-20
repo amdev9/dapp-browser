@@ -1,5 +1,6 @@
 
 import * as React from "react"
+ 
 // import { MoonLoader } from "react-spinners"
  
 // export namespace AppCard {
@@ -40,7 +41,8 @@ type DApp = {
 }
 
 interface AppCardProps {
-  dapp: DApp
+  dapp: DApp,
+  toggleAppHome?: (dappName: string) => any
 }
 
 export class AppCard extends React.Component<AppCardProps>  {
@@ -64,26 +66,24 @@ export class AppCard extends React.Component<AppCardProps>  {
   // }
 
   private getCategories(): JSX.Element {
-
-    const { categories } = this.props.dapp
-
-    const items = categories.map((item, index): JSX.Element => (
+    const { dapp } = this.props;
+    const items = dapp.categories.map((item, index): JSX.Element => (
       <div key={`tag-${index}`} className="tag">
         <span>{item}</span>
       </div>
-    ))
+    ));
     return (
       <div className="tags">
         {items}
       </div>
-    )
+    );
   }
   public render() {
-    const { dapp } = this.props;
+    const { dapp, toggleAppHome } = this.props;
     return (
-      <div className="app-card">
+      <div className="app-card" onClick={() => toggleAppHome(dapp.name)}>
         <div className="header" style={{ backgroundImage: `url('${dapp.preview}')` }}> 
-        {/*  */}
+        
 
           {/* @TODO: add addittional network tags */
  
@@ -97,6 +97,6 @@ export class AppCard extends React.Component<AppCardProps>  {
           </div>
         </div>
       </div>
-    )
+    );
   }
 }

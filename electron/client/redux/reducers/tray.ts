@@ -1,4 +1,4 @@
-import { SWITCH_DAPP, ADD_APP_ITEM, TOGGLE_HOME } from '../constants';
+import { SWITCH_DAPP, ADD_APP_ITEM, TOGGLE_HOME, TOGGLE_APP_HOME } from '../constants';
 import { TrayAction } from '../actions/tray';
 import { Tray } from './state';
 
@@ -65,6 +65,9 @@ export default function tray(state: Tray = initialState, action: TrayAction) {
         ...state, 
         isHome: isHome
       };
+    
+    case TOGGLE_APP_HOME:
+      return state;
     
     default:
       return state;

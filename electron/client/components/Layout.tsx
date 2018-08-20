@@ -23,7 +23,8 @@ interface AppProps {
   clearNotification: (id?: number) => void,
   clearAllNotifications: () => void,
   onAddAppItem: (appItem?: AppItem) => any,
-  onSwitchDapp: (targetDappId?: number, targetDappName?: string) => any
+  onSwitchDapp: (targetDappId?: number, targetDappName?: string) => any,
+  onToggleAppHome: (dappName: string) => any,
 }
 
 class App extends React.Component<AppProps> {
@@ -31,7 +32,8 @@ class App extends React.Component<AppProps> {
     const { 
       onTogglePanel, openNotificationPanel, clearNotification, clearAllNotifications,
       onAddAppItem, onSwitchDapp, onToggleHome,
-      trayItems, notifyItems
+      trayItems, notifyItems,
+      onToggleAppHome
     } = this.props;
     return (
       <div>
@@ -52,7 +54,7 @@ class App extends React.Component<AppProps> {
           {/* <div className="content" id="content-wrap"> */}  
             {/* <main className="page-container"> */}
               <Tray items={trayItems} toggleSwitch={onSwitchDapp}/>
-              <AppsFeed />
+              <AppsFeed toggleAppHome={onToggleAppHome}/>
             {/* </main> */}
           {/* </div> */}
         </div>
@@ -76,7 +78,8 @@ const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
   clearAllNotifications: NotificationActions.clearAllNotifications,
   onAddAppItem: TrayActions.addAppItem,
   onSwitchDapp: TrayActions.switchDapp,
-  onToggleHome: TrayActions.toggleHome
+  onToggleHome: TrayActions.toggleHome,
+  onToggleAppHome: TrayActions.toggleAppHome
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

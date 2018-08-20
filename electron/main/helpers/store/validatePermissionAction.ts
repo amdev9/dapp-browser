@@ -5,6 +5,15 @@ import { INCREMENT_COUNTER, DECREMENT_COUNTER } from '../actions/counter';
 import { Dispatch } from 'redux';
 import { Action } from './configureStore';
 import { RendererConf } from '../../createDappView';
+import { 
+  TOGGLE_NOTIFICATION_PANEL,
+  CLEAR_NOTIFICATION,
+  CLEAR_ALL_NOTIFICATIONS,
+  ADD_APP_ITEM,
+  SWITCH_DAPP,
+  TOGGLE_HOME,
+  TOGGLE_APP_HOME 
+} from '../constants';
 
 export const validatePermissionAction = (globalId: RendererConf[]) => {
   return () => (next: Dispatch<void>) => <A extends Action>(action: A) => {
@@ -42,13 +51,13 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
           case DECREMENT_COUNTER:
             console.log(action);
             return next(action);
-          case 'ADD_APP_ITEM':
+          case ADD_APP_ITEM:
             console.log(action);
             return next(action);
-          case 'SWITCH_DAPP': 
+          case SWITCH_DAPP: 
             console.log(action);
             return next(action);
-          case 'TOGGLE_NOTIFICATION_PANEL':
+          case TOGGLE_NOTIFICATION_PANEL:
             let clientObj = globalId.find(renObj => renObj.status === 'client');
             if (clientObj) {
               const payloadUuidObj = { 
@@ -57,15 +66,19 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
               action.payload = Object.assign(action.payload, payloadUuidObj) 
             }
             return next(action);
-          case 'CLEAR_NOTIFICATION':
+          case CLEAR_NOTIFICATION:
             console.log(action);
             return next(action);
-          case 'CLEAR_ALL_NOTIFICATIONS':
+          case CLEAR_ALL_NOTIFICATIONS:
             console.log(action);
             return next(action);
-          case 'TOGGLE_HOME':
+          case TOGGLE_HOME:
             console.log(action);
             return next(action);
+          case TOGGLE_APP_HOME: 
+            console.log(action);
+            return next(action);
+
           default:
             console.log("Cancelled for client");
         }
