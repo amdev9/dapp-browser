@@ -1,4 +1,4 @@
-import { AppItem, NotifyItem, ActiveDapp } from '../model';
+import { AppItem, NotifyItem, ActiveDapp, StatusBarItem } from '../model';
 
 export interface Tray {
   items: AppItem[],
@@ -11,10 +11,16 @@ export interface NotificationPanel {
   isOpen: boolean
 }
 
+export interface StatusBarPanel {
+  items: { [index: string]: StatusBarItem; },
+  isOpen: boolean
+}
+
 export type Counter = number;
 
 export interface IState {
   counter: Counter;
   notification: NotificationPanel;
+  statusBar: StatusBarPanel;
   tray: Tray
 }

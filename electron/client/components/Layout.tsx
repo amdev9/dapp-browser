@@ -4,9 +4,11 @@ import { connect } from 'react-redux';
 import * as CounterActions from '../redux/actions/counter';
 import * as NotificationActions from '../redux/actions/notification';
 import * as TrayActions from '../redux/actions/tray';
-import { AppItem, NotifyItem } from '../redux/model';
+import * as StatusBarActions from '../redux/actions/status-bar';
+import { AppItem, NotifyItem, StatusBarItem } from '../redux/model';
 import { HeaderBar } from './HeaderBar'
 import { NotificationPanel } from "./NotificationPanel"
+import { StatusBar } from "./StatusBar"
 import { Tray } from './Tray';
 import { AppsFeed } from './AppsFeed';
 import { IState } from '../redux/reducers/state';
@@ -14,8 +16,11 @@ import { IState } from '../redux/reducers/state';
 interface AppProps {
   counter: number,
   openNotificationPanel: boolean,
+  openStatusBarPanel: boolean,
   trayItems: AppItem[],
   notifyItems: NotifyItem[],
+  statusBarItems?: {[index: string]: StatusBarItem},
+  statusBarToggle: () => void,
   onIncrement: () => any,
   onDecrement: () => any,
   onToggle: (openStatus?: boolean) => any,
@@ -28,8 +33,8 @@ interface AppProps {
 class App extends React.Component<AppProps> {
   render() {
     const { 
-      onToggle, openNotificationPanel, clearNotification, clearAllNotifications,
-      onAddAppItem, onSwitchDapp, trayItems, notifyItems
+      onToggle, openNotificationPanel, openStatusBarPanel, clearNotification, clearAllNotifications,
+      onAddAppItem, onSwitchDapp, trayItems, notifyItems, statusBarItems, statusBarToggle,
     } = this.props;
     return (
       <div>
@@ -44,11 +49,12 @@ class App extends React.Component<AppProps> {
         <div className="content-zone" key="root-content" id="root-container">
           {/* <div className="content" id="content-wrap"> */}  
             {/* <main className="page-container"> */}
-              <Tray items={trayItems} toggleSwitch={onSwitchDapp}/>
+              <Tray items={trayItems} toggleSwitch={onSwitchDapp} toggleStatusBar={statusBarToggle} statusBarIsOpen={openStatusBarPanel} />
               <AppsFeed />
             {/* </main> */}
           {/* </div> */}
         </div>
+        <StatusBar isOpen={openStatusBarPanel} items={statusBarItems} />
       </div>
     )
   }
@@ -58,6 +64,8 @@ const mapStateToProps = (state: IState) => ({
   counter: state.counter,
   notifyItems: state.notification.items,
   openNotificationPanel: state.notification.isOpen,
+  openStatusBarPanel: state.statusBar.isOpen,
+  statusBarItems: state.statusBar.items,
   trayItems: state.tray.items,
 });
 
@@ -67,6 +75,7 @@ const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
   onToggle: NotificationActions.toggle,
   clearNotification: NotificationActions.clearNotification,
   clearAllNotifications: NotificationActions.clearAllNotifications,
+  statusBarToggle: StatusBarActions.toggle,
   onAddAppItem: TrayActions.addAppItem,
   onSwitchDapp: TrayActions.switchDapp,
 }, dispatch);

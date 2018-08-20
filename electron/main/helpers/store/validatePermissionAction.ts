@@ -60,6 +60,9 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
           case 'CLEAR_NOTIFICATION':
             console.log(action);
             return next(action);
+          case 'TOGGLE_STATUS_BAR_PANEL':
+            console.log(action);
+            return next(action);
           case 'CLEAR_ALL_NOTIFICATIONS':
             console.log(action);
             return next(action);
