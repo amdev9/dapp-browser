@@ -33,15 +33,14 @@ export class StatusBar extends React.Component<StatusBarProps> {
   }
 
   public render() {
-    let { isOpen, items } = this.props;
-    items = items ? items : {};
-    isOpen = !!isOpen;
+    let { isOpen } = this.props;
 
     const props: any = {
       className: "statusbar",
       style: {
         position: "absolute",
-        bottom: isOpen ? 0 : `${(Object.keys(items).length * -50)}px`
+        bottom: 0,
+        display: isOpen ? "block": "none"
       },
     };
 
