@@ -3,13 +3,25 @@
   Uses process.stdout.write instead of console.log so we can cleanly catch the output in the parent process.
 */
 
-import { app, BrowserView, ipcMain, screen } from 'electron';
+import { app, BrowserView, ipcMain, screen, BrowserWindow } from 'electron';
 import { Store } from 'redux';
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer';
 import { configureStore } from './helpers/store/configureStore';
 import { createClientWindow } from './createClientWindow';
 import { createDappView } from './createDappView';
 import { RendererConf } from './createDappView';
+
+require('electron-context-menu')({
+	prepend: (params: any, browserWindow: BrowserWindow) => [{
+    label: 'Pin to top',
+		// Only show it when right-clicking images
+		// visible: params.mediaType === 'image'
+  },
+  {
+    label: 'Close app',
+		// visible: params.mediaType === 'image'
+	}]
+});
 
 const globalUUIDList: RendererConf[] = [];
 let clientWindow: Electron.BrowserWindow = null;
