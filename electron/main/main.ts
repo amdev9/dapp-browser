@@ -67,7 +67,7 @@ app.on('ready', async () => {
 
       let nameObj: RendererConf = globalUUIDList.find(renObj => renObj.name === activeDappName);
       if (nameObj) {
-        let view = BrowserView.fromId(nameObj.viewId);
+        let view = nameObj.dappView;
         if (view) {
           clientWindow.setBrowserView(view); // @todo detach other browserView via setBrowserView()
           view.setBounds(bounds);  //{width: 0, height: 0, x: 0, y: 0}

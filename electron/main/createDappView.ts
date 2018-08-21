@@ -14,7 +14,7 @@ export interface RendererConf {
   name: string;
   status: string;
   winId: number;
-  viewId?: number; // for dapp BrowserView 
+  dappView?: BrowserView, 
   intent?: string;
   binded?: BindedListConf
 }
@@ -55,7 +55,7 @@ export function createDappView(globalUUIDList: RendererConf[], entryPath: string
     id: uuidDapp,
     status: 'dapp',
     winId: renderIdDapp,
-    viewId: dappView.id,
+    dappView,
     name: entryPath.split('.')[0] // load from dapp
   }
   globalUUIDList.push(rendererObj);
