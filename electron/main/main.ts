@@ -60,22 +60,25 @@ app.on('ready', async () => {
     if (storeState.client.isHome) {
       console.log('>>> home triggered');
       clientWindow.setBrowserView(null);
-    }
-
-    if (storeState.client.activeDapp) {
-      let activeDappName: string = storeState.client.activeDapp.appName;
-
-      let nameObj: RendererConf = globalUUIDList.find(renObj => renObj.name === activeDappName);
-      if (nameObj) {
-        let view = nameObj.dappView;
-        if (view) {
-          clientWindow.setBrowserView(view); // @todo detach other browserView via setBrowserView()
-          view.setBounds(bounds);  //{width: 0, height: 0, x: 0, y: 0}
-        } else {
-          process.stdout.write('error: view is null');
+    } else {
+      if (storeState.client.activeDapp) {
+        let activeDappName: string = storeState.client.activeDapp.appName;
+  
+        let nameObj: RendererConf = globalUUIDList.find(renObj => renObj.name === activeDappName);
+        if (nameObj) {
+          let view = nameObj.dappView;
+          if (view) {
+            clientWindow.setBrowserView(view); // @todo detach other browserView via setBrowserView()
+            view.setBounds(bounds);  //{width: 0, height: 0, x: 0, y: 0}
+          } else {
+            clientWindow.setBrowserView(null);
+            process.stdout.write('error: view is null');
+          }
         }
       }
     }
+
+
   });
 });
 process.stdout.write("Main initialized");
