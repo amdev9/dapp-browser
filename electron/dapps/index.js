@@ -2,7 +2,7 @@ import { store, sendDataChannel1, sendDataChannel2, receiveDataChannel } from '.
 
 const renderState = () => {
   //next todo library object dapp will emit events on store pub-sub actions in: `dapp.emit('event-name', ...)`
-  // console.log(JSON.stringify(store.getState()));
+ 
   if (document.getElementById('value')) {
     document.getElementById('value').innerHTML = store.getState().counter;
   }

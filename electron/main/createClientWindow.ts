@@ -20,7 +20,7 @@ export function createClientWindow(globalUUIDList: RendererConf[]) {
     ]
   };
 
-  if (process.env.NODE_ENV == 'production') {
+  if (process.env.ELECTRON_ENV == 'production') {
     webPrefObj = Object.assign(webPrefObj, { sandbox: true })
   }
 
@@ -42,8 +42,6 @@ export function createClientWindow(globalUUIDList: RendererConf[]) {
     }
     clientWindow.show();
     clientWindow.focus();
-
-    
   });
 
   clientWindow.on('closed', () => {
@@ -51,13 +49,12 @@ export function createClientWindow(globalUUIDList: RendererConf[]) {
     // remove from global
   });
 
-  if (process.env.NODE_ENV === 'development') {
+  // console.log(process.env);
+  if (process.env.ELECTRON_ENV === 'development') {
     openDevTool(clientWindow, true);
   }  
   
   const renderIdClient = clientWindow.webContents.getProcessId(); //.webContents.getProcessId(); //.id,
-    // console.log(renderIdClient);
-
     let rendererObj: RendererConf = {
       id: uuidClient,
       status: 'client',

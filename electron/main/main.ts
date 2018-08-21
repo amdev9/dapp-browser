@@ -13,7 +13,8 @@ import { RendererConf } from './createDappView';
 
 const globalUUIDList: RendererConf[] = [];
 let clientWindow: Electron.BrowserWindow = null;
-if (process.env.NODE_ENV === 'production') {
+
+if (process.env.ELECTRON_ENV === 'development') {
   const sourceMapSupport = require('source-map-support'); // eslint-disable-line
   sourceMapSupport.install();
 }
@@ -32,10 +33,8 @@ app.on('ready', async () => {
     width: 200,//width - 70,
     height: height - 60  
   };
-  // let displays = screen.getAllDisplays();
-  // process.stdout.write(JSON.stringify(displays));
-
-  if (process.env.NODE_ENV === 'development') {
+ 
+  if (process.env.ELECTRON_ENV === 'development') {
     let devtools = await installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS]);
     console.log(`Added Extension: ${devtools}`);
   }
@@ -58,8 +57,6 @@ app.on('ready', async () => {
   
   store.subscribe( () => {
     let storeState: any = store.getState();
-    process.stdout.write(JSON.stringify(storeState));
-
     if (storeState.client.isHome) {
       console.log('>>> home triggered');
       clientWindow.setBrowserView(null);
@@ -70,29 +67,15 @@ app.on('ready', async () => {
 
       let nameObj: RendererConf = globalUUIDList.find(renObj => renObj.name === activeDappName);
       if (nameObj) {
-        process.stdout.write(JSON.stringify( nameObj ) );
-         
         let view = BrowserView.fromId(nameObj.viewId);
-        process.stdout.write(  JSON.stringify(BrowserView.getAllViews()) );
-        
         if (view) {
           clientWindow.setBrowserView(view); // @todo detach other browserView via setBrowserView()
           view.setBounds(bounds);  //{width: 0, height: 0, x: 0, y: 0}
         } else {
           process.stdout.write('error: view is null');
         }
-        
-        /**/
- 
       }
     }
   });
-  process.stdout.write(JSON.stringify(globalUUIDList));
-  
 });
 process.stdout.write("Main initialized");
-
-// In main process.
-// ipcMain.once('answer', (event: Electron.Event, argv: any) => {
-//   console.log(argv);
-// });

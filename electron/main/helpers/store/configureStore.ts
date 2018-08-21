@@ -101,7 +101,6 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
 
     if (action.type == 'OPEN_CHANNEL') {
       let uuidObj = globalId.find(renObj => renObj.id === action.payload.uuid);
-      console.log('OPEN_CHANNEL ---> ', uuidObj);
       let intentObj = globalId.find(renObj => renObj.id === uuidObj.intent);
       const channelSender = uuidChannelMapList.find(uuidChannelMap => uuidChannelMap.uuid == uuidObj.id).channel;
       const channelReceiver = uuidChannelMapList.find(uuidChannelMap => uuidChannelMap.uuid == uuidObj.intent).channel;
@@ -139,7 +138,6 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
 
 const bindChannel = (webId: number, channelReceiver: string, channelSender: string) => {
   ipcMain.on(channelSender, (event: Electron.Event, payload: string) => {
-    // console.log('on: ' + channelSender, 'send: ' + channelReceiver, 'webId: ' + webId, payload);
     const bindResolver = targetWebContents(webId);
     if (bindResolver) {
       bindResolver.send(channelReceiver, payload);

@@ -1,8 +1,7 @@
-import { BrowserWindow, BrowserView } from 'electron';
+import { BrowserView } from 'electron';
 import * as path from 'path';
 import * as uuidv4 from 'uuid/v4';
-import { openDevTool } from './helpers/devtools';
-
+ 
 let dappView: Electron.BrowserView = null;
  
 const DAPPS_PATH: string = path.join(__dirname, '..', '..', 'dapps');
@@ -21,7 +20,6 @@ export interface RendererConf {
 }
 
 export function createDappView(globalUUIDList: RendererConf[], entryPath: string) {
-
   const uuidDapp = uuidv4();
   const authorizedChannelsList = ['channelId1', 'channelId2']; //next todo get channels list from dapp manifest
 
@@ -34,11 +32,11 @@ export function createDappView(globalUUIDList: RendererConf[], entryPath: string
     ]
   };
 
-  if (process.env.NODE_ENV == 'production') {
+  if (process.env.ELECTRON_ENV == 'production') {
     webPrefObj = Object.assign(webPrefObj, { sandbox: true })
   }
 
-  dappView = new BrowserView({ // BrowserView
+  dappView = new BrowserView({
     webPreferences: webPrefObj
   });
   
@@ -48,31 +46,8 @@ export function createDappView(globalUUIDList: RendererConf[], entryPath: string
     width: 300,
     height: 300
   };
- 
-  dappView.setBounds(bounds); 
 
   dappView.webContents.loadURL('file://' + path.join(DAPPS_PATH, entryPath));
- 
-  // @TODO: Use 'ready-to-show' event
-  //        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event
- 
-    // dappView.webContents.on('did-finish-load', () => {
-    //   if (!dappView) {
-    //     throw new Error('"clientWindow" is not defined');
-    //   }
-    //   dappView.show();
-    //   dappView.focus();
-    // });
- 
-
-  // dappView.on('closed', () => {
-  //   dappView = null;
-  //   // remove from global
-  // });
-
-  // if (process.env.NODE_ENV === 'development') {
-  //   openDevTool(dappView, true);
-  // }  
 
   const renderIdDapp = dappView.webContents.getProcessId(); 
 
