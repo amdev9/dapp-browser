@@ -78,7 +78,7 @@ app.on('ready', async () => {
       if (nameObj) {
         let view = nameObj.dappView;
         if (view) {
-          clientWindow.setBrowserView(view); // @todo detach other browserView via setBrowserView()
+          clientWindow.setBrowserView(view);
           view.setBounds(bounds);  //{width: 0, height: 0, x: 0, y: 0}
         } else {
           clientWindow.setBrowserView(null);
