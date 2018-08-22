@@ -13,14 +13,21 @@ var path = require('path');
 
 class AppsManager {
   constructor() {
+    // list of Objects 
     this.id = 1; // auto generate identificator
     this.appName = '';
     this.icon = '';
     this.permissions = [];
     this.getAppItem = this.getAppItem.bind(this);
   }
-  getAppItem (appName) {
+  getAppItem(appName) {
     // return appItem
+  }
+  getAllDappsForPreview() {
+    // return icons, etc. for home screen
+  }
+  parseDapps() {
+    // put dapps abstractions into array
   }
 }
 
