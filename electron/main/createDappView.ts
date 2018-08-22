@@ -4,7 +4,7 @@ import * as uuidv4 from 'uuid/v4';
  
 let dappView: Electron.BrowserView = null;
  
-const DAPPS_PATH: string = path.join(__dirname, '..', '..', 'dapps');
+const DAPPS_PATH: string = path.join(__dirname, '..', '..', 'dapps', 'lib');
 
 export type ChannelsConf = Array<string>;
 export type BindedConf = Map<string, ChannelsConf>;

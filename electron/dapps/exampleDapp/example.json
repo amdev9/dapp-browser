@@ -1,0 +1,8 @@
+{
+  "title": "exampleApp",
+  "app": {
+    "js/dapp.js": ["app/dapp.js"],
+    "index.html": "app/index.html",
+    "assets/": ["app/images/**"]
+  }
+}
