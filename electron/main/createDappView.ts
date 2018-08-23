@@ -4,7 +4,7 @@ import * as uuidv4 from 'uuid/v4';
  
 let dappView: Electron.BrowserView = null;
  
-const DAPPS_PATH: string = path.join(__dirname, '..', '..', 'dapps');
+const DAPPS_PATH: string = path.join(__dirname, '..', '..', 'dapps', 'lib');
 
 export type ChannelsConf = Array<string>;
 export type BindedConf = Map<string, ChannelsConf>;
@@ -47,7 +47,7 @@ export function createDappView(globalUUIDList: RendererConf[], entryPath: string
     height: 300
   };
 
-  dappView.webContents.loadURL('file://' + path.join(DAPPS_PATH, entryPath));
+  dappView.webContents.loadURL('file://' + path.join(DAPPS_PATH, entryPath)); //todo pass @param path to index.html 
 
   const renderIdDapp = dappView.webContents.getProcessId(); 
 
@@ -56,7 +56,7 @@ export function createDappView(globalUUIDList: RendererConf[], entryPath: string
     status: 'dapp',
     winId: renderIdDapp,
     dappView,
-    name: entryPath.split('.')[0] // load from dapp
+    name: entryPath.split('.')[0] //todo pass @param name 
   }
   globalUUIDList.push(rendererObj);
 

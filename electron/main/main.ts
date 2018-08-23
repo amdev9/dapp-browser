@@ -59,7 +59,7 @@ app.on('ready', async () => {
 
   // create multiple view and keep them around the memory, detached from the window
   // then switching workspaces is just and additional call to setBrowserView
-  const dappsIndexes: string[] = ['index.html', 'index2.html'];
+  const dappsIndexes: string[] = ['index.html', 'index2.html']; //todo pass AppsManager @instances
   let dappInd: string;
   for (dappInd of dappsIndexes) {
     createDappView(globalUUIDList, dappInd);
@@ -67,30 +67,25 @@ app.on('ready', async () => {
   
   const store: Store<{}> = configureStore(global.state, globalUUIDList);
   
-  store.subscribe( () => {
+  store.subscribe(() => {
     let storeState: any = store.getState();
-    if (storeState.client.isHome) {
-      console.log('>>> home triggered');
+    process.stdout.write(JSON.stringify(storeState));
+    if (storeState.client.isHome && storeState.client.activeDapp.id == 0) {
       clientWindow.setBrowserView(null);
     } else {
-      if (storeState.client.activeDapp) {
-        let activeDappName: string = storeState.client.activeDapp.appName;
-  
-        let nameObj: RendererConf = globalUUIDList.find(renObj => renObj.name === activeDappName);
-        if (nameObj) {
-          let view = nameObj.dappView;
-          if (view) {
-            clientWindow.setBrowserView(view); // @todo detach other browserView via setBrowserView()
-            view.setBounds(bounds);  //{width: 0, height: 0, x: 0, y: 0}
-          } else {
-            clientWindow.setBrowserView(null);
-            process.stdout.write('error: view is null');
-          }
+      let activeDappName: string = storeState.client.activeDapp.appName;
+      let nameObj: RendererConf = globalUUIDList.find(renObj => renObj.name === activeDappName);
+      if (nameObj) {
+        let view = nameObj.dappView;
+        if (view) {
+          clientWindow.setBrowserView(view);
+          view.setBounds(bounds);  //{width: 0, height: 0, x: 0, y: 0}
+        } else {
+          clientWindow.setBrowserView(null);
+          process.stdout.write('error: view is null');
         }
       }
     }
-
-
   });
 });
 process.stdout.write("Main initialized");

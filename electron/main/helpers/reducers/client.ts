@@ -25,7 +25,11 @@ export function client(state: Client = initialState, action: clients.TrayAction)
       const isHome = action.payload.isHome;
       return { 
         ...state, 
-        isHome: isHome
+        isHome: isHome,
+        activeDapp: { 
+          id: 0, 
+          appName: null 
+        }
       };
     default:
       return state;

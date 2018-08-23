@@ -62,9 +62,25 @@ export default function tray(state: Tray = initialState, action: TrayAction) {
     
     case TOGGLE_HOME:
       const isHome = action.payload.isHome;
+      const cleanItems = state.items.map((item) => {
+        if( item.statusIcon.includes('active') ) {
+          return { 
+            ...item,
+            statusIcon: item.statusIcon.filter(status => status !== 'active')
+          }         
+        } else {
+          return item;
+        }
+      });
+
       return { 
         ...state, 
-        isHome: isHome
+        isHome: isHome,
+        activeDapp: { 
+          id: 0, 
+          appName: null 
+        },
+        items: cleanItems
       };
     
     case TOGGLE_APP_HOME:
