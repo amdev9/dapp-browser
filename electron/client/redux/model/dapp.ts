@@ -1,4 +1,5 @@
-export type Dapp = {
+
+export type DApp = {
   // Dapp name
   name: string
   // Preview image (for card on marketplace)

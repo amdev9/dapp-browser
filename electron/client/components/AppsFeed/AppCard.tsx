@@ -1,45 +1,8 @@
-
 import * as React from "react"
- 
+import { DApp } from '../../redux/model';
+
 // import { MoonLoader } from "react-spinners"
  
-// export namespace AppCard {
-//   export enum ActionStatus {
-//     Install,
-//     Update,
-//   }
-//   export enum TargetAction {
-//     Install,
-//     Update,
-//     Launch,
-//   }
-//   export enum Size {
-//     Default,
-//     Small,
-//   }
-//   export interface Props {
-//     action: TargetAction
-//     size: Size
-//     dapp: DApp
-//   }
-//   export interface State {
-//     status: Option<ActionStatus>
-//   }
-// }
-
- 
-
-type DApp = {
-  // Dapp name
-  name: string
-  // Preview image (for card on marketplace)
-  preview: string
-  // icon (eg for tray)
-  icon: string
-  // Categories
-  categories: string[]
-}
-
 interface AppCardProps {
   dapp: DApp,
   toggleAppHome?: (dappName: string) => any
