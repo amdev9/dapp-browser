@@ -40,6 +40,19 @@ class App extends React.Component<AppProps> {
       trayItems, notifyItems, statusBarItems, statusBarToggle,
       onToggleAppHome
     } = this.props;
+
+    const feedItems = [{
+      preview: require("../assets/app-images/thumb.png"),
+      icon: require("../assets/app-icons/exchange.svg"),
+      categories: ["games", "tools"],
+      name: "My Awesome Dapp 1",
+    },  {
+      preview: require("../assets/app-images/thumb.png"),
+      icon: require("../assets/app-icons/exchange.svg"),
+      categories: ["games", "tools"],
+      name: "My Awesome Dapp 2",
+    }];
+
     return (
       <div>
         <HeaderBar
@@ -59,8 +72,8 @@ class App extends React.Component<AppProps> {
             {/* <main className="page-container"> */}
               <Tray items={trayItems} toggleSwitch={onSwitchDapp} toggleStatusBar={statusBarToggle} statusBarIsOpen={openStatusBarPanel}/>
               
-              <AppsFeed toggleAppHome={onToggleAppHome}/> 
-              {/* items={feedItems} */}
+              <AppsFeed items={feedItems} toggleAppHome={onToggleAppHome}/> 
+              {/*  */}
 
             {/* </main> */}
           {/* </div> */}

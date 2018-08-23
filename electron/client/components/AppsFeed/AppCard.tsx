@@ -4,7 +4,7 @@ import { DApp } from '../../redux/model';
 // import { MoonLoader } from "react-spinners"
  
 interface AppCardProps {
-  dapp: DApp,
+  dapp?: DApp,
   toggleAppHome?: (dappName: string) => any
 }
 
