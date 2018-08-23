@@ -59,7 +59,7 @@ app.on('ready', async () => {
 
   // create multiple view and keep them around the memory, detached from the window
   // then switching workspaces is just and additional call to setBrowserView
-  const dappsIndexes: string[] = ['index.html', 'index2.html'];
+  const dappsIndexes: string[] = ['index.html', 'index2.html']; //todo pass AppsManager @instances
   let dappInd: string;
   for (dappInd of dappsIndexes) {
     createDappView(globalUUIDList, dappInd);
