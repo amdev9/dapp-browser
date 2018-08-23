@@ -1,5 +1,9 @@
 import { AppItem, NotifyItem, ActiveDapp, StatusBarItem } from '../model';
 
+export interface Feed {
+ 
+}
+
 export interface Tray {
   items: AppItem[],
   activeDapp: ActiveDapp,
