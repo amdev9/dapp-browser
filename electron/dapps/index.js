@@ -34,7 +34,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var path = require('path');
 var fs = require('fs');
 function readDir(path) {
@@ -76,13 +76,24 @@ function readFile(path, opts) {
 // }
 var AppsManager = /** @class */ (function () {
     function AppsManager() {
+        this._appName = 'define first!';
         // list of Objects 
-        this.id = 1; // auto generate identificator
-        this.appName = '';
-        this.icon = '';
-        this.permissions = [];
+        // this.id = 1; // auto generate identificator
+        // this.appName = '';
+        // this.icon = '';
+        // this.permissions = [];
         this.getAppItem = this.getAppItem.bind(this);
     }
+    Object.defineProperty(AppsManager.prototype, "appName", {
+        get: function () {
+            return this._appName;
+        },
+        set: function (newName) {
+            this._appName = newName;
+        },
+        enumerable: true,
+        configurable: true
+    });
     AppsManager.prototype.getAppItem = function (appName) {
         // return appItem
     };
@@ -95,7 +106,7 @@ var AppsManager = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        console.log('parseDapps', this.appName);
+                        console.log('parseDapps', this._appName);
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
@@ -139,3 +150,5 @@ var AppsManager = /** @class */ (function () {
 }());
 var manager = new AppsManager();
 manager.parseDapps();
+manager.appName = "test";
+console.log(manager.appName);

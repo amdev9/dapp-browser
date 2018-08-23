@@ -45,17 +45,26 @@ async function readFile(path, opts = 'utf8') {
 // }
 
 class AppsManager {
+  private _appName: string;
   id: number;
-  appName: string;
   icon: string;
   permissions: any[];
   constructor() {
+    this._appName = 'define first!';
     // list of Objects 
-    this.id = 1; // auto generate identificator
-    this.appName = '';
-    this.icon = '';
-    this.permissions = [];
+    // this.id = 1; // auto generate identificator
+    // this.appName = '';
+    // this.icon = '';
+    // this.permissions = [];
     this.getAppItem = this.getAppItem.bind(this);
+  }
+
+  set appName(newName: string) {
+    this._appName = newName; 
+  }
+  
+  get appName(): string {
+    return this._appName;
   }
 
   getAppItem(appName) {
@@ -65,7 +74,7 @@ class AppsManager {
     // return icons, etc. for home screen
   } 
   async parseDapps() {
-    console.log('parseDapps', this.appName);
+    console.log('parseDapps', this._appName);
     try {
       let files = await readDir(path.join(__dirname, 'exampleDapp'));
       console.log(files);
@@ -96,3 +105,5 @@ class AppsManager {
 let manager = new AppsManager();
  
 manager.parseDapps();
+manager.appName = "test";
+console.log(manager.appName);
