@@ -58,7 +58,10 @@ class App extends React.Component<AppProps> {
           {/* <div className="content" id="content-wrap"> */}  
             {/* <main className="page-container"> */}
               <Tray items={trayItems} toggleSwitch={onSwitchDapp} toggleStatusBar={statusBarToggle} statusBarIsOpen={openStatusBarPanel}/>
-              <AppsFeed toggleAppHome={onToggleAppHome}/>
+              
+              <AppsFeed toggleAppHome={onToggleAppHome}/> 
+              {/* items={feedItems} */}
+
             {/* </main> */}
           {/* </div> */}
         </div>

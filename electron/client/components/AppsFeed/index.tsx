@@ -1,7 +1,9 @@
 import * as React from "react" 
 import { AppCard } from "./AppCard"
+import { Dapp } from "../../redux/model";
 
 interface AppsFeedProps {
+  items?: Dapp[]
   toggleAppHome?: (dappName?: string) => any
 }
 
@@ -24,6 +26,10 @@ export class AppsFeed extends React.Component<AppsFeedProps> {
       },
     }
     
+    // const appCardsList: JSX.Element[] = this.props.items.map((item): JSX.Element => (
+    //   <AppBox key={`${Math.random() * 1000}-${item.id}-${item.appName}`} item={item} />
+    // ));
+
     return (
       <div className="feeds">
         <div className="header">
