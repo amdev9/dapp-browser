@@ -135,29 +135,6 @@ export class AppsManager {
     const list = await readDir(dir);
     await this.processArray(list);
     console.log("list: ", list);
-    /*return readDir(dir).then((list) => {
-      console.log("List!: ", list);
-      return Promise.all(list.map((file: any) => {
-        file = path.resolve(dir, file);
-        return stat(file).then((stat) => {
-          if (stat.isDirectory()) {
-            return readFile(path.join(DAPPS_PATH, file, 'manifest.json'))
-              .then((fileContent) => {
-                this.dapps[file] = JSON.parse(fileContent);
-                //return this.iterate2(file);
-              })
-              .catch( () => {
-                return
-              })
-          } else {
-            return file;
-          }
-        });
-      }));
-    }).then((results) => {
-      // flatten the array of arrays
-      return Array.prototype.concat.apply([], results);
-    });*/
   }
 }
 
