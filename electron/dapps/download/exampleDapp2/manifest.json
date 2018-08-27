@@ -2,5 +2,6 @@
     "title": "exampleApp2",
     "main": "index2.html",
     "appName": "exampleDapp2",
-    "assets/": ["app/images/**"]
+    "assets/": ["app/images/**"],
+    "icon": "app/images/share.svg"
 }

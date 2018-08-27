@@ -12,6 +12,7 @@ declare const Promise: any;
 import * as path from 'path';
 import * as fs from 'fs';
 import * as async from 'async';
+import { callbackify } from "util";
 
 /**/
  
@@ -56,9 +57,11 @@ export class AppsManager {
     const targetDapp = _dapps.find((item: AppItem) => item.appName == appName);
     const randomKey = Math.floor(Math.random() * 1000);
 
+    let iconPath = path.join(DAPPS_PATH, targetDapp.appName, targetDapp.icon);
     return Object.assign({}, targetDapp, { 
       id: randomKey, 
-      statusIcon: ["runnning"] //@todo add icon resolve
+      statusIcon: ["runnning"], //@todo add icon resolve
+      icon: iconPath
     });
   }
 
@@ -66,17 +69,16 @@ export class AppsManager {
     return _dapps;
   }
 
-  async parseDapps() {
+  static async parseDapps() {
     try {
       const dappsFolders = await readDir(DAPPS_PATH);
-      console.log(dappsFolders);
+      console.log('folders', dappsFolders);
 
- 
       const promises = dappsFolders.map(async (file: any) => { //@todo rewrite with async lib
         try {
           const fileContent = await readFile(path.join(DAPPS_PATH, file, 'manifest.json'));
           AppsManager.dapps.push(JSON.parse(fileContent)); //@todo 1 add icon resolver
-          //this.dapps[file] = JSON.parse(fileContent);   
+     
         } catch (err) {
           if(err instanceof SyntaxError) {
             console.log('Please check your js syntax: \n'); //@todo put it into console logs
@@ -87,6 +89,7 @@ export class AppsManager {
         }
       })
       await Promise.all(promises);
+
 
     } catch (err) {
       console.log('Catched' , err);

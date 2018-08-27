@@ -58,8 +58,9 @@ app.on('ready', async () => {
   });
   clientWindow = createClientWindow(globalUUIDList);
 
-  let appManager = new AppsManager();
-  await appManager.parseDapps();
+  // let appManager = new AppsManager();
+  await AppsManager.parseDapps();
+ 
  
  
   // create multiple view and keep them around the memory, detached from the window
