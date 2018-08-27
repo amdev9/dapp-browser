@@ -5,12 +5,12 @@ import { Tray } from './state';
 const initialState: Tray = {
   items: [{
     id: 1,
-    appName: "index",
+    appName: "exampleDapp",
     icon: require("../../assets/app-icons/share.svg"),
     statusIcon: ["running"]
   }, {
     id: 2,
-    appName: "index2",
+    appName: "exampleDapp2",
     icon: require("../../assets/app-icons/chat.svg"),
     statusIcon: ["running"]
   }],
