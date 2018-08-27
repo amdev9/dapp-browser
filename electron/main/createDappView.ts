@@ -19,7 +19,7 @@ export interface RendererConf {
   binded?: BindedListConf
 }
 
-export function createDappView(globalUUIDList: RendererConf[], entryPath: string) {
+export function createDappView(globalUUIDList: RendererConf[], entryPath: string, appName: string) {
   const uuidDapp = uuidv4();
   const authorizedChannelsList = ['channelId1', 'channelId2']; //next todo get channels list from dapp manifest
 
@@ -47,7 +47,7 @@ export function createDappView(globalUUIDList: RendererConf[], entryPath: string
     height: 300
   };
 
-  dappView.webContents.loadURL('file://' + path.join(DAPPS_PATH, entryPath)); //todo pass @param path to index.html 
+  dappView.webContents.loadURL('file://' + path.join(DAPPS_PATH, entryPath)); //todo pass @param path to index.html
 
   const renderIdDapp = dappView.webContents.getProcessId(); 
 
@@ -56,7 +56,7 @@ export function createDappView(globalUUIDList: RendererConf[], entryPath: string
     status: 'dapp',
     winId: renderIdDapp,
     dappView,
-    name: entryPath.split('.')[0] //todo pass @param name 
+    name: appName
   }
   globalUUIDList.push(rendererObj);
 

@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/bluebird": "^3.5.23",
     "@types/uuid": "^3.4.3",
     "awesome-typescript-loader": "^5.2.0",
     "electron-debug": "^2.0.0",

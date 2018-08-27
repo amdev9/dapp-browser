@@ -1,0 +1,6 @@
+{
+  "title": "exampleApp",
+  "main": "index.html",
+  "appName": "index",
+  "assets/": ["app/images/**"]
+}
