@@ -71,10 +71,11 @@ export class AppsManager {
       const dappsFolders = await readDir(DAPPS_PATH);
       console.log(dappsFolders);
 
+ 
       const promises = dappsFolders.map(async (file: any) => { //@todo rewrite with async lib
         try {
           const fileContent = await readFile(path.join(DAPPS_PATH, file, 'manifest.json'));
-          AppsManager.dapps.push(JSON.parse(fileContent)); //@todo 1 add 
+          AppsManager.dapps.push(JSON.parse(fileContent)); //@todo 1 add icon resolver
           //this.dapps[file] = JSON.parse(fileContent);   
         } catch (err) {
           if(err instanceof SyntaxError) {
