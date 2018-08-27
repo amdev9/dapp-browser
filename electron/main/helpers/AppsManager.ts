@@ -13,6 +13,8 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as async from 'async';
 
+/**/
+ 
 const DAPPS_PATH: string = path.join(__dirname, '..', '..', 'dapps', 'download');
 
 async function readDir(path: string) {
@@ -34,6 +36,7 @@ async function readFile(path: string, opts = 'utf8') {
 }
 
 export type AppItem = {
+  
   id?: number;
   appName: string;
   main: string;
@@ -41,20 +44,26 @@ export type AppItem = {
   statusIcon: string[];
 }
 
+let _dapps: AppItem[] = [];
+ 
 export class AppsManager {
   id: number;
   icon: string;
   permissions: any[];
-  dapps: { 
-    [index: string]: AppItem; //@todo fix
-  } = {};
 
-  getAppItem(appName: string) {
-    return this.dapps[appName];
+  static getAppItem(appName: string) {
+    console.log('_dapps', _dapps, appName);
+    const targetDapp = _dapps.find((item: AppItem) => item.appName == appName);
+    const randomKey = Math.floor(Math.random() * 1000);
+
+    return Object.assign({}, targetDapp, { 
+      id: randomKey, 
+      statusIcon: ["runnning"] //@todo add icon resolve
+    });
   }
 
-  getAllDappsForPreview() {
-    return this.dapps;
+  static get dapps() {
+    return _dapps;
   }
 
   async parseDapps() {
@@ -65,7 +74,8 @@ export class AppsManager {
       const promises = dappsFolders.map(async (file: any) => { //@todo rewrite with async lib
         try {
           const fileContent = await readFile(path.join(DAPPS_PATH, file, 'manifest.json'));
-          this.dapps[file] = JSON.parse(fileContent);   
+          AppsManager.dapps.push(JSON.parse(fileContent)); //@todo 1 add 
+          //this.dapps[file] = JSON.parse(fileContent);   
         } catch (err) {
           if(err instanceof SyntaxError) {
             console.log('Please check your js syntax: \n'); //@todo put it into console logs

@@ -26,7 +26,7 @@ export class AppItem extends React.Component<AppsItemProps> {
   }
 
   public render() {
-    const { item, clickItem } = this.props
+    const { item, clickItem } = this.props;
     
     const classNameValue = `tray item ${item.statusIcon.join(' ')}`;
     return (

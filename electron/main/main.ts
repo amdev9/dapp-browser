@@ -7,7 +7,7 @@ import { app, BrowserView, ipcMain, screen, BrowserWindow } from 'electron';
 import { Store } from 'redux';
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer';
 import { configureStore } from './helpers/store/configureStore';
-import { AppsManager } from './helpers/AppsManager';
+import { AppsManager, AppItem } from './helpers/AppsManager';
 import { createClientWindow } from './createClientWindow';
 import { createDappView } from './createDappView';
 import { RendererConf } from './createDappView';
@@ -65,10 +65,9 @@ app.on('ready', async () => {
   // create multiple view and keep them around the memory, detached from the window
   // then switching workspaces is just and additional call to setBrowserView
   //const dappsIndexes: string[] = ['index.html', 'index2.html']; //todo pass AppsManager @instances
-  let dappName: string;
-  for (dappName of Object.keys(appManager.getAllDappsForPreview())) {
-    const appItem = appManager.getAppItem(dappName);
-    createDappView(globalUUIDList, appItem.main, appItem.appName);
+  let dapp: AppItem;
+  for (dapp of AppsManager.dapps) {
+    createDappView(globalUUIDList, dapp);
   }
   
   const store: Store<{}> = configureStore(global.state, globalUUIDList);

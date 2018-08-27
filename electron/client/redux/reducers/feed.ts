@@ -7,12 +7,12 @@ const initialState: Feed = {
     preview: require("../assets/app-images/thumb.png"),
     icon: require("../assets/app-icons/exchange.svg"),
     categories: ["games", "tools"],
-    name: "My Awesome Dapp 1",
+    name: "exampleDapp",
   },  {
     preview: require("../assets/app-images/thumb.png"),
     icon: require("../assets/app-icons/exchange.svg"),
     categories: ["games", "tools"],
-    name: "My Awesome Dapp 2",
+    name: "exampleDapp2",
   }]
 }
  
