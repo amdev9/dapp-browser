@@ -58,24 +58,16 @@ app.on('ready', async () => {
   });
   clientWindow = createClientWindow(globalUUIDList);
 
-  let manager = new AppsManager();
-  //manager.parseDapps();
-  await manager.iterate2();
-  /*iterate2(".").then(function(results) {
-    console.log(results);
-  });*/
-  //manager.appName = "test";
-  console.log(manager.getAllDappsForPreview());
-  console.log(manager.getAppItem("exampleDapp"));
-
-
-
+  let appManager = new AppsManager();
+  await appManager.parseDapps();
+ 
+ 
   // create multiple view and keep them around the memory, detached from the window
   // then switching workspaces is just and additional call to setBrowserView
   //const dappsIndexes: string[] = ['index.html', 'index2.html']; //todo pass AppsManager @instances
   let dappName: string;
-  for (dappName of Object.keys(manager.getAllDappsForPreview())) {
-    const appItem = manager.getAppItem(dappName);
+  for (dappName of Object.keys(appManager.getAllDappsForPreview())) {
+    const appItem = appManager.getAppItem(dappName);
     createDappView(globalUUIDList, appItem.main, appItem.appName);
   }
   
