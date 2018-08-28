@@ -3,7 +3,9 @@ import { TrayAction } from '../actions/tray';
 import { Tray } from './state';
 
 const initialState: Tray = {
-  items: [{
+  items: [],
+  /*
+  {
     id: 1,
     appName: "exampleDapp",
     icon: require("../../assets/app-icons/share.svg"),
@@ -13,7 +15,8 @@ const initialState: Tray = {
     appName: "exampleDapp2",
     icon: require("../../assets/app-icons/chat.svg"),
     statusIcon: ["running"]
-  }],
+  } 
+  */
   activeDapp: {
     appName: null, 
     id: 0
