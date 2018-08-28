@@ -41,7 +41,7 @@ const initUi = () => {
       store.dispatch({
         type: 'INTENT_OPEN_CHANNELS',
         payload: {
-          targetDapp: 'exampleDapp2' 
+          targetDapp: 'Chat' 
         }
       }); 
     });
