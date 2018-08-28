@@ -32,8 +32,9 @@ export const initialState: IState = {
       appName: null
     },
     isHome: true
-  }
-}
+  },
+  feed: {}
+};
  
 declare global {
   namespace NodeJS {
@@ -164,7 +165,7 @@ const replyActionMain = (store: Store<{}>, globalId: RendererConf[]) => {
         };
         payload.payload = Object.assign(payload.payload, payloadUuidObj) 
       }
-      store.dispatch(payload);   
+      store.dispatch(payload);
     } else {
       console.log("Spoofing detected")
     }

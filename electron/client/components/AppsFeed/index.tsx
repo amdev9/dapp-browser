@@ -11,7 +11,7 @@ export class AppsFeed extends React.Component<AppsFeedProps> {
   public render() {
 
     const appCardsList: JSX.Element[] = this.props.items.map((item): JSX.Element => (
-      <AppCard key={item.name} dapp={item} {...this.props} />
+      <AppCard key={item.appName} dapp={item} {...this.props} />
     ));
 
     return (  

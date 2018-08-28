@@ -1,7 +1,7 @@
 
 export type DApp = {
   // Dapp name
-  name: string
+  appName: string
   // Preview image (for card on marketplace)
   preview: string
   // icon (eg for tray)

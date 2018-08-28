@@ -43,6 +43,7 @@ export type AppItem = {
   main: string;
   icon: string;
   statusIcon: string[];
+  preview: string;
 }
 
 let _dapps: AppItem[] = [];
@@ -57,11 +58,9 @@ export class AppsManager {
     const targetDapp = _dapps.find((item: AppItem) => item.appName == appName);
     const randomKey = Math.floor(Math.random() * 1000);
 
-    let iconPath = path.join(DAPPS_PATH, targetDapp.appName, targetDapp.icon);
     return Object.assign({}, targetDapp, { 
       id: randomKey, 
       statusIcon: ["running"], //@todo add icon resolve
-      icon: iconPath
     });
   }
 
@@ -69,15 +68,21 @@ export class AppsManager {
     return _dapps;
   }
 
+  static resolvePath(item: AppItem) {
+    const icon = path.join(DAPPS_PATH, item.appName, item.icon);
+    const preview = path.join(DAPPS_PATH, item.appName, item.preview);
+    return {...item, icon, preview}
+  }
+
   static async parseDapps() {
     try {
       const dappsFolders = await readDir(DAPPS_PATH);
-      console.log('folders', dappsFolders);
 
       const promises = dappsFolders.map(async (file: any) => { //@todo rewrite with async lib
         try {
           const fileContent = await readFile(path.join(DAPPS_PATH, file, 'manifest.json'));
-          AppsManager.dapps.push(JSON.parse(fileContent)); //@todo 1 add icon resolver
+          const itemWithResolvedPath = AppsManager.resolvePath(JSON.parse(fileContent));
+          AppsManager.dapps.push(itemWithResolvedPath); //@todo 1 add icon resolver
      
         } catch (err) {
           if(err instanceof SyntaxError) {
@@ -87,7 +92,7 @@ export class AppsManager {
             console.log('other error: ', err);
           }
         }
-      })
+      });
       await Promise.all(promises);
 
 
