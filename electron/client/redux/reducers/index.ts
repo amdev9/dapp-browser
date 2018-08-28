@@ -3,14 +3,15 @@ import counter from './counter';
 import notification from './notification';
 import statusBar from './status-bar';
 import tray from './tray';
-
+import feed from './feed';
 import { IState } from './state';
 
 const rootReducer = combineReducers<IState>({
   counter,
   notification,
   statusBar,
-  tray
+  tray,
+  feed
 });
 
 export default rootReducer;

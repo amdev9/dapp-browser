@@ -4,13 +4,13 @@ import { Feed } from './state';
 
 const initialState: Feed = {
   items: [{
-    preview: require("../assets/app-images/thumb.png"),
-    icon: require("../assets/app-icons/exchange.svg"),
+    preview: require("../../assets/app-images/thumb.png"),
+    icon: require("../../assets/app-icons/exchange.svg"),
     categories: ["games", "tools"],
     name: "exampleDapp",
   },  {
-    preview: require("../assets/app-images/thumb.png"),
-    icon: require("../assets/app-icons/exchange.svg"),
+    preview: require("../../assets/app-images/thumb.png"),
+    icon: require("../../assets/app-icons/exchange.svg"),
     categories: ["games", "tools"],
     name: "exampleDapp2",
   }]

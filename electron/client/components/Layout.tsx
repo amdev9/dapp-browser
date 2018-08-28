@@ -5,7 +5,7 @@ import * as CounterActions from '../redux/actions/counter';
 import * as NotificationActions from '../redux/actions/notification';
 import * as TrayActions from '../redux/actions/tray';
 import * as StatusBarActions from '../redux/actions/status-bar';
-import { AppItem, NotifyItem, StatusBarItem } from '../redux/model';
+import { AppItem, NotifyItem, StatusBarItem, FeedItem } from '../redux/model';
 import { HeaderBar } from './HeaderBar'
 import { NotificationPanel } from "./NotificationPanel"
 import { StatusBar } from "./StatusBar"
@@ -18,6 +18,7 @@ interface AppProps {
   openNotificationPanel: boolean,
   openStatusBarPanel: boolean,
   trayItems: AppItem[],
+  feedItems: FeedItem[],
   notifyItems: NotifyItem[],
   statusBarItems?: {[index: string]: StatusBarItem},
   statusBarToggle: () => void,
@@ -36,22 +37,10 @@ class App extends React.Component<AppProps> {
   render() {
     const {
       onTogglePanel, openNotificationPanel, openStatusBarPanel, clearNotification, clearAllNotifications,
-      onAddAppItem, onSwitchDapp, onToggleHome,
-      trayItems, notifyItems, statusBarItems, statusBarToggle,
-      onToggleAppHome
+      onAddAppItem, onSwitchDapp, onToggleHome, statusBarToggle, onToggleAppHome,
+      trayItems, feedItems, notifyItems, statusBarItems, 
     } = this.props;
 
-    const feedItems = [{
-      preview: require("../assets/app-images/thumb.png"),
-      icon: require("../assets/app-icons/exchange.svg"),
-      categories: ["games", "tools"],
-      name: "exampleDapp",
-    },  {
-      preview: require("../assets/app-images/thumb.png"),
-      icon: require("../assets/app-icons/exchange.svg"),
-      categories: ["games", "tools"],
-      name: "exampleDapp2",
-    }];
 
     return (
       <div>
@@ -91,6 +80,7 @@ const mapStateToProps = (state: IState) => ({
   openStatusBarPanel: state.statusBar.isOpen,
   statusBarItems: state.statusBar.items,
   trayItems: state.tray.items,
+  feedItems: state.feed.items
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({

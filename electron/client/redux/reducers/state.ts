@@ -1,7 +1,7 @@
-import { AppItem, NotifyItem, ActiveDapp, StatusBarItem } from '../model';
+import { AppItem, NotifyItem, ActiveDapp, StatusBarItem, FeedItem } from '../model';
 
 export interface Feed {
- 
+  items: FeedItem[]
 }
 
 export interface Tray {
@@ -27,5 +27,6 @@ export interface IState {
   counter: Counter;
   notification: NotificationPanel;
   statusBar: StatusBarPanel;
-  tray: Tray
+  tray: Tray;
+  feed: Feed;
 }
