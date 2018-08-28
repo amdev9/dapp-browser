@@ -71,7 +71,7 @@ app.on('ready', async () => {
     createDappView(globalUUIDList, dapp);
   }
   
-  const store: Store<{}> = configureStore(global.state, globalUUIDList);
+  const store: Store<{}> = configureStore(global.state, globalUUIDList); //@todo pass parsed dapps
   
   store.subscribe(() => {
     let storeState: any = store.getState();
