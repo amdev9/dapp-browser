@@ -60,7 +60,7 @@ export class AppsManager {
     let iconPath = path.join(DAPPS_PATH, targetDapp.appName, targetDapp.icon);
     return Object.assign({}, targetDapp, { 
       id: randomKey, 
-      statusIcon: ["runnning"], //@todo add icon resolve
+      statusIcon: ["running"], //@todo add icon resolve
       icon: iconPath
     });
   }
