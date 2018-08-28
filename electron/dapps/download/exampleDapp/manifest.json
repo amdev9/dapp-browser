@@ -1,7 +1,0 @@
-{
-  "title": "exampleApp",
-  "main": "app/index.html",
-  "appName": "exampleDapp",
-  "assets/": ["app/images/**"],
-  "icon": "app/images/chat.svg"
-}

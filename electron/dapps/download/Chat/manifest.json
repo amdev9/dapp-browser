@@ -1,0 +1,12 @@
+{
+    "title": "exampleApp2",
+    "main": "index2.html",
+    "appName": "Chat",
+    "assets/": ["app/images/**"],
+    "icon": "app/images/chat.svg",
+    "preview": "app/images/chat.svg",
+    "categories": [
+        "games",
+        "tools"
+    ]
+}

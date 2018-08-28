@@ -44,7 +44,7 @@ export class AppCard extends React.Component<AppCardProps>  {
   public render() {
     const { dapp, toggleAppHome } = this.props;
     return (
-      <div className="app-card" onClick={() => toggleAppHome(dapp.name)}>
+      <div className="app-card" onClick={() => toggleAppHome(dapp.appName)}>
         <div className="header" style={{ backgroundImage: `url('${dapp.preview}')` }}> 
         
 
@@ -53,7 +53,7 @@ export class AppCard extends React.Component<AppCardProps>  {
           }
         </div>
         <div className="content">
-          <div className="title">{dapp.name}</div>
+          <div className="title">{dapp.appName}</div>
           <div className="footer">
             {this.getCategories()}
              

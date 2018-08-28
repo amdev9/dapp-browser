@@ -11,6 +11,7 @@ export type Client = {
 export interface IState {
   counter: number;
   channel: {};
-  client: Client
+  client: Client,
+  feed: {}
 }
 

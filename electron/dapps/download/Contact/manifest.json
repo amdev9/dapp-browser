@@ -1,0 +1,11 @@
+{
+  "title": "exampleApp",
+  "main": "app/index.html",
+  "appName": "Contact",
+  "assets/": ["app/images/**"],
+  "icon": "app/images/contact.svg",
+  "preview": "app/images/contact.svg",
+  "categories": [
+    "games"
+  ]
+}

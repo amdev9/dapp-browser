@@ -6,7 +6,7 @@
 import { app, BrowserView, ipcMain, screen, BrowserWindow } from 'electron';
 import { Store } from 'redux';
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer';
-import { configureStore } from './helpers/store/configureStore';
+import { configureStore, initialState } from './helpers/store/configureStore';
 import { AppsManager, AppItem } from './helpers/AppsManager';
 import { createClientWindow } from './createClientWindow';
 import { createDappView } from './createDappView';
@@ -70,9 +70,13 @@ app.on('ready', async () => {
   for (dapp of AppsManager.dapps) {
     createDappView(globalUUIDList, dapp);
   }
-  
+  global.state = {
+    ...initialState,
+    feed: {items: AppsManager.dapps}
+  };
+
   const store: Store<{}> = configureStore(global.state, globalUUIDList); //@todo pass parsed dapps
-  
+
   store.subscribe(() => {
     let storeState: any = store.getState();
     process.stdout.write(JSON.stringify(storeState));
