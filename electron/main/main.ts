@@ -12,6 +12,8 @@ import { createClientWindow } from './createClientWindow';
 import { createDappView } from './createDappView';
 import { RendererConf } from './createDappView';
 
+import * as path from 'path';
+
 require('electron-context-menu')({
 	prepend: (params: any, browserWindow: BrowserWindow) => [{
     label: 'Pin to top',
@@ -26,6 +28,8 @@ require('electron-context-menu')({
 
 const globalUUIDList: RendererConf[] = [];
 let clientWindow: Electron.BrowserWindow = null;
+
+
 
 if (process.env.ELECTRON_ENV === 'development') {
   const sourceMapSupport = require('source-map-support'); // eslint-disable-line
@@ -58,6 +62,40 @@ app.on('ready', async () => {
   });
   clientWindow = createClientWindow(globalUUIDList);
 
+
+  //////
+const DAPPS_PATH: string = path.join(__dirname, '..', '..', 'client');
+const popuWindowOffsetX = 500;
+const popuWindowOffsetY = 150;
+const popupWindow = new BrowserWindow({
+  x: clientWindow.getPosition()[0] + popuWindowOffsetX,
+  y: clientWindow.getPosition()[1] + popuWindowOffsetY,
+  show: false,
+  width: 150,
+  height: 250,
+  transparent: true,
+  frame: false,
+  resizable: false,
+  //alwaysOnTop: true,
+  parent: clientWindow
+});
+popupWindow.webContents.loadURL('file://' + path.join(DAPPS_PATH, "indexOverlay.html"));
+/*popupWindow.on('blur', () => {
+  popupWindow.close();
+});*/
+const correctPopupWindowPosition = (e: any) => {
+  const bounds = e.sender.getBounds();
+  popupWindow.setPosition(bounds.x + popuWindowOffsetX, bounds.y + popuWindowOffsetY);
+};
+clientWindow.on('move',(e: any) => correctPopupWindowPosition(e));
+clientWindow.on('resize',(e: any) => correctPopupWindowPosition(e));
+clientWindow.on('maximize',(e: any) => correctPopupWindowPosition(e));
+clientWindow.on('restore',(e: any) => correctPopupWindowPosition(e));
+popupWindow.show();
+//////
+
+
+
   // let appManager = new AppsManager();
   await AppsManager.parseDapps();
  
@@ -70,15 +108,16 @@ app.on('ready', async () => {
   for (dapp of AppsManager.dapps) {
     createDappView(globalUUIDList, dapp);
   }
-  global.state = {
+ 
+
+  const store: Store<{}> = configureStore({
     ...initialState,
     feed: {items: AppsManager.dapps}
-  };
-
-  const store: Store<{}> = configureStore(global.state, globalUUIDList); //@todo pass parsed dapps
+  }, globalUUIDList); //@todo pass parsed dapps
 
   store.subscribe(() => {
     let storeState: any = store.getState();
+    
     process.stdout.write(JSON.stringify(storeState));
     if (storeState.client.isHome && storeState.client.activeDapp.id == 0) {
       clientWindow.setBrowserView(null);
