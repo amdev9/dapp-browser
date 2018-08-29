@@ -14,7 +14,7 @@ export class HeaderBar extends React.Component<HeaderBarProps> {
     return (
       <div className="headerbar">
         <HomeWidget toggleHome={toggleHome}/>
-        <div className="title">
+        <div className="title" title="hello">
           Home
         </div>
 
