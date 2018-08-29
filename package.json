@@ -13,6 +13,7 @@
   "license": "MIT",
   "dependencies": {
     "concurrently": "^4.0.1",
+    "cross-env": "^5.2.0",
     "react-burger-menu": "^2.5.2",
     "react-perfect-scrollbar": "^1.2.0"
   }
