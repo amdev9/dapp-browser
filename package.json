@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently --kill-others \"cd electron/client && cross-env NODE_ENV=development node --max_old_space_size=2096 server.js\" \"cd electron/dapps/lib && npm run webpack\" \"cd electron/main && npm run webpack\" \"NODE_ENV=development npm start\"",
+    "setup": "concurrently --kill-others \"cd electron/client && npm i && cross-env NODE_ENV=development node --max_old_space_size=2096 server.js\" \"cd electron/dapps/lib && npm i && npm run webpack\" \"cd electron/main && npm i && npm run webpack\"",
+    "dev": "NODE_ENV=development npm start",
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
