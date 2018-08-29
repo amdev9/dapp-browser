@@ -41,13 +41,6 @@ export function createDappView(globalUUIDList: RendererConf[], dapp: AppItem) { 
     webPreferences: webPrefObj
   });
   
-  const bounds = {
-    x: 70,
-    y: 60,
-    width: 300,
-    height: 300
-  };
-
   console.log('entry: ', path.join(DAPPS_PATH, dapp.appName, dapp.main));
 
   dappView.webContents.loadURL('file://' + path.join(DAPPS_PATH, dapp.appName, dapp.main)); //todo pass @param path to index.html

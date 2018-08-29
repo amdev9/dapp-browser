@@ -63,39 +63,6 @@ app.on('ready', async () => {
   clientWindow = createClientWindow(globalUUIDList);
 
 
-  //////
-const DAPPS_PATH: string = path.join(__dirname, '..', '..', 'client');
-const popuWindowOffsetX = 500;
-const popuWindowOffsetY = 150;
-const popupWindow = new BrowserWindow({
-  x: clientWindow.getPosition()[0] + popuWindowOffsetX,
-  y: clientWindow.getPosition()[1] + popuWindowOffsetY,
-  show: false,
-  width: 150,
-  height: 250,
-  transparent: true,
-  frame: false,
-  resizable: false,
-  //alwaysOnTop: true,
-  parent: clientWindow
-});
-popupWindow.webContents.loadURL('file://' + path.join(DAPPS_PATH, "indexOverlay.html"));
-/*popupWindow.on('blur', () => {
-  popupWindow.close();
-});*/
-const correctPopupWindowPosition = (e: any) => {
-  const bounds = e.sender.getBounds();
-  popupWindow.setPosition(bounds.x + popuWindowOffsetX, bounds.y + popuWindowOffsetY);
-};
-clientWindow.on('move',(e: any) => correctPopupWindowPosition(e));
-clientWindow.on('resize',(e: any) => correctPopupWindowPosition(e));
-clientWindow.on('maximize',(e: any) => correctPopupWindowPosition(e));
-clientWindow.on('restore',(e: any) => correctPopupWindowPosition(e));
-popupWindow.show();
-//////
-
-
-
   // let appManager = new AppsManager();
   await AppsManager.parseDapps();
  
