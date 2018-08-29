@@ -4,13 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "NODE_ENV=development npm start",
+    "dev": "concurrently --kill-others \"cd electron/client && cross-env NODE_ENV=development node --max_old_space_size=2096 server.js\" \"cd electron/dapps/lib && npm run webpack\" \"cd electron/main && npm run webpack\" \"NODE_ENV=development npm start\"",
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "cypherpunk99",
   "license": "MIT",
   "dependencies": {
+    "concurrently": "^4.0.1",
     "react-burger-menu": "^2.5.2",
     "react-perfect-scrollbar": "^1.2.0"
   }
