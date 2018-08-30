@@ -1,11 +1,13 @@
+const fs = require('fs');
 const IPFS = require('ipfs');
+const libp2p = require('libp2p');
 const WStar = require('libp2p-webrtc-star');
 const wrtc = require('wrtc');
 const wstar = new WStar({
   wrtc: wrtc
 })
 
-const ipfs = new IPFS({   //);
+const remoteConf = { 
   EXPERIMENTAL: {
     pubsub: true
   },
@@ -22,17 +24,30 @@ const ipfs = new IPFS({   //);
       API: "/ip4/127.0.0.1/tcp/5001",
       Gateway: "/ip4/127.0.0.1/tcp/8080"
     }
-  },
-  // libp2p: {
-  //   modules: {
-  //     transport: [wstar],
-  //     discovery: [wstar.discovery]
-  //   }
-  // }
-})
+  }
+};
+
+const localConf = { 
+  repo: '/Users/pidgin/dev/boilerplate/ipfsTest',
+  config: {
+    Addresses: {
+      API: "/ip4/127.0.0.1/tcp/5001",
+    }
+  }
+};
+
+const ipfs = new IPFS(localConf)
+
+
+
 
 ipfs.on('ready', async () => { 
-  console.log(ipfs.isOnline() ? 'online' : 'offline');
+  if (ipfs.isOnline()) {
+    console.log('online');
+  } else {
+    console.log('offline, try to start');
+    ipfs.start();
+  }
 
   const version = await ipfs.version()
 
@@ -53,11 +68,45 @@ ipfs.on('ready', async () => {
     console.log(file.toString('utf8'))
   });
 
-  ipfs.ls(ipfsPath, function (err, files) {
-    files.forEach((file) => {
-      console.log(file.path)
-    })
+
+  const stream = ipfs.files.addReadableStream();
+  stream.on('data', function (file) {
+
+    ipfs.files.cat(file.hash, function (err, fileContent) {
+      if (err) {
+        throw err
+      }
+      console.log(file, fileContent.toString('utf8'))
+    });
+
+    // 'file' will be of the form
+    // {
+    //   path: '/tmp/myfile.txt',
+    //   hash: 'QmHash' // base58 encoded multihash
+    //   size: 123
+    // }
   })
+
+  fs.readFile('package.json', (err, data) => {
+    if (err) throw err;
+    console.log(data);
+    stream.write({
+      path: '/testFile.txt',
+      content: data
+    })
+    stream.end();
+   
+  });
+
+
+
+
 
 });
  
+
+ipfs.on('error', error => {
+  console.error('Something went terribly wrong!', error)
+})
+
+ipfs.on('start', () => console.log('Node started!'))
