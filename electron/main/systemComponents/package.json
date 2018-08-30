@@ -5,6 +5,7 @@
   "main": "ipfs.js",
   "dependencies": {
     "ipfs": "^0.31.7",
+    "ipfs-pubsub-room": "^1.4.0",
     "libp2p-webrtc-star": "^0.15.4",
     "wrtc": "^0.1.6"
   },
