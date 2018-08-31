@@ -95,16 +95,9 @@ ipfs.on('ready', async () => {
       content: data
     })
     stream.end();
-   
   });
-
-
-
-
-
 });
  
-
 ipfs.on('error', error => {
   console.error('Something went terribly wrong!', error)
 })

@@ -289,6 +289,7 @@ array
 |        |- subscribe
 |
 |- Ipc
+|- FileManager
 |- LocalStorage  
 |- IpfsStorage 
 |- OrbitDb 
@@ -421,6 +422,14 @@ Example:
 #### Links
 https://github.com/arrayio/docs.array.io/blob/master/ru_RU/src/components/activity.md
 
+
+# array.FileManager
+
+FileManager class provide secure way for local user files managing, encapsulates permissions mechanizms. Also provide methods for resourse effective file handling.
+
+File upload with progress bar example:
+https://github.com/linonetwo/ipfs-uploader-browser/blob/master/src/FileUpload.js
+
 # array.LocalStorage
 Local Storage is useful for dapps that want to store data on client side.
 
@@ -458,9 +467,10 @@ Example usage
 -------------
 
 ```javascript
-const { IpfsStorage } = require('array');
-ipfs = new IpfsStorage();
-let response = ipfs.transfer('./video.avi', 1000, function(error, result) {
+const { IpfsStorage, FileManager } = require('array');
+let videoInstance = new FileManager('./video.avi');
+let ipfs = new IpfsStorage();
+let response = ipfs.transfer(videoInstance, 1000, function(error, result) {
   if (!error) { console.log(result); }
 })
 .on("process", function() {
