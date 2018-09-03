@@ -436,7 +436,7 @@ https://developer.mozilla.org/en-US/docs/Web/API/FileReader
 Unrestricted File Upload
 https://www.owasp.org/index.php/Unrestricted_File_Upload
 
-
+Reading text and binary data with Node.js readable streams http://codewinds.com/blog/2013-08-04-nodejs-readable-streams.html
 
 # array.LocalStorage
 Local Storage is useful for dapps that want to store data on client side.
