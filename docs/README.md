@@ -426,9 +426,17 @@ https://github.com/arrayio/docs.array.io/blob/master/ru_RU/src/components/activi
 # array.FileManager
 
 FileManager class provide secure way for local user files managing, encapsulates permissions mechanizms. Also provide methods for resourse effective file handling.
+FileManager as a FileReader wrapper with restricted paths.
+
 
 File upload with progress bar example:
 https://github.com/linonetwo/ipfs-uploader-browser/blob/master/src/FileUpload.js
+https://developer.mozilla.org/en-US/docs/Web/API/FileReader
+
+Unrestricted File Upload
+https://www.owasp.org/index.php/Unrestricted_File_Upload
+
+
 
 # array.LocalStorage
 Local Storage is useful for dapps that want to store data on client side.
