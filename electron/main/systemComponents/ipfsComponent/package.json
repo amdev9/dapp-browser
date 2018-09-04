@@ -1,0 +1,24 @@
+{
+  "name": "ipfstest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "ipfs.js",
+  "dependencies": {
+    "@types/bluebird": "^3.5.24",
+    "@types/stream-buffers": "^3.0.2",
+    "buffer": "^5.2.1",
+    "file-api": "^0.10.4",
+    "ipfs": "^0.31.7",
+    "ipfs-pubsub-room": "^1.4.0",
+    "libp2p": "^0.23.1",
+    "libp2p-webrtc-star": "^0.15.4",
+    "stream-buffers": "^3.0.2",
+    "wrtc": "^0.1.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
