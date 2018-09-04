@@ -7,7 +7,9 @@ const initialState: Client = {
     id: 0,
     appName: null
   },
-  isHome: true
+  isHome: true,
+  notification: {isOpen: false},
+  statusBar: {isOpen: false}
 }
 
 export function client(state: Client = initialState, action: clients.TrayAction) {
@@ -31,6 +33,13 @@ export function client(state: Client = initialState, action: clients.TrayAction)
           appName: null 
         }
       };
+
+    case clients.TOGGLE_NOTIFICATION_PANEL:
+      return {...state, notification: {isOpen: !state.notification.isOpen}};
+
+    case clients.TOGGLE_STATUS_BAR_PANEL:
+      return {...state, statusBar: {isOpen: !state.statusBar.isOpen}};
+
     default:
       return state;
   }
