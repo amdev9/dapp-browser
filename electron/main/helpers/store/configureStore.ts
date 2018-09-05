@@ -31,7 +31,9 @@ export const initialState: IState = {
       id: 0,
       appName: null
     },
-    isHome: true
+    isHome: true,
+    notification: {isOpen: false},
+    statusBar: {isOpen: false}
   },
   feed: {}
 };

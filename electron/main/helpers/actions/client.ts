@@ -4,6 +4,8 @@ import { Action } from 'redux';
  
 export const SWITCH_DAPP = 'SWITCH_DAPP';
 export const TOGGLE_HOME = 'TOGGLE_HOME';
+export const TOGGLE_NOTIFICATION_PANEL = 'TOGGLE_NOTIFICATION_PANEL';
+export const TOGGLE_STATUS_BAR_PANEL = 'TOGGLE_STATUS_BAR_PANEL';
 
 
 export interface TrayAction extends Action {

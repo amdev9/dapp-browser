@@ -8,11 +8,10 @@ import { Store } from 'redux';
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer';
 import { configureStore, initialState } from './helpers/store/configureStore';
 import { AppsManager, AppItem } from './helpers/AppsManager';
+import dappFrame from './helpers/dappFrame';
 import { createClientWindow } from './createClientWindow';
 import { createDappView } from './createDappView';
 import { RendererConf } from './createDappView';
-
-import * as path from 'path';
 
 require('electron-context-menu')({
 	prepend: (params: any, browserWindow: BrowserWindow) => [{
@@ -42,15 +41,26 @@ app.on('window-all-closed', () => {
   }
 });
 
+const correctDappViewBounds = (storeState: any) => {
+  if (!clientWindow) {
+    console.log('Trying to send bounds of Dapp View while its parent window has not been initialized');
+    return;
+  }
+
+  const view = clientWindow.getBrowserView();
+  if (view) {
+    const windowBounds = clientWindow.getBounds();
+    view.setBounds({
+      x: dappFrame.getXOffset(),
+      y: dappFrame.getYOffset(),
+      width: windowBounds.width - dappFrame.getWidthOffset(storeState),
+      height: windowBounds.height - dappFrame.getHeightOffset(storeState)
+    });
+  }
+};
+
 app.on('ready', async () => {
-  const {width, height} = screen.getPrimaryDisplay().workAreaSize;
-  let bounds = {
-    x: 70,
-    y: 60,
-    width: 200,//width - 70,
-    height: height - 60  
-  };
- 
+
   if (process.env.ELECTRON_ENV === 'development') {
     let devtools = await installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS]);
     console.log(`Added Extension: ${devtools}`);
@@ -95,7 +105,7 @@ app.on('ready', async () => {
         let view = nameObj.dappView;
         if (view) {
           clientWindow.setBrowserView(view);
-          view.setBounds(bounds);  //{width: 0, height: 0, x: 0, y: 0}
+          correctDappViewBounds(storeState);
         } else {
           clientWindow.setBrowserView(null);
           process.stdout.write('error: view is null');
@@ -103,5 +113,9 @@ app.on('ready', async () => {
       }
     }
   });
+
+  clientWindow.on('resize',(e: any) => correctDappViewBounds(store.getState()));
+  clientWindow.on('maximize',(e: any) => correctDappViewBounds(store.getState()));
+  clientWindow.on('restore',(e: any) => correctDappViewBounds(store.getState()));
 });
 process.stdout.write("Main initialized");
