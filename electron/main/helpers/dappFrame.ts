@@ -1,6 +1,6 @@
 export default {
   getWidthOffset: (storeState: any) => {
-    let offset = 72;
+    let offset = 73;
     if (storeState.client.notification.isOpen) {
       offset += 302;
     }
@@ -16,11 +16,11 @@ export default {
   },
 
   getXOffset: () => {
-    return process.platform === 'darwin' ? 70 : 5;
+    return 73;
   },
 
   getYOffset: () => {
-    return process.platform === 'darwin' ? 60 : 4;
+    return 62;
   }
 
 }

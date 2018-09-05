@@ -51,8 +51,8 @@ const correctDappViewBounds = (storeState: any) => {
   if (view) {
     const windowBounds = clientWindow.getBounds();
     view.setBounds({
-      x: windowBounds.x + dappFrame.getXOffset(),
-      y: windowBounds.y + dappFrame.getYOffset(),
+      x: dappFrame.getXOffset(),
+      y: dappFrame.getYOffset(),
       width: windowBounds.width - dappFrame.getWidthOffset(storeState),
       height: windowBounds.height - dappFrame.getHeightOffset(storeState)
     });
@@ -60,14 +60,7 @@ const correctDappViewBounds = (storeState: any) => {
 };
 
 app.on('ready', async () => {
-  const {width, height} = screen.getPrimaryDisplay().workAreaSize;
-  let bounds = {
-    x: 70,
-    y: 60,
-    width: 200,//width - 70,
-    height: height - 60
-  };
- 
+
   if (process.env.ELECTRON_ENV === 'development') {
     let devtools = await installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS]);
     console.log(`Added Extension: ${devtools}`);
