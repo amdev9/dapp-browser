@@ -11,6 +11,7 @@ import {
   TOGGLE_HOME,
   TOGGLE_APP_HOME,
   TOGGLE_STATUS_BAR_PANEL,
+  TOGGLE_LOADER_PANEL,
   BIND_OPEN_CHANNELS_DONE,
   BIND_OPEN_CHANNELS,
   OPEN_CHANNEL_SUCCESS,
@@ -28,7 +29,7 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
           case OPEN_CHANNEL_SUCCESS:
           case BIND_OPEN_CHANNELS:
           case BIND_OPEN_CHANNELS_DONE:
-          case INCREMENT_COUNTER: 
+          case INCREMENT_COUNTER:
           case DECREMENT_COUNTER:
             return next(action);
           default:
@@ -39,17 +40,18 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
           case TOGGLE_NOTIFICATION_PANEL:
             let clientObj = globalId.find(renObj => renObj.status === 'client');
             if (clientObj) {
-              const payloadUuidObj = { 
+              const payloadUuidObj = {
                 uuid: clientObj.id,
               };
-              action.payload = Object.assign(action.payload, payloadUuidObj) 
+              action.payload = Object.assign(action.payload, payloadUuidObj)
             }
             return next(action);
 
-          case INCREMENT_COUNTER: 
+          case INCREMENT_COUNTER:
           case DECREMENT_COUNTER:
           case CLEAR_NOTIFICATION:
           case CLEAR_ALL_NOTIFICATIONS:
+          case TOGGLE_LOADER_PANEL:
           case TOGGLE_STATUS_BAR_PANEL:
           case TOGGLE_HOME:
           case TOGGLE_APP_HOME:
@@ -67,4 +69,4 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
   }
 };
 
- 
+

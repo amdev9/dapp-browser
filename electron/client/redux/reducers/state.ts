@@ -16,6 +16,10 @@ export interface NotificationPanel {
   isOpen: boolean
 }
 
+export interface LoaderPanel {
+  isOpen: boolean
+}
+
 export interface StatusBarPanel {
   items: { [index: string]: StatusBarItem; },
   isOpen: boolean
@@ -26,6 +30,7 @@ export type Counter = number;
 export interface IState {
   counter: Counter;
   notification: NotificationPanel;
+  loader: LoaderPanel;
   statusBar: StatusBarPanel;
   tray: Tray;
   feed: Feed;

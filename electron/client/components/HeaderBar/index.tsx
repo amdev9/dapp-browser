@@ -1,16 +1,18 @@
 import * as React from "react";
- 
+
 import { NotificationWidget } from './NotificationWidget';
 import { HomeWidget } from './HomeWidget';
+import { DownloadWidget } from './DownloadWidget';
 
 interface HeaderBarProps {
   isOpen?: boolean,
   togglePanel?(): void,
+  toggleLoaderPanel?(): void,
   toggleHome?(): void
 }
-export class HeaderBar extends React.Component<HeaderBarProps> { 
+export class HeaderBar extends React.Component<HeaderBarProps> {
   public render() {
-    const { togglePanel, toggleHome, isOpen } = this.props;
+    const { togglePanel, toggleHome, isOpen, toggleLoaderPanel } = this.props;
     return (
       <div className="headerbar">
         <HomeWidget toggleHome={toggleHome}/>
@@ -30,6 +32,7 @@ export class HeaderBar extends React.Component<HeaderBarProps> {
             {/* <Settings /> */}
 
             <NotificationWidget isOpen togglePanel={togglePanel} />
+            <DownloadWidget isOpen togglePanel={toggleLoaderPanel} />
           </div>
         </div>
       </div>
