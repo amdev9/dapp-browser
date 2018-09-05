@@ -9,6 +9,10 @@ interface LoaderPanelState {
   activeTab: string
 }
 
+// Links:
+// https://alligator.io/react/react-dropzone/
+// https://github.com/react-dropzone/react-dropzone
+// https://react-dropzone.js.org/
 export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelState> {
   constructor(props: LoaderPanelProps) {
     super(props)
