@@ -3,10 +3,57 @@ import * as IPFS from 'ipfs';
 
 
 class IpfsComponent {
+  ipfs: IPFS;
+  status: boolean = false;
+   
   constructor(configuration: any) {
-
+    this.ipfs = new IPFS(configuration);
+    
+    this.ipfs.on('ready', this.readyFunction.bind(this)); 
+    this.ipfs.on('error', this.errorFunction.bind(this, Error));
+    this.ipfs.on('start', this.startFunction.bind(this));
   }
-  uploadFile() {}
+
+  async errorFunction(error: Error) {
+    console.error('Something went terribly wrong!', error);
+  }
+
+  async startFunction() {
+    console.log('Node started!');
+  }
+  
+  async readyFunction() {
+    if (this.ipfs.isOnline()) {
+      console.log('online');
+      this.status = true;
+    } else {
+      console.log('offline, try to start');
+      this.ipfs.start();
+    }
+
+    const version = await this.ipfs.version();
+    console.log('Version:', version.version);
+    this.uploadFile();
+  };
+  
+  uploadFile() {
+
+    var rstream = fs.createReadStream('uploadFile.ts'); 
+    const files = [
+      {
+        path: '/upload.ts',
+        content: rstream
+      }
+    ];
+    const handler = (p: any) => { console.log(p); };
+    const options = { 
+      progress: handler
+    };
+    this.ipfs.files.add(files, options, function (err, files) {
+      if(err) { console.log(err); }
+      console.log(files);
+    })
+  }
 }
 
 const remoteConf = { 
@@ -38,39 +85,7 @@ const localConf = {
   }
 };
 
-const ipfs = new IPFS(localConf);
-
-ipfs.on('ready', async () => { 
-  if (ipfs.isOnline()) {
-    console.log('online');
-  } else {
-    console.log('offline, try to start');
-    ipfs.start();
-  }
-
-  const version = await ipfs.version();
-
-  console.log('Version:', version.version);
   
-  var rstream = fs.createReadStream('uploadFile.ts'); 
-  const files = [
-    {
-      path: '/upload.ts',
-      content: rstream
-    }
-  ];
-  const handler = (p) => { console.log(p); };
-  const options = { 
-    progress: handler
-  };
-  ipfs.files.add(files, options, function (err, files) {
-    if(err) { console.log(err); }
-    console.log(files);
-  })
-});
+let ipfs = new IpfsComponent(localConf);
+console.log(ipfs.status);
  
-ipfs.on('error', error => {
-  console.error('Something went terribly wrong!', error)
-});
-
-ipfs.on('start', () => console.log('Node started!'));
