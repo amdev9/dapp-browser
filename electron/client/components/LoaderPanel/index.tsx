@@ -1,15 +1,21 @@
 import * as React from "react";
-import {Props as MenuProps, slide as Menu} from "react-burger-menu";
+import {Props as MenuProps, slide as Menu, State} from "react-burger-menu";
 import { IoIosDocument, IoMdFolderOpen, IoMdCloudUpload, IoMdMenu } from 'react-icons/io';
 interface LoaderPanelProps {
   isOpen?: boolean,
   togglePanel?(openStatus: boolean): void
 }
-export class LoaderPanel extends React.Component<LoaderPanelProps> {
+interface LoaderPanelState {
+  activeTab: string
+}
+
+export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelState> {
   constructor(props: LoaderPanelProps) {
     super(props)
     this.onDragOver = this.onDragOver.bind(this);
     this.onDrop = this.onDrop.bind(this);
+    this.switchTab = this.switchTab.bind(this);
+    this.state = {activeTab: 'uploads'}
   }
 
   private onDragOver(e: any): void {
@@ -20,7 +26,21 @@ export class LoaderPanel extends React.Component<LoaderPanelProps> {
     console.log('onDrop1');
   }
 
+  private switchTab(tabName: string): void {
+    this.setState({activeTab: tabName});
+  }
+
   render() {
+    const activeClass = ['active', 'show'];
+
+    let downloadClass = null;
+    let uploadClass = null;
+    if(this.state.activeTab === 'downloads') {
+      downloadClass = activeClass;
+    } else {
+      uploadClass = activeClass;
+    }
+
     let { isOpen, togglePanel } = this.props;
 
     const menuProps: MenuProps = {
@@ -42,12 +62,12 @@ export class LoaderPanel extends React.Component<LoaderPanelProps> {
       <Menu {...menuProps}>
         <div className="loader-popup">
           <ul className="nav nav-tabs nav-justified">
-            <li className="nav-item"><a href="#downloads" className="nav-link" data-toggle="tab">Downloads</a></li>
-            <li className="nav-item"><a href="#uploads" className="nav-link active" data-toggle="tab">Uploads</a></li>
+            <li className="nav-item"><a href="#downloads" className={['nav-link'].concat(downloadClass).join(' ')} data-toggle="tab" onClick={()=>this.switchTab('downloads')}>Downloads</a></li>
+            <li className="nav-item"><a href="#uploads" className={['nav-link'].concat(uploadClass).join(' ')} data-toggle="tab" onClick={()=>this.switchTab('uploads')}>Uploads</a></li>
           </ul>
 
           <div className="tab-content">
-            <div className="tab-pane" id="downloads">
+            <div className={['tab-pane'].concat(downloadClass).join(' ')} id="downloads">
               <ul>
                 <li className="row align-items-center">
                   <div className="col-auto icon">
@@ -73,7 +93,7 @@ export class LoaderPanel extends React.Component<LoaderPanelProps> {
               </ul>
             </div>
 
-            <div className="tab-pane show active" id="uploads">
+            <div className={['tab-pane'].concat(uploadClass).join(' ')} id="uploads">
               <div className="dragzone"
                    onDragOver={(e)=>this.onDragOver(e)}
                    onDrop={(e)=>this.onDrop(e)}>
