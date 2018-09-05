@@ -44,6 +44,7 @@ ipfs.on('ready', async () => {
 
   console.log('Version:', version.version);
   
+  /* upload file with progress */
   var rstream = fs.createReadStream('uploadFile.ts'); 
   const files = [
     {
@@ -58,7 +59,32 @@ ipfs.on('ready', async () => {
   ipfs.files.add(files, options, function (err, files) {
     if(err) { console.log(err); }
     console.log(files);
+    
+  });
+
+ 
+  /* download file with progress */
+  const validCID = 'QmbV8Uedt7ZrwePTQjQADHJ84ifVicaKhTZJVqVBJDmydp';
+  const stream = ipfs.files.getReadableStream(validCID);
+  var wstream = fs.createWriteStream('myFile.vbox-extpack');
+  // stream.pipe(wstream);
+
+  stream.on('data', (file) => {
+    console.log(file.size);
+    // write the file's path and contents to standard out
+    console.log(file.path)
+    if(file.type !== 'dir') {
+      // file.content.pipe(wstream);
+      file.content.on('data', (chunk) => {
+        console.log(chunk.byteLength);
+        wstream.write(chunk);
+        // console.log(data.toString())
+      })
+      file.content.resume()
+    }
   })
+
+
 });
  
 ipfs.on('error', error => {
