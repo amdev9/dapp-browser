@@ -30,7 +30,7 @@ const localConf = {
   }
 };
 
-const ipfs = new IPFS(localConf);
+const ipfs = new IPFS(remoteConf);
 
 ipfs.on('ready', async () => { 
   if (ipfs.isOnline()) {

@@ -5,7 +5,8 @@ import * as IPFS from 'ipfs';
 class IpfsComponent {
   ipfs: IPFS;
   status: boolean = false;
-   
+  url: string = 'https://ipfs.array.io/ipfs/';
+
   constructor(configuration: any) {
     this.ipfs = new IPFS(configuration);
     
@@ -33,12 +34,11 @@ class IpfsComponent {
 
     const version = await this.ipfs.version();
     console.log('Version:', version.version);
-    this.uploadFile();
+    this.uploadFile('uploadFile.ts');
   };
   
-  uploadFile() {
-
-    var rstream = fs.createReadStream('uploadFile.ts'); 
+  uploadFile(fileName: string) {
+    var rstream = fs.createReadStream(fileName); 
     const files = [
       {
         path: '/upload.ts',
@@ -53,6 +53,10 @@ class IpfsComponent {
       if(err) { console.log(err); }
       console.log(files);
     })
+  }
+
+  downloadFile(hash: string) {
+    console.log(this.url.concat(hash));
   }
 }
 
