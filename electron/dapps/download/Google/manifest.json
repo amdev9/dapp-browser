@@ -1,10 +1,10 @@
 {
   "title": "exampleApp",
   "main": "app/index.html",
-  "appName": "Contact",
+  "appName": "Google",
   "assets/": ["app/images/**"],
-  "icon": "app/images/contact.svg",
-  "preview": "app/images/contact.svg",
+  "icon": "app/images/favicon.png",
+  "preview": "app/images/thumb.png",
   "categories": [
     "games"
   ]
