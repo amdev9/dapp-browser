@@ -1,9 +1,13 @@
 export default {
   getWidthOffset: (storeState: any) => {
     let offset = 70;
-    if (storeState.client.notification.isOpen) {
+    if (storeState.client.notification.isOpen ) {
       offset += 300;
     }
+    // if ( storeState.client.loader.isOpen ) {
+    //   offset += 300;
+    // }
+    
     return offset;
   },
 

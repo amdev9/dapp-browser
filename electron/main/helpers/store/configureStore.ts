@@ -33,6 +33,7 @@ export const initialState: IState = {
     },
     isHome: true,
     notification: {isOpen: false},
+    loader: {isOpen: false},
     statusBar: {isOpen: false}
   },
   feed: {}

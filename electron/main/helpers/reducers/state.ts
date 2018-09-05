@@ -7,8 +7,15 @@ export type Client = {
     appName?: string
   },
   isHome: boolean,
-  notification: {isOpen: boolean},
-  statusBar: {isOpen: boolean}
+  notification: {
+    isOpen: boolean
+  },
+  statusBar: {
+    isOpen: boolean
+  },
+  loader: {
+    isOpen: boolean
+  }
 }
 export interface IState {
   counter: number;
