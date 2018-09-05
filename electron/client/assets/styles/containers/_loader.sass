@@ -1,0 +1,305 @@
+.loader-popup
+  display: flex !important // Override overlay style
+  background-color: #ffffff
+  flex-direction: column
+  max-height: 100%
+  height: 100%
+
+  //position: fixed
+  //top: 60px
+  //right: -350px
+  //bottom: 45px
+  //width: 350px
+  //opacity: 0
+  //visibility: hidden
+  //overflow: auto
+  //background: $white
+  //z-index: 5
+  //border-top: 1px solid rgba(32, 32, 73, .05)
+  //box-shadow: -1px 2px 3px rgba(32, 32, 73, .05)
+
+  //@include transition()
+
+  &::-webkit-scrollbar
+    width: 0
+
+  &.visible
+    opacity: 1
+    right: 0
+    visibility: visible
+
+  .nav
+    &-link
+      font: 600 20px $font-montserrat !important
+      color: $dgray
+      border: 0
+      padding: 20px 10px
+      border-radius: 0
+      background: $gray
+
+      &.active
+        color: $theme
+
+  .tab
+    &-pane
+      padding: 15px
+
+      .notifications-name
+        display: block
+        margin: 0 -15px 15px
+        padding: 7px 15px
+
+      .dragzone
+        position: relative
+        height: 320px
+        margin: 0 0 15px
+        border-radius: 7px
+        border: 2px dashed $lgray
+
+        .message
+          position: absolute
+          top: 50%
+          left: 0
+          right: 0
+          text-align: center
+          //@include transform(translateY(-50%))
+
+          svg
+            margin-bottom: -20px
+            font-size: 45px
+            color: $lgray
+
+          [class^="icon-"]
+            font-size: 35px
+            color: $lgray
+
+          strong, span
+            font: 600 20px $font-montserrat
+            display: block
+            color: $lgray
+
+          strong
+            margin: 15px 0 5px
+
+          span
+            font-size: 14px
+
+        &.dragover:after
+          position: absolute
+          content: ''
+          top: 0
+          left: 0
+          right: 0
+          bottom: 0
+          background: fade($theme, 30%)
+
+      ul
+        display: block
+        margin: 0
+        padding: 0 15px
+
+        li
+          list-style: none
+          padding-bottom: 20px
+
+          &:after
+            display: table
+            content: ''
+            clear: both
+
+          &.complete
+            .icon
+              [class^="icon-"]
+                font-size: 20px
+                color: $theme
+            //.transform(translateY(-50%))
+
+            &.no-bg .icon
+              background: none
+
+          & + li
+            padding-top: 20px;
+            padding-bottom: 20px;
+            border-top: 1px solid $gray
+
+          .icon
+            position: relative
+            width: 50px
+            height: 50px
+            background: $gray
+            border-radius: 50%
+
+            [class^="icon-"]
+              position: absolute
+              font-size: 20px
+              top: 48%
+              left: 0
+              right: 0
+              margin: 0 auto
+              color: $lgray
+              text-align: center
+
+            svg
+              position: absolute
+              top: 9px
+              left: 0
+              right: 0
+              margin: 0 auto
+              font-size: 35px
+              color: $lgray
+              text-align: center
+              //@include transform(translateY(-50%));
+
+              &.over
+                margin: -25px auto 0
+                animation: rotator 1.5s ease-in-out infinite
+
+            .total
+              position: absolute
+              font: 500 12px $font-opensans
+              color: $lgray
+              top: 50%
+              left: 0
+              right: 0
+              margin: -9px auto 0
+              text-align: center
+
+          /*@keyframes rotator
+            0% { transform: rotate( 0deg ) }
+            100% { transform: rotate( 360deg ) }*/
+
+          .introtext
+            overflow: hidden
+            padding: 2px 0 0 15px
+
+            strong
+              font: 500 16px $font-opensans
+              display: block
+              white-space: nowrap
+              overflow: hidden
+              text-overflow: ellipsis
+
+            small
+              font: 12px $font-opensans
+              color: $lgray
+
+          .action
+            .dropdown
+              &-target
+                display: inline-block
+                width: 20px
+                color: $lgray
+                padding: 0 5px
+                cursor: pointer
+                text-align: center
+                margin-right: -15px
+
+                &:hover
+                  color: $theme
+
+              &-menu
+                right: -15px
+
+  &-empty
+    padding: 30px 15px
+    text-align: center
+
+    span
+      font: 14px $font-opensans
+      color: fade($dgray, 50%)
+
+  &-title
+    display: table
+    padding: 20px 15px
+
+    strong
+      font: 600 20px $font-montserrat
+      display: table-cell
+      width: 100%
+      padding-right: 15px
+
+    button
+      display: table-cell
+      width: 100%
+      border: 0
+      background: none
+      color: $lgray
+      //@include transition(color)
+
+      [class^="icon-"]
+        &:before
+          width: 24px
+
+      &:hover
+        color: $dgray
+
+  &-name
+    display: table
+    padding: 3px 15px
+    background: $gray
+
+    span, button
+      display: table-cell
+      width: 100%
+      vertical-align: middle
+
+    span
+      font: 600 12px $font-montserrat
+      color: $dgray
+      text-transform: uppercase
+
+    button
+      font-size: 12px
+      border: 0
+      color: $lgray
+      margin: -4px 0 0
+      background: none
+      //@include transition(color)
+
+      &:hover
+        color: $dgray
+
+  &-item
+    padding: 15px 0
+
+    & + .notifications-item
+      border-top: 1px solid $gray
+
+    &-title
+      padding: 0 0 10px
+      margin: 0
+
+      .item
+        &-name, &-time
+          overflow: hidden
+
+          span, small
+            display: block
+            overflow: hidden
+            white-space: nowrap
+            text-overflow: ellipsis
+
+          span, img
+            font: 16px $font-montserrat
+            display: inline-block
+            vertical-align: middle
+            color: $dark
+            max-width: 130px
+
+          img
+            max-width: 42px
+            margin-right: 10px
+
+        &-time
+          padding-top: 10px
+
+          small
+            font: 12px $font-opensans
+            color: fade($dgray, 50%)
+
+    &-body
+      padding: 0 15px
+
+      span
+        font: 14px $font-opensans
+        color: fade($dgray, 50%)
