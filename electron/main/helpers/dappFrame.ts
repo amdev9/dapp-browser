@@ -1,26 +1,26 @@
 export default {
   getWidthOffset: (storeState: any) => {
-    let offset = 73;
+    let offset = 70;
     if (storeState.client.notification.isOpen) {
-      offset += 302;
+      offset += 300;
     }
     return offset;
   },
 
   getHeightOffset: (storeState: any) => {
-    let offset = 86;
+    let offset = 85;
     if (storeState.client.statusBar.isOpen) { //@todo account items.count . Now this functions works correctly only for 3 items
-      offset += 154;
+      offset += 153;
     }
     return offset;
   },
 
   getXOffset: () => {
-    return 73;
+    return 70;
   },
 
   getYOffset: () => {
-    return 62;
+    return 60;
   }
 
 }

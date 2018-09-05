@@ -7,88 +7,90 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
+Object.defineProperty(exports, "__esModule", { value: true });
+const fs = require("fs");
+const IPFS = require("ipfs");
+class IpfsComponent {
+    constructor(configuration) {
+        this.status = false;
+        this.ipfs = new IPFS(configuration);
+        this.ipfs.on('ready', this.readyFunction.bind(this));
+        this.ipfs.on('error', this.errorFunction.bind(this, Error));
+        this.ipfs.on('start', this.startFunction.bind(this));
+    }
+    errorFunction(error) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.error('Something went terribly wrong!', error);
+        });
+    }
+    startFunction() {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log('Node started!');
+        });
+    }
+    readyFunction() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.ipfs.isOnline()) {
+                console.log('online');
+                this.status = true;
             }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+            else {
+                console.log('offline, try to start');
+                this.ipfs.start();
+            }
+            const version = yield this.ipfs.version();
+            console.log('Version:', version.version);
+            this.uploadFile();
+        });
+    }
+    ;
+    uploadFile() {
+        var rstream = fs.createReadStream('uploadFile.ts');
+        const files = [
+            {
+                path: '/upload.ts',
+                content: rstream
+            }
+        ];
+        const handler = (p) => { console.log(p); };
+        const options = {
+            progress: handler
+        };
+        this.ipfs.files.add(files, options, function (err, files) {
+            if (err) {
+                console.log(err);
+            }
+            console.log(files);
+        });
+    }
+}
+const remoteConf = {
+    EXPERIMENTAL: {
+        pubsub: true
+    },
+    config: {
+        Bootstrap: [
+            "/ip4/35.204.17.104/tcp/4001/ipfs/QmWCsxqpvYMKCeCejvXLc7TbWrraLwmAKMxWgcsKQ8xUL3"
+        ],
+        Addresses: {
+            Swarm: [
+                "/ip4/0.0.0.0/tcp/4001",
+                "/ip6/::/tcp/4001",
+                "/dns4/discovery.libp2p.array.io/tcp/9091/wss/p2p-websocket-star/"
+            ],
+            API: "/ip4/127.0.0.1/tcp/5001",
+            Gateway: "/ip4/127.0.0.1/tcp/8080"
+        }
     }
 };
-var _this = this;
-exports.__esModule = true;
-var buffer_1 = require("buffer");
-var stream_buffers_1 = require("stream-buffers");
-var file_api_1 = require("file-api");
-var file = new file_api_1.File({ path: "./package.json" });
-var main = function () { return __awaiter(_this, void 0, void 0, function () {
-    var files, response, err_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                files = [file];
-                _a.label = 1;
-            case 1:
-                _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, Promise.all(files.map(function (aFile) { return readFile(aFile); }).slice())];
-            case 2:
-                response = _a.sent();
-                console.log(response);
-                return [3 /*break*/, 4];
-            case 3:
-                err_1 = _a.sent();
-                console.log(err_1);
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
+const localConf = {
+    // repo: '/Users/pidgin/dev/boilerplate/ipfsTest',
+    config: {
+        Addresses: {
+            API: "/ip4/127.0.0.1/tcp/5001",
         }
-    });
-}); };
-function uploadIPFS(fileArrayBuffer) {
-    var _this = this;
-    return new Promise(function (resolve, reject) {
-        // this.setState({ progress: 0 });
-        var myReadableStreamBuffer = new stream_buffers_1["default"].ReadableStreamBuffer({
-            chunkSize: 25000
-        });
-        myReadableStreamBuffer.on('data', function (chunk) {
-            // this.setState({ progress: this.state.progress + chunk.byteLength });
-            myReadableStreamBuffer.resume();
-        });
-        _this.stream = _this.node.files.addReadableStream();
-        _this.stream.on('data', function (file) { return resolve(file); });
-        _this.stream.write(myReadableStreamBuffer);
-        myReadableStreamBuffer.put(buffer_1.Buffer.from(fileArrayBuffer));
-        myReadableStreamBuffer.on('end', function () { return _this.stream.end(); });
-        myReadableStreamBuffer.stop();
-    });
-}
-;
-function readFile(file) {
-    var _this = this;
-    return new Promise(function (resolve, reject) {
-        var fileReader = new FileReader();
-        fileReader.onload = function (event) { return resolve(uploadIPFS(_this.result)); };
-        fileReader.onerror = reject;
-        fileReader[_this.props.readAs](file);
-    });
-}
-main();
+    }
+};
+let ipfs = new IpfsComponent(localConf);
+console.log(ipfs.status);
+//# sourceMappingURL=uploadFile.js.map
