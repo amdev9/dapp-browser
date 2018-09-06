@@ -45,28 +45,6 @@
   - [array.Keychain](#arraykeychain)
 
 
-# Client front-end documentation
-
-Main reason to use Redux-Observable / RxJs to halt work in the middle of the process (instead of Promise ignore way, which causes **CPU overhead**)
-
-*A lot of people compare RxJS with promises and callbacks that can be chained together. You can compare them in a way but with the enormous difference* **promises/callbacks are unstoppable. Once a promise is triggered there is no way to stop them. Once fired they WILL end and call their callback method, if you want it or not, either in a successful way or in an error. Observables though are stoppable and can be called to a halt in the middle of its process.** 
-
-## External references
-
-https://github.com/piotrwitek/typesafe-actions<br />
-https://electronjs.org/blog/typescript<br />
-https://github.com/electron/electron-quick-start-typescript<br />
-https://github.com/piotrwitek/react-redux-typescript-guide#action-creators<br />
-https://github.com/mitsuruog/react-redux-observable-typescript-sample<br />
-https://blog.mitsuruog.info/2018/03/react-redux-observable-typescript<br />
-https://www.typescriptlang.org/docs/handbook/classes.html<br />
-https://redux.js.org/<br />
-<br />
-Improve your front-end with RxJs https://axxes.com/en/frontend-en/rxjs-reinforcing-your-front-end/ <br />
-Observables in Angular 2: https://angular.io/guide/observables <br />
-RxJS 5 Thinking Reactively https://www.youtube.com/watch?v=3LKMwkuK0ZE <br />
-Netflix JavaScript Talks - RxJS + Redux + React = Amazing! https://www.youtube.com/watch?v=AslncyG8whg <br />
-Introduction to Redux-Observable https://www.youtube.com/watch?v=zk2bVBZhmcc <br />
 
 # Architecture technical documentation
 
@@ -131,6 +109,30 @@ Links:
 
 Other helpfull links:
 - Reducing desktop app memory footprint: https://slack.engineering/reducing-slacks-memory-footprint-4480fec7e8eb 
+
+
+## Client front-end  
+
+Main reason to use Redux-Observable / RxJs to halt work in the middle of the process (instead of Promise ignore way, which causes **CPU overhead**)
+
+*A lot of people compare RxJS with promises and callbacks that can be chained together. You can compare them in a way but with the enormous difference* **promises/callbacks are unstoppable. Once a promise is triggered there is no way to stop them. Once fired they WILL end and call their callback method, if you want it or not, either in a successful way or in an error. Observables though are stoppable and can be called to a halt in the middle of its process.** 
+
+## External references
+
+https://github.com/piotrwitek/typesafe-actions<br />
+https://electronjs.org/blog/typescript<br />
+https://github.com/electron/electron-quick-start-typescript<br />
+https://github.com/piotrwitek/react-redux-typescript-guide#action-creators<br />
+https://github.com/mitsuruog/react-redux-observable-typescript-sample<br />
+https://blog.mitsuruog.info/2018/03/react-redux-observable-typescript<br />
+https://www.typescriptlang.org/docs/handbook/classes.html<br />
+https://redux.js.org/<br />
+<br />
+Improve your front-end with RxJs https://axxes.com/en/frontend-en/rxjs-reinforcing-your-front-end/ <br />
+Observables in Angular 2: https://angular.io/guide/observables <br />
+RxJS 5 Thinking Reactively https://www.youtube.com/watch?v=3LKMwkuK0ZE <br />
+Netflix JavaScript Talks - RxJS + Redux + React = Amazing! https://www.youtube.com/watch?v=AslncyG8whg <br />
+Introduction to Redux-Observable https://www.youtube.com/watch?v=zk2bVBZhmcc <br />
 
 
 ## Next releases improvements
