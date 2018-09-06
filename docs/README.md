@@ -70,7 +70,72 @@ Introduction to Redux-Observable https://www.youtube.com/watch?v=zk2bVBZhmcc <br
 
 # Architecture technical documentation
 
-*TODO: Dynamic permission mechanizm*<br />
+## Infrastructure description
+
+
+```
+   [sandbox - BrowserWindow]
+              *           [chromium]
+        ipc   *   ---------------------------
+     ------>  *  |    * * * * * * *         |
+    |         *  |    *  -------  *         |
+    |         *  |    * |       | *         |
+ [Main]<----  *  |    * |  Dapp | *         |
+        ipc   *  |    *  -------  *         |
+              *  |    * * * * * * *         |
+              *  | [sandbox - BrowserView]  |
+              *   ---------------------------
+              *
+```
+ 
+Client are loading inside sandboxed BrowserWindow *[1] *[3].  
+Dapps are loading inside sandboxed BrowserViews.
+
+Sandboxed BrowserView *[2] *[7]:
+> It behaves more like a Chrome tab than the webview does
+It’s used more like a native window than a DOM element
+What we mean by that is — unlike the webview — you can’t drop a BrowserView into the DOM and manipulate it with CSS. 
+Similar to top-level windows, these views can only be created from the background Node process. 
+
+Each BrowserView process store own state in Redux and set it up with a clever middleware called electron-redux *[5]:
+> It uses Electron’s IPC to bounce actions between processes, like so:
+If an action is dispatched in a renderer process, that renderer ignores it and forwards it to the main process
+If an action is dispatched in the main process, it is handled there first, then replayed in the renderers
+This makes the main process’ store the One True Store, and ensures that the others are eventually consistent. 
+With this strategy, there’s no need to shuttle state or get into the serialization game. 
+
+ARRAY solve Redux asynchronous actions side-effects with redux-observable (like a saga but more Homeric) *[6]
+> It becomes really powerful when combined with a Redux store in each process, 
+because now we can kickoff main process side-effects from a renderer and vice-versa, 
+in a decoupled way. It’s similar to an event bus or pub-sub, but across Chromium processes.
+                    -----------------------------------------------------------------------
+
+
+ARRAY stack: 
+- Electron.js (sandboxed BrowserWindow and BrowserViews, safe hardcoded list ipc communication channels)
+- React.js
+- Redux + redux-electron
+- Rx + redux-observable
+- TypeScript  
+
+Links:
+------
+ 
+[1] Path 2: Remote Isolation<br /> https://slack.engineering/interops-labyrinth-sharing-code-between-web-electron-apps-f9474d62eccc <br />
+[2] https://slack.engineering/growing-pains-migrating-slacks-desktop-app-to-browserview-2759690d9c7b <br />
+[3] Sandbox https://electronjs.org/docs/api/sandbox-option <br />
+[4] BrowserWindow sandbox boilerplates https://github.com/kewde/electron-sandbox-boilerplate <br />
+[5] Electron-redux https://github.com/hardchor/electron-redux <br />
+[6] Redux-observable https://github.com/redux-observable/redux-observable<br />
+[7] Same webPreferences with sandbox option like BrowserWindow has: <br />https://github.com/electron/electron/blob/master/docs/api/browser-view.md<br />
+
+Other helpfull links:
+- Reducing desktop app memory footprint: https://slack.engineering/reducing-slacks-memory-footprint-4480fec7e8eb 
+
+
+## Next releases improvements
+
+Dynamic permission mechanizm<br />
 *If we change permissions on the fly. In this case, if the application is running, it is necessary to "load" the new permissions and, accordingly, the channels.*
 Start-stop channels: https://github.com/MichaelVasseur/electron-ipc-bus
 
@@ -207,7 +272,7 @@ Allow to store local data currently in renderer process browserWindow. Local Sto
 After Local Storage permission granted and dapp process started we provide ready to initialize instance of PouchDb storage with IndexedDb adapter.
 
 ## Permissions signal sequence (success scenario)
-1. Dapp user init instance `new LocalStorage()`
+1. Dapp developer init instance `new LocalStorage()`
 2. Dapp redux store disaptches `INTENT_CHANNEL_DATA_PASS(LOCALSTORAGE)`
 3. Main process orchestrate and accept data passing `ACCEPT_CHANNEL_DATA_PASS`
 4. Create wrapper class with corresponding data manipulation methods. Class  `new LocalStorage()` extends `PouchDb` class with `IndexedDb` adapter.
@@ -228,7 +293,7 @@ Main responsibility of Ipfs Storage component is to store data in IPFS. It provi
  Ipfs Storage is useful for applications that want to store/backup a large amount of data, keep data decentralized at the same time. In other words it is File System for your dapp.
  
 ## Permissions signal sequence (success scenario)
-1. Dapp user init instance `new IpfsStorage()`
+1. Dapp developer init instance `new IpfsStorage()`
 2. Dapp redux store disaptches `INTENT_CHANNEL_DATA_PASS(IPFS)`
 3. Main process orchestrate and accept data passing `ACCEPT_CHANNEL_DATA_PASS(CHANNEL_ID)`
 4. Create proxy class `new IpfsStorage()` with corresponding data manipulation methods. Proxy class resposible to send and listen for events propagated by `IPFS` class at main process. 
@@ -243,7 +308,7 @@ Simply speaking, OrbitDb component, being a layer of abstraction under IPFS prov
 > OrbitDB is a serverless, distributed, peer-to-peer database. OrbitDB uses [IPFS](https://ipfs.io/) as its data storage and [IPFS Pubsub](https://github.com/ipfs/go-ipfs/blob/master/core/commands/pubsub.go#L23) to automatically sync databases with peers. It's an eventually consistent database that uses CRDTs for conflict-free database merges making OrbitDB an excellent choice for decentralized apps (dApps), blockchain applications and offline-first web applications.
 
 ## Permissions signal sequence (success scenario)
-1. Dapp user init instance `new OrbitDb()`
+1. Dapp developer init instance `new OrbitDb()`
 2. Dapp redux store disaptches `INTENT_CHANNEL_DATA_PASS(ORBIT)`
 3. Main process orchestrate and accept data passing `ACCEPT_CHANNEL_DATA_PASS(CHANNEL_ID)`
 4. Create proxy class `new OrbitDb()` with corresponding data manipulation methods. Proxy class resposible to send and listen for events propagated by `OrbitDb` class at main process. 
@@ -256,7 +321,7 @@ https://github.com/orbitdb/orbit-db<br/>
 Logger component provide logging. It intercept main process system errors and save it in `sqlite` database.
 
 ## Permissions signal sequence (success scenario)
-1. Dapp user init instance `new Logger()`
+1. Dapp developer init instance `new Logger()`
 2. Dapp redux store disaptches `INTENT_CHANNEL_DATA_PASS(LOGGER)`
 3. Main process orchestrate and accept data passing `ACCEPT_CHANNEL_DATA_PASS(CHANNEL_ID)`
 4. Create proxy class `new Logger()` with corresponding data manipulation methods. Proxy class resposible to send and listen for events propagated by `Logger` class at main process. 
@@ -270,7 +335,7 @@ Winston logger https://github.com/winstonjs/winston
 Keychain component provide transaction signing methods. It uses third-party Keychain application for keys manipulations and signing. Client app uses connection bridge to pass data in and out.
 
 ## Permissions signal sequence (success scenario)
-1. Dapp user init instance `new Keychain()`
+1. Dapp developer init instance `new Keychain()`
 2. Dapp redux store disaptches `INTENT_CHANNEL_DATA_PASS(KEYCHAIN)`
 3. Main process orchestrate and accept data passing `ACCEPT_CHANNEL_DATA_PASS(CHANNEL_ID)`
 4. Create proxy class `new Keychain()` with corresponding data manipulation methods. Proxy class resposible to send and listen for events propagated by `Keychain` class at main process. 
