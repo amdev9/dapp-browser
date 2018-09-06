@@ -44,6 +44,7 @@ export type AppItem = {
   icon: string;
   statusIcon: string[];
   preview: string;
+  permissions: string[]
 }
 
 let _dapps: AppItem[] = [];
@@ -82,6 +83,7 @@ export class AppsManager {
         try {
           const fileContent = await readFile(path.join(DAPPS_PATH, file, 'manifest.json'));
           const itemWithResolvedPath = AppsManager.resolvePath(JSON.parse(fileContent));
+          console.log(itemWithResolvedPath);
           AppsManager.dapps.push(itemWithResolvedPath); //@todo 1 add icon resolver
      
         } catch (err) {

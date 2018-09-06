@@ -10,7 +10,7 @@ import { configureStore, initialState } from './helpers/store/configureStore';
 import { AppsManager, AppItem } from './helpers/AppsManager';
 import dappFrame from './helpers/dappFrame';
 import { createClientWindow } from './createClientWindow';
-import { createPermissionWindow } from './createPermissionWindow';
+import { createPermissionWindow } from './permissionManager/createPermissionWindow';
 import { createDappView } from './createDappView';
 import { RendererConf } from './createDappView';
 
@@ -74,12 +74,7 @@ app.on('ready', async () => {
   });
   clientWindow = createClientWindow(globalUUIDList);
 
-  //
-  app.on('activate', () => {
-    permissionWindow = createPermissionWindow(clientWindow);
-  });
-  permissionWindow = createPermissionWindow(clientWindow);
-  //
+
 
   // let appManager = new AppsManager();
   await AppsManager.parseDapps();
@@ -92,6 +87,11 @@ app.on('ready', async () => {
   let dapp: AppItem;
   for (dapp of AppsManager.dapps) {
     createDappView(globalUUIDList, dapp);
+
+    console.log('spawn ', dapp);
+    permissionWindow = createPermissionWindow(clientWindow, dapp.permissions);
+    //
+    
   }
  
 
