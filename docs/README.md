@@ -18,7 +18,6 @@
   - [SmartContract](not-relevant/contract.md)
   - [Loader](not-relevant/loader.md)
 
-
 ## Client documentation
 
 - [Client front-end documentation](#client-front-end-documentation)
