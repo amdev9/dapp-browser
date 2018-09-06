@@ -10,6 +10,7 @@ import { configureStore, initialState } from './helpers/store/configureStore';
 import { AppsManager, AppItem } from './helpers/AppsManager';
 import dappFrame from './helpers/dappFrame';
 import { createClientWindow } from './createClientWindow';
+import { createPermissionWindow } from './createPermissionWindow';
 import { createDappView } from './createDappView';
 import { RendererConf } from './createDappView';
 
@@ -27,6 +28,7 @@ require('electron-context-menu')({
 
 const globalUUIDList: RendererConf[] = [];
 let clientWindow: Electron.BrowserWindow = null;
+let permissionWindow: Electron.BrowserWindow = null;
 
 
 
@@ -72,6 +74,12 @@ app.on('ready', async () => {
   });
   clientWindow = createClientWindow(globalUUIDList);
 
+  //
+  app.on('activate', () => {
+    permissionWindow = createPermissionWindow();
+  });
+  permissionWindow = createPermissionWindow();
+  //
 
   // let appManager = new AppsManager();
   await AppsManager.parseDapps();
