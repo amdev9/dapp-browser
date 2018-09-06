@@ -76,9 +76,9 @@ app.on('ready', async () => {
 
   //
   app.on('activate', () => {
-    permissionWindow = createPermissionWindow();
+    permissionWindow = createPermissionWindow(clientWindow);
   });
-  permissionWindow = createPermissionWindow();
+  permissionWindow = createPermissionWindow(clientWindow);
   //
 
   // let appManager = new AppsManager();

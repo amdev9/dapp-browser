@@ -6,7 +6,7 @@ import { openDevTool } from './helpers/devtools';
 let permissionWindow: Electron.BrowserWindow = null;
 const PATH: string = path.join(__dirname, '..');
 
-export function createPermissionWindow() {
+export function createPermissionWindow(mainWindow: Electron.BrowserWindow) {
   const uuidClient = uuidv4();
   const authorizedChannelsList = ['channelId1', 'channelId2']; //next todo get channels list from dapp manifest
 
@@ -24,12 +24,16 @@ export function createPermissionWindow() {
   }
 
   permissionWindow = new BrowserWindow({
+    parent: mainWindow,
     title: "ARRAY | Permissions",
+    alwaysOnTop: true,
+    center: true,
     show: false,
     x: 0,
     y: 0,
-    width: 1200,
-    height: 800,
+    width: 400,
+    height: 300,
+    resizable: false,
     webPreferences: webPrefObj
   })
   permissionWindow.loadURL('file://' + path.join(PATH, 'permission.html'));
@@ -50,9 +54,9 @@ export function createPermissionWindow() {
   });
 
   // console.log(process.env);
-  if (process.env.ELECTRON_ENV === 'development') {
-    openDevTool(permissionWindow, true);
-  }  
+  // if (process.env.ELECTRON_ENV === 'development') {
+  //   openDevTool(permissionWindow, true);
+  // }  
   
   
   return permissionWindow;
