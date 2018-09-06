@@ -15,6 +15,10 @@ export type Client = {
   },
   loader: {
     isOpen: boolean
+  },
+  feedSize: {
+    width: number,
+    height: number
   }
 }
 export interface IState {

@@ -16,7 +16,8 @@ import {
   BIND_OPEN_CHANNELS,
   OPEN_CHANNEL_SUCCESS,
   OPEN_CHANNEL,
-  INTENT_OPEN_CHANNELS
+  INTENT_OPEN_CHANNELS,
+  APPS_FEED_RESIZE
 } from '../constants';
 
 export const validatePermissionAction = (globalId: RendererConf[]) => {
@@ -57,6 +58,7 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
           case TOGGLE_APP_HOME:
           case SWITCH_DAPP:
           case ADD_APP_ITEM:
+          case APPS_FEED_RESIZE:
             return next(action);
           default:
             console.log("Cancelled for client");

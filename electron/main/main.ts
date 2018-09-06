@@ -51,10 +51,10 @@ const correctDappViewBounds = (storeState: any) => {
   if (view) {
     const windowBounds = clientWindow.getBounds();
     view.setBounds({
-      x: dappFrame.getXOffset(),
-      y: dappFrame.getYOffset(),
-      width: windowBounds.width - dappFrame.getWidthOffset(storeState),
-      height: windowBounds.height - dappFrame.getHeightOffset(storeState)
+      x: dappFrame.getX(),
+      y: dappFrame.getY(),
+      width: dappFrame.getWidth(storeState),
+      height: dappFrame.getHeight(storeState)
     });
   }
 };
@@ -75,9 +75,9 @@ app.on('ready', async () => {
 
   // let appManager = new AppsManager();
   await AppsManager.parseDapps();
- 
- 
- 
+
+
+
   // create multiple view and keep them around the memory, detached from the window
   // then switching workspaces is just and additional call to setBrowserView
   //const dappsIndexes: string[] = ['index.html', 'index2.html']; //todo pass AppsManager @instances
@@ -85,7 +85,6 @@ app.on('ready', async () => {
   for (dapp of AppsManager.dapps) {
     createDappView(globalUUIDList, dapp);
   }
- 
 
   const store: Store<{}> = configureStore({
     ...initialState,
@@ -94,7 +93,7 @@ app.on('ready', async () => {
 
   store.subscribe(() => {
     let storeState: any = store.getState();
-    
+
     process.stdout.write(JSON.stringify(storeState));
     if (storeState.client.isHome && storeState.client.activeDapp.id == 0) {
       clientWindow.setBrowserView(null);
@@ -104,18 +103,22 @@ app.on('ready', async () => {
       if (nameObj) {
         let view = nameObj.dappView;
         if (view) {
+          //correctDappViewBounds(storeState, true); // @todo solve first load problem - getting narrow long window on first load
           clientWindow.setBrowserView(view);
-          correctDappViewBounds(storeState);
         } else {
           clientWindow.setBrowserView(null);
           process.stdout.write('error: view is null');
         }
       }
     }
+
+    if (clientWindow.getBrowserView()) {
+      correctDappViewBounds(storeState);
+    }
   });
 
-  clientWindow.on('resize',(e: any) => correctDappViewBounds(store.getState()));
-  clientWindow.on('maximize',(e: any) => correctDappViewBounds(store.getState()));
-  clientWindow.on('restore',(e: any) => correctDappViewBounds(store.getState()));
+  //clientWindow.on('resize',(e: any) => correctDappViewBounds(store.getState()));
+  //clientWindow.on('maximize',(e: any) => correctDappViewBounds(store.getState()));
+  //clientWindow.on('restore',(e: any) => correctDappViewBounds(store.getState()));
 });
 process.stdout.write("Main initialized");
