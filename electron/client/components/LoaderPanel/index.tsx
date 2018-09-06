@@ -1,4 +1,5 @@
 import * as React from "react";
+import Dropzone from 'react-dropzone';
 import {Props as MenuProps, slide as Menu, State} from "react-burger-menu";
 import { IoIosDocument, IoMdFolderOpen, IoMdCloudUpload, IoMdMenu } from 'react-icons/io';
 interface LoaderPanelProps {
@@ -16,18 +17,14 @@ interface LoaderPanelState {
 export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelState> {
   constructor(props: LoaderPanelProps) {
     super(props)
-    this.onDragOver = this.onDragOver.bind(this);
+ 
     this.onDrop = this.onDrop.bind(this);
     this.switchTab = this.switchTab.bind(this);
     this.state = {activeTab: 'uploads'}
   }
 
-  private onDragOver(e: any): void {
-    console.log('onDragOver1');
-  }
-
-  private onDrop(e: any): void {
-    console.log('onDrop1');
+  private onDrop(files: any): void {
+    console.log(files);
   }
 
   private switchTab(tabName: string): void {
@@ -98,15 +95,16 @@ export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelSt
             </div>
 
             <div className={['tab-pane'].concat(uploadClass).join(' ')} id="uploads">
-              <div className="dragzone"
-                   onDragOver={(e)=>this.onDragOver(e)}
-                   onDrop={(e)=>this.onDrop(e)}>
+              
+
+              <Dropzone onDrop={this.onDrop}>Drag & drop Files Here to Upload</Dropzone>
+              {/* <div className="dragzone">
                 <div className="message">
                   <IoMdCloudUpload />
                   <strong>Drag & drop</strong>
-                  <span>Files Here to Upload</span>
+                  <span>Files Here to Upload</span> 
                 </div>
-              </div>
+              </div> */}
 
               <div className="notifications-name">
                 <span>Uploaded files</span>
