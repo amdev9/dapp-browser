@@ -50,29 +50,28 @@
               *
 ```
  
-The client is launched inside the sandboxed BrowserWindow *[1] *[3].  
+The client is launched inside the [sandboxed](https://slack.engineering/interops-labyrinth-sharing-code-between-web-electron-apps-f9474d62eccc) [BrowserWindow](https://slack.engineering/growing-pains-migrating-slacks-desktop-app-to-browserview-2759690d9c7b).  
 Dapps are launched inside the sandboxed BrowserView.
 
-Sandboxed BrowserView *[2] *[7]:
+[Sandboxed](https://electronjs.org/docs/api/sandbox-option) [BrowserView](https://github.com/electron/electron/blob/master/docs/api/browser-view.md):
 > It behaves more like a Chrome tab than the webview does
 It’s used more like a native window than a DOM element
 What we mean by that is — unlike the webview — you can’t drop a BrowserView into the DOM and manipulate it with CSS. 
 Similar to top-level windows, these views can only be created from the background Node process. 
 
-Each BrowserView process stores its own state in Redux and sets it up with a smart middleware called electron-redux *[5]:
+Each BrowserView process stores its own state in Redux and sets it up with a smart middleware called [electron-redux](https://github.com/hardchor/electron-redux):
 > It uses Electron’s IPC to bounce actions between processes, like so:
 If an action is dispatched in a renderer process, that renderer ignores it and forwards it to the main process
 If an action is dispatched in the main process, it is handled there first, then replayed in the renderers
 This makes the main process’ store the One True Store, and ensures that the others are eventually consistent. 
 With this strategy, there’s no need to shuttle state or get into the serialization game. 
 
-ARRAY solves the side-effects of the Redux asynchronous actions with redux-observable *[6]
+ARRAY solves the side-effects of the Redux asynchronous actions with [redux-observable]( https://github.com/redux-observable/redux-observable)
 > It becomes really powerful when combined with a Redux store in each process, 
 because now we can kickoff main process side-effects from a renderer and vice-versa, 
 in a decoupled way. It’s similar to an event bus or pub-sub, but across Chromium processes.
 
 -----------------------------------------------------------------------
-
 
 ARRAY stack: 
 - Electron.js (sandboxed BrowserWindow and BrowserViews, safe hardcoded list ipc communication channels)
@@ -83,16 +82,8 @@ ARRAY stack:
 
 Links:
 ------
- 
-[1] Path 2: Remote Isolation<br /> https://slack.engineering/interops-labyrinth-sharing-code-between-web-electron-apps-f9474d62eccc <br />
-[2] https://slack.engineering/growing-pains-migrating-slacks-desktop-app-to-browserview-2759690d9c7b <br />
-[3] Sandbox https://electronjs.org/docs/api/sandbox-option <br />
-[4] BrowserWindow sandbox boilerplates https://github.com/kewde/electron-sandbox-boilerplate <br />
-[5] Electron-redux https://github.com/hardchor/electron-redux <br />
-[6] Redux-observable https://github.com/redux-observable/redux-observable<br />
-[7] Same webPreferences with sandbox option like BrowserWindow has: <br />https://github.com/electron/electron/blob/master/docs/api/browser-view.md<br />
 
-Other helpfull links:
+- BrowserWindow sandbox boilerplates https://github.com/kewde/electron-sandbox-boilerplate <br />
 - Reducing desktop app memory footprint: https://slack.engineering/reducing-slacks-memory-footprint-4480fec7e8eb 
 
 
