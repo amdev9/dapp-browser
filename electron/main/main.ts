@@ -28,8 +28,7 @@ require('electron-context-menu')({
 
 const globalUUIDList: RendererConf[] = [];
 let clientWindow: Electron.BrowserWindow = null;
-let permissionWindow: Electron.BrowserWindow = null;
-
+ 
 
 
 if (process.env.ELECTRON_ENV === 'development') {
@@ -86,12 +85,7 @@ app.on('ready', async () => {
   //const dappsIndexes: string[] = ['index.html', 'index2.html']; //todo pass AppsManager @instances
   let dapp: AppItem;
   for (dapp of AppsManager.dapps) {
-    createDappView(globalUUIDList, dapp);
-
-    console.log('spawn ', dapp);
-    permissionWindow = createPermissionWindow(clientWindow, dapp.permissions);
-    //
-    
+    createDappView(globalUUIDList, dapp);    
   }
  
 
@@ -113,6 +107,12 @@ app.on('ready', async () => {
         let view = nameObj.dappView;
         if (view) {
           clientWindow.setBrowserView(view);
+
+          //
+          let targetDappObj: AppItem = AppsManager.dapps.find(dappObj => dappObj.appName == nameObj.name);
+          createPermissionWindow(clientWindow, targetDappObj.permissions);
+          //
+
           correctDappViewBounds(storeState);
         } else {
           clientWindow.setBrowserView(null);
