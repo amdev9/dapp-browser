@@ -45,6 +45,7 @@ export class AppsFeed extends React.Component<AppsFeedProps> {
   }
 
   componentDidMount() {
+    this.resize();
     window.addEventListener('resize', this.resize)
   }
 

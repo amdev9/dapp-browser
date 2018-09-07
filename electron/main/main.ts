@@ -117,7 +117,6 @@ const correctDappViewBounds = (storeState: any) => {
 
   const view = clientWindow.getBrowserView();
   if (view) {
-    const windowBounds = clientWindow.getBounds();
     view.setBounds({
       x: dappFrame.getX(),
       y: dappFrame.getY(),
