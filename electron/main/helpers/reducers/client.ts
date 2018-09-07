@@ -11,7 +11,7 @@ const initialState: Client = {
   notification: {isOpen: false},
   loader: {isOpen: false},
   statusBar: {isOpen: false},
-  feedSize: {width: 0, height: 0}
+  window: {width: 0, height: 0}
 }
 
 export function client(state: Client = initialState, action: clients.TrayAction) {
@@ -61,7 +61,7 @@ export function client(state: Client = initialState, action: clients.TrayAction)
       };
 
     case clients.APPS_FEED_RESIZE:
-      return { ...state, feedSize: action.payload };
+      return { ...state, window: action.payload };
 
     default:
       return state;

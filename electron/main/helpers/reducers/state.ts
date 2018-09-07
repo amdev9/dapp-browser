@@ -16,7 +16,7 @@ export type Client = {
   loader: {
     isOpen: boolean
   },
-  feedSize: {
+  window: {
     width: number,
     height: number
   }

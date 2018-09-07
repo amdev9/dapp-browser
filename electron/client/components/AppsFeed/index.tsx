@@ -9,19 +9,16 @@ interface AppsFeedProps {
 }
 
 export class AppsFeed extends React.Component<AppsFeedProps> {
-  private feedsContainer: React.RefObject<HTMLDivElement>;
 
   constructor(props: AppsFeedProps) {
     super(props);
 
     this.resize = this.resize.bind(this);
-    this.feedsContainer = React.createRef();
     this.state = {activeTab: 'uploads'}
   }
 
   private resize() {
-    const current = this.feedsContainer.current;
-    this.props.resizeAppsFeed(current.offsetWidth, current.offsetHeight);
+    this.props.resizeAppsFeed(window.innerWidth, window.innerHeight);
   }
 
   public render() {
@@ -31,7 +28,7 @@ export class AppsFeed extends React.Component<AppsFeedProps> {
     ));
 
     return (
-      <div className="feeds" ref={this.feedsContainer}>
+      <div className="feeds">
         <div className="header">
           <div className="title">
             Your apps

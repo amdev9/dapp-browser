@@ -35,7 +35,7 @@ export const initialState: IState = {
     notification: {isOpen: false},
     loader: {isOpen: false},
     statusBar: {isOpen: false},
-    feedSize: {width: 0, height: 0}
+    window: {width: 0, height: 0}
   },
   feed: {}
 };
