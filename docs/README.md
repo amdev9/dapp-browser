@@ -89,9 +89,9 @@ Links:
 
 ## Client front-end  
 
-The main reason to use Redux-Observable / RxJs is the fact that it allows to halt the process at any time (unlike the 'Promise ignore' way which causes **CPU overhead**)
+The main reason to use Redux-Observable / RxJs is that it allows to halt the process at any time (unlike the 'Promise ignore' way which causes **CPU overhead**)
 
-*A lot of people compare RxJS with promises and callbacks that can be chained together. You can compare them in a way but with the enormous difference* **promises/callbacks are unstoppable. Once a promise is triggered there is no way to stop them. Once fired they WILL end and call their callback method, if you want it or not, either in a successful way or in an error. Observables though are stoppable and can be called to a halt in the middle of its process.** 
+*Many people compare RxJS with promises and callbacks that can be chained together. They could be compared to a certain extent but they have numerous differences, at the same time* **promises/callbacks are unstoppable. Once a promise is triggered, there is no way to stop it. Once it is fired, is WILL inevitably end and call the callback method. It happens whether you want it or not either successfully or in an error. Unlike promises/callbacks, observables are stoppable and can be called to a halt DURING any process.** 
 
 ## External references
 
@@ -100,7 +100,7 @@ The main reason to use Redux-Observable / RxJs is the fact that it allows to hal
 ## Next releases improvements
 
 Dynamic permission mechanizm<br />
-*If we change permissions on the fly. In this case, if the application is running, it is necessary to "load" the new permissions and, accordingly, the channels.*
+*In case we change permissions on the fly, if the application is running, it is necessary to "load" the new permissions and, accordingly, the channels.*
 Start-stop channels: https://github.com/MichaelVasseur/electron-ipc-bus
 
 ## Events action signals
