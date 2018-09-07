@@ -28,7 +28,7 @@ require('electron-context-menu')({
 
 const globalUUIDList: RendererConf[] = [];
 let clientWindow: Electron.BrowserWindow = null;
- 
+
 
 
 if (process.env.ELECTRON_ENV === 'development') {
@@ -41,7 +41,6 @@ app.on('window-all-closed', () => {
     app.quit();
   }
 });
-
 
 app.on('ready', async () => {
 
@@ -57,20 +56,20 @@ app.on('ready', async () => {
   clientWindow = createClientWindow(globalUUIDList);
 
 
-
   // let appManager = new AppsManager();
   await AppsManager.parseDapps();
- 
- 
- 
+
+
+
   // create multiple view and keep them around the memory, detached from the window
   // then switching workspaces is just and additional call to setBrowserView
   //const dappsIndexes: string[] = ['index.html', 'index2.html']; //todo pass AppsManager @instances
   // let dapp: AppItem;
   // for (dapp of AppsManager.dapps) {
-  //   createDappView(globalUUIDList, dapp);    
+  //   createDappView(globalUUIDList, dapp);
   // }
- 
+
+
   const store: Store<{}> = configureStore({
     ...initialState,
     feed: {items: AppsManager.dapps}
@@ -78,36 +77,37 @@ app.on('ready', async () => {
 
   store.subscribe(() => {
     let storeState: any = store.getState();
-    
+
     process.stdout.write(JSON.stringify(storeState));
-    if (storeState.client.isHome ) { // && storeState.client.activeDapp.id == 0
+    if (storeState.client.isHome) { // && storeState.client.activeDapp.id == 0
       clientWindow.setBrowserView(null);
     } else {
       let activeDappName: string = storeState.client.activeDapp.appName;
+
       let targetDappObj: AppItem = AppsManager.dapps.find(dappObj => dappObj.appName == activeDappName);
       createPermissionWindow(clientWindow, targetDappObj.permissions);
 
       //@todo create on permissions granted
-      createDappView(globalUUIDList, targetDappObj);    
+      createDappView(globalUUIDList, targetDappObj);
       let nameObj: RendererConf = globalUUIDList.find(renObj => renObj.name === activeDappName);
       if (nameObj) {
         let view = nameObj.dappView;
         if (view) {
           clientWindow.setBrowserView(view);
-          correctDappViewBounds(storeState);
         } else {
           clientWindow.setBrowserView(null);
           process.stdout.write('error: view is null');
         }
       }
     }
+
+    correctDappViewBounds(storeState);
   });
 
-  clientWindow.on('resize',(e: any) => correctDappViewBounds(store.getState()));
-  clientWindow.on('maximize',(e: any) => correctDappViewBounds(store.getState()));
-  clientWindow.on('restore',(e: any) => correctDappViewBounds(store.getState()));
+  //clientWindow.on('resize',(e: any) => correctDappViewBounds(store.getState()));
+  //clientWindow.on('maximize',(e: any) => correctDappViewBounds(store.getState()));
+  //clientWindow.on('restore',(e: any) => correctDappViewBounds(store.getState()));
 });
-
 
 const correctDappViewBounds = (storeState: any) => {
   if (!clientWindow) {
@@ -119,10 +119,10 @@ const correctDappViewBounds = (storeState: any) => {
   if (view) {
     const windowBounds = clientWindow.getBounds();
     view.setBounds({
-      x: dappFrame.getXOffset(),
-      y: dappFrame.getYOffset(),
-      width: windowBounds.width - dappFrame.getWidthOffset(storeState),
-      height: windowBounds.height - dappFrame.getHeightOffset(storeState)
+      x: dappFrame.getX(),
+      y: dappFrame.getY(),
+      width: dappFrame.getWidth(storeState),
+      height: dappFrame.getHeight(storeState)
     });
   }
 };

@@ -6,6 +6,7 @@ import * as NotificationActions from '../redux/actions/notification';
 import * as LoaderActions from '../redux/actions/loader';
 import * as TrayActions from '../redux/actions/tray';
 import * as StatusBarActions from '../redux/actions/status-bar';
+import * as AppsFeedActions  from "../redux/actions/appsFeed";
 import { AppItem, NotifyItem, StatusBarItem, FeedItem } from '../redux/model';
 import { HeaderBar } from './HeaderBar'
 import { NotificationPanel } from "./NotificationPanel"
@@ -35,6 +36,7 @@ interface AppProps {
   onAddAppItem: (appItem?: AppItem) => any,
   onSwitchDapp: (targetDappId?: number, targetDappName?: string) => any,
   onToggleAppHome: (dappName: string) => any,
+  onResizeAppsFeed: (width: number, height: number) => any,
 }
 
 class App extends React.Component<AppProps> {
@@ -42,7 +44,7 @@ class App extends React.Component<AppProps> {
     const {
       onTogglePanel, openNotificationPanel, openStatusBarPanel, clearNotification, clearAllNotifications,
       onAddAppItem, onSwitchDapp, onToggleHome, statusBarToggle, onToggleAppHome,
-      trayItems, feedItems, notifyItems, statusBarItems, onToggleLoaderPanel, openLoaderPanel,
+      trayItems, feedItems, notifyItems, statusBarItems, onToggleLoaderPanel, openLoaderPanel, onResizeAppsFeed
     } = this.props;
 
 
@@ -70,7 +72,7 @@ class App extends React.Component<AppProps> {
             {/* <main className="page-container"> */}
               <Tray items={trayItems} toggleSwitch={onSwitchDapp} toggleStatusBar={statusBarToggle} statusBarIsOpen={openStatusBarPanel}/>
 
-              <AppsFeed items={feedItems} toggleAppHome={onToggleAppHome}/>
+              <AppsFeed items={feedItems} toggleAppHome={onToggleAppHome} resizeAppsFeed={onResizeAppsFeed}/>
               {/*  */}
 
             {/* </main> */}
@@ -104,7 +106,8 @@ const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
   onAddAppItem: TrayActions.addAppItem,
   onSwitchDapp: TrayActions.switchDapp,
   onToggleHome: TrayActions.toggleHome,
-  onToggleAppHome: TrayActions.toggleAppHome
+  onToggleAppHome: TrayActions.toggleAppHome,
+  onResizeAppsFeed: AppsFeedActions.resize,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
