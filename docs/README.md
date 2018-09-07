@@ -70,7 +70,8 @@ ARRAY solves the side-effects of the Redux asynchronous actions with redux-obs
 > It becomes really powerful when combined with a Redux store in each process, 
 because now we can kickoff main process side-effects from a renderer and vice-versa, 
 in a decoupled way. It’s similar to an event bus or pub-sub, but across Chromium processes.
-                    -----------------------------------------------------------------------
+
+-----------------------------------------------------------------------
 
 
 ARRAY stack: 
