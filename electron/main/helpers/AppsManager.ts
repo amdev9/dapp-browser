@@ -55,7 +55,7 @@ export class AppsManager {
   permissions: any[];
 
   static getAppItem(appName: string) {
-    console.log('_dapps', _dapps, appName);
+    // console.log('_dapps', _dapps, appName);
     const targetDapp = _dapps.find((item: AppItem) => item.appName == appName);
     const randomKey = Math.floor(Math.random() * 1000);
 
@@ -83,7 +83,7 @@ export class AppsManager {
         try {
           const fileContent = await readFile(path.join(DAPPS_PATH, file, 'manifest.json'));
           const itemWithResolvedPath = AppsManager.resolvePath(JSON.parse(fileContent));
-          console.log(itemWithResolvedPath);
+          // console.log(itemWithResolvedPath);
           AppsManager.dapps.push(itemWithResolvedPath); //@todo 1 add icon resolver
      
         } catch (err) {

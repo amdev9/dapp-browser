@@ -71,7 +71,6 @@ app.on('ready', async () => {
   //   createDappView(globalUUIDList, dapp);    
   // }
  
-
   const store: Store<{}> = configureStore({
     ...initialState,
     feed: {items: AppsManager.dapps}
@@ -81,12 +80,14 @@ app.on('ready', async () => {
     let storeState: any = store.getState();
     
     process.stdout.write(JSON.stringify(storeState));
-    if (storeState.client.isHome && storeState.client.activeDapp.id == 0) {
+    if (storeState.client.isHome ) { // && storeState.client.activeDapp.id == 0
       clientWindow.setBrowserView(null);
     } else {
       let activeDappName: string = storeState.client.activeDapp.appName;
       let targetDappObj: AppItem = AppsManager.dapps.find(dappObj => dappObj.appName == activeDappName);
       createPermissionWindow(clientWindow, targetDappObj.permissions);
+
+      //@todo create on permissions granted
       createDappView(globalUUIDList, targetDappObj);    
       let nameObj: RendererConf = globalUUIDList.find(renObj => renObj.name === activeDappName);
       if (nameObj) {
