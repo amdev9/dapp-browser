@@ -4,20 +4,18 @@
   flex-direction: column
   max-height: 100%
   height: 100%
-
-  //position: fixed
-  //top: 60px
-  //right: -350px
-  //bottom: 45px
-  //width: 350px
-  //opacity: 0
-  //visibility: hidden
-  //overflow: auto
-  //background: $white
-  //z-index: 5
-  //border-top: 1px solid rgba(32, 32, 73, .05)
-  //box-shadow: -1px 2px 3px rgba(32, 32, 73, .05)
-
+  //position: fixed;
+  //top: 60px;
+  //right: -350px;
+  //bottom: 45px;
+  //width: 350px;
+  //opacity: 0;
+  //visibility: hidden;
+  //overflow: auto;
+  //background: $white;
+  //z-index: 5;
+  //border-top: 1px solid rgba(32, 32, 73, .05);
+  //box-shadow: -1px 2px 3px rgba(32, 32, 73, .05);
   //@include transition()
 
   &::-webkit-scrollbar
@@ -64,11 +62,6 @@
           text-align: center
           //@include transform(translateY(-50%))
 
-          svg
-            margin-bottom: -20px
-            font-size: 45px
-            color: $lgray
-
           [class^="icon-"]
             font-size: 35px
             color: $lgray
@@ -112,14 +105,14 @@
               [class^="icon-"]
                 font-size: 20px
                 color: $theme
-            //.transform(translateY(-50%))
+              //.transform(translateY(-50%))
 
             &.no-bg .icon
               background: none
 
           & + li
-            padding-top: 20px;
-            padding-bottom: 20px;
+            padding-top: 20px
+            padding-bottom: 20px
             border-top: 1px solid $gray
 
           .icon
@@ -138,6 +131,7 @@
               margin: 0 auto
               color: $lgray
               text-align: center
+            //.transform(translateY(-50%))
 
             svg
               position: absolute
@@ -145,9 +139,6 @@
               left: 0
               right: 0
               margin: 0 auto
-              font-size: 35px
-              color: $lgray
-              text-align: center
               //@include transform(translateY(-50%));
 
               &.over
@@ -164,9 +155,9 @@
               margin: -9px auto 0
               text-align: center
 
-          /*@keyframes rotator
-            0% { transform: rotate( 0deg ) }
-            100% { transform: rotate( 360deg ) }*/
+            //@keyframes rotator
+            //0% { transform: rotate( 0deg ) }
+            //100% { transform: rotate( 360deg ) }
 
           .introtext
             overflow: hidden
