@@ -1,6 +1,14 @@
-import * as clients from '../actions/client';
+import {
+  SWITCH_DAPP,
+  TOGGLE_HOME,
+  TOGGLE_NOTIFICATION_PANEL,
+  TOGGLE_LOADER_PANEL,
+  TOGGLE_STATUS_BAR_PANEL,
+  TOGGLE_APP_HOME,
+  APPS_FEED_RESIZE
+} from '../constants';
+import { TrayAction } from '../actions/client';
 import { Client } from './state';
-
 
 const initialState: Client = {
   activeDapp: {
@@ -14,9 +22,9 @@ const initialState: Client = {
   window: {width: 0, height: 0}
 }
 
-export function client(state: Client = initialState, action: clients.TrayAction) {
+export function client(state: Client = initialState, action: TrayAction) {
   switch (action.type) {
-    case clients.SWITCH_DAPP:
+    case SWITCH_DAPP:
       const dappId = action.payload.targetDappId;
       const dappName = action.payload.targetDappName;
       return {
@@ -25,7 +33,7 @@ export function client(state: Client = initialState, action: clients.TrayAction)
         isHome: false
       }
 
-    case clients.TOGGLE_HOME:
+    case TOGGLE_HOME:
       const isHome = action.payload.isHome;
       return {
         ...state,
@@ -36,7 +44,17 @@ export function client(state: Client = initialState, action: clients.TrayAction)
         }
       };
 
-    case clients.TOGGLE_NOTIFICATION_PANEL:
+    case TOGGLE_APP_HOME:
+      return {
+        ...state,
+        isHome: false,
+        activeDapp: {
+          dappId: 1,
+          appName: action.payload.targetDappName
+        }
+      }
+
+    case TOGGLE_NOTIFICATION_PANEL:
       return {
         ...state,
         notification: {
@@ -44,7 +62,7 @@ export function client(state: Client = initialState, action: clients.TrayAction)
         }
       };
 
-    case clients.TOGGLE_LOADER_PANEL:
+    case TOGGLE_LOADER_PANEL:
       return {
         ...state,
         loader: {
@@ -52,7 +70,7 @@ export function client(state: Client = initialState, action: clients.TrayAction)
         }
       };
 
-    case clients.TOGGLE_STATUS_BAR_PANEL:
+    case TOGGLE_STATUS_BAR_PANEL:
       return {
         ...state,
         statusBar: {
@@ -60,7 +78,7 @@ export function client(state: Client = initialState, action: clients.TrayAction)
         }
       };
 
-    case clients.APPS_FEED_RESIZE:
+    case APPS_FEED_RESIZE:
       return { ...state, window: action.payload };
 
     default:

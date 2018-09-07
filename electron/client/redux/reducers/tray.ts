@@ -87,8 +87,14 @@ export default function tray(state: Tray = initialState, action: TrayAction) {
       };
     
     case TOGGLE_APP_HOME:
-      return state;
-    
+      return {
+        ...state,
+        isHome: false, 
+        activeDapp: { 
+          appName: action.payload.dappName 
+        }
+      }
+
     default:
       return state;
   }

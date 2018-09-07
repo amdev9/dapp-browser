@@ -45,6 +45,9 @@ ipfs.on('ready', async () => {
   console.log('Version:', version.version);
   
   /* upload file with progress */
+  // Dapp redux store disaptches INTENT_CHANNEL_DATA_PASS(IPFS)
+  // Main process orchestrate and accept data passing ACCEPT_CHANNEL_DATA_PASS(CHANNEL_ID)
+  //@todo pass payload with username, get back handler info
   var rstream = fs.createReadStream('uploadFile.ts'); 
   const files = [
     {
@@ -64,6 +67,8 @@ ipfs.on('ready', async () => {
 
  
   /* download file with progress */
+  //@todo pass payload with cid, local file name, 
+  // get back handler info about uploaded chunks
   const validCID = 'QmbV8Uedt7ZrwePTQjQADHJ84ifVicaKhTZJVqVBJDmydp';
   const stream = ipfs.files.getReadableStream(validCID);
   var wstream = fs.createWriteStream('myFile.vbox-extpack');

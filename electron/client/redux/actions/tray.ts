@@ -31,5 +31,5 @@ export const toggleHome = (openStatus: boolean):
 
 export const toggleAppHome = (dappName: string): 
   TrayAction => action(TOGGLE_APP_HOME, { 
-    dappName: dappName
+    targetDappName: dappName
   });

@@ -7,5 +7,6 @@
   "preview": "app/images/thumb.png",
   "categories": [
     "games"
-  ]
+  ],
+  "permissions": ["ipfs"]
 }
