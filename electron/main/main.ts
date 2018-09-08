@@ -54,21 +54,7 @@ app.on('ready', async () => {
     clientWindow = createClientWindow(globalUUIDList);
   });
   clientWindow = createClientWindow(globalUUIDList);
-
-
-  // let appManager = new AppsManager();
   await AppsManager.parseDapps();
-
-
-
-  // create multiple view and keep them around the memory, detached from the window
-  // then switching workspaces is just and additional call to setBrowserView
-  //const dappsIndexes: string[] = ['index.html', 'index2.html']; //todo pass AppsManager @instances
-  // let dapp: AppItem;
-  // for (dapp of AppsManager.dapps) {
-  //   createDappView(globalUUIDList, dapp);
-  // }
-
 
   const store: Store<{}> = configureStore({
     ...initialState,
@@ -85,7 +71,7 @@ app.on('ready', async () => {
       let activeDappName: string = storeState.client.activeDapp.appName;
 
       let targetDappObj: AppItem = AppsManager.dapps.find(dappObj => dappObj.appName == activeDappName);
-      createPermissionWindow(clientWindow, targetDappObj.permissions);
+      // createPermissionWindow(clientWindow, targetDappObj.permissions);
 
       //@todo create on permissions granted
       createDappView(globalUUIDList, targetDappObj);
@@ -100,13 +86,8 @@ app.on('ready', async () => {
         }
       }
     }
-
     correctDappViewBounds(storeState);
   });
-
-  //clientWindow.on('resize',(e: any) => correctDappViewBounds(store.getState()));
-  //clientWindow.on('maximize',(e: any) => correctDappViewBounds(store.getState()));
-  //clientWindow.on('restore',(e: any) => correctDappViewBounds(store.getState()));
 });
 
 const correctDappViewBounds = (storeState: any) => {

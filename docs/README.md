@@ -1,11 +1,12 @@
 <p align="center">
-    <img src="logo.png" height="250px" width="250px" /> 
+  <img src="logo.png" height="250px" width="250px" /> 
 </p>
 
 # Client documentation
 
 - [Architecture](#architecture)
-- [Client front-end](#client-front-end)
+  - [Infrastructure description](#infrastructure-description)
+  - [Client front-end](#client-front-end)
   - [Events action signals](#events-action-signals)
   - [UUID store resolver](#uuid-store-resolver)
   - [Redux middleware for permission check](#redux-middleware-for-permission-check)
@@ -29,11 +30,9 @@
   - [array.Keychain](#arraykeychain)
 
 
-
 # Architecture  
 
 ## Infrastructure description
-
 
 ```
    [sandbox - BrowserWindow]
@@ -51,7 +50,7 @@
 ```
  
 The client is launched inside the [sandboxed](https://slack.engineering/interops-labyrinth-sharing-code-between-web-electron-apps-f9474d62eccc) [BrowserWindow](https://slack.engineering/growing-pains-migrating-slacks-desktop-app-to-browserview-2759690d9c7b).  
-Dapps are launched inside the sandboxed BrowserView.
+Dapps are launched inside the sandboxed BrowserView. On first launch of each dapp we create browserView for it. So, at some point, we have multiple view's, when multiple dapp is running and we keep them around the memory, detached from the BrowserWindow, then switching workspaces is just and additional call to setBrowserView.
 
 [Sandboxed](https://electronjs.org/docs/api/sandbox-option) [BrowserView](https://github.com/electron/electron/blob/master/docs/api/browser-view.md):
 > It behaves more like a Chrome tab than the webview does
