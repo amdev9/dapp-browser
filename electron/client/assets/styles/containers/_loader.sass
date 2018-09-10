@@ -1,24 +1,18 @@
+.row
+  display: -webkit-box
+  display: -ms-flexbox
+  display: flex
+  -ms-flex-wrap: wrap
+  flex-wrap: wrap
+  margin-right: -15px
+  margin-left: -15px
+
 .loader-popup
   display: flex !important // Override overlay style
   background-color: #ffffff
   flex-direction: column
   max-height: 100%
   height: 100%
-
-  //position: fixed
-  //top: 60px
-  //right: -350px
-  //bottom: 45px
-  //width: 350px
-  //opacity: 0
-  //visibility: hidden
-  //overflow: auto
-  //background: $white
-  //z-index: 5
-  //border-top: 1px solid rgba(32, 32, 73, .05)
-  //box-shadow: -1px 2px 3px rgba(32, 32, 73, .05)
-
-  //@include transition()
 
   &::-webkit-scrollbar
     width: 0
@@ -28,7 +22,24 @@
     right: 0
     visibility: visible
 
+  .nav-justified .nav-item
+    -ms-flex-preferred-size: 0
+    flex-basis: 0
+    -webkit-box-flex: 1
+    -ms-flex-positive: 1
+    flex-grow: 1
+    text-align: center
+
   .nav
+    display: -webkit-box
+    display: -ms-flexbox
+    display: flex
+    -ms-flex-wrap: wrap
+    flex-wrap: wrap
+    padding-left: 0
+    margin-bottom: 0
+    margin-top: 0
+    list-style: none
     &-link
       font: 600 20px $font-montserrat !important
       color: $dgray
@@ -36,18 +47,35 @@
       padding: 20px 10px
       border-radius: 0
       background: $gray
+      text-decoration: none
+      display: block
 
       &.active
-        color: $theme
+        color: $theme !important
+        background-color: #fff
 
   .tab
+    &-content
+      .active
+        display: block
+
     &-pane
+      display: none
       padding: 15px
 
-      .notifications-name
+      .uploaded-name
         display: block
         margin: 0 -15px 15px
         padding: 7px 15px
+        background: #F2F3F6
+
+        span
+          display: table-cell
+          width: 100%
+          vertical-align: middle
+          font: 600 12px 'Montserrat', sans-serif
+          color: #7B8DA7
+          text-transform: uppercase
 
       .dragzone
         position: relative
@@ -62,7 +90,6 @@
           left: 0
           right: 0
           text-align: center
-          //@include transform(translateY(-50%))
 
           svg
             margin-bottom: -20px
@@ -84,14 +111,8 @@
           span
             font-size: 14px
 
-        &.dragover:after
-          position: absolute
-          content: ''
-          top: 0
-          left: 0
-          right: 0
-          bottom: 0
-          background: fade($theme, 30%)
+      .dragover
+        background-color: $dgray
 
       ul
         display: block
@@ -112,14 +133,13 @@
               [class^="icon-"]
                 font-size: 20px
                 color: $theme
-            //.transform(translateY(-50%))
 
             &.no-bg .icon
               background: none
 
           & + li
-            padding-top: 20px;
-            padding-bottom: 20px;
+            padding-top: 20px
+            padding-bottom: 20px
             border-top: 1px solid $gray
 
           .icon
@@ -145,10 +165,6 @@
               left: 0
               right: 0
               margin: 0 auto
-              font-size: 35px
-              color: $lgray
-              text-align: center
-              //@include transform(translateY(-50%));
 
               &.over
                 margin: -25px auto 0
@@ -158,15 +174,15 @@
               position: absolute
               font: 500 12px $font-opensans
               color: $lgray
-              top: 50%
+              top: 40%
               left: 0
               right: 0
               margin: -9px auto 0
               text-align: center
 
-          /*@keyframes rotator
-            0% { transform: rotate( 0deg ) }
-            100% { transform: rotate( 360deg ) }*/
+            //@keyframes rotator
+            //0% { transform: rotate( 0deg ) }
+            //100% { transform: rotate( 360deg ) }
 
           .introtext
             overflow: hidden
@@ -224,7 +240,6 @@
       border: 0
       background: none
       color: $lgray
-      //@include transition(color)
 
       [class^="icon-"]
         &:before
@@ -254,7 +269,6 @@
       color: $lgray
       margin: -4px 0 0
       background: none
-      //@include transition(color)
 
       &:hover
         color: $dgray
