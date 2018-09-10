@@ -18,6 +18,7 @@
   - [OrbitDb](#orbitdb)
   - [Logger](#logger)
   - [Keychain](#keychain)
+  - [Network](#network)
 - [Array library documentation](#array-library-documentation)
   - [array.dapp](#arraydapp)
   - [array.dapp.subscribe](#arraydappsubscribe)
@@ -28,6 +29,7 @@
   - [array.OrbitDb](#arrayorbitdb)
   - [array.Logger](#arraylogger)
   - [array.Keychain](#arraykeychain)
+  - [array.Network](#arraynetwork)
 
 
 # Architecture  
