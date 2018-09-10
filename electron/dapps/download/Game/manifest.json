@@ -8,5 +8,6 @@
   "categories": [
     "games",
     "tools"
-  ]
+  ],
+  "permissions": ["storage", "logger", "ipfs"]
 }

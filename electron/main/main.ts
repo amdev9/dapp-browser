@@ -10,6 +10,7 @@ import { configureStore, initialState } from './helpers/store/configureStore';
 import { AppsManager, AppItem } from './helpers/AppsManager';
 import dappFrame from './helpers/dappFrame';
 import { createClientWindow } from './createClientWindow';
+import { createPermissionWindow } from './permissionManager/createPermissionWindow';
 import { createDappView } from './createDappView';
 import { RendererConf } from './createDappView';
 
@@ -41,24 +42,6 @@ app.on('window-all-closed', () => {
   }
 });
 
-const correctDappViewBounds = (storeState: any) => {
-  if (!clientWindow) {
-    console.log('Trying to send bounds of Dapp View while its parent window has not been initialized');
-    return;
-  }
-
-  const view = clientWindow.getBrowserView();
-  if (view) {
-    const windowBounds = clientWindow.getBounds();
-    view.setBounds({
-      x: dappFrame.getXOffset(),
-      y: dappFrame.getYOffset(),
-      width: windowBounds.width - dappFrame.getWidthOffset(storeState),
-      height: windowBounds.height - dappFrame.getHeightOffset(storeState)
-    });
-  }
-};
-
 app.on('ready', async () => {
 
   if (process.env.ELECTRON_ENV === 'development') {
@@ -71,21 +54,7 @@ app.on('ready', async () => {
     clientWindow = createClientWindow(globalUUIDList);
   });
   clientWindow = createClientWindow(globalUUIDList);
-
-
-  // let appManager = new AppsManager();
   await AppsManager.parseDapps();
- 
- 
- 
-  // create multiple view and keep them around the memory, detached from the window
-  // then switching workspaces is just and additional call to setBrowserView
-  //const dappsIndexes: string[] = ['index.html', 'index2.html']; //todo pass AppsManager @instances
-  let dapp: AppItem;
-  for (dapp of AppsManager.dapps) {
-    createDappView(globalUUIDList, dapp);
-  }
- 
 
   const store: Store<{}> = configureStore({
     ...initialState,
@@ -94,28 +63,48 @@ app.on('ready', async () => {
 
   store.subscribe(() => {
     let storeState: any = store.getState();
-    
+
     process.stdout.write(JSON.stringify(storeState));
-    if (storeState.client.isHome && storeState.client.activeDapp.id == 0) {
+    if (storeState.client.isHome) { // && storeState.client.activeDapp.id == 0
       clientWindow.setBrowserView(null);
     } else {
       let activeDappName: string = storeState.client.activeDapp.appName;
+
+      let targetDappObj: AppItem = AppsManager.dapps.find(dappObj => dappObj.appName == activeDappName);
+      // createPermissionWindow(clientWindow, targetDappObj.permissions);
+
+      //@todo create on permissions granted
+      createDappView(globalUUIDList, targetDappObj);
       let nameObj: RendererConf = globalUUIDList.find(renObj => renObj.name === activeDappName);
       if (nameObj) {
         let view = nameObj.dappView;
         if (view) {
           clientWindow.setBrowserView(view);
-          correctDappViewBounds(storeState);
         } else {
           clientWindow.setBrowserView(null);
           process.stdout.write('error: view is null');
         }
       }
     }
+    correctDappViewBounds(storeState);
   });
-
-  clientWindow.on('resize',(e: any) => correctDappViewBounds(store.getState()));
-  clientWindow.on('maximize',(e: any) => correctDappViewBounds(store.getState()));
-  clientWindow.on('restore',(e: any) => correctDappViewBounds(store.getState()));
 });
+
+const correctDappViewBounds = (storeState: any) => {
+  if (!clientWindow) {
+    console.log('Trying to send bounds of Dapp View while its parent window has not been initialized');
+    return;
+  }
+
+  const view = clientWindow.getBrowserView();
+  if (view) {
+    view.setBounds({
+      x: dappFrame.getX(),
+      y: dappFrame.getY(),
+      width: dappFrame.getWidth(storeState),
+      height: dappFrame.getHeight(storeState)
+    });
+  }
+};
+
 process.stdout.write("Main initialized");

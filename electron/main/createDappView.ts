@@ -2,9 +2,9 @@ import { BrowserView } from 'electron';
 import * as path from 'path';
 import * as uuidv4 from 'uuid/v4';
 import { AppItem } from './helpers/AppsManager';
- 
+
 let dappView: Electron.BrowserView = null;
- 
+
 const DAPPS_PATH: string = path.join(__dirname, '..', '..', 'dapps', 'download');
 
 export type ChannelsConf = Array<string>;
@@ -15,7 +15,7 @@ export interface RendererConf {
   name: string;
   status: string;
   winId: number;
-  dappView?: BrowserView, 
+  dappView?: BrowserView,
   intent?: string;
   binded?: BindedListConf
 }
@@ -27,7 +27,7 @@ export function createDappView(globalUUIDList: RendererConf[], dapp: AppItem) { 
   let webPrefObj = {
     nodeIntegration: false,
     preload: path.join(__dirname, '..', 'preload.js'),
-    additionalArguments: [ 
+    additionalArguments: [
       '--uuid-renderer='.concat(uuidDapp),
       '--channels='.concat(authorizedChannelsList.join(";"))
     ]
@@ -40,12 +40,12 @@ export function createDappView(globalUUIDList: RendererConf[], dapp: AppItem) { 
   dappView = new BrowserView({
     webPreferences: webPrefObj
   });
-  
-  console.log('entry: ', path.join(DAPPS_PATH, dapp.appName, dapp.main));
+
+  // console.log('entry: ', path.join(DAPPS_PATH, dapp.appName, dapp.main));
 
   dappView.webContents.loadURL('file://' + path.join(DAPPS_PATH, dapp.appName, dapp.main)); //todo pass @param path to index.html
 
-  const renderIdDapp = dappView.webContents.getProcessId(); 
+  const renderIdDapp = dappView.webContents.getProcessId();
 
   let rendererObj: RendererConf = {
     id: uuidDapp,

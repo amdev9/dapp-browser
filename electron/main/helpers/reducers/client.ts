@@ -1,6 +1,14 @@
-import * as clients from '../actions/client';
+import {
+  SWITCH_DAPP,
+  TOGGLE_HOME,
+  TOGGLE_NOTIFICATION_PANEL,
+  TOGGLE_LOADER_PANEL,
+  TOGGLE_STATUS_BAR_PANEL,
+  TOGGLE_APP_HOME,
+  APPS_FEED_RESIZE
+} from '../constants';
+import { TrayAction } from '../actions/client';
 import { Client } from './state';
- 
 
 const initialState: Client = {
   activeDapp: {
@@ -10,54 +18,68 @@ const initialState: Client = {
   isHome: true,
   notification: {isOpen: false},
   loader: {isOpen: false},
-  statusBar: {isOpen: false}
+  statusBar: {isOpen: false},
+  window: {width: 0, height: 0}
 }
 
-export function client(state: Client = initialState, action: clients.TrayAction) {
+export function client(state: Client = initialState, action: TrayAction) {
   switch (action.type) {
-    case clients.SWITCH_DAPP:
-      const dappId = action.payload.targetDappId; 
-      const dappName = action.payload.targetDappName; 
+    case SWITCH_DAPP:
+      const dappId = action.payload.targetDappId;
+      const dappName = action.payload.targetDappName;
       return {
         ...state,
         activeDapp: { id: dappId, appName: dappName },
         isHome: false
       }
-    
-    case clients.TOGGLE_HOME:
+
+    case TOGGLE_HOME:
       const isHome = action.payload.isHome;
-      return { 
-        ...state, 
+      return {
+        ...state,
         isHome: isHome,
-        activeDapp: { 
-          id: 0, 
-          appName: null 
+        activeDapp: {
+          id: 0,
+          appName: null
         }
       };
 
-    case clients.TOGGLE_NOTIFICATION_PANEL:
+    case TOGGLE_APP_HOME:
       return {
-        ...state, 
+        ...state,
+        isHome: false,
+        activeDapp: {
+          dappId: 1,
+          appName: action.payload.targetDappName
+        }
+      }
+
+    case TOGGLE_NOTIFICATION_PANEL:
+      return {
+        ...state,
         notification: {
           isOpen: !state.notification.isOpen
         }
       };
 
-    case clients.TOGGLE_LOADER_PANEL:
+    case TOGGLE_LOADER_PANEL:
       return {
-        ...state, 
+        ...state,
         loader: {
           isOpen: !state.loader.isOpen
         }
       };
 
-    case clients.TOGGLE_STATUS_BAR_PANEL:
+    case TOGGLE_STATUS_BAR_PANEL:
       return {
-        ...state, 
+        ...state,
         statusBar: {
           isOpen: !state.statusBar.isOpen
         }
       };
+
+    case APPS_FEED_RESIZE:
+      return { ...state, window: action.payload };
 
     default:
       return state;
