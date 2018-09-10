@@ -96,7 +96,7 @@ export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelSt
 
             <div className={['tab-pane'].concat(uploadClass).join(' ')} id="uploads">
 
-              <Dropzone className="dragzone" onDrop={this.onDrop}>
+              <Dropzone className="dragzone" activeClassName="dragover" onDrop={this.onDrop}>
                 <div className="message">
                   <IoMdCloudUpload />
                   <strong>Drag & drop</strong>
