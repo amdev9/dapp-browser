@@ -1,7 +1,8 @@
 import * as React from "react";
  
 interface PermCheckBoxProps {
-  permissionFlag?: string
+  permissionFlag?: string,
+  isChecked?: boolean
 }
  
 export class PermCheckBox extends React.Component<PermCheckBoxProps> { 
@@ -27,7 +28,7 @@ export class PermCheckBox extends React.Component<PermCheckBoxProps> {
           <input
             name={permissionFlag}
             type="checkbox"
-            checked={false} //this.state.isChecked
+            checked={this.props.isChecked}
             onChange={this.handleInputChange} />
         </label>
       </div>
