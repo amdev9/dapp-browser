@@ -8,7 +8,8 @@ interface LoaderPanelProps {
 }
 interface LoaderPanelState {
   activeTab: string,
-  files: File[]
+  uploads: File[],
+  uploaded: File[]
 }
 
 // Links:
@@ -17,16 +18,20 @@ interface LoaderPanelState {
 // https://react-dropzone.js.org/
 export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelState> {
   constructor(props: LoaderPanelProps) {
-    super(props)
+    super(props);
 
     this.onDrop = this.onDrop.bind(this);
     this.switchTab = this.switchTab.bind(this);
-    this.state = {activeTab: 'uploads', files: []}
+    this.state = {activeTab: 'uploads', uploads: [], uploaded: []}
   }
 
-  private onDrop(files: File[]): void {
+  private onDrop(uploads: File[]): void {
+    let uploaded = [...this.state.uploaded, ...uploads].filter(
+      (file, i, files) => files.findIndex(item => item.name === file.name) === i
+    ); // only unique values
     this.setState({
-      files
+      uploads,
+      uploaded
     });
   }
 
@@ -109,7 +114,7 @@ export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelSt
 
               <ul>
                 {
-                  this.state.files.map(f => <li className="row align-items-center complete no-bg" key={f.name}>
+                  this.state.uploads.map(f => <li className="row align-items-center complete no-bg" key={f.name}>
                     <div className="col-auto icon">
                       <svg className="out" height="0" width="50">
                         <circle cx="25" cy="9" r="22" stroke="#F2F3F6" strokeWidth="3" fill="none"></circle>
@@ -133,31 +138,19 @@ export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelSt
               </div>
 
               <ul>
-                <li className="row align-items-center complete">
-                <div className="col-auto icon">
-                  <IoIosDocument fontSize="35px" color="#A8B2BD"/>
-                </div>
-
-                <div className="col introtext">
-                  <strong>item.name</strong>
-                  <small>item.size</small>
-                </div>
-
-                <div className="col-auto action">
-                  <div className="dropdown">
-                    <span className="dropdown-target">
-                      <IoMdMenu fontSize="35px" color="#A8B2BD" />
-                    </span>
-
-                    <div className="dropdown-menu align-right">
-                      <div className="dropdown-point"><span>Open</span></div>
-                      <div className="dropdown-point"><span>Delete</span></div>
-                      <div className="dropdown-point"><span>Show in folder</span></div>
-                    </div>
-                  </div>
-                </div>
-              </li>
-            </ul>
+                {
+                  this.state.uploaded.map(f => <li className="row align-items-center complete" key={f.name}>
+                      <div className="col-auto icon">
+                        <IoIosDocument fontSize="35px" color="#A8B2BD"/>
+                      </div>
+                      <div className="col introtext">
+                        <strong>{f.name}</strong>
+                        <small>{f.size}</small>
+                      </div>
+                  </li>
+                  )
+                }
+              </ul>
             </div>
           </div>
         </div>
