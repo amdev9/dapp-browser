@@ -20,6 +20,7 @@ export class PermissionLayout extends React.Component<PermissionLayoutProps> {
     return (
       <div>
         {permissionItems}
+        <button>APPROVE</button>
       </div>
     )
   }

@@ -73,6 +73,10 @@ app.on('ready', async () => {
       let targetDappObj: AppItem = AppsManager.dapps.find(dappObj => dappObj.appName == activeDappName);
       // createPermissionWindow(clientWindow, targetDappObj.permissions);
 
+      //@todo pass approved permissions back, close created window on 'APPROVE' button clicked
+      // if (approve)
+      // permissionWindow.close();
+
       //@todo create on permissions granted
       createDappView(globalUUIDList, targetDappObj);
       let nameObj: RendererConf = globalUUIDList.find(renObj => renObj.name === activeDappName);
