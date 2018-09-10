@@ -1,22 +1,20 @@
 
 import { action } from 'typesafe-actions';
 import { Action } from 'redux';
-
-import { SWITCH_DAPP, TOGGLE_HOME, TOGGLE_LOADER_PANEL, TOGGLE_STATUS_BAR_PANEL, TOGGLE_APP_HOME } from '../constants';
+import { AppItem } from '../AppsManager';
+import { SWITCH_DAPP, TOGGLE_HOME, TOGGLE_LOADER_PANEL, TOGGLE_STATUS_BAR_PANEL, TOGGLE_APP_HOME, ADD_APP_ITEM } from '../constants';
 
 export interface TrayAction extends Action {
   payload?: {
-    targetDappId?: number,
     targetDappName?: string,
     isHome?: boolean,
   };
 }
 
-export function switchDapp(dappId: number, dappName: string) {
+export function switchDapp(dappName: string) {
   return {
     type: SWITCH_DAPP,
     payload: {
-      targetDappId: dappId,
       targetDappName: dappName
     }
   };
@@ -31,3 +29,11 @@ export const toggleAppHome = (dappName: string):
   TrayAction => action(TOGGLE_APP_HOME, {
     targetDappName: dappName
   });
+
+export const addAppItem = (appItem: AppItem) => ({ 
+    type: ADD_APP_ITEM, 
+    payload: {
+      item: appItem
+    } 
+  });
+  

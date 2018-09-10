@@ -9,7 +9,7 @@ interface TrayProps {
   items?: AppItem[],
   statusBarIsOpen?: boolean
   toggleStatusBar?: (isOpen: boolean) => void
-  toggleSwitch?: (targetDappId?: number, targetDappName?: string) => any
+  toggleSwitch?: ( targetDappName?: string) => any
 }
 
 export class Tray extends React.Component<TrayProps> {

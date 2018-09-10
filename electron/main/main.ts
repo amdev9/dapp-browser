@@ -65,7 +65,7 @@ app.on('ready', async () => {
     let storeState: any = store.getState();
 
     process.stdout.write(JSON.stringify(storeState));
-    if (storeState.client.isHome) { // && storeState.client.activeDapp.id == 0
+    if (storeState.client.isHome) { 
       clientWindow.setBrowserView(null);
     } else {
       let activeDappName: string = storeState.client.activeDapp.appName;

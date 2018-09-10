@@ -5,7 +5,6 @@ import { AppItem } from '../model';
 
 export interface TrayAction extends Action {
   payload?: {
-    targetDappId?: number,
     targetDappName?: string,
     item?: AppItem,
     isHome?: boolean,
@@ -13,9 +12,8 @@ export interface TrayAction extends Action {
   }
 }
 
-export const switchDapp = (dappId: number, dappName: string): 
+export const switchDapp = (dappName: string): 
   TrayAction => action(SWITCH_DAPP, { 
-    targetDappId: dappId, 
     targetDappName: dappName 
   });
 

@@ -28,7 +28,6 @@ export const initialState: IState = {
   channel: {},
   client: {
     activeDapp: {
-      id: 0,
       appName: null
     },
     isHome: true,
