@@ -37,7 +37,7 @@ export function createPermissionWindow(mainWindow: Electron.BrowserWindow, permi
     // resizable: false,
     webPreferences: webPrefObj
   })
-  permissionWindow.loadURL('file://' + path.join(PATH, 'permission.html'));
+  permissionWindow.loadURL('file://' + path.join(PATH, 'index.html'));
 
   // @TODO: Use 'ready-to-show' event
   //        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event

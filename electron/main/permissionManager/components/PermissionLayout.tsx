@@ -14,7 +14,7 @@ export class PermissionLayout extends React.Component<PermissionLayoutProps> {
   public render() {
     // add PermCheckBox props
     const permissionItems: JSX.Element[] = this.props.permissions.map((item): JSX.Element => (
-      <PermCheckBox key={`${item}`} item={item}/>
+      <PermCheckBox /> //key={`${item}`} item={item}
     ));
 
     return (

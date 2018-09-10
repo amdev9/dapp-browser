@@ -14,6 +14,10 @@ export class PermCheckBox extends React.Component<PermCheckBoxProps> {
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
+  handleInputChange() {
+    console.log('handleInputChange');
+  }
+
   public render() {
     return (
       <div>
@@ -22,7 +26,7 @@ export class PermCheckBox extends React.Component<PermCheckBoxProps> {
           <input
             name="isGoing"
             type="checkbox"
-            checked={this.state.isChecked}
+            checked={false} //this.state.isChecked
             onChange={this.handleInputChange} />
         </label>
       </div>
