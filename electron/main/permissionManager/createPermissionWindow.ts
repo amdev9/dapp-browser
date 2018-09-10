@@ -7,7 +7,7 @@ import { AppItem } from '../helpers/AppsManager';
 let permissionWindow: Electron.BrowserWindow = null;
 const PATH: string = path.join(__dirname, '..', 'permissionManager');
 
-export function createPermissionWindow(mainWindow: Electron.BrowserWindow, permissions: string[]) {
+export function createPermissionWindow(mainWindow: Electron.BrowserWindow, appName: string, permissions: string[]) {
   const uuidClient = uuidv4();
    
   let preloadPath = path.join(__dirname, '..', 'permissionManager', 'preload.js');
@@ -26,7 +26,7 @@ export function createPermissionWindow(mainWindow: Electron.BrowserWindow, permi
 
   permissionWindow = new BrowserWindow({
     parent: mainWindow,
-    title: "ARRAY | Permissions",
+    title: appName + " | Permissions",
     alwaysOnTop: true,
     // center: true,
     show: false,
