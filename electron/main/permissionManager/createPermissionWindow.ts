@@ -25,9 +25,9 @@ export function createPermissionWindow(mainWindow: Electron.BrowserWindow, permi
   }
 
   permissionWindow = new BrowserWindow({
-    // parent: mainWindow,
-    // title: "ARRAY | Permissions",
-    // alwaysOnTop: true,
+    parent: mainWindow,
+    title: "ARRAY | Permissions",
+    alwaysOnTop: true,
     // center: true,
     show: false,
     x: 0,
