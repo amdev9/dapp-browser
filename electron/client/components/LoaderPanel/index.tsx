@@ -17,7 +17,7 @@ interface LoaderPanelState {
 export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelState> {
   constructor(props: LoaderPanelProps) {
     super(props)
- 
+
     this.onDrop = this.onDrop.bind(this);
     this.switchTab = this.switchTab.bind(this);
     this.state = {activeTab: 'uploads'}
@@ -87,7 +87,7 @@ export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelSt
                   </div>
 
                   <div className="col introtext">
-                    <strong>Document downloaded.doc</strong>
+                    <strong>Document downl.doc</strong>
                     <small>2 mb</small>
                   </div>
                 </li>
@@ -95,18 +95,36 @@ export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelSt
             </div>
 
             <div className={['tab-pane'].concat(uploadClass).join(' ')} id="uploads">
-              
 
-              <Dropzone onDrop={this.onDrop}>Drag & drop Files Here to Upload</Dropzone>
-              {/* <div className="dragzone">
+              <Dropzone className="dragzone" onDrop={this.onDrop}>
                 <div className="message">
                   <IoMdCloudUpload />
                   <strong>Drag & drop</strong>
-                  <span>Files Here to Upload</span> 
+                  <span>Files Here to Upload</span>
                 </div>
-              </div> */}
+              </Dropzone>
 
-              <div className="notifications-name">
+              <ul>
+                <li  className="row align-items-center complete no-bg">
+                  <div className="col-auto icon">
+                    <svg className="out" height="0" width="50">
+                      <circle cx="25" cy="9" r="22" stroke="#F2F3F6" strokeWidth="3" fill="none"></circle>
+                    </svg>
+                    <svg className="over" height="70" width="50">
+                      <circle  cx="25" cy="37" r="22" stroke="#4686FF" strokeWidth="3" fill="none" strokeDasharray="138,138"></circle>
+                    </svg>
+
+                    <small className="total">100%</small>
+                  </div>
+
+                  <div className="col introtext">
+                    <strong>item.name</strong>
+                    <small>item.size</small>
+                  </div>
+                </li>
+              </ul>
+
+              <div className="uploaded-name">
                 <span>Uploaded files</span>
               </div>
 

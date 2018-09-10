@@ -1,3 +1,12 @@
+.row
+  display: -webkit-box
+  display: -ms-flexbox
+  display: flex
+  -ms-flex-wrap: wrap
+  flex-wrap: wrap
+  margin-right: -15px
+  margin-left: -15px
+
 .loader-popup
   display: flex !important // Override overlay style
   background-color: #ffffff
@@ -54,11 +63,6 @@
       display: none
       padding: 15px
 
-      .notifications-name
-        display: block
-        margin: 0 -15px 15px
-        padding: 7px 15px
-
       .dragzone
         position: relative
         height: 320px
@@ -72,6 +76,11 @@
           left: 0
           right: 0
           text-align: center
+
+          svg
+            margin-bottom: -20px
+            font-size: 45px
+            color: $lgray
 
           [class^="icon-"]
             font-size: 35px
@@ -157,7 +166,7 @@
               position: absolute
               font: 500 12px $font-opensans
               color: $lgray
-              top: 50%
+              top: 40%
               left: 0
               right: 0
               margin: -9px auto 0
