@@ -7,7 +7,8 @@ interface LoaderPanelProps {
   togglePanel?(openStatus: boolean): void
 }
 interface LoaderPanelState {
-  activeTab: string
+  activeTab: string,
+  files: File[]
 }
 
 // Links:
@@ -20,11 +21,13 @@ export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelSt
 
     this.onDrop = this.onDrop.bind(this);
     this.switchTab = this.switchTab.bind(this);
-    this.state = {activeTab: 'uploads'}
+    this.state = {activeTab: 'uploads', files: []}
   }
 
-  private onDrop(files: any): void {
-    console.log(files);
+  private onDrop(files: File[]): void {
+    this.setState({
+      files
+    });
   }
 
   private switchTab(tabName: string): void {
@@ -105,23 +108,24 @@ export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelSt
               </Dropzone>
 
               <ul>
-                <li  className="row align-items-center complete no-bg">
-                  <div className="col-auto icon">
-                    <svg className="out" height="0" width="50">
-                      <circle cx="25" cy="9" r="22" stroke="#F2F3F6" strokeWidth="3" fill="none"></circle>
-                    </svg>
-                    <svg className="over" height="70" width="50">
-                      <circle  cx="25" cy="37" r="22" stroke="#4686FF" strokeWidth="3" fill="none" strokeDasharray="138,138"></circle>
-                    </svg>
-
-                    <small className="total">100%</small>
-                  </div>
-
-                  <div className="col introtext">
-                    <strong>item.name</strong>
-                    <small>item.size</small>
-                  </div>
-                </li>
+                {
+                  this.state.files.map(f => <li className="row align-items-center complete no-bg" key={f.name}>
+                    <div className="col-auto icon">
+                      <svg className="out" height="0" width="50">
+                        <circle cx="25" cy="9" r="22" stroke="#F2F3F6" strokeWidth="3" fill="none"></circle>
+                      </svg>
+                      <svg className="over" height="70" width="50">
+                        <circle  cx="25" cy="37" r="22" stroke="#4686FF" strokeWidth="3" fill="none" strokeDasharray="138,138"></circle>
+                      </svg>
+                      <small className="total">100%</small>
+                    </div>
+                    <div className="col introtext">
+                      <strong>{f.name}</strong>
+                      <small>{f.size}</small>
+                    </div>
+                  </li>
+                  )
+                }
               </ul>
 
               <div className="uploaded-name">
