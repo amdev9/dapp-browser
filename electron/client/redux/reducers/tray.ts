@@ -56,9 +56,12 @@ export default function tray(state: Tray = initialState, action: TrayAction) {
     
     case ADD_APP_ITEM:
       const appItem = action.payload.item;
+      
       return {
         ...state,
-        items: state.items.concat(appItem) 
+        items: state.items.filter(item => item.appName == appItem.appName).length == 0 ? 
+          state.items.concat(appItem) : 
+            state.items
       }
     
     case TOGGLE_HOME:
