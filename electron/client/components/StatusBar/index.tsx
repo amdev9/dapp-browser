@@ -5,7 +5,8 @@ import { Bar } from "./bar"
 interface StatusBarProps {
   items?: { [index: string]: StatusBarItem; },
   isOpen?: boolean,
-  toggleStatusBar?: () => void
+  toggleStatusBar?: () => void,
+  peersBarIsOpen?: boolean
 }
 
 export class StatusBar extends React.Component<StatusBarProps> {
@@ -16,7 +17,7 @@ export class StatusBar extends React.Component<StatusBarProps> {
   }
 
   public getList(): JSX.Element[] {
-    const { items, isOpen, toggleStatusBar } = this.props;
+    const { items, peersBarIsOpen, toggleStatusBar } = this.props;
 
     if (items) {
       return Object.keys(items)
@@ -25,7 +26,7 @@ export class StatusBar extends React.Component<StatusBarProps> {
         <Bar
           key={`${itemKey}-${index}`}
           item={items[itemKey]}
-          visible={isOpen}
+          visible={peersBarIsOpen}
           toggleStatusBar={toggleStatusBar}
         />
       ))

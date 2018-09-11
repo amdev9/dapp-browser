@@ -23,6 +23,7 @@ export interface LoaderPanel {
 export interface StatusBarPanel {
   items: { [index: string]: StatusBarItem; },
   isOpen: boolean
+  isPeersOpen: boolean
 }
 
 export type Counter = number;
