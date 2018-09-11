@@ -12,16 +12,18 @@ interface NotificationPanelProps {
   togglePanel?(openStatus: boolean): void;
   clearNotification?(id: number): void;
   clearAllNotifications?(): void;
+  isLoaderPanelOpen?: boolean
+  toggleLoaderPanel?(openStatus: boolean): void
 }
 
 export class NotificationPanel extends React.Component<NotificationPanelProps> {
   constructor(props: NotificationPanelProps) {
-    super(props)
+    super(props);
     this.getList = this.getList.bind(this);
   }
 
   private getList(): JSX.Element[] | JSX.Element {
-    const { items } = this.props
+    const { items } = this.props;
 
     if (!items || items.length === 0) {
       return (
@@ -41,7 +43,7 @@ export class NotificationPanel extends React.Component<NotificationPanelProps> {
   }
 
   render() {
-    const { isOpen, togglePanel } = this.props;
+    const { isOpen, togglePanel, isLoaderPanelOpen, toggleLoaderPanel } = this.props;
 
     const menuProps: MenuProps = {
       outerContainerId: "root-container",
@@ -50,13 +52,16 @@ export class NotificationPanel extends React.Component<NotificationPanelProps> {
       customCrossIcon: false,
       right: true,
       width: 300,
-      isOpen: isOpen,
+      isOpen,
       onStateChange: (value) => {
+        if (isOpen && isLoaderPanelOpen) {
+          toggleLoaderPanel(false);
+        }
         if (isOpen !== value.isOpen) {
           togglePanel(value.isOpen);
         }
       },
-    }
+    };
 
     return (
       <Menu {...menuProps}>

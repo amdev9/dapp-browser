@@ -60,10 +60,14 @@ class App extends React.Component<AppProps> {
           items={notifyItems}
           isOpen={openNotificationPanel}
           togglePanel={(openStatus) => onTogglePanel(openStatus)}
+          isLoaderPanelOpen={openLoaderPanel}
+          toggleLoaderPanel={(openStatus) => onToggleLoaderPanel(openStatus)}
           key="root-notifications" />
         <LoaderPanel
           isOpen={openLoaderPanel}
           togglePanel={(openStatus) => onToggleLoaderPanel(openStatus)}
+          isNotificationPanelOpen={openNotificationPanel}
+          toggleNotificationPanel={(openStatus) => onTogglePanel(openStatus)}
           key="root-loader" />
         <div className="content-zone" key="root-content" id="root-container">
           {/* <div className="content" id="content-wrap"> */}
