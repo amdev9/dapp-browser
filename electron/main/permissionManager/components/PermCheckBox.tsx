@@ -16,6 +16,7 @@ export class PermCheckBox extends React.Component<PermCheckBoxProps> {
 
   handleInputChange() {
     const { permissionFlag } = this.props;
+    // change granted boolean flag
     console.log('handleInputChange', permissionFlag);
   }
 
