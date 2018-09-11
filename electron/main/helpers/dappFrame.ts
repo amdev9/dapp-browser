@@ -10,9 +10,12 @@ export default {
   },
 
   getHeight: (storeState: any) => {
-    let offset = 60;
-    if (storeState.client.statusBar.isOpen) { //@todo account items.count . Now this functions works correctly only for 3 items
-      offset += 150;
+    let offset = 110;
+    if (storeState.client.statusBar.isOpen) {
+      offset += 250;
+    }
+    if (storeState.client.statusBar.isPeersOpen) {  //@todo account items.count . Now this functions works correctly only for 3 items
+      offset += 100
     }
     return storeState.client.window.height - offset;
   },

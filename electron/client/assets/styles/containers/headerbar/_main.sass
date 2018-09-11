@@ -1,11 +1,12 @@
 \:root
   --headerbar-title-display: block
 
- 
+
 .headerbar
   border-bottom: $headerbar-border-width solid #EEE
   background-color: $headerbar-background
   +flex(row, flex-start, center)
+  +noselect
   height: $headerbar-height
   width: 100%
 
@@ -30,7 +31,7 @@
 
       .network, .keychain
         margin: 0 8px
-    
+
       .network
         border: 1px solid rgba(0,0,0, 0.1)
         color: rgba(0,0,0, 0.7)
@@ -38,7 +39,7 @@
         padding: 8px 14px
         font-weight: 500
         font-size: 14px
-    
+
       .keychain
         +flex(row, center, center)
         color: rgba(0,0,0, 0.67)

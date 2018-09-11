@@ -21,11 +21,13 @@ interface AppProps {
   openNotificationPanel: boolean,
   openLoaderPanel: boolean,
   openStatusBarPanel: boolean,
+  openPeersBarPanel: boolean,
   trayItems: AppItem[],
   feedItems: FeedItem[],
   notifyItems: NotifyItem[],
   statusBarItems?: {[index: string]: StatusBarItem},
   statusBarToggle: () => void,
+  peersBarToggle: () => void,
   onIncrement: () => any,
   onDecrement: () => any,
   onTogglePanel: (openStatus?: boolean) => any,
@@ -42,8 +44,8 @@ interface AppProps {
 class App extends React.Component<AppProps> {
   render() {
     const {
-      onTogglePanel, openNotificationPanel, openStatusBarPanel, clearNotification, clearAllNotifications,
-      onAddAppItem, onSwitchDapp, onToggleHome, statusBarToggle, onToggleAppHome,
+      onTogglePanel, openNotificationPanel, openStatusBarPanel, openPeersBarPanel, clearNotification, clearAllNotifications,
+      onAddAppItem, onSwitchDapp, onToggleHome, statusBarToggle, peersBarToggle, onToggleAppHome,
       trayItems, feedItems, notifyItems, statusBarItems, onToggleLoaderPanel, openLoaderPanel, onResizeAppsFeed
     } = this.props;
 
@@ -62,15 +64,19 @@ class App extends React.Component<AppProps> {
           items={notifyItems}
           isOpen={openNotificationPanel}
           togglePanel={(openStatus) => onTogglePanel(openStatus)}
+          isLoaderPanelOpen={openLoaderPanel}
+          toggleLoaderPanel={(openStatus) => onToggleLoaderPanel(openStatus)}
           key="root-notifications" />
         <LoaderPanel
           isOpen={openLoaderPanel}
           togglePanel={(openStatus) => onToggleLoaderPanel(openStatus)}
+          isNotificationPanelOpen={openNotificationPanel}
+          toggleNotificationPanel={(openStatus) => onTogglePanel(openStatus)}
           key="root-loader" />
         <div className="content-zone" key="root-content" id="root-container">
           {/* <div className="content" id="content-wrap"> */}
             {/* <main className="page-container"> */}
-              <Tray items={trayItems} toggleSwitch={onSwitchDapp} toggleStatusBar={statusBarToggle} statusBarIsOpen={openStatusBarPanel}/>
+              <Tray items={trayItems} toggleSwitch={onSwitchDapp} togglePeersBar={peersBarToggle} peersBarIsOpen={openPeersBarPanel}/>
 
               <AppsFeed items={feedItems} toggleAppHome={onToggleAppHome} resizeAppsFeed={onResizeAppsFeed}/>
               {/*  */}
@@ -78,7 +84,7 @@ class App extends React.Component<AppProps> {
             {/* </main> */}
           {/* </div> */}
         </div>
-        <StatusBar isOpen={openStatusBarPanel} items={statusBarItems} />
+        <StatusBar isOpen={openStatusBarPanel} items={statusBarItems} toggleStatusBar={statusBarToggle} peersBarIsOpen={openPeersBarPanel}/>
       </div>
     )
   }
@@ -90,6 +96,7 @@ const mapStateToProps = (state: IState) => ({
   openNotificationPanel: state.notification.isOpen,
   openLoaderPanel: state.loader.isOpen,
   openStatusBarPanel: state.statusBar.isOpen,
+  openPeersBarPanel: state.statusBar.isPeersOpen,
   statusBarItems: state.statusBar.items,
   trayItems: state.tray.items,
   feedItems: state.feed.items
@@ -103,6 +110,7 @@ const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
   clearAllNotifications: NotificationActions.clearAllNotifications,
   onToggleLoaderPanel: LoaderActions.toggle,
   statusBarToggle: StatusBarActions.toggle,
+  peersBarToggle: StatusBarActions.togglePeers,
   onAddAppItem: TrayActions.addAppItem,
   onSwitchDapp: TrayActions.switchDapp,
   onToggleHome: TrayActions.toggleHome,

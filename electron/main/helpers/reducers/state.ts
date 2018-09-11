@@ -10,7 +10,8 @@ export type Client = {
     isOpen: boolean
   },
   statusBar: {
-    isOpen: boolean
+    isOpen: boolean,
+    isPeersOpen: boolean
   },
   loader: {
     isOpen: boolean

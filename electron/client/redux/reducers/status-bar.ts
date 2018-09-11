@@ -1,4 +1,4 @@
-import { TOGGLE_STATUS_BAR_PANEL } from '../constants';
+import {TOGGLE_PEERS_BAR_PANEL, TOGGLE_STATUS_BAR_PANEL} from '../constants';
 import { NotificationPanelAction } from '../actions/notification';
 import { StatusBarPanel } from './state';
 
@@ -33,6 +33,7 @@ const initialState: StatusBarPanel = {
     }
   },
   isOpen: false,
+  isPeersOpen: false
 };
 
 export default function statusBar(state: StatusBarPanel = initialState, action: NotificationPanelAction) {
@@ -43,6 +44,9 @@ export default function statusBar(state: StatusBarPanel = initialState, action: 
       //} else {
         return { ...state, isOpen: !state.isOpen };
       //}
+
+    case TOGGLE_PEERS_BAR_PANEL:
+      return {...state, isPeersOpen: !state.isPeersOpen};
 
     default:
       return state;

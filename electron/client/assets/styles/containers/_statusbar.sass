@@ -1,9 +1,130 @@
+//.view-code
+//  position: fixed
+//  margin: 0 auto
+//  left: 0
+//  right: 0
+//  bottom: 0
+//  z-index: 10
+//  padding-left: 62px
+//  background: #FAFAFC
+//
+//.view-code-indicator
+//  position: absolute
+//  font-size: 14px
+//  color: #AAB4BF
+//  left: 22px
+//  top: 10px
+//  cursor: pointer
+//  width: 15px
+//  margin: 0 auto
+//
+//.view-code-indicator:hover
+//  color: #4686FF
+//
+//.view-code-panel
+//  position: relative
+//  cursor: pointer
+//  height: 45px
+//  overflow: hidden
+//  line-height: 45px
+//  padding: 0 15px
+//  background: #FAFAFC
+//  border-left: 1px solid #F2F3F6
+//
+//.view-code-panel.showall
+//  height: auto
+//
+//.view-code-panel .row + .row
+//  border-top: 1px solid #F2F3F6
+//
+//.view-code-panel.showall .row
+//  visibility: visible
+//
+//.view-code-panel.showall .url
+//  visibility: visible
+//
+//.view-code-panel span,
+//.view-code-panel small
+//  font-size: 13px
+//  color: #252526
+//  vertical-align: middle
+//
+//.view-code-panel span.url,
+//.view-code-panel small.url
+//  display: block
+//  line-height: normal
+//  margin: -10px 0 10px
+//  visibility: hidden
+//
+//.view-code-panel small
+//  color: #7B8DA7
+//
+//.view-code-panel .icon,
+//.view-code-panel [class^="icon-"]
+//  color: #AAB4BF
+//  margin: 0 10px 0 0
+//
+//.view-code-console
+//  height: 0
+//  color: #c3e3ff
+//  overflow: auto
+//  padding: 0 30px 0
+//  opacity: 0
+//  z-index: 10
+//  background: #163246
+
+//.view-code-console p
+//  margin: 0 0 15px
+//
+//.view-code-console span.info
+//  color: #28a745
+//
+//.view-code-console span.debug
+//  color: #007bff
+//
+//.view-code-console span.error
+//  color: #dc3545
+//
+//.view-code-console span.warning
+//  color: #ffc107
+//
+//.view-code-console.visible
+//  height: 250px
+//  opacity: 1
+//  padding: 30px 30px 15px
+
+
+//  position: absolute
+//  bottom: 0
+//  display: block
+//  transition: all 0.4s ease
+//  background-color: #ffffff
+//  min-height: 50px
+//  margin-left: $tray-width + 1px
+//  width: 100%
+
 .statusbar
   transition: all 0.4s ease
   background-color: #ffffff
   min-height: 50px
   margin-left: $tray-width + 1px
   width: 100%
+  position: absolute
+  bottom: 0
+  display: block
+
+  .console
+    height: 250px
+    color: #c3e3ff
+    overflow: auto
+    padding: 0 30px 0
+    z-index: 10
+    background: #163246
+
+    border-top: 1px solid rgba(0,0,0, 0.05)
+    justify-content: center
+    flex-direction: column
+    display: flex
 
   .bar
     border-top: 1px solid rgba(0,0,0, 0.05)
@@ -11,6 +132,7 @@
     flex-direction: column
     display: flex
     height: 50px
+    cursor: pointer
 
     .info
       +flex(row, flex-start, center)
@@ -30,14 +152,14 @@
         +flex(row, center, center)
         margin: 0 10px
         width: 100px
-        
+
         .icon
           margin-right: 8px
           height: 15px
           img
             height: 15px
-            width: auto     
-        
+            width: auto
+
         .count
           color: rgba(0,0,0, 0.8)
           letter-spacing: 0
@@ -57,12 +179,12 @@
           img
             height: 15px
             width: auto
-        
+
         .count, .total, .separator
           letter-spacing: 0
           font-weight: 500
           font-size: 15px
-        
+
         .total, .separator
           color: #7b8da7
         .count

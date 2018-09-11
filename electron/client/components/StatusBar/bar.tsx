@@ -4,6 +4,8 @@ import * as React from "react"
 
 interface StatusBarProps {
   item: StatusBarItem
+  visible: boolean,
+  toggleStatusBar?: () => void
 }
 
 // Assets
@@ -14,10 +16,11 @@ const clockIcon = require("../../assets/icons/clock.svg");
 export class Bar extends React.Component<StatusBarProps> {
 
   public render() {
-    const { item } = this.props;
+    const { item, visible, toggleStatusBar } = this.props;
+    const props = {style: {display: visible ? "flex" : "none"}};
 
     return (
-      <div className="bar">
+      <div className="bar" {...props} onClick={toggleStatusBar}>
         <div className="info">
           <div className="title">
             <div className="name">{item.name}</div>
