@@ -82,7 +82,7 @@ class App extends React.Component<AppProps> {
             {/* </main> */}
           {/* </div> */}
         </div>
-        <StatusBar isOpen={openStatusBarPanel} items={statusBarItems} />
+        <StatusBar isOpen={openStatusBarPanel} items={statusBarItems} toggleStatusBar={statusBarToggle} />
       </div>
     )
   }

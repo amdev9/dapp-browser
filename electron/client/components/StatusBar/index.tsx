@@ -4,7 +4,8 @@ import { Bar } from "./bar"
 
 interface StatusBarProps {
   items?: { [index: string]: StatusBarItem; },
-  isOpen?: boolean
+  isOpen?: boolean,
+  toggleStatusBar?: () => void
 }
 
 export class StatusBar extends React.Component<StatusBarProps> {
@@ -15,7 +16,7 @@ export class StatusBar extends React.Component<StatusBarProps> {
   }
 
   public getList(): JSX.Element[] {
-    const { items, isOpen } = this.props;
+    const { items, isOpen, toggleStatusBar } = this.props;
 
     if (items) {
       return Object.keys(items)
@@ -25,6 +26,7 @@ export class StatusBar extends React.Component<StatusBarProps> {
           key={`${itemKey}-${index}`}
           item={items[itemKey]}
           visible={isOpen}
+          toggleStatusBar={toggleStatusBar}
         />
       ))
     } else {
@@ -36,7 +38,7 @@ export class StatusBar extends React.Component<StatusBarProps> {
   }
 
   public render() {
-    let { isOpen, items } = this.props;
+    let { isOpen, items, toggleStatusBar } = this.props;
 
     const props: any = {
       style: {
@@ -52,6 +54,7 @@ export class StatusBar extends React.Component<StatusBarProps> {
           key={`${keys[0]}-${0}`}
           item={items[keys[0]]}
           visible={true}
+          toggleStatusBar={toggleStatusBar}
         />
         {this.getList()}
         <div className="console" {...props} />
