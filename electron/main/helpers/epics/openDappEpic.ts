@@ -1,30 +1,29 @@
 import 'rxjs'; 
 import {  ofType, Epic } from 'redux-observable';
 import { of } from 'rxjs'; 
-import { mapTo, map, mergeMap, concatMap } from 'rxjs/operators';
- 
-
+import { merge, concatMap } from 'rxjs/operators';
 import { 
   TOGGLE_APP_HOME,
   ADD_APP_ITEM
 } from '../constants';
-  
-import { AppItem, AppsManager } from '../AppsManager';
- 
+import {  AppsManager } from '../AppsManager';
+import { addAppItem, switchDapp } from '../actions/client';
 
-const addAppItem = (appItem: AppItem) => ({ 
-  type: ADD_APP_ITEM, 
-  payload: {
-    item: appItem
-  } 
-});
 
 
 const openDappEpic: Epic<any> = action$ => action$.pipe(
   ofType(TOGGLE_APP_HOME), //@todo get appName from payload
   concatMap( (action: any) => of(
-    addAppItem(AppsManager.getAppItem(action.payload.dappName))
-  ))
+      addAppItem(AppsManager.getAppItem(action.payload.targetDappName))
+    )
+    .pipe(
+      merge(
+        of(
+          switchDapp(action.payload.targetDappName) 
+        )
+      )  
+    )
+  )
 );
 
 export default openDappEpic;

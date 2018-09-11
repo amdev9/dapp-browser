@@ -4,7 +4,7 @@ import { AppItem as AppItemModel } from '../../redux/model';
 
 interface AppBoxProps {
   item?: AppItemModel,
-  toggleSwitch?: (targetDappId?: number, targetDappName?: string) => any
+  toggleSwitch?: (targetDappName?: string) => any
 }
  
 export class AppBox extends React.Component<AppBoxProps> { 
@@ -15,7 +15,7 @@ export class AppBox extends React.Component<AppBoxProps> {
   public render() {
     const { item, toggleSwitch } = this.props;
     return (
-      <AppItem {...this.props} clickItem={() => toggleSwitch(item.id, item.appName)} />
+      <AppItem {...this.props} clickItem={() => toggleSwitch(item.appName)} />
     )
   }
 }

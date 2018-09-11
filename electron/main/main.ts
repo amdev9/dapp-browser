@@ -65,13 +65,17 @@ app.on('ready', async () => {
     let storeState: any = store.getState();
 
     process.stdout.write(JSON.stringify(storeState));
-    if (storeState.client.isHome) { // && storeState.client.activeDapp.id == 0
+    if (storeState.client.isHome) { 
       clientWindow.setBrowserView(null);
     } else {
       let activeDappName: string = storeState.client.activeDapp.appName;
 
       let targetDappObj: AppItem = AppsManager.dapps.find(dappObj => dappObj.appName == activeDappName);
-      // createPermissionWindow(clientWindow, targetDappObj.permissions);
+      // createPermissionWindow(clientWindow, targetDappObj.appName, targetDappObj.permissions);
+
+      //@todo pass approved permissions back, close created window on 'APPROVE' button clicked
+      // if (approve)
+      // permissionWindow.close();
 
       //@todo create on permissions granted
       createDappView(globalUUIDList, targetDappObj);

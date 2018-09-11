@@ -3,7 +3,6 @@
 
 export type Client = {
   activeDapp?: {
-    id?: number,
     appName?: string
   },
   isHome: boolean,

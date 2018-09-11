@@ -36,7 +36,7 @@ interface AppProps {
   clearNotification: (id?: number) => void,
   clearAllNotifications: () => void,
   onAddAppItem: (appItem?: AppItem) => any,
-  onSwitchDapp: (targetDappId?: number, targetDappName?: string) => any,
+  onSwitchDapp: (targetDappName?: string) => any,
   onToggleAppHome: (dappName: string) => any,
   onResizeAppsFeed: (width: number, height: number) => any,
 }

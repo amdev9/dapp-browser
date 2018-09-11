@@ -13,7 +13,6 @@ import { Client } from './state';
 
 const initialState: Client = {
   activeDapp: {
-    id: 0,
     appName: null
   },
   isHome: true,
@@ -26,11 +25,11 @@ const initialState: Client = {
 export function client(state: Client = initialState, action: TrayAction) {
   switch (action.type) {
     case SWITCH_DAPP:
-      const dappId = action.payload.targetDappId;
+     
       const dappName = action.payload.targetDappName;
       return {
         ...state,
-        activeDapp: { id: dappId, appName: dappName },
+        activeDapp: { appName: dappName },
         isHome: false
       };
 
@@ -40,7 +39,6 @@ export function client(state: Client = initialState, action: TrayAction) {
         ...state,
         isHome: isHome,
         activeDapp: {
-          id: 0,
           appName: null
         }
       };
@@ -50,7 +48,6 @@ export function client(state: Client = initialState, action: TrayAction) {
         ...state,
         isHome: false,
         activeDapp: {
-          dappId: 1,
           appName: action.payload.targetDappName
         }
       };

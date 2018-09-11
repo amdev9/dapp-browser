@@ -18,6 +18,7 @@
   - [OrbitDb](#orbitdb)
   - [Logger](#logger)
   - [Keychain](#keychain)
+  - [Network](#network)
 - [Array library documentation](#array-library-documentation)
   - [array.dapp](#arraydapp)
   - [array.dapp.subscribe](#arraydappsubscribe)
@@ -28,6 +29,7 @@
   - [array.OrbitDb](#arrayorbitdb)
   - [array.Logger](#arraylogger)
   - [array.Keychain](#arraykeychain)
+  - [array.Network](#arraynetwork)
 
 
 # Architecture  
@@ -303,10 +305,18 @@ Keychain component provides transaction signing methods. It uses third-party Key
 3. The main process accepts the data and orchestrates it via `ACCEPT_CHANNEL_DATA_PASS(CHANNEL_ID)`
 4. Create a proxy class `new Keychain()` with the corresponding data manipulation methods. A proxy class is resposible for sending and listening for events propagated by `Keychain` class in the main process. 
  
-## External refferences:
-ORM for sqlite https://github.com/sequelize/sequelize<br/>
-Winston logger https://github.com/winstonjs/winston
+# Network
 
+For proceed network queries with blockchain node. Make JSON-RPC calls to blockchain node. Network component can work with different blockchain nodes - ARRAY, bitshares, ethereum, etc.
+
+
+## Permissions signal sequence (success scenario)
+1. Dapp developer initiates instance `new Network()`
+2. Dapp redux store disaptches `INTENT_CHANNEL_DATA_PASS(NETWORK)`
+3. The main process accepts the data and orchestrates it via `ACCEPT_CHANNEL_DATA_PASS(CHANNEL_ID)`
+4. Create a proxy class `new Network()` with the corresponding data manipulation methods. A proxy class is resposible for sending and listening for events propagated by `Network` class in the main process. 
+ 
+ 
 
 # Array library documentation
 
@@ -569,6 +579,27 @@ let signed = await kchain.sign(
 #### Links
 https://github.com/arrayio/docs.array.io/blob/master/ru_RU/src/components/keychain.md
 
+
+# array.Network
+The `Network` module proceed network queries with blockchain node. Dapp developer can pass specific blockchain node name to `Network` class constructor.
+
+Module provide methods to:
+* get witness by ID
+* get block
+* get serialized data
+ 
+`Network` class instance that inherits from `EventEmitter`. It helps us to monitor the status of a file transfer by triggering `event`.
+
+Example usage
+-------------
+
+```javascript
+const { Network } = require('array');
+let net = new Network('bitshares'); // proceed network queries with blockchain node - 'bitshares' node here
+let witnessId = 'de5f4d8974715e20f47c8bb609547c9e66b0b9e31d521199b3d8';
+let witness = await net.getWitnessByID(witnessId);
+```
+ 
 
 
 ## External references

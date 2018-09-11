@@ -18,8 +18,7 @@ const initialState: Tray = {
   } 
   */
   activeDapp: {
-    appName: null, 
-    id: 0
+    appName: null
   },
   pinned: [],
   isHome: true
@@ -28,15 +27,15 @@ const initialState: Tray = {
 export default function tray(state: Tray = initialState, action: TrayAction) {
   switch (action.type) {
     case SWITCH_DAPP:
-      const dappId = action.payload.targetDappId;
+     
       const dappName = action.payload.targetDappName;
       const newItems = state.items.map((item) => {
-        if( (item.appName != dappName || item.id != dappId) && item.statusIcon.includes('active') ) {
+        if( (item.appName != dappName) && item.statusIcon.includes('active') ) {
           return { 
             ...item,
             statusIcon: item.statusIcon.filter(status => status !== 'active')
           }         
-        } else if(item.id == dappId && item.appName == dappName && !item.statusIcon.includes('active')) {
+        } else if(item.appName == dappName && !item.statusIcon.includes('active')) {
           return { 
             ...item,
             statusIcon: item.statusIcon.concat(['active'])
@@ -51,16 +50,18 @@ export default function tray(state: Tray = initialState, action: TrayAction) {
         items: newItems,
         isHome: false, 
         activeDapp: { 
-          id: dappId, 
           appName: dappName 
         }
       }
     
     case ADD_APP_ITEM:
       const appItem = action.payload.item;
+      
       return {
         ...state,
-        items: state.items.concat(appItem) 
+        items: state.items.filter(item => item.appName == appItem.appName).length == 0 ? 
+          state.items.concat(appItem) : 
+            state.items
       }
     
     case TOGGLE_HOME:
@@ -80,7 +81,6 @@ export default function tray(state: Tray = initialState, action: TrayAction) {
         ...state, 
         isHome: isHome,
         activeDapp: { 
-          id: 0, 
           appName: null 
         },
         items: cleanItems
