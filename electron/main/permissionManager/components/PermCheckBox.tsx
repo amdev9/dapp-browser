@@ -5,6 +5,7 @@ interface PermCheckBoxProps {
   isChecked?: boolean
 }
  
+//@todo read data & assets from AppsManager for icons preview
 export class PermCheckBox extends React.Component<PermCheckBoxProps> { 
   constructor(props: PermCheckBoxProps) {
     super(props);

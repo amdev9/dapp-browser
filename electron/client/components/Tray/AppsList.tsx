@@ -2,8 +2,6 @@ import * as React from "react"
 import { AppBox } from './AppBox'; 
 import { AppItem } from "../../redux/model";
  
-import * as ScrollArea from 'react-scrollbar';
-
 interface AppListProps {
   items?: AppItem[],
   toggleSwitch?: (targetDappName?: string) => any
@@ -17,9 +15,7 @@ export class AppsList extends React.Component<AppListProps> {
 
     return (
       <div className="list">
-        <ScrollArea>
-          {appItemsList} 
-        </ScrollArea>
+        {appItemsList} 
       </div>
     )
   }

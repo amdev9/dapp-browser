@@ -25,5 +25,7 @@ export interface IState {
   channel: {};
   client: Client,
   feed: {}
+
+  //@todo add MapPermissions
 }
 
