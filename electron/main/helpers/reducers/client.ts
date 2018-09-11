@@ -4,6 +4,7 @@ import {
   TOGGLE_NOTIFICATION_PANEL,
   TOGGLE_LOADER_PANEL,
   TOGGLE_STATUS_BAR_PANEL,
+  TOGGLE_PEERS_BAR_PANEL,
   TOGGLE_APP_HOME,
   APPS_FEED_RESIZE
 } from '../constants';
@@ -18,9 +19,9 @@ const initialState: Client = {
   isHome: true,
   notification: {isOpen: false},
   loader: {isOpen: false},
-  statusBar: {isOpen: false},
+  statusBar: {isOpen: false, isPeersOpen: false},
   window: {width: 0, height: 0}
-}
+};
 
 export function client(state: Client = initialState, action: TrayAction) {
   switch (action.type) {
@@ -31,7 +32,7 @@ export function client(state: Client = initialState, action: TrayAction) {
         ...state,
         activeDapp: { id: dappId, appName: dappName },
         isHome: false
-      }
+      };
 
     case TOGGLE_HOME:
       const isHome = action.payload.isHome;
@@ -52,7 +53,7 @@ export function client(state: Client = initialState, action: TrayAction) {
           dappId: 1,
           appName: action.payload.targetDappName
         }
-      }
+      };
 
     case TOGGLE_NOTIFICATION_PANEL:
       return {
@@ -74,7 +75,17 @@ export function client(state: Client = initialState, action: TrayAction) {
       return {
         ...state,
         statusBar: {
+          ...state.statusBar,
           isOpen: !state.statusBar.isOpen
+        }
+      };
+
+    case TOGGLE_PEERS_BAR_PANEL:
+      return {
+        ...state,
+        statusBar: {
+          ...state.statusBar,
+          isPeersOpen: !state.statusBar.isPeersOpen
         }
       };
 

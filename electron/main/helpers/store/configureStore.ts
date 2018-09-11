@@ -34,7 +34,7 @@ export const initialState: IState = {
     isHome: true,
     notification: {isOpen: false},
     loader: {isOpen: false},
-    statusBar: {isOpen: false},
+    statusBar: {isOpen: false, isPeersOpen: false},
     window: {width: 0, height: 0}
   },
   feed: {}
@@ -52,7 +52,7 @@ declare global {
 interface uuidChannelMap {
   uuid: string;
   channel: string;
-};
+}
 let uuidChannelMapList: Array<uuidChannelMap>;
 
 const epicMiddleware = createEpicMiddleware();
