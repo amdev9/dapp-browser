@@ -47,6 +47,7 @@ export class StatusBar extends React.Component<StatusBarProps> {
     return (
       <div {...props}>
         {this.getList()}
+        <div className="console"></div>
       </div>
     )
   }
