@@ -1,31 +1,25 @@
 import * as React from "react"
-import { AppsList } from './AppsList'; 
+import { AppsList } from './AppsList';
 import { AppItem } from "../../redux/model";
 
 const indicatorIcon = require("../../assets/icons/indicator.svg");
 const closeIcon = require("../../assets/icons/close.svg");
- 
+
 interface TrayProps {
   items?: AppItem[],
-  statusBarIsOpen?: boolean
-  toggleStatusBar?: (isOpen: boolean) => void
+  statusBarIsOpen: boolean
+  toggleStatusBar?: () => void
   toggleSwitch?: (targetDappId?: number, targetDappName?: string) => any
 }
 
 export class Tray extends React.Component<TrayProps> {
   private getBottomToggle(): JSX.Element {
-    let { statusBarIsOpen } = this.props;
-    statusBarIsOpen = !!statusBarIsOpen;
+    let { statusBarIsOpen, toggleStatusBar } = this.props;
 
     const statusIcon = statusBarIsOpen ? closeIcon : indicatorIcon;
 
-    const toggle = () => {
-      const { toggleStatusBar } = this.props;
-      toggleStatusBar(statusBarIsOpen);
-    };
-
     return (
-      <div className="bottom" onClick={toggle}>
+      <div className="bottom" onClick={() => toggleStatusBar()}>
         <div className="indicator">
           <img src={statusIcon} />
         </div>
