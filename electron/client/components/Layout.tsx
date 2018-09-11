@@ -76,7 +76,7 @@ class App extends React.Component<AppProps> {
         <div className="content-zone" key="root-content" id="root-container">
           {/* <div className="content" id="content-wrap"> */}
             {/* <main className="page-container"> */}
-              <Tray items={trayItems} toggleSwitch={onSwitchDapp} togglePeersBar={peersBarToggle} statusBarIsOpen={openStatusBarPanel}/>
+              <Tray items={trayItems} toggleSwitch={onSwitchDapp} togglePeersBar={peersBarToggle} peersBarIsOpen={openPeersBarPanel}/>
 
               <AppsFeed items={feedItems} toggleAppHome={onToggleAppHome} resizeAppsFeed={onResizeAppsFeed}/>
               {/*  */}

@@ -7,16 +7,16 @@ const closeIcon = require("../../assets/icons/close.svg");
 
 interface TrayProps {
   items?: AppItem[],
-  statusBarIsOpen: boolean
+  peersBarIsOpen: boolean
   togglePeersBar?: () => void
   toggleSwitch?: (targetDappId?: number, targetDappName?: string) => any
 }
 
 export class Tray extends React.Component<TrayProps> {
   private getBottomToggle(): JSX.Element {
-    let { statusBarIsOpen, togglePeersBar } = this.props;
+    let { peersBarIsOpen, togglePeersBar } = this.props;
 
-    const statusIcon = statusBarIsOpen ? closeIcon : indicatorIcon;
+    const statusIcon = peersBarIsOpen ? closeIcon : indicatorIcon;
 
     return (
       <div className="bottom" onClick={() => togglePeersBar()}>
