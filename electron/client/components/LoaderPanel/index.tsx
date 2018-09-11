@@ -4,7 +4,9 @@ import {Props as MenuProps, slide as Menu, State} from "react-burger-menu";
 import { IoIosDocument, IoMdFolderOpen, IoMdCloudUpload, IoMdMenu } from 'react-icons/io';
 interface LoaderPanelProps {
   isOpen?: boolean,
-  togglePanel?(openStatus: boolean): void
+  togglePanel?(openStatus: boolean): void,
+  isNotificationPanelOpen?: boolean,
+  toggleNotificationPanel?(openStatus: boolean): void
 }
 interface LoaderPanelState {
   activeTab: string,
@@ -50,7 +52,7 @@ export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelSt
       uploadClass = activeClass;
     }
 
-    let { isOpen, togglePanel } = this.props;
+    let { isOpen, togglePanel, isNotificationPanelOpen, toggleNotificationPanel } = this.props;
 
     const menuProps: MenuProps = {
       outerContainerId: "root-container",
@@ -59,13 +61,16 @@ export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelSt
       customCrossIcon: false,
       right: true,
       width: 300,
-      isOpen: isOpen,
+      isOpen,
       onStateChange: (value) => {
+        if (isOpen && isNotificationPanelOpen) {
+          toggleNotificationPanel(false);
+        }
         if (isOpen !== value.isOpen) {
           togglePanel(value.isOpen);
         }
       },
-    }
+    };
 
     return (
       <Menu {...menuProps}>
