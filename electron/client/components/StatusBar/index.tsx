@@ -15,13 +15,16 @@ export class StatusBar extends React.Component<StatusBarProps> {
   }
 
   public getList(): JSX.Element[] {
-    const { items } = this.props;
+    const { items, isOpen } = this.props;
 
     if (items) {
-      return Object.keys(items).map((itemKey, index) => (
+      return Object.keys(items)
+        .filter((key, index) => index !== 0) // don't take first element as it always visible
+        .map((itemKey, index) => (
         <Bar
           key={`${itemKey}-${index}`}
           item={items[itemKey]}
+          visible={isOpen}
         />
       ))
     } else {
@@ -33,21 +36,25 @@ export class StatusBar extends React.Component<StatusBarProps> {
   }
 
   public render() {
-    let { isOpen } = this.props;
+    let { isOpen, items } = this.props;
 
     const props: any = {
-      className: "statusbar",
       style: {
-        position: "absolute",
-        bottom: 0,
         display: isOpen ? "block": "none"
       },
     };
 
+    const keys = Object.keys(items);
+
     return (
-      <div {...props}>
+      <div className="statusbar">
+        <Bar
+          key={`${keys[0]}-${0}`}
+          item={items[keys[0]]}
+          visible={true}
+        />
         {this.getList()}
-        <div className="console"></div>
+        <div className="console" {...props} />
       </div>
     )
   }
