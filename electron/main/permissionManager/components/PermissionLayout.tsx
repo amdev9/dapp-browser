@@ -21,11 +21,14 @@ export class PermissionLayout extends React.Component<PermissionLayoutProps> {
   
   public render() {
     const { permissions } = this.props;
-    const permissionItems: JSX.Element[] = permissions.map((perm: SystemComponent): JSX.Element => (
+    const permissionItems: JSX.Element[] = permissions.map((perm: any): JSX.Element => (
       <PermCheckBox 
         key={`${perm}`} 
-        permissionFlag={perm.type} 
-        isChecked={perm.granted} /> 
+        permissionConf={perm} /> 
+
+        //  permissionFlag={perm.type} 
+        // isChecked={perm.granted}
+
     ));
     
     return (

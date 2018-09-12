@@ -19,7 +19,7 @@ export interface PermissionList extends Array<SystemComponent> {
 //   type: Permission,
 //   granted: boolean
 // }
-// export interface IState {
-//   permissions: PermissionList
-// }
+export interface IState {
+  permissions: PermissionList
+}
 
