@@ -13,6 +13,7 @@ import {
   TOGGLE_STATUS_BAR_PANEL,
   TOGGLE_PEERS_BAR_PANEL,
   TOGGLE_LOADER_PANEL,
+  TOGGLE_SETTINGS_PANEL,
   BIND_OPEN_CHANNELS_DONE,
   BIND_OPEN_CHANNELS,
   OPEN_CHANNEL_SUCCESS,
@@ -54,6 +55,7 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
           case CLEAR_NOTIFICATION:
           case CLEAR_ALL_NOTIFICATIONS:
           case TOGGLE_LOADER_PANEL:
+          case TOGGLE_SETTINGS_PANEL:
           case TOGGLE_STATUS_BAR_PANEL:
           case TOGGLE_PEERS_BAR_PANEL:
           case TOGGLE_HOME:

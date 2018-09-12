@@ -7,6 +7,7 @@ import * as LoaderActions from '../redux/actions/loader';
 import * as TrayActions from '../redux/actions/tray';
 import * as StatusBarActions from '../redux/actions/status-bar';
 import * as AppsFeedActions  from "../redux/actions/appsFeed";
+import * as SettingsActions  from "../redux/actions/settings";
 import { AppItem, NotifyItem, StatusBarItem, FeedItem } from '../redux/model';
 import { HeaderBar } from './HeaderBar'
 import { NotificationPanel } from "./NotificationPanel"
@@ -30,6 +31,7 @@ interface AppProps {
   peersBarToggle: () => void,
   onIncrement: () => any,
   onDecrement: () => any,
+  onToggleSettingsPanel: (openStatus?: boolean) => any,
   onTogglePanel: (openStatus?: boolean) => any,
   onToggleHome: (openStatus?: boolean) => any,
   onToggleLoaderPanel: (openStatus?: boolean) => any,
@@ -46,7 +48,7 @@ class App extends React.Component<AppProps> {
     const {
       onTogglePanel, openNotificationPanel, openStatusBarPanel, openPeersBarPanel, clearNotification, clearAllNotifications,
       onAddAppItem, onSwitchDapp, onToggleHome, statusBarToggle, peersBarToggle, onToggleAppHome,
-      trayItems, feedItems, notifyItems, statusBarItems, onToggleLoaderPanel, openLoaderPanel, onResizeAppsFeed
+      trayItems, feedItems, notifyItems, statusBarItems, onToggleLoaderPanel, onToggleSettingsPanel, openLoaderPanel, onResizeAppsFeed
     } = this.props;
 
 
@@ -54,6 +56,7 @@ class App extends React.Component<AppProps> {
       <div>
         <HeaderBar
           isOpen={openNotificationPanel}
+          toggleSettingsPanel={() => onToggleSettingsPanel()}
           togglePanel={() => onTogglePanel()}
           toggleLoaderPanel={onToggleLoaderPanel}
           toggleHome={() => onToggleHome(true)}
@@ -105,6 +108,7 @@ const mapStateToProps = (state: IState) => ({
 const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
   onIncrement: CounterActions.increment,
   onDecrement: CounterActions.decrement,
+  onToggleSettingsPanel: SettingsActions.toggle,
   onTogglePanel: NotificationActions.toggle,
   clearNotification: NotificationActions.clearNotification,
   clearAllNotifications: NotificationActions.clearAllNotifications,
