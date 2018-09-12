@@ -7,8 +7,34 @@ interface SettingsPanelProps {
   peersBarIsOpen?: boolean
 }
 
-export class SettingsPanel extends React.Component<SettingsPanelProps> {
+interface SettingsPanelState {
+  activeTab: string
+}
+
+export class SettingsPanel extends React.Component<SettingsPanelProps, SettingsPanelState> {
+  constructor(props: SettingsPanelProps) {
+    super(props);
+
+    this.switchTab = this.switchTab.bind(this);
+    this.state = {activeTab: 'general'}
+  }
+
+  private switchTab(tabName: string): void {
+    this.setState({activeTab: tabName});
+  }
+
   public render() {
+    const activeClass = ['active', 'show'];
+
+    let generalClass = null;
+    let networkClass = null;
+
+    if(this.state.activeTab === 'general') {
+      generalClass = activeClass;
+    } else {
+      networkClass = activeClass;
+    }
+
     let { isOpen } = this.props;
 
     const props: any = {
@@ -22,13 +48,13 @@ export class SettingsPanel extends React.Component<SettingsPanelProps> {
         <div className="navigate">
           <ul className="nav justify-content-center">
             <li className="nav-item">
-              <button type="button" name="general" className="btn btn-link active">General</button>
+              <button type="button" name="general" className={['btn', 'btn-link'].concat(generalClass).join(' ')} onClick={()=>this.switchTab('general')}>General</button>
             </li>
             <li className="nav-item">
               <button type="button" name="access" className="btn btn-link">Access</button>
             </li>
             <li className="nav-item">
-              <button type="button" name="network" className="btn btn-link">Network</button>
+              <button type="button" name="network" className={['btn', 'btn-link'].concat(networkClass).join(' ')} onClick={()=>this.switchTab('network')}>Network</button>
             </li>
             <li className="nav-item">
               <button type="button" name="devmode" className="btn btn-link">Dev Mode</button>
@@ -196,41 +222,48 @@ export class SettingsPanel extends React.Component<SettingsPanelProps> {
                   {/*</div>*/}
                 {/*</form>*/}
               {/*</div>*/}
-              {/*<div className="item" style="display: none;">*/}
-                {/*<form className="form-settings">*/}
-                  {/*<div className="form-group">*/}
-                    {/*<div className="custom-control custom-checkbox"><input type="hidden" name="proxy" value="false">*/}
-                      {/*<input type="checkbox" name="proxy" value="true" id="input-proxy"*/}
-                             {/*className="custom-control-input"> <label htmlFor="input-proxy"*/}
-                                                                      {/*className="custom-control-label">Use socks*/}
-                        {/*proxy</label></div>*/}
-                  {/*</div>*/}
-                  {/*<div className="form-group"><label>Host</label> <input type="text" name="host"*/}
-                                                                         {/*className="form-control"></div>*/}
-                  {/*<div className="form-group"><label>Port</label> <input type="text" name="port"*/}
-                                                                         {/*className="form-control"></div>*/}
-                  {/*<div className="form-group"><label>Public Key</label> <input type="text" name="public"*/}
-                                                                               {/*className="form-control"></div>*/}
-                  {/*<div className="form-group">*/}
-                    {/*<div className="row">*/}
-                      {/*<div className="col-auto">*/}
-                        {/*<div className="custom-control custom-radio"><input type="radio" id="radio-socks-3" name="socks"*/}
-                                                                            {/*value="3" className="custom-control-input">*/}
-                          {/*<label htmlFor="radio-socks-3" className="custom-control-label">Socks 3</label></div>*/}
-                      {/*</div>*/}
-                      {/*<div className="col-auto">*/}
-                        {/*<div className="custom-control custom-radio"><input type="radio" id="radio-socks-4" name="socks"*/}
-                                                                            {/*value="4" className="custom-control-input">*/}
-                          {/*<label htmlFor="radio-socks-4" className="custom-control-label">Socks 4</label></div>*/}
-                      {/*</div>*/}
-                    {/*</div>*/}
-                  {/*</div>*/}
-                  {/*<div className="form-group text-right">*/}
-                    {/*<button type="button" className="btn btn-light btn-lg">Cancel</button>*/}
-                    {/*<button type="submit" className="btn btn-primary btn-lg">Save</button>*/}
-                  {/*</div>*/}
-                {/*</form>*/}
-              {/*</div>*/}
+              <div className="item" style={{display: "none"}}>
+                <form className="form-settings">
+                  <div className="form-group">
+                    <div className="custom-control custom-checkbox">
+                      <input type="hidden" name="proxy" value="false" />
+                      <input type="checkbox" name="proxy" value="true" id="input-proxy" className="custom-control-input" />
+                      <label htmlFor="input-proxy" className="custom-control-label">Use socks proxy</label>
+                    </div>
+                  </div>
+                  <div className="form-group">
+                    <label>Host</label>
+                    <input type="text" name="host" className="form-control" />
+                  </div>
+                  <div className="form-group">
+                    <label>Port</label>
+                    <input type="text" name="port" className="form-control" />
+                  </div>
+                  <div className="form-group">
+                    <label>Public Key</label>
+                    <input type="text" name="public" className="form-control" /></div>
+                    <div className="form-group">
+                      <div className="row">
+                        <div className="col-auto">
+                          <div className="custom-control custom-radio">
+                            <input type="radio" id="radio-socks-3" name="socks" value="3" className="custom-control-input" />
+                            <label htmlFor="radio-socks-3" className="custom-control-label">Socks 3</label>
+                          </div>
+                        </div>
+                        <div className="col-auto">
+                          <div className="custom-control custom-radio">
+                            <input type="radio" id="radio-socks-4" name="socks" value="4" className="custom-control-input" />
+                            <label htmlFor="radio-socks-4" className="custom-control-label">Socks 4</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="form-group text-right">
+                      <button type="button" className="btn btn-light btn-lg">Cancel</button>
+                      <button type="submit" className="btn btn-primary btn-lg">Save</button>
+                    </div>
+                </form>
+              </div>
               {/*<div className="item" style="display: none;">*/}
                 {/*<form className="form-settings">*/}
                   {/*<div className="form-group">*/}
