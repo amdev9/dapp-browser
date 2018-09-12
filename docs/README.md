@@ -52,7 +52,7 @@
 ```
  
 The client is launched inside the [sandboxed](https://slack.engineering/interops-labyrinth-sharing-code-between-web-electron-apps-f9474d62eccc) [BrowserWindow](https://slack.engineering/growing-pains-migrating-slacks-desktop-app-to-browserview-2759690d9c7b).  
-Dapps are launched inside the sandboxed BrowserView. When you launch a dapp for the first time, we create a BrowserWindow for it. At some point, you're going to have multiple BrowserViews in which the dapps are running. We are going to keep them datached from the BworserWindow. To switch workspaces, you will need to make an additional request to set a BrowserView. 
+Dapps are launched inside the sandboxed BrowserView. When you launch a dapp for the first time, we create a BrowserWindow for it. At some point, you're going to have multiple BrowserViews in which the dapps are running. We are going to keep them around the memory, detached from the BrowserWindow. Then switching workspaces is just an additional call to `setBrowserView`. 
 
 [Sandboxed](https://electronjs.org/docs/api/sandbox-option) [BrowserView](https://github.com/electron/electron/blob/master/docs/api/browser-view.md):
 > It behaves more like a Chrome tab than the webview does
