@@ -83,14 +83,13 @@ class App extends React.Component<AppProps> {
             {/* <main className="page-container"> */}
               <Tray items={trayItems} toggleSwitch={onSwitchDapp} togglePeersBar={peersBarToggle} peersBarIsOpen={openPeersBarPanel}/>
 
-              <AppsFeed items={feedItems} toggleAppHome={onToggleAppHome} resizeAppsFeed={onResizeAppsFeed}/>
-              {/*  */}
+              <AppsFeed items={feedItems} toggleAppHome={onToggleAppHome} resizeAppsFeed={onResizeAppsFeed} settingsPanelIsOpen={openSettingsPanel}/>
+              <SettingsPanel isOpen={openSettingsPanel}/>
 
             {/* </main> */}
           {/* </div> */}
         </div>
         <StatusBar isOpen={openStatusBarPanel} items={statusBarItems} toggleStatusBar={statusBarToggle} peersBarIsOpen={openPeersBarPanel}/>
-        <SettingsPanel isOpen={openSettingsPanel}/>
       </div>
     )
   }
