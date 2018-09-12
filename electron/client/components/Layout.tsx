@@ -12,6 +12,7 @@ import { AppItem, NotifyItem, StatusBarItem, FeedItem } from '../redux/model';
 import { HeaderBar } from './HeaderBar'
 import { NotificationPanel } from "./NotificationPanel"
 import { LoaderPanel } from './LoaderPanel'
+import { SettingsPanel } from './SettingsPanel'
 import { StatusBar } from "./StatusBar"
 import { Tray } from './Tray';
 import { AppsFeed } from './AppsFeed';
@@ -23,6 +24,7 @@ interface AppProps {
   openLoaderPanel: boolean,
   openStatusBarPanel: boolean,
   openPeersBarPanel: boolean,
+  openSettingsPanel: boolean,
   trayItems: AppItem[],
   feedItems: FeedItem[],
   notifyItems: NotifyItem[],
@@ -46,7 +48,7 @@ interface AppProps {
 class App extends React.Component<AppProps> {
   render() {
     const {
-      onTogglePanel, openNotificationPanel, openStatusBarPanel, openPeersBarPanel, clearNotification, clearAllNotifications,
+      onTogglePanel, openNotificationPanel, openStatusBarPanel, openPeersBarPanel, openSettingsPanel, clearNotification, clearAllNotifications,
       onAddAppItem, onSwitchDapp, onToggleHome, statusBarToggle, peersBarToggle, onToggleAppHome,
       trayItems, feedItems, notifyItems, statusBarItems, onToggleLoaderPanel, onToggleSettingsPanel, openLoaderPanel, onResizeAppsFeed
     } = this.props;
@@ -88,6 +90,7 @@ class App extends React.Component<AppProps> {
           {/* </div> */}
         </div>
         <StatusBar isOpen={openStatusBarPanel} items={statusBarItems} toggleStatusBar={statusBarToggle} peersBarIsOpen={openPeersBarPanel}/>
+        <SettingsPanel isOpen={openSettingsPanel}/>
       </div>
     )
   }
@@ -100,6 +103,7 @@ const mapStateToProps = (state: IState) => ({
   openLoaderPanel: state.loader.isOpen,
   openStatusBarPanel: state.statusBar.isOpen,
   openPeersBarPanel: state.statusBar.isPeersOpen,
+  openSettingsPanel: state.settings.isOpen,
   statusBarItems: state.statusBar.items,
   trayItems: state.tray.items,
   feedItems: state.feed.items
