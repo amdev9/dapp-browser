@@ -16,6 +16,11 @@
       }
     }, 
     "logger", 
-    "ipfs"
+    {
+      "ipfs": { 
+        "required": "true",
+        "dependecy": ["appName1", "appName2"]
+      }
+    }
   ]
 }

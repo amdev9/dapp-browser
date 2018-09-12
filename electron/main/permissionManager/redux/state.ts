@@ -1,15 +1,25 @@
-import { Permission } from './model';
+// import { Permission } from './model';
 
-export interface MapPermission {
-  type: Permission,
-  granted: boolean
+export type Permission = "ipfs" | "network" | "storage";
+
+interface ComponentProps {
+  required?: boolean,
+  dependency?: string[],
 }
 
-export interface PermissionList extends Array<MapPermission> {
-  items: MapPermission[]
+export type SystemComponent = {
+  [key: string]: ComponentProps
+} | Permission;
+
+export interface PermissionList extends Array<SystemComponent> {
+  items: SystemComponent[]
 }
 
-export interface IState {
-  permissions: PermissionList
-}
+// export interface MapPermission {
+//   type: Permission,
+//   granted: boolean
+// }
+// export interface IState {
+//   permissions: PermissionList
+// }
 

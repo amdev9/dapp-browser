@@ -2,7 +2,7 @@ import * as React from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { PermCheckBox } from './PermCheckBox'; 
-import { PermissionList, MapPermission } from "../redux/state";
+import { PermissionList, SystemComponent, Permission } from "../redux/state";
 import { IState } from '../redux/state';
 
 interface PermissionLayoutProps {
@@ -21,7 +21,7 @@ export class PermissionLayout extends React.Component<PermissionLayoutProps> {
   
   public render() {
     const { permissions } = this.props;
-    const permissionItems: JSX.Element[] = permissions.map((perm: MapPermission): JSX.Element => (
+    const permissionItems: JSX.Element[] = permissions.map((perm: SystemComponent): JSX.Element => (
       <PermCheckBox 
         key={`${perm}`} 
         permissionFlag={perm.type} 
