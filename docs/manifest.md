@@ -1,4 +1,14 @@
 # Manifest
+
+
+ 
+For that specific problem, add `required: "false"` to your manifest, to indicate that this feature is optional.
+
+Links: <br />
+https://stackoverflow.com/questions/9299993/optional-permissions-so-an-app-can-show-on-all-devices-and-enable-optional-featu
+https://developer.android.com/training/permissions/requesting
+
+
 Предлагаемая конечная версия схемы манифеста
 
 ```typescript

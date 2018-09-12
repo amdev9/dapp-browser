@@ -1,11 +1,11 @@
 import { Permission } from './model';
 
-interface MapPermission {
+export interface MapPermission {
   type: Permission,
   granted: boolean
 }
 
-export interface PermissionList {
+export interface PermissionList extends Array<MapPermission> {
   items: MapPermission[]
 }
 

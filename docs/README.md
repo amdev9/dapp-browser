@@ -20,6 +20,7 @@
   - [Keychain](#keychain)
   - [Network](#network)
 - [Array library documentation](#array-library-documentation)
+  - [Dapp manifest](manifest.md)
   - [array.dapp](#arraydapp)
   - [array.dapp.subscribe](#arraydappsubscribe)
   - [array.Ipc](#arrayipc)

@@ -2,11 +2,11 @@ import * as React from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { PermCheckBox } from './PermCheckBox'; 
-import { Permission } from "../redux/model";
+import { PermissionList, MapPermission } from "../redux/state";
 import { IState } from '../redux/state';
 
 interface PermissionLayoutProps {
-  permissions: Permission[],
+  permissions: PermissionList,
 }
  
 export class PermissionLayout extends React.Component<PermissionLayoutProps> { 
@@ -21,10 +21,13 @@ export class PermissionLayout extends React.Component<PermissionLayoutProps> {
   
   public render() {
     const { permissions } = this.props;
-    const permissionItems: JSX.Element[] = permissions.map((perm): JSX.Element => (
-      <PermCheckBox key={`${perm}`} permissionFlag={perm}/> 
+    const permissionItems: JSX.Element[] = permissions.map((perm: MapPermission): JSX.Element => (
+      <PermCheckBox 
+        key={`${perm}`} 
+        permissionFlag={perm.type} 
+        isChecked={perm.granted} /> 
     ));
-
+    
     return (
       <div>
         {permissionItems}

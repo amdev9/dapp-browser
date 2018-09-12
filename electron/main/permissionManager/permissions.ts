@@ -3,7 +3,7 @@
 import { combineReducers, createStore, applyMiddleware, compose, StoreEnhancer, Store, Middleware, Dispatch } from 'redux';
  
 import { isFSA } from 'flux-standard-action'; 
-import { Permission } from './model';
+import { PermissionList } from './redux/state';
  
 interface Action {
   type: string;
@@ -21,7 +21,7 @@ interface ElectronManager {
   sendActionMain(action: any): void;
   replyActionRenderer(store: any): void;
   getGlobalState(): () => string;
-  permissions: Permission[]
+  permissions: PermissionList
 }
 
 declare const window: Window & {

@@ -9,20 +9,20 @@ interface PermCheckBoxProps {
 export class PermCheckBox extends React.Component<PermCheckBoxProps> { 
   constructor(props: PermCheckBoxProps) {
     super(props);
-    this.state = {
-      isChecked: true
-    };
+    // this.state = {
+    //   isChecked: true
+    // };
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
   handleInputChange() {
-    const { permissionFlag } = this.props;
+    const { permissionFlag, isChecked } = this.props;
     // change granted boolean flag
     console.log('handleInputChange', permissionFlag);
   }
 
   public render() {
-    const { permissionFlag } = this.props;
+    const { permissionFlag, isChecked } = this.props;
     return (
       <div>
         <label>
@@ -30,7 +30,7 @@ export class PermCheckBox extends React.Component<PermCheckBoxProps> {
           <input
             name={permissionFlag}
             type="checkbox"
-            checked={this.props.isChecked}
+            checked={isChecked}
             onChange={this.handleInputChange} />
         </label>
       </div>
