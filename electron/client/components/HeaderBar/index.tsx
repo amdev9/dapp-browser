@@ -4,6 +4,7 @@ import { HomeWidget } from './HomeWidget';
 import { DownloadWidget } from './DownloadWidget';
 import { SettingsWidget } from './SettingsWidget';
 import { NetworkWidget } from './NetworkWidget';
+import { SuggestSearch } from './SuggestSearch';
 
 interface HeaderBarProps {
   isOpen?: boolean,
@@ -22,7 +23,7 @@ export class HeaderBar extends React.Component<HeaderBarProps> {
           Home
         </div>
         <div className="actions">
-          {/* <SuggestSearch /> */}
+          <SuggestSearch />
           <div className="unions">
             <NetworkWidget />
             {/* <Keychain /> */}

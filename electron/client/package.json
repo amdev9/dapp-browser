@@ -55,6 +55,7 @@
     "prop-types": "^15.5.10",
     "rc-dropdown": "^2.2.0",
     "react": "^16.4.0",
+    "react-autocomplete": "^1.8.1",
     "react-burger-menu": "^2.5.2",
     "react-dom": "^16.4.0",
     "react-dropzone": "^5.0.1",
