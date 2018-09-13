@@ -20,6 +20,10 @@ export interface LoaderPanel {
   isOpen: boolean
 }
 
+export interface SettingsPanel {
+  isOpen: boolean
+}
+
 export interface StatusBarPanel {
   items: { [index: string]: StatusBarItem; },
   isOpen: boolean
@@ -35,4 +39,5 @@ export interface IState {
   statusBar: StatusBarPanel;
   tray: Tray;
   feed: Feed;
+  settings: SettingsPanel;
 }

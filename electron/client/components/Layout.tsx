@@ -7,10 +7,12 @@ import * as LoaderActions from '../redux/actions/loader';
 import * as TrayActions from '../redux/actions/tray';
 import * as StatusBarActions from '../redux/actions/status-bar';
 import * as AppsFeedActions  from "../redux/actions/appsFeed";
+import * as SettingsActions  from "../redux/actions/settings";
 import { AppItem, NotifyItem, StatusBarItem, FeedItem } from '../redux/model';
 import { HeaderBar } from './HeaderBar'
 import { NotificationPanel } from "./NotificationPanel"
 import { LoaderPanel } from './LoaderPanel'
+import { SettingsPanel } from './SettingsPanel'
 import { StatusBar } from "./StatusBar"
 import { Tray } from './Tray';
 import { AppsFeed } from './AppsFeed';
@@ -22,6 +24,7 @@ interface AppProps {
   openLoaderPanel: boolean,
   openStatusBarPanel: boolean,
   openPeersBarPanel: boolean,
+  openSettingsPanel: boolean,
   trayItems: AppItem[],
   feedItems: FeedItem[],
   notifyItems: NotifyItem[],
@@ -30,6 +33,7 @@ interface AppProps {
   peersBarToggle: () => void,
   onIncrement: () => any,
   onDecrement: () => any,
+  onToggleSettingsPanel: (openStatus?: boolean) => any,
   onTogglePanel: (openStatus?: boolean) => any,
   onToggleHome: (openStatus?: boolean) => any,
   onToggleLoaderPanel: (openStatus?: boolean) => any,
@@ -44,9 +48,9 @@ interface AppProps {
 class App extends React.Component<AppProps> {
   render() {
     const {
-      onTogglePanel, openNotificationPanel, openStatusBarPanel, openPeersBarPanel, clearNotification, clearAllNotifications,
+      onTogglePanel, openNotificationPanel, openStatusBarPanel, openPeersBarPanel, openSettingsPanel, clearNotification, clearAllNotifications,
       onAddAppItem, onSwitchDapp, onToggleHome, statusBarToggle, peersBarToggle, onToggleAppHome,
-      trayItems, feedItems, notifyItems, statusBarItems, onToggleLoaderPanel, openLoaderPanel, onResizeAppsFeed
+      trayItems, feedItems, notifyItems, statusBarItems, onToggleLoaderPanel, onToggleSettingsPanel, openLoaderPanel, onResizeAppsFeed
     } = this.props;
 
 
@@ -54,6 +58,7 @@ class App extends React.Component<AppProps> {
       <div>
         <HeaderBar
           isOpen={openNotificationPanel}
+          toggleSettingsPanel={() => onToggleSettingsPanel()}
           togglePanel={() => onTogglePanel()}
           toggleLoaderPanel={onToggleLoaderPanel}
           toggleHome={() => onToggleHome(true)}
@@ -78,8 +83,8 @@ class App extends React.Component<AppProps> {
             {/* <main className="page-container"> */}
               <Tray items={trayItems} toggleSwitch={onSwitchDapp} togglePeersBar={peersBarToggle} peersBarIsOpen={openPeersBarPanel}/>
 
-              <AppsFeed items={feedItems} toggleAppHome={onToggleAppHome} resizeAppsFeed={onResizeAppsFeed}/>
-              {/*  */}
+              <AppsFeed items={feedItems} toggleAppHome={onToggleAppHome} resizeAppsFeed={onResizeAppsFeed} settingsPanelIsOpen={openSettingsPanel}/>
+              <SettingsPanel isOpen={openSettingsPanel}/>
 
             {/* </main> */}
           {/* </div> */}
@@ -97,6 +102,7 @@ const mapStateToProps = (state: IState) => ({
   openLoaderPanel: state.loader.isOpen,
   openStatusBarPanel: state.statusBar.isOpen,
   openPeersBarPanel: state.statusBar.isPeersOpen,
+  openSettingsPanel: state.settings.isOpen,
   statusBarItems: state.statusBar.items,
   trayItems: state.tray.items,
   feedItems: state.feed.items
@@ -105,6 +111,7 @@ const mapStateToProps = (state: IState) => ({
 const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
   onIncrement: CounterActions.increment,
   onDecrement: CounterActions.decrement,
+  onToggleSettingsPanel: SettingsActions.toggle,
   onTogglePanel: NotificationActions.toggle,
   clearNotification: NotificationActions.clearNotification,
   clearAllNotifications: NotificationActions.clearAllNotifications,

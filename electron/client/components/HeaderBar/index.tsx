@@ -3,16 +3,18 @@ import * as React from "react";
 import { NotificationWidget } from './NotificationWidget';
 import { HomeWidget } from './HomeWidget';
 import { DownloadWidget } from './DownloadWidget';
+import { SettingsWidget } from "./SettingsWidget";
 
 interface HeaderBarProps {
   isOpen?: boolean,
+  toggleSettingsPanel?(): void,
   togglePanel?(): void,
   toggleLoaderPanel?(): void,
   toggleHome?(): void
 }
 export class HeaderBar extends React.Component<HeaderBarProps> {
   public render() {
-    const { togglePanel, toggleHome, isOpen, toggleLoaderPanel } = this.props;
+    const { togglePanel, toggleHome, toggleLoaderPanel, toggleSettingsPanel } = this.props;
     return (
       <div className="headerbar">
         <HomeWidget toggleHome={toggleHome}/>
@@ -29,8 +31,8 @@ export class HeaderBar extends React.Component<HeaderBarProps> {
             </div>
 
             {/* <Keychain /> */}
-            {/* <Settings /> */}
 
+            <SettingsWidget isOpen togglePanel={toggleSettingsPanel} />
             <NotificationWidget isOpen togglePanel={togglePanel} />
             <DownloadWidget isOpen togglePanel={toggleLoaderPanel} />
           </div>

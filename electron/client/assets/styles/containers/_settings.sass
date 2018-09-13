@@ -1,0 +1,227 @@
+.settingsbar
+  display: block
+  width: 100%
+
+  .btn-link
+    font: 500 14px 'Open Sans', sans-serif
+    color: #AAB4BF
+    text-transform: none
+
+  .btn
+    font: 12px 'Montserrat', sans-serif
+    position: relative
+    border: 0
+    padding: 10px 20px
+    text-transform: uppercase
+    border-radius: 4px
+    cursor: pointer
+    &:focus
+      outline: none
+
+  .btn-link
+    font-weight: 400
+    color: #007bff
+    background-color: transparent
+
+  .btn-light
+    color: #AAB4BF
+    background: #fff
+
+  .btn-primary
+    color: #fff
+    background-color: #007bff
+    border-color: #007bff
+
+  .text-right
+    text-align: right !important
+
+  .form-control
+    font: 16px 'Open Sans', sans-serif
+    color: #252526
+    //height: 50px
+    padding: 10px 15px
+    border-radius: 4px
+    border-color: #fff
+    &:focus
+      outline: none
+
+  .form-control
+    display: block
+    width: 100%
+    padding: .375rem .75rem
+    font-size: 1rem
+    line-height: 1.5
+    color: #495057
+    background-color: #fff
+    background-clip: padding-box
+    border: 1px solid #ced4da
+    border-radius: .25rem
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out
+    button, input
+      overflow: visible
+
+    button, input, optgroup, select, textarea
+      margin: 0
+      font-family: inherit
+      font-size: inherit
+      line-height: inherit
+
+
+  .form-group .nice-select .list
+    left: -1px
+    right: -1px
+    margin: 2px 0 0
+    border-radius: 0 0 4px 4px
+    box-shadow: 0 2px 3px rgba(32, 32, 73, 0.05)
+
+  .nice-select .list
+    background-color: #fff
+    border-radius: 5px
+    box-shadow: 0 0 0 1px rgba(68, 68, 68, 0.11)
+    box-sizing: border-box
+    margin-top: 4px
+    opacity: 0
+    overflow: hidden
+    padding: 0
+    pointer-events: none
+    position: absolute
+    top: 100%
+    left: 0
+    z-index: 9
+
+  .form-group .nice-select
+    font: 16px 'Open Sans', sans-serif
+    float: none
+    color: #252526
+    height: 50px
+    line-height: 26px
+    padding: 10px 15px
+    border-radius: 4px
+    border-color: #fff
+
+  .nice-select
+    -webkit-tap-highlight-color: transparent
+    background-color: #fff
+    border-radius: 5px
+    border: solid 1px #e8e8e8
+    box-sizing: border-box
+    clear: both
+    cursor: pointer
+    display: block
+    float: left
+    font-family: inherit
+    font-size: 14px
+    font-weight: normal
+    height: 42px
+    line-height: 40px
+    outline: none
+    padding-left: 18px
+    padding-right: 30px
+    position: relative
+    text-align: left !important
+    -webkit-transition: all 0.2s ease-in-out
+    transition: all 0.2s ease-in-out
+    -webkit-user-select: none
+    -moz-user-select: none
+    -ms-user-select: none
+    user-select: none
+    white-space: nowrap
+    width: auto
+
+  .form-group
+    font: 500 17px 'Open Sans', sans-serif
+    margin: 0 0 30px
+
+  .form-settings
+    margin: 30px 0 0
+    .btn
+      min-width: 180px
+
+  .justify-content-center
+    -webkit-box-pack: center!important
+    -ms-flex-pack: center!important
+    justify-content: center !important
+
+  .item
+    margin: auto 80px
+
+  .category .item .sortby > span
+    font: 500 14px 'Open Sans', sans-serif
+    display: inline-block
+    color: #7B8DA7
+    margin-right: 10px
+
+  .category .item .sortby .dropdown > button
+    border-color: #E3E5E8
+    background: none
+
+  .navigate
+    height: 75px
+    background: #FAFAFC
+    //margin: 0 -55px 10px -55px
+    //border-left: 1px solid #F2F3F6
+
+  .navigate .nav
+    height: 100%
+
+  .navigate .nav-item
+    height: 100%
+
+  .navigate .nav-item button
+    font: 12px 'Montserrat', sans-serif
+    color: #7B8DA7
+    height: 100%
+    text-transform: uppercase
+    border-radius: 0
+    border-bottom: 3px solid transparent
+    cursor: pointer
+    &:focus
+      outline: none
+
+  .navigate .nav-item button.active,
+  .navigate .nav-item button:hover
+    color: #4686FF
+
+  .navigate .nav-item button.active
+    border-bottom-color: #4686FF
+
+  .nav-justified .nav-item
+    -ms-flex-preferred-size: 0
+    flex-basis: 0
+    -webkit-box-flex: 1
+    -ms-flex-positive: 1
+    flex-grow: 1
+    text-align: center
+
+  .nav
+    display: -webkit-box
+    display: -ms-flexbox
+    display: flex
+    -ms-flex-wrap: wrap
+    flex-wrap: wrap
+    padding-left: 0
+    margin-bottom: 0
+    margin-top: 0
+    list-style: none
+    &-link
+      font: 600 20px $font-montserrat !important
+      color: $dgray
+      border: 0
+      padding: 20px 10px
+      border-radius: 0
+      background: $gray
+      text-decoration: none
+      display: block
+
+      &.active
+        color: $theme !important
+        background-color: #fff
+
+  .tab
+    &-content
+      .active
+      display: block
+
+    &-pane
+      display: none
+      padding: 15px

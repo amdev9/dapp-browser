@@ -34,6 +34,7 @@ export const initialState: IState = {
     notification: {isOpen: false},
     loader: {isOpen: false},
     statusBar: {isOpen: false, isPeersOpen: false},
+    settings: {isOpen: false},
     window: {width: 0, height: 0}
   },
   feed: {}

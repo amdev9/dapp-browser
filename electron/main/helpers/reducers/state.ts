@@ -16,6 +16,9 @@ export type Client = {
   loader: {
     isOpen: boolean
   },
+  settings: {
+    isOpen: boolean
+  },
   window: {
     width: number,
     height: number
