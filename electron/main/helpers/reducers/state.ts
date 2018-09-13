@@ -16,16 +16,12 @@ export type Client = {
   loader: {
     isOpen: boolean
   },
-  settings: {
-    isOpen: boolean
-  },
   window: {
     width: number,
     height: number
   }
 }
 export interface IState {
-  counter: number;
   channel: {};
   client: Client,
   feed: {}

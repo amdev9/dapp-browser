@@ -1,97 +1,89 @@
-import { SWITCH_DAPP, ADD_APP_ITEM, TOGGLE_HOME, TOGGLE_APP_HOME } from '../constants';
+import {
+  SWITCH_DAPP,
+  ADD_APP_ITEM,
+  TOGGLE_HOME,
+  TOGGLE_APP_HOME
+} from '../constants';
 import { TrayAction } from '../actions/tray';
 import { Tray } from './state';
 
 const initialState: Tray = {
   items: [],
-  /*
-  {
-    id: 1,
-    appName: "exampleDapp",
-    icon: require("../../assets/app-icons/share.svg"),
-    statusIcon: ["running"]
-  }, {
-    id: 2,
-    appName: "exampleDapp2",
-    icon: require("../../assets/app-icons/chat.svg"),
-    statusIcon: ["running"]
-  } 
-  */
   activeDapp: {
     appName: null
   },
   pinned: [],
   isHome: true
 }
- 
+
 export default function tray(state: Tray = initialState, action: TrayAction) {
   switch (action.type) {
     case SWITCH_DAPP:
-     
+
       const dappName = action.payload.targetDappName;
       const newItems = state.items.map((item) => {
-        if( (item.appName != dappName) && item.statusIcon.includes('active') ) {
-          return { 
+        if ((item.appName != dappName) && item.statusIcon.includes('active')) {
+          return {
             ...item,
             statusIcon: item.statusIcon.filter(status => status !== 'active')
-          }         
-        } else if(item.appName == dappName && !item.statusIcon.includes('active')) {
-          return { 
+          }
+        } else if (item.appName == dappName && !item.statusIcon.includes('active')) {
+          return {
             ...item,
             statusIcon: item.statusIcon.concat(['active'])
-          }   
-        } else {
-          return item;
-        }
-      });
-       
-      return {
-        ...state,
-        items: newItems,
-        isHome: false, 
-        activeDapp: { 
-          appName: dappName 
-        }
-      }
-    
-    case ADD_APP_ITEM:
-      const appItem = action.payload.item;
-      
-      return {
-        ...state,
-        items: state.items.filter(item => item.appName == appItem.appName).length == 0 ? 
-          state.items.concat(appItem) : 
-            state.items
-      }
-    
-    case TOGGLE_HOME:
-      const isHome = action.payload.isHome;
-      const cleanItems = state.items.map((item) => {
-        if( item.statusIcon.includes('active') ) {
-          return { 
-            ...item,
-            statusIcon: item.statusIcon.filter(status => status !== 'active')
-          }         
+          }
         } else {
           return item;
         }
       });
 
-      return { 
-        ...state, 
+      return {
+        ...state,
+        items: newItems,
+        isHome: false,
+        activeDapp: {
+          appName: dappName
+        }
+      }
+
+    case ADD_APP_ITEM:
+      const appItem = action.payload.item;
+
+      return {
+        ...state,
+        items: state.items.filter(item => item.appName == appItem.appName).length == 0 ?
+          state.items.concat(appItem) :
+          state.items
+      }
+
+    case TOGGLE_HOME:
+      const isHome = action.payload.isHome;
+      const cleanItems = state.items.map((item) => {
+        if (item.statusIcon.includes('active')) {
+          return {
+            ...item,
+            statusIcon: item.statusIcon.filter(status => status !== 'active')
+          }
+        } else {
+          return item;
+        }
+      });
+
+      return {
+        ...state,
         isHome: isHome,
-        activeDapp: { 
-          appName: null 
+        activeDapp: {
+          appName: null
         },
         items: cleanItems
       };
-    
+
     case TOGGLE_APP_HOME:
       return {
         ...state,
-        isHome: false, 
-        activeDapp: { 
-          appName: action.payload.dappName 
+        isHome: false,
+        activeDapp: {
+          appName: action.payload.dappName
         }
       }
 

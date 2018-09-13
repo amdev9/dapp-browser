@@ -1,4 +1,8 @@
-import {CLEAR_ALL_NOTIFICATIONS, CLEAR_NOTIFICATION, TOGGLE_NOTIFICATION_PANEL} from '../constants';
+import {
+  CLEAR_ALL_NOTIFICATIONS,
+  CLEAR_NOTIFICATION,
+  TOGGLE_NOTIFICATION_PANEL
+} from '../constants';
 import { NotificationPanelAction } from '../actions/notification';
 import { NotificationPanel } from './state';
 
@@ -8,14 +12,14 @@ const contactIcon = require("../../assets/app-icons/contact.svg");
 const initialState: NotificationPanel = {
   items: [{
     id: 1,
-    message: '13245lorem ipsum delorem new as lorem ipsum, we go to hell',
+    message: 'Ipsum delorem new as lorem ipsum, we go to hell',
     created: new Date(),
     icon: chatIcon,
     appName: 'Chat'
   },
   {
     id: 2,
-    message: '434343434lorem ipsum delorem new as lorem ipsum, we go to hell',
+    message: 'Delorem new as lorem ipsum, we go to hell',
     created: new Date(),
     icon: contactIcon,
     appName: 'Chat'
@@ -34,12 +38,12 @@ export default function notification(state: NotificationPanel = initialState, ac
       }
     case CLEAR_NOTIFICATION:
       const items = state.items.filter(item => item.id !== action.payload.id);
-      return {...state, items};
+      return { ...state, items };
 
     case CLEAR_ALL_NOTIFICATIONS:
-      return {...state, items: []};
+      return { ...state, items: [] };
 
-    default: 
+    default:
       return state;
   }
 }

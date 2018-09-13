@@ -80,5 +80,5 @@ export class NotificationPanel extends React.Component<NotificationPanelProps> {
     )
   }
 }
- 
+
 

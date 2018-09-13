@@ -10,9 +10,9 @@ export default {
   },
 
   getHeight: (storeState: any) => {
-    if (storeState.client.settings.isOpen) {
-      return 0;
-    }
+    // if (storeState.client.settings.isOpen) {
+    //   return 0;
+    // }
     let offset = 110;
     if (storeState.client.statusBar.isOpen) {
       offset += 250;

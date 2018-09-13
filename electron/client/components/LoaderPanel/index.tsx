@@ -1,6 +1,6 @@
 import * as React from "react";
 import Dropzone from 'react-dropzone';
-import {Props as MenuProps, slide as Menu, State} from "react-burger-menu";
+import { Props as MenuProps, slide as Menu, State } from "react-burger-menu";
 import { IoIosDocument, IoMdFolderOpen, IoMdCloudUpload, IoMdMenu } from 'react-icons/io';
 interface LoaderPanelProps {
   isOpen?: boolean,
@@ -14,17 +14,13 @@ interface LoaderPanelState {
   uploaded: File[]
 }
 
-// Links:
-// https://alligator.io/react/react-dropzone/
-// https://github.com/react-dropzone/react-dropzone
-// https://react-dropzone.js.org/
 export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelState> {
   constructor(props: LoaderPanelProps) {
     super(props);
 
     this.onDrop = this.onDrop.bind(this);
     this.switchTab = this.switchTab.bind(this);
-    this.state = {activeTab: 'uploads', uploads: [], uploaded: []}
+    this.state = { activeTab: 'uploads', uploads: [], uploaded: [] }
   }
 
   private onDrop(uploads: File[]): void {
@@ -38,7 +34,7 @@ export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelSt
   }
 
   private switchTab(tabName: string): void {
-    this.setState({activeTab: tabName});
+    this.setState({ activeTab: tabName });
   }
 
   render() {
@@ -46,7 +42,7 @@ export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelSt
 
     let downloadClass = null;
     let uploadClass = null;
-    if(this.state.activeTab === 'downloads') {
+    if (this.state.activeTab === 'downloads') {
       downloadClass = activeClass;
     } else {
       uploadClass = activeClass;
@@ -76,8 +72,8 @@ export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelSt
       <Menu {...menuProps}>
         <div className="loader-popup">
           <ul className="nav nav-tabs nav-justified">
-            <li className="nav-item"><a href="#downloads" className={['nav-link'].concat(downloadClass).join(' ')} data-toggle="tab" onClick={()=>this.switchTab('downloads')}>Downloads</a></li>
-            <li className="nav-item"><a href="#uploads" className={['nav-link'].concat(uploadClass).join(' ')} data-toggle="tab" onClick={()=>this.switchTab('uploads')}>Uploads</a></li>
+            <li className="nav-item"><a href="#downloads" className={['nav-link'].concat(downloadClass).join(' ')} data-toggle="tab" onClick={() => this.switchTab('downloads')}>Downloads</a></li>
+            <li className="nav-item"><a href="#uploads" className={['nav-link'].concat(uploadClass).join(' ')} data-toggle="tab" onClick={() => this.switchTab('uploads')}>Uploads</a></li>
           </ul>
 
           <div className="tab-content">
@@ -85,7 +81,7 @@ export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelSt
               <ul>
                 <li className="row align-items-center">
                   <div className="col-auto icon">
-                    <IoIosDocument fontSize="35px" color="#A8B2BD"/>
+                    <IoIosDocument fontSize="35px" color="#A8B2BD" />
                   </div>
 
                   <div className="col introtext">
@@ -125,7 +121,7 @@ export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelSt
                         <circle cx="25" cy="9" r="22" stroke="#F2F3F6" strokeWidth="3" fill="none"></circle>
                       </svg>
                       <svg className="over" height="70" width="50">
-                        <circle  cx="25" cy="37" r="22" stroke="#4686FF" strokeWidth="3" fill="none" strokeDasharray="138,138"></circle>
+                        <circle cx="25" cy="37" r="22" stroke="#4686FF" strokeWidth="3" fill="none" strokeDasharray="138,138"></circle>
                       </svg>
                       <small className="total">100%</small>
                     </div>
@@ -145,13 +141,13 @@ export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelSt
               <ul>
                 {
                   this.state.uploaded.map(f => <li className="row align-items-center complete" key={f.name}>
-                      <div className="col-auto icon">
-                        <IoIosDocument fontSize="35px" color="#A8B2BD"/>
-                      </div>
-                      <div className="col introtext">
-                        <strong>{f.name}</strong>
-                        <small>{f.size}</small>
-                      </div>
+                    <div className="col-auto icon">
+                      <IoIosDocument fontSize="35px" color="#A8B2BD" />
+                    </div>
+                    <div className="col introtext">
+                      <strong>{f.name}</strong>
+                      <small>{f.size}</small>
+                    </div>
                   </li>
                   )
                 }

@@ -16,11 +16,11 @@ export class SettingsPanel extends React.Component<SettingsPanelProps, SettingsP
     super(props);
 
     this.switchTab = this.switchTab.bind(this);
-    this.state = {activeTab: 'general'}
+    this.state = { activeTab: 'general' } //@todo fix it to have a global state, dispatch action when switch tabs
   }
 
   private switchTab(tabName: string): void {
-    this.setState({activeTab: tabName});
+    this.setState({ activeTab: tabName });
   }
 
   public render() {
@@ -31,9 +31,9 @@ export class SettingsPanel extends React.Component<SettingsPanelProps, SettingsP
     let accessClass = null;
     let devModeClass = null;
 
-    if(this.state.activeTab === 'general') {
+    if (this.state.activeTab === 'general') {
       generalClass = activeClass;
-    } else if (this.state.activeTab === 'network'){
+    } else if (this.state.activeTab === 'network') {
       networkClass = activeClass;
     } else if (this.state.activeTab === 'access') {
       accessClass = activeClass;
@@ -45,7 +45,7 @@ export class SettingsPanel extends React.Component<SettingsPanelProps, SettingsP
 
     const props: any = {
       style: {
-        display: isOpen ? "block": "none"
+        display: isOpen ? "block" : "none"
       },
     };
 
@@ -54,28 +54,28 @@ export class SettingsPanel extends React.Component<SettingsPanelProps, SettingsP
         <div className="navigate">
           <ul className="nav justify-content-center">
             <li className="nav-item">
-              <button type="button" name="general" className={['btn', 'btn-link'].concat(generalClass).join(' ')} onClick={()=>this.switchTab('general')}>General</button>
+              <button type="button" name="general" className={['btn', 'btn-link'].concat(generalClass).join(' ')} onClick={() => this.switchTab('general')}>General</button>
             </li>
             <li className="nav-item">
-              <button type="button" name="access" className={['btn', 'btn-link'].concat(accessClass).join(' ')} onClick={()=>this.switchTab('access')}>Access</button>
+              <button type="button" name="access" className={['btn', 'btn-link'].concat(accessClass).join(' ')} onClick={() => this.switchTab('access')}>Access</button>
             </li>
             <li className="nav-item">
-              <button type="button" name="network" className={['btn', 'btn-link'].concat(networkClass).join(' ')} onClick={()=>this.switchTab('network')}>Network</button>
+              <button type="button" name="network" className={['btn', 'btn-link'].concat(networkClass).join(' ')} onClick={() => this.switchTab('network')}>Network</button>
             </li>
             <li className="nav-item">
-              <button type="button" name="devmode" className={['btn', 'btn-link'].concat(devModeClass).join(' ')} onClick={()=>this.switchTab('devmode')}>Dev Mode</button>
+              <button type="button" name="devmode" className={['btn', 'btn-link'].concat(devModeClass).join(' ')} onClick={() => this.switchTab('devmode')}>Dev Mode</button>
             </li>
           </ul>
         </div>
         <div className="category">
           <div className="justify-content-center">
             <div className="col-lg-7">
-              <div className="item" style={{display: this.state.activeTab === "general" ? "block" : "none"}}>
+              <div className="item" style={{ display: this.state.activeTab === "general" ? "block" : "none" }}>
                 <form className="form-settings">
                   <div className="form-group"><label>Language</label>
                     {/*<select name="language" style={{display: "none"}}>*/}
-                      {/*<option value="en">English</option>*/}
-                      {/*<option value="ru">Russian</option>*/}
+                    {/*<option value="en">English</option>*/}
+                    {/*<option value="ru">Russian</option>*/}
                     {/*</select>*/}
                     <div className="nice-select" tabIndex={0}><span className="current">English</span>
                       <ul className="list">
@@ -85,11 +85,11 @@ export class SettingsPanel extends React.Component<SettingsPanelProps, SettingsP
                     </div>
                   </div>
                   <div className="form-group"><label>Preferred unit of account</label>
-                  {/*<select name="units" style={{display: "none"}}>*/}
+                    {/*<select name="units" style={{display: "none"}}>*/}
                     {/*<option value="bts">BTS</option>*/}
                     {/*<option value="usd">USD</option>*/}
                     {/*<option value="rub">RUB</option>*/}
-                  {/*</select>*/}
+                    {/*</select>*/}
                     <div className="nice-select" tabIndex={0}><span className="current">BTS</span>
                       <ul className="list">
                         <li data-value="bts" className="option selected">BTS</li>
@@ -108,7 +108,7 @@ export class SettingsPanel extends React.Component<SettingsPanelProps, SettingsP
                 </form>
               </div>
 
-              <div className="item" style={{display: this.state.activeTab === "access" ? "block" : "none"}}>
+              <div className="item" style={{ display: this.state.activeTab === "access" ? "block" : "none" }}>
                 <form className="form-settings">
                   <div className="form-group"><label className="form-title">Active node</label>
                     <div className="row">
@@ -231,7 +231,7 @@ export class SettingsPanel extends React.Component<SettingsPanelProps, SettingsP
                 </form>
               </div>
 
-              <div className="item" style={{display: this.state.activeTab === 'network' ? "block" : "none"}}>
+              <div className="item" style={{ display: this.state.activeTab === 'network' ? "block" : "none" }}>
                 <form className="form-settings">
                   <div className="form-group">
                     <div className="custom-control custom-checkbox">
@@ -275,7 +275,7 @@ export class SettingsPanel extends React.Component<SettingsPanelProps, SettingsP
                 </form>
               </div>
 
-              <div className="item" style={{display: this.state.activeTab === "devmode" ? "block" : "none"}}>
+              <div className="item" style={{ display: this.state.activeTab === "devmode" ? "block" : "none" }}>
                 <form className="form-settings">
                   <div className="form-group">
                     <div className="custom-control custom-checkbox">

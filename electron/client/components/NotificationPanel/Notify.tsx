@@ -9,7 +9,7 @@ interface NotifyProps {
 }
 
 export class Notify extends React.Component<NotifyProps> {
- 
+
   public render() {
     const { clearNotification, item } = this.props;
     const created = moment(item.created)
@@ -17,7 +17,7 @@ export class Notify extends React.Component<NotifyProps> {
     const timeLabel = created.isSame(moment(), "day")
       ? created.fromNow()
       : created.format("DD.MM.YY")
-   
+
     return (
       <div className="item" onClick={() => clearNotification(item.id)}>
         <div className="title">

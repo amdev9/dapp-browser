@@ -3,9 +3,7 @@ import { store, sendDataChannel1, sendDataChannel2, receiveDataChannel } from '.
 const renderState = () => {
   //next todo library object dapp will emit events on store pub-sub actions in: `dapp.emit('event-name', ...)`
  
-  if (document.getElementById('value')) {
-    document.getElementById('value').innerHTML = store.getState().counter;
-  }
+ 
 }
 
 const initUi = () => {
@@ -20,21 +18,6 @@ const initUi = () => {
     document.getElementById('messageId').innerHTML = channelData;
   })
 
-  if( document.getElementById('increment') ) {
-    document.getElementById('increment').addEventListener('click', () => {
-      store.dispatch({
-        type: 'INCREMENT_COUNTER'
-      }); 
-    });
-  }
-
-  if( document.getElementById('decrement') ) {
-    document.getElementById('decrement').addEventListener('click', () => {
-      store.dispatch({
-        type: 'DECREMENT_COUNTER'
-      });
-    });
-  }
 
   if( document.getElementById('communicate') ) {
     document.getElementById('communicate').addEventListener('click', () => {

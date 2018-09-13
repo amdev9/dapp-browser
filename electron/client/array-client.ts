@@ -8,7 +8,6 @@ import { isFSA } from 'flux-standard-action';
 import { rootEpic } from './redux/epics';
 import rootReducer from './redux/reducers';
 
-import * as counterActions from './redux/actions/counter';
 import * as notificationActions from './redux/actions/notification';
 import * as trayActions from './redux/actions/tray';
 
@@ -46,7 +45,6 @@ declare const module: NodeModule & {
 };
   
 const actionCreators = Object.assign({}, 
-    counterActions, 
     notificationActions, 
     trayActions,
     {}

@@ -1,9 +1,9 @@
 import * as React from "react";
-
 import { NotificationWidget } from './NotificationWidget';
 import { HomeWidget } from './HomeWidget';
 import { DownloadWidget } from './DownloadWidget';
-import { SettingsWidget } from "./SettingsWidget";
+import { SettingsWidget } from './SettingsWidget';
+import { NetworkWidget } from './NetworkWidget';
 
 interface HeaderBarProps {
   isOpen?: boolean,
@@ -17,21 +17,15 @@ export class HeaderBar extends React.Component<HeaderBarProps> {
     const { togglePanel, toggleHome, toggleLoaderPanel, toggleSettingsPanel } = this.props;
     return (
       <div className="headerbar">
-        <HomeWidget toggleHome={toggleHome}/>
+        <HomeWidget toggleHome={toggleHome} />
         <div className="title" title="hello">
           Home
         </div>
-
         <div className="actions">
           {/* <SuggestSearch /> */}
-
           <div className="unions">
-            <div className="network">
-              MAINNET
-            </div>
-
+            <NetworkWidget />
             {/* <Keychain /> */}
-
             <SettingsWidget isOpen togglePanel={toggleSettingsPanel} />
             <NotificationWidget isOpen togglePanel={togglePanel} />
             <DownloadWidget isOpen togglePanel={toggleLoaderPanel} />
