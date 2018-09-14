@@ -1,8 +1,9 @@
-import "babel-polyfill";
+// import "babel-polyfill";
  
 import { combineReducers, createStore, applyMiddleware, compose, StoreEnhancer, Store, Middleware, Dispatch } from 'redux';
  
 import { isFSA } from 'flux-standard-action'; 
+import { PermissionList } from './redux/state';
  
 interface Action {
   type: string;
@@ -20,6 +21,7 @@ interface ElectronManager {
   sendActionMain(action: any): void;
   replyActionRenderer(store: any): void;
   getGlobalState(): () => string;
+  permissions: PermissionList
 }
 
 declare const window: Window & {
@@ -73,15 +75,7 @@ const configureStore = () => {
   compose;
   
   const enhancer = composeEnhancers(...enhanced); // compose
-
   const store = createStore(enhancer);
-
-  if (module.hot) {
-    module.hot.accept('./redux/reducers', () =>
-      store.replaceReducer(require('./redux/reducers')) // eslint-disable-line global-require
-    );
-  }
-
 
   electronManager.replyActionRenderer(store); // window.ipc
   return store;
@@ -95,7 +89,7 @@ const initStore = () => {
 // // electron-redux store
 const store = initStore();
 
-export default store;
+export { store, electronManager };
 
 
 // if( document.getElementById('permission') ) {

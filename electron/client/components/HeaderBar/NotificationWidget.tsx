@@ -1,7 +1,7 @@
 import * as React from "react"
- 
+
 const notificationIcon = require("../../assets/icons/notification.svg")
- 
+
 interface NotificationWidgetProps {
   isOpen?: boolean;
   togglePanel?(): void
@@ -17,4 +17,3 @@ export class NotificationWidget extends React.Component<NotificationWidgetProps>
   }
 }
 
- 

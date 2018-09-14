@@ -1,4 +1,4 @@
-import {TOGGLE_PEERS_BAR_PANEL, TOGGLE_STATUS_BAR_PANEL} from '../constants';
+import { TOGGLE_PEERS_BAR_PANEL, TOGGLE_STATUS_BAR_PANEL } from '../constants';
 import { NotificationPanelAction } from '../actions/notification';
 import { StatusBarPanel } from './state';
 
@@ -40,13 +40,13 @@ export default function statusBar(state: StatusBarPanel = initialState, action: 
   switch (action.type) {
     case TOGGLE_STATUS_BAR_PANEL:
       //if (action.payload && action.payload.hasOwnProperty('isOpen')) {
-        //return { ...state, isOpen: action.payload.isOpen };
+      //return { ...state, isOpen: action.payload.isOpen };
       //} else {
-        return { ...state, isOpen: !state.isOpen };
-      //}
+      return { ...state, isOpen: !state.isOpen };
+    //}
 
     case TOGGLE_PEERS_BAR_PANEL:
-      return {...state, isPeersOpen: !state.isPeersOpen};
+      return { ...state, isPeersOpen: !state.isPeersOpen };
 
     default:
       return state;

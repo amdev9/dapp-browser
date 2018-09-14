@@ -2,6 +2,9 @@ import * as React from "react"
 import { AppsList } from './AppsList';
 import { AppItem } from "../../redux/model";
 
+//@todo intergrate 
+import PerfectScrollbar from "react-perfect-scrollbar";
+
 const indicatorIcon = require("../../assets/icons/indicator.svg");
 const closeIcon = require("../../assets/icons/close.svg");
 

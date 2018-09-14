@@ -2,7 +2,7 @@ import * as React from "react"
 import { DApp } from '../../redux/model';
 
 // import { MoonLoader } from "react-spinners"
- 
+
 interface AppCardProps {
   dapp?: DApp,
   toggleAppHome?: (dappName: string) => any
@@ -11,10 +11,10 @@ interface AppCardProps {
 export class AppCard extends React.Component<AppCardProps>  {
   constructor(props: AppCardProps) {
     super(props)
- 
+
     this.getCategories = this.getCategories.bind(this)
     // this.actionHandle = this.actionHandle.bind(this)
- 
+
   }
 
   // public state: AppCard.State = {
@@ -45,18 +45,18 @@ export class AppCard extends React.Component<AppCardProps>  {
     const { dapp, toggleAppHome } = this.props;
     return (
       <div className="app-card" onClick={() => toggleAppHome(dapp.appName)}>
-        <div className="header" style={{ backgroundImage: `url('${dapp.preview}')` }}> 
-        
+        <div className="header" style={{ backgroundImage: `url('${dapp.preview}')` }}>
+
 
           {/* @TODO: add addittional network tags */
- 
+
           }
         </div>
         <div className="content">
           <div className="title">{dapp.appName}</div>
           <div className="footer">
             {this.getCategories()}
-             
+
           </div>
         </div>
       </div>

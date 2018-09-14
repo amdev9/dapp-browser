@@ -1,4 +1,4 @@
-import { INCREMENT_COUNTER, DECREMENT_COUNTER } from '../actions/counter';
+ 
 import { Dispatch } from 'redux';
 import { Action } from './configureStore';
 import { RendererConf } from '../../createDappView';
@@ -32,8 +32,7 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
           case OPEN_CHANNEL_SUCCESS:
           case BIND_OPEN_CHANNELS:
           case BIND_OPEN_CHANNELS_DONE:
-          case INCREMENT_COUNTER:
-          case DECREMENT_COUNTER:
+ 
             return next(action);
           default:
             console.log("Cancelled for dapp");
@@ -50,8 +49,6 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
             }
             return next(action);
 
-          case INCREMENT_COUNTER:
-          case DECREMENT_COUNTER:
           case CLEAR_NOTIFICATION:
           case CLEAR_ALL_NOTIFICATIONS:
           case TOGGLE_LOADER_PANEL:

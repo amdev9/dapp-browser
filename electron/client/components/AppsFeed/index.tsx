@@ -6,7 +6,7 @@ interface AppsFeedProps {
   items?: DApp[],
   toggleAppHome?: (dappName?: string) => any,
   resizeAppsFeed?: (width: number, height: number) => any,
-  settingsPanelIsOpen: boolean
+   
 }
 
 export class AppsFeed extends React.Component<AppsFeedProps> {
@@ -15,7 +15,7 @@ export class AppsFeed extends React.Component<AppsFeedProps> {
     super(props);
 
     this.resize = this.resize.bind(this);
-    this.state = {activeTab: 'uploads'}
+    this.state = { activeTab: 'uploads' }
   }
 
   private resize() {
@@ -24,16 +24,16 @@ export class AppsFeed extends React.Component<AppsFeedProps> {
 
   public render() {
 
-    const { settingsPanelIsOpen } = this.props;
+ 
 
     const appCardsList: JSX.Element[] = this.props.items.map((item): JSX.Element => (
       <AppCard key={item.appName} dapp={item} {...this.props} />
     ));
 
-    const props = {style: {display: settingsPanelIsOpen ? "none" : "block"}};
+    // const props = { style: { display: settingsPanelIsOpen ? "none" : "block" } };
 
     return (
-      <div className="feeds" {...props}>
+      <div className="feeds" >
         <div className="header">
           <div className="title">
             Your apps

@@ -20,7 +20,6 @@ const initialState: Client = {
   notification: {isOpen: false},
   loader: {isOpen: false},
   statusBar: {isOpen: false, isPeersOpen: false},
-  settings: {isOpen: false},
   window: {width: 0, height: 0}
 };
 
@@ -85,14 +84,6 @@ export function client(state: Client = initialState, action: TrayAction) {
         statusBar: {
           ...state.statusBar,
           isPeersOpen: !state.statusBar.isPeersOpen
-        }
-      };
-
-    case TOGGLE_SETTINGS_PANEL:
-      return {
-        ...state,
-        settings: {
-          isOpen: !state.settings.isOpen
         }
       };
 

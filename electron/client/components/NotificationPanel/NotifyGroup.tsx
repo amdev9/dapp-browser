@@ -14,7 +14,7 @@ export class NotifyGroup extends React.Component<NotifyGroupProps> {
     super(props);
     this.getList = this.getList.bind(this);
   }
- 
+
   private getList(): JSX.Element[] | null {
     const { items, clearNotification } = this.props
 
@@ -39,7 +39,7 @@ export class NotifyGroup extends React.Component<NotifyGroupProps> {
         <div className="title">
           <span>{groupTimeLabel}</span>
           <div className="clear" onClick={() => clearAllNotifications()}>
-            <IoMdClose fontSize="14px" color="#A8B2BD"/>        
+            <IoMdClose fontSize="14px" color="#A8B2BD" />
           </div>
         </div>
         <div className="items">

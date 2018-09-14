@@ -30,10 +30,7 @@ export interface StatusBarPanel {
   isPeersOpen: boolean
 }
 
-export type Counter = number;
-
 export interface IState {
-  counter: Counter;
   notification: NotificationPanel;
   loader: LoaderPanel;
   statusBar: StatusBarPanel;
