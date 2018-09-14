@@ -1,22 +1,22 @@
-import { Apis } from 'bitsharesjs-ws';
+import {Apis, BalanceObject, Block, Witness} from 'bitsharesjs-ws';
 import { ChainStore } from 'bitsharesjs';
 
 let dynamicGlobal;
 let globalWS;
 
-async function getWitnessByID ( id ) {
-  let result;
-  let witness;
+async function getWitnessByID ( id: string ) {
+  let result: BalanceObject[];
+  let witness: Witness[];
 
   try {
     witness = await Apis.instance()
       .db_api()
-      .exec('get_witnesses', [
+      .exec<Witness[]>('get_witnesses', [
         [id]
       ]);
     result = await Apis.instance()
       .db_api()
-      .exec('get_full_accounts', [
+      .exec<BalanceObject[]>('get_full_accounts', [
         [witness[0].witness_account], console.log()
       ]);
   } catch ( error ) {
@@ -26,7 +26,7 @@ async function getWitnessByID ( id ) {
   return result[0][1];
 }
 
-function getData ( ApiObject ) {
+function getData ( ApiObject: Block ) {
   if ( ApiObject ) {
     return {
       block: {
@@ -41,13 +41,13 @@ function getData ( ApiObject ) {
 }
 
 async function getBlock (height = 1000) {
-  let block;
+  let block: Block;
   let witness;
 
   try {
     block = await Apis.instance()
       .db_api()
-      .exec('get_block', [height]);
+      .exec<Block>('get_block', [height]);
   } catch ( error ) {
     console.log( error );
     return;
@@ -60,7 +60,7 @@ async function getBlock (height = 1000) {
   return block;
 }
 
-const blocks = [];
+const blocks: Block[] = [];
 
 async function getSerializedData () {
   let block;
@@ -79,12 +79,12 @@ async function getSerializedData () {
 }
 
 class Network {
-  private static instance;
+  private static instance: Network;
 
   constructor () {
     if ( !Network.instance ) {
       Apis.instance('ws://hawking.array.io:8090/ws', true).init_promise.then(
-        res => {
+        (res: object) => {
           ChainStore.init().then(() => {
             ChainStore.subscribe( this.broadcast );
           });
@@ -95,7 +95,7 @@ class Network {
     return Network.instance;
   }
 
-  async broadcast ( ) {
+  async broadcast () {
     const data = await getSerializedData();
     console.log("broadcast data: ", data);
     //io.emit('network:getBlock', data);

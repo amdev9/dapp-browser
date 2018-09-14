@@ -2,10 +2,10 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es6",
-    "lib": ["es6", "dom"],
-    "noImplicitAny": false,
+    "lib": ["es2015", "es6", "dom"],
+    "noImplicitAny": true,
     "sourceMap": true,
-    // "outDir": "./dist/",
+    "outDir": "./dist/",
     "baseUrl": ".",
     "paths": {
       "*": ["node_modules/*", "types/*"]
