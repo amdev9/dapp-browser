@@ -36,6 +36,7 @@ const noop = () => {}
 
 const DB_CLOSED_MESSAGE = 'Operation is not allowed when DB is closed!';
 
+
 export default function SQLiteStorage(SQLite = {}, config = {}) {
   const defaultConfig = {
     name: 'sqlite-storage',
@@ -87,14 +88,22 @@ export default function SQLiteStorage(SQLite = {}, config = {}) {
 
   function getItem(key, cb = noop) {
     return new Promise((resolve, reject) => {
-
-      Store.findOne({ 
-        where: {
-          key: 'janedoe'
-        } 
-      }).then(project => {
-        console.log(project);
-      })
+      sequelize
+        .authenticate()
+        .then(function(err) {
+          Store.findOne({ 
+            where: {
+              key: 'janedoe'
+            } 
+          }).then(project => {
+            resolve(project);
+          })
+        }, function (err) {
+          console.log('Unable to connect to the database:', err);
+          reject();
+        });
+        
+     
 
       // dbResolver.then( db => {
       //   db.transaction((tx) => {
@@ -119,11 +128,21 @@ export default function SQLiteStorage(SQLite = {}, config = {}) {
   function setItem(key, value, cb = noop) {
     return new Promise((resolve, reject) => {
 
-       Store.update({ 
-        value: 'newPass'
-      }, { where: { key: 'janedoe', id: 1 }}).then(project => {
-        console.log(project);
-      });
+      sequelize
+        .authenticate()
+        .then(function(err) {
+          Store.update({ 
+            value: 'newPass'
+          }, { where: { key: 'janedoe', id: 1 }}).then(project => {
+            resolve(project);
+          });
+        }, function (err) {
+          console.log('Unable to connect to the database:', err);
+          reject();
+        });
+        
+
+      
 
       // dbResolver.then( db => {
       //   db.transaction((tx) => {
@@ -161,13 +180,22 @@ export default function SQLiteStorage(SQLite = {}, config = {}) {
   function removeItem(key, cb = noop) {
     return new Promise((resolve, reject) => {
 
-      Store.destroy({ 
-        where: { 
-          key: 'janedoe', id: 1 
-        }
-      }).then(project => {
-        console.log(project);
+      sequelize
+      .authenticate()
+      .then(function(err) {
+        Store.destroy({ 
+          where: { 
+            key: 'janedoe', id: 1 
+          }
+        }).then(project => {
+          resolve(project);
+        });
+      }, function (err) {
+        console.log('Unable to connect to the database:', err);
+        reject();
       });
+
+      
 
       // dbResolver.then( db => {
       //   db.transaction((tx) => {
@@ -191,12 +219,18 @@ export default function SQLiteStorage(SQLite = {}, config = {}) {
   
   function getAllKeys(cb = noop) {
     return new Promise((resolve, reject) => {
-
-          
-      Store.findAll()
-      .then(projects => {
-        console.log(projects);
-      })
+      sequelize
+        .authenticate()
+        .then(function(err) {
+          Store.findAll()
+          .then(projects => {
+            resolve(projects);
+          });
+        }, function (err) {
+          console.log('Unable to connect to the database:', err);
+          reject();
+        });
+      
 
 
 
@@ -227,12 +261,21 @@ export default function SQLiteStorage(SQLite = {}, config = {}) {
   function clear(cb = noop) {
     return new Promise((resolve, reject) => {
      
-      Store.destroy({ 
-        where: { 
-        }
-      }).then(project => {
-        console.log(project);
-      });
+      sequelize
+        .authenticate()
+        .then(function(err) {    
+          Store.destroy({ 
+            where: { 
+            }
+          }).then(project => {
+            resolve(project);
+          });
+        }, function (err) {
+          console.log('Unable to connect to the database:', err);
+          reject();
+        });
+
+        
 
 
       // dbResolver.then( db => {
