@@ -30,8 +30,8 @@ export interface StatusBarPanel {
   isPeersOpen: boolean
 }
 
-export interface Search {
-  [groupName: string]: SearchItem[]
+export interface SearchPanel {
+  items: { [groupName: string]: SearchItem[]; }
 }
 
 export interface IState {
@@ -41,4 +41,5 @@ export interface IState {
   tray: Tray;
   feed: Feed;
   settings: SettingsPanel;
+  search: SearchPanel;
 }

@@ -8,7 +8,7 @@ import * as TrayActions from '../redux/actions/tray';
 import * as StatusBarActions from '../redux/actions/status-bar';
 import * as AppsFeedActions from "../redux/actions/appsFeed";
 
-import { AppItem, NotifyItem, StatusBarItem, FeedItem } from '../redux/model';
+import { AppItem, NotifyItem, StatusBarItem, FeedItem, SearchItem } from '../redux/model';
 import { HeaderBar } from './HeaderBar'
 import { NotificationPanel } from "./NotificationPanel"
 import { LoaderPanel } from './LoaderPanel'
@@ -27,6 +27,7 @@ interface AppProps {
   trayItems: AppItem[],
   feedItems: FeedItem[],
   notifyItems: NotifyItem[],
+  searchItems: { [index: string]: SearchItem[] },
   statusBarItems?: { [index: string]: StatusBarItem },
   statusBarToggle: () => void,
   peersBarToggle: () => void,
@@ -45,7 +46,7 @@ class App extends React.Component<AppProps> {
   render() {
     const {
       onTogglePanel, openNotificationPanel, openStatusBarPanel, openPeersBarPanel, clearNotification, clearAllNotifications,
-      onAddAppItem, onSwitchDapp, onToggleHome, statusBarToggle, peersBarToggle, onToggleAppHome,
+      onAddAppItem, onSwitchDapp, onToggleHome, statusBarToggle, peersBarToggle, onToggleAppHome, searchItems,
       trayItems, feedItems, notifyItems, statusBarItems, onToggleLoaderPanel, openLoaderPanel, onResizeAppsFeed
     } = this.props;
 
@@ -56,6 +57,7 @@ class App extends React.Component<AppProps> {
           togglePanel={() => onTogglePanel()}
           toggleLoaderPanel={onToggleLoaderPanel}
           toggleHome={() => onToggleHome(true)}
+          searchItems={searchItems}
           key="root-headerbar" />
         <NotificationPanel
           clearAllNotifications={() => clearAllNotifications()}
@@ -94,7 +96,8 @@ const mapStateToProps = (state: IState) => ({
   openPeersBarPanel: state.statusBar.isPeersOpen,
   statusBarItems: state.statusBar.items,
   trayItems: state.tray.items,
-  feedItems: state.feed.items
+  feedItems: state.feed.items,
+  searchItems: state.search.items
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({

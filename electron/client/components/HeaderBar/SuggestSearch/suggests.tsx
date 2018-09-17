@@ -1,41 +1,17 @@
 import * as React from "react";
 import * as Autocomplete from "react-autocomplete";
 import { SearchItem, SuggestItem } from "../../../redux/model";
-import { Search } from "../../../redux/reducers/state";
 
 
 interface SuggestProps {
-  [groupName: string]: SearchItem[]
+  searchItems: { [index: string]: SearchItem[] }
 }
 
 interface SuggestState {
   value: string
 }
 
-
-
-// export namespace Suggests {
-//   export interface Props {
-//     items?: Search
-//   }
-//
-//   export interface State {
-//     value: string
-//   }
-// }
 const getKey = (): string => Math.random().toString(36).substring(7);
-
-// const mapStateToProps = (state: RootState): { items: RootState.Search } => {
-//   return {
-//     items: state.search,
-//   }
-// }
-//
-// const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
-//
-// }, dispatch)
-//
-// @connect(mapStateToProps, mapDispatchToProps)
 
 export class Suggests extends React.Component<SuggestProps> {
   constructor(props: SuggestProps) {
@@ -54,37 +30,7 @@ export class Suggests extends React.Component<SuggestProps> {
   };
 
   private getItems(): SuggestItem[] {
-    // let { items } = this.props;
-    let items: Search = {applications: [
-        {
-          icon: require("../../../assets/app-icons/chat.svg"),
-          uri: "chat://sendMessage/satan/",
-          network: "mainnet",
-          app: "Chat",
-        },
-        {
-          icon: require("../../../assets/app-icons/exchange.svg"),
-          uri: "exchange://send-file/",
-          network: "testnet",
-          app: "Exchange",
-        },
-      ],
-
-      marketplace: [
-        {
-          icon: require("../../../assets/app-icons/chat.svg"),
-          uri: "chat://marketplace/install?name=Chat",
-          network: "mainnet",
-          app: "Chat",
-        },
-        {
-          icon: require("../../../assets/app-icons/exchange.svg"),
-          uri: "chat://marketplace/install?name=Exchange",
-          network: "testnet",
-          app: "Exchange",
-        },
-      ],};
-    items = items ? items : {};
+     let items = this.props.searchItems;
 
     const result = Object.keys(items).map(groupName => {
       const groupItems = items[groupName];
@@ -195,7 +141,7 @@ export class Suggests extends React.Component<SuggestProps> {
     };
 
     const props: Autocomplete.Props = {
-      isItemSelectable: (suggestItem) => (suggestItem.type !== SuggestItem.Type.Header),
+      isItemSelectable: (suggestItem: SuggestItem) => (suggestItem.type !== SuggestItem.Type.Header),
       getItemValue: this.getItemValue,
       renderItem: this.getItem,
       renderMenu: this.getMenu,
