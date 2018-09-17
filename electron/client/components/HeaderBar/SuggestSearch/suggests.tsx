@@ -1,74 +1,56 @@
-import { Dispatch, bindActionCreators } from "redux";
-import { connect } from "react-redux";
 import * as React from "react";
-// import * as _ from "lodash";
 import * as Autocomplete from "react-autocomplete";
-// import { SuggestItem } from "../../../redux/model";
-// import { RootState } from "../../../redux/reducers";
-
-// import { getKey } from "app/utils"
+import { SearchItem, SuggestItem } from "../../../redux/model";
 
 
-
-export namespace Suggests {
-  export interface Props {
-    items?: RootState.Search
-  }
-
-  export interface State {
-    value: string
-  }
+interface SuggestProps {
+  searchItems: { [index: string]: SearchItem[] }
 }
 
-const mapStateToProps = (state: RootState): { items: RootState.Search } => {
-  return {
-    items: state.search,
-  }
+interface SuggestState {
+  value: string
 }
 
-const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
+const getKey = (): string => Math.random().toString(36).substring(7);
 
-}, dispatch)
+export class Suggests extends React.Component<SuggestProps> {
+  constructor(props: SuggestProps) {
+    super(props);
 
-@connect(mapStateToProps, mapDispatchToProps)
-export class Suggests extends React.Component<Suggests.Props, Suggests.State> {
-  constructor(props: Suggests.Props) {
-    super(props)
-
-    this.getItemValue = this.getItemValue.bind(this)
-    this.getItems = this.getItems.bind(this)
-    this.onSelect = this.onSelect.bind(this)
-    this.onChange = this.onChange.bind(this)
-    this.getItem = this.getItem.bind(this)
-    this.getMenu = this.getMenu.bind(this)
+    this.getItemValue = this.getItemValue.bind(this);
+    this.getItems = this.getItems.bind(this);
+    this.onSelect = this.onSelect.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.getItem = this.getItem.bind(this);
+    this.getMenu = this.getMenu.bind(this);
   }
 
-  public state: Suggests.State = {
+  public state: SuggestState = {
     value: "",
-  }
+  };
 
   private getItems(): SuggestItem[] {
-    let { items } = this.props
-    items = items ? items : {}
+     let items = this.props.searchItems;
 
-    const result = _(items).map((groupItems, groupName): SuggestItem[] => {
+    const result = Object.keys(items).map(groupName => {
+      const groupItems = items[groupName];
       const suggestHeader: SuggestItem = {
         type: SuggestItem.Type.Header,
         header: groupName,
-      }
+      };
 
-      const suggestItems: SuggestItem[] = _(groupItems).map((item) => ({
+      const suggestItems: SuggestItem[] = groupItems.map((item) => ({
         type: SuggestItem.Type.Item,
         item,
-      })).value()
+      }));
 
       return [
         suggestHeader,
         ...suggestItems,
       ]
-    }).flatten().value()
+    });
 
-    return result
+    return [].concat(...result);
   }
 
   private onSelect(value: string, suggestItem: SuggestItem) {
@@ -84,12 +66,12 @@ export class Suggests extends React.Component<Suggests.Props, Suggests.State> {
   }
 
   private getItem(suggestItem: SuggestItem, isHighlighted: boolean): JSX.Element {
-    const key = `${suggestItem.type}-${getKey()}`
-    const activeClass = isHighlighted ? "active" : ""
+    const key = `${suggestItem.type}-${getKey()}`;
+    const activeClass = isHighlighted ? "active" : "";
 
     switch (+suggestItem.type) {
       case SuggestItem.Type.Header: {
-        const header = suggestItem.header ? suggestItem.header : ""
+        const header = suggestItem.header ? suggestItem.header : "";
         return (
           <div key={key} className="item header">
             <span>{header}</span>
@@ -101,7 +83,7 @@ export class Suggests extends React.Component<Suggests.Props, Suggests.State> {
         if (!suggestItem.item) {
           return <div key={key} />
         } else {
-          const { item } = suggestItem
+          const { item } = suggestItem;
 
           return (
             <div key={key} className={`item suggest ${activeClass}`}>
@@ -145,21 +127,21 @@ export class Suggests extends React.Component<Suggests.Props, Suggests.State> {
   }
 
   private getItemValue(suggestItem: SuggestItem): string {
-    const { item } = suggestItem
+    const { item } = suggestItem;
     return item ? item.uri : ""
   }
 
   public render() {
-    const { value } = this.state
+    const { value } = this.state;
 
     const styles: React.CSSProperties = {
       display: "inline-block",
       overflowX: "hidden",
       flex: 1,
-    }
+    };
 
     const props: Autocomplete.Props = {
-      isItemSelectable: (suggestItem) => (suggestItem.type !== SuggestItem.Type.Header),
+      isItemSelectable: (suggestItem: SuggestItem) => (suggestItem.type !== SuggestItem.Type.Header),
       getItemValue: this.getItemValue,
       renderItem: this.getItem,
       renderMenu: this.getMenu,
@@ -168,7 +150,7 @@ export class Suggests extends React.Component<Suggests.Props, Suggests.State> {
       items: this.getItems(),
       wrapperStyle: styles,
       value,
-    }
+    };
 
     return (
       <Autocomplete {...props} />
