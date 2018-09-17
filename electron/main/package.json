@@ -25,6 +25,8 @@
   "dependencies": {
     "@types/async": "^2.0.49",
     "@types/electron-devtools-installer": "^2.2.0",
+    "@types/react": "^16.4.14",
+    "@types/redux-persist": "^4.3.1",
     "assert": "^1.4.1",
     "async": "^2.6.1",
     "electron": "3.0.0-beta.4",
@@ -36,8 +38,11 @@
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "redux-observable": "^1.0.0",
+    "redux-persist": "^5.10.0",
     "rxjs": "^6.2.2",
+    "sequelize": "^4.38.1",
     "source-map-support": "^0.5.6",
+    "sqlite3": "^4.0.2",
     "tslint": "^5.11.0",
     "typesafe-actions": "^2.0.4",
     "uuid": "^3.2.1"
