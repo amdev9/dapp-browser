@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import * as React from "react";
-// import { Suggests } from "./suggests";
+import { Suggests } from "./suggests";
 // import { RootState } from "../../../redux/reducers"
 
 // Assets
@@ -25,7 +25,7 @@ export class SuggestSearch extends React.Component<{}, {isOpen: boolean}> {
 
   public state: SuggestSearchState = {
     isOpen: false,
-  }
+  };
 
   private toggle() {
     const { isOpen } = this.state;
@@ -33,7 +33,7 @@ export class SuggestSearch extends React.Component<{}, {isOpen: boolean}> {
     // Hide or show title in headerbar by searchbar status
     const title = document.querySelector(".headerbar .title") as HTMLElement
     if (title) {
-      const willOpen = !isOpen
+      const willOpen = !isOpen;
       if (willOpen) {
         title.style.setProperty("--headerbar-title-display", "none")
       } else {
@@ -48,9 +48,9 @@ export class SuggestSearch extends React.Component<{}, {isOpen: boolean}> {
   }
 
   public render() {
-    const { isOpen } = this.state
-    const actionIcon = isOpen ? closeIcon : searchIcon
-    const visibleClass = isOpen ? "showed" : "hidden"
+    const { isOpen } = this.state;
+    const actionIcon = isOpen ? closeIcon : searchIcon;
+    const visibleClass = isOpen ? "showed" : "hidden";
 
     return (
       <div className="search">
@@ -58,7 +58,7 @@ export class SuggestSearch extends React.Component<{}, {isOpen: boolean}> {
           <div className="title">
             URI:
           </div>
-          {/* <Suggests /> */}
+          <Suggests />
         </div>
         <div className="action" onClick={this.toggle}>
           <img className={visibleClass} src={actionIcon} />

@@ -1,4 +1,4 @@
-import { AppItem, NotifyItem, ActiveDapp, StatusBarItem, FeedItem } from '../model';
+import { AppItem, NotifyItem, ActiveDapp, StatusBarItem, FeedItem, SearchItem } from '../model';
 
 export interface Feed {
   items: FeedItem[]
@@ -28,6 +28,10 @@ export interface StatusBarPanel {
   items: { [index: string]: StatusBarItem; },
   isOpen: boolean
   isPeersOpen: boolean
+}
+
+export interface Search {
+  [groupName: string]: SearchItem[]
 }
 
 export interface IState {
