@@ -14,6 +14,7 @@
  * All the method above returns Promise object.
 
 */
+
 'use strict';
 
 var Sequelize = require('sequelize');
@@ -74,13 +75,15 @@ export default function SQLiteStorage() {
           .then(function (err) {
             if (err) {
               cb(err);
+              reject('unable to get value', err);
             }
             Store.findOne({
               where: {
                 key: key
               }
             }).then(project => {
-              resolve(project);
+              resolve(project.value);
+              cb(null, project.value);
             })
           }, function (err) {
             console.log('Unable to connect to the database:', err);
@@ -98,6 +101,7 @@ export default function SQLiteStorage() {
           .then(function (err) {
             if (err) {
               cb(err);
+              reject('unable to set value', err);
             }
 
             Store
@@ -111,7 +115,7 @@ export default function SQLiteStorage() {
                   objStore.update({
                     value: value
                   }).then(project => {
-                    resolve(project);
+                    resolve(project.value);
                   });
                 } else {
                   Store.create({
@@ -119,7 +123,7 @@ export default function SQLiteStorage() {
                       value: value
                     })
                     .then(function (insertedStore) {
-                      resolve(insertedStore);
+                      resolve(insertedStore.value);
                     });
                 }
               });
@@ -138,14 +142,16 @@ export default function SQLiteStorage() {
           .authenticate()
           .then(function (err) {
             if (err) {
-              cb(err);
+              reject('unable to remove key', err);
+              cb(err, 'unable to remove key');
             }
             Store.destroy({
               where: {
                 key: key
               }
             }).then(project => {
-              resolve(project);
+              resolve(`${project} removed from store`);
+              cb(null, `${project} removed from store`);
             });
           }, function (err) {
             console.log('Unable to connect to the database:', err);
@@ -162,11 +168,18 @@ export default function SQLiteStorage() {
           .authenticate()
           .then(function (err) {
             if (err) {
-              cb(err);
+              // cb(err);
+              resolve([]);
+              cb(null, []);
             }
             Store.findAll()
               .then(projects => {
-                resolve(projects);
+                const result = [];
+                for( let i = 0, il = projects.length; i < il; i++) {
+                  result.push(projects[i].key);
+                }
+                resolve(result);
+                cb(null, result);
               });
           }, function (err) {
             console.log('Unable to connect to the database:', err);
@@ -183,12 +196,16 @@ export default function SQLiteStorage() {
           .authenticate()
           .then(function (err) {
             if (err) {
+              reject(err);
               cb(err);
             }
             Store.destroy({
               where: {}
             }).then(project => {
-              resolve(project);
+
+              console.log(project);
+              resolve(null);
+              cb(null);
             });
           }, function (err) {
             console.log('Unable to connect to the database:', err);
