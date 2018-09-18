@@ -28,7 +28,7 @@ export interface Action {
 }
 
 export const initialState: IState = {
- 
+
   channel: {},
   client: {
     activeDapp: {
@@ -38,7 +38,7 @@ export const initialState: IState = {
     notification: {isOpen: false},
     loader: {isOpen: false},
     statusBar: {isOpen: false, isPeersOpen: false},
- 
+    search: {isOpen: false},
     window: {width: 0, height: 0}
   },
   feed: {}

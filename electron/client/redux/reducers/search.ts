@@ -1,7 +1,8 @@
 import { SearchAction } from '../actions/search';
-import {SearchItem} from "../model";
+import { SearchPanel } from "./state";
+import { TOGGLE_SEARCH_PANEL } from "../constants";
 
-const initialState: { items: {[index: string]: SearchItem[] }} =
+const initialState: SearchPanel =
   {items:
     {
     applications: [
@@ -32,11 +33,19 @@ const initialState: { items: {[index: string]: SearchItem[] }} =
         network: "testnet",
         app: "Exchange",
       },
-    ]}
+    ]},
+
+    isOpen: false
   };
 
-export default function search(state: { items: {[index: string]: SearchItem[] }} = initialState, action: SearchAction) {
+export default function search(state: SearchPanel = initialState, action: SearchAction) {
   switch (action.type) {
+    case TOGGLE_SEARCH_PANEL:
+      if (action.payload && action.payload.hasOwnProperty('isOpen')) {
+        return { ...state, isOpen: action.payload.isOpen };
+      } else {
+        return { ...state, isOpen: !state.isOpen };
+      }
 
     default:
       return state;

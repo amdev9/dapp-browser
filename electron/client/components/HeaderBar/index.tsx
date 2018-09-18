@@ -10,6 +10,8 @@ import {SearchItem} from "../../redux/model";
 interface HeaderBarProps {
   isOpen?: boolean,
   searchItems: { [index: string]: SearchItem[] },
+  isSearchPanelOpen: boolean,
+  toggleSearchPanel(): void,
   toggleSettingsPanel?(): void,
   togglePanel?(): void,
   toggleLoaderPanel?(): void,
@@ -17,7 +19,7 @@ interface HeaderBarProps {
 }
 export class HeaderBar extends React.Component<HeaderBarProps> {
   public render() {
-    const { togglePanel, toggleHome, toggleLoaderPanel, toggleSettingsPanel, searchItems } = this.props;
+    const { togglePanel, toggleHome, toggleLoaderPanel, toggleSettingsPanel, searchItems, toggleSearchPanel, isSearchPanelOpen } = this.props;
     return (
       <div className="headerbar">
         <HomeWidget toggleHome={toggleHome} />
@@ -25,7 +27,7 @@ export class HeaderBar extends React.Component<HeaderBarProps> {
           Home
         </div>
         <div className="actions">
-          <SuggestSearch searchItems={searchItems}/>
+          <SuggestSearch searchItems={searchItems} togglePanel={toggleSearchPanel} isOpen={isSearchPanelOpen}/>
           <div className="unions">
             <NetworkWidget />
             {/* <Keychain /> */}

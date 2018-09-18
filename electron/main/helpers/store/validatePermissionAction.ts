@@ -1,4 +1,4 @@
- 
+
 import { Dispatch } from 'redux';
 import { Action } from './configureStore';
 import { RendererConf } from '../../createDappView';
@@ -14,6 +14,7 @@ import {
   TOGGLE_PEERS_BAR_PANEL,
   TOGGLE_LOADER_PANEL,
   TOGGLE_SETTINGS_PANEL,
+  TOGGLE_SEARCH_PANEL,
   BIND_OPEN_CHANNELS_DONE,
   BIND_OPEN_CHANNELS,
   OPEN_CHANNEL_SUCCESS,
@@ -32,7 +33,7 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
           case OPEN_CHANNEL_SUCCESS:
           case BIND_OPEN_CHANNELS:
           case BIND_OPEN_CHANNELS_DONE:
- 
+
             return next(action);
           default:
             console.log("Cancelled for dapp");
@@ -57,6 +58,7 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
           case TOGGLE_PEERS_BAR_PANEL:
           case TOGGLE_HOME:
           case TOGGLE_APP_HOME:
+          case TOGGLE_SEARCH_PANEL:
           case SWITCH_DAPP:
           case ADD_APP_ITEM:
           case APPS_FEED_RESIZE:

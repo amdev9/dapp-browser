@@ -7,6 +7,7 @@ import * as LoaderActions from '../redux/actions/loader';
 import * as TrayActions from '../redux/actions/tray';
 import * as StatusBarActions from '../redux/actions/status-bar';
 import * as AppsFeedActions from "../redux/actions/appsFeed";
+import * as SearchActions from "../redux/actions/search";
 
 import { AppItem, NotifyItem, StatusBarItem, FeedItem, SearchItem } from '../redux/model';
 import { HeaderBar } from './HeaderBar'
@@ -23,6 +24,7 @@ interface AppProps {
   openLoaderPanel: boolean,
   openStatusBarPanel: boolean,
   openPeersBarPanel: boolean,
+  openSearchPanel: boolean,
 
   trayItems: AppItem[],
   feedItems: FeedItem[],
@@ -34,6 +36,7 @@ interface AppProps {
   onTogglePanel: (openStatus?: boolean) => any,
   onToggleHome: (openStatus?: boolean) => any,
   onToggleLoaderPanel: (openStatus?: boolean) => any,
+  onToggleSearch: (openStatus?: boolean) => any,
   clearNotification: (id?: number) => void,
   clearAllNotifications: () => void,
   onAddAppItem: (appItem?: AppItem) => any,
@@ -45,8 +48,8 @@ interface AppProps {
 class App extends React.Component<AppProps> {
   render() {
     const {
-      onTogglePanel, openNotificationPanel, openStatusBarPanel, openPeersBarPanel, clearNotification, clearAllNotifications,
-      onAddAppItem, onSwitchDapp, onToggleHome, statusBarToggle, peersBarToggle, onToggleAppHome, searchItems,
+      onTogglePanel, openNotificationPanel, openStatusBarPanel, openPeersBarPanel, openSearchPanel, clearNotification, clearAllNotifications,
+      onAddAppItem, onSwitchDapp, onToggleHome, statusBarToggle, peersBarToggle, onToggleAppHome, onToggleSearch, searchItems,
       trayItems, feedItems, notifyItems, statusBarItems, onToggleLoaderPanel, openLoaderPanel, onResizeAppsFeed
     } = this.props;
 
@@ -58,6 +61,8 @@ class App extends React.Component<AppProps> {
           toggleLoaderPanel={onToggleLoaderPanel}
           toggleHome={() => onToggleHome(true)}
           searchItems={searchItems}
+          isSearchPanelOpen={openSearchPanel}
+          toggleSearchPanel={onToggleSearch}
           key="root-headerbar" />
         <NotificationPanel
           clearAllNotifications={() => clearAllNotifications()}
@@ -94,6 +99,7 @@ const mapStateToProps = (state: IState) => ({
   openLoaderPanel: state.loader.isOpen,
   openStatusBarPanel: state.statusBar.isOpen,
   openPeersBarPanel: state.statusBar.isPeersOpen,
+  openSearchPanel: state.search.isOpen,
   statusBarItems: state.statusBar.items,
   trayItems: state.tray.items,
   feedItems: state.feed.items,
@@ -112,6 +118,7 @@ const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
   onToggleHome: TrayActions.toggleHome,
   onToggleAppHome: TrayActions.toggleAppHome,
   onResizeAppsFeed: AppsFeedActions.resize,
+  onToggleSearch: SearchActions.toggle
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

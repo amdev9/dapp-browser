@@ -1,8 +1,6 @@
-import { connect } from "react-redux";
 import * as React from "react";
 import { Suggests } from "./suggests";
 import {SearchItem} from "../../../redux/model";
-// import { RootState } from "../../../redux/reducers"
 
 // Assets
 const searchIcon = require("../../../assets/icons/search.svg");
@@ -11,13 +9,15 @@ const closeIcon = require("../../../assets/icons/close.svg");
 
 export interface SuggestSearchProps {
   searchItems: { [index: string]: SearchItem[] }
+  isOpen: boolean
+  togglePanel(openStatus?: boolean): void
 }
 
 export interface SuggestSearchState {
   isOpen: boolean
 }
 
-export class SuggestSearch extends React.Component<SuggestSearchProps, {isOpen: boolean}> {
+export class SuggestSearch extends React.Component<SuggestSearchProps, SuggestSearchState> {
   constructor(props: SuggestSearchProps) {
     super(props);
 
@@ -59,7 +59,7 @@ export class SuggestSearch extends React.Component<SuggestSearchProps, {isOpen: 
           <div className="title">
             URI:
           </div>
-          <Suggests searchItems={this.props.searchItems}/>
+          <Suggests searchItems={this.props.searchItems} togglePanel={this.props.togglePanel}/>
         </div>
         <div className="action" onClick={this.toggle}>
           <img className={visibleClass} src={actionIcon} />
