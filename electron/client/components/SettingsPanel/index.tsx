@@ -279,13 +279,13 @@ export class SettingsPanel extends React.Component<SettingsPanelProps, SettingsP
                 <form className="form-settings">
                   <div className="form-group">
                     <div className="custom-control custom-checkbox">
-                      <input type="checkbox" id="input-proxy-1" checked={true} className="custom-control-input" />
+                      <input type="checkbox" id="input-proxy-1" defaultChecked={true} className="custom-control-input" />
                       <label htmlFor="input-proxy-1" className="custom-control-label">Test 1</label>
                     </div>
                   </div>
                   <div className="form-group">
                     <div className="custom-control custom-checkbox">
-                      <input type="checkbox" id="input-proxy-2" checked={true} className="custom-control-input" />
+                      <input type="checkbox" id="input-proxy-2" defaultChecked={true} className="custom-control-input" />
                       <label htmlFor="input-proxy-2" className="custom-control-label">Test 2</label>
                     </div>
                   </div>

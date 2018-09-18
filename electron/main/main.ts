@@ -8,7 +8,7 @@ import { Store } from 'redux';
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer';
 import { configureStore, initialState } from './helpers/store/configureStore';
 import { AppsManager, AppItem } from './helpers/AppsManager';
-import dappFrame from './helpers/dappFrame';
+import { DappFrame } from './helpers/DappFrame';
 import { createClientWindow } from './createClientWindow';
 import { createPermissionWindow } from './permissionManager/createPermissionWindow';
 import { createDappView } from './createDappView';
@@ -106,12 +106,8 @@ const correctDappViewBounds = (clientState: Client) => {
 
   const view = clientWindow.getBrowserView();
   if (view) {
-    view.setBounds({
-      x: dappFrame.getX(),
-      y: dappFrame.getY(clientState),
-      width: dappFrame.getWidth(clientState),
-      height: dappFrame.getHeight(clientState)
-    });
+    const dappFrame = new DappFrame(clientState);
+    view.setBounds(dappFrame);
   }
 };
 
