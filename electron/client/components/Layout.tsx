@@ -63,6 +63,10 @@ class App extends React.Component<AppProps> {
           searchItems={searchItems}
           isSearchPanelOpen={openSearchPanel}
           toggleSearchPanel={onToggleSearch}
+          isStatusBarOpen={openStatusBarPanel}
+          toggleStatusBar={statusBarToggle}
+          isPeersBarOpen={openPeersBarPanel}
+          togglePeersBar={peersBarToggle}
           key="root-headerbar" />
         <NotificationPanel
           clearAllNotifications={() => clearAllNotifications()}

@@ -11,15 +11,31 @@ interface HeaderBarProps {
   isOpen?: boolean,
   searchItems: { [index: string]: SearchItem[] },
   isSearchPanelOpen: boolean,
+  isStatusBarOpen: boolean,
+  isPeersBarOpen: boolean,
   toggleSearchPanel(): void,
   toggleSettingsPanel?(): void,
   togglePanel?(): void,
   toggleLoaderPanel?(): void,
   toggleHome?(): void
+  toggleStatusBar(): void
+  togglePeersBar(): void
 }
 export class HeaderBar extends React.Component<HeaderBarProps> {
   public render() {
-    const { togglePanel, toggleHome, toggleLoaderPanel, toggleSettingsPanel, searchItems, toggleSearchPanel, isSearchPanelOpen } = this.props;
+    const {
+      togglePanel,
+      toggleHome,
+      toggleLoaderPanel,
+      toggleSettingsPanel,
+      searchItems,
+      toggleSearchPanel,
+      isSearchPanelOpen,
+      isStatusBarOpen,
+      toggleStatusBar,
+      isPeersBarOpen,
+      togglePeersBar
+    } = this.props;
     return (
       <div className="headerbar">
         <HomeWidget toggleHome={toggleHome} />
@@ -27,7 +43,15 @@ export class HeaderBar extends React.Component<HeaderBarProps> {
           Home
         </div>
         <div className="actions">
-          <SuggestSearch searchItems={searchItems} togglePanel={toggleSearchPanel} isOpen={isSearchPanelOpen}/>
+          <SuggestSearch
+            searchItems={searchItems}
+            togglePanel={toggleSearchPanel}
+            isOpen={isSearchPanelOpen}
+            isStatusBarOpen={isStatusBarOpen}
+            toggleStatusBar={toggleStatusBar}
+            isPeersBarOpen={isPeersBarOpen}
+            togglePeersBar={togglePeersBar}
+          />
           <div className="unions">
             <NetworkWidget />
             {/* <Keychain /> */}

@@ -11,6 +11,10 @@ export interface SuggestSearchProps {
   searchItems: { [index: string]: SearchItem[] }
   isOpen: boolean
   togglePanel(openStatus?: boolean): void
+  isStatusBarOpen: boolean
+  toggleStatusBar(openStatus: boolean): void
+  isPeersBarOpen: boolean
+  togglePeersBar(openStatus: boolean): void
 }
 
 export interface SuggestSearchState {
@@ -50,6 +54,7 @@ export class SuggestSearch extends React.Component<SuggestSearchProps, SuggestSe
 
   public render() {
     const { isOpen } = this.state;
+    const { searchItems, togglePanel, toggleStatusBar, isStatusBarOpen, isPeersBarOpen, togglePeersBar} = this.props;
     const actionIcon = isOpen ? closeIcon : searchIcon;
     const visibleClass = isOpen ? "showed" : "hidden";
 
@@ -59,7 +64,14 @@ export class SuggestSearch extends React.Component<SuggestSearchProps, SuggestSe
           <div className="title">
             URI:
           </div>
-          <Suggests searchItems={this.props.searchItems} togglePanel={this.props.togglePanel}/>
+          <Suggests
+            searchItems={searchItems}
+            togglePanel={togglePanel}
+            isStatusBarOpen={isStatusBarOpen}
+            toggleStatusBar={toggleStatusBar}
+            isPeersBarOpen={isPeersBarOpen}
+            togglePeersBar={togglePeersBar}
+          />
         </div>
         <div className="action" onClick={this.toggle}>
           <img className={visibleClass} src={actionIcon} />
