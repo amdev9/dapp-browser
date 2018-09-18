@@ -6,6 +6,10 @@ import { SearchItem, SuggestItem } from "../../../redux/model";
 interface SuggestProps {
   searchItems: { [index: string]: SearchItem[] }
   togglePanel(openStatus?: boolean): void
+  isStatusBarOpen: boolean
+  toggleStatusBar(openStatus: boolean): void
+  isPeersBarOpen: boolean
+  togglePeersBar(openStatus: boolean): void
 }
 
 interface SuggestState {
@@ -68,6 +72,13 @@ export class Suggests extends React.Component<SuggestProps> {
   }
 
   private onMenuVisibilityChange(isOpen: boolean) {
+    const { isStatusBarOpen, toggleStatusBar, isPeersBarOpen, togglePeersBar } = this.props;
+    if (isOpen && isStatusBarOpen) {
+      toggleStatusBar(false);
+    }
+    if (isOpen && isPeersBarOpen) {
+      togglePeersBar(false);
+    }
     this.props.togglePanel(isOpen);
   }
 
