@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "typeRoots" : ["./typings"],
+        "inlineSourceMap": true,
+        "target": "es6",
+        "moduleResolution": "node",
+        "lib": ["es2017"],
+        "rootDir": "src",
+        "outDir": "dist",
+        "module": "commonjs",
+        "declaration": true,
+        "strict": true,
+        "sourceMap": true,
+        "inlineSources": true,
+        "types": ["node", "mocha"]
+    },
+    "include": [
+        "src/**/*", "typings/bitsharesjs.d.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+  }
