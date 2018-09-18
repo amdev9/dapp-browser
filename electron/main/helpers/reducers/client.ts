@@ -6,6 +6,7 @@ import {
   TOGGLE_STATUS_BAR_PANEL,
   TOGGLE_PEERS_BAR_PANEL,
   TOGGLE_SETTINGS_PANEL,
+  TOGGLE_SEARCH_PANEL,
   TOGGLE_APP_HOME,
   APPS_FEED_RESIZE
 } from '../constants';
@@ -20,6 +21,7 @@ const initialState: Client = {
   notification: {isOpen: false},
   loader: {isOpen: false},
   statusBar: {isOpen: false, isPeersOpen: false},
+  search: { isOpen: false },
   window: {width: 0, height: 0}
 };
 
@@ -84,6 +86,14 @@ export function client(state: Client = initialState, action: TrayAction) {
         statusBar: {
           ...state.statusBar,
           isPeersOpen: !state.statusBar.isPeersOpen
+        }
+      };
+
+    case TOGGLE_SEARCH_PANEL:
+      return {
+        ...state,
+        search: {
+          isOpen: !state.search.isOpen
         }
       };
 

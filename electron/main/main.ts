@@ -13,6 +13,7 @@ import { createClientWindow } from './createClientWindow';
 import { createPermissionWindow } from './permissionManager/createPermissionWindow';
 import { createDappView } from './createDappView';
 import { RendererConf } from './createDappView';
+import { Client } from "./helpers/reducers/state";
 
 require('electron-context-menu')({
 	prepend: (params: any, browserWindow: BrowserWindow) => [{
@@ -65,7 +66,7 @@ app.on('ready', async () => {
     let storeState: any = store.getState();
 
     process.stdout.write(JSON.stringify(storeState));
-    if (storeState.client.isHome) { 
+    if (storeState.client.isHome) {
       clientWindow.setBrowserView(null);
     } else {
       let activeDappName: string = storeState.client.activeDapp.appName;
@@ -76,7 +77,7 @@ app.on('ready', async () => {
       //@todo pass approved permissions back, close created window on 'APPROVE' button clicked,
       // add data from permissionManager to state, on next action dispatch check state for permissions data exists,
       // do not open permissionManager window if so.
-      
+
       // if (approve)
       // permissionWindow.close();
 
@@ -93,11 +94,11 @@ app.on('ready', async () => {
         }
       }
     }
-    correctDappViewBounds(storeState);
+    correctDappViewBounds(storeState.client);
   });
 });
 
-const correctDappViewBounds = (storeState: any) => {
+const correctDappViewBounds = (clientState: Client) => {
   if (!clientWindow) {
     console.log('Trying to send bounds of Dapp View while its parent window has not been initialized');
     return;
@@ -107,9 +108,9 @@ const correctDappViewBounds = (storeState: any) => {
   if (view) {
     view.setBounds({
       x: dappFrame.getX(),
-      y: dappFrame.getY(),
-      width: dappFrame.getWidth(storeState),
-      height: dappFrame.getHeight(storeState)
+      y: dappFrame.getY(clientState),
+      width: dappFrame.getWidth(clientState),
+      height: dappFrame.getHeight(clientState)
     });
   }
 };

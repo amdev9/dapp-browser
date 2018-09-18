@@ -5,6 +5,7 @@ import { SearchItem, SuggestItem } from "../../../redux/model";
 
 interface SuggestProps {
   searchItems: { [index: string]: SearchItem[] }
+  togglePanel(openStatus?: boolean): void
 }
 
 interface SuggestState {
@@ -21,6 +22,7 @@ export class Suggests extends React.Component<SuggestProps> {
     this.getItems = this.getItems.bind(this);
     this.onSelect = this.onSelect.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.onMenuVisibilityChange = this.onMenuVisibilityChange.bind(this);
     this.getItem = this.getItem.bind(this);
     this.getMenu = this.getMenu.bind(this);
   }
@@ -63,6 +65,10 @@ export class Suggests extends React.Component<SuggestProps> {
     this.setState({
       value,
     })
+  }
+
+  private onMenuVisibilityChange(isOpen: boolean) {
+    this.props.togglePanel(isOpen);
   }
 
   private getItem(suggestItem: SuggestItem, isHighlighted: boolean): JSX.Element {
@@ -147,6 +153,7 @@ export class Suggests extends React.Component<SuggestProps> {
       renderMenu: this.getMenu,
       onSelect: this.onSelect,
       onChange: this.onChange,
+      onMenuVisibilityChange: this.onMenuVisibilityChange,
       items: this.getItems(),
       wrapperStyle: styles,
       value,

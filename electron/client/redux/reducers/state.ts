@@ -31,7 +31,8 @@ export interface StatusBarPanel {
 }
 
 export interface SearchPanel {
-  items: { [groupName: string]: SearchItem[]; }
+  items: { [groupName: string]: SearchItem[]; },
+  isOpen: boolean
 }
 
 export interface IState {
