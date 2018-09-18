@@ -14,6 +14,7 @@ import { createPermissionWindow } from './permissionManager/createPermissionWind
 import { createDappView } from './createDappView';
 import { RendererConf } from './createDappView';
 import { Client } from "./helpers/reducers/state";
+import Rectangle = Electron.Rectangle;
 
 require('electron-context-menu')({
 	prepend: (params: any, browserWindow: BrowserWindow) => [{
@@ -106,7 +107,7 @@ const correctDappViewBounds = (clientState: Client) => {
 
   const view = clientWindow.getBrowserView();
   if (view) {
-    const dappFrame = new DappFrame(clientState);
+    const dappFrame: Rectangle = new DappFrame(clientState);
     view.setBounds(dappFrame);
   }
 };
