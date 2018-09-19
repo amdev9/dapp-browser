@@ -126,9 +126,15 @@ export class Suggests extends React.Component<SuggestProps> {
   }
 
   private getMenu(items: JSX.Element[], value: string): JSX.Element | JSX.Element[] {
+    const menuStyle: React.CSSProperties = { // take whole screen width, not only width under the input
+      width: (window.innerWidth - 75) + "px",
+      marginLeft: "-118px",
+      height: "280px"
+    };
+
     if (value === "") {
       return (
-        <div className="menu">
+        <div className="menu" style={menuStyle}>
           <div className="empty">
             Please enter your request
           </div>
@@ -136,7 +142,7 @@ export class Suggests extends React.Component<SuggestProps> {
       )
     } else {
       return (
-        <div className="menu">
+        <div className="menu" style={menuStyle}>
           {items}
         </div>
       )
