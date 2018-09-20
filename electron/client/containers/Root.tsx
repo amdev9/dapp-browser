@@ -6,13 +6,14 @@ import Layout from '../components/Layout';
 
 interface IRootType {
   store: Store<any>; // Redux.Store<any>;
-};
+  isProduction: boolean
+}
 
-export default function Root({ store }: IRootType) {
+export default function Root({ store, isProduction }: IRootType) {
   return (
     <Provider store={store}>
       <App>
-        <Layout />
+        <Layout isProduction={isProduction} />
       </App>
     </Provider>
   );

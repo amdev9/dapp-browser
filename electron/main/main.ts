@@ -13,8 +13,13 @@ import { createClientWindow } from './createClientWindow';
 import { createPermissionWindow } from './permissionManager/createPermissionWindow';
 import { createDappView } from './createDappView';
 import { RendererConf } from './createDappView';
-import { Client } from "./helpers/reducers/state";
+import { IState, Client } from "./helpers/reducers/state";
 import Rectangle = Electron.Rectangle;
+
+import * as nodeConsole from 'console';
+const console = new nodeConsole.Console(process.stdout, process.stderr);
+
+const isProduction = process.env.ELECTRON_ENV === 'production';
 
 require('electron-context-menu')({
 	prepend: (params: any, browserWindow: BrowserWindow) => [{
@@ -58,13 +63,13 @@ app.on('ready', async () => {
   clientWindow = createClientWindow(globalUUIDList);
   await AppsManager.parseDapps();
 
-  const store: Store<{}> = configureStore({
+  const store: Store<IState> = configureStore({
     ...initialState,
     feed: {items: AppsManager.dapps}
   }, globalUUIDList); //@todo pass parsed dapps
 
   store.subscribe(() => {
-    let storeState: any = store.getState();
+    const storeState = store.getState();
 
     process.stdout.write(JSON.stringify(storeState));
     if (storeState.client.isHome) {
@@ -97,17 +102,24 @@ app.on('ready', async () => {
     }
     correctDappViewBounds(storeState.client);
   });
+
+  if (isProduction) {
+    clientWindow.on('resize', () => correctDappViewBounds(store.getState().client));
+    clientWindow.on('maximize', () => correctDappViewBounds(store.getState().client));
+    clientWindow.on('restore', () => correctDappViewBounds(store.getState().client));
+  }
 });
 
 const correctDappViewBounds = (clientState: Client) => {
   if (!clientWindow) {
-    console.log('Trying to send bounds of Dapp View while its parent window has not been initialized');
+    process.stdout.write('Trying to send bounds of Dapp View while its parent window has not been initialized');
     return;
   }
 
   const view = clientWindow.getBrowserView();
+  const windowBounds = clientWindow.getBounds();
   if (view) {
-    const dappFrame: Rectangle = new DappFrame(clientState);
+    const dappFrame: Rectangle = new DappFrame(clientState, isProduction ? windowBounds : null);
     view.setBounds(dappFrame);
   }
 };

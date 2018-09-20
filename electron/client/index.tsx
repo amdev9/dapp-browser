@@ -5,11 +5,13 @@ import Root from './containers/Root';
 //import './app.global.scss';
 
 import "./assets/styles/main.sass"
-import store from './array-client';
- 
+import store from "./array-client";
+import { isProduction } from "./array-client";
+
+
 render(
   <AppContainer>
-    <Root store={store} />
+    <Root store={store} isProduction={isProduction()}/>
   </AppContainer>,
   document.getElementById('root')
 );
