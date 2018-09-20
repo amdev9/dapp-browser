@@ -103,7 +103,7 @@ app.on('ready', async () => {
     correctDappViewBounds(storeState.client);
   });
 
-  if (process.env.ELECTRON_ENV === 'production') {
+  if (isProduction) {
     clientWindow.on('resize', () => correctDappViewBounds(store.getState().client));
     clientWindow.on('maximize', () => correctDappViewBounds(store.getState().client));
     clientWindow.on('restore', () => correctDappViewBounds(store.getState().client));

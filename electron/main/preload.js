@@ -1,14 +1,14 @@
 const electron = require('electron');
 const ipcRenderer = electron.ipcRenderer;
- 
+
 // window.onload = () => {
 //   ipcRenderer.send('answer', process.argv);
 // };
 
 class ElectronManager {
   constructor() {
-    
-    // https://github.com/kewde/electron-sandbox-boilerplate/blob/master/sandbox-preload-extended/electron/renderer/preload-extended.js, 
+
+    // https://github.com/kewde/electron-sandbox-boilerplate/blob/master/sandbox-preload-extended/electron/renderer/preload-extended.js,
     // granted channels parse from process argv
 
 
@@ -18,7 +18,7 @@ class ElectronManager {
 
     const uuidRendererParam = process.argv.filter( (param) => {
       return param.indexOf('--uuid-renderer') >= 0;
-    });  
+    });
     const uuidRenderer = uuidRendererParam[0].split("=")[1];
     // console.log(uuidRenderer);
 
@@ -27,8 +27,8 @@ class ElectronManager {
 
     // console.log(electron.remote.getGlobal('getReduxState')());
 
-    const replyActionRenderer = (store) => { 
-      ipcRenderer.on('redux-action', (event, payload) => { 
+    const replyActionRenderer = (store) => {
+      ipcRenderer.on('redux-action', (event, payload) => {
         // additional check for uuid received
         if( !payload.uuid || (payload.uuid && payload.uuid.includes(uuidRenderer)) ) {
           store.dispatch(payload);
@@ -37,7 +37,7 @@ class ElectronManager {
     }
 
     const getGlobalState = () => {
-      const globalState = electron.remote.getGlobal('getReduxState'); 
+      const globalState = electron.remote.getGlobal('getReduxState');
       return globalState;
     }
 
@@ -46,14 +46,18 @@ class ElectronManager {
       ipcRenderer.send('redux-action', uuidRenderer, action);
     }
 
-    const sendDataChannel = (channelId, data) => { 
+    const sendDataChannel = (channelId, data) => {
       ipcRenderer.send(channelId, data);
     }
-    
+
     const receiveDataChannel = (channelId, callbackData) => {
       ipcRenderer.on(channelId, (event, payload) => {
         callbackData(payload);
       });
+    }
+
+    const getElectronEnv = () => {
+      return electron.remote.process.env["ELECTRON_ENV"];
     }
 
     this.replyActionRenderer = replyActionRenderer;
@@ -61,6 +65,7 @@ class ElectronManager {
     this.sendActionMain = sendActionMain;
     this.sendDataChannel = sendDataChannel;
     this.receiveDataChannel = receiveDataChannel;
+    this.getElectronEnv = getElectronEnv;
   }
 }
 
@@ -89,7 +94,7 @@ class ElectronManager {
 //     const protect = (fn) => {
 //       return (channel, ...args) => {
 //         if (!validEvents.includes(channel)) {
-//           throw new Error(`Blocked access to unknown channel ${channel} from the renderer. 
+//           throw new Error(`Blocked access to unknown channel ${channel} from the renderer.
 //                           Add channel to whitelist in preload.js in case it is legitimate.`);
 //         }
 //         return fn.apply(ipcRenderer, [channel].concat(args));

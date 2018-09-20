@@ -43,14 +43,21 @@ interface AppProps {
   onSwitchDapp: (targetDappName?: string) => any,
   onToggleAppHome: (dappName: string) => any,
   onResizeAppsFeed: (width: number, height: number) => any,
+  isProduction: boolean
 }
 
 class App extends React.Component<AppProps> {
+
+  constructor(props: AppProps) {
+    super(props);
+    this.resize = this.resize.bind(this);
+  }
+
   render() {
     const {
       onTogglePanel, openNotificationPanel, openStatusBarPanel, openPeersBarPanel, openSearchPanel, clearNotification, clearAllNotifications,
       onAddAppItem, onSwitchDapp, onToggleHome, statusBarToggle, peersBarToggle, onToggleAppHome, onToggleSearch, searchItems,
-      trayItems, feedItems, notifyItems, statusBarItems, onToggleLoaderPanel, openLoaderPanel, onResizeAppsFeed
+      trayItems, feedItems, notifyItems, statusBarItems, onToggleLoaderPanel, openLoaderPanel
     } = this.props;
 
     return (
@@ -88,12 +95,29 @@ class App extends React.Component<AppProps> {
           <Tray items={trayItems} toggleSwitch={onSwitchDapp} togglePeersBar={peersBarToggle} peersBarIsOpen={openPeersBarPanel} />
 
           {/* switch between  AppsFeed and SettingsPanel components  */}
-          <AppsFeed items={feedItems} toggleAppHome={onToggleAppHome} resizeAppsFeed={onResizeAppsFeed} />
+          <AppsFeed items={feedItems} toggleAppHome={onToggleAppHome} />
           <SettingsPanel isOpen={false} />
         </div>
         <StatusBar isOpen={openStatusBarPanel} items={statusBarItems} toggleStatusBar={statusBarToggle} peersBarIsOpen={openPeersBarPanel} />
       </div>
     )
+  }
+
+  private resize() {
+    this.props.onResizeAppsFeed(window.innerWidth, window.innerHeight);
+  }
+
+  componentDidMount() {
+    if (!this.props.isProduction) {
+      this.resize();
+      window.addEventListener('resize', this.resize)
+    }
+  }
+
+  componentWillUnmount() {
+    if (!this.props.isProduction) {
+      window.removeEventListener('resize', this.resize)
+    }
   }
 }
 
