@@ -15,9 +15,10 @@
 
 */
 
+ 
 'use strict';
 
-var Sequelize = require('sequelize');
+import * as Sequelize from 'sequelize';
 
 var sequelize = new Sequelize('mainDB', null, null, {
   dialect: "sqlite",
@@ -25,114 +26,161 @@ var sequelize = new Sequelize('mainDB', null, null, {
 });
 
 var Store = sequelize.define('store', {
-  key: Sequelize.STRING,
-  value: Sequelize.STRING
+  id: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  },
+  key: {
+    type: Sequelize.STRING
+  },
+  value: {
+    type: Sequelize.STRING
+  }
 });
 
-
-const noop = (err: Error) => {}
+const noop = () => {}
 
 const DB_CLOSED_MESSAGE = 'Operation is not allowed when DB is closed!';
 
-export default function SQLiteStorage() {
+function SQLiteStorage() {
 
   const dbResolver = (() => {
     return new Promise((resolve, reject) => {
       sequelize
-      .authenticate()
-      .then(function(err: any) {
-        console.log('Connection has been established successfully.');
-        sequelize.sync({ force: true })
-          .then(function(err: any) {
-            console.log('It worked!');
-            resolve();
-          }, function (err: any) {
-            console.log('An error occurred while creating the table:', err);
-            reject();
-          });
-      }, function (err: any) {
-        console.log('Unable to connect to the database:', err);
-        reject(DB_CLOSED_MESSAGE);
-      })
+        .authenticate()
+        .then(function (err) {
+          console.log('Connection has been established successfully.');
+          sequelize.sync({ force: false })
+            .then(function (err) {
+              console.log('It worked!');
+              resolve();
+            }, function (err) {
+              console.log('An error occurred while creating the table:', err);
+              reject();
+            });
+        }, function (err) {
+          console.log('Unable to connect to the database:', err);
+          reject(DB_CLOSED_MESSAGE);
+        })
     });
   })();
 
-  function getItem(key: any, cb = noop) {
+  function getItem(key, cb = noop) {
     return new Promise((resolve, reject) => {
       dbResolver.then(() => {
         sequelize
           .authenticate()
-          .then(function(err: any) {
-            if(err) { cb(err); }
-            Store.findOne({ 
+          .then(function (err) {
+            if (err) {
+              cb(err);
+              reject('unable to get value', err);
+            }
+            Store.findOne({
               where: {
                 key: key
-              } 
-            }).then((project: any) => {
-              resolve(project);
+              }
+            }).then(project => {
+              resolve(project.value);
+              cb(null, project.value);
             })
-          }, function (err: any) {
+          }, function (err) {
             console.log('Unable to connect to the database:', err);
             reject(DB_CLOSED_MESSAGE);
           });
       });
     });
   }
-  
-  function setItem(key: any, value: any, cb = noop) {
+
+  function setItem(key, value, cb = noop) {
     return new Promise((resolve, reject) => {
       dbResolver.then(() => {
         sequelize
           .authenticate()
-          .then(function(err: any) {
-            if (err) { cb(err); }
-            Store.update({ 
-              value: value
-            }, { where: { key: key }}).then((project: any) => {
-              resolve(project);
-            });
-          }, function (err: any) {
+          .then(function (err) {
+            if (err) {
+              cb(err);
+              reject('unable to set value', err);
+            }
+
+            Store
+              .findOne({
+                where: {
+                  key: key
+                }
+              })
+              .then(function (objStore) {
+                if (objStore) {
+                  objStore.update({
+                    value: value
+                  }).then(project => {
+                    resolve(project.value);
+                  });
+                } else {
+                  Store.create({
+                      key: key,
+                      value: value
+                    })
+                    .then(function (insertedStore) {
+                      resolve(insertedStore.value);
+                    });
+                }
+              });
+          }, function (err) {
             console.log('Unable to connect to the database:', err);
             reject(DB_CLOSED_MESSAGE);
           });
       });
     });
   }
-  
-  function removeItem(key: any, cb = noop) {
+
+  function removeItem(key, cb = noop) {
     return new Promise((resolve, reject) => {
       dbResolver.then(() => {
         sequelize
           .authenticate()
-          .then(function(err: any) {
-            if(err) { cb(err); }
-            Store.destroy({ 
-              where: { 
+          .then(function (err) {
+            if (err) {
+              reject('unable to remove key', err);
+              cb(err, 'unable to remove key');
+            }
+            Store.destroy({
+              where: {
                 key: key
               }
-            }).then((project: any) => {
-              resolve(project);
+            }).then(project => {
+              resolve(`${project} removed from store`);
+              cb(null, `${project} removed from store`);
             });
-          }, function (err: any) {
+          }, function (err) {
             console.log('Unable to connect to the database:', err);
             reject(DB_CLOSED_MESSAGE);
           });
       });
     });
   }
-  
+
   function getAllKeys(cb = noop) {
     return new Promise((resolve, reject) => {
       dbResolver.then(() => {
         sequelize
           .authenticate()
-          .then(function(err: any) {
-            if(err) { cb(err); }
+          .then(function (err) {
+            if (err) {
+              // cb(err);
+              resolve([]);
+              cb(null, []);
+            }
             Store.findAll()
-            .then( (projects: any) => {
-              resolve(projects);
-            });
-          }, function (err: any) {
+              .then(projects => {
+                const result = [];
+                for( let i = 0, il = projects.length; i < il; i++) {
+                  result.push(projects[i].key);
+                }
+                resolve(result);
+                cb(null, result);
+              });
+          }, function (err) {
             console.log('Unable to connect to the database:', err);
             reject(DB_CLOSED_MESSAGE);
           });
@@ -145,14 +193,20 @@ export default function SQLiteStorage() {
       dbResolver.then(() => {
         sequelize
           .authenticate()
-          .then(function(err: any) {  
-            if(err) { cb(err); }  
-            Store.destroy({ 
+          .then(function (err) {
+            if (err) {
+              reject(err);
+              cb(err);
+            }
+            Store.destroy({
               where: {}
-            }).then((project: any) => {
-              resolve(project);
+            }).then(project => {
+
+              console.log(project);
+              resolve(null);
+              cb(null);
             });
-          }, function (err: any) {
+          }, function (err) {
             console.log('Unable to connect to the database:', err);
             reject(DB_CLOSED_MESSAGE);
           });
