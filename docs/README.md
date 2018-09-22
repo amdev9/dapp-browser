@@ -93,7 +93,7 @@ Links:
 
 The main reason to use Redux-Observable / RxJs is that it allows to halt the process at any time (unlike the 'Promise ignore' way which causes **CPU overhead**)
 
-*Many people compare RxJS with promises and callbacks that can be chained together. They could be compared to a certain extent but they have numerous differences, at the same time* **promises/callbacks are unstoppable. Once a promise is triggered, there is no way to stop it. Once it is fired, is WILL inevitably end and call the callback method. It happens whether you want it or not either successfully or in an error. Unlike promises/callbacks, observables are stoppable and can be called to a halt DURING any process.** 
+*Many people compare RxJS with promises and callbacks that can be chained together. They could be compared to a certain extent but they have numerous differences, at the same time* **promises/callbacks are unstoppable**. Once a promise is triggered, there is no way to stop it. Once it is fired, is WILL inevitably end and call the callback method. It happens whether you want it or not either successfully or in an error. Unlike promises/callbacks, observables are stoppable and can be called to a halt DURING any process.** 
 
 ## External references
 
