@@ -182,11 +182,6 @@
     .btn
       min-width: 180px
 
-  .justify-content-center
-    -webkit-box-pack: center!important
-    -ms-flex-pack: center!important
-    justify-content: center !important
-
   .item
     margin: auto 80px
 
@@ -200,73 +195,55 @@
     border-color: #E3E5E8
     background: none
 
-  .navigate
-    height: 75px
+  .react-tabs
+    -webkit-tap-highlight-color: transparent
+    justify-content: center !important
+    height: 100%
     background: #FAFAFC
-    //margin: 0 -55px 10px -55px
-    //border-left: 1px solid #F2F3F6
 
-  .navigate .nav
-    height: 100%
+    &__tab-list
+      margin: 0
+      padding: 0 150px
 
-  .navigate .nav-item
-    height: 100%
+    &__tab
+      display: inline-block
+      border: 1px solid transparent
+      border-bottom: none
+      bottom: -1px
+      position: relative
+      list-style: none
+      padding: 6px 12px
+      margin: auto
+      cursor: pointer
+      -webkit-box-pack: center!important
 
-  .navigate .nav-item button
-    font: 12px 'Montserrat', sans-serif
-    color: #7B8DA7
-    height: 100%
-    text-transform: uppercase
-    border-radius: 0
-    border-bottom: 3px solid transparent
-    cursor: pointer
-    &:focus
-      outline: none
-
-  .navigate .nav-item button.active,
-  .navigate .nav-item button:hover
-    color: #4686FF
-
-  .navigate .nav-item button.active
-    border-bottom-color: #4686FF
-
-  .nav-justified .nav-item
-    -ms-flex-preferred-size: 0
-    flex-basis: 0
-    -webkit-box-flex: 1
-    -ms-flex-positive: 1
-    flex-grow: 1
-    text-align: center
-
-  .nav
-    display: -webkit-box
-    display: -ms-flexbox
-    display: flex
-    -ms-flex-wrap: wrap
-    flex-wrap: wrap
-    padding-left: 0
-    margin-bottom: 0
-    margin-top: 0
-    list-style: none
-    &-link
-      font: 600 20px $font-montserrat !important
-      color: $dgray
-      border: 0
-      padding: 20px 10px
+      height: 45px
+      font: 12px 'Montserrat', sans-serif
+      color: #7B8DA7
+      text-transform: uppercase
       border-radius: 0
-      background: $gray
-      text-decoration: none
-      display: block
+      border-bottom: 3px solid transparent
 
-      &.active
-        color: $theme !important
-        background-color: #fff
+      -ms-flex-preferred-size: 0
+      flex-basis: 0
+      -webkit-box-flex: 1
+      -ms-flex-positive: 1
+      flex-grow: 1
+      text-align: center
 
-  .tab
-    &-content
-      .active
-      display: block
+      &--selected
+        border-bottom-color: #4686FF
 
-    &-pane
+      &--disabled
+        color: GrayText
+        cursor: default
+
+
+      &:focus
+        outline: none
+
+    &__tab-panel
       display: none
-      padding: 15px
+
+      &--selected
+        display: block
