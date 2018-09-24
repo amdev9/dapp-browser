@@ -213,7 +213,6 @@
       position: relative
       list-style: none
       padding: 6px 12px
-      margin: auto
       cursor: pointer
       -webkit-box-pack: center!important
 
@@ -231,6 +230,12 @@
       flex-grow: 1
       text-align: center
 
+      &:before
+        content: ""
+        display: inline-block
+        vertical-align: middle
+        height: 100%
+
       &--selected
         border-bottom-color: #4686FF
 
@@ -244,6 +249,7 @@
 
     &__tab-panel
       display: none
+      margin: 0 100px
 
       &--selected
         display: block
