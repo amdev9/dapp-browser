@@ -196,39 +196,31 @@
     background: none
 
   .react-tabs
-    -webkit-tap-highlight-color: transparent
-    justify-content: center !important
     height: 100%
     background: #FAFAFC
 
     &__tab-list
-      margin: 0
-      padding: 0 150px
+      display: table
+      margin-right: auto
+      margin-left: auto
+      margin-top: 0
+      list-style: none
 
     &__tab
       display: inline-block
       border: 1px solid transparent
       border-bottom: none
       bottom: -1px
-      position: relative
-      list-style: none
       padding: 6px 12px
       cursor: pointer
       -webkit-box-pack: center!important
-
+      +noselect
       height: 45px
       font: 12px 'Montserrat', sans-serif
       color: #7B8DA7
       text-transform: uppercase
       border-radius: 0
       border-bottom: 3px solid transparent
-
-      -ms-flex-preferred-size: 0
-      flex-basis: 0
-      -webkit-box-flex: 1
-      -ms-flex-positive: 1
-      flex-grow: 1
-      text-align: center
 
       &:before
         content: ""
@@ -242,7 +234,6 @@
       &--disabled
         color: GrayText
         cursor: default
-
 
       &:focus
         outline: none

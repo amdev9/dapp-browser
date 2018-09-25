@@ -25,23 +25,6 @@ export class SettingsPanel extends React.Component<SettingsPanelProps, SettingsP
   }
 
   public render() {
-    const activeClass = ['active', 'show'];
-
-    let generalClass = null;
-    let networkClass = null;
-    let accessClass = null;
-    let devModeClass = null;
-
-    if (this.state.activeTab === 'general') {
-      generalClass = activeClass;
-    } else if (this.state.activeTab === 'network') {
-      networkClass = activeClass;
-    } else if (this.state.activeTab === 'access') {
-      accessClass = activeClass;
-    } else {
-      devModeClass = activeClass;
-    }
-
     let { isOpen } = this.props;
 
     const props: any = {
