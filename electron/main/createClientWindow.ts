@@ -20,7 +20,7 @@ export function createClientWindow(globalUUIDList: RendererConf[]) {
     ]
   };
 
-  if (process.env.ELECTRON_ENV == 'production') {
+  if (process.env.ELECTRON_ENV !== 'development') {
     webPrefObj = Object.assign(webPrefObj, { sandbox: true })
   }
 
@@ -53,8 +53,8 @@ export function createClientWindow(globalUUIDList: RendererConf[]) {
   // console.log(process.env);
   if (process.env.ELECTRON_ENV === 'development') {
     openDevTool(clientWindow, true);
-  }  
-  
+  }
+
   const renderIdClient = clientWindow.webContents.getProcessId(); //.webContents.getProcessId(); //.id,
     let rendererObj: RendererConf = {
       id: uuidClient,

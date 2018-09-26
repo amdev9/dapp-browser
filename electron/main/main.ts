@@ -19,7 +19,7 @@ import Rectangle = Electron.Rectangle;
 import * as nodeConsole from 'console';
 const console = new nodeConsole.Console(process.stdout, process.stderr);
 
-const isProduction = process.env.ELECTRON_ENV === 'production';
+const isProduction = process.env.ELECTRON_ENV !== 'development';
 
 require('electron-context-menu')({
 	prepend: (params: any, browserWindow: BrowserWindow) => [{
