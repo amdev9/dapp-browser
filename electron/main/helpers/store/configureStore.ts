@@ -42,7 +42,8 @@ export const initialState: IState = {
     search: {isOpen: false},
     window: {width: 0, height: 0}
   },
-  feed: {}
+  feed: {},
+  permissions: {}
 };
 
 declare global {

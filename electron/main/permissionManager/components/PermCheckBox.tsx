@@ -1,25 +1,28 @@
 import * as React from "react";
  
 interface PermCheckBoxProps {
-  permissionConf: any
+  permissionConf: any,
   // permissionFlag?: string,
-  // isChecked?: boolean
+  isChecked?: boolean
 }
  
 //@todo read data & assets from AppsManager for icons preview
-export class PermCheckBox extends React.Component<PermCheckBoxProps> { 
+export class PermCheckBox extends React.Component< PermCheckBoxProps, { checked?: boolean }> { 
   constructor(props: PermCheckBoxProps) {
     super(props);
-    // this.state = {
-    //   isChecked: true
-    // };
+    this.state = {
+      checked: this.props.isChecked
+    };
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
   handleInputChange() {
-    const { permissionConf } = this.props;
-    // change granted boolean flag
-    // console.log('handleInputChange', permissionFlag);
+
+    //@todo add actions to change permissions model state
+
+    console.log("handleInputChange");
+    this.setState({ checked: !this.state.checked });
+
   }
 
   public render() {
@@ -31,7 +34,7 @@ export class PermCheckBox extends React.Component<PermCheckBoxProps> {
           <input
             name={JSON.stringify(permissionConf)}
             type="checkbox"
-            checked={false}
+            checked={this.state.checked}
             onChange={this.handleInputChange} />
         </label>
       </div>
