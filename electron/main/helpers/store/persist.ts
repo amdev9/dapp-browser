@@ -18,200 +18,121 @@
  
 'use strict';
 
-import * as Sequelize from 'sequelize';
+import "reflect-metadata";
+import { createConnection } from "typeorm";
+import { Store } from "./model/Store";
 
-var sequelize = new Sequelize('mainDB', null, null, {
-  dialect: "sqlite",
-  storage: './test.sqlite',
-});
+export default function SQLiteStorage() {
+ 
+  const connection = async () => {
 
-var Store = sequelize.define('store', {
-  id: {
-    type: Sequelize.INTEGER,
-    autoIncrement: true,
-    primaryKey: true
-  },
-  key: {
-    type: Sequelize.STRING
-  },
-  value: {
-    type: Sequelize.STRING
-  }
-});
-
-const noop = () => {}
-
-const DB_CLOSED_MESSAGE = 'Operation is not allowed when DB is closed!';
-
-function SQLiteStorage() {
-
-  const dbResolver = (() => {
-    return new Promise((resolve, reject) => {
-      sequelize
-        .authenticate()
-        .then(function (err) {
-          console.log('Connection has been established successfully.');
-          sequelize.sync({ force: false })
-            .then(function (err) {
-              console.log('It worked!');
-              resolve();
-            }, function (err) {
-              console.log('An error occurred while creating the table:', err);
-              reject();
-            });
-        }, function (err) {
-          console.log('Unable to connect to the database:', err);
-          reject(DB_CLOSED_MESSAGE);
-        })
-    });
-  })();
-
-  function getItem(key, cb = noop) {
-    return new Promise((resolve, reject) => {
-      dbResolver.then(() => {
-        sequelize
-          .authenticate()
-          .then(function (err) {
-            if (err) {
-              cb(err);
-              reject('unable to get value', err);
-            }
-            Store.findOne({
-              where: {
-                key: key
-              }
-            }).then(project => {
-              resolve(project.value);
-              cb(null, project.value);
-            })
-          }, function (err) {
-            console.log('Unable to connect to the database:', err);
-            reject(DB_CLOSED_MESSAGE);
-          });
+    console.log('connection')
+    try { 
+      let connection = await createConnection({
+        "name": "default",
+        "type": "sqlite",
+        "database": "test.sqlite",
+        "synchronize": true,
+        "logging": true,
+        "entities": [
+          "./model/*.js"
+        ],
       });
-    });
+      return connection;
+    } catch(error) {
+      throw new Error('Unable to connect sqlite ' + error);
+    }
   }
 
-  function setItem(key, value, cb = noop) {
-    return new Promise((resolve, reject) => {
-      dbResolver.then(() => {
-        sequelize
-          .authenticate()
-          .then(function (err) {
-            if (err) {
-              cb(err);
-              reject('unable to set value', err);
-            }
-
-            Store
-              .findOne({
-                where: {
-                  key: key
-                }
-              })
-              .then(function (objStore) {
-                if (objStore) {
-                  objStore.update({
-                    value: value
-                  }).then(project => {
-                    resolve(project.value);
-                  });
-                } else {
-                  Store.create({
-                      key: key,
-                      value: value
-                    })
-                    .then(function (insertedStore) {
-                      resolve(insertedStore.value);
-                    });
-                }
-              });
-          }, function (err) {
-            console.log('Unable to connect to the database:', err);
-            reject(DB_CLOSED_MESSAGE);
-          });
-      });
-    });
+  const getRepository = async () => {
+    console.log('getRepository')
+    let conn  =  await connection();   
+    return conn.getRepository(Store);
   }
 
-  function removeItem(key, cb = noop) {
-    return new Promise((resolve, reject) => {
-      dbResolver.then(() => {
-        sequelize
-          .authenticate()
-          .then(function (err) {
-            if (err) {
-              reject('unable to remove key', err);
-              cb(err, 'unable to remove key');
-            }
-            Store.destroy({
-              where: {
-                key: key
-              }
-            }).then(project => {
-              resolve(`${project} removed from store`);
-              cb(null, `${project} removed from store`);
-            });
-          }, function (err) {
-            console.log('Unable to connect to the database:', err);
-            reject(DB_CLOSED_MESSAGE);
-          });
+  const setItem = async (key: string, value: string) => {   
+    console.log('setItem')
+    try {
+
+      let repository = await getRepository();
+
+      // setItem
+      const objStore = await repository.findOne({
+          key: key
       });
-    });
+        if (objStore) {
+          let project = await repository.update(objStore, {
+              value: value
+          });
+          return project;
+        } else {
+          let insertedStore = await repository.save({
+            key: key,
+            value: value
+          });
+          return insertedStore.value;
+        }
+      } catch (error) {
+        throw new Error('unable to set value ' + error);
+      }
+    }
+
+  const getItem =  async (key: string) => {
+    console.log('getItem')
+    try {
+      let repository = await getRepository();
+      let item = await repository.findOne({ 
+          where: {
+            key: key
+          } 
+      });
+      return item.value;
+    } catch (error) {
+      throw new Error('unable to get value ' + error);
+    }
   }
 
-  function getAllKeys(cb = noop) {
-    return new Promise((resolve, reject) => {
-      dbResolver.then(() => {
-        sequelize
-          .authenticate()
-          .then(function (err) {
-            if (err) {
-              // cb(err);
-              resolve([]);
-              cb(null, []);
-            }
-            Store.findAll()
-              .then(projects => {
-                const result = [];
-                for( let i = 0, il = projects.length; i < il; i++) {
-                  result.push(projects[i].key);
-                }
-                resolve(result);
-                cb(null, result);
-              });
-          }, function (err) {
-            console.log('Unable to connect to the database:', err);
-            reject(DB_CLOSED_MESSAGE);
-          });
+  const removeItem = async (key: string) => {
+     
+    console.log('removeItem')
+    try {
+      let repository = await getRepository();
+      const itemRemove = await repository.findOne({
+          key: key
       });
-    });
+      let project = await repository.remove(itemRemove);
+          return project;
+    } catch (error) {
+      throw new Error('Unable to remove item' + error);
+    }
   }
 
-  function clear(cb = noop) {
-    return new Promise((resolve, reject) => {
-      dbResolver.then(() => {
-        sequelize
-          .authenticate()
-          .then(function (err) {
-            if (err) {
-              reject(err);
-              cb(err);
-            }
-            Store.destroy({
-              where: {}
-            }).then(project => {
 
-              console.log(project);
-              resolve(null);
-              cb(null);
-            });
-          }, function (err) {
-            console.log('Unable to connect to the database:', err);
-            reject(DB_CLOSED_MESSAGE);
-          });
-      });
-    });
+  const getAllKeys = async () => { 
+    console.log('getAllKeys')
+    try {
+      let repository = await getRepository();
+      let projects = await repository.find();
+      const result = [];
+      for( let i = 0, il = projects.length; i < il; i++) {
+        result.push(projects[i].key);
+      }
+      return result;     
+    } catch (error) {
+      throw new Error('Unable to get all keys' + error);
+    }      
+  }
+
+  const clear = async () => {
+    console.log('clear')
+    try {
+      let repository = await getRepository();
+      let projects = await repository.find();
+      let project = await repository.remove(projects);
+      return project;
+    } catch (error) {
+      throw new Error('Unable to destroy all data' + error);
+    }      
   }
 
   return {
@@ -221,5 +142,9 @@ function SQLiteStorage() {
     getAllKeys,
     clear
   };
-};
+}
 
+
+
+
+  

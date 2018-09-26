@@ -4,14 +4,19 @@
     "target": "es6",
     "lib": ["es5", "es2015", "dom", "scripthost"],
     "noImplicitAny": true,
-    "sourceMap": true,
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
       "*": ["node_modules/*"]
-    }
+    },
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "sourceMap": true
   },
   "include": [
     "./*"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }
