@@ -33,7 +33,7 @@ export function createDappView(globalUUIDList: RendererConf[], dapp: AppItem) { 
     ]
   };
 
-  if (process.env.ELECTRON_ENV == 'production') {
+  if (process.env.ELECTRON_ENV !== 'development') {
     webPrefObj = Object.assign(webPrefObj, { sandbox: true })
   }
 
@@ -53,7 +53,7 @@ export function createDappView(globalUUIDList: RendererConf[], dapp: AppItem) { 
     winId: renderIdDapp,
     dappView,
     name: dapp.appName
-  }
+  };
   globalUUIDList.push(rendererObj);
 
 }
