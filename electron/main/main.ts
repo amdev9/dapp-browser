@@ -10,7 +10,7 @@ import { configureStore, initialState } from './helpers/store/configureStore';
 import { AppsManager, AppItem } from './helpers/AppsManager';
 import { DappFrame } from './helpers/DappFrame';
 import { createClientWindow } from './createClientWindow';
-import { createPermissionWindow } from './permissionManager/createPermissionWindow';
+import { createPermissionWindow } from '../permissionManager/createPermissionWindow';
 import { createDappView } from './createDappView';
 import { RendererConf } from './createDappView';
 import { IState, Client } from "./helpers/reducers/state";
@@ -78,7 +78,7 @@ app.on('ready', async () => {
       let activeDappName: string = storeState.client.activeDapp.appName;
 
       let targetDappObj: AppItem = AppsManager.dapps.find(dappObj => dappObj.appName == activeDappName);
-      createPermissionWindow(clientWindow, targetDappObj.appName, targetDappObj.permissions);
+      // createPermissionWindow(clientWindow, targetDappObj.appName, targetDappObj.permissions);
 
       //@todo pass approved permissions back, close created window on 'APPROVE' button clicked,
       // add data from permissionManager to state, on next action dispatch check state for permissions data exists,
