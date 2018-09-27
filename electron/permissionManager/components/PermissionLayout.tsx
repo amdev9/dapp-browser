@@ -2,8 +2,8 @@ import * as React from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { PermCheckBox } from './PermCheckBox'; 
-import { PermissionList, SystemComponent, Permission } from "../redux/state";
-import { IState } from '../redux/state';
+import { PermissionList, SystemComponent, Permission } from "../redux/reducers/state";
+import { IState } from '../redux/reducers/state';
 
 interface PermissionLayoutProps {
   permissions: PermissionList,

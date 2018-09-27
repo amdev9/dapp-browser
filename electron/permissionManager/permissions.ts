@@ -3,7 +3,7 @@
 import { combineReducers, createStore, applyMiddleware, compose, StoreEnhancer, Store, Middleware, Dispatch } from 'redux';
  
 import { isFSA } from 'flux-standard-action'; 
-import { PermissionList } from './redux/state';
+import { PermissionList } from './redux/reducers/state';
  
 interface Action {
   type: string;
