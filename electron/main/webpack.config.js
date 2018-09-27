@@ -5,25 +5,30 @@ const nodeExternals = require("webpack-node-externals");
 module.exports = {
   mode: 'development',
   target: 'electron-main',
-  externals: [nodeExternals(), "node_helper"],
-  entry: "./main.ts",
+  externals: [
+    nodeExternals(),
+    'require(\'sqlite3\')',
+    'require(\'typeorm\')',
+    'node_helper'
+  ],
+  entry: './main.ts',
   output: {
-    filename: "main.js",
-    path: __dirname + "/dist"
+    filename: 'main.js',
+    path: __dirname + '/dist'
   },
 
-  // Enable sourcemaps for debugging webpack"s output.
+  // Enable sourcemaps for debugging webpack's output.
   devtool: 'source-map',
 
   resolve: {
-    // Add ".ts" and ".tsx" as resolvable extensions.
-    extensions: [".ts", ".tsx", ".js", ".json"]
+    // Add '.ts' and '.tsx' as resolvable extensions.
+    extensions: ['.ts', '.tsx', '.js', '.json']
   },
 
   module: {
     rules: [
-      { test: /\.ts$/, loader: "awesome-typescript-loader" },
-			{ enforce: "pre", test: /\.js$/, loader: "source-map-loader" }
+      { test: /\.ts$/, loader: 'awesome-typescript-loader' },
+			{ enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' }
     ]
   },
   watch: true,

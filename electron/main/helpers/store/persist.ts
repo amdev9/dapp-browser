@@ -15,136 +15,117 @@
 
 */
 
- 
 'use strict';
 
-import "reflect-metadata";
-import { createConnection } from "typeorm";
-import { Store } from "./model/Store";
+import 'reflect-metadata';
+import {createConnection, ConnectionOptions} from 'typeorm';
+import { Story } from './model/Story';
 
-export default function SQLiteStorage() {
- 
-  const connection = async () => {
+export interface SQLiteStorageConfig {
+  database: string;
+  logging?: boolean;
+  logger?: ConnectionOptions['logger'];
+}
 
-    console.log('connection')
-    try { 
-      let connection = await createConnection({
-        "name": "default",
-        "type": "sqlite",
-        "database": "test.sqlite",
-        "synchronize": true,
-        "logging": true,
-        "entities": [
-          "./model/*.js"
-        ],
-      });
-      return connection;
-    } catch(error) {
-      throw new Error('Unable to connect sqlite ' + error);
-    }
-  }
+export default function SQLiteStorage(config?: SQLiteStorageConfig) {
 
-  const getRepository = async () => {
-    console.log('getRepository')
-    let conn  =  await connection();   
-    return conn.getRepository(Store);
-  }
+  const storageEntity = Story;
 
-  const setItem = async (key: string, value: string) => {   
-    console.log('setItem')
+  const dbConnection = createConnection({
+    database: 'temp/sqliteStorage.db',
+    type: 'sqlite',
+    synchronize: true,
+    ...config,
+    entities: [storageEntity],
+  });
+
+  const getItem = async (key: string) => {
     try {
+      const connection = await dbConnection;
 
-      let repository = await getRepository();
+      const storyRepository = connection.getRepository(storageEntity.name);
 
-      // setItem
-      const objStore = await repository.findOne({
-          key: key
-      });
-        if (objStore) {
-          let project = await repository.update(objStore, {
-              value: value
-          });
-          return project;
-        } else {
-          let insertedStore = await repository.save({
-            key: key,
-            value: value
-          });
-          return insertedStore.value;
-        }
-      } catch (error) {
-        throw new Error('unable to set value ' + error);
-      }
-    }
+      const story: any = await storyRepository.findOne(key);
 
-  const getItem =  async (key: string) => {
-    console.log('getItem')
-    try {
-      let repository = await getRepository();
-      let item = await repository.findOne({ 
-          where: {
-            key: key
-          } 
-      });
-      return item.value;
-    } catch (error) {
-      throw new Error('unable to get value ' + error);
+      return story && story.value
+
+    } catch (e) {
+      console.error(e)
     }
   }
+
+  const setItem = async (key: string, item: string) => {
+    try {
+      const connection = await dbConnection;
+
+      const storyRepository = connection.getRepository(storageEntity.name);
+
+      const story = new Story();
+
+      story.key = key;
+      story.value = item;
+
+      return storyRepository.save(story)
+
+    } catch (e) {
+      console.error(e)
+    }
+  };
 
   const removeItem = async (key: string) => {
-     
-    console.log('removeItem')
     try {
-      let repository = await getRepository();
-      const itemRemove = await repository.findOne({
-          key: key
-      });
-      let project = await repository.remove(itemRemove);
-          return project;
-    } catch (error) {
-      throw new Error('Unable to remove item' + error);
+      const connection = await dbConnection;
+
+      const storyRepository = connection.getRepository(storageEntity.name);
+
+      const storyToRemove = await storyRepository.findOne(key);
+
+      return storyRepository.remove(storyToRemove)
+
+    } catch (e) {
+      console.error(e)
     }
-  }
+  };
 
-
-  const getAllKeys = async () => { 
-    console.log('getAllKeys')
+  const getAllKeys = async () => {
     try {
-      let repository = await getRepository();
-      let projects = await repository.find();
-      const result = [];
-      for( let i = 0, il = projects.length; i < il; i++) {
-        result.push(projects[i].key);
-      }
-      return result;     
-    } catch (error) {
-      throw new Error('Unable to get all keys' + error);
-    }      
-  }
+      const connection = await dbConnection;
+
+      const storyRepository = connection.getRepository(storageEntity.name);
+
+      const stories = await storyRepository.find();
+
+      return stories.map((story: Story) => story.key)
+
+    } catch (e) {
+      console.error(e)
+    }
+  };
 
   const clear = async () => {
-    console.log('clear')
     try {
-      let repository = await getRepository();
-      let projects = await repository.find();
-      let project = await repository.remove(projects);
-      return project;
-    } catch (error) {
-      throw new Error('Unable to destroy all data' + error);
-    }      
-  }
+      const connection = await dbConnection;
+
+      const storyRepository = connection.getRepository(storageEntity.name);
+
+      const storiesToRemove = await storyRepository.find();
+
+      const result = storyRepository.remove(storiesToRemove)
+
+    } catch (e) {
+      console.error(e)
+    }
+
+  };
 
   return {
     getItem,
-    setItem,
     removeItem,
-    getAllKeys,
-    clear
-  };
+    setItem,
+    clear,
+    getAllKeys
+  }
 }
 
 
 
-
-  
