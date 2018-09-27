@@ -3,6 +3,8 @@ import { createStore, applyMiddleware, compose, Store, Middleware, GenericStoreE
 import { isFSA } from 'flux-standard-action';
 // import { triggerAlias } from 'electron-redux';
 import { createEpicMiddleware } from 'redux-observable';
+import { persistStore,  persistReducer } from 'redux-persist';
+
 import { validatePermissionAction } from './validatePermissionAction';
 import rootEpic from '../epics';
 import { rootReducer } from '../reducers';
@@ -12,8 +14,6 @@ import { IState } from '../reducers/state';
 
 import SQLiteStorage from './persist';
 
-import { persistStore,  persistReducer } from 'redux-persist';
- 
 
 export interface Action {
   type: string;
@@ -188,16 +188,19 @@ export const configureStore = (state: IState = initialState, globalId?: Renderer
   const enhanced = [applyMiddleware(...middleware)];
   const enhancer: GenericStoreEnhancer = compose(...enhanced);
 
-  const storeEngine = SQLiteStorage();
+  const storeEngine = SQLiteStorage({
+    database: 'temp/sqliteStorage.db'
+  });
+
   const persistConfig = {
     key: 'root',
-    storage: storeEngine, // storage, 
+    storage: storeEngine, // storage,
     debug: true
   };
   const pReducer = persistReducer(persistConfig, rootReducer); 
-  // console.log('reducer', pReducer);
-  const store = createStore(pReducer, state, enhancer);
 
+  const store = createStore(pReducer, state, enhancer);
+  let persistor = persistStore(store)
 
   epicMiddleware.run(rootEpic);
   replyActionMain(store, globalId);
