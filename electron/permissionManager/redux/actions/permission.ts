@@ -1,24 +1,21 @@
 import { action } from 'typesafe-actions';
 import { Action } from 'redux';
 import { CLOSE_MANAGER, TOGGLE_PERMISSION } from '../constants';
-import { AppItem } from '../model';
+import { Permission } from '../model';
 
-export interface TrayAction extends Action {
+export interface PermissionAction extends Action {
   payload?: {
-    targetDappName?: string,
-    item?: AppItem,
-    isHome?: boolean,
-    dappName?: string
+    item?: Permission,
+    status?: boolean
   }
 }
 
-export const closeManager = (dappName: string):
-  TrayAction => action(CLOSE_MANAGER, {
-    targetDappName: dappName
-  });
+export const closeManager = ():
+  PermissionAction => action(CLOSE_MANAGER);
 
-export const togglePermission = (TrayItem: AppItem):
-  TrayAction => action(TOGGLE_PERMISSION, {
-    item: TrayItem
+export const togglePermission = (PermissionType: Permission, isApproved: boolean):
+  PermissionAction => action(TOGGLE_PERMISSION, {
+    item: PermissionType,
+    status: isApproved
   });
  

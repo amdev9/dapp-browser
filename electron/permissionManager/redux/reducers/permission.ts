@@ -1,21 +1,21 @@
 import { CLOSE_MANAGER, TOGGLE_PERMISSION } from '../constants';
-import { TrayAction } from '../actions/permission';
-import { Tray } from './state';
+import { PermissionAction } from '../actions/permission';
+import { IState, PermissionList } from './state';
 
-const initialState: Tray = {
-  items: [],
-  activeDapp: {
-    appName: null
-  },
-  pinned: [],
-  isHome: true
+let perm: PermissionList;
+
+const initialState: IState = {
+  permissions: perm
 }
 
-export default function tray(state: Tray = initialState, action: TrayAction) {
+export default function permission(state: IState = initialState, action: PermissionAction) {
   switch (action.type) {
     case TOGGLE_PERMISSION:
+      return {
+        ...state,
+        permissions: state.permissions.concat() //@todo add to array checked permission
+      }
     case CLOSE_MANAGER:
-
       return state;
 
     default:
