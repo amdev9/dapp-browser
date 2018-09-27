@@ -14,7 +14,7 @@ console.log("dirname: " + __dirname)
 */
 
 let child;
- 
+
 if (process.env.NODE_ENV === 'development') {
   console.log('DEVELOPMENT mode\nproc.spawn should execute: ' + electron + __dirname + "/electron/main/dist/main.js");
   child = proc.spawn(electron , [ __dirname + "/electron/main/dist/main.js"], {
@@ -24,7 +24,7 @@ if (process.env.NODE_ENV === 'development') {
 
   console.log('PRODUCTION mode\nproc.spawn should execute: ' + electron + '--enable-sandbox' + __dirname + "/electron/main/dist/main.js");
   child = proc.spawn(electron , ["--enable-sandbox", __dirname + "/electron/main/dist/main.js"], {
-    env: Object.assign({ ELECTRON_ENV: 'development' }, process.env)
+    env: Object.assign({ ELECTRON_ENV: 'production' }, process.env)
   });
 }
 /* Catch the outputs of the electron child process */
@@ -45,4 +45,3 @@ child.on('close', (code) => {
 process.on('exit', (code) => {
   console.log(`About to exit with code: ${code}`);
 });
- 

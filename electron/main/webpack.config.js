@@ -1,6 +1,11 @@
+
+const nodeExternals = require("webpack-node-externals");
+
+
 module.exports = {
   mode: 'development',
   target: 'electron-main',
+  externals: [nodeExternals(), "node_helper"],
   entry: "./main.ts",
   output: {
     filename: "main.js",

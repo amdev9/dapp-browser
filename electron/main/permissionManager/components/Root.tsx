@@ -13,7 +13,8 @@ export default function Root({ store }: IRootType) {
   return (
     <Provider store={store}> 
       <App>
-        <PermissionLayout permissions={electronManager.permissions}/>
+        <PermissionLayout permissions={electronManager.permissions} />
+        {/* //mainAction={electronManager.sendActionMain} */}
       </App>
     </Provider>
   );

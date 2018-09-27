@@ -112,11 +112,11 @@ const initStore = () => {
     const initialState = JSON.parse(states()); // getInitialStateRenderer();
     const store = configureStore(initialState);
     return store;
-}
+};
 
 export const isProduction = () => {
-  return electronManager.getElectronEnv() === 'production';
-}
+  return electronManager.getElectronEnv() !== 'development';
+};
 
 // // electron-redux store
 const store = initStore();

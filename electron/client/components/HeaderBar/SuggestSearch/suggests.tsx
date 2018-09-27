@@ -22,11 +22,12 @@ export class Suggests extends React.Component<SuggestProps> {
   constructor(props: SuggestProps) {
     super(props);
 
+    this.onMenuVisibilityChange = this.onMenuVisibilityChange.bind(this);
+    this.shouldItemRender = this.shouldItemRender.bind(this);
     this.getItemValue = this.getItemValue.bind(this);
     this.getItems = this.getItems.bind(this);
     this.onSelect = this.onSelect.bind(this);
     this.onChange = this.onChange.bind(this);
-    this.onMenuVisibilityChange = this.onMenuVisibilityChange.bind(this);
     this.getItem = this.getItem.bind(this);
     this.getMenu = this.getMenu.bind(this);
   }
@@ -36,7 +37,7 @@ export class Suggests extends React.Component<SuggestProps> {
   };
 
   private getItems(): SuggestItem[] {
-     let items = this.props.searchItems;
+    let items = this.props.searchItems;
 
     const result = Object.keys(items).map(groupName => {
       const groupItems = items[groupName];
@@ -57,6 +58,17 @@ export class Suggests extends React.Component<SuggestProps> {
     });
 
     return [].concat(...result);
+  }
+
+  private shouldItemRender(suggestItem: SuggestItem, value: string) {
+    const match = (searchItem: SearchItem, value: string) => searchItem.app.toLocaleLowerCase().indexOf(value.toLocaleLowerCase()) > -1;
+
+    if (suggestItem.type === SuggestItem.Type.Header) {
+      const matchedItemsInGroup = this.props.searchItems[suggestItem.header].filter(searchItem => match(searchItem, value));
+      return matchedItemsInGroup.length > 0;
+    } else {
+      return match(suggestItem.item, value);
+    }
   }
 
   private onSelect(value: string, suggestItem: SuggestItem) {
@@ -165,12 +177,13 @@ export class Suggests extends React.Component<SuggestProps> {
 
     const props: Autocomplete.Props = {
       isItemSelectable: (suggestItem: SuggestItem) => (suggestItem.type !== SuggestItem.Type.Header),
+      onMenuVisibilityChange: this.onMenuVisibilityChange,
+      shouldItemRender: this.shouldItemRender,
       getItemValue: this.getItemValue,
       renderItem: this.getItem,
       renderMenu: this.getMenu,
       onSelect: this.onSelect,
       onChange: this.onChange,
-      onMenuVisibilityChange: this.onMenuVisibilityChange,
       items: this.getItems(),
       wrapperStyle: styles,
       value,

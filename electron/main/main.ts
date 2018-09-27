@@ -19,7 +19,7 @@ import Rectangle = Electron.Rectangle;
 import * as nodeConsole from 'console';
 const console = new nodeConsole.Console(process.stdout, process.stderr);
 
-const isProduction = process.env.ELECTRON_ENV === 'production';
+const isProduction = process.env.ELECTRON_ENV !== 'development';
 
 require('electron-context-menu')({
 	prepend: (params: any, browserWindow: BrowserWindow) => [{
@@ -78,7 +78,7 @@ app.on('ready', async () => {
       let activeDappName: string = storeState.client.activeDapp.appName;
 
       let targetDappObj: AppItem = AppsManager.dapps.find(dappObj => dappObj.appName == activeDappName);
-      // createPermissionWindow(clientWindow, targetDappObj.appName, targetDappObj.permissions);
+      createPermissionWindow(clientWindow, targetDappObj.appName, targetDappObj.permissions);
 
       //@todo pass approved permissions back, close created window on 'APPROVE' button clicked,
       // add data from permissionManager to state, on next action dispatch check state for permissions data exists,

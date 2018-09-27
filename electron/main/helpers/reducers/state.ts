@@ -27,7 +27,8 @@ export type Client = {
 export interface IState {
   channel: {};
   client: Client,
-  feed: {}
+  feed: {},
+  permissions: {}
 
   //@todo add MapPermissions
 }

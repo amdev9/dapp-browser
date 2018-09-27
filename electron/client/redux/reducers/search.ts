@@ -10,7 +10,7 @@ const initialState: SearchPanel =
         icon: require("../../assets/app-icons/chat.svg"),
         uri: "chat://sendMessage/satan/",
         network: "mainnet",
-        app: "Chat",
+        app: "Chat1",
       },
       {
         icon: require("../../assets/app-icons/exchange.svg"),

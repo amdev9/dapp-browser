@@ -7,6 +7,7 @@ import { IState } from '../redux/state';
 
 interface PermissionLayoutProps {
   permissions: PermissionList,
+  // mainAction: (action: any) => void
 }
  
 export class PermissionLayout extends React.Component<PermissionLayoutProps> { 
@@ -16,7 +17,9 @@ export class PermissionLayout extends React.Component<PermissionLayoutProps> {
   }
 
   handleApproveClick() {
+    // const {  mainAction } = this.props;
     console.log('close app');
+    // mainAction('closeAndSaveaction');
   }
   
   public render() {
@@ -24,10 +27,10 @@ export class PermissionLayout extends React.Component<PermissionLayoutProps> {
     const permissionItems: JSX.Element[] = permissions.map((perm: any): JSX.Element => (
       <PermCheckBox 
         key={`${perm}`} 
-        permissionConf={perm} /> 
+        permissionConf={perm} isChecked={false} /> 
 
         //  permissionFlag={perm.type} 
-        // isChecked={perm.granted}
+        
 
     ));
     

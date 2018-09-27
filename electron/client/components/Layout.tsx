@@ -65,21 +65,6 @@ class App extends React.Component<AppProps> {
 
     return (
       <div>
-        <HeaderBar
-          isOpen={openNotificationPanel}
-          togglePanel={() => onTogglePanel()}
-          toggleLoaderPanel={onToggleLoaderPanel}
-          toggleHome={() => onToggleHome(true)}
-          searchItems={searchItems}
-          isSearchPanelOpen={openSearchPanel}
-          toggleSearchPanel={onToggleSearch}
-          isSettingsPanelOpen={openSettingsPanel}
-          toggleSettingsPanel={onToggleSettingsPanel}
-          isStatusBarOpen={openStatusBarPanel}
-          toggleStatusBar={statusBarToggle}
-          isPeersBarOpen={openPeersBarPanel}
-          togglePeersBar={peersBarToggle}
-          key="root-headerbar" />
         <NotificationPanel
           clearAllNotifications={() => clearAllNotifications()}
           clearNotification={(id: number) => clearNotification(id)}
@@ -95,6 +80,21 @@ class App extends React.Component<AppProps> {
           isNotificationPanelOpen={openNotificationPanel}
           toggleNotificationPanel={(openStatus) => onTogglePanel(openStatus)}
           key="root-loader" />
+        <HeaderBar
+          isOpen={openNotificationPanel}
+          togglePanel={() => onTogglePanel()}
+          toggleLoaderPanel={onToggleLoaderPanel}
+          toggleHome={() => onToggleHome(true)}
+          searchItems={searchItems}
+          isSearchPanelOpen={openSearchPanel}
+          toggleSearchPanel={onToggleSearch}
+          isSettingsPanelOpen={openSettingsPanel}
+          toggleSettingsPanel={onToggleSettingsPanel}
+          isStatusBarOpen={openStatusBarPanel}
+          toggleStatusBar={statusBarToggle}
+          isPeersBarOpen={openPeersBarPanel}
+          togglePeersBar={peersBarToggle}
+          key="root-headerbar" />
         <div className="content-zone" key="root-content" id="root-container">
 
           <Tray items={trayItems} toggleSwitch={onSwitchDapp} togglePeersBar={peersBarToggle} peersBarIsOpen={openPeersBarPanel} />
