@@ -39,14 +39,15 @@ export default function SQLiteStorage(config?: SQLiteStorageConfig) {
     entities: [storageEntity],
   });
 
+  const getStoreRepository = async () => {
+    const connection = await dbConnection;
+    return connection.getRepository(storageEntity.name);
+  }
+
   const getItem = async (key: string) => {
     try {
-      const connection = await dbConnection;
-
-      const storyRepository = connection.getRepository(storageEntity.name);
-
+      const storyRepository = await getStoreRepository();
       const story: any = await storyRepository.findOne(key);
-
       return story && story.value
 
     } catch (e) {
@@ -56,9 +57,7 @@ export default function SQLiteStorage(config?: SQLiteStorageConfig) {
 
   const setItem = async (key: string, item: string) => {
     try {
-      const connection = await dbConnection;
-
-      const storyRepository = connection.getRepository(storageEntity.name);
+      const storyRepository = await getStoreRepository();
 
       const story = new Story();
 
@@ -74,9 +73,7 @@ export default function SQLiteStorage(config?: SQLiteStorageConfig) {
 
   const removeItem = async (key: string) => {
     try {
-      const connection = await dbConnection;
-
-      const storyRepository = connection.getRepository(storageEntity.name);
+      const storyRepository = await getStoreRepository();
 
       const storyToRemove = await storyRepository.findOne(key);
 
@@ -89,9 +86,7 @@ export default function SQLiteStorage(config?: SQLiteStorageConfig) {
 
   const getAllKeys = async () => {
     try {
-      const connection = await dbConnection;
-
-      const storyRepository = connection.getRepository(storageEntity.name);
+      const storyRepository = await getStoreRepository();
 
       const stories = await storyRepository.find();
 
@@ -104,9 +99,7 @@ export default function SQLiteStorage(config?: SQLiteStorageConfig) {
 
   const clear = async () => {
     try {
-      const connection = await dbConnection;
-
-      const storyRepository = connection.getRepository(storageEntity.name);
+      const storyRepository = await getStoreRepository();
 
       const storiesToRemove = await storyRepository.find();
 

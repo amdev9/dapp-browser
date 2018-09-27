@@ -12,4 +12,5 @@ package-lock.json
 .git
 keychain.dms
 .log
+temp/
 
