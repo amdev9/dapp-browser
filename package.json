@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "setup": "concurrently --kill-others \"cd electron/client && npm i && cross-env NODE_ENV=development node --max_old_space_size=2096 server.js\" \"cd electron/dapps/lib && npm i && npm run webpack\" \"cd electron/main && npm i && npm run webpack\"",
+    "setup": "concurrently --kill-others \"cd electron/client && npm i && cross-env NODE_ENV=development node --max_old_space_size=2096 server.js\" \"cd electron/dapps/lib && npm i && npm run webpack\" \"cd electron/main && npm i && npm run rebuild && npm run webpack\"",
+    "mainSetup": "cd electron/main && npm i && npm run rebuild && npm run webpack",
     "dev": "NODE_ENV=development npm start",
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,6 +16,7 @@
     "concurrently": "^4.0.1",
     "cross-env": "^5.2.0",
     "react-burger-menu": "^2.5.2",
-    "react-perfect-scrollbar": "^1.2.0"
+    "react-perfect-scrollbar": "^1.2.0",
+    "sqlite3": "^4.0.2"
   }
 }

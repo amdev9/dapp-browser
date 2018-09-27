@@ -8,6 +8,7 @@ module.exports = {
   externals: [
     nodeExternals(),
     'require(\'sqlite3\')',
+    'require(\'typeorm\')',
     'node_helper'
   ],
   entry: './main.ts',
