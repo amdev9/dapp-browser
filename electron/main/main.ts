@@ -10,11 +10,11 @@ import { configureStore, initialState } from './helpers/store/configureStore';
 import { AppsManager, AppItem } from './helpers/AppsManager';
 import { DappFrame } from './helpers/DappFrame';
 import { createClientWindow } from './createClientWindow';
-import { createPermissionWindow } from '../permissionManager/createPermissionWindow';
+import { createPermissionWindow } from './createPermissionWindow';
 import { createDappView } from './createDappView';
 import { RendererConf } from './createDappView';
 import { IState, Client } from "./helpers/reducers/state";
-import Rectangle = Electron.Rectangle;
+ 
 
 import * as nodeConsole from 'console';
 const console = new nodeConsole.Console(process.stdout, process.stderr);
@@ -119,7 +119,7 @@ const correctDappViewBounds = (clientState: Client) => {
   const view = clientWindow.getBrowserView();
   const windowBounds = clientWindow.getBounds();
   if (view) {
-    const dappFrame: Rectangle = new DappFrame(clientState, isProduction ? windowBounds : null);
+    const dappFrame: Electron.Rectangle = new DappFrame(clientState, isProduction ? windowBounds : null);
     view.setBounds(dappFrame);
   }
 };
