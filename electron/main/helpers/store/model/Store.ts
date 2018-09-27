@@ -7,5 +7,4 @@ export class Store {
 
   @Column()
   value: string;
-
 }

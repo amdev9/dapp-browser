@@ -19,7 +19,7 @@
 
 import 'reflect-metadata';
 import {createConnection, ConnectionOptions} from 'typeorm';
-import { Story } from './model/Story';
+import { Store } from './model/Store';
 
 export interface SQLiteStorageConfig {
   database: string;
@@ -29,7 +29,7 @@ export interface SQLiteStorageConfig {
 
 export default function SQLiteStorage(config?: SQLiteStorageConfig) {
 
-  const storageEntity = Story;
+  const storageEntity = Store;
 
   const dbConnection = createConnection({
     database: 'temp/sqliteStorage.db',
@@ -46,67 +46,66 @@ export default function SQLiteStorage(config?: SQLiteStorageConfig) {
 
   const getItem = async (key: string) => {
     try {
-      const storyRepository = await getStoreRepository();
-      const story: any = await storyRepository.findOne(key);
-      return story && story.value
+      const storeRepository = await getStoreRepository();
+      const storeDb: any = await storeRepository.findOne(key);
+      return storeDb && storeDb.value;
 
     } catch (e) {
-      console.error(e)
+      console.error(e);
     }
   }
 
   const setItem = async (key: string, item: string) => {
     try {
-      const storyRepository = await getStoreRepository();
+      const storeRepository = await getStoreRepository();
+      const storeDb = new Store();
 
-      const story = new Story();
+      storeDb.key = key;
+      storeDb.value = item;
 
-      story.key = key;
-      story.value = item;
-
-      return storyRepository.save(story)
+      return storeRepository.save(storeDb);
 
     } catch (e) {
-      console.error(e)
+      console.error(e);
     }
   };
 
   const removeItem = async (key: string) => {
     try {
-      const storyRepository = await getStoreRepository();
+      const storeRepository = await getStoreRepository();
 
-      const storyToRemove = await storyRepository.findOne(key);
+      const storeToRemove = await storeRepository.findOne(key);
 
-      return storyRepository.remove(storyToRemove)
+      return storeRepository.remove(storeToRemove);
 
     } catch (e) {
-      console.error(e)
+      console.error(e);
     }
   };
 
   const getAllKeys = async () => {
     try {
-      const storyRepository = await getStoreRepository();
+      const storeRepository = await getStoreRepository();
 
-      const stories = await storyRepository.find();
+      const stories = await storeRepository.find();
 
-      return stories.map((story: Story) => story.key)
+      return stories.map((store: Store) => store.key);
 
     } catch (e) {
-      console.error(e)
+      console.error(e);
     }
   };
 
   const clear = async () => {
     try {
-      const storyRepository = await getStoreRepository();
+      const storeRepository = await getStoreRepository();
 
-      const storiesToRemove = await storyRepository.find();
+      const storiesToRemove = await storeRepository.find();
 
-      const result = storyRepository.remove(storiesToRemove)
+      const result = storeRepository.remove(storiesToRemove);
 
     } catch (e) {
-      console.error(e)
+      console.error(e);
     }
 
   };
