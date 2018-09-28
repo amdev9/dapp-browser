@@ -1,13 +1,17 @@
 import * as React from 'react';
-import { bindActionCreators, Dispatch } from 'redux';
+import { bindActionCreators, Dispatch, Action } from 'redux';
 import { connect } from 'react-redux';
 import { PermCheckBox } from './PermCheckBox'; 
-import { PermissionList, SystemComponent, Permission } from "../redux/reducers/state";
+import { PermissionList, Permission } from "../redux/reducers/state";
 import { IState } from '../redux/reducers/state';
 
+
+import * as permissionActions from '../redux/actions/permission';
+
 interface PermissionLayoutProps {
-  permissions: PermissionList,
-  // mainAction: (action: any) => void
+  permissions: Permission[],
+  onCloseWindow?: () => void,
+  onTogglePermission?: (PermissionType: Permission) => void
 }
  
 export class PermissionLayout extends React.Component<PermissionLayoutProps> { 
@@ -16,23 +20,24 @@ export class PermissionLayout extends React.Component<PermissionLayoutProps> {
     this.handleApproveClick = this.handleApproveClick.bind(this);
   }
 
-  handleApproveClick() {
-    // const {  mainAction } = this.props;
+  handleApproveClick() { 
+  
     console.log('close app');
-    // mainAction('closeAndSaveaction');
+
+    this.props.onCloseWindow();
   }
   
   public render() {
-    const { permissions } = this.props;
-    const permissionItems: JSX.Element[] = permissions.map((perm: any): JSX.Element => (
-      <PermCheckBox 
-        key={`${perm}`} 
-        permissionConf={perm} isChecked={false} /> 
-
-        //  permissionFlag={perm.type} 
-        
-
-    ));
+    const { permissions, onTogglePermission } = this.props;
+    const permissionItems: JSX.Element[] = permissions.map(
+      (value: Permission): JSX.Element => (
+        <PermCheckBox 
+          key={`${value}`} 
+          permissionItem={value} 
+          onTogglePerm={onTogglePermission}
+        />
+      )      
+    );
     
     return (
       <div>
@@ -43,15 +48,11 @@ export class PermissionLayout extends React.Component<PermissionLayoutProps> {
   }
 }
 
-const mapStateToProps = (state: IState) => ({
-  // counter: state.counter,
-});
-
-// const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
-//   onIncrement: CounterActions.increment,
-//   // onDecrement: CounterActions.decrement,
-// }, dispatch);
-
-export default connect(mapStateToProps)(PermissionLayout); // mapDispatchToProps
+const mapStateToProps = (state: IState) => ({});
+const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
+  onCloseWindow: permissionActions.closeManager,
+  onTogglePermission: permissionActions.togglePermission
+}, dispatch);
+export default connect(mapStateToProps, mapDispatchToProps)(PermissionLayout); 
 
 

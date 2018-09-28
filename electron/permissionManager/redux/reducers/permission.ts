@@ -1,23 +1,20 @@
 import { CLOSE_MANAGER, TOGGLE_PERMISSION } from '../constants';
 import { PermissionAction } from '../actions/permission';
-import { IState, PermissionList } from './state';
+import { PermissionList, Permission } from './state';
 
-let perm: PermissionList;
+ 
+let perm: Permission[];
 
-const initialState: IState = {
-  permissions: perm
+const initialState: PermissionList = {
+  items: perm
 }
 
-export default function permission(state: IState = initialState, action: PermissionAction) {
+export function permission(state: PermissionList = initialState, action: PermissionAction) {
   switch (action.type) {
     case TOGGLE_PERMISSION:
-      return {
-        ...state,
-        permissions: state.permissions.concat() //@todo add to array checked permission
-      }
+      return state;
     case CLOSE_MANAGER:
       return state;
-
     default:
       return state;
   }

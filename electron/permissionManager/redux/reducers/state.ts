@@ -1,25 +1,25 @@
-// import { Permission } from './model';
 
 export type Permission = "ipfs" | "network" | "storage";
-
-interface ComponentProps {
-  required?: boolean,
-  dependency?: string[],
+export interface PermissionList {
+  items: Permission[]
 }
+export interface IState {
+  permission: PermissionList
+};
+  
 
-export type SystemComponent = {
-  [key: string]: ComponentProps
-} | Permission;
 
-export interface PermissionList extends Array<SystemComponent> {
-  items: SystemComponent[]
-}
 
+// import { Permission } from './model';
+// interface ComponentProps {
+//   required?: boolean,
+//   dependency?: string[],
+// }
+// {
+//   [key: string]: ComponentProps
+// } | Permission;
 // export interface MapPermission {
 //   type: Permission,
 //   granted: boolean
 // }
-export interface IState {
-  permissions: PermissionList
-}
 

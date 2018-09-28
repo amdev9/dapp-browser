@@ -13,9 +13,8 @@ export interface PermissionAction extends Action {
 export const closeManager = ():
   PermissionAction => action(CLOSE_MANAGER);
 
-export const togglePermission = (PermissionType: Permission, isApproved: boolean):
+export const togglePermission = (PermissionType: Permission):
   PermissionAction => action(TOGGLE_PERMISSION, {
-    item: PermissionType,
-    status: isApproved
+    item: PermissionType
   });
  
