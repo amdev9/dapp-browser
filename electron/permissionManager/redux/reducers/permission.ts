@@ -12,9 +12,9 @@ const initialState: PermissionList = {
 export function permission(state: PermissionList = initialState, action: PermissionAction) {
   switch (action.type) {
     case TOGGLE_PERMISSION:
-      return state;
+      return state; // state.permissions = [], add or remove from array
     case CLOSE_MANAGER:
-      return state;
+      return state; // state.granted // if granted not spawn permissionManager 
     default:
       return state;
   }
