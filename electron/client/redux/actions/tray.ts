@@ -8,7 +8,9 @@ export interface TrayAction extends Action {
     targetDappName?: string,
     item?: AppItem,
     isHome?: boolean,
-    dappName?: string
+    dappName?: string,
+    counter?: number,
+    indicator?: number
   }
 }
 
