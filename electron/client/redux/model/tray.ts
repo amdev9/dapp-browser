@@ -4,6 +4,7 @@ export type AppItem = {
   statusIcon: string[];
   counter?: number,
   indicator?: number
+  pin?: boolean
 }
 
 export type ActiveDapp = {
