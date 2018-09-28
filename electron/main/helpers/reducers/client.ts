@@ -8,7 +8,8 @@ import {
   TOGGLE_SETTINGS_PANEL,
   TOGGLE_SEARCH_PANEL,
   TOGGLE_APP_HOME,
-  APPS_FEED_RESIZE
+  APPS_FEED_RESIZE,
+  REMOVE_TRAY_ITEM
 } from '../constants';
 import { TrayAction } from '../actions/client';
 import { Client } from './state';
@@ -54,6 +55,15 @@ export function client(state: Client = initialState, action: TrayAction) {
           appName: action.payload.targetDappName
         }
       };
+
+    case REMOVE_TRAY_ITEM:
+      return {
+        ...state,
+        isHome: true,
+        activeDapp: {
+          appName: null
+        }
+      };  
 
     case TOGGLE_NOTIFICATION_PANEL:
       return {
