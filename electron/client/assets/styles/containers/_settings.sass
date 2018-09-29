@@ -2,6 +2,51 @@
   display: block
   width: 100%
 
+  .form-settings
+    margin: 30px 0 0
+
+    .btn
+      min-width: 180px
+
+    .card
+      border: 0
+      border-radius: 6px
+
+      .disabled
+        opacity: .5
+
+      dl
+        margin-bottom: 0
+
+      dl dt,
+      dl dd
+        font: 16px 'Open Sans', sans-serif
+        margin-bottom: 0
+
+      .list-group-item
+        border-color: #f0f2f4
+        position: relative
+        display: block
+        padding: .75rem 1.25rem
+        margin-bottom: -1px
+        background-color: #fff
+        border: 1px solid rgba(0, 0, 0, 0.125)
+
+        small
+          font-size: 13px
+          color: #252526
+
+        dl dd
+          font-size: 14px
+          color: #4686FF
+
+        dl dd small
+          font-size: 11px
+          text-transform: uppercase
+
+        dl dd.disabled
+          color: #FD6047
+
   .btn-link
     font: 500 14px 'Open Sans', sans-serif
     color: #AAB4BF
@@ -137,11 +182,6 @@
     .btn
       min-width: 180px
 
-  .justify-content-center
-    -webkit-box-pack: center!important
-    -ms-flex-pack: center!important
-    justify-content: center !important
-
   .item
     margin: auto 80px
 
@@ -155,73 +195,52 @@
     border-color: #E3E5E8
     background: none
 
-  .navigate
-    height: 75px
+  .react-tabs
+    height: 100%
     background: #FAFAFC
-    //margin: 0 -55px 10px -55px
-    //border-left: 1px solid #F2F3F6
 
-  .navigate .nav
-    height: 100%
+    &__tab-list
+      display: table
+      margin-right: auto
+      margin-left: auto
+      margin-top: 0
+      list-style: none
 
-  .navigate .nav-item
-    height: 100%
-
-  .navigate .nav-item button
-    font: 12px 'Montserrat', sans-serif
-    color: #7B8DA7
-    height: 100%
-    text-transform: uppercase
-    border-radius: 0
-    border-bottom: 3px solid transparent
-    cursor: pointer
-    &:focus
-      outline: none
-
-  .navigate .nav-item button.active,
-  .navigate .nav-item button:hover
-    color: #4686FF
-
-  .navigate .nav-item button.active
-    border-bottom-color: #4686FF
-
-  .nav-justified .nav-item
-    -ms-flex-preferred-size: 0
-    flex-basis: 0
-    -webkit-box-flex: 1
-    -ms-flex-positive: 1
-    flex-grow: 1
-    text-align: center
-
-  .nav
-    display: -webkit-box
-    display: -ms-flexbox
-    display: flex
-    -ms-flex-wrap: wrap
-    flex-wrap: wrap
-    padding-left: 0
-    margin-bottom: 0
-    margin-top: 0
-    list-style: none
-    &-link
-      font: 600 20px $font-montserrat !important
-      color: $dgray
-      border: 0
-      padding: 20px 10px
+    &__tab
+      display: inline-block
+      border: 1px solid transparent
+      border-bottom: none
+      bottom: -1px
+      padding: 6px 12px
+      cursor: pointer
+      -webkit-box-pack: center!important
+      +noselect
+      height: 45px
+      font: 12px 'Montserrat', sans-serif
+      color: #7B8DA7
+      text-transform: uppercase
       border-radius: 0
-      background: $gray
-      text-decoration: none
-      display: block
+      border-bottom: 3px solid transparent
 
-      &.active
-        color: $theme !important
-        background-color: #fff
+      &:before
+        content: ""
+        display: inline-block
+        vertical-align: middle
+        height: 100%
 
-  .tab
-    &-content
-      .active
-      display: block
+      &--selected
+        border-bottom-color: #4686FF
 
-    &-pane
+      &--disabled
+        color: GrayText
+        cursor: default
+
+      &:focus
+        outline: none
+
+    &__tab-panel
       display: none
-      padding: 15px
+      margin: 0 100px
+
+      &--selected
+        display: block

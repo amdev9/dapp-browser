@@ -7,6 +7,7 @@ import statusBar from './status-bar';
 import tray from './tray';
 import feed from './feed';
 import search from './search';
+import settings from './settings';
 import { IState } from './state';
 
 const rootReducer = combineReducers<IState>({
@@ -15,7 +16,8 @@ const rootReducer = combineReducers<IState>({
   statusBar,
   tray,
   feed,
-  search
+  search,
+  settings
 });
 
 export default rootReducer;
