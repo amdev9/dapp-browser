@@ -461,18 +461,23 @@ https://github.com/arrayio/docs.array.io/blob/master/ru_RU/src/components/activi
 # array.FileManager
 
 The FileManager class provides a secure approach to the local user files management. It encapsulates permission mechanizms and incorporates methods for resource-effiecient file handling.
- 
-FileManager is a FileReader wrapper with restricted paths.
+
+We use electron module `dialog` to secure path from dapp renderer process. Dapp develper pass command via our api to give oportunity dapp user select file from his filesystem. Main process handle real path and pass back unique identificator which help represent file abstraction in dapp process.
 
 
-File upload with progress bar example:
-https://github.com/linonetwo/ipfs-uploader-browser/blob/master/src/FileUpload.js
-https://developer.mozilla.org/en-US/docs/Web/API/FileReader
+Example usage
+-------------
 
-Unrestricted File Upload
-https://www.owasp.org/index.php/Unrestricted_File_Upload
+```javascript
+const { FileManager } = require('array');
+let fmanager = new FileManager();
+let videoInstance = await fmanager.openFileDialog(); // request filepath from dapp user 
+```
 
-Reading text and binary data with Node.js readable streams http://codewinds.com/blog/2013-08-04-nodejs-readable-streams.html
+#### Links: 
+> The Dialog is opened from Electron's main thread.
+https://electronjs.org/docs/api/dialog
+
 
 # array.LocalStorage
 Local Storage gives you the opportunity to store data on the renderer side. 
@@ -512,9 +517,10 @@ Example usage
 
 ```javascript
 const { IpfsStorage, FileManager } = require('array');
-let videoInstance = new FileManager('./video.avi');
+let fmanager = new FileManager();
+let videoInstance = await fmanager.openFileDialog(); // request filepath from dapp user 
 let ipfs = new IpfsStorage();
-let response = ipfs.transfer(videoInstance, 1000, function(error, result) {
+let response = await ipfs.transfer(videoInstance, 1000, function(error, result) {
   if (!error) { console.log(result); }
 })
 .on("process", function() {
