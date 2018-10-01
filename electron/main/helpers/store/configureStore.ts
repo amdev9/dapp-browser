@@ -40,10 +40,11 @@ export const initialState: IState = {
     loader: {isOpen: false},
     statusBar: {isOpen: false, isPeersOpen: false},
     search: {isOpen: false},
-    window: {width: 0, height: 0}
+    window: {width: 0, height: 0},
   },
   feed: {},
-  permissions: {}
+  permissions: {},
+  tray: {items: []},
 };
 
 declare global {
