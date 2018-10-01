@@ -23,7 +23,8 @@ import {
   OPEN_CHANNEL,
   INTENT_OPEN_CHANNELS,
   APPS_FEED_RESIZE,
-  REMOVE_TRAY_ITEM
+  REMOVE_TRAY_ITEM,
+  INTENT_OPEN_FILE
 } from '../constants';
 
 export const validatePermissionAction = (globalId: RendererConf[]) => {
@@ -32,11 +33,11 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
       if (action.payload.status === 'dapp') {
         switch (action.type) {
           case INTENT_OPEN_CHANNELS:
+          case INTENT_OPEN_FILE:
           case OPEN_CHANNEL:
           case OPEN_CHANNEL_SUCCESS:
           case BIND_OPEN_CHANNELS:
           case BIND_OPEN_CHANNELS_DONE:
-
             return next(action);
           default:
             console.log("Cancelled for dapp");
