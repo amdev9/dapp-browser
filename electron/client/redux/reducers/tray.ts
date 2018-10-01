@@ -4,6 +4,11 @@ import {
   TOGGLE_HOME,
   TOGGLE_APP_HOME
 } from '../constants';
+
+const SET_TRAY_PROGRESS = "SET_TRAY_PROGRESS"; // todo cannot import these constants from ../constants for some reason, getting undefined for the new variables
+const SET_TRAY_COUNTER = "SET_TRAY_COUNTER";
+const REMOVE_TRAY_ITEM = "REMOVE_TRAY_ITEM";
+
 import { TrayAction } from '../actions/tray';
 import { Tray } from './state';
 
@@ -86,6 +91,56 @@ export default function tray(state: Tray = initialState, action: TrayAction) {
           appName: action.payload.dappName
         }
       }
+      
+    case REMOVE_TRAY_ITEM: {
+      const dappName = action.payload.targetDappName;
+      const newItems = state.items.filter(item => item.appName !== dappName);
+
+      return {
+        ...state,
+        items: newItems
+      }
+    }
+
+    case SET_TRAY_PROGRESS: {
+      const dappName = action.payload.targetDappName;
+      const indicator = action.payload.indicator;
+      const newItems = state.items.map(item => {
+        if (item.appName === dappName) {
+          return {
+            ...item,
+            indicator
+          }
+        } else {
+          return item;
+        }
+      });
+
+      return {
+        ...state,
+        items: newItems
+      }
+    }
+
+    case SET_TRAY_COUNTER: {
+      const dappName = action.payload.targetDappName;
+      const counter = action.payload.counter;
+      const newItems = state.items.map((item) => {
+        if (item.appName === dappName) {
+          return {
+            ...item,
+            counter
+          }
+        } else {
+          return item;
+        }
+      });
+
+      return {
+        ...state,
+        items: newItems
+      }
+    }
 
     default:
       return state;

@@ -30,7 +30,7 @@ class ElectronManager {
     const replyActionRenderer = (store) => {
       ipcRenderer.on('redux-action', (event, payload) => {
         // additional check for uuid received
-        if( !payload.uuid || (payload.uuid && payload.uuid.includes(uuidRenderer)) ) {
+        if( !payload.uuid || (payload.uuid && payload.uuid.includes(uuidRenderer)) ) { // todo simplify to (!payload.uuid || payload.uuid.includes(uuidRenderer) )  ? 
           store.dispatch(payload);
         }
       });

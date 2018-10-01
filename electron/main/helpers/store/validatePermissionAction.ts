@@ -10,6 +10,8 @@ import {
   SWITCH_DAPP,
   TOGGLE_HOME,
   TOGGLE_APP_HOME,
+  SET_TRAY_COUNTER,
+  SET_TRAY_PROGRESS,
   TOGGLE_STATUS_BAR_PANEL,
   TOGGLE_PEERS_BAR_PANEL,
   TOGGLE_LOADER_PANEL,
@@ -20,7 +22,8 @@ import {
   OPEN_CHANNEL_SUCCESS,
   OPEN_CHANNEL,
   INTENT_OPEN_CHANNELS,
-  APPS_FEED_RESIZE
+  APPS_FEED_RESIZE,
+  REMOVE_TRAY_ITEM
 } from '../constants';
 
 export const validatePermissionAction = (globalId: RendererConf[]) => {
@@ -62,6 +65,9 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
           case SWITCH_DAPP:
           case ADD_APP_ITEM:
           case APPS_FEED_RESIZE:
+          case SET_TRAY_COUNTER:
+          case SET_TRAY_PROGRESS:
+          case REMOVE_TRAY_ITEM:
             return next(action);
           default:
             console.log("Cancelled for client");

@@ -21,6 +21,8 @@ const console = new nodeConsole.Console(process.stdout, process.stderr);
 
 const isProduction = process.env.ELECTRON_ENV !== 'development';
 
+let store: Store<IState>;
+
 require('electron-context-menu')({
 	prepend: (params: any, browserWindow: BrowserWindow) => [{
     label: 'Pin to top',
@@ -30,6 +32,9 @@ require('electron-context-menu')({
   {
     label: 'Close app',
 		// visible: params.mediaType === 'image'
+    click: (e: any) => {
+      store.dispatch({type: "REMOVE_TRAY_ITEM", payload: {targetDappName: "Game"}}); // todo how to determine app name where the click has been made?
+    }
 	}]
 });
 
@@ -63,7 +68,7 @@ app.on('ready', async () => {
   clientWindow = createClientWindow(globalUUIDList);
   await AppsManager.parseDapps();
 
-  const store: Store<IState> = configureStore({
+  store = configureStore({
     ...initialState,
     feed: {items: AppsManager.dapps}
   }, globalUUIDList); //@todo pass parsed dapps
