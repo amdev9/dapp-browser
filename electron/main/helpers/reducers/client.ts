@@ -56,15 +56,6 @@ export function client(state: Client = initialState, action: TrayAction) {
         }
       };
 
-    case REMOVE_TRAY_ITEM:
-      return {
-        ...state,
-        isHome: true,
-        activeDapp: {
-          appName: null
-        }
-      };  
-
     case TOGGLE_NOTIFICATION_PANEL:
       return {
         ...state,
