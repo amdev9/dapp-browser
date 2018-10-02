@@ -22,6 +22,9 @@ export type Client = {
   window: {
     width: number,
     height: number
+  },
+  fileDialog: {
+    isOpen: boolean
   }
 }
 export interface IState {

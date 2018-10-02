@@ -3,7 +3,7 @@
   Uses process.stdout.write instead of console.log so we can cleanly catch the output in the parent process.
 */
 
-import { app, BrowserView, ipcMain, screen, BrowserWindow } from 'electron';
+import { app, BrowserView, ipcMain, screen, BrowserWindow , dialog} from 'electron';
 import { Store } from 'redux';
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer';
 import { configureStore, initialState } from './helpers/store/configureStore';
@@ -77,6 +77,19 @@ app.on('ready', async () => {
     const storeState = store.getState();
 
     process.stdout.write(JSON.stringify(storeState));
+    if (storeState.client.fileDialog.isOpen) {
+      dialog.showOpenDialog(clientWindow, {
+        filters: [
+          {name: 'Images', extensions: ['jpg', 'png', 'gif']},
+          {name: 'Movies', extensions: ['mkv', 'avi', 'mp4']},
+          {name: 'Custom File Type', extensions: ['as']},
+          {name: 'All Files', extensions: ['*']}
+        ]
+      }, (filePaths: string[]) => {
+        console.log("filePaths", filePaths);
+        store.dispatch({type: "INTENT_OPEN_FILE", payload: {isFileDialogOpen: false}});
+      })
+    }
     if (storeState.client.isHome) {
       clientWindow.setBrowserView(null);
     } else {

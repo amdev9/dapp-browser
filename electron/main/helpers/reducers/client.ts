@@ -9,9 +9,9 @@ import {
   TOGGLE_SEARCH_PANEL,
   TOGGLE_APP_HOME,
   APPS_FEED_RESIZE,
-  REMOVE_TRAY_ITEM
+  INTENT_OPEN_FILE,
 } from '../constants';
-import { TrayAction } from '../actions/client';
+import { ClientAction } from '../actions/client';
 import { Client } from './state';
 
 const initialState: Client = {
@@ -23,11 +23,20 @@ const initialState: Client = {
   loader: {isOpen: false},
   statusBar: {isOpen: false, isPeersOpen: false},
   search: { isOpen: false },
-  window: {width: 0, height: 0}
+  window: {width: 0, height: 0},
+  fileDialog: {isOpen: false}
 };
 
-export function client(state: Client = initialState, action: TrayAction) {
+export function client(state: Client = initialState, action: ClientAction) {
   switch (action.type) {
+    case INTENT_OPEN_FILE:
+      if (action.payload && action.payload.hasOwnProperty('isOpen')) {
+        return { ...state, fileDialog: {isOpen: action.payload.isFileDialogOpen} };
+      } else {
+        return { ...state, fileDialog: {isOpen: !state.fileDialog.isOpen }};
+      }
+      
+
     case SWITCH_DAPP:
 
       const dappName = action.payload.targetDappName;
