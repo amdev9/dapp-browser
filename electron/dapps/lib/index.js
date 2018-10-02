@@ -26,7 +26,7 @@ const initUi = () => {
         payload: {
           targetDapp: 'Game' 
         }
-      }); 
+      });
     });
   }
 
@@ -42,6 +42,17 @@ const initUi = () => {
       sendDataChannel2('testdata 2');
     });
   }
-}
+
+  if( document.getElementById('file1') ) {
+    document.getElementById('file1').addEventListener('click', () => {
+      store.dispatch({
+        type: 'INTENT_OPEN_FILE',
+        payload: {
+          targetDapp: 'Game'
+        }
+      });
+    });
+  }
+};
 
 initUi();
