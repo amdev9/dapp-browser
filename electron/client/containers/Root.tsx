@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { Store } from 'redux';
 import { Provider } from 'react-redux';
 import App from '../components/App';
@@ -12,9 +13,11 @@ interface IRootType {
 export default function Root({ store, isProduction }: IRootType) {
   return (
     <Provider store={store}>
-      <App>
-        <Layout isProduction={isProduction} />
-      </App>
+      <Router>
+        <App>
+          <Layout isProduction={isProduction} />
+        </App>
+      </Router>
     </Provider>
   );
 }
