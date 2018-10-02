@@ -70,8 +70,8 @@ app.on('ready', async () => {
 
   store = configureStore({
     ...initialState,
-    feed: {items: AppsManager.dapps}
-  }, globalUUIDList); //@todo pass parsed dapps
+    feed: {items: AppsManager.dapps},
+  }, globalUUIDList); // @todo pass parsed dapps
 
   store.subscribe(() => {
     const storeState = store.getState();
@@ -98,7 +98,7 @@ app.on('ready', async () => {
       let targetDappObj: AppItem = AppsManager.dapps.find(dappObj => dappObj.appName == activeDappName);
       // createPermissionWindow(clientWindow, targetDappObj.appName, targetDappObj.permissions);
 
-      //@todo pass approved permissions back, close created window on 'APPROVE' button clicked,
+      // @todo pass approved permissions back, close created window on 'APPROVE' button clicked,
       // add data from permissionManager to state, on next action dispatch check state for permissions data exists,
       // do not open permissionManager window if so.
 

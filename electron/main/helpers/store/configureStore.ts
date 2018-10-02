@@ -44,7 +44,8 @@ export const initialState: IState = {
     fileDialog: {isOpen: false}
   },
   feed: {},
-  permissions: {}
+  permissions: {},
+  tray: {items: []},
 };
 
 declare global {
