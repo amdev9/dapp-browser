@@ -8,7 +8,7 @@ import * as TrayActions from '../redux/actions/tray';
 import * as StatusBarActions from '../redux/actions/status-bar';
 import * as AppsFeedActions from "../redux/actions/appsFeed";
 import * as SearchActions from "../redux/actions/search";
-import * as SettingsActions  from "../redux/actions/settings";
+import * as SettingsActions from "../redux/actions/settings";
 
 import { AppItem, NotifyItem, StatusBarItem, FeedItem, SearchItem } from '../redux/model';
 import { HeaderBar } from './HeaderBar'
@@ -46,7 +46,8 @@ interface AppProps {
   onSwitchDapp: (targetDappName?: string) => any,
   onToggleAppHome: (dappName: string) => any,
   onResizeAppsFeed: (width: number, height: number) => any,
-  isProduction: boolean
+  isProduction: boolean,
+  locationPath: string
 }
 
 class App extends React.Component<AppProps> {
@@ -60,9 +61,10 @@ class App extends React.Component<AppProps> {
     const {
       onTogglePanel, openNotificationPanel, openStatusBarPanel, openPeersBarPanel, openSettingsPanel, openSearchPanel, clearNotification, clearAllNotifications,
       onAddAppItem, onSwitchDapp, onToggleHome, statusBarToggle, peersBarToggle, onToggleAppHome, onToggleSearch, searchItems,
-      trayItems, feedItems, notifyItems, statusBarItems, onToggleLoaderPanel, openLoaderPanel, onToggleSettingsPanel
+      trayItems, feedItems, notifyItems, statusBarItems, onToggleLoaderPanel, openLoaderPanel, onToggleSettingsPanel, locationPath
     } = this.props;
 
+    
     return (
       <div>
         <NotificationPanel
@@ -100,8 +102,10 @@ class App extends React.Component<AppProps> {
           <Tray items={trayItems} toggleSwitch={onSwitchDapp} togglePeersBar={peersBarToggle} peersBarIsOpen={openPeersBarPanel} />
 
           {/* switch between  AppsFeed and SettingsPanel components  */}
-          <AppsFeed items={feedItems} toggleAppHome={onToggleAppHome} settingsPanelIsOpen={openSettingsPanel}/>
-          <SettingsPanel isOpen={openSettingsPanel} />
+          {locationPath === '/settings' ?
+            <SettingsPanel isOpen={openSettingsPanel} />
+            :
+            <AppsFeed items={feedItems} toggleAppHome={onToggleAppHome} settingsPanelIsOpen={openSettingsPanel} />}
         </div>
         <StatusBar isOpen={openStatusBarPanel} items={statusBarItems} toggleStatusBar={statusBarToggle} peersBarIsOpen={openPeersBarPanel} />
       </div>

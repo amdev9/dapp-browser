@@ -27,7 +27,7 @@ export class AppsFeed extends React.Component<AppsFeedProps> {
     const props = { style: { display: settingsPanelIsOpen ? "none" : "block" } };
 
     return (
-      <div className="feeds" {...props}>
+      <div className="feeds" /*{...props}*/>
         <div className="header">
           <div className="title">
             Your apps

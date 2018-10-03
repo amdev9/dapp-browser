@@ -34,7 +34,7 @@ export class SettingsPanel extends React.Component<SettingsPanelProps, SettingsP
     };
 
     return (
-      <div className="settingsbar" {...props}>
+      <div className="settingsbar" /*{...props}*/>
         <Tabs>
           <TabList>
             <Tab>General</Tab>
