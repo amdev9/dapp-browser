@@ -31,7 +31,7 @@
   - [array.Logger](#arraylogger)
   - [array.Keychain](#arraykeychain)
   - [array.Network](#arraynetwork)
-
+  - [Library implementation notes](#library-implementation-notes)
 
 # Architecture  
 
@@ -618,6 +618,82 @@ web3 events api: <br />
  https://github.com/ethereum/web3.js/blob/develop/lib/web3.js
 
 
+# Library implementation notes
+
+FileManager
+-----------
+
+1) new FileManager()
+```javascript
+  class FileManager() {
+    constructor() {
+
+      this.channelDataPass(); // run method right from constructor
+    }
+  }
+```
+
+2) channelDataPass dispatch action `INTENT_CHANNEL_DATA_PASS(FM)`
+3) receive from main `ACCEPT_CHANNEL_DATA_PASS(channelId)`
+4) main start accept data through channel with id `channelId`
+5) 
+```javascript
+  let videoInstance: string = await fmanager.openFileDialog(); // generated string as file 
+```
+```
+      FM_OPEN_FILE
+  [main]   <---------  [dapp]
+    |
+    |
+  process dialog opening ..
+    |
+  user interact with UI
+    |
+  got paths for all selected files
+    |     FM_OPEN_FILE_SUCCESS (generatedId)
+   [.]    ----------->
+```
+
+Generate uniq UUID with stripped "-".
+
+IPFS
+-----------
+
+1) new IpfsStorage();
+2) ...
+
+```
+ [.]  <---- TRANSFER_FILE(id)
+  |
+  |  
+process file with generated id
+
+
+---> TRANSFER_SUCCESS(KBytes), id
+---> TRANSFER_SUCCESS(KBytes), id // emites in our promiEvent instance
+    <---- TRANSFER_CANCEL // call method, await method response with resolve result = CANCEL
+
+
+new Promise(resolve, reject)
+ __    
+| ---> TRANSFER_DONE -> emit connect result resolve
+|
+| ---> TRANSFER_FAIL -> emit connect error reject
+|__
+```
+
+
+Dapp side epic responsible for emit propagating.
+
+
+
+ Method function promisification https://stackoverflow.com/questions/29933088/trigger-promise-when-an-event-fires
+ 
+
+Redux-observable main side will catch TRANSFER_CANCEL with `takeUntil` rxjs operator.
+Each system component will have own epic aka protocol handler.
+
+ 
 __________________________
 
 ## Old documentation:
