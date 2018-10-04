@@ -16,7 +16,7 @@ export class HomeWidget extends React.Component<HomeWidgetProps> {
     }
 
     return (
-      <div className="header" /*onClick={handleClick}*/>
+      <div className="header" onClick={handleClick}>
         <CustomNav to="/">
           <img className="icon" src={homeIcon} />
         </CustomNav>

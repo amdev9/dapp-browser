@@ -5,15 +5,15 @@ import CustomNav from '../CustomNav';
 const loaderIcon = require("../../assets/icons/settings.svg")
 
 interface SettingsWidgetProps {
-  isOpen?: boolean;
-  togglePanel?(): void
+  //isOpen?: boolean;
+  toggleHome?(): void
 }
 export class SettingsWidget extends React.Component<SettingsWidgetProps> {
   public render() {
 
-    const { togglePanel } = this.props;
+    const { toggleHome } = this.props;
     return (
-      <div /*onClick={() => togglePanel()}*/>
+      <div onClick={() => toggleHome()}>
         <CustomNav to="/settings">
           <img className="icon" src={loaderIcon} />
         </CustomNav>

@@ -103,7 +103,7 @@ class App extends React.Component<AppProps> {
 
           {/* switch between  AppsFeed and SettingsPanel components  */}
           {locationPath === '/settings' ?
-            <SettingsPanel isOpen={openSettingsPanel} />
+            <SettingsPanel /*isOpen={openSettingsPanel}*/ />
             :
             <AppsFeed items={feedItems} toggleAppHome={onToggleAppHome} settingsPanelIsOpen={openSettingsPanel} />}
         </div>
