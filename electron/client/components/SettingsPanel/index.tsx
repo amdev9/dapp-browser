@@ -3,7 +3,7 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 
 interface SettingsPanelProps {
   items?: { [index: string]: SettingsPanelProps; },
-  isOpen?: boolean,
+  //isOpen?: boolean,
   toggleStatusBar?: () => void,
   peersBarIsOpen?: boolean
 }

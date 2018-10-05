@@ -5,8 +5,8 @@ import { DApp } from "../../redux/model";
 interface AppsFeedProps {
   items?: DApp[],
   toggleAppHome?: (dappName?: string) => any,
-  resizeAppsFeed?: (width: number, height: number) => any,
-  settingsPanelIsOpen: boolean
+  resizeAppsFeed?: (width: number, height: number) => any
+  //settingsPanelIsOpen: boolean
 }
 
 export class AppsFeed extends React.Component<AppsFeedProps> {

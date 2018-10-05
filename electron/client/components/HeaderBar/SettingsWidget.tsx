@@ -1,6 +1,7 @@
 import * as React from "react"
 
 import CustomNav from '../CustomNav';
+import { SETTINGS } from "../../router/routes"
 
 const loaderIcon = require("../../assets/icons/settings.svg")
 
@@ -14,7 +15,7 @@ export class SettingsWidget extends React.Component<SettingsWidgetProps> {
     const { toggleHome } = this.props;
     return (
       <div onClick={() => toggleHome()}>
-        <CustomNav to="/settings">
+        <CustomNav to={SETTINGS}>
           <img className="icon" src={loaderIcon} />
         </CustomNav>
       </div>

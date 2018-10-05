@@ -20,6 +20,8 @@ import { Tray } from './Tray';
 import { AppsFeed } from './AppsFeed';
 import { IState } from '../redux/reducers/state';
 
+import * as ROUTES from "../router/routes"
+
 interface AppProps {
   openNotificationPanel: boolean,
   openLoaderPanel: boolean,
@@ -64,7 +66,7 @@ class App extends React.Component<AppProps> {
       trayItems, feedItems, notifyItems, statusBarItems, onToggleLoaderPanel, openLoaderPanel, onToggleSettingsPanel, locationPath
     } = this.props;
 
-    
+
     return (
       <div>
         <NotificationPanel
@@ -102,10 +104,18 @@ class App extends React.Component<AppProps> {
           <Tray items={trayItems} toggleSwitch={onSwitchDapp} togglePeersBar={peersBarToggle} peersBarIsOpen={openPeersBarPanel} />
 
           {/* switch between  AppsFeed and SettingsPanel components  */}
-          {locationPath === '/settings' ?
-            <SettingsPanel /*isOpen={openSettingsPanel}*/ />
-            :
-            <AppsFeed items={feedItems} toggleAppHome={onToggleAppHome} settingsPanelIsOpen={openSettingsPanel} />}
+          {(() => {
+            switch (locationPath) {
+              case ROUTES.SETTINGS:
+                return <SettingsPanel /*isOpen={openSettingsPanel}*/ />
+                break;
+
+              default:
+                return <AppsFeed items={feedItems} toggleAppHome={onToggleAppHome} /*settingsPanelIsOpen={openSettingsPanel}*/ />
+                break;
+            }
+          })()}
+
         </div>
         <StatusBar isOpen={openStatusBarPanel} items={statusBarItems} toggleStatusBar={statusBarToggle} peersBarIsOpen={openPeersBarPanel} />
       </div>
