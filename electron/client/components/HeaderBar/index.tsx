@@ -57,7 +57,7 @@ export class HeaderBar extends React.Component<HeaderBarProps> {
           <div className="unions">
             <NetworkWidget />
             {/* <Keychain /> */}
-            <SettingsWidget isOpen togglePanel={toggleSettingsPanel} />
+            <SettingsWidget /*isOpen*/ toggleHome={toggleHome} />
             <NotificationWidget isOpen togglePanel={togglePanel} />
             <DownloadWidget isOpen togglePanel={toggleLoaderPanel} />
           </div>

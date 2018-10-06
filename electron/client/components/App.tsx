@@ -1,10 +1,21 @@
 import * as React from 'react';
+import { Route } from 'react-router-dom';
 
-export default class App extends React.Component {
+import Layout from '../components/Layout';
+
+interface IAppType {
+  isProduction: boolean
+}
+
+export default class App extends React.Component<IAppType> {
   render() {
+    const { isProduction } = this.props
     return (
       <div>
-        {this.props.children}
+        <Route path='/:page/:dapp' children={({ match, ...rest }) => {
+          return <Layout isProduction={isProduction} locationPath={rest.location.pathname} />
+        }
+        } />
       </div>
     );
   }

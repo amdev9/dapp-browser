@@ -1,5 +1,8 @@
 import * as React from "react"
 
+import CustomNav from '../CustomNav';
+import { HOME } from "../../router/routes"
+
 const homeIcon = require("../../assets/icons/home.svg");
 
 interface HomeWidgetProps {
@@ -15,7 +18,9 @@ export class HomeWidget extends React.Component<HomeWidgetProps> {
 
     return (
       <div className="header" onClick={handleClick}>
-        <img className="icon" src={homeIcon} />
+        <CustomNav to={HOME}>
+          <img className="icon" src={homeIcon} />
+        </CustomNav>
       </div>
     )
   }

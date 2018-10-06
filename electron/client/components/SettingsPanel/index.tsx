@@ -3,7 +3,7 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 
 interface SettingsPanelProps {
   items?: { [index: string]: SettingsPanelProps; },
-  isOpen?: boolean,
+  //isOpen?: boolean,
   toggleStatusBar?: () => void,
   peersBarIsOpen?: boolean
 }
@@ -25,16 +25,16 @@ export class SettingsPanel extends React.Component<SettingsPanelProps, SettingsP
   }
 
   public render() {
-    let { isOpen } = this.props;
+    // let { isOpen } = this.props;
 
-    const props: any = {
-      style: {
-        display: isOpen ? "block" : "none"
-      },
-    };
+    // const props: any = {
+    //   style: {
+    //     display: isOpen ? "block" : "none"
+    //   },
+    // };
 
     return (
-      <div className="settingsbar" {...props}>
+      <div className="settingsbar" /*{...props}*/>
         <Tabs>
           <TabList>
             <Tab>General</Tab>
