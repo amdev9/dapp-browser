@@ -1,15 +1,17 @@
  
-import { combineReducers, createStore, applyMiddleware, compose, StoreEnhancer, Store, Middleware, GenericStoreEnhancer, Dispatch } from 'redux';
+import { combineReducers, createStore, applyMiddleware, compose, StoreEnhancer, Store, Middleware, GenericStoreEnhancer, Dispatch, AnyAction } from 'redux';
+
+declare module 'redux' {
+  export type GenericStoreEnhancer = any;
+}
+
 import { createEpicMiddleware } from 'redux-observable';
 import { logger } from 'redux-logger';
 import { isFSA } from 'flux-standard-action';
 
 import { rootEpic } from './redux/epics';
-
 import rootReducer from './redux/reducers';
-
 import * as permissionActions from './redux/actions/permission';
-
 import { IState as State } from './redux/reducers/state';
 
 interface Action {
@@ -55,7 +57,7 @@ const validateAction = (action: Action) => {
   return isFSA(action);
 }
 
-const forwardToMain = (store: Store<any>) => (next: Dispatch<void>) => <A extends Action>(action: A) => {
+const forwardToMain =  (store: Store<any>) => (next: Dispatch<AnyAction>) => <A extends Action>(action: A) => {
   if (!validateAction(action)) return next(action);
   if (
     action.type.substr(0, 2) !== '@@' &&

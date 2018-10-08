@@ -6,8 +6,8 @@ import { permission } from './redux/reducers/permission'
 import { Permission } from './redux/reducers/state';
 
 import { Provider } from 'react-redux';
-import App from './components/App';
-import { PermissionLayout } from './components/PermissionLayout';
+ 
+import { PermissionLayoutConnected } from './components/PermissionLayout';
 
 //import Root from './components/Root';
 // const store = createStore(permission);
@@ -19,9 +19,7 @@ const list: string[] = ["ipfs", "storage"];
 render(
   // <Root store={store} />,   
   <Provider store={store}> 
-    <App>
-      <PermissionLayout permissions={list}/>
-    </App>
+    <PermissionLayoutConnected permissions={list}/>
   </Provider>,
   document.getElementById('root')
 );

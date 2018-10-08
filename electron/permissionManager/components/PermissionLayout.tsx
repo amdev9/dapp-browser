@@ -21,30 +21,35 @@ export interface PermissionLayoutProps {
   onToggle?: () => any;
 }
 
-export const PermissionLayout: React.SFC<PermissionLayoutProps> = (props) => {
-  const {  onToggle, permissions } = props;
+export class PermissionLayout extends React.Component<PermissionLayoutProps>  {
 
-  const permissionItems: JSX.Element[] = permissions.map(
-    (value: string): JSX.Element => (
-      <PermissionBox 
-        key={`${value}`} 
-        item={value} 
-        onTogglePerm={onToggle}
-      />
-    )      
-  );
+  constructor(props: PermissionLayoutProps) {
+    super(props);
+  }  
 
+  public render() {
 
-  const handleToggle = () => { onToggle(); };
+    const permissionItems: JSX.Element[] = this.props.permissions.map(
+      (value: string): JSX.Element => (
+        <PermissionBox 
+          key={`${value}`} 
+          item={value} 
+          onTogglePerm={this.props.onToggle}
+        />
+      )      
+    );
 
-  return (
-    <div>
-      <span>{permissionItems} </span>
-      <button type="button" onClick={handleToggle}>
-        {`Toggle`}
-      </button>
-    </div>
-  );
+    const handleToggle = () => { this.props.onToggle(); };
+
+    return (
+      <div>
+        <span>{permissionItems} </span>
+        <button type="button" onClick={handleToggle}>
+          {`Toggle`}
+        </button>
+      </div>
+    );
+  }
 };
 
 const mapStateToProps = (state: RootState) => ({
@@ -52,7 +57,7 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => bindActionCreators({
-  onToggle: permissionActions.togglePermission,
+  onToggle: permissionActions.closeManager,
 }, dispatch);
 
 export const PermissionLayoutConnected =

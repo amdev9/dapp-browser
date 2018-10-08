@@ -12,24 +12,22 @@ export class PermissionBox extends React.Component< PermissionBoxProps, { checke
     super(props);
     this.state = {
       checked: false
-    };
-    
+    }; 
   }  
 
   public render() {
-    const { item, onTogglePerm } = this.props;
- 
     return (
       <div>
         <label>
-          {item}
+          {this.props.item}
           <input
-            name={item}
+            name={this.props.item}
             type="checkbox"
             checked={this.state.checked}
-            onClick={() => { onTogglePerm(); }}
+       
+            onChange={() => { this.props.onTogglePerm(); }}
              />
-             {/* onChange={this.handleInputChange} */}
+             {/*  */}
         </label>
       </div>
     )

@@ -7,8 +7,8 @@ import { IState } from './state';
 
 export type PermissionAction = ActionType<typeof permission>;
 
-const rootReducer = combineReducers<IState>({
-  permissionReducer
+const rootReducer = combineReducers<IState, PermissionAction>({
+  permission: permissionReducer
 });
 
 export default rootReducer;
