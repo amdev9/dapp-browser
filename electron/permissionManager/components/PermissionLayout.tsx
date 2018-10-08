@@ -1,58 +1,63 @@
 import * as React from 'react';
-import { bindActionCreators, Dispatch, Action } from 'redux';
+import { bindActionCreators, Dispatch } from 'redux';
+import { StateType } from 'typesafe-actions';
+ 
+import { PermissionAction } from '../redux/reducers';
+import rootReducer from '../redux/reducers';
+ 
+export type RootState = StateType<typeof rootReducer>;
+export type RootAction = PermissionAction;
+ 
 import { connect } from 'react-redux';
-import { PermCheckBox } from './PermCheckBox'; 
-import { PermissionList, Permission } from "../redux/reducers/state";
-import { IState } from '../redux/reducers/state';
-
 
 import * as permissionActions from '../redux/actions/permission';
-
-interface PermissionLayoutProps {
-  permissions: Permission[],
-  onCloseWindow?: () => void,
-  onTogglePermission?: (PermissionType: Permission) => void
-}
  
-export class PermissionLayout extends React.Component<PermissionLayoutProps> { 
-  constructor(props: PermissionLayoutProps) {
-    super(props);
-    this.handleApproveClick = this.handleApproveClick.bind(this);
-  }
+import { PermissionBox } from './PermissionBox';
 
-  handleApproveClick() { 
-  
-    console.log('close app');
-
-    this.props.onCloseWindow();
-  }
-  
-  public render() {
-    const { permissions, onTogglePermission } = this.props;
-    const permissionItems: JSX.Element[] = permissions.map(
-      (value: Permission): JSX.Element => (
-        <PermCheckBox 
-          key={`${value}`} 
-          permissionItem={value} 
-          onTogglePerm={onTogglePermission}
-        />
-      )      
-    );
-    
-    return (
-      <div>
-        {permissionItems}
-        <button onClick={this.handleApproveClick}>APPROVE</button>
-      </div>
-    )
-  }
+export interface PermissionLayoutProps {
+  permissions: string[];
+  // label: string;
+ 
+  onToggle?: () => any;
 }
 
-const mapStateToProps = (state: IState) => ({});
-const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
-  onCloseWindow: permissionActions.closeManager,
-  onTogglePermission: permissionActions.togglePermission
+export const PermissionLayout: React.SFC<PermissionLayoutProps> = (props) => {
+  const {  onToggle, permissions } = props;
+
+  const permissionItems: JSX.Element[] = permissions.map(
+    (value: string): JSX.Element => (
+      <PermissionBox 
+        key={`${value}`} 
+        item={value} 
+        onTogglePerm={onToggle}
+      />
+    )      
+  );
+
+
+  const handleToggle = () => { onToggle(); };
+
+  return (
+    <div>
+      <span>{permissionItems} </span>
+      <button type="button" onClick={handleToggle}>
+        {`Toggle`}
+      </button>
+    </div>
+  );
+};
+
+const mapStateToProps = (state: RootState) => ({
+  // count: state.counters.reduxCounter,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => bindActionCreators({
+  onToggle: permissionActions.togglePermission,
 }, dispatch);
-export default connect(mapStateToProps, mapDispatchToProps)(PermissionLayout); 
+
+export const PermissionLayoutConnected =
+  connect(mapStateToProps, mapDispatchToProps)(PermissionLayout);
+
+
 
 

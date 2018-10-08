@@ -12,10 +12,14 @@
   "author": "cypherpunk99",
   "license": "MIT",
   "dependencies": {
+    "@types/redux": "^3.6.0",
+    "@types/redux-logger": "^3.0.6",
     "concurrently": "^4.0.1",
     "cross-env": "^5.2.0",
     "react-burger-menu": "^2.5.2",
     "react-perfect-scrollbar": "^1.2.0",
+    "redux": "^4.0.0",
+    "redux-logger": "^3.0.6",
     "sqlite3": "^4.0.2"
   }
 }

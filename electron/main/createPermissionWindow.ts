@@ -16,8 +16,8 @@ export function createPermissionWindow(mainWindow: Electron.BrowserWindow, appNa
     preload: preloadPath,
     additionalArguments: [
       '--uuid-renderer='.concat(uuidClient),
-      '--permissions='.concat(JSON.stringify(permissions)),
-    ]
+      // '--permissions='.concat(JSON.stringify(permissions)),
+    ] 
   };
 
   if (process.env.ELECTRON_ENV !== 'development') {

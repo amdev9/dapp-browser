@@ -14,7 +14,7 @@ import { PermissionLayout } from './components/PermissionLayout';
 
 import store from "./array-permission";
 
-const list: Permission[] = ["ipfs", "storage"];
+const list: string[] = ["ipfs", "storage"];
 
 render(
   // <Root store={store} />,   

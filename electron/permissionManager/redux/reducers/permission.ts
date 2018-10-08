@@ -1,5 +1,5 @@
 import { CLOSE_MANAGER, TOGGLE_PERMISSION } from '../constants';
-import { PermissionAction } from '../actions/permission';
+import { PermissionAction } from './index';
 import { PermissionList, Permission } from './state';
 
  
