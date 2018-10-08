@@ -13,12 +13,13 @@ import { connect } from 'react-redux';
 import * as permissionActions from '../redux/actions/permission';
  
 import { PermissionBox } from './PermissionBox';
+import {Permission} from "../redux/model";
 
 export interface PermissionLayoutProps {
   permissions: string[];
   // label: string;
- 
-  onToggle?: () => any;
+  onTogglePerm: (permissionName: Permission, checked: boolean) => any;
+  onCloseManager: () => any;
 }
 
 export class PermissionLayout extends React.Component<PermissionLayoutProps>  {
@@ -34,30 +35,31 @@ export class PermissionLayout extends React.Component<PermissionLayoutProps>  {
         <PermissionBox 
           key={`${value}`} 
           item={value} 
-          onTogglePerm={this.props.onToggle}
+          onTogglePerm={this.props.onTogglePerm}
         />
       )      
     );
 
-    const handleToggle = () => { this.props.onToggle(); };
+    const handleClose = () => { this.props.onCloseManager(); };
 
     return (
       <div>
         <span>{permissionItems} </span>
-        <button type="button" onClick={handleToggle}>
+        <button type="button" onClick={handleClose}>
           {`Toggle`}
         </button>
       </div>
     );
   }
-};
+}
 
 const mapStateToProps = (state: RootState) => ({
   // count: state.counters.reduxCounter,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => bindActionCreators({
-  onToggle: permissionActions.closeManager,
+  onTogglePerm: permissionActions.togglePermission,
+  onCloseManager: permissionActions.closeManager,
 }, dispatch);
 
 export const PermissionLayoutConnected =

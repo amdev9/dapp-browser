@@ -24,14 +24,16 @@ import {
   INTENT_OPEN_CHANNELS,
   APPS_FEED_RESIZE,
   REMOVE_TRAY_ITEM,
-  INTENT_OPEN_FILE
+  INTENT_OPEN_FILE,
+  CLOSE_MANAGER,
+  TOGGLE_PERMISSION,
 } from '../constants';
 
 export const validatePermissionAction = (globalId: RendererConf[]) => {
   return () => (next: Dispatch<void>) => <A extends Action>(action: A) => {
     if (action.payload && action.payload.hasOwnProperty('status')) {
       if (action.payload.status === 'dapp') {
-        switch (action.type) {
+        switch (action.type) {  // todo switch / case structure can be rewritten as allowedActions.includes(actionType) which seems more appropriate here
           case INTENT_OPEN_CHANNELS:
           case INTENT_OPEN_FILE:
           case OPEN_CHANNEL:
@@ -42,7 +44,7 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
           default:
             console.log("Cancelled for dapp");
         }
-      } else if (action.payload.status == 'client') {
+      } else if (action.payload.status === 'client') {
         switch (action.type) {
           case TOGGLE_NOTIFICATION_PANEL:
             let clientObj = globalId.find(renObj => renObj.status === 'client');
@@ -50,7 +52,7 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
               const payloadUuidObj = {
                 uuid: clientObj.id,
               };
-              action.payload = Object.assign(action.payload, payloadUuidObj)
+              action.payload = Object.assign(action.payload, payloadUuidObj);
             }
             return next(action);
 
@@ -73,12 +75,20 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
           default:
             console.log("Cancelled for client");
         }
+      } else if (action.payload.status === 'permission_manager') {
+        switch (action.type) {
+          case CLOSE_MANAGER:
+          case TOGGLE_PERMISSION:
+            return next(action);
+          default:
+            console.log("Cancelled for permission manager");
+        }
       }
     } else {
       console.log("no status: ", action);
       return next(action);
     }
-  }
+  };
 };
 
 

@@ -57,7 +57,7 @@ app.on('window-all-closed', () => {
 app.on('ready', async () => {
 
   if (process.env.ELECTRON_ENV === 'development') {
-    let devtools = await installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS]);
+    const devtools = await installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS]);
     console.log(`Added Extension: ${devtools}`);
   }
   app.on('activate', () => {
@@ -73,6 +73,31 @@ app.on('ready', async () => {
     feed: {items: AppsManager.dapps},
   }, globalUUIDList); // @todo pass parsed dapps
 
+  let pmIsOpen = false;
+  const permissionWindow = createPermissionWindow(globalUUIDList, clientWindow); // , targetDappObj.appName, targetDappObj.permissions
+  permissionWindow.on('close', (event) => {
+    event.preventDefault();
+    permissionWindow.hide();
+    pmIsOpen = false;
+  });
+
+  let isClientWindowLoaded = false;
+
+  // @TODO: Use 'ready-to-show' event
+  //        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event
+  clientWindow.webContents.on('did-finish-load', () => {
+    isClientWindowLoaded = true;
+    if (!clientWindow) {
+      throw new Error('"clientWindow" is not defined');
+    }
+    clientWindow.show();
+    clientWindow.focus();
+    if (!pmIsOpen) {
+      permissionWindow.show();
+      pmIsOpen = true;
+    }
+  });
+
   store.subscribe(() => {
     const storeState = store.getState();
 
@@ -83,20 +108,19 @@ app.on('ready', async () => {
           {name: 'Images', extensions: ['jpg', 'png', 'gif']},
           {name: 'Movies', extensions: ['mkv', 'avi', 'mp4']},
           {name: 'Custom File Type', extensions: ['as']},
-          {name: 'All Files', extensions: ['*']}
-        ]
+          {name: 'All Files', extensions: ['*']},
+        ],
       }, (filePaths: string[]) => {
         console.log("filePaths", filePaths);
         store.dispatch({type: "INTENT_OPEN_FILE", payload: {isFileDialogOpen: false}});
-      })
+      });
     }
     if (storeState.client.isHome) {
       clientWindow.setBrowserView(null);
     } else {
-      let activeDappName: string = storeState.client.activeDapp.appName;
+      const activeDappName: string = storeState.client.activeDapp.appName;
 
-      let targetDappObj: AppItem = AppsManager.dapps.find(dappObj => dappObj.appName == activeDappName);
-      // createPermissionWindow(clientWindow, targetDappObj.appName, targetDappObj.permissions);
+      const targetDappObj: AppItem = AppsManager.dapps.find(dappObj => dappObj.appName === activeDappName);
 
       // @todo pass approved permissions back, close created window on 'APPROVE' button clicked,
       // add data from permissionManager to state, on next action dispatch check state for permissions data exists,
@@ -105,13 +129,19 @@ app.on('ready', async () => {
       // if (approve)
       // permissionWindow.close();
 
-      //@todo create on permissions granted
+      // @todo create on permissions granted
       createDappView(globalUUIDList, targetDappObj);
-      let nameObj: RendererConf = globalUUIDList.find(renObj => renObj.name === activeDappName);
+
+      const nameObj: RendererConf = globalUUIDList.find(renObj => renObj.name === activeDappName && renObj.status === 'dapp');
       if (nameObj) {
-        let view = nameObj.dappView;
+        const view = nameObj.dappView;
         if (view) {
           clientWindow.setBrowserView(view);
+
+          if (isClientWindowLoaded && !pmIsOpen) {  // Linux. If not to check isClientWindowLoaded, than permissionWindow loads before clientWindow and shows behind clientWindow
+            permissionWindow.show();
+            pmIsOpen = true;
+          }
         } else {
           clientWindow.setBrowserView(null);
           process.stdout.write('error: view is null');

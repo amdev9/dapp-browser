@@ -15,12 +15,15 @@ export interface RendererConf {
   name: string;
   status: string;
   winId: number;
-  dappView?: BrowserView,
+  dappView?: BrowserView;
   intent?: string;
-  binded?: BindedListConf
+  binded?: BindedListConf;
 }
 
-export function createDappView(globalUUIDList: RendererConf[], dapp: AppItem) { //entryPath: string, appName: string
+export function createDappView(globalUUIDList: RendererConf[], dapp: AppItem) { // entryPath: string, appName: string
+  if (globalUUIDList.findIndex(item => item.name === dapp.appName && item.status === 'dapp') !== -1) { // Skip creating a new BrowserView for the same dapp
+    return;
+  }
   const uuidDapp = uuidv4();
   const authorizedChannelsList = ['channelId1', 'channelId2']; //next todo get channels list from dapp manifest
 
@@ -38,7 +41,7 @@ export function createDappView(globalUUIDList: RendererConf[], dapp: AppItem) { 
   }
 
   dappView = new BrowserView({
-    webPreferences: webPrefObj
+    webPreferences: webPrefObj,
   });
 
   // console.log('entry: ', path.join(DAPPS_PATH, dapp.appName, dapp.main));
@@ -47,12 +50,12 @@ export function createDappView(globalUUIDList: RendererConf[], dapp: AppItem) { 
 
   const renderIdDapp = dappView.webContents.getProcessId();
 
-  let rendererObj: RendererConf = {
+  const rendererObj: RendererConf = {
     id: uuidDapp,
     status: 'dapp',
     winId: renderIdDapp,
     dappView,
-    name: dapp.appName
+    name: dapp.appName,
   };
   globalUUIDList.push(rendererObj);
 
