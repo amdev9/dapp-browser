@@ -10,7 +10,10 @@ import App from './components/App';
 import { PermissionLayout } from './components/PermissionLayout';
 
 //import Root from './components/Root';
-const store = createStore(permission);
+// const store = createStore(permission);
+
+import store from "./array-permission";
+
 const list: Permission[] = ["ipfs", "storage"];
 
 render(
