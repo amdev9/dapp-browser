@@ -1,5 +1,3 @@
-
-
 import { Action } from 'redux';
 
 export interface ChannelAction extends Action {
