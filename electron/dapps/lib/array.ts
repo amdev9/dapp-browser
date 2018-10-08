@@ -1,20 +1,49 @@
-import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
+import { combineReducers, createStore, applyMiddleware, compose, GenericStoreEnhancer, Store, Dispatch } from 'redux';
+ 
+ 
 import { isFSA } from 'flux-standard-action';
 import { createEpicMiddleware } from 'redux-observable';
 import { logger } from 'redux-logger';
 import { rootEpic } from './redux/epics';
-import rootReducer from './redux/reducers'; 
+import { rootReducer } from './redux/reducers'; 
+
+interface ElectronManager {
+  sendActionMain(action: any): void;
+  replyActionRenderer(store: any): void;
+  getGlobalState(): () => string;
+  sendDataChannel(channelId: string, data: string): () => any,
+  receiveDataChannel(channelId: string, callback: () => any): () => any
+}
+
+declare const window: Window & {
+  __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?(a: any): void;
+  ipc: ElectronManager;
+};
+
+
+interface Action {
+  type: string;
+  payload?: {
+    uuid?: string;
+    uuidSend?: string;
+    uuidRec?: string;
+  };
+  meta?: {
+    scope?: string
+  };
+}
 
 
 const epicMiddleware = createEpicMiddleware();
 
 const electronManager = window.ipc;
 
-const validateAction = (action) => {
+const validateAction = (action: Action) => {
   return isFSA(action);
 }
 
-const forwardToMain = store => next => (action) => {
+// const forwardToMain = (store: Store<any>) => (next: Dispatch<any>) => <A extends Action>(action: A) => {
+const forwardToMain = (store: Store<any>) => (next: Dispatch<void>) => <A extends Action>(action: A) => {
   if (!validateAction(action)) return next(action);
 
   if (
@@ -36,13 +65,13 @@ const forwardToMain = store => next => (action) => {
   return next(action);
 };
 
-const configureStore = (initialState) => {
+const configureStore = (initialState?: any) => {
 
   const middleware = [forwardToMain, epicMiddleware, logger];
   const enhanced = [
     applyMiddleware(...middleware),
   ];
-  const enhancer = compose(...enhanced);
+  const enhancer: GenericStoreEnhancer = compose(...enhanced);
 
  
   const store = createStore(rootReducer, initialState, enhancer);
@@ -63,15 +92,15 @@ const initStore = () => {
   return store;
 }
  
-const sendDataChannel1 = (data) => {
+const sendDataChannel1 = (data: any) => {
   electronManager.sendDataChannel('testChannel1', data);
 }
 
-const sendDataChannel2 = (data) => {
+const sendDataChannel2 = (data: any) => {
   electronManager.sendDataChannel('testChannel2', data);
 }
 
-const receiveDataChannel = (channelId, callback) => {
+const receiveDataChannel = (channelId: string, callback: any) => {
   electronManager.receiveDataChannel(channelId, callback);
 }
 

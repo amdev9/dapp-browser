@@ -3,21 +3,19 @@ import { store, sendDataChannel1, sendDataChannel2, receiveDataChannel } from '.
 const renderState = () => {
   //next todo library object dapp will emit events on store pub-sub actions in: `dapp.emit('event-name', ...)`
  
- 
 }
 
 const initUi = () => {
   renderState();
   store.subscribe(renderState);
 
-  receiveDataChannel('testChannel2', (channelData) => {
+  receiveDataChannel('testChannel2', (channelData: any) => {
     document.getElementById('area').innerHTML = channelData;
   })
 
-  receiveDataChannel('testChannel1', (channelData) => {
+  receiveDataChannel('testChannel1', (channelData: any) => {
     document.getElementById('messageId').innerHTML = channelData;
   })
-
 
   if( document.getElementById('communicate') ) {
     document.getElementById('communicate').addEventListener('click', () => {
