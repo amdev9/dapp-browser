@@ -5,12 +5,12 @@ import { openDevTool } from './helpers/devtools';
 import { AppItem } from './helpers/AppsManager';
 
 let permissionWindow: Electron.BrowserWindow = null;
-const PATH: string = path.join(__dirname, '..', 'permissionManager');
+const PATH: string = path.join(__dirname, '..', '..', 'permissionManager');
 
 export function createPermissionWindow(mainWindow: Electron.BrowserWindow, appName: string, permissions: string[]) {
   const uuidClient = uuidv4();
 
-  let preloadPath = path.join(__dirname, '..', 'permissionManager', 'preload.js');
+  let preloadPath = path.join(__dirname, '..', '..', 'permissionManager', 'preload.js');
   let webPrefObj = {
     nodeIntegration: false,
     preload: preloadPath,
