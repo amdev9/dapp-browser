@@ -28,7 +28,6 @@ const initUi = () => {
     });
   }
 
-   
   if( document.getElementById('sendchannel1') ) {
     document.getElementById('sendchannel1').addEventListener('click', () => {
       sendDataChannel1('testdata 1');
@@ -51,6 +50,26 @@ const initUi = () => {
       });
     });
   }
+
+
+  if( document.getElementById('intent_channel') ) {
+    document.getElementById('intent_channel').addEventListener('click', () => {
+      store.dispatch({
+        type: 'INTENT_CHANNEL_DATA_PASS',
+        payload: {
+          component: 'FM'
+        }
+      });
+    });
+  }
+
+
+  //@todo add 
+  // INTENT_CHANNEL_DATA_PASS(FM)
+  // ACCEPT_CHANNEL_DATA_PASS(ChannelId)
+  // through new channelId
+  // FM_OPEN_FILE
+  // FM_OPEN_FILE_SUCCESS
 };
 
 initUi();

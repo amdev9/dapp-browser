@@ -1,16 +1,4 @@
-import {
-  SWITCH_DAPP,
-  TOGGLE_HOME,
-  TOGGLE_NOTIFICATION_PANEL,
-  TOGGLE_LOADER_PANEL,
-  TOGGLE_STATUS_BAR_PANEL,
-  TOGGLE_PEERS_BAR_PANEL,
-  TOGGLE_SETTINGS_PANEL,
-  TOGGLE_SEARCH_PANEL,
-  TOGGLE_APP_HOME,
-  APPS_FEED_RESIZE,
-  INTENT_OPEN_FILE,
-} from '../constants';
+import * as constants from '../constants';
 import { ClientAction } from '../actions/client';
 import { Client } from './state';
 
@@ -29,7 +17,7 @@ const initialState: Client = {
 
 export function client(state: Client = initialState, action: ClientAction) {
   switch (action.type) {
-    case INTENT_OPEN_FILE:
+    case constants.INTENT_OPEN_FILE:
       if (action.payload && action.payload.hasOwnProperty('isOpen')) {
         return { ...state, fileDialog: {isOpen: action.payload.isFileDialogOpen} };
       } else {
@@ -37,7 +25,7 @@ export function client(state: Client = initialState, action: ClientAction) {
       }
       
 
-    case SWITCH_DAPP:
+    case constants.SWITCH_DAPP:
 
       const dappName = action.payload.targetDappName;
       return {
@@ -46,7 +34,7 @@ export function client(state: Client = initialState, action: ClientAction) {
         isHome: false
       };
 
-    case TOGGLE_HOME:
+    case constants.TOGGLE_HOME:
       const isHome = action.payload.isHome;
       return {
         ...state,
@@ -56,7 +44,7 @@ export function client(state: Client = initialState, action: ClientAction) {
         }
       };
 
-    case TOGGLE_APP_HOME:
+    case constants.TOGGLE_APP_HOME:
       return {
         ...state,
         isHome: false,
@@ -65,7 +53,7 @@ export function client(state: Client = initialState, action: ClientAction) {
         }
       };
 
-    case TOGGLE_NOTIFICATION_PANEL:
+    case constants.TOGGLE_NOTIFICATION_PANEL:
       return {
         ...state,
         notification: {
@@ -73,7 +61,7 @@ export function client(state: Client = initialState, action: ClientAction) {
         }
       };
 
-    case TOGGLE_LOADER_PANEL:
+    case constants.TOGGLE_LOADER_PANEL:
       return {
         ...state,
         loader: {
@@ -81,7 +69,7 @@ export function client(state: Client = initialState, action: ClientAction) {
         }
       };
 
-    case TOGGLE_STATUS_BAR_PANEL:
+    case constants.TOGGLE_STATUS_BAR_PANEL:
       return {
         ...state,
         statusBar: {
@@ -90,7 +78,7 @@ export function client(state: Client = initialState, action: ClientAction) {
         }
       };
 
-    case TOGGLE_PEERS_BAR_PANEL:
+    case constants.TOGGLE_PEERS_BAR_PANEL:
       return {
         ...state,
         statusBar: {
@@ -99,7 +87,7 @@ export function client(state: Client = initialState, action: ClientAction) {
         }
       };
 
-    case TOGGLE_SEARCH_PANEL:
+    case constants.TOGGLE_SEARCH_PANEL:
       return {
         ...state,
         search: {
@@ -107,7 +95,7 @@ export function client(state: Client = initialState, action: ClientAction) {
         }
       };
 
-    case APPS_FEED_RESIZE:
+    case constants.APPS_FEED_RESIZE:
       return { ...state, window: action.payload };
 
     default:

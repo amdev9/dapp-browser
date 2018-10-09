@@ -28,3 +28,4 @@ export const INTENT_OPEN_FILE = "INTENT_OPEN_FILE";
 // Component-channel resolver
 export const INTENT_CHANNEL_DATA_PASS = 'INTENT_CHANNEL_DATA_PASS';
 export const ACCEPT_CHANNEL_DATA_PASS = 'ACCEPT_CHANNEL_DATA_PASS';
+

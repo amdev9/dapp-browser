@@ -15,3 +15,5 @@ const startCountdownEpic: Epic<Action> = action$ => action$.pipe(
 export const rootEpic = combineEpics(
   startCountdownEpic
 );
+
+//@todo add epic for channelId map save, add sendDataChannel with channelId
