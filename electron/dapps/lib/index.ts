@@ -63,6 +63,12 @@ const initUi = () => {
     });
   }
 
+  if( document.getElementById('send_channel') ) {
+    document.getElementById('send_channel').addEventListener('click', () => {
+      //sendDataChannelId('channelId', action);
+    });
+  }
+
 
   //@todo add 
   // INTENT_CHANNEL_DATA_PASS(FM)

@@ -636,7 +636,8 @@ FileManager
 2) channelDataPass dispatch action `INTENT_CHANNEL_DATA_PASS(FM)`
 3) receive from main `ACCEPT_CHANNEL_DATA_PASS(channelId)`
 4) main start accept data through channel with id `channelId`
-5) 
+5) dedicated store via `initStore` with `channelId` as argument for correspond system component
+
 ```javascript
   let videoInstance: string = await fmanager.openFileDialog(); // generated string as file 
 ```
