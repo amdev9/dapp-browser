@@ -17,7 +17,7 @@ import {Permission} from "../redux/model";
 
 export interface PermissionLayoutProps {
   permissions: string[];
-  // label: string;
+  appName: string;
   onTogglePerm: (permissionName: Permission, checked: boolean) => any;
   onCloseManager: () => any;
 }
@@ -35,6 +35,7 @@ export class PermissionLayout extends React.Component<PermissionLayoutProps>  {
         <PermissionBox 
           key={`${value}`} 
           item={value} 
+          appName={this.props.appName}
           onTogglePerm={this.props.onTogglePerm}
         />
       )      

@@ -10,17 +10,18 @@ const PATH: string = path.join(__dirname, '..', '..', 'permissionManager');
 export function createPermissionWindow(globalUUIDList: RendererConf[], mainWindow: Electron.BrowserWindow, appName: string, permissions: string[]) {
   const uuid = uuidv4();
 
-  let webPrefObj = {
+  let webPreferences = {
     nodeIntegration: false,
     preload: path.join(__dirname, '..', '..', 'permissionManager', 'preload.js'),
     additionalArguments: [
       '--uuid-renderer='.concat(uuid),
+      '--app-name='.concat(appName),
       '--permissions='.concat(JSON.stringify(permissions)),
     ],
   };
 
   if (process.env.ELECTRON_ENV !== 'development') {
-    webPrefObj = Object.assign(webPrefObj, { sandbox: true });
+    webPreferences = Object.assign(webPreferences, { sandbox: true });
   }
 
   permissionWindow = new BrowserWindow({
@@ -34,7 +35,7 @@ export function createPermissionWindow(globalUUIDList: RendererConf[], mainWindo
     width: 400,
     height: 300,
     // resizable: false,
-    webPreferences: webPrefObj,
+    webPreferences,
     modal: true,
   });
   permissionWindow.setMenu(null);

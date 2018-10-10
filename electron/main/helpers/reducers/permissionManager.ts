@@ -8,6 +8,7 @@ interface PermissionAction extends Action {
   payload: {
     permissionName: string;
     checked: boolean;
+    appName: string;
   };
 }
 
@@ -19,7 +20,7 @@ interface PermissionsState {
 export function permissionManager(state: PermissionsState = null, action: PermissionAction) {
   switch (action.type) {
     case TOGGLE_PERMISSION:
-      const appName = "Game"; // todo pass appName to payload
+      const appName = action.payload.appName;
       const permissionName = action.payload.permissionName;
       const checked = action.payload.checked;
       let appPermissions = state.permissions[appName];
@@ -28,7 +29,9 @@ export function permissionManager(state: PermissionsState = null, action: Permis
       }
       const permissions = {...state.permissions};
       if (checked) {
-        permissions[appName] = [...appPermissions, permissionName];
+        if (appPermissions.indexOf(permissionName) === -1) {
+          permissions[appName] = [...appPermissions, permissionName];
+        }
       } else {
         permissions[appName] = appPermissions.filter(item => item !== permissionName);
       }

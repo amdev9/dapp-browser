@@ -32,6 +32,7 @@ interface ElectronManager {
   getGlobalState(): () => string;
   getElectronEnv(): string;
   getPermissions: string[];
+  getAppName: string;
 }
 
 declare const window: Window & {
@@ -118,6 +119,7 @@ export const isProduction = () => {
 };
 
 export const getPermissions = electronManager.getPermissions;
+export const getAppName = electronManager.getAppName;
 
 const store = initStore();
 

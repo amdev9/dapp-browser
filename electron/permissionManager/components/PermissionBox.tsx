@@ -3,7 +3,8 @@ import  { Permission } from '../redux/reducers/state';
 
 interface PermissionBoxProps {
   item: string,
-  onTogglePerm: (permissionName: string, checked: boolean) => any
+  appName: string,
+  onTogglePerm: (permissionName: string, checked: boolean, appName: string) => any
 }
 
 //@todo read data & assets from AppsManager for icons preview
@@ -17,7 +18,7 @@ export class PermissionBox extends React.Component<PermissionBoxProps, { checked
   }
 
   handleInputChange() {
-    this.props.onTogglePerm(this.props.item, !this.state.checked);
+    this.props.onTogglePerm(this.props.item, !this.state.checked, this.props.appName);
     this.setState({ checked: !this.state.checked });
   }
 

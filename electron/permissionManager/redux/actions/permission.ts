@@ -4,5 +4,5 @@ import { Permission } from '../model';
 
  
 export const closeManager = () => action(CLOSE_MANAGER);
-export const togglePermission = (permissionName: Permission, checked: boolean) => action(TOGGLE_PERMISSION, {permissionName, checked});
+export const togglePermission = (permissionName: Permission, checked: boolean, appName: boolean) => action(TOGGLE_PERMISSION, {permissionName, checked, appName});
  

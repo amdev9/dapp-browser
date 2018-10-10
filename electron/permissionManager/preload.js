@@ -9,6 +9,11 @@ class ElectronManager {
     });
     const uuidRenderer = uuidRendererParam[0].split("=")[1];
 
+    const appNameParam = process.argv.filter( (param) => { // todo use only --uuid-renerer without using --app-name ?
+      return param.indexOf('--app-name') >= 0;
+    });
+    const appName = appNameParam[0].split("=")[1];
+
     const permissionsParam = process.argv.filter( (param) => {
       return param.indexOf('--permissions') >= 0;
     });
@@ -54,6 +59,7 @@ class ElectronManager {
     this.receiveDataChannel = receiveDataChannel;
     this.getElectronEnv = getElectronEnv;
     this.getPermissions = permissions;
+    this.getAppName = appName;
   }
 }
 
