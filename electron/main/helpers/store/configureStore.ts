@@ -29,7 +29,6 @@ export interface Action {
 }
 
 export const initialState: IState = {
-
   channel: {},
   client: {
     activeDapp: {
@@ -44,7 +43,7 @@ export const initialState: IState = {
     fileDialog: {isOpen: false}
   },
   feed: {},
-  permissions: [],
+  permissionManager: {isOpen: false, permissions: {}},
   tray: {items: []},
 };
 

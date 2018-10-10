@@ -1,15 +1,16 @@
 import { CLOSE_MANAGER, TOGGLE_PERMISSION } from '../constants';
 import { PermissionAction } from './index';
-import { PermissionList, Permission } from './state';
+import { PermissionManager, Permission } from './state';
 
  
 let perm: Permission[];
 
-const initialState: PermissionList = {
+const initialState: PermissionManager = {
+  isOpen: false,
   items: perm
-}
+};
 
-export function permission(state: PermissionList = initialState, action: PermissionAction) {
+export function permissionManager(state: PermissionManager = initialState, action: PermissionAction) {
   switch (action.type) {
     case TOGGLE_PERMISSION:
       return state; // state.permissions = [], add or remove from array

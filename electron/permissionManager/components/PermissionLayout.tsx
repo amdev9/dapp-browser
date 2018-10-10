@@ -41,13 +41,13 @@ export class PermissionLayout extends React.Component<PermissionLayoutProps>  {
     );
 
     const handleClose = () => { this.props.onCloseManager(); };
+    const handleCancel = () => { this.props.onCloseManager(); };
 
     return (
       <div>
         <span>{permissionItems} </span>
-        <button type="button" onClick={handleClose}>
-          {`Toggle`}
-        </button>
+        <button type="button" onClick={handleClose}>{`Toggle`}</button>
+        <button type="button" onClick={handleCancel}>{`Cancel`}</button>
       </div>
     );
   }

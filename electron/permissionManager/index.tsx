@@ -1,9 +1,5 @@
 import * as React from 'react';
-import { applyMiddleware, createStore } from "redux";
 import { render } from 'react-dom';
-
-import { permission } from './redux/reducers/permission'
-import { Permission } from './redux/reducers/state';
 
 import { Provider } from 'react-redux';
  

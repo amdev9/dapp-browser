@@ -74,11 +74,14 @@ app.on('ready', async () => {
   }, globalUUIDList); // @todo pass parsed dapps
 
   let pmIsOpen = false;
+  const closePermissionManager = () => {
+    permissionWindow.hide();
+    pmIsOpen = false;
+  };
   const permissionWindow = createPermissionWindow(globalUUIDList, clientWindow); // , targetDappObj.appName, targetDappObj.permissions
   permissionWindow.on('close', (event) => {
     event.preventDefault();
-    permissionWindow.hide();
-    pmIsOpen = false;
+    closePermissionManager();
   });
 
   let isClientWindowLoaded = false;
@@ -114,6 +117,9 @@ app.on('ready', async () => {
         console.log("filePaths", filePaths);
         store.dispatch({type: "INTENT_OPEN_FILE", payload: {isFileDialogOpen: false}});
       });
+    }
+    if (!storeState.permissionManager.isOpen) {
+      closePermissionManager();
     }
     if (storeState.client.isHome) {
       clientWindow.setBrowserView(null);
