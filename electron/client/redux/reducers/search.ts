@@ -1,6 +1,9 @@
-import { SearchAction } from '../actions/search';
+import { ActionType } from 'typesafe-actions';
 import { SearchPanel } from "./state";
 import { TOGGLE_SEARCH_PANEL } from "../constants";
+import * as searchActions from '../actions/search';
+
+export type SearchAction = ActionType<typeof searchActions>;
 
 const initialState: SearchPanel =
   {items:

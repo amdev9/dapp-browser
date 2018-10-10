@@ -2,8 +2,8 @@
 // redux-persist integration here
 
 export type Client = {
-  activeDapp?: {
-    appName?: string
+  activeDapp: {
+    appName: any
   },
   isHome: boolean,
   notification: {
