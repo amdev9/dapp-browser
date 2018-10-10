@@ -43,7 +43,7 @@ export const initialState: IState = {
     fileDialog: {isOpen: false}
   },
   feed: {},
-  permissionManager: {isOpen: false, permissions: {}},
+  permissionManager: {isOpen: true, permissions: {}},
   tray: {items: []},
 };
 

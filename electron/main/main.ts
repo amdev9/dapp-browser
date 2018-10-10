@@ -95,10 +95,6 @@ app.on('ready', async () => {
     }
     clientWindow.show();
     clientWindow.focus();
-    if (!pmIsOpen) {
-      permissionWindow.show();
-      pmIsOpen = true;
-    }
   });
 
   store.subscribe(() => {
@@ -117,9 +113,6 @@ app.on('ready', async () => {
         console.log("filePaths", filePaths);
         store.dispatch({type: "INTENT_OPEN_FILE", payload: {isFileDialogOpen: false}});
       });
-    }
-    if (!storeState.permissionManager.isOpen) {
-      closePermissionManager();
     }
     if (storeState.client.isHome) {
       clientWindow.setBrowserView(null);
@@ -144,9 +137,13 @@ app.on('ready', async () => {
         if (view) {
           clientWindow.setBrowserView(view);
 
-          if (isClientWindowLoaded && !pmIsOpen) {  // Linux. If not to check isClientWindowLoaded, than permissionWindow loads before clientWindow and shows behind clientWindow
-            permissionWindow.show();
-            pmIsOpen = true;
+          if (storeState.permissionManager.isOpen) {
+            if (isClientWindowLoaded && !pmIsOpen) {  // Linux. If not to check isClientWindowLoaded, than permissionWindow loads before clientWindow and shows behind clientWindow
+              permissionWindow.show();
+              pmIsOpen = true;
+            }
+          } else {
+            closePermissionManager();
           }
         } else {
           clientWindow.setBrowserView(null);
