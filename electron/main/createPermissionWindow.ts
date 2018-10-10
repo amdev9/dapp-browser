@@ -7,10 +7,8 @@ import {RendererConf} from "./createDappView";
 let permissionWindow: Electron.BrowserWindow = null;
 const PATH: string = path.join(__dirname, '..', '..', 'permissionManager');
 
-export function createPermissionWindow(globalUUIDList: RendererConf[], mainWindow: Electron.BrowserWindow) { // , appName: string, permissions: string[]
+export function createPermissionWindow(globalUUIDList: RendererConf[], mainWindow: Electron.BrowserWindow, appName: string, permissions: string[]) {
   const uuid = uuidv4();
-  const appName = "Game";
-  const permissions = ["ipfs", "file"];
 
   let webPrefObj = {
     nodeIntegration: false,
@@ -30,7 +28,7 @@ export function createPermissionWindow(globalUUIDList: RendererConf[], mainWindo
     title: appName + " | Permissions",
     alwaysOnTop: true,
     // center: true,
-    show: false,
+    show: true,
     x: 0,
     y: 0,
     width: 400,

@@ -1,36 +1,18 @@
 const electron = require('electron');
 const ipcRenderer = electron.ipcRenderer;
 
-// window.onload = () => {
-//   ipcRenderer.send('answer', process.argv);
-// };
-
 class ElectronManager {
   constructor() {
-
-    // https://github.com/kewde/electron-sandbox-boilerplate/blob/master/sandbox-preload-extended/electron/renderer/preload-extended.js,
-    // granted channels parse from process argv
-
-
-    // const channelsParam = process.argv.filter( (param) => {
-    //   return param.indexOf('--channels') >= 0;
-    // });
 
     const uuidRendererParam = process.argv.filter( (param) => {
       return param.indexOf('--uuid-renderer') >= 0;
     });
     const uuidRenderer = uuidRendererParam[0].split("=")[1];
-    // console.log(uuidRenderer);
 
     const permissionsParam = process.argv.filter( (param) => {
       return param.indexOf('--permissions') >= 0;
     });
     const permissions = JSON.parse(permissionsParam[0].split("=")[1]);
-
-    // const authChannels = channelsParam[0].split("=").split(";");
-    // console.log(authChannels);
-
-    // console.log(electron.remote.getGlobal('getReduxState')());
 
     const replyActionRenderer = (store) => {
       ipcRenderer.on('redux-action', (event, payload) => {

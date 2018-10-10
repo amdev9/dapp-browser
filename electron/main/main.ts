@@ -75,14 +75,11 @@ app.on('ready', async () => {
 
   let pmIsOpen = false;
   const closePermissionManager = () => {
-    permissionWindow.hide();
     pmIsOpen = false;
+    permissionWindow.close();
+    permissionWindow = null;
   };
-  const permissionWindow = createPermissionWindow(globalUUIDList, clientWindow); // , targetDappObj.appName, targetDappObj.permissions
-  permissionWindow.on('close', (event) => {
-    event.preventDefault();
-    closePermissionManager();
-  });
+  let permissionWindow: BrowserWindow;
 
   let isClientWindowLoaded = false;
 
@@ -139,7 +136,11 @@ app.on('ready', async () => {
 
           if (storeState.permissionManager.isOpen) {
             if (isClientWindowLoaded && !pmIsOpen) {  // Linux. If not to check isClientWindowLoaded, than permissionWindow loads before clientWindow and shows behind clientWindow
-              permissionWindow.show();
+              permissionWindow = createPermissionWindow(globalUUIDList, clientWindow, targetDappObj.appName, targetDappObj.permissions);
+              permissionWindow.on('close', (event) => {
+                pmIsOpen = false;
+                permissionWindow = null;
+              });
               pmIsOpen = true;
             }
           } else {
