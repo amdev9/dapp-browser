@@ -9,8 +9,9 @@ import { PermissionLayoutConnected } from './components/PermissionLayout';
 // const store = createStore(permission);
 
 import store from "./array-permission";
+import { getPermissions } from "./array-permission";
 
-const list: string[] = ["ipfs", "storage"];
+const list = getPermissions;
 
 render(
   // <Root store={store} />,   

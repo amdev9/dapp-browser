@@ -9,18 +9,5 @@
     "games",
     "tools"
   ],
-  "permissions": [
-    {
-      "storage": { 
-        "required": "true"
-      }
-    }, 
-    "logger", 
-    {
-      "ipfs": { 
-        "required": "true",
-        "dependecy": ["appName1", "appName2"]
-      }
-    }
-  ]
+  "permissions": ["storage", "logger", "ipfs"]
 }

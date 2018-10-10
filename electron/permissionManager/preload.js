@@ -22,6 +22,11 @@ class ElectronManager {
     const uuidRenderer = uuidRendererParam[0].split("=")[1];
     // console.log(uuidRenderer);
 
+    const permissionsParam = process.argv.filter( (param) => {
+      return param.indexOf('--permissions') >= 0;
+    });
+    const permissions = JSON.parse(permissionsParam[0].split("=")[1]);
+
     // const authChannels = channelsParam[0].split("=").split(";");
     // console.log(authChannels);
 
@@ -66,6 +71,7 @@ class ElectronManager {
     this.sendDataChannel = sendDataChannel;
     this.receiveDataChannel = receiveDataChannel;
     this.getElectronEnv = getElectronEnv;
+    this.getPermissions = permissions;
   }
 }
 
