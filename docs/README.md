@@ -106,7 +106,7 @@ Start-stop channels: https://github.com/MichaelVasseur/electron-ipc-bus
 
 ## Events action signals
 
-Event action signals are used in our architecture to receive event signals only when no other related channels (see [Component-channel resolver](#component-channel-resolver)) is opened. All component events go through the channels via the `ipcMain`-`ipcRenderer` mechanizm.
+All component events go through the channels via the `ipcMain`-`ipcRenderer` mechanizm.
  
 ## UUID store resolver
 
