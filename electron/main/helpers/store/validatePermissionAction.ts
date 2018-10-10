@@ -15,6 +15,7 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
           case constants.OPEN_CHANNEL_SUCCESS:
           case constants.BIND_OPEN_CHANNELS:
           case constants.BIND_OPEN_CHANNELS_DONE:
+          case constants.FILE_MANAGER_OPEN_DIALOG:
 
           case constants.INTENT_CHANNEL_DATA_PASS:
             return next(action);

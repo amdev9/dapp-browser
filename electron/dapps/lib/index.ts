@@ -1,4 +1,5 @@
 import { store, sendDataChannel1, sendDataChannel2, receiveDataChannel } from './array';
+import * as actions from './redux/actions/channel'
 
 const renderState = () => {
   //next todo library object dapp will emit events on store pub-sub actions in: `dapp.emit('event-name', ...)`
@@ -25,6 +26,12 @@ const initUi = () => {
           targetDapp: 'Game' 
         }
       });
+    });
+  }
+
+  if( document.getElementById('openDialogButton') ) {
+    document.getElementById('openDialogButton').addEventListener('click', () => {
+      store.dispatch(actions.openFileManagerDialog());
     });
   }
 
