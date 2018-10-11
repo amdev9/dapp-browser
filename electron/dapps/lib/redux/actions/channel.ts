@@ -17,6 +17,8 @@ export const FILE_MANAGER_OPEN_DIALOG = 'FILE_MANAGER_OPEN_DIALOG';
 export const FILE_MANAGER_OPEN_DIALOG_SUCCESS = 'FILE_MANAGER_OPEN_DIALOG_SUCCESS';
 export const FILE_MANAGER_OPEN_DIALOG_FAILURE = 'FILE_MANAGER_OPEN_DIALOG_FAILURE';
 
+export const SHOW_FILE_ENTRIES = 'SHOW_FILE_ENTRIES';
+
 export function openChannelIntent() {
   return {
     type: INTENT_OPEN_CHANNELS
@@ -25,4 +27,8 @@ export function openChannelIntent() {
 
 export const openFileManagerDialog = () => ({
   type: FILE_MANAGER_OPEN_DIALOG
+})
+
+export const showFileEntries = () => ({
+  type: SHOW_FILE_ENTRIES
 })
