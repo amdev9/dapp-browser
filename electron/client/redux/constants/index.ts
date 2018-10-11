@@ -11,8 +11,7 @@ export const APPS_FEED_RESIZE = 'APPS_FEED_RESIZE';
 export const ADD_APP_ITEM = 'ADD_APP_ITEM';
 export const SWITCH_DAPP = 'SWITCH_DAPP';
 export const TOGGLE_HOME = 'TOGGLE_HOME';
-export const SET_TRAY_COUNTER = 'SET_TRAY_COUNTER';
-export const SET_TRAY_PROGRESS = 'SET_TRAY_PROGRESS';
+ 
 export const TOGGLE_APP_HOME = 'TOGGLE_APP_HOME';
 
 // Dapp communication protocol
@@ -25,3 +24,9 @@ export const BIND_OPEN_CHANNELS_DONE = 'BIND_OPEN_CHANNELS_DONE';
 export const INTENT_CHANNEL_DATA_PASS = 'INTENT_CHANNEL_DATA_PASS';
 export const ACCEPT_CHANNEL_DATA_PASS = 'ACCEPT_CHANNEL_DATA_PASS';
  
+
+export const SET_TRAY_PROGRESS = "SET_TRAY_PROGRESS"; 
+export const SET_TRAY_COUNTER = "SET_TRAY_COUNTER";
+export const REMOVE_TRAY_ITEM = "REMOVE_TRAY_ITEM";
+
+

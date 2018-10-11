@@ -10,7 +10,6 @@
   - [Events action signals](#events-action-signals)
   - [UUID store resolver](#uuid-store-resolver)
   - [Redux middleware for permission check](#redux-middleware-for-permission-check)
-  - [Component-channel resolver](#component-channel-resolver)
   - [Dapp communication protocol](#dapp-communication-protocol)
 - [System components](#system-components)
   - [Local Storage](#local-storage)
@@ -107,7 +106,7 @@ Start-stop channels: https://github.com/MichaelVasseur/electron-ipc-bus
 
 ## Events action signals
 
-Event action signals are used in our architecture to receive event signals only when no other related channels (see [Component-channel resolver](#component-channel-resolver)) is opened. All component events go through the channels via the `ipcMain`-`ipcRenderer` mechanizm.
+All component events go through the channels via the `ipcMain`-`ipcRenderer` mechanizm.
  
 ## UUID store resolver
 
@@ -124,7 +123,7 @@ Each dispatched action, before it reaches the target dapp, is passed to the main
 
 ![Permission middleware failure](diagrams/permissionMIddlewareFailure.png?raw=true "Permission middleware failure")
 
-
+<!-- 
 ## Component channel resolver
 
 To get data from a **main process component** (i.e. LocalStorage, Network, etc), you schould resolve `CHANNEL_ID` for a dapp renderer process. This is done in eight steps that are described further on.
@@ -136,9 +135,9 @@ Every component channel has a particular event identifier for each request, whic
       Renderer                     |            Main
 -----------------------------------------------------------------------
                                    |
-  [payload] --> ([payload], id1) --|--> process [payload] --
+  [payload] ==> ([payload], id1) ==|==> process [payload] --
                                    |                        |
-  waiting (callback, id1) <--------|--- ([result], id1) ----
+  waiting (callback, id1) <========|==== ([result], id1) ----
                                    |    
   (id1 == id1) => callback(result) |
 ```
@@ -173,7 +172,7 @@ Each component has its own channel which is responsible for data transportation.
 ```javascript
   { type: 'ACCEPT_CHANNEL_DATA_PASS', payload: { channelId: '[CHANNEL_ID]', uuid: '[UUID_RECEIVER_RENDERER]' } }
 ```
-- The renderer passes the data through the `CHANNEL_ID` that was resolved in the main action
+- The renderer passes the data through the `CHANNEL_ID` that was resolved in the main action -->
 
 
 ## Dapp communication protocol
@@ -197,6 +196,7 @@ ipcMain.on('[CHANNEL_ID_RECEIVER]', (event, payload) => {
 
 ![Dapp communication failure scenario](./diagrams/DappCommunicationFailure.png?raw=true "Dapp communication failure scenario")
 
+After successful dapp communication handshake we init electron-redux stores with channelId `CHANNEL_ID_SENDER`, `CHANNEL_ID_RECEIVER`. Redux action used as main protocol in communication. 
 
 ### Actions roadmap
 
@@ -241,9 +241,7 @@ After Local Storage permission is granted and the dapp process is started off, w
 
 ## Permissions signal sequence (Success scenario)
 1. Dapp developer initiates instance `new LocalStorage()`
-2. Dapp redux store disaptches `INTENT_CHANNEL_DATA_PASS(LOCALSTORAGE)`
-3. The main process accepts the data and orchestrates it via`ACCEPT_CHANNEL_DATA_PASS`
-4. Create a wrapper class with corresponding data manipulation methods. The class  `new LocalStorage()` extends `PouchDb` class with `IndexedDb` adapter.
+2. Create a wrapper class with corresponding data manipulation methods. The class  `new LocalStorage()` extends `PouchDb` class with `IndexedDb` adapter.
 
 
 ## External refferences:
@@ -259,10 +257,8 @@ IPFS provides a decentralized approach to data storage. That is why it is partic
 > IPFS is a distributed file system that seeks to connect all computing devices with the same system of files. In some ways, this is similar to the original aims of the Web, but IPFS is actually more similar to a single bittorrent swarm exchanging git objects. You can read more about its origins in the paper [IPFS - Content Addressed, Versioned, P2P File System](https://github.com/ipfs/ipfs/blob/master/papers/ipfs-cap2pfs/ipfs-p2p-file-system.pdf?raw=true).
 
 ## Permissions signal sequence (success scenario)
-1. Dapp developer initiates instance `new IpfsStorage()`
-2. Dapp redux store disaptches `INTENT_CHANNEL_DATA_PASS(IPFS)`
-3. The main process accepts the data and orchestrates it via `ACCEPT_CHANNEL_DATA_PASS(CHANNEL_ID)`
-4. Create a proxy class `new IpfsStorage()` with the corresponding data manipulation methods. A proxy class is resposible for sending and listening for the events propagated by `IPFS` class in the main process. 
+
+Create a proxy class `new IpfsStorage()` with the corresponding data manipulation methods. A proxy class is resposible for sending and listening for the events propagated by `IPFS` class in the main process. 
  
 ## External refferences:
 https://github.com/ipfs/ipfs<br/>
@@ -275,9 +271,7 @@ OrbitDB is an abstraction layer below IPFS, that provides P2P sycnchronization b
 
 ## Permissions signal sequence (Success scenario)
 1. Dapp developer initiates instance `new OrbitDb()`
-2. Dapp redux store disaptches `INTENT_CHANNEL_DATA_PASS(ORBIT)`
-3. The main process accepts the data and orchestrates it via`ACCEPT_CHANNEL_DATA_PASS(CHANNEL_ID)`
-4. Create a proxy class `new OrbitDb()` with the corresponding data manipulation methods. A proxy class is resposible for sending and listening for events propagated by `OrbitDb` class in the main process. 
+2. Create a proxy class `new OrbitDb()` with the corresponding data manipulation methods. A proxy class is resposible for sending and listening for events propagated by `OrbitDb` class in the main process. 
  
 ## External refferences:
 https://github.com/orbitdb/orbit-db<br/>
@@ -288,9 +282,7 @@ Logger component provides the platform for logging. It intercepts system errors 
 
 ## Permissions signal sequence (Success scenario)
 1. Dapp developer init instance `new Logger()`
-2. Dapp redux store disaptches `INTENT_CHANNEL_DATA_PASS(LOGGER)`
-3. The main process accepts the data and orchestrates it via `ACCEPT_CHANNEL_DATA_PASS(CHANNEL_ID)`
-4. Create a proxy class `new Logger()` with the corresponding data manipulation methods. A proxy class is resposible for sending and listening for events propagated by `Logger` class in the main process. 
+2. Create a proxy class `new Logger()` with the corresponding data manipulation methods. A proxy class is resposible for sending and listening for events propagated by `Logger` class in the main process. 
  
 ## External refferences:
 ORM for sqlite https://github.com/sequelize/sequelize<br/>
@@ -302,9 +294,7 @@ Keychain component provides transaction signing methods. It uses third-party Key
 
 ## Permissions signal sequence (success scenario)
 1. Dapp developer initiates instance `new Keychain()`
-2. Dapp redux store disaptches `INTENT_CHANNEL_DATA_PASS(KEYCHAIN)`
-3. The main process accepts the data and orchestrates it via `ACCEPT_CHANNEL_DATA_PASS(CHANNEL_ID)`
-4. Create a proxy class `new Keychain()` with the corresponding data manipulation methods. A proxy class is resposible for sending and listening for events propagated by `Keychain` class in the main process. 
+2. Create a proxy class `new Keychain()` with the corresponding data manipulation methods. A proxy class is resposible for sending and listening for events propagated by `Keychain` class in the main process. 
  
 # Network
 
@@ -313,9 +303,7 @@ For proceed network queries with blockchain node. Make JSON-RPC calls to blockch
 
 ## Permissions signal sequence (success scenario)
 1. Dapp developer initiates instance `new Network()`
-2. Dapp redux store disaptches `INTENT_CHANNEL_DATA_PASS(NETWORK)`
-3. The main process accepts the data and orchestrates it via `ACCEPT_CHANNEL_DATA_PASS(CHANNEL_ID)`
-4. Create a proxy class `new Network()` with the corresponding data manipulation methods. A proxy class is resposible for sending and listening for events propagated by `Network` class in the main process. 
+2. Create a proxy class `new Network()` with the corresponding data manipulation methods. A proxy class is resposible for sending and listening for events propagated by `Network` class in the main process. 
  
  
 
@@ -421,7 +409,7 @@ Returns
 
 ``EventEmitter`` - A Subscription instance
 
-Example
+Example // Fix to use redux store
 -------
 
 ```javascript
@@ -623,7 +611,7 @@ web3 events api: <br />
 FileManager
 -----------
 
-1) new FileManager()
+new FileManager()
 ```javascript
   class FileManager() {
     constructor() {
@@ -633,10 +621,6 @@ FileManager
   }
 ```
 
-2) channelDataPass dispatch action `INTENT_CHANNEL_DATA_PASS(FM)`
-3) receive from main `ACCEPT_CHANNEL_DATA_PASS(channelId)`
-4) main start accept data through channel with id `channelId`
-5) 
 ```javascript
   let videoInstance: string = await fmanager.openFileDialog(); // generated string as file 
 ```

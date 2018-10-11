@@ -4,8 +4,8 @@
 export type Permission = "ipfs" | "network" | "storage";
 
 export type Client = {
-  activeDapp?: {
-    appName?: string
+  activeDapp: {
+    appName: any
   },
   isHome: boolean,
   notification: {

@@ -9,5 +9,9 @@
     "games",
     "tools"
   ],
-  "permissions": ["storage", "logger", "ipfs"]
+  "permissions": [
+    "storage",
+    "logger", 
+    "ipfs" 
+  ]
 }
