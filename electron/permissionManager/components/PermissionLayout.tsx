@@ -21,6 +21,7 @@ export interface PermissionLayoutProps {
   onTogglePerm: (permissionName: Permission, checked: boolean) => any;
   onCloseManager: () => any;
   onGrantPermissions: (appName: string) => any;
+  onLoadPermissions: () => any;
 }
 
 export class PermissionLayout extends React.Component<PermissionLayoutProps>  {
@@ -60,6 +61,11 @@ export class PermissionLayout extends React.Component<PermissionLayoutProps>  {
       </div>
     );
   }
+
+  componentDidMount() {
+    this.props.onLoadPermissions();
+    console.log("componentDidMount");
+  }
 }
 
 const mapStateToProps = (state: RootState) => ({
@@ -70,6 +76,7 @@ const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => bindActionCreator
   onTogglePerm: permissionActions.togglePermission,
   onCloseManager: permissionActions.closeManager,
   onGrantPermissions: permissionActions.grantPermissions,
+  onLoadPermissions: permissionActions.loadPermissions
 }, dispatch);
 
 export const PermissionLayoutConnected =

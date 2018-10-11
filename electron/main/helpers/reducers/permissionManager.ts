@@ -3,6 +3,7 @@ import {
   TOGGLE_PERMISSION,
   CLOSE_MANAGER,
   GRANT_PERMISSIONS,
+  LOAD_PERMISSIONS,
 } from '../constants';
 
 interface PermissionAction extends Action {
@@ -41,6 +42,8 @@ export function permissionManager(state: PermissionsState = null, action: Permis
     }
     case CLOSE_MANAGER:
       return {...state, isOpen: false};
+    case LOAD_PERMISSIONS:
+      return {...state, isOpen: true};  
     case GRANT_PERMISSIONS:
       const appName = action.payload.appName;
       const grantedApps = [...state.grantedApps];

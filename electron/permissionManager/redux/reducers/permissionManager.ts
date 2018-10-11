@@ -1,4 +1,4 @@
-import { CLOSE_MANAGER, TOGGLE_PERMISSION, GRANT_PERMISSIONS } from '../constants';
+import { CLOSE_MANAGER, TOGGLE_PERMISSION, GRANT_PERMISSIONS, LOAD_PERMISSIONS } from '../constants';
 import { PermissionAction } from './index';
 import { PermissionManager} from './state';
 
@@ -18,6 +18,8 @@ export function permissionManager(state: PermissionManager = null, action: Permi
     case CLOSE_MANAGER:
       return state; // state.granted // if granted not spawn permissionManager
     case GRANT_PERMISSIONS:
+      return state;
+    case LOAD_PERMISSIONS:
       return state;  
     default:
       return state;

@@ -135,7 +135,6 @@ app.on('ready', async () => {
         const view = nameObj.dappView;
         if (view) {
           clientWindow.setBrowserView(view);
-
           if (isClientWindowLoaded) {
             if (!pmIsOpen) {  // Linux. If not to check isClientWindowLoaded, than permissionWindow loads before clientWindow and shows behind clientWindow
               const activeDappGranted = storeState.permissionManager.grantedApps.indexOf(activeDappName) !== -1;
@@ -148,7 +147,9 @@ app.on('ready', async () => {
                 pmIsOpen = true;
               }
             } else {
-              closePermissionManager();
+              if (!storeState.permissionManager.isOpen) {
+                closePermissionManager();
+              }
             }
           }
         } else {
