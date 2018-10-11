@@ -2,7 +2,8 @@
 export type Permission = "ipfs" | "network" | "storage";
 export interface PermissionManager {
   isOpen: boolean,
-  items: Permission[]
+  items: Permission[],
+  grantedApps: string[]
 }
 export interface IState {
   permissionManager: PermissionManager

@@ -20,7 +20,7 @@ export interface PermissionLayoutProps {
   appName: string;
   onTogglePerm: (permissionName: Permission, checked: boolean) => any;
   onCloseManager: () => any;
-  onGrantPermissions: () => any;
+  onGrantPermissions: (appName: string) => any;
 }
 
 export class PermissionLayout extends React.Component<PermissionLayoutProps>  {
@@ -32,7 +32,7 @@ export class PermissionLayout extends React.Component<PermissionLayoutProps>  {
   }
 
   handleGrant() {
-    this.props.onGrantPermissions();
+    this.props.onGrantPermissions(this.props.appName);
   }
 
   handleCancel() {

@@ -2,6 +2,7 @@ import {Action} from "redux";
 import {
   TOGGLE_PERMISSION,
   CLOSE_MANAGER,
+  GRANT_PERMISSIONS,
 } from '../constants';
 
 interface PermissionAction extends Action {
@@ -13,13 +14,14 @@ interface PermissionAction extends Action {
 }
 
 interface PermissionsState {
-  isOpen: boolean,
+  isOpen: boolean;
   permissions: {[index: string]: string[]};
+  grantedApps: string[];
 }
 
 export function permissionManager(state: PermissionsState = null, action: PermissionAction) {
   switch (action.type) {
-    case TOGGLE_PERMISSION:
+    case TOGGLE_PERMISSION: {
       const appName = action.payload.appName;
       const permissionName = action.payload.permissionName;
       const checked = action.payload.checked;
@@ -36,9 +38,17 @@ export function permissionManager(state: PermissionsState = null, action: Permis
         permissions[appName] = appPermissions.filter(item => item !== permissionName);
       }
       return {...state, permissions};
+    }
     case CLOSE_MANAGER:
       return {...state, isOpen: false};
-      
+    case GRANT_PERMISSIONS:
+      const appName = action.payload.appName;
+      const grantedApps = [...state.grantedApps];
+      if (state.grantedApps.indexOf(appName) === -1) {
+        grantedApps.push(appName);
+      }
+      return {...state, isOpen: false, grantedApps};
+
     default:
       return state;
   }
