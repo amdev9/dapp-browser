@@ -178,7 +178,7 @@ const bindChannel = (webId: number, channelReceiver: string, channelSender: stri
 const replyActionMain = (store: Store<{}>, globalId: RendererConf[]) => {
   global.getReduxState = () => JSON.stringify(store.getState());
  
-  ipcMain.on('redux-action', (event: Electron.Event, uuid: string, payload: any) => {
+  ipcMain.on('redux-action', (event: Electron.Event, uuid: string, action: any) => {
     const uuidObj = globalId.find(renObj => renObj.id === uuid);
  
     if (uuidObj) {
@@ -188,7 +188,7 @@ const replyActionMain = (store: Store<{}>, globalId: RendererConf[]) => {
       action.meta = action.meta ? Object.assign(action.meta, sourceUUID) : sourceUUID
       // uuid resolver
  
-      const uuidTargetObj = globalId.find(renObj => renObj.name === payload.payload.targetDapp && renObj.status === 'dapp');
+      const uuidTargetObj = globalId.find(renObj => renObj.name === action.payload.targetDapp && renObj.status === 'dapp');
  
       if (uuidTargetObj) {
         const payloadUuidObj = {
