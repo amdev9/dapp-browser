@@ -77,19 +77,7 @@ app.on('ready', async () => {
     const storeState = store.getState();
 
     process.stdout.write(JSON.stringify(storeState));
-    if (storeState.client.fileDialog.isOpen) {
-      dialog.showOpenDialog(clientWindow, {
-        filters: [
-          {name: 'Images', extensions: ['jpg', 'png', 'gif']},
-          {name: 'Movies', extensions: ['mkv', 'avi', 'mp4']},
-          {name: 'Custom File Type', extensions: ['as']},
-          {name: 'All Files', extensions: ['*']}
-        ]
-      }, (filePaths: string[]) => {
-        console.log("filePaths", filePaths);
-        store.dispatch({type: "INTENT_OPEN_FILE", payload: {isFileDialogOpen: false}});
-      })
-    }
+ 
     if (storeState.client.isHome) {
       clientWindow.setBrowserView(null);
     } else {

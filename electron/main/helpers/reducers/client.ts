@@ -20,13 +20,7 @@ const initialState: Client = {
 
 export function client(state: Client = initialState, action: any) { //@todo add actions to client.ts
   switch (action.type) {
-    case constants.INTENT_OPEN_FILE:
-      if (action.payload && action.payload.hasOwnProperty('isOpen')) {
-        return { ...state, fileDialog: {isOpen: action.payload.isFileDialogOpen} };
-      } else {
-        return { ...state, fileDialog: {isOpen: !state.fileDialog.isOpen }};
-      }
-      
+ 
     case constants.SWITCH_DAPP:
       const dappName = action.payload.targetDappName;
       return {

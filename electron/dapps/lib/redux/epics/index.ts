@@ -8,21 +8,16 @@ import * as utils from '../utils'
 
 const openChannelSuccess = () => ({ type: actions.OPEN_CHANNEL_SUCCESS });
 
-const startCountdownEpic: Epic<Action> = action$ => action$.pipe(
+const startCountdownEpic: Epic<any> = action$ => action$.pipe(
   ofType(actions.OPEN_CHANNEL),
   mapTo(openChannelSuccess())
 );
 
-const fileManagerOpenSuccess: Epic<Action> = action$ => action$.pipe(
+const fileManagerOpenSuccess: Epic<any> = action$ => action$.pipe(
   ofType(actions.FILE_MANAGER_OPEN_DIALOG_SUCCESS),
-  tap((action) => utils.insertContentIntoBlock(action.payload && action.payload.join(',\r\n'))),
-  mapTo(actions.showFileEntries())
+  tap((action) => utils.insertContentIntoBlock(action.payload && action.payload.join(',\r\n'))), 
+  mapTo(actions.showFileEntries()) 
 );
-
-// const fileManagerOpenFailure: Epic<Action> = action$ => action$.pipe(
-//   ofType(actions.FILE_MANAGER_OPEN_DIALOG_FAILURE),
-//   mapTo({ type: 'ANYTHING'})
-// );
 
 export const rootEpic = combineEpics(
   startCountdownEpic,
@@ -30,4 +25,4 @@ export const rootEpic = combineEpics(
   // fileManagerOpenFailure
 );
 
-//@todo add epic for channelId map save, add sendDataChannel with channelId
+ 

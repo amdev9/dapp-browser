@@ -10,17 +10,19 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
       if (action.payload.status === 'dapp') {
         switch (action.type) {
           case constants.INTENT_OPEN_CHANNELS:
-          case constants.INTENT_OPEN_FILE:
+ 
           case constants.OPEN_CHANNEL:
           case constants.OPEN_CHANNEL_SUCCESS:
           case constants.BIND_OPEN_CHANNELS:
           case constants.BIND_OPEN_CHANNELS_DONE:
-          case constants.FILE_MANAGER_OPEN_DIALOG:
 
-          case constants.INTENT_CHANNEL_DATA_PASS:
+
+          case constants.FILE_MANAGER_OPEN_DIALOG:
+          case constants.SHOW_FILE_ENTRIES:
+          
             return next(action);
           default:
-            console.log("Cancelled for dapp");
+            console.log("Cancelled for dapp " + action.type);
         }
       } else if (action.payload.status == 'client') {
         switch (action.type) {

@@ -1,18 +1,19 @@
 import { AnyAction } from 'redux';
-import {combineEpics, Epic, ofType} from 'redux-observable';
-import {switchMap} from 'rxjs/operators';
+import { combineEpics, Epic, ofType } from 'redux-observable';
+import { switchMap } from 'rxjs/operators';
 
-import { FileManager } from '../../systemComponents/src'
+import { FileManager } from '../FileManager'
 import * as fileManagerActions from '../actions/fileManager';
 import * as constants from '../constants';
+ 
+ 
+const fileManagerInstance = new FileManager();
 
-const FileManagerInstance = new FileManager()
-
-const fileManagerOpenDialogEpic: Epic<AnyAction> = action$ => action$.pipe(
+const fileManagerOpenDialogEpic: Epic<AnyAction> = action$ => action$.pipe( //@todo fix action type
   ofType(constants.FILE_MANAGER_OPEN_DIALOG),
   switchMap(async (action) => {
     try {
-      const idsArray = await FileManagerInstance.showOpenDialog()
+      const idsArray = await fileManagerInstance.showOpenDialog()
       return fileManagerActions.openDialogSuccess(idsArray, action.meta.sourceUUID)
     } catch(error){
       return fileManagerActions.openDialogFailure(error, action.meta.sourceUUID)

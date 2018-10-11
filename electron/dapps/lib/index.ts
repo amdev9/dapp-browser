@@ -47,17 +47,6 @@ const initUi = () => {
     });
   }
 
-  if( document.getElementById('file1') ) {
-    document.getElementById('file1').addEventListener('click', () => {
-      store.dispatch({
-        type: 'INTENT_OPEN_FILE',
-        payload: {
-          targetDapp: 'Game'
-        }
-      });
-    });
-  }
-
   if( document.getElementById('send_channel') ) {
     document.getElementById('send_channel').addEventListener('click', () => {
       //sendDataChannelId('channelId', action);
