@@ -138,12 +138,15 @@ app.on('ready', async () => {
 
           if (isClientWindowLoaded) {
             if (!pmIsOpen) {  // Linux. If not to check isClientWindowLoaded, than permissionWindow loads before clientWindow and shows behind clientWindow
-              permissionWindow = createPermissionWindow(globalUUIDList, clientWindow, targetDappObj.appName, targetDappObj.permissions);
-              permissionWindow.on('closed', () => {
-                pmIsOpen = false;
-                permissionWindow = null;
-              });
-              pmIsOpen = true;
+              const activeDappGranted = storeState.permissionManager.grantedApps.indexOf(activeDappName) !== -1;
+              if (!activeDappGranted) {
+                permissionWindow = createPermissionWindow(globalUUIDList, clientWindow, targetDappObj.appName, targetDappObj.permissions);
+                permissionWindow.on('closed', () => {
+                  pmIsOpen = false;
+                  permissionWindow = null;
+                });
+                pmIsOpen = true;
+              }
             } else {
               closePermissionManager();
             }
