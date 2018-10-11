@@ -76,8 +76,10 @@ app.on('ready', async () => {
   let pmIsOpen = false;
   const closePermissionManager = () => {
     pmIsOpen = false;
-    permissionWindow.close();
-    permissionWindow = null;
+    if (permissionWindow) {
+      permissionWindow.close();
+      permissionWindow = null;
+    }
   };
   let permissionWindow: BrowserWindow;
 
@@ -134,17 +136,17 @@ app.on('ready', async () => {
         if (view) {
           clientWindow.setBrowserView(view);
 
-          if (storeState.permissionManager.isOpen) {
-            if (isClientWindowLoaded && !pmIsOpen) {  // Linux. If not to check isClientWindowLoaded, than permissionWindow loads before clientWindow and shows behind clientWindow
+          if (isClientWindowLoaded) {
+            if (!pmIsOpen) {  // Linux. If not to check isClientWindowLoaded, than permissionWindow loads before clientWindow and shows behind clientWindow
               permissionWindow = createPermissionWindow(globalUUIDList, clientWindow, targetDappObj.appName, targetDappObj.permissions);
-              permissionWindow.on('close', (event) => {
+              permissionWindow.on('closed', () => {
                 pmIsOpen = false;
                 permissionWindow = null;
               });
               pmIsOpen = true;
+            } else {
+              closePermissionManager();
             }
-          } else {
-            closePermissionManager();
           }
         } else {
           clientWindow.setBrowserView(null);
