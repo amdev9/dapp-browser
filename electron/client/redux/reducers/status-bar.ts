@@ -1,5 +1,5 @@
 import { TOGGLE_PEERS_BAR_PANEL, TOGGLE_STATUS_BAR_PANEL } from '../constants';
-import { NotificationPanelAction } from '../actions/notification';
+ 
 import { StatusBarPanel } from './state';
 
 const initialState: StatusBarPanel = {
@@ -36,7 +36,7 @@ const initialState: StatusBarPanel = {
   isPeersOpen: false
 };
 
-export default function statusBar(state: StatusBarPanel = initialState, action: NotificationPanelAction) {
+export default function statusBar(state: StatusBarPanel = initialState, action: any) { //@todo combine with notification.ts
   switch (action.type) {
     case TOGGLE_STATUS_BAR_PANEL:
       //if (action.payload && action.payload.hasOwnProperty('isOpen')) {

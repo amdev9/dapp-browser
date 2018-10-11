@@ -1,5 +1,15 @@
 import { AppItem, NotifyItem, ActiveDapp, StatusBarItem, FeedItem, SearchItem } from '../model';
 
+// @todo 
+// export interface ToggleStatus {
+//   NotificationPanel isOpen
+//   LoaderPanel isOpen
+//   SettingsPanel isOpen
+//   StatusBarPanel isOpen
+//   StatusBarPanel isPeersOpen 
+//   SearchPanel isOpen
+// }
+
 export interface Feed {
   items: FeedItem[]
 }

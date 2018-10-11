@@ -1,35 +1,35 @@
 import { action } from 'typesafe-actions';
-import { Action } from 'redux';
-import { SWITCH_DAPP, ADD_APP_ITEM, TOGGLE_HOME, TOGGLE_APP_HOME } from '../constants';
+import * as constants from '../constants';
 import { AppItem } from '../model';
 
-export interface TrayAction extends Action {
-  payload?: {
-    targetDappName?: string,
-    item?: AppItem,
-    isHome?: boolean,
-    dappName?: string,
-    counter?: number,
-    indicator?: number
-  }
-}
-
-export const switchDapp = (dappName: string):
-  TrayAction => action(SWITCH_DAPP, {
+export const switchDapp = (dappName: string) => action(constants.SWITCH_DAPP, {
     targetDappName: dappName
   });
 
-export const addAppItem = (TrayItem: AppItem):
-  TrayAction => action(ADD_APP_ITEM, {
+export const addAppItem = (TrayItem: AppItem) => action(constants.ADD_APP_ITEM, {
     item: TrayItem
   });
 
-export const toggleHome = (openStatus: boolean):
-  TrayAction => action(TOGGLE_HOME, {
+export const toggleHome = (openStatus: boolean) => action(constants.TOGGLE_HOME, {
     isHome: openStatus
   });
 
-export const toggleAppHome = (dappName: string):
-  TrayAction => action(TOGGLE_APP_HOME, {
+export const toggleAppHome = (dappName: string) => action(constants.TOGGLE_APP_HOME, {
     targetDappName: dappName
   });
+
+export const setTrayProgress = (dappName: string, indicator: string) => action(constants.SET_TRAY_PROGRESS, {
+    targetDappName: dappName,
+    indicator
+  });
+
+export const removeTrayItem = (dappName: string) => action(constants.REMOVE_TRAY_ITEM, {  
+  targetDappName: dappName 
+});
+
+export const setTrayCounter = (dappName: string, counter: string) => action(constants.SET_TRAY_COUNTER, { 
+  targetDappName: dappName, 
+  counter 
+});
+
+

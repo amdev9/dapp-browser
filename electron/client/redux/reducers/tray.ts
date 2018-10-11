@@ -1,16 +1,9 @@
-import {
-  SWITCH_DAPP,
-  ADD_APP_ITEM,
-  TOGGLE_HOME,
-  TOGGLE_APP_HOME
-} from '../constants';
-
-const SET_TRAY_PROGRESS = "SET_TRAY_PROGRESS"; // todo cannot import these constants from ../constants for some reason, getting undefined for the new variables
-const SET_TRAY_COUNTER = "SET_TRAY_COUNTER";
-const REMOVE_TRAY_ITEM = "REMOVE_TRAY_ITEM";
-
-import { TrayAction } from '../actions/tray';
+import { ActionType } from 'typesafe-actions';
+import * as constants from '../constants';
+import * as trayActions from '../actions/tray';
 import { Tray } from './state';
+ 
+export type TrayAction = ActionType<typeof trayActions>;
 
 const initialState: Tray = {
   items: [],
@@ -23,7 +16,7 @@ const initialState: Tray = {
 
 export default function tray(state: Tray = initialState, action: TrayAction) {
   switch (action.type) {
-    case SWITCH_DAPP:
+    case constants.SWITCH_DAPP:
 
       const dappName = action.payload.targetDappName;
       const newItems = state.items.map((item) => {
@@ -51,7 +44,7 @@ export default function tray(state: Tray = initialState, action: TrayAction) {
         }
       }
 
-    case ADD_APP_ITEM:
+    case constants.ADD_APP_ITEM:
       const appItem = action.payload.item;
 
       return {
@@ -61,7 +54,7 @@ export default function tray(state: Tray = initialState, action: TrayAction) {
           state.items
       }
 
-    case TOGGLE_HOME:
+    case constants.TOGGLE_HOME:
       const isHome = action.payload.isHome;
       const cleanItems = state.items.map((item) => {
         if (item.statusIcon.includes('active')) {
@@ -83,16 +76,17 @@ export default function tray(state: Tray = initialState, action: TrayAction) {
         items: cleanItems
       };
 
-    case TOGGLE_APP_HOME:
+    case constants.TOGGLE_APP_HOME:
+      
       return {
         ...state,
         isHome: false,
         activeDapp: {
-          appName: action.payload.dappName
+          appName: action.payload.targetDappName
         }
       }
       
-    case REMOVE_TRAY_ITEM: {
+    case constants.REMOVE_TRAY_ITEM: {
       const dappName = action.payload.targetDappName;
       const newItems = state.items.filter(item => item.appName !== dappName);
 
@@ -102,7 +96,7 @@ export default function tray(state: Tray = initialState, action: TrayAction) {
       }
     }
 
-    case SET_TRAY_PROGRESS: {
+    case constants.SET_TRAY_PROGRESS: {
       const dappName = action.payload.targetDappName;
       const indicator = action.payload.indicator;
       const newItems = state.items.map(item => {
@@ -122,7 +116,7 @@ export default function tray(state: Tray = initialState, action: TrayAction) {
       }
     }
 
-    case SET_TRAY_COUNTER: {
+    case constants.SET_TRAY_COUNTER: {
       const dappName = action.payload.targetDappName;
       const counter = action.payload.counter;
       const newItems = state.items.map((item) => {

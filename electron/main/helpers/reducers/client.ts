@@ -1,6 +1,9 @@
+import { ActionType } from 'typesafe-actions';
 import * as constants from '../constants';
-import { ClientAction } from '../actions/client';
+import * as clientActions from '../actions/client';
 import { Client } from './state';
+
+export type ClientAction = ActionType<typeof clientActions>;
 
 const initialState: Client = {
   activeDapp: {
@@ -15,7 +18,7 @@ const initialState: Client = {
   fileDialog: {isOpen: false}
 };
 
-export function client(state: Client = initialState, action: ClientAction) {
+export function client(state: Client = initialState, action: any) { //@todo add actions to client.ts
   switch (action.type) {
     case constants.INTENT_OPEN_FILE:
       if (action.payload && action.payload.hasOwnProperty('isOpen')) {
@@ -24,9 +27,7 @@ export function client(state: Client = initialState, action: ClientAction) {
         return { ...state, fileDialog: {isOpen: !state.fileDialog.isOpen }};
       }
       
-
     case constants.SWITCH_DAPP:
-
       const dappName = action.payload.targetDappName;
       return {
         ...state,
@@ -39,9 +40,7 @@ export function client(state: Client = initialState, action: ClientAction) {
       return {
         ...state,
         isHome: isHome,
-        activeDapp: {
-          appName: null
-        }
+        activeDapp: {}
       };
 
     case constants.TOGGLE_APP_HOME:
