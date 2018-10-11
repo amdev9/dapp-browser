@@ -4,29 +4,60 @@ import { Action } from './configureStore';
 import { RendererConf } from '../../createDappView';
  
 import * as constants from '../constants';
- 
+import {IState} from "../reducers/state";
+const dappActions: string[] = [
+  constants.INTENT_OPEN_CHANNELS,
+  constants.OPEN_CHANNEL,
+  constants.OPEN_CHANNEL_SUCCESS,
+  constants.BIND_OPEN_CHANNELS_DONE,
+  constants.FILE_MANAGER_OPEN_DIALOG,
+  constants.SHOW_FILE_ENTRIES
+];
+
+const fileManagerActions = [constants.FILE_MANAGER_OPEN_DIALOG, constants.SHOW_FILE_ENTRIES];
+const FILE_MANAGER_PERMISSION_NAME = "storage";
+
+const checkGranted = (state: IState, dappName: string) => {
+  
+  if (state.permissionManager.grantedApps.indexOf(dappName) === -1) {
+    console.log(`Dapp "${dappName}" has no privileges to use FileManager`);
+    return false;
+  }
+  if (state.permissionManager.permissions[dappName].indexOf(FILE_MANAGER_PERMISSION_NAME) === -1) {
+    console.log(`Dapp "${dappName}" has no privileges to use FileManager`);
+    return false;
+  }
+  console.log(`Dapp "${dappName}" has privileges to use FileManager. OK`);
+  return true;
+};
+
+const getSourceDappName = (globalId: RendererConf[], action: any) => {
+  const dapp = globalId.find(item => item.id === action.meta.sourceUUID);
+  if (!dapp) {
+    console.log("Dapp not found in globalId by uuid: ", action.meta.sourceUUID);
+    return null;
+  }
+  return dapp.name;
+};
 
 export const validatePermissionAction = (globalId: RendererConf[]) => {
-  return () => (next: Dispatch<void>) => <A extends Action>(action: A) => {
+  return (store: any) => (next: Dispatch<void>) => function <A extends Action>(action: A) {
     if (action.payload && action.payload.hasOwnProperty('status')) {
       if (action.payload.status === 'dapp') {
- 
-        switch (action.type) {
-          case constants.INTENT_OPEN_CHANNELS:
- 
-          case constants.OPEN_CHANNEL:
-          case constants.OPEN_CHANNEL_SUCCESS:
-          case constants.BIND_OPEN_CHANNELS:
-          case constants.BIND_OPEN_CHANNELS_DONE:
-
-
-          case constants.FILE_MANAGER_OPEN_DIALOG:
-          case constants.SHOW_FILE_ENTRIES:
+        if (dappActions.indexOf(action.type) === -1) {
+          console.log("Cancelled for dapp " + action.type);
+        } else {
+          const dappName = getSourceDappName(globalId, action);
           
- 
+          if (fileManagerActions.indexOf(action.type) !== -1) {
+            if (checkGranted(store.getState(), dappName)) {
+              return next(action);
+            } else {
+              console.log(`Action "${action.type}" is not granted for FileManager and dapp "${dappName}"`);
+            }
+          } else {
             return next(action);
-          default:
-            console.log("Cancelled for dapp " + action.type);
+          }
         }
       } else if (action.payload.status === 'client') {
         switch (action.type) {
