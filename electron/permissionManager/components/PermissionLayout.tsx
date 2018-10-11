@@ -13,19 +13,32 @@ import { connect } from 'react-redux';
 import * as permissionActions from '../redux/actions/permission';
  
 import { PermissionBox } from './PermissionBox';
+import {Permission} from "../redux/model";
 
 export interface PermissionLayoutProps {
   permissions: string[];
-  // label: string;
- 
-  onToggle?: () => any;
+  appName: string;
+  onTogglePerm: (permissionName: Permission, checked: boolean) => any;
+  onCloseManager: () => any;
+  onGrantPermissions: (appName: string) => any;
+  onLoadPermissions: () => any;
 }
 
 export class PermissionLayout extends React.Component<PermissionLayoutProps>  {
 
   constructor(props: PermissionLayoutProps) {
     super(props);
-  }  
+    this.handleGrant = this.handleGrant.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
+  }
+
+  handleGrant() {
+    this.props.onGrantPermissions(this.props.appName);
+  }
+
+  handleCancel() {
+    this.props.onCloseManager();
+  }
 
   public render() {
 
@@ -34,30 +47,36 @@ export class PermissionLayout extends React.Component<PermissionLayoutProps>  {
         <PermissionBox 
           key={`${value}`} 
           item={value} 
-          onTogglePerm={this.props.onToggle}
+          appName={this.props.appName}
+          onTogglePerm={this.props.onTogglePerm}
         />
       )      
     );
 
-    const handleToggle = () => { this.props.onToggle(); };
-
     return (
       <div>
         <span>{permissionItems} </span>
-        <button type="button" onClick={handleToggle}>
-          {`Toggle`}
-        </button>
+        <button type="button" onClick={this.handleGrant}>{`Grant`}</button>
+        <button type="button" onClick={this.handleCancel}>{`Cancel`}</button>
       </div>
     );
   }
-};
+
+  componentDidMount() {
+    this.props.onLoadPermissions();
+    console.log("componentDidMount");
+  }
+}
 
 const mapStateToProps = (state: RootState) => ({
   // count: state.counters.reduxCounter,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => bindActionCreators({
-  onToggle: permissionActions.closeManager,
+  onTogglePerm: permissionActions.togglePermission,
+  onCloseManager: permissionActions.closeManager,
+  onGrantPermissions: permissionActions.grantPermissions,
+  onLoadPermissions: permissionActions.loadPermissions
 }, dispatch);
 
 export const PermissionLayoutConnected =

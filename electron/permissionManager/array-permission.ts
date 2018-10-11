@@ -31,6 +31,8 @@ interface ElectronManager {
   replyActionRenderer(store: any): void;
   getGlobalState(): () => string;
   getElectronEnv(): string;
+  getPermissions: string[];
+  getAppName: string;
 }
 
 declare const window: Window & {
@@ -115,6 +117,9 @@ const initStore = () => {
 export const isProduction = () => {
   return electronManager.getElectronEnv() !== 'development';
 };
+
+export const getPermissions = electronManager.getPermissions;
+export const getAppName = electronManager.getAppName;
 
 const store = initStore();
 

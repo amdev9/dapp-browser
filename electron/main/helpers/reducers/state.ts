@@ -1,6 +1,8 @@
 // global main state
 // redux-persist integration here
 
+export type Permission = "ipfs" | "network" | "storage";
+
 export type Client = {
   activeDapp: {
     appName: any
@@ -27,11 +29,16 @@ export type Client = {
     isOpen: boolean
   }
 }
+
 export interface IState {
   channel: {};
   client: Client;
   feed: {};
-  permissions: {};
+  permissionManager: {
+    isOpen: boolean,
+    permissions: {[index:string]: Permission[]},
+    grantedApps: string[],
+  };
   tray: {};
 
   //@todo add MapPermissions

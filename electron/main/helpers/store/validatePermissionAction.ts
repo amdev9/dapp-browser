@@ -2,12 +2,15 @@
 import { Dispatch } from 'redux';
 import { Action } from './configureStore';
 import { RendererConf } from '../../createDappView';
+ 
 import * as constants from '../constants';
+ 
 
 export const validatePermissionAction = (globalId: RendererConf[]) => {
   return () => (next: Dispatch<void>) => <A extends Action>(action: A) => {
     if (action.payload && action.payload.hasOwnProperty('status')) {
       if (action.payload.status === 'dapp') {
+ 
         switch (action.type) {
           case constants.INTENT_OPEN_CHANNELS:
  
@@ -20,11 +23,12 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
           case constants.FILE_MANAGER_OPEN_DIALOG:
           case constants.SHOW_FILE_ENTRIES:
           
+ 
             return next(action);
           default:
             console.log("Cancelled for dapp " + action.type);
         }
-      } else if (action.payload.status == 'client') {
+      } else if (action.payload.status === 'client') {
         switch (action.type) {
           case constants.TOGGLE_NOTIFICATION_PANEL:
             let clientObj = globalId.find(renObj => renObj.status === 'client');
@@ -32,7 +36,7 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
               const payloadUuidObj = {
                 uuid: clientObj.id,
               };
-              action.payload = Object.assign(action.payload, payloadUuidObj)
+              action.payload = Object.assign(action.payload, payloadUuidObj);
             }
             return next(action);
 
@@ -55,12 +59,22 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
           default:
             console.log("Cancelled for client");
         }
+      } else if (action.payload.status === 'permission_manager') {
+        switch (action.type) {
+          case constants.CLOSE_MANAGER:
+          case constants.TOGGLE_PERMISSION:
+          case constants.GRANT_PERMISSIONS:
+          case constants.LOAD_PERMISSIONS:
+            return next(action);
+          default:
+            console.log("Cancelled for permission manager");
+        }
       }
     } else {
       console.log("no status: ", action);
       return next(action);
     }
-  }
+  };
 };
 
 

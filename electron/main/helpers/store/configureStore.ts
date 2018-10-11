@@ -30,7 +30,6 @@ export interface Action {
 }
 
 export const initialState: IState = {
-
   channel: {},
   client: {
     activeDapp: {
@@ -45,7 +44,7 @@ export const initialState: IState = {
     fileDialog: {isOpen: false}
   },
   feed: {},
-  permissions: {},
+  permissionManager: {isOpen: true, permissions: {}, grantedApps: []},
   tray: {items: []},
 };
 
@@ -178,25 +177,31 @@ const bindChannel = (webId: number, channelReceiver: string, channelSender: stri
 
 const replyActionMain = (store: Store<{}>, globalId: RendererConf[]) => {
   global.getReduxState = () => JSON.stringify(store.getState());
-  ipcMain.on('redux-action', (event: Electron.Event, uuid: string, action: any) => {
-    let uuidObj = globalId.find(renObj => renObj.id === uuid);
+ 
+  ipcMain.on('redux-action', (event: Electron.Event, uuid: string, payload: any) => {
+    const uuidObj = globalId.find(renObj => renObj.id === uuid);
+ 
     if (uuidObj) {
       const statusObj = { status: uuidObj.status };
       const sourceUUID = { sourceUUID: uuid }
       action.payload = (action.payload) ? Object.assign(action.payload, statusObj) : statusObj;
       action.meta = action.meta ? Object.assign(action.meta, sourceUUID) : sourceUUID
       // uuid resolver
-      let uuidTargetObj = globalId.find(renObj => renObj.name === action.payload.targetDapp);
+ 
+      const uuidTargetObj = globalId.find(renObj => renObj.name === payload.payload.targetDapp && renObj.status === 'dapp');
+ 
       if (uuidTargetObj) {
         const payloadUuidObj = {
           uuidRec: uuidTargetObj.id,
-          uuidSend: uuid
+          uuidSend: uuid,
         };
+ 
         action.payload = Object.assign(action.payload, payloadUuidObj)
+ 
       }
       store.dispatch(action);
     } else {
-      console.log("Spoofing detected")
+      console.log("Spoofing detected");
     }
   });
 }
@@ -216,7 +221,7 @@ export const configureStore = (state: IState = initialState, globalId?: Renderer
     storage: storeEngine, // storage,
     debug: true
   };
-  const pReducer = persistReducer(persistConfig, rootReducer); 
+  const pReducer = persistReducer(persistConfig, rootReducer);
 
   const store = createStore(pReducer, state, enhancer);
   let persistor = persistStore(store)
