@@ -1,9 +1,10 @@
-import { BrowserView } from 'electron';
+import { BrowserView, BrowserWindow } from 'electron';
 import * as path from 'path';
 import * as uuidv4 from 'uuid/v4';
 import { AppItem } from './helpers/AppsManager';
 
 let dappView: Electron.BrowserView = null;
+let devToolView = null;
 
 const DAPPS_PATH: string = path.join(__dirname, '..', '..', 'dapps', 'download');
 
@@ -45,6 +46,11 @@ export function createDappView(globalUUIDList: RendererConf[], dapp: AppItem) { 
 
   dappView.webContents.loadURL('file://' + path.join(DAPPS_PATH, dapp.appName, dapp.main)); //todo pass @param path to index.html
 
+  if (!devToolView){
+    devToolView = new BrowserWindow();
+    dappView.webContents.setDevToolsWebContents(devToolView.webContents);
+    dappView.webContents.openDevTools();
+  }
   const renderIdDapp = dappView.webContents.getProcessId();
 
   let rendererObj: RendererConf = {

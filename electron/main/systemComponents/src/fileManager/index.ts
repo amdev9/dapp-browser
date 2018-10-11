@@ -16,7 +16,7 @@ export class FileManager {
     return uuidv4()
   }
 
-  _setPathEntries(pathArray: Array<string>): EntryIdsList {
+  _setPathEntries(pathArray: Array<string> = []): EntryIdsList {
     return pathArray.map((path) => {
       const pathId = FileManager.generateFileEntryId()
       entryMap.set(pathId, path)
