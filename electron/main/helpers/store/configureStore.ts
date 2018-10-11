@@ -24,7 +24,8 @@ export interface Action {
     status?: string;
   };
   meta?: {
-    scope?: string
+    scope?: string,
+    targetUUID: string;
   };
 }
 
@@ -120,31 +121,45 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
       bindChannel(intentObj.winId, channelReceiver, channelSender);
     }
 
-    // if (action.payload && action.payload.uuid) {
-    //   // loop through all action uuid's passed in payload {
-    //   let uuidObj = globalId.find(renObj => renObj.id === action.payload.uuid);
-    //   if (uuidObj) {
-    //     const resolver = targetWebContents(uuidObj.winId);
-    //     // console.log(resolver);
-    //     if (resolver) {
-    //       resolver.send('redux-action', rendererAction);
-    //     } else {
-    //       console.log('resolver error: ', 'action message lost');
-    //       return next(action);
-    //     }
-    //   }
-    //   // }
-    //   return next(action);
-    // } else {
-    //   return next(action);
-    // }
+    const targetUUID = action.payload && action.payload.uuid || action.meta && action.meta.targetUUID
 
-    const allWebContents = webContents.getAllWebContents();
-    allWebContents.forEach((contents) => {
-      // console.log('---> contents id: ', contents.id);
-      contents.send('redux-action', rendererAction);
-    });
-    return next(action);
+    if (targetUUID) {
+      // loop through all action uuid's passed in payload {
+      let uuidObj = globalId.find(renObj => renObj.id === targetUUID);
+      if (uuidObj) {
+        const resolver = targetWebContents(uuidObj.winId);
+        // console.log(resolver);
+        if (resolver) {
+          const copyAction = Object.assign({}, rendererAction)
+
+          if (copyAction.meta && copyAction.meta.targetUUID){
+            delete copyAction.meta.targetUUID
+          }
+
+          resolver.send('redux-action', copyAction);
+
+        } else {
+          console.log('resolver error: ', 'action message lost');
+          return next(action);
+        }
+      }
+      // }
+      return next(action);
+    } else {
+      const allWebContents = webContents.getAllWebContents();
+      allWebContents.forEach((contents) => {
+        // console.log('---> contents id: ', contents.id);
+        contents.send('redux-action', rendererAction);
+      });
+      return next(action);
+    }
+
+    // const allWebContents = webContents.getAllWebContents();
+    // allWebContents.forEach((contents) => {
+    //   // console.log('---> contents id: ', contents.id);
+    //   contents.send('redux-action', rendererAction);
+    // });
+    // return next(action);
 
   };
 }
@@ -163,21 +178,23 @@ const bindChannel = (webId: number, channelReceiver: string, channelSender: stri
 
 const replyActionMain = (store: Store<{}>, globalId: RendererConf[]) => {
   global.getReduxState = () => JSON.stringify(store.getState());
-  ipcMain.on('redux-action', (event: Electron.Event, uuid: string, payload: any) => {
+  ipcMain.on('redux-action', (event: Electron.Event, uuid: string, action: any) => {
     let uuidObj = globalId.find(renObj => renObj.id === uuid);
     if (uuidObj) {
       const statusObj = { status: uuidObj.status };
-      payload.payload = (payload.payload) ? Object.assign(payload.payload, statusObj) : statusObj;
+      const sourceUUID = { sourceUUID: uuid }
+      action.payload = (action.payload) ? Object.assign(action.payload, statusObj) : statusObj;
+      action.meta = action.meta ? Object.assign(action.meta, sourceUUID) : sourceUUID
       // uuid resolver
-      let uuidTargetObj = globalId.find(renObj => renObj.name === payload.payload.targetDapp);
+      let uuidTargetObj = globalId.find(renObj => renObj.name === action.payload.targetDapp);
       if (uuidTargetObj) {
         const payloadUuidObj = {
           uuidRec: uuidTargetObj.id,
           uuidSend: uuid
         };
-        payload.payload = Object.assign(payload.payload, payloadUuidObj)
+        action.payload = Object.assign(action.payload, payloadUuidObj)
       }
-      store.dispatch(payload);
+      store.dispatch(action);
     } else {
       console.log("Spoofing detected")
     }
