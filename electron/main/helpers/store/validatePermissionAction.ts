@@ -27,6 +27,7 @@ import {
   INTENT_OPEN_FILE,
   CLOSE_MANAGER,
   TOGGLE_PERMISSION,
+  GRANT_PERMISSIONS,
 } from '../constants';
 
 export const validatePermissionAction = (globalId: RendererConf[]) => {
@@ -79,6 +80,7 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
         switch (action.type) {
           case CLOSE_MANAGER:
           case TOGGLE_PERMISSION:
+          case GRANT_PERMISSIONS:
             return next(action);
           default:
             console.log("Cancelled for permission manager");

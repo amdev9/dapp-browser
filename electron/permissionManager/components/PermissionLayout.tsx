@@ -20,13 +20,24 @@ export interface PermissionLayoutProps {
   appName: string;
   onTogglePerm: (permissionName: Permission, checked: boolean) => any;
   onCloseManager: () => any;
+  onGrantPermissions: () => any;
 }
 
 export class PermissionLayout extends React.Component<PermissionLayoutProps>  {
 
   constructor(props: PermissionLayoutProps) {
     super(props);
-  }  
+    this.handleGrant = this.handleGrant.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
+  }
+
+  handleGrant() {
+    this.props.onGrantPermissions();
+  }
+
+  handleCancel() {
+    this.props.onCloseManager();
+  }
 
   public render() {
 
@@ -41,14 +52,11 @@ export class PermissionLayout extends React.Component<PermissionLayoutProps>  {
       )      
     );
 
-    const handleClose = () => { this.props.onCloseManager(); };
-    const handleCancel = () => { this.props.onCloseManager(); };
-
     return (
       <div>
         <span>{permissionItems} </span>
-        <button type="button" onClick={handleClose}>{`Toggle`}</button>
-        <button type="button" onClick={handleCancel}>{`Cancel`}</button>
+        <button type="button" onClick={this.handleGrant}>{`Grant`}</button>
+        <button type="button" onClick={this.handleCancel}>{`Cancel`}</button>
       </div>
     );
   }
@@ -61,6 +69,7 @@ const mapStateToProps = (state: RootState) => ({
 const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => bindActionCreators({
   onTogglePerm: permissionActions.togglePermission,
   onCloseManager: permissionActions.closeManager,
+  onGrantPermissions: permissionActions.grantPermissions,
 }, dispatch);
 
 export const PermissionLayoutConnected =
