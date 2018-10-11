@@ -18,17 +18,6 @@ const initUi = () => {
     document.getElementById('messageId').innerHTML = channelData;
   })
 
-  if( document.getElementById('communicate') ) {
-    document.getElementById('communicate').addEventListener('click', () => {
-      store.dispatch({
-        type: 'INTENT_OPEN_CHANNELS',
-        payload: {
-          targetDapp: 'Game' 
-        }
-      });
-    });
-  }
-
   if( document.getElementById('openDialogButton') ) {
     document.getElementById('openDialogButton').addEventListener('click', () => {
       store.dispatch(actions.openFileManagerDialog());

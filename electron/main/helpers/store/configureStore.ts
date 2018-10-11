@@ -79,7 +79,6 @@ const targetWebContents = (targetId: number) => {
 
 const forwardToRendererWrapper = (globalId: RendererConf[]) => {
   return () => (next: Dispatch<void>) => <A extends Action>(action: A) => {
-    console.log('ACTION(forwardToRendererWrapper)', action)
     if (!validateAction(action)) return next(action);
     if (action.meta && action.meta.scope === 'local') return next(action);
 
