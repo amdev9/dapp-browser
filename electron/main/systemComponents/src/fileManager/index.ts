@@ -29,7 +29,7 @@ export class FileManager {
     return idsArray.map((id: string): FileEntry => ({ id, path: entryMap.get(id) || '' }))
   }
 
-  showOpenDialog(options: OpenDialogOptions = {properties: ['openFile']}): Promise<EntryIdsList> {
+  showOpenDialog(options: OpenDialogOptions = {properties: ['openFile', 'multiSelections']}): Promise<EntryIdsList> {
     return new Promise((resolve, reject) => {
       dialog.showOpenDialog(
         options,

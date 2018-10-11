@@ -15,7 +15,7 @@ const startCountdownEpic: Epic<Action> = action$ => action$.pipe(
 
 const fileManagerOpenSuccess: Epic<Action> = action$ => action$.pipe(
   ofType(actions.FILE_MANAGER_OPEN_DIALOG_SUCCESS),
-  tap((action) => utils.insertContentIntoBlock(action.payload && action.payload.join(' '))),
+  tap((action) => utils.insertContentIntoBlock(action.payload && action.payload.join(',\r\n'))),
   mapTo(actions.showFileEntries())
 );
 
