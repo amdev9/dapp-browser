@@ -2,53 +2,35 @@
 import { Dispatch } from 'redux';
 import { Action } from './configureStore';
 import { RendererConf } from '../../createDappView';
-import {
-  TOGGLE_NOTIFICATION_PANEL,
-  CLEAR_NOTIFICATION,
-  CLEAR_ALL_NOTIFICATIONS,
-  ADD_APP_ITEM,
-  SWITCH_DAPP,
-  TOGGLE_HOME,
-  TOGGLE_APP_HOME,
-  SET_TRAY_COUNTER,
-  SET_TRAY_PROGRESS,
-  TOGGLE_STATUS_BAR_PANEL,
-  TOGGLE_PEERS_BAR_PANEL,
-  TOGGLE_LOADER_PANEL,
-  TOGGLE_SETTINGS_PANEL,
-  TOGGLE_SEARCH_PANEL,
-  BIND_OPEN_CHANNELS_DONE,
-  BIND_OPEN_CHANNELS,
-  OPEN_CHANNEL_SUCCESS,
-  OPEN_CHANNEL,
-  INTENT_OPEN_CHANNELS,
-  APPS_FEED_RESIZE,
-  REMOVE_TRAY_ITEM,
-  INTENT_OPEN_FILE,
-  CLOSE_MANAGER,
-  TOGGLE_PERMISSION,
-  GRANT_PERMISSIONS,
-  LOAD_PERMISSIONS,
-} from '../constants';
+ 
+import * as constants from '../constants';
+ 
 
 export const validatePermissionAction = (globalId: RendererConf[]) => {
   return () => (next: Dispatch<void>) => <A extends Action>(action: A) => {
     if (action.payload && action.payload.hasOwnProperty('status')) {
       if (action.payload.status === 'dapp') {
-        switch (action.type) {  // todo switch / case structure can be rewritten as allowedActions.includes(actionType) which seems more appropriate here
-          case INTENT_OPEN_CHANNELS:
-          case INTENT_OPEN_FILE:
-          case OPEN_CHANNEL:
-          case OPEN_CHANNEL_SUCCESS:
-          case BIND_OPEN_CHANNELS:
-          case BIND_OPEN_CHANNELS_DONE:
+ 
+        switch (action.type) {
+          case constants.INTENT_OPEN_CHANNELS:
+ 
+          case constants.OPEN_CHANNEL:
+          case constants.OPEN_CHANNEL_SUCCESS:
+          case constants.BIND_OPEN_CHANNELS:
+          case constants.BIND_OPEN_CHANNELS_DONE:
+
+
+          case constants.FILE_MANAGER_OPEN_DIALOG:
+          case constants.SHOW_FILE_ENTRIES:
+          
+ 
             return next(action);
           default:
-            console.log("Cancelled for dapp");
+            console.log("Cancelled for dapp " + action.type);
         }
       } else if (action.payload.status === 'client') {
         switch (action.type) {
-          case TOGGLE_NOTIFICATION_PANEL:
+          case constants.TOGGLE_NOTIFICATION_PANEL:
             let clientObj = globalId.find(renObj => renObj.status === 'client');
             if (clientObj) {
               const payloadUuidObj = {
@@ -58,31 +40,31 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
             }
             return next(action);
 
-          case CLEAR_NOTIFICATION:
-          case CLEAR_ALL_NOTIFICATIONS:
-          case TOGGLE_LOADER_PANEL:
-          case TOGGLE_SETTINGS_PANEL:
-          case TOGGLE_STATUS_BAR_PANEL:
-          case TOGGLE_PEERS_BAR_PANEL:
-          case TOGGLE_HOME:
-          case TOGGLE_APP_HOME:
-          case TOGGLE_SEARCH_PANEL:
-          case SWITCH_DAPP:
-          case ADD_APP_ITEM:
-          case APPS_FEED_RESIZE:
-          case SET_TRAY_COUNTER:
-          case SET_TRAY_PROGRESS:
-          case REMOVE_TRAY_ITEM:
+          case constants.CLEAR_NOTIFICATION:
+          case constants.CLEAR_ALL_NOTIFICATIONS:
+          case constants.TOGGLE_LOADER_PANEL:
+          case constants.TOGGLE_SETTINGS_PANEL:
+          case constants.TOGGLE_STATUS_BAR_PANEL:
+          case constants.TOGGLE_PEERS_BAR_PANEL:
+          case constants.TOGGLE_HOME:
+          case constants.TOGGLE_APP_HOME:
+          case constants.TOGGLE_SEARCH_PANEL:
+          case constants.SWITCH_DAPP:
+          case constants.ADD_APP_ITEM:
+          case constants.APPS_FEED_RESIZE:
+          case constants.SET_TRAY_COUNTER:
+          case constants.SET_TRAY_PROGRESS:
+          case constants.REMOVE_TRAY_ITEM:
             return next(action);
           default:
             console.log("Cancelled for client");
         }
       } else if (action.payload.status === 'permission_manager') {
         switch (action.type) {
-          case CLOSE_MANAGER:
-          case TOGGLE_PERMISSION:
-          case GRANT_PERMISSIONS:
-          case LOAD_PERMISSIONS:
+          case constants.CLOSE_MANAGER:
+          case constants.TOGGLE_PERMISSION:
+          case constants.GRANT_PERMISSIONS:
+          case constants.LOAD_PERMISSIONS:
             return next(action);
           default:
             console.log("Cancelled for permission manager");

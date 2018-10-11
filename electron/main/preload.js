@@ -46,8 +46,8 @@ class ElectronManager {
       ipcRenderer.send('redux-action', uuidRenderer, action);
     }
 
-    const sendDataChannel = (channelId, data) => {
-      ipcRenderer.send(channelId, data);
+    const sendDataChannel = (channelId, data) => { // !only for dapp
+      ipcRenderer.send(channelId, data); //@todo fix to action
     }
 
     const receiveDataChannel = (channelId, callbackData) => {

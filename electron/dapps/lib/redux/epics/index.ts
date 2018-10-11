@@ -1,17 +1,28 @@
 import 'rxjs';
 import { combineEpics, ofType, Epic } from 'redux-observable';
-import { delay, mapTo } from 'rxjs/operators';
+import { delay, mapTo, tap } from 'rxjs/operators';
 import { Action } from 'redux';
 
-import { OPEN_CHANNEL, INTENT_OPEN_CHANNELS, OPEN_CHANNEL_SUCCESS } from '../actions/channel';
+import * as actions from '../actions/channel';
+import * as utils from '../utils'
 
-const openChannelSuccess = () => ({ type: OPEN_CHANNEL_SUCCESS });
- 
-const startCountdownEpic: Epic<Action> = action$ => action$.pipe(
-  ofType(OPEN_CHANNEL),
+const openChannelSuccess = () => ({ type: actions.OPEN_CHANNEL_SUCCESS });
+
+const startCountdownEpic: Epic<any> = action$ => action$.pipe(
+  ofType(actions.OPEN_CHANNEL),
   mapTo(openChannelSuccess())
 );
 
-export const rootEpic = combineEpics(
-  startCountdownEpic
+const fileManagerOpenSuccess: Epic<any> = action$ => action$.pipe(
+  ofType(actions.FILE_MANAGER_OPEN_DIALOG_SUCCESS),
+  tap((action) => utils.insertContentIntoBlock(action.payload && action.payload.join(',\r\n'))), 
+  mapTo(actions.showFileEntries()) 
 );
+
+export const rootEpic = combineEpics(
+  startCountdownEpic,
+  fileManagerOpenSuccess,
+  // fileManagerOpenFailure
+);
+
+ 

@@ -13,4 +13,4 @@ package-lock.json
 keychain.dms
 .log
 temp/
-
+electron/dapps/lib/dist

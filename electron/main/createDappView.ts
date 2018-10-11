@@ -1,4 +1,4 @@
-import { BrowserView } from 'electron';
+import { BrowserView, BrowserWindow } from 'electron';
 import * as path from 'path';
 import * as uuidv4 from 'uuid/v4';
 import { AppItem } from './helpers/AppsManager';
