@@ -18,6 +18,17 @@ const initUi = () => {
     document.getElementById('messageId').innerHTML = channelData;
   })
 
+  if( document.getElementById('communicate') ) {
+    document.getElementById('communicate').addEventListener('click', () => {
+      store.dispatch({
+        type: 'INTENT_OPEN_CHANNELS',
+        payload: {
+          targetDapp: 'Game'
+        }
+      });
+    });
+  }
+
   if( document.getElementById('openDialogButton') ) {
     document.getElementById('openDialogButton').addEventListener('click', () => {
       store.dispatch(actions.openFileManagerDialog());
@@ -42,18 +53,6 @@ const initUi = () => {
         type: 'INTENT_OPEN_FILE',
         payload: {
           targetDapp: 'Game'
-        }
-      });
-    });
-  }
-
-
-  if( document.getElementById('intent_channel') ) {
-    document.getElementById('intent_channel').addEventListener('click', () => {
-      store.dispatch({
-        type: 'INTENT_CHANNEL_DATA_PASS',
-        payload: {
-          component: 'FM'
         }
       });
     });
