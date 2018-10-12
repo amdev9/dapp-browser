@@ -26,7 +26,13 @@ export class FileManager {
   }
 
   getPathEntries(idsArray: Array<string>): FileEntryList {
-    return idsArray.map((id: string): FileEntry => ({ id, path: entryMap.get(id) || '' }));
+    return idsArray.map((id: string): FileEntry => {
+      if (!entryMap.has(id)){
+        throw Error('File path with current EntryID doesn\'t exist')
+      }
+
+      return { id, path: entryMap.get(id) }
+    });
   }
 
   async showOpenDialog(options: OpenDialogOptions = {properties: ['openFile', 'multiSelections']}) {

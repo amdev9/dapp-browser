@@ -8,6 +8,7 @@ import * as constants from '../constants';
 
 export const validatePermissionAction = (globalId: RendererConf[]) => {
   return () => (next: Dispatch<void>) => <A extends Action>(action: A) => {
+    console.log('validate', action)
     if (action.payload && action.payload.hasOwnProperty('status')) {
       if (action.payload.status === 'dapp') {
  
@@ -28,7 +29,7 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
           default:
             console.log("Cancelled for dapp " + action.type);
         }
-      } else if (action.payload.status === 'client') {
+      } else if (action.payload && action.payload.status === 'client') {
         switch (action.type) {
           case constants.TOGGLE_NOTIFICATION_PANEL:
             let clientObj = globalId.find(renObj => renObj.status === 'client');
@@ -59,7 +60,7 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
           default:
             console.log("Cancelled for client");
         }
-      } else if (action.payload.status === 'permission_manager') {
+      } else if (action.payload && action.payload.status === 'permission_manager') {
         switch (action.type) {
           case constants.CLOSE_MANAGER:
           case constants.TOGGLE_PERMISSION:

@@ -92,4 +92,3 @@ const localConf = {
   
 let ipfs = new IpfsComponent(localConf);
 console.log(ipfs.status);
- 
