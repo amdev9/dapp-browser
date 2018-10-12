@@ -3,7 +3,8 @@ import { Action } from './configureStore';
 import { RendererConf } from '../../createDappView';
  
 import * as constants from '../constants';
-import {IState} from "../reducers/state";
+import { IState } from "../reducers/state";
+
 const dappActions: string[] = [
   constants.INTENT_OPEN_CHANNELS,
   constants.OPEN_CHANNEL,
@@ -13,8 +14,19 @@ const dappActions: string[] = [
   constants.SHOW_FILE_ENTRIES
 ];
 
-const fileManagerActions = [constants.FILE_MANAGER_OPEN_DIALOG, constants.SHOW_FILE_ENTRIES];
-const FILE_MANAGER_PERMISSION_NAME = "storage";
+const fileManagerActions: string[] = [
+  constants.FILE_MANAGER_OPEN_DIALOG,
+  constants.SHOW_FILE_ENTRIES
+];
+
+const pmActions: string[] = [
+  constants.CLOSE_MANAGER,
+  constants.TOGGLE_PERMISSION,
+  constants.GRANT_PERMISSIONS,
+  constants.LOAD_PERMISSIONS,
+];
+
+const FILE_MANAGER_PERMISSION_NAME = "filesystem";
 
 const checkGranted = (state: IState, dappName: string) => {
   
@@ -89,15 +101,11 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
           default:
             console.log("Cancelled for client");
         }
-      } else if (action.payload.status === 'permission_manager') {
-        switch (action.type) {
-          case constants.CLOSE_MANAGER:
-          case constants.TOGGLE_PERMISSION:
-          case constants.GRANT_PERMISSIONS:
-          case constants.LOAD_PERMISSIONS:
-            return next(action);
-          default:
-            console.log("Cancelled for permission manager");
+      } else if (action.payload.status === 'permission_manager') {    
+        if(pmActions.includes(action.type)) { 
+          return next(action);
+        } else {
+          console.log("Cancelled for permission manager " + action.type); 
         }
       }
     } else {
