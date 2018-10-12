@@ -97,7 +97,7 @@ class Network {
 
   async broadcast () {
     const data = await getSerializedData();
-    console.log("broadcast data: ", data);
+    return JSON.stringify(data);
     //io.emit('network:getBlock', data);
   }
 }
@@ -105,4 +105,4 @@ class Network {
 new Network();
 
 
-module.exports = Network;
+export default Network;
