@@ -208,7 +208,7 @@ const replyActionMain = (store: Store<{}>, globalId: RendererConf[]) => {
 
 export const configureStore = (state: IState = initialState, globalId?: RendererConf[]) => {
   const middleware: Middleware[] = [];
-  middleware.push(epicMiddleware, validatePermissionAction(globalId), forwardToRendererWrapper(globalId));
+  middleware.push(validatePermissionAction(globalId), epicMiddleware, forwardToRendererWrapper(globalId));
   const enhanced = [applyMiddleware(...middleware)];
   const enhancer: GenericStoreEnhancer = compose(...enhanced);
 

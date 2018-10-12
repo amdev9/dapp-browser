@@ -1,6 +1,6 @@
 import { action } from 'typesafe-actions';
 import { CLOSE_MANAGER, TOGGLE_PERMISSION, GRANT_PERMISSIONS, LOAD_PERMISSIONS } from '../constants';
-import { Permission } from '../model';
+import { Permission } from '../reducers/state';
 
  
 export const closeManager = () => action(CLOSE_MANAGER);
