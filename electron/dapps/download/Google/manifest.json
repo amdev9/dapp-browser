@@ -8,5 +8,5 @@
   "categories": [
     "games"
   ],
-  "permissions": ["ipfs"]
+  "permissions": ["ipfs", "storage"]
 }
