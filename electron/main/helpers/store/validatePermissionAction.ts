@@ -1,4 +1,3 @@
-
 import { Dispatch } from 'redux';
 import { Action } from './configureStore';
 import { RendererConf } from '../../createDappView';
@@ -19,11 +18,11 @@ const FILE_MANAGER_PERMISSION_NAME = "storage";
 
 const checkGranted = (state: IState, dappName: string) => {
   
-  if (state.permissionManager.grantedApps.indexOf(dappName) === -1) {
+  if (!state.permissionManager.grantedApps.includes(dappName)) {
     console.log(`Dapp "${dappName}" has no privileges to use FileManager`);
     return false;
   }
-  if (state.permissionManager.permissions[dappName].indexOf(FILE_MANAGER_PERMISSION_NAME) === -1) {
+  if (!state.permissionManager.permissions[dappName].includes(FILE_MANAGER_PERMISSION_NAME)) {
     console.log(`Dapp "${dappName}" has no privileges to use FileManager`);
     return false;
   }
@@ -41,15 +40,15 @@ const getSourceDappName = (globalId: RendererConf[], action: any) => {
 };
 
 export const validatePermissionAction = (globalId: RendererConf[]) => {
-  return (store: any) => (next: Dispatch<void>) => function <A extends Action>(action: A) {
+  return (store: any) => (next: Dispatch<void>) => <A extends Action>(action: A) => {
     if (action.payload && action.payload.hasOwnProperty('status')) {
       if (action.payload.status === 'dapp') {
-        if (dappActions.indexOf(action.type) === -1) {
+        if (!dappActions.includes(action.type)) {
           console.log("Cancelled for dapp " + action.type);
         } else {
           const dappName = getSourceDappName(globalId, action);
           
-          if (fileManagerActions.indexOf(action.type) !== -1) {
+          if (fileManagerActions.includes(action.type)) {
             if (checkGranted(store.getState(), dappName)) {
               return next(action);
             } else {
