@@ -1,6 +1,5 @@
-export const insertContentIntoBlock = (content: string = '') => {
+export const insertContentIntoBlock = (content: string = '', buttonId: string) => {
   const blockId = 'entryIdsBlock'
-  const buttonId = 'openDialogButton'
   const blockElement = document.getElementById(blockId)
   const buttonElement = document.getElementById(buttonId)
 

@@ -22,6 +22,9 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
 
           case constants.FILE_MANAGER_OPEN_DIALOG:
           case constants.SHOW_FILE_ENTRIES:
+
+          case constants.NETWORK_GET_BLOCK:
+          case constants.SHOW_BLOCK:
           
  
             return next(action);
