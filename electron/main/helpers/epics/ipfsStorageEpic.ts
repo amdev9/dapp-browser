@@ -6,8 +6,8 @@ import * as ipfsStorageActions from '../actions/ipfsStorage';
 import * as constants from '../constants';
 import { FileManager } from '../FileManager'
 // import '../../systemComponents/src/ipfsComponent/ipfs'
-// import ipfs from '../IpfsStorage'
-//
+import ipfs from '../IpfsStorage'
+
 const fileManager = new FileManager()
 
 const ipfsStorageEpic: Epic<AnyAction> = action$ => action$.pipe( //@todo fix action type
