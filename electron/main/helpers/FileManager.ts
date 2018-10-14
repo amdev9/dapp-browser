@@ -1,8 +1,10 @@
 import { dialog, OpenDialogOptions } from 'electron';
 import * as uuidv4 from 'uuid/v4';
 
+export type FileEntryId = string;
+
 export interface FileEntry {
-  id: string;
+  id: FileEntryId;
   path: string;
 }
 export type FileEntryList = Array<FileEntry>;
@@ -26,13 +28,19 @@ export class FileManager {
   }
 
   getPathEntries(idsArray: Array<string>): FileEntryList {
-    return idsArray.map((id: string): FileEntry => {
+    const entries: FileEntryList = []
+
+
+
+    idsArray.forEach((id: string): FileEntry => {
       if (!entryMap.has(id)){
-        throw Error('File path with current EntryID doesn\'t exist')
+        return
       }
 
-      return { id, path: entryMap.get(id) }
+      entries.push({ id, path: entryMap.get(id) })
     });
+
+    return entries
   }
 
   async showOpenDialog(options: OpenDialogOptions = {properties: ['openFile', 'multiSelections']}) {

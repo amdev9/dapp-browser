@@ -108,9 +108,10 @@ var IpfsComponent = /** @class */ (function () {
                         files = pathsList.map(function (path) { return ({ path: path, content: fs.createReadStream(path) }); });
                         handler = function (p) { console.log(p); };
                         options = {
-                            progress: handler
+                            progress: handler,
+                            wrapWithDirectory: true,
+                            recursive: false,
                         };
-                        console.log('filesfunc', this.ipfs.files.add);
                         return [4 /*yield*/, this.ipfs.files.add(files, options)];
                     case 1:
                         result = _a.sent();

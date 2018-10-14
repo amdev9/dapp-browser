@@ -58,8 +58,6 @@ ipfs.on('ready', async () => {
   const handler = (p) => { console.log(p); };
   const options = { 
     progress: handler,
-    wrapWithDirectory: false,
-    recursive: false,
   };
   ipfs.files.add(files, options, function (err, files) {
     if(err) { console.log(err); }

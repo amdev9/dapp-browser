@@ -10,7 +10,7 @@ import ipfs from '../IpfsStorage'
 
 const fileManager = new FileManager()
 
-const ipfsStorageEpic: Epic<AnyAction> = action$ => action$.pipe( //@todo fix action type
+const ipfsStorageUploadEpic: Epic<AnyAction> = action$ => action$.pipe( //@todo fix action type
   // ofType(constants.IPFS_STORAGE_UPLOAD_FILES),
   ofType(constants.FILE_MANAGER_OPEN_DIALOG_SUCCESS),
   switchMap(async (action) => {
@@ -20,10 +20,52 @@ const ipfsStorageEpic: Epic<AnyAction> = action$ => action$.pipe( //@todo fix ac
       const pathArray = fileEntries.map((entry) => entry.path)
 
       console.log('paths', pathArray, action)
-      const result = await ipfs.uploadFiles(pathArray)
-      console.log('result', result)
+      const ipfsFileObjectList = await ipfs.uploadFiles(pathArray)
 
-      return ipfsStorageActions.ipfsUploadFilesSuccess(result, action.meta.sourceUUID)
+      const resultIpfsFileObjects = fileEntries.map((fileEntry) => {
+        const foundIpfsFileObject = ipfsFileObjectList.find((item) => item.path === fileEntry.path)
+
+        if (!foundIpfsFileObject){
+          return
+        }
+
+        return {
+          id: fileEntry.id,
+          hash: foundIpfsFileObject.hash,
+        }
+      })
+
+      return ipfsStorageActions.ipfsUploadFilesSuccess(resultIpfsFileObjects, action.meta.sourceUUID)
+    } catch(error){
+      return ipfsStorageActions.ipfsUploadFilesFailure(error, action.meta.sourceUUID)
+    }
+  }),
+);
+
+const ipfsStorageDownloadEpic: Epic<AnyAction> = action$ => action$.pipe(
+  ofType(constants.IPFS_STORAGE_UPLOAD_FILES),
+  switchMap(async (action) => {
+    try {
+      const fileEntries = fileManager.getPathEntries(action.payload)
+      const pathArray = fileEntries.map((entry) => entry.path)
+
+      console.log('paths', pathArray, action)
+      const ipfsFileObjectList = await ipfs.uploadFiles(pathArray)
+
+      const resultIpfsFileObjects = fileEntries.map((fileEntry) => {
+        const foundIpfsFileObject = ipfsFileObjectList.find((item) => item.path === fileEntry.path)
+
+        if (!foundIpfsFileObject){
+          return
+        }
+
+        return {
+          id: fileEntry.id,
+          hash: foundIpfsFileObject.hash,
+        }
+      })
+
+      return ipfsStorageActions.ipfsUploadFilesSuccess(resultIpfsFileObjects, action.meta.sourceUUID)
     } catch(error){
       return ipfsStorageActions.ipfsUploadFilesFailure(error, action.meta.sourceUUID)
     }
@@ -31,5 +73,6 @@ const ipfsStorageEpic: Epic<AnyAction> = action$ => action$.pipe( //@todo fix ac
 );
 
 export default combineEpics(
-  ipfsStorageEpic,
+  ipfsStorageUploadEpic,
+  ipfsStorageDownloadEpic,
 )

@@ -1,11 +1,18 @@
 import * as fs from 'fs';
 import * as IPFS from 'ipfs';
 
+export interface IpfsFileObject {
+  hash: string;
+  path: string;
+  size: number;
+}
+
+export type IpfsFileObjectList = Array<IpfsFileObject>
 
 class IpfsComponent {
   ipfs: IPFS;
   status: boolean = false;
-  readyState: Promise<ipfs>;
+  readyState: Promise<any>;
   url: string = 'https://ipfs.array.io/ipfs/';
 
   constructor(configuration: any) {
@@ -51,8 +58,8 @@ class IpfsComponent {
     // this.uploadFile('uploadFile.ts');
   };
 
-  async uploadFilesMethod(pathsList: Array<string>) {
-    const files = pathsList.map((path) => ({ path, content: fs.createReadStream(path) }))
+  async uploadFilesMethod(pathsList: Array<string>): Promise<IpfsFileObjectList> {
+    const files = pathsList.map((path) => ({ path, dir: false, content: fs.createReadStream(path) }))
 
     const handler = (p: any) => { console.log(p); };
     const options = {
@@ -65,7 +72,7 @@ class IpfsComponent {
     return result
   }
 
-  async uploadFiles(pathsList: Array<string>) {
+  async uploadFiles(pathsList: Array<string>): Promise<IpfsFileObjectList> {
     // console.log('uploadFiles', this.ipfs)
     return this.readyState.then(() => {
       return this.uploadFilesMethod(pathsList)
