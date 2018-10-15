@@ -18,7 +18,6 @@ class IpfsComponent {
   constructor(configuration: any) {
     this.ipfs = new IPFS(configuration);
 
-    // console.log('this.ipfs', this.ipfs)
     this.readyState = new Promise((resolve, reject) => {
       this.ipfs.on('ready', () => {
         if (this.ipfs.isOnline()) {
@@ -55,7 +54,6 @@ class IpfsComponent {
 
     const version = await this.ipfs.version();
     console.log('Version:', version.version);
-    // this.uploadFile('uploadFile.ts');
   };
 
   async uploadFilesMethod(pathsList: Array<string>): Promise<IpfsFileObjectList> {
@@ -73,11 +71,9 @@ class IpfsComponent {
   }
 
   async uploadFiles(pathsList: Array<string>): Promise<IpfsFileObjectList> {
-    // console.log('uploadFiles', this.ipfs)
     return this.readyState.then(() => {
       return this.uploadFilesMethod(pathsList)
     })
-
   }
 
   downloadFile(hash: string) {
