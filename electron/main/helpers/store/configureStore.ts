@@ -25,7 +25,9 @@ export interface Action {
   };
   meta?: {
     scope?: string,
+    sourceUUID: string;
     targetUUID: string;
+    name: string;
   };
 }
 
@@ -131,8 +133,8 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
         if (resolver) {
           const copyAction = Object.assign({}, rendererAction)
 
-          if (copyAction.meta && copyAction.meta.targetUUID){
-            delete copyAction.meta.targetUUID
+          if (copyAction.meta){
+            delete copyAction.meta
           }
 
           resolver.send('redux-action', copyAction);
@@ -180,12 +182,12 @@ const replyActionMain = (store: Store<{}>, globalId: RendererConf[]) => {
  
   ipcMain.on('redux-action', (event: Electron.Event, uuid: string, action: any) => {
     const uuidObj = globalId.find(renObj => renObj.id === uuid);
- 
+
     if (uuidObj) {
       const statusObj = { status: uuidObj.status };
-      const sourceUUID = { sourceUUID: uuid }
+      const metadata = { sourceUUID: uuid, name: uuidObj.name }
       action.payload = (action.payload) ? Object.assign(action.payload, statusObj) : statusObj;
-      action.meta = action.meta ? Object.assign(action.meta, sourceUUID) : sourceUUID
+      action.meta = action.meta ? Object.assign(action.meta, metadata) : metadata
       // uuid resolver
  
       const uuidTargetObj = globalId.find(renObj => renObj.name === action.payload.targetDapp && renObj.status === 'dapp');

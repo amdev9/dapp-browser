@@ -36,7 +36,7 @@ export interface IState {
   feed: {};
   permissionManager: {
     isOpen: boolean,
-    permissions: {[index:string]: Permission[]},
+    permissions: {[index:string]: Array<Permission>},
     grantedApps: string[],
   };
   tray: {};

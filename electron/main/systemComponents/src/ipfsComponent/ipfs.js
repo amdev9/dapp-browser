@@ -48,7 +48,7 @@ ipfs.on('ready', async () => {
   // Dapp redux store disaptches INTENT_CHANNEL_DATA_PASS(IPFS)
   // Main process orchestrate and accept data passing ACCEPT_CHANNEL_DATA_PASS(CHANNEL_ID)
   //@todo pass payload with username, get back handler info
-  var rstream = fs.createReadStream('uploadFile.ts'); 
+  var rstream = fs.createReadStream('uploadFile.ts');
   const files = [
     {
       path: '/upload.ts',

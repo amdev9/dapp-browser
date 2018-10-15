@@ -15,7 +15,7 @@ import * as async from 'async';
 import { callbackify } from "util";
 
 /**/
- 
+
 const DAPPS_PATH: string = path.join(__dirname, '..', '..', 'dapps', 'download');
 
 async function readDir(path: string) {
@@ -37,7 +37,7 @@ async function readFile(path: string, opts = 'utf8') {
 }
 
 export type AppItem = {
-  
+
   id?: number;
   appName: string;
   main: string;
@@ -48,7 +48,7 @@ export type AppItem = {
 }
 
 let _dapps: AppItem[] = [];
- 
+
 export class AppsManager {
   id: number;
   icon: string;
@@ -59,8 +59,8 @@ export class AppsManager {
     const targetDapp = _dapps.find((item: AppItem) => item.appName == appName);
     const randomKey = Math.floor(Math.random() * 1000);
 
-    return Object.assign({}, targetDapp, { 
-      id: randomKey, 
+    return Object.assign({}, targetDapp, {
+      id: randomKey,
       statusIcon: ["running"], //@todo add icon resolve
     });
   }
@@ -72,7 +72,7 @@ export class AppsManager {
   static resolvePath(item: AppItem) {
     const icon = path.join(DAPPS_PATH, item.appName, item.icon);
     const preview = path.join(DAPPS_PATH, item.appName, item.preview);
-    return {...item, icon, preview}
+    return { ...item, icon, preview }
   }
 
   static async parseDapps() {
@@ -85,9 +85,9 @@ export class AppsManager {
           const itemWithResolvedPath = AppsManager.resolvePath(JSON.parse(fileContent));
           // console.log(itemWithResolvedPath);
           AppsManager.dapps.push(itemWithResolvedPath); //@todo 1 add icon resolver
-     
+
         } catch (err) {
-          if(err instanceof SyntaxError) {
+          if (err instanceof SyntaxError) {
             console.log('Please check your js syntax: \n'); //@todo put it into console logs
             console.log(err);
           } else {
@@ -99,7 +99,7 @@ export class AppsManager {
 
 
     } catch (err) {
-      console.log('Catched' , err);
+      console.log('Catched', err);
     }
   }
 }

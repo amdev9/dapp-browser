@@ -11,6 +11,11 @@ const dappActions: string[] = [
   constants.OPEN_CHANNEL_SUCCESS,
   constants.BIND_OPEN_CHANNELS_DONE,
   constants.FILE_MANAGER_OPEN_DIALOG,
+  constants.FILE_MANAGER_OPEN_DIALOG_SUCCESS,
+  constants.FILE_MANAGER_OPEN_DIALOG_FAILURE,
+  constants.IPFS_STORAGE_UPLOAD_FILES,
+  constants.IPFS_STORAGE_UPLOAD_FILES_SUCCESS,
+  constants.IPFS_STORAGE_UPLOAD_FILES_FAILURE,
   constants.SHOW_FILE_ENTRIES,
   constants.NETWORK_GET_BLOCK,
   constants.SHOW_BLOCK,
@@ -18,12 +23,20 @@ const dappActions: string[] = [
 
 const fileManagerActions: string[] = [
   constants.FILE_MANAGER_OPEN_DIALOG,
-  constants.SHOW_FILE_ENTRIES
+  constants.FILE_MANAGER_OPEN_DIALOG_SUCCESS,
+  constants.FILE_MANAGER_OPEN_DIALOG_FAILURE,
+  // constants.SHOW_FILE_ENTRIES
 ];
 
 const networkActions: string[] = [
   constants.NETWORK_GET_BLOCK,
   constants.SHOW_BLOCK
+];
+
+const ipfsActions: string[] = [
+  constants.IPFS_STORAGE_UPLOAD_FILES,
+  constants.IPFS_STORAGE_UPLOAD_FILES_SUCCESS,
+  constants.IPFS_STORAGE_UPLOAD_FILES_FAILURE,
 ];
 
 const pmActions: string[] = [
@@ -35,6 +48,7 @@ const pmActions: string[] = [
 
 const FILE_MANAGER_PERMISSION_NAME = "filesystem";
 const NETWORK_PERMISSION_NAME = "network";
+const IPFS_PERMISSION_NAME = "ipfs";
 
 const checkGranted = (state: IState, dappName: string, actionType: string) => {
   if (fileManagerActions.includes(actionType)) {
@@ -42,6 +56,9 @@ const checkGranted = (state: IState, dappName: string, actionType: string) => {
   }
   if (networkActions.includes(actionType)) {
     return checkGrantedForPermission(state, dappName, NETWORK_PERMISSION_NAME);
+  }
+  if (ipfsActions.includes(actionType)) {
+    return checkGrantedForPermission(state, dappName, IPFS_PERMISSION_NAME);
   }
   return true;
 };

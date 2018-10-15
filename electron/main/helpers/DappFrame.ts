@@ -1,4 +1,4 @@
-import {Client} from "./reducers/state";
+import { Client } from "./reducers/state";
 import Rectangle = Electron.Rectangle;
 
 interface WindowBounds {
@@ -12,7 +12,7 @@ export class DappFrame {
   searchOffset = 270; //Math.round((state.window.height - offset) / 2);
 
   private static adjustElectronWindowBounds(windowBounds: Rectangle) {
-    return {width: windowBounds.width, height: windowBounds.height - 25}
+    return { width: windowBounds.width, height: windowBounds.height - 25 }
   }
 
   constructor(state: Client, windowBounds?: Rectangle) {

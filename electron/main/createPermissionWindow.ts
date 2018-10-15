@@ -12,7 +12,7 @@ export function createPermissionWindow(globalUUIDList: RendererConf[], mainWindo
 
   let webPreferences = {
     nodeIntegration: false,
-    preload: path.join(__dirname, '..', '..', 'permissionManager', 'preload.js'),
+    preload: path.join(__dirname, '..', 'preload-pm.js'),
     additionalArguments: [
       '--uuid-renderer='.concat(uuid),
       '--app-name='.concat(appName),

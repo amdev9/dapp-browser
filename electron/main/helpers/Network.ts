@@ -1,10 +1,10 @@
-import {Apis, BalanceObject, Block, Witness} from 'bitsharesjs-ws';
+import { Apis, BalanceObject, Block, Witness } from 'bitsharesjs-ws';
 import { ChainStore } from 'bitsharesjs';
 
 let dynamicGlobal;
 let globalWS;
 
-async function getWitnessByID ( id: string ) {
+async function getWitnessByID(id: string) {
   let result: BalanceObject[];
   let witness: Witness[];
 
@@ -19,15 +19,15 @@ async function getWitnessByID ( id: string ) {
       .exec<BalanceObject[]>('get_full_accounts', [
         [witness[0].witness_account], console.log()
       ]);
-  } catch ( error ) {
-    console.log( error );
+  } catch (error) {
+    console.log(error);
   }
 
   return result[0][1];
 }
 
-function getData ( ApiObject: Block ) {
-  if ( ApiObject ) {
+function getData(ApiObject: Block) {
+  if (ApiObject) {
     return {
       block: {
         blockID: ApiObject.id,
@@ -40,7 +40,7 @@ function getData ( ApiObject: Block ) {
   }
 }
 
-async function getBlock (height = 1000) {
+async function getBlock(height = 1000) {
   let block: Block;
   let witness;
 
@@ -48,12 +48,12 @@ async function getBlock (height = 1000) {
     block = await Apis.instance()
       .db_api()
       .exec<Block>('get_block', [height]);
-  } catch ( error ) {
-    console.log( error );
+  } catch (error) {
+    console.log(error);
     return;
   }
 
-  witness = await getWitnessByID( block.witness );
+  witness = await getWitnessByID(block.witness);
   block.id = height;
   block.witnessName = witness.lifetime_referrer_name;
 
@@ -62,17 +62,17 @@ async function getBlock (height = 1000) {
 
 const blocks: Block[] = [];
 
-async function getSerializedData () {
+async function getSerializedData() {
   let block;
 
   dynamicGlobal = ChainStore.getObject('2.1.0');
   console.log("dynamicGlobal: ", dynamicGlobal);
   globalWS = dynamicGlobal ? dynamicGlobal.toJS() : dynamicGlobal;
 
-  if ( globalWS ) {
-    block = await getBlock( globalWS.head_block_number );
-    blocks.push( block );
-    return getData( block );
+  if (globalWS) {
+    block = await getBlock(globalWS.head_block_number);
+    blocks.push(block);
+    return getData(block);
   } else {
     return null;
   }
@@ -81,8 +81,8 @@ async function getSerializedData () {
 export class Network {
   private static instance: Network;
 
-  constructor () {
-    if ( !Network.instance ) {
+  constructor() {
+    if (!Network.instance) {
       Apis.instance('ws://hawking.array.io:8090/ws', true).init_promise.then(
         (res: object) => {
           ChainStore.init().then(() => {
@@ -95,7 +95,7 @@ export class Network {
     return Network.instance;
   }
 
-  async getBlock () {
+  async getBlock() {
     const data = await getSerializedData();
     return JSON.stringify(data);
   }
