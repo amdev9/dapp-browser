@@ -5,26 +5,12 @@ import * as IPFS from 'ipfs';
 class IpfsComponent {
   ipfs: IPFS;
   status: boolean = false;
-  readyState: Promise<ipfs>;
   url: string = 'https://ipfs.array.io/ipfs/';
 
   constructor(configuration: any) {
     this.ipfs = new IPFS(configuration);
 
-    // console.log('this.ipfs', this.ipfs)
-    this.readyState = new Promise((resolve, reject) => {
-      this.ipfs.on('ready', () => {
-        if (this.ipfs.isOnline()) {
-          console.log('online');
-         resolve()
-        } else {
-          console.log('offline, try to start');
-          this.ipfs.start();
-        }
-      });
-
-    })
-
+    this.ipfs.on('ready', this.readyFunction.bind(this));
     this.ipfs.on('error', this.errorFunction.bind(this, Error));
     this.ipfs.on('start', this.startFunction.bind(this));
   }
@@ -48,31 +34,25 @@ class IpfsComponent {
 
     const version = await this.ipfs.version();
     console.log('Version:', version.version);
-    // this.uploadFile('uploadFile.ts');
+    this.uploadFile('uploadFile.ts');
   };
   
-  async uploadFilesMethod(pathsList: Array<string>) {
-    const files = pathsList.map((path) => { return { path, content: fs.createReadStream(path) }})
-
+  uploadFile(fileName: string) {
+    var rstream = fs.createReadStream(fileName);
+    const files = [
+      {
+        path: '/upload.ts',
+        content: rstream
+      }
+    ];
     const handler = (p: any) => { console.log(p); };
     const options = { 
-      // progress: handler,
-      wrapWithDirectory: false,
-      recursive: false
+      progress: handler
     };
-
-    const result = await this.ipfs.files.add(files)
-    console.log('uploaded files', result, files)
-
-    return result
-  }
-
-  async uploadFiles(pathsList: Array<string>) {
-    // console.log('uploadFiles', this.ipfs)
-    return this.readyState.then(() => {
-      return this.uploadFilesMethod(pathsList)
+    this.ipfs.files.add(files, options, function (err, files) {
+      if(err) { console.log(err); }
+      console.log(files);
     })
-
   }
 
   downloadFile(hash: string) {
@@ -81,7 +61,6 @@ class IpfsComponent {
 }
 
 const remoteConf = {
-  start: true,
   EXPERIMENTAL: {
     pubsub: true
   },
@@ -111,5 +90,5 @@ const localConf = {
 };
 
   
-const comp = new IpfsComponent(remoteConf);
-export default comp
+let ipfs = new IpfsComponent(localConf);
+console.log(ipfs.status);
