@@ -86,7 +86,7 @@ class Network {
       Apis.instance('ws://hawking.array.io:8090/ws', true).init_promise.then(
         (res: object) => {
           ChainStore.init().then(() => {
-            ChainStore.subscribe( this.broadcast );
+            // ChainStore.subscribe( this.broadcast );
           });
         }
       ).catch();
