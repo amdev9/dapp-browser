@@ -31,14 +31,13 @@ class IpfsComponent {
         }
       });
 
-      this.ipfs.on('error', () => {
-        reject()
+      this.ipfs.on('error', (error) => {
+        reject(error)
       });
 
 
     })
 
-    this.ipfs.on('error', this.errorFunction.bind(this, Error));
     this.ipfs.on('start', this.startFunction.bind(this));
   }
 
@@ -72,7 +71,6 @@ class IpfsComponent {
     };
 
     const result = await this.ipfs.files.add(files, options)
-    console.log('-----> rs', result)
 
     return result
   }
