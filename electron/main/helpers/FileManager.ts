@@ -28,22 +28,19 @@ export class FileManager {
   }
 
   getPathEntries(idsArray: Array<string>): FileEntryList {
-    const entries: FileEntryList = []
-
-
-
+    const entries: FileEntryList = [];
     idsArray.forEach((id: string): FileEntry => {
-      if (!entryMap.has(id)){
-        return
+      if (!entryMap.has(id)) {
+        return;
       }
 
-      entries.push({ id, path: entryMap.get(id) })
+      entries.push({ id, path: entryMap.get(id) });
     });
 
-    return entries
+    return entries;
   }
 
-  async showOpenDialog(options: OpenDialogOptions = {properties: ['openFile', 'multiSelections']}) {
+  async showOpenDialog(options: OpenDialogOptions = { properties: ['openFile', 'multiSelections'] }) {
     let fileList = await dialog.showOpenDialog(options);
     return this._setPathEntries(fileList);
   }

@@ -32,7 +32,7 @@ const uploadFileIpfsStorageSuccess: Epic<any> = action$ => action$.pipe(
 );
 
 const networkGetBlockSuccess: Epic<any> = action$ => action$.pipe(
-  ofType(actions.NETWORK_GET_BLOCK_SUCCESS),
+  ofType(constants.NETWORK_GET_BLOCK_SUCCESS),
   tap((action) => utils.insertContentIntoBlock(action.payload,'networkGetBlockButton')),
   mapTo(actions.showBlock())
 );

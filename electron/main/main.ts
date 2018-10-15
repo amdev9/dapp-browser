@@ -3,7 +3,7 @@
   Uses process.stdout.write instead of console.log so we can cleanly catch the output in the parent process.
 */
 
-import { app, BrowserView, ipcMain, screen, BrowserWindow , dialog} from 'electron';
+import { app, BrowserView, ipcMain, screen, BrowserWindow, dialog } from 'electron';
 import { Store } from 'redux';
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer';
 import { configureStore, initialState } from './helpers/store/configureStore';
@@ -14,7 +14,7 @@ import { createPermissionWindow } from './createPermissionWindow';
 import { createDappView } from './createDappView';
 import { RendererConf } from './createDappView';
 import { IState, Client } from "./helpers/reducers/state";
- 
+
 
 import * as nodeConsole from 'console';
 const console = new nodeConsole.Console(process.stdout, process.stderr);
@@ -24,18 +24,18 @@ const isProduction = process.env.ELECTRON_ENV !== 'development';
 let store: Store<IState>;
 
 require('electron-context-menu')({
-	prepend: (params: any, browserWindow: BrowserWindow) => [{
+  prepend: (params: any, browserWindow: BrowserWindow) => [{
     label: 'Pin to top',
-		// Only show it when right-clicking images
-		// visible: params.mediaType === 'image'
+    // Only show it when right-clicking images
+    // visible: params.mediaType === 'image'
   },
   {
     label: 'Close app',
-		// visible: params.mediaType === 'image'
+    // visible: params.mediaType === 'image'
     click: (e: any) => {
-      store.dispatch({type: "REMOVE_TRAY_ITEM", payload: {targetDappName: "Game"}}); // todo how to determine app name where the click has been made?
+      store.dispatch({ type: "REMOVE_TRAY_ITEM", payload: { targetDappName: "Game" } }); // todo how to determine app name where the click has been made?
     }
-	}]
+  }]
 });
 
 const globalUUIDList: RendererConf[] = [];
@@ -70,7 +70,7 @@ app.on('ready', async () => {
 
   store = configureStore({
     ...initialState,
-    feed: {items: AppsManager.dapps},
+    feed: { items: AppsManager.dapps },
   }, globalUUIDList); // @todo pass parsed dapps
 
   let pmIsOpen = false;
@@ -100,7 +100,7 @@ app.on('ready', async () => {
     const storeState = store.getState();
 
     process.stdout.write(JSON.stringify(storeState));
- 
+
     if (storeState.client.isHome) {
       clientWindow.setBrowserView(null);
     } else {
