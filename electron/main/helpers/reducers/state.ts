@@ -1,7 +1,7 @@
 // global main state
 // redux-persist integration here
 
-export type Permission = "ipfs" | "network" | "filesystem";
+export type Permission = "ipfs" | "network" | "filesystem" | "storage" | "logger";
 
 export type Client = {
   activeDapp: {
@@ -36,7 +36,7 @@ export interface IState {
   feed: {};
   permissionManager: {
     isOpen: boolean,
-    permissions: {[index:string]: Permission[]},
+    permissions: {[index:string]: Array<Permission>},
     grantedApps: string[],
   };
   tray: {};

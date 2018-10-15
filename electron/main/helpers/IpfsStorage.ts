@@ -1,17 +1,41 @@
 import * as fs from 'fs';
 import * as IPFS from 'ipfs';
 
+export interface IpfsFileObject {
+  hash: string;
+  path: string;
+  size: number;
+}
+
+export type IpfsFileObjectList = Array<IpfsFileObject>
 
 class IpfsComponent {
   ipfs: IPFS;
   status: boolean = false;
+  readyState: Promise<any>;
   url: string = 'https://ipfs.array.io/ipfs/';
 
   constructor(configuration: any) {
     this.ipfs = new IPFS(configuration);
 
-    this.ipfs.on('ready', this.readyFunction.bind(this));
-    this.ipfs.on('error', this.errorFunction.bind(this, Error));
+    this.readyState = new Promise((resolve, reject) => {
+      this.ipfs.on('ready', () => {
+        if (this.ipfs.isOnline()) {
+          console.log('online');
+          resolve()
+        } else {
+          console.log('offline, try to start');
+          this.ipfs.start();
+        }
+      });
+
+      this.ipfs.on('error', (error: Error) => {
+        reject(error);
+      });
+
+
+    })
+
     this.ipfs.on('start', this.startFunction.bind(this));
   }
 
@@ -22,7 +46,7 @@ class IpfsComponent {
   async startFunction() {
     console.log('Node started!');
   }
-  
+
   async readyFunction() {
     if (this.ipfs.isOnline()) {
       console.log('online');
@@ -34,24 +58,24 @@ class IpfsComponent {
 
     const version = await this.ipfs.version();
     console.log('Version:', version.version);
-    this.uploadFile('uploadFile.ts');
   };
-  
-  uploadFile(fileName: string) {
-    var rstream = fs.createReadStream(fileName);
-    const files = [
-      {
-        path: '/upload.ts',
-        content: rstream
-      }
-    ];
+
+  async uploadFilesMethod(pathsList: Array<string>): Promise<IpfsFileObjectList> {
+    const files = pathsList.map((path) => ({ path, content: fs.createReadStream(path) }))
+
     const handler = (p: any) => { console.log(p); };
-    const options = { 
-      progress: handler
+    const options = {
+      progress: handler,
     };
-    this.ipfs.files.add(files, options, function (err, files) {
-      if(err) { console.log(err); }
-      console.log(files);
+
+    const result = await this.ipfs.files.add(files, options)
+
+    return result
+  }
+
+  async uploadFiles(pathsList: Array<string>): Promise<IpfsFileObjectList> {
+    return this.readyState.then(() => {
+      return this.uploadFilesMethod(pathsList)
     })
   }
 
@@ -61,6 +85,7 @@ class IpfsComponent {
 }
 
 const remoteConf = {
+  start: true,
   EXPERIMENTAL: {
     pubsub: true
   },
@@ -80,7 +105,7 @@ const remoteConf = {
   }
 };
 
-const localConf = { 
+const localConf = {
   // repo: '/Users/pidgin/dev/boilerplate/ipfsTest',
   config: {
     Addresses: {
@@ -89,6 +114,5 @@ const localConf = {
   }
 };
 
-  
-let ipfs = new IpfsComponent(localConf);
-console.log(ipfs.status);
+
+export default new IpfsComponent(remoteConf);

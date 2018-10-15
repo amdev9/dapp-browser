@@ -1,12 +1,11 @@
-import { INTENT_OPEN_CHANNELS } from '../actions/channel';
+import * as constants from '../constants';
 
 export function channel(state = 0, action: any) {
   switch (action.type) {
-    case INTENT_OPEN_CHANNELS:
- 
+    case constants.INTENT_OPEN_CHANNELS:
+
     default:
       return state;
   }
 }
 
- 
