@@ -1,7 +1,7 @@
 // global main state
 // redux-persist integration here
 
-export type Permission = "ipfs" | "network" | "storage";
+export type Permission = "ipfs" | "network" | "filesystem" | "storage" | "logger";
 
 export type Client = {
   activeDapp: {

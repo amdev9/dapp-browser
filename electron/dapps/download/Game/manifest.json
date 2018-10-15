@@ -11,7 +11,9 @@
   ],
   "permissions": [
     "storage",
+    "filesystem",
     "logger", 
-    "ipfs" 
+    "ipfs",
+    "network"
   ]
 }

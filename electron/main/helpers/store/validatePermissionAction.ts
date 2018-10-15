@@ -1,47 +1,104 @@
-
 import { Dispatch } from 'redux';
 import { Action } from './configureStore';
 import { RendererConf } from '../../createDappView';
  
 import * as constants from '../constants';
-import { checkComponentAppPermissions } from '../utils/selectors'
- 
+import {IState, Permission} from "../reducers/state";
+
+const dappActions: string[] = [
+  constants.INTENT_OPEN_CHANNELS,
+  constants.OPEN_CHANNEL,
+  constants.OPEN_CHANNEL_SUCCESS,
+  constants.BIND_OPEN_CHANNELS_DONE,
+  constants.FILE_MANAGER_OPEN_DIALOG,
+  constants.FILE_MANAGER_OPEN_DIALOG_SUCCESS,
+  constants.FILE_MANAGER_OPEN_DIALOG_FAILURE,
+  constants.IPFS_STORAGE_UPLOAD_FILES,
+  constants.IPFS_STORAGE_UPLOAD_FILES_SUCCESS,
+  constants.IPFS_STORAGE_UPLOAD_FILES_FAILURE,
+  constants.SHOW_FILE_ENTRIES,
+  constants.NETWORK_GET_BLOCK,
+  constants.SHOW_BLOCK,
+];
+
+const fileManagerActions: string[] = [
+  constants.FILE_MANAGER_OPEN_DIALOG,
+  constants.FILE_MANAGER_OPEN_DIALOG_SUCCESS,
+  constants.FILE_MANAGER_OPEN_DIALOG_FAILURE,
+  // constants.SHOW_FILE_ENTRIES
+];
+
+const networkActions: string[] = [
+  constants.NETWORK_GET_BLOCK,
+  constants.SHOW_BLOCK
+];
+
+const ipfsActions: string[] = [
+  constants.IPFS_STORAGE_UPLOAD_FILES,
+  constants.IPFS_STORAGE_UPLOAD_FILES_SUCCESS,
+  constants.IPFS_STORAGE_UPLOAD_FILES_FAILURE,
+];
+
+const pmActions: string[] = [
+  constants.CLOSE_MANAGER,
+  constants.TOGGLE_PERMISSION,
+  constants.GRANT_PERMISSIONS,
+  constants.LOAD_PERMISSIONS,
+];
+
+const FILE_MANAGER_PERMISSION_NAME = "filesystem";
+const NETWORK_PERMISSION_NAME = "network";
+const IPFS_PERMISSION_NAME = "ipfs";
+
+const checkGranted = (state: IState, dappName: string, actionType: string) => {
+  if (fileManagerActions.includes(actionType)) {
+    return checkGrantedForPermission(state, dappName, FILE_MANAGER_PERMISSION_NAME);
+  }
+  if (networkActions.includes(actionType)) {
+    return checkGrantedForPermission(state, dappName, NETWORK_PERMISSION_NAME);
+  }
+  if (ipfsActions.includes(actionType)) {
+    return checkGrantedForPermission(state, dappName, IPFS_PERMISSION_NAME);
+  }
+  return true;
+};
+
+const checkGrantedForPermission = (state: IState, dappName: string, permissionName: Permission) => {
+  if (state.permissionManager.grantedApps.includes(dappName) &&
+    state.permissionManager.permissions[dappName] && 
+    state.permissionManager.permissions[dappName].includes(permissionName)) {
+    console.log(`Dapp "${dappName}" has privileges to use ${permissionName}}. OK`);
+    return true;
+  }
+  console.log(`Dapp "${dappName}" has no privileges to use ${permissionName}}`);
+  return false;
+};
+
+const getSourceDappName = (globalId: RendererConf[], action: any) => {
+  const dapp = globalId.find(item => item.id === action.meta.sourceUUID);
+  if (!dapp) {
+    console.log("Dapp not found in globalId by uuid: ", action.meta.sourceUUID);
+    return null;
+  }
+  return dapp.name;
+};
 
 export const validatePermissionAction = (globalId: RendererConf[]) => {
   return (store: any) => (next: Dispatch<void>) => <A extends Action>(action: A) => {
-    console.log('validate', action)
     if (action.payload && action.payload.hasOwnProperty('status')) {
       if (action.payload.status === 'dapp') {
-
-        if (action.type === constants.IPFS_STORAGE_UPLOAD_FILES &&
-          checkComponentAppPermissions(action.meta.name, constants.IPFS_COMPONENT)(store.getState())
-        ){
-          return next(action)
-        }
- 
-        switch (action.type) {
-          case constants.INTENT_OPEN_CHANNELS:
- 
-          case constants.OPEN_CHANNEL:
-          case constants.OPEN_CHANNEL_SUCCESS:
-          case constants.BIND_OPEN_CHANNELS:
-          case constants.BIND_OPEN_CHANNELS_DONE:
-
-          case constants.FILE_MANAGER_OPEN_DIALOG:
-
-          case constants.FILE_MANAGER_OPEN_DIALOG_SUCCESS:
-          case constants.FILE_MANAGER_OPEN_DIALOG_FAILURE:
-
-          case constants.IPFS_STORAGE_UPLOAD_FILES_SUCCESS:
-          case constants.IPFS_STORAGE_UPLOAD_FILES_FAILURE:
-
-          case constants.SHOW_FILE_ENTRIES:
-
+        if (!dappActions.includes(action.type)) {
+          console.log("Cancelled for dapp " + action.type);
+        } else {
+          const dappName = getSourceDappName(globalId, action);
+          
+          if (checkGranted(store.getState(), dappName, action.type)) {
             return next(action);
-          default:
-            console.log("Cancelled for dapp " + action.type);
+          } else {
+            console.log(`Action "${action.type}" is not granted for dapp "${dappName}"`);
+          }
         }
-      } else if (action.payload && action.payload.status === 'client') {
+      } else if (action.payload.status === 'client') {
         switch (action.type) {
           case constants.TOGGLE_NOTIFICATION_PANEL:
             let clientObj = globalId.find(renObj => renObj.status === 'client');
@@ -72,15 +129,11 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
           default:
             console.log("Cancelled for client");
         }
-      } else if (action.payload && action.payload.status === 'permission_manager') {
-        switch (action.type) {
-          case constants.CLOSE_MANAGER:
-          case constants.TOGGLE_PERMISSION:
-          case constants.GRANT_PERMISSIONS:
-          case constants.LOAD_PERMISSIONS:
-            return next(action);
-          default:
-            console.log("Cancelled for permission manager");
+      } else if (action.payload.status === 'permission_manager') {    
+        if(pmActions.includes(action.type)) { 
+          return next(action);
+        } else {
+          console.log("Cancelled for permission manager " + action.type); 
         }
       }
     } else {

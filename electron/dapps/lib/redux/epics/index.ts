@@ -16,7 +16,7 @@ const startCountdownEpic: Epic<any> = action$ => action$.pipe(
 const fileManagerOpenSuccess: Epic<any> = action$ => action$.pipe(
   ofType(constants.FILE_MANAGER_OPEN_DIALOG_SUCCESS),
   map((action) => {
-    utils.insertContentIntoBlock(action.payload && action.payload.join(',\r\n'))
+    utils.insertContentIntoBlock(action.payload && action.payload.join(',\r\n'), 'openDialogButton')
     return actions.uploadFilesIpfsStorage(action.payload)
   }),
 );
@@ -25,9 +25,16 @@ const uploadFileIpfsStorageSuccess: Epic<any> = action$ => action$.pipe(
   ofType(constants.IPFS_STORAGE_UPLOAD_FILES_SUCCESS),
   tap((action) =>
     utils.insertContentIntoBlock(
-      action.payload && action.payload.map((v: {id: string, hash: string}) => `${v.id}:${v.hash}`).join(',\r\n'))
+      action.payload && action.payload.map((v: {id: string, hash: string}) => `${v.id}:${v.hash}`).join(',\r\n'),
+      'openDialogButton')
   ),
   mapTo(actions.showFileEntries())
+);
+
+const networkGetBlockSuccess: Epic<any> = action$ => action$.pipe(
+  ofType(actions.NETWORK_GET_BLOCK_SUCCESS),
+  tap((action) => utils.insertContentIntoBlock(action.payload,'networkGetBlockButton')),
+  mapTo(actions.showBlock())
 );
 
 
@@ -35,5 +42,6 @@ export const rootEpic = combineEpics(
   fileManagerOpenSuccess,
   startCountdownEpic,
   uploadFileIpfsStorageSuccess,
+  networkGetBlockSuccess,
 );
 

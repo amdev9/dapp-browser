@@ -13,7 +13,7 @@ import { connect } from 'react-redux';
 import * as permissionActions from '../redux/actions/permission';
  
 import { PermissionBox } from './PermissionBox';
-import {Permission} from "../redux/model";
+import { Permission } from "../redux/reducers/state";
 
 export interface PermissionLayoutProps {
   permissions: string[];

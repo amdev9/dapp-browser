@@ -78,7 +78,7 @@ async function getSerializedData () {
   }
 }
 
-class Network {
+export class Network {
   private static instance: Network;
 
   constructor () {
@@ -95,14 +95,9 @@ class Network {
     return Network.instance;
   }
 
-  async broadcast () {
+  async getBlock () {
     const data = await getSerializedData();
     return JSON.stringify(data);
-    //io.emit('network:getBlock', data);
   }
 }
 
-new Network();
-
-
-export default Network;

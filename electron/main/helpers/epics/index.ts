@@ -5,6 +5,7 @@ import bindOpenChannelsEpic from './bindOpenChannelsEpic';
 import openDappEpic from './openDappEpic';
 import fileManagerEpic from './fileManagerEpic';
 import ipfsStorageEpic from './ipfsStorageEpic';
+import networkEpic from './networkEpic';
 
 // todo fix https://github.com/piotrwitek/react-redux-typescript-guide#async-flow
 
@@ -14,5 +15,6 @@ export default combineEpics(
   openDappEpic,
   fileManagerEpic,
   ipfsStorageEpic,
+  networkEpic,
 );
  

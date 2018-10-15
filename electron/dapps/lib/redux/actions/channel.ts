@@ -18,3 +18,11 @@ export const uploadFilesIpfsStorage = (entryList: Array<string>) => ({
 export const showFileEntries = () => ({
   type: constants.SHOW_FILE_ENTRIES
 })
+
+export const networkGetBlock = () => ({
+  type: constants.NETWORK_GET_BLOCK
+})
+
+export const showBlock = () => ({
+  type: constants.SHOW_BLOCK
+})

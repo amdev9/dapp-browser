@@ -2,12 +2,12 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es6",
-    "lib": ["es5", "es7", "es2015", "dom", "scripthost"],
+    "lib": ["es2017", "dom", "scripthost"],
     "noImplicitAny": true,
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "*": ["node_modules/*"]
+      "*": ["node_modules/*", "types/*"]
     },
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -20,3 +20,4 @@
     "node_modules"
   ]
 }
+
