@@ -57,7 +57,7 @@ class IpfsComponent {
   };
 
   async uploadFilesMethod(pathsList: Array<string>): Promise<IpfsFileObjectList> {
-    const files = pathsList.map((path) => ({ path, dir: false, content: fs.createReadStream(path) }))
+    const files = pathsList.map((path) => ({ path, content: fs.createReadStream(path) }))
 
     const handler = (p: any) => { console.log(p); };
     const options = {
@@ -65,7 +65,6 @@ class IpfsComponent {
     };
 
     const result = await this.ipfs.files.add(files, options)
-    console.log('uploaded files', result, files)
 
     return result
   }
