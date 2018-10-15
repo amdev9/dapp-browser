@@ -18,8 +18,6 @@ class IpfsComponent {
   constructor(configuration: any) {
     this.ipfs = new IPFS(configuration);
 
-    console.log('')
-
     this.readyState = new Promise((resolve, reject) => {
       this.ipfs.on('ready', () => {
         if (this.ipfs.isOnline()) {
