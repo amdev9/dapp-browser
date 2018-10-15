@@ -15,14 +15,19 @@ const startCountdownEpic: Epic<any> = action$ => action$.pipe(
 
 const fileManagerOpenSuccess: Epic<any> = action$ => action$.pipe(
   ofType(actions.FILE_MANAGER_OPEN_DIALOG_SUCCESS),
-  tap((action) => utils.insertContentIntoBlock(action.payload && action.payload.join(',\r\n'))), 
+  tap((action) => utils.insertContentIntoBlock(action.payload && action.payload.join(',\r\n'), 'openDialogButton')), 
   mapTo(actions.showFileEntries()) 
+);
+
+const networkGetBlockSuccess: Epic<any> = action$ => action$.pipe(
+  ofType(actions.NETWORK_GET_BLOCK_SUCCESS),
+  tap((action) => utils.insertContentIntoBlock(action.payload,'networkGetBlockButton')),
+  mapTo(actions.showBlock())
 );
 
 export const rootEpic = combineEpics(
   startCountdownEpic,
   fileManagerOpenSuccess,
   // fileManagerOpenFailure
+  networkGetBlockSuccess,
 );
-
- 

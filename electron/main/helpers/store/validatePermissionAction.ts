@@ -3,7 +3,7 @@ import { Action } from './configureStore';
 import { RendererConf } from '../../createDappView';
  
 import * as constants from '../constants';
-import { IState } from "../reducers/state";
+import {IState, Permission} from "../reducers/state";
 
 const dappActions: string[] = [
   constants.INTENT_OPEN_CHANNELS,
@@ -11,12 +11,19 @@ const dappActions: string[] = [
   constants.OPEN_CHANNEL_SUCCESS,
   constants.BIND_OPEN_CHANNELS_DONE,
   constants.FILE_MANAGER_OPEN_DIALOG,
-  constants.SHOW_FILE_ENTRIES
+  constants.SHOW_FILE_ENTRIES,
+  constants.NETWORK_GET_BLOCK,
+  constants.SHOW_BLOCK,
 ];
 
 const fileManagerActions: string[] = [
   constants.FILE_MANAGER_OPEN_DIALOG,
   constants.SHOW_FILE_ENTRIES
+];
+
+const networkActions: string[] = [
+  constants.NETWORK_GET_BLOCK,
+  constants.SHOW_BLOCK
 ];
 
 const pmActions: string[] = [
@@ -27,19 +34,27 @@ const pmActions: string[] = [
 ];
 
 const FILE_MANAGER_PERMISSION_NAME = "filesystem";
+const NETWORK_PERMISSION_NAME = "network";
 
-const checkGranted = (state: IState, dappName: string) => {
-  
-  if (!state.permissionManager.grantedApps.includes(dappName)) {
-    console.log(`Dapp "${dappName}" has no privileges to use FileManager`);
-    return false;
+const checkGranted = (state: IState, dappName: string, actionType: string) => {
+  if (fileManagerActions.includes(actionType)) {
+    return checkGrantedForPermission(state, dappName, FILE_MANAGER_PERMISSION_NAME);
   }
-  if (!state.permissionManager.permissions[dappName].includes(FILE_MANAGER_PERMISSION_NAME)) {
-    console.log(`Dapp "${dappName}" has no privileges to use FileManager`);
-    return false;
+  if (networkActions.includes(actionType)) {
+    return checkGrantedForPermission(state, dappName, NETWORK_PERMISSION_NAME);
   }
-  console.log(`Dapp "${dappName}" has privileges to use FileManager. OK`);
   return true;
+};
+
+const checkGrantedForPermission = (state: IState, dappName: string, permissionName: Permission) => {
+  if (state.permissionManager.grantedApps.includes(dappName) &&
+    state.permissionManager.permissions[dappName] && 
+    state.permissionManager.permissions[dappName].includes(permissionName)) {
+    console.log(`Dapp "${dappName}" has privileges to use ${permissionName}}. OK`);
+    return true;
+  }
+  console.log(`Dapp "${dappName}" has no privileges to use ${permissionName}}`);
+  return false;
 };
 
 const getSourceDappName = (globalId: RendererConf[], action: any) => {
@@ -60,14 +75,10 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
         } else {
           const dappName = getSourceDappName(globalId, action);
           
-          if (fileManagerActions.includes(action.type)) {
-            if (checkGranted(store.getState(), dappName)) {
-              return next(action);
-            } else {
-              console.log(`Action "${action.type}" is not granted for FileManager and dapp "${dappName}"`);
-            }
-          } else {
+          if (checkGranted(store.getState(), dappName, action.type)) {
             return next(action);
+          } else {
+            console.log(`Action "${action.type}" is not granted for dapp "${dappName}"`);
           }
         }
       } else if (action.payload.status === 'client') {

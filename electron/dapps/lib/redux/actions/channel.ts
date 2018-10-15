@@ -19,6 +19,12 @@ export const FILE_MANAGER_OPEN_DIALOG_FAILURE = 'FILE_MANAGER_OPEN_DIALOG_FAILUR
 
 export const SHOW_FILE_ENTRIES = 'SHOW_FILE_ENTRIES';
 
+export const NETWORK_GET_BLOCK = 'NETWORK_GET_BLOCK';
+export const NETWORK_GET_BLOCK_SUCCESS = 'NETWORK_GET_BLOCK_SUCCESS';
+export const NETWORK_GET_BLOCK_FAILURE = 'NETWORK_GET_BLOCK_FAILURE';
+
+export const SHOW_BLOCK = 'SHOW_BLOCK';
+
 export function openChannelIntent() {
   return {
     type: INTENT_OPEN_CHANNELS
@@ -31,4 +37,12 @@ export const openFileManagerDialog = () => ({
 
 export const showFileEntries = () => ({
   type: SHOW_FILE_ENTRIES
+})
+
+export const networkGetBlock = () => ({
+  type: NETWORK_GET_BLOCK
+})
+
+export const showBlock = () => ({
+  type: SHOW_BLOCK
 })

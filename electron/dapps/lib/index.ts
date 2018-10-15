@@ -29,6 +29,12 @@ const initUi = () => {
     });
   }
 
+  if( document.getElementById('networkGetBlockButton') ) {
+    document.getElementById('networkGetBlockButton').addEventListener('click', () => {
+      store.dispatch(actions.networkGetBlock());
+    });
+  }
+
   if( document.getElementById('openDialogButton') ) {
     document.getElementById('openDialogButton').addEventListener('click', () => {
       store.dispatch(actions.openFileManagerDialog());

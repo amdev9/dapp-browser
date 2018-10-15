@@ -7,7 +7,7 @@
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "*": ["node_modules/*"]
+      "*": ["node_modules/*", "types/*"]
     },
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
