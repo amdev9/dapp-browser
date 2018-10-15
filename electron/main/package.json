@@ -26,7 +26,6 @@
   "dependencies": {
     "@types/async": "^2.0.49",
     "@types/electron-devtools-installer": "^2.2.0",
-    "@types/ipfs": "git+https://github.com/survirtual/types-ipfs.git",
     "@types/react": "^16.4.14",
     "@types/redux-persist": "^4.3.1",
     "assert": "^1.4.1",

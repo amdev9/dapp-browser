@@ -29,8 +29,8 @@ class IpfsComponent {
         }
       });
 
-      this.ipfs.on('error', (error) => {
-        reject(error)
+      this.ipfs.on('error', (error: Error) => {
+        reject(error);
       });
 
 
