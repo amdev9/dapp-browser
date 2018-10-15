@@ -30,6 +30,8 @@
     "@types/redux-persist": "^4.3.1",
     "assert": "^1.4.1",
     "async": "^2.6.1",
+    "bitsharesjs": "^1.8.2",
+    "bitsharesjs-ws": "^1.5.5",
     "electron": "3.0.0-beta.4",
     "electron-builder": "^20.28.4",
     "electron-context-menu": "^0.10.0",
