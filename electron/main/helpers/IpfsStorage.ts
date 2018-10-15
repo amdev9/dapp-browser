@@ -18,6 +18,8 @@ class IpfsComponent {
   constructor(configuration: any) {
     this.ipfs = new IPFS(configuration);
 
+    console.log('')
+
     this.readyState = new Promise((resolve, reject) => {
       this.ipfs.on('ready', () => {
         if (this.ipfs.isOnline()) {
@@ -28,6 +30,11 @@ class IpfsComponent {
           this.ipfs.start();
         }
       });
+
+      this.ipfs.on('error', () => {
+        reject()
+      });
+
 
     })
 
@@ -65,6 +72,7 @@ class IpfsComponent {
     };
 
     const result = await this.ipfs.files.add(files, options)
+    console.log('-----> rs', result)
 
     return result
   }
@@ -111,5 +119,4 @@ const localConf = {
 };
 
 
-const comp = new IpfsComponent(remoteConf);
-export default comp
+export default new IpfsComponent(remoteConf);
