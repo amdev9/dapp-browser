@@ -34,6 +34,9 @@ export const TOGGLE_PERMISSION = 'TOGGLE_PERMISSION';
 export const GRANT_PERMISSIONS = 'GRANT_PERMISSIONS';
 export const CLOSE_MANAGER = 'CLOSE_MANAGER';
 export const LOAD_PERMISSIONS = 'LOAD_PERMISSIONS';
+
+// Names of system components
+export const IPFS_COMPONENT = 'ipfs'
  
 // FileManager action types
 export const FILE_MANAGER_OPEN_DIALOG = 'FILE_MANAGER_OPEN_DIALOG'

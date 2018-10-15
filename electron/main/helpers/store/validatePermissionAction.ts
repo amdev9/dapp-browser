@@ -4,13 +4,20 @@ import { Action } from './configureStore';
 import { RendererConf } from '../../createDappView';
  
 import * as constants from '../constants';
+import { checkComponentAppPermissions } from '../utils/selectors'
  
 
 export const validatePermissionAction = (globalId: RendererConf[]) => {
-  return () => (next: Dispatch<void>) => <A extends Action>(action: A) => {
+  return (store: any) => (next: Dispatch<void>) => <A extends Action>(action: A) => {
     console.log('validate', action)
     if (action.payload && action.payload.hasOwnProperty('status')) {
       if (action.payload.status === 'dapp') {
+
+        if (action.type === constants.IPFS_STORAGE_UPLOAD_FILES &&
+          checkComponentAppPermissions(action.meta.name, constants.IPFS_COMPONENT)(store.getState())
+        ){
+          return next(action)
+        }
  
         switch (action.type) {
           case constants.INTENT_OPEN_CHANNELS:
@@ -20,11 +27,16 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
           case constants.BIND_OPEN_CHANNELS:
           case constants.BIND_OPEN_CHANNELS_DONE:
 
-
           case constants.FILE_MANAGER_OPEN_DIALOG:
+
+          case constants.FILE_MANAGER_OPEN_DIALOG_SUCCESS:
+          case constants.FILE_MANAGER_OPEN_DIALOG_FAILURE:
+
+          case constants.IPFS_STORAGE_UPLOAD_FILES_SUCCESS:
+          case constants.IPFS_STORAGE_UPLOAD_FILES_FAILURE:
+
           case constants.SHOW_FILE_ENTRIES:
-          
- 
+
             return next(action);
           default:
             console.log("Cancelled for dapp " + action.type);
