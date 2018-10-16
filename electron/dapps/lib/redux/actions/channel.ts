@@ -1,18 +1,17 @@
+import { action } from 'typesafe-actions'
 import * as constants from '../constants'
 
-export function openChannelIntent() {
-  return {
-    type: constants.INTENT_OPEN_CHANNELS
-  };
-}
+export const openChannelIntent = () => ({
+  type: constants.INTENT_OPEN_CHANNELS
+})
 
 export const openFileManagerDialog = () => ({
   type: constants.FILE_MANAGER_OPEN_DIALOG
 })
 
-export const uploadFilesIpfsStorage = (entryList: Array<string>) => ({
-  type: constants.IPFS_STORAGE_UPLOAD_FILES,
-  payload: entryList,
+export const uploadFilesIpfsStorage = (entry: string) => ({
+  type: constants.IPFS_STORAGE_UPLOAD_FILE,
+  payload: { entry },
 })
 
 export const showFileEntries = () => ({
@@ -26,3 +25,6 @@ export const networkGetBlock = () => ({
 export const showBlock = () => ({
   type: constants.SHOW_BLOCK
 })
+
+export const downloadFileIpfsStorage = (hash: string) =>
+  action(constants.IPFS_STORAGE_DOWNLOAD_FILE, { hash })

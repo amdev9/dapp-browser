@@ -13,8 +13,9 @@ const fileManagerOpenDialogEpic: Epic<AnyAction> = action$ => action$.pipe( //@t
   ofType(constants.FILE_MANAGER_OPEN_DIALOG),
   switchMap(async (action) => {
     try {
-      const idsArray = await fileManagerInstance.showOpenDialog()
-      return fileManagerActions.openDialogSuccess(idsArray, action.meta.sourceUUID)
+      const fileId = await fileManagerInstance.openFile()
+      console.log('fileManagerOpenDialogEpic', fileId)
+      return fileManagerActions.openDialogSuccess(fileId, action.meta.sourceUUID)
     } catch(error){
       return fileManagerActions.openDialogFailure(error, action.meta.sourceUUID)
     }

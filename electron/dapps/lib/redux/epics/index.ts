@@ -16,17 +16,15 @@ const startCountdownEpic: Epic<any> = action$ => action$.pipe(
 const fileManagerOpenSuccess: Epic<any> = action$ => action$.pipe(
   ofType(constants.FILE_MANAGER_OPEN_DIALOG_SUCCESS),
   map((action) => {
-    utils.insertContentIntoBlock(action.payload && action.payload.join(',\r\n'), 'openDialogButton')
-    return actions.uploadFilesIpfsStorage(action.payload)
+    utils.insertContentIntoBlock(action.payload.entry, 'openDialogButton')
+    return actions.uploadFilesIpfsStorage(action.payload.entry)
   }),
 );
 
 const uploadFileIpfsStorageSuccess: Epic<any> = action$ => action$.pipe(
-  ofType(constants.IPFS_STORAGE_UPLOAD_FILES_SUCCESS),
+  ofType(constants.IPFS_STORAGE_UPLOAD_FILE_SUCCESS),
   tap((action) =>
-    utils.insertContentIntoBlock(
-      action.payload && action.payload.map((v: {id: string, hash: string}) => `${v.id}:${v.hash}`).join(',\r\n'),
-      'openDialogButton')
+    utils.insertContentIntoBlock(`${action.payload.ipfsEntry.id}:${action.payload.ipfsEntry.hash}`, 'openDialogButton')
   ),
   mapTo(actions.showFileEntries())
 );
