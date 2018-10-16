@@ -1,7 +1,7 @@
 // global main state
 // redux-persist integration here
 
-export type Permission = "ipfs" | "network" | "filesystem" | "storage" | "logger";
+export type Permission = "ipfs" | "network" | "filesystem" | "storage" | "logger"; // todo can we get these values from ../constants ?
 
 export type Client = {
   activeDapp: {

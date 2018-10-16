@@ -19,6 +19,9 @@ const dappActions: string[] = [
   constants.SHOW_FILE_ENTRIES,
   constants.NETWORK_GET_BLOCK,
   constants.SHOW_BLOCK,
+  constants.LOGGER_WRITE,
+  constants.LOGGER_WRITE_SUCCESS,
+  constants.LOGGER_WRITE_FAILURE,
 ];
 
 const fileManagerActions: string[] = [
@@ -46,19 +49,28 @@ const pmActions: string[] = [
   constants.LOAD_PERMISSIONS,
 ];
 
-const FILE_MANAGER_PERMISSION_NAME = "filesystem";
-const NETWORK_PERMISSION_NAME = "network";
-const IPFS_PERMISSION_NAME = "ipfs";
+const loggerActions: string[] = [
+  constants.LOGGER_WRITE,
+  constants.LOGGER_WRITE_SUCCESS,
+  constants.LOGGER_WRITE_FAILURE
+];
 
 const checkGranted = (state: IState, dappName: string, actionType: string) => {
+  let permissionName: Permission = null;
   if (fileManagerActions.includes(actionType)) {
-    return checkGrantedForPermission(state, dappName, FILE_MANAGER_PERMISSION_NAME);
+    permissionName = constants.PERMISSION_NAME_FILE_MANAGER;
   }
   if (networkActions.includes(actionType)) {
-    return checkGrantedForPermission(state, dappName, NETWORK_PERMISSION_NAME);
+    permissionName = constants.PERMISSION_NAME_NETWORK;
   }
   if (ipfsActions.includes(actionType)) {
-    return checkGrantedForPermission(state, dappName, IPFS_PERMISSION_NAME);
+    permissionName = constants.PERMISSION_NAME_IPFS;
+  }
+  if (loggerActions.includes(actionType)) {
+    permissionName = constants.PERMISSION_NAME_LOGGER;
+  }
+  if (permissionName) {
+    return checkGrantedForPermission(state, dappName, permissionName);
   }
   return true;
 };

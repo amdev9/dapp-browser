@@ -59,6 +59,13 @@ const initUi = () => {
     });
   }
 
+  if (document.getElementById("sendToConsoleButton")) {
+    document.getElementById("sendToConsoleButton").addEventListener('click', () => {
+      const input = <HTMLInputElement>document.getElementById("consoleText");
+      store.dispatch(actions.writeToConsole(input.value));
+    })
+  }
+
 
   //@todo add 
   // INTENT_CHANNEL_DATA_PASS(FM)

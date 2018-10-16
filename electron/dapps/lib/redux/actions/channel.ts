@@ -26,3 +26,8 @@ export const networkGetBlock = () => ({
 export const showBlock = () => ({
   type: constants.SHOW_BLOCK
 })
+
+export const writeToConsole = (message: string) => ({
+  type: constants.LOGGER_WRITE,
+  payload: {message}
+})
