@@ -12,10 +12,8 @@ const loggerInstance = new Logger();
 const loggerWriteEpic: Epic<AnyAction> = action$ => action$.pipe( //@todo fix action type
   ofType(constants.LOGGER_WRITE),
   switchMap(async (action) => {
-    console.log("loggerWrite Epic action: ", action);
     try {
       const message = await loggerInstance.writeToConsole(action.payload.message);
-      console.log("loggerWrite Epic message: ", message);
       return loggerActions.loggerWriteSuccess(message, action.meta.sourceUUID)
     } catch(error) {
       return loggerActions.loggerWriteFailure(error, action.meta.sourceUUID)

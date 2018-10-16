@@ -6,6 +6,7 @@ interface StatusBarProps {
   items?: { [index: string]: StatusBarItem; },
   isOpen?: boolean,
   toggleStatusBar?: () => void,
+  statusBarMessages?: string[],
   peersBarIsOpen?: boolean
 }
 
@@ -14,6 +15,7 @@ export class StatusBar extends React.Component<StatusBarProps> {
     super(props);
 
     this.getList = this.getList.bind(this)
+    this.getMessages = this.getMessages.bind(this)
   }
 
   public getList(): JSX.Element[] {
@@ -37,6 +39,11 @@ export class StatusBar extends React.Component<StatusBarProps> {
       ]
     }
   }
+  
+  public getMessages(): JSX.Element[] {
+    const {statusBarMessages} = this.props;
+    return statusBarMessages.map((itemKey, index) => <div key={`${itemKey}-${index}`}>{itemKey}</div>); 
+  }
 
   public render() {
     let { isOpen, items, toggleStatusBar } = this.props;
@@ -58,7 +65,9 @@ export class StatusBar extends React.Component<StatusBarProps> {
           toggleStatusBar={toggleStatusBar}
         />
         {this.getList()}
-        <div className="console" {...props} />
+        <div className="console" {...props} >
+          {this.getMessages()}
+        </div>
       </div>
     )
   }

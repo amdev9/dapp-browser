@@ -47,6 +47,7 @@ interface AppProps {
   onAddAppItem: (appItem?: AppItem) => any,
   onSwitchDapp: (targetDappName?: string) => any,
   onToggleAppHome: (dappName: string) => any,
+  statusBarMessages: string[],
   onResizeAppsFeed: (width: number, height: number) => any,
   isProduction: boolean,
   locationPath: string
@@ -63,7 +64,7 @@ class App extends React.Component<AppProps> {
     const {
       onTogglePanel, openNotificationPanel, openStatusBarPanel, openPeersBarPanel, openSettingsPanel, openSearchPanel, clearNotification, clearAllNotifications,
       onAddAppItem, onSwitchDapp, onToggleHome, statusBarToggle, peersBarToggle, onToggleAppHome, onToggleSearch, searchItems,
-      trayItems, feedItems, notifyItems, statusBarItems, onToggleLoaderPanel, openLoaderPanel, onToggleSettingsPanel, locationPath
+      trayItems, feedItems, notifyItems, statusBarItems, onToggleLoaderPanel, openLoaderPanel, onToggleSettingsPanel, locationPath, statusBarMessages
     } = this.props;
 
 
@@ -117,7 +118,7 @@ class App extends React.Component<AppProps> {
           })()}
 
         </div>
-        <StatusBar isOpen={openStatusBarPanel} items={statusBarItems} toggleStatusBar={statusBarToggle} peersBarIsOpen={openPeersBarPanel} />
+        <StatusBar isOpen={openStatusBarPanel} items={statusBarItems} toggleStatusBar={statusBarToggle} peersBarIsOpen={openPeersBarPanel} statusBarMessages={statusBarMessages} />
       </div>
     )
   }
@@ -146,6 +147,7 @@ const mapStateToProps = (state: IState) => ({
   openLoaderPanel: state.loader.isOpen,
   openStatusBarPanel: state.statusBar.isOpen,
   openPeersBarPanel: state.statusBar.isPeersOpen,
+  statusBarMessages: state.statusBar.messages,
   openSettingsPanel: state.settings.isOpen,
   openSearchPanel: state.search.isOpen,
   statusBarItems: state.statusBar.items,
