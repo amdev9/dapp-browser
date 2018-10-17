@@ -48,6 +48,9 @@ if (process.env.ELECTRON_ENV === 'development') {
   sourceMapSupport.install();
 }
 
+//Enables full sandbox mode
+app.enableSandbox();
+
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
