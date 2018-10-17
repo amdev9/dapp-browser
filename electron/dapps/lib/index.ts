@@ -45,7 +45,10 @@ const initUi = () => {
   // Download
   if( document.getElementById('downloadButton') ) {
     document.getElementById('downloadButton').addEventListener('click', () => {
-      store.dispatch(actions.downloadIpfsFile('QmXQeUUn1UuGjEEFdxdasjvLNh85u5DUC8TJCEJFS4eyqw'));
+      const ipfsHashElement = <HTMLInputElement> document.getElementById('ipfsHash')
+      if (ipfsHashElement.value) {
+        store.dispatch(actions.downloadIpfsFile(ipfsHashElement.value));
+      }
     });
   }
 

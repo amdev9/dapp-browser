@@ -24,7 +24,7 @@ export interface FileObject {
   content?: Buffer;
 }
 
-const entryMap: Map<string, string> = new Map();
+const entryMap: Map<FileId, Path> = new Map();
 
 export class FileManager {
 
@@ -53,11 +53,7 @@ export class FileManager {
     return pathId;
   }
 
-  _setPathEntries(pathArray: PathList = []): FileIdList {
-    return pathArray.map(FileManager._setPathEntry.bind(this))
-  }
-
-  getPath(id: FileId): Path {
+  static getPath(id: FileId): Path {
     if (!entryMap.has(id)) {
       return;
     }
@@ -65,7 +61,7 @@ export class FileManager {
     return entryMap.get(id)
   }
 
-  async openFile(): Promise<FileEntry | undefined> {
+  static async openFile(): Promise<FileEntry | undefined> {
     const file = await FileManager.selectFile()
 
     if (!file || !file.length) {
@@ -86,10 +82,5 @@ export class FileManager {
 
     return FileManager._setPathEntry(location)
   }
-
-  static makeDir(dir: string) {
-    fs.mkdirSync(dir)
-  }
-
 }
 
