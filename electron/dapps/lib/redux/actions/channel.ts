@@ -1,30 +1,17 @@
 import { action } from 'typesafe-actions'
 import * as constants from '../constants'
 
-export const openChannelIntent = () => ({
-  type: constants.INTENT_OPEN_CHANNELS
-})
+export const openChannelIntent = () => action(constants.INTENT_OPEN_CHANNELS)
 
-export const openFileManagerDialog = () => ({
-  type: constants.FILE_MANAGER_OPEN_DIALOG
-})
+export const openFileManagerDialog = () => action(constants.FILE_MANAGER_OPEN_DIALOG)
 
-export const uploadIpfsFile = (entry: string) => ({
-  type: constants.IPFS_STORAGE_UPLOAD_FILE,
-  payload: { entry },
-})
+export const uploadIpfsFile = (entry: string) => action(constants.IPFS_STORAGE_UPLOAD_FILE, {entry})
 
-export const showFileEntries = () => ({
-  type: constants.SHOW_FILE_ENTRIES
-})
+export const showFileEntries = () => action(constants.SHOW_FILE_ENTRIES)
 
-export const networkGetBlock = () => ({
-  type: constants.NETWORK_GET_BLOCK
-})
+export const networkGetBlock = () => action(constants.NETWORK_GET_BLOCK)
 
-export const showBlock = () => ({
-  type: constants.SHOW_BLOCK
-})
+export const showBlock = () => action(constants.SHOW_BLOCK)
 
 export const downloadIpfsFile = (hash: string) =>
   action(constants.IPFS_STORAGE_DOWNLOAD_FILE, { hash })
