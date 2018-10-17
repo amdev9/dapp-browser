@@ -59,8 +59,7 @@ export function createClientWindow(globalUUIDList: RendererConf[]) {
     let rendererObj: RendererConf = {
       id: uuidClient,
       status: 'client',
-      winId: renderIdClient,
-      name: 'clientname128729'
+      winId: renderIdClient
     };
     globalUUIDList.push(rendererObj);
 
