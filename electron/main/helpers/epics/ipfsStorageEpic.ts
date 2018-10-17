@@ -38,6 +38,10 @@ const ipfsStorageDownloadEpic: Epic<AnyAction> = (action$) => action$.pipe( //@t
       const targetDirectory = await FileManager.selectDirectory()
       const downloadFile = await ipfs.downloadFile(action.payload.hash)
 
+      if (!downloadFile){
+        throw Error('File with current hash does not exist')
+      }
+
       const ipfsFileEntry: ipfsStorageActions.IpfsFileEntry = {
         id: FileManager.saveFile(targetDirectory, <FileObject> downloadFile),
         hash: action.payload.hash

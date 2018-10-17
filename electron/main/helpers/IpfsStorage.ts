@@ -105,7 +105,7 @@ class IpfsComponent {
     return ipfsFiles[ipfsFiles.length - 1]
   }
 
-  async downloadFile(hash: string): Promise<IPFSGetResult> {
+  async downloadFile(hash: string): Promise<IPFSGetResult | null> {
     if (!hash) {
       return
     }
@@ -114,6 +114,10 @@ class IpfsComponent {
     await this.readyState
 
     const files = <IPFSGetResult[]> await this.ipfs.files.get(hash)
+
+    if (!files || !files.length){
+      return null
+    }
 
     return files[files.length - 1]
   }
