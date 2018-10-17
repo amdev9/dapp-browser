@@ -237,15 +237,32 @@ System components are proxy classes and wrapper classes that are isolated for se
 
 This component allows to store local data in the BrowserWindow. It is particularly useful for dapps that do not require persistent Internet connection or for dapps that need to store large amounts of data (e.g. a catalog of DVDs in a lending library).
 
-After Local Storage permission is granted and the dapp process is started off, we provide a ready-to-initialize instance of PouchDb storage with an IndexedDb adapter. 
+After Local Storage permission is granted and the dapp process is started off, we provide a ready-to-initialize instance of Localforage storage with an IndexedDb adapter. 
 
 ## Permissions signal sequence (Success scenario)
 1. Dapp developer initiates instance `new LocalStorage()`
-2. Create a wrapper class with corresponding data manipulation methods. The class  `new LocalStorage()` extends `PouchDb` class with `IndexedDb` adapter.
+2. Create a wrapper class with corresponding data manipulation methods. The class  `new LocalStorage()` extends `Localforage` class with `IndexedDb` adapter.
 
+LocalStorage component wraps `localforage` initialization (only if correspond permissions granted): 
+
+```javascript
+localforage.config({
+    driver      : localforage.IndexedDb, // Force WebSQL; same as using setDriver()
+    name        : 'myApp',
+    version     : 1.0,
+    size        : 4980736, // Size of database, in bytes. WebSQL-only for now.
+    storeName   : 'keyvaluepairs', // Should be alphanumeric, with underscores.
+    description : 'some description'
+});
+
+var store = localforage.createInstance({
+  name: "nameHere"
+});
+
+```
 
 ## External refferences:
-https://pouchdb.com<br>
+https://github.com/localForage/localForage<br>
 https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Basic_Concepts_Behind_IndexedDB<br/>
 
 -------------------------
@@ -470,14 +487,7 @@ https://electronjs.org/docs/api/dialog
 # array.LocalStorage
 Local Storage gives you the opportunity to store data on the renderer side. 
 
-The `LocalStorage` module equips you with methods which enable you to: 
 
-* Create storage instance via `localDb = new LocalStorage()` and close it with `localDb.close()`
-* Create a document `localDb.post(payload, [callback])`
-* Fetch a document `localDb.get(payloadId, [callback])`
-* Delete a document `localDb.remove(payloadId, [callback])` or `localDb.remove(payload, [callback])`
-
-`callback` are optional. If you don’t specify a `callback`, the API returns a promise. 
  
 Example usage
 -------------

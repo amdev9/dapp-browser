@@ -1,4 +1,7 @@
 import * as Bluebird from "bluebird";
+import * as path from 'path';
+import * as fs from 'fs';
+
 // Bluebird as global Promise
 declare global {
   export interface Promise<T> extends Bluebird<T> { }
@@ -8,13 +11,6 @@ declare global {
 }
 
 declare const Promise: any;
-
-import * as path from 'path';
-import * as fs from 'fs';
-import * as async from 'async';
-import { callbackify } from "util";
-
-/**/
 
 const DAPPS_PATH: string = path.join(__dirname, '..', '..', 'dapps', 'download');
 

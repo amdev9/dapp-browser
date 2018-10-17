@@ -66,23 +66,16 @@ const forwardToMain = (store: Store<any>) => (next: Dispatch<void>) => <A extend
 };
 
 const configureStore = (initialState?: any) => {
-
   const middleware = [forwardToMain, epicMiddleware, logger];
   const enhanced = [
     applyMiddleware(...middleware),
   ];
-  const enhancer: GenericStoreEnhancer = compose(...enhanced);
-
- 
+  const enhancer: GenericStoreEnhancer = compose(...enhanced); 
   const store = createStore(rootReducer, initialState, enhancer);
-
   epicMiddleware.run(rootEpic);
-
   electronManager.replyActionRenderer(store);  
-
   return store;
 };
-
 
 const initStore = () => {
   const states = electronManager.getGlobalState();  

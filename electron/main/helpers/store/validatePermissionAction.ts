@@ -1,9 +1,9 @@
 import { Dispatch } from 'redux';
 import { Action } from './configureStore';
 import { RendererConf } from '../../createDappView';
- 
+
 import * as constants from '../constants';
-import {IState, Permission} from "../reducers/state";
+import { IState, Permission } from '../reducers/state';
 
 const dappActions: string[] = [
   constants.INTENT_OPEN_CHANNELS,
@@ -73,7 +73,7 @@ const checkGranted = (state: IState, dappName: string, actionType: string) => {
 
 const checkGrantedForPermission = (state: IState, dappName: string, permissionName: Permission) => {
   if (state.permissionManager.grantedApps.includes(dappName) &&
-    state.permissionManager.permissions[dappName] && 
+    state.permissionManager.permissions[dappName] &&
     state.permissionManager.permissions[dappName].includes(permissionName)) {
     console.log(`Dapp "${dappName}" has privileges to use ${permissionName}}. OK`);
     return true;
@@ -99,7 +99,7 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
           console.log("Cancelled for dapp " + action.type);
         } else {
           const dappName = getSourceDappName(globalId, action);
-          
+
           if (checkGranted(store.getState(), dappName, action.type)) {
             return next(action);
           } else {
@@ -137,11 +137,11 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
           default:
             console.log("Cancelled for client");
         }
-      } else if (action.payload.status === 'permission_manager') {    
-        if(pmActions.includes(action.type)) { 
+      } else if (action.payload.status === 'permission_manager') {
+        if (pmActions.includes(action.type)) {
           return next(action);
         } else {
-          console.log("Cancelled for permission manager " + action.type); 
+          console.log("Cancelled for permission manager " + action.type);
         }
       }
     } else {
