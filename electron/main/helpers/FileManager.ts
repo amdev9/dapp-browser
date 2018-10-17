@@ -25,7 +25,12 @@ export interface FileObject {
 }
 
 export class FileManager {
-  entryMap: Map<FileId, Path> = new Map();
+  entryMap: Map<FileId, Path>
+
+  constructor(){
+    this.entryMap = new Map();
+
+  }
 
   static generateFileEntryId() {
     return uuidv4();

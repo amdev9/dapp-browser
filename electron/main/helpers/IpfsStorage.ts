@@ -2,8 +2,9 @@ import * as fs from 'fs';
 import * as IPFS from 'ipfs';
 import * as pathModule from 'path';
 
+import IpfsBaseComponent from './IpfsBaseComponent'
 import { Path } from './FileManager';
-import { IPFSGetResult} from '../types/ipfs';
+import { IPFSGetResult } from '../types/ipfs';
 import { remoteConfig } from './config/ipfs'
 
 export interface IpfsFileObject {
@@ -14,73 +15,10 @@ export interface IpfsFileObject {
 
 export type IpfsFileObjectList = Array<IpfsFileObject>
 
-class IpfsComponent {
-  ipfs: IPFS;
-  status: boolean = false;
-  readyState: Promise<any>;
-  url: string = 'https://ipfs.array.io/ipfs/';
-
+class IpfsStorage extends IpfsBaseComponent {
   constructor(configuration: IPFS.Options) {
-    this.ipfs = new IPFS(configuration);
-
-    console.log('---> IPFS constructor')
-    this.cleanLocks()
-
-    this.readyState = new Promise((resolve, reject) => {
-      this.ipfs.on('ready', () => {
-        if (this.ipfs.isOnline()) {
-          console.log('online');
-          resolve()
-        } else {
-          console.log('offline, try to start');
-          this.ipfs.start();
-        }
-      });
-
-      this.ipfs.on('error', (error: Error) => {
-        reject(error);
-      });
-
-
-    })
-
-    this.ipfs.on('start', this.startFunction.bind(this));
+    super(configuration)
   }
-
-  cleanLocks () {
-    const repoPath = this.ipfs.repo.path()
-    // This fixes a bug on Windows, where the daemon seems
-    // not to be exiting correctly, hence the file is not
-    // removed.
-    console.log('Cleaning repo.lock file')
-    const lockPath = pathModule.join(repoPath, 'repo.lock')
-
-    if (fs.existsSync(lockPath)) {
-      try {
-        fs.unlinkSync(lockPath)
-      } catch (err) {
-        console.warn('Could not remove repo.lock. Daemon might be running')
-      }
-    }
-  }
-
-  async startFunction() {
-    console.log('Node started!');
-  }
-
-  async readyFunction() {
-    if (this.ipfs.isOnline()) {
-      console.log('online');
-      this.status = true;
-    } else {
-      console.log('offline, try to start');
-      this.ipfs.start();
-    }
-
-    const version = await this.ipfs.version();
-    console.log('Version:', version.version);
-  };
-
 
   async uploadFile(filePath: Path): Promise<IpfsFileObject | null> {
     if (!filePath){
@@ -127,4 +65,4 @@ class IpfsComponent {
 }
 
 
-export default new IpfsComponent(remoteConfig);
+export default new IpfsStorage(remoteConfig);
