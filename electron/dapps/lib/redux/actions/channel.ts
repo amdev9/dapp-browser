@@ -9,7 +9,7 @@ export const openFileManagerDialog = () => ({
   type: constants.FILE_MANAGER_OPEN_DIALOG
 })
 
-export const uploadFilesIpfsStorage = (entry: string) => ({
+export const uploadIpfsFile = (entry: string) => ({
   type: constants.IPFS_STORAGE_UPLOAD_FILE,
   payload: { entry },
 })
@@ -26,5 +26,5 @@ export const showBlock = () => ({
   type: constants.SHOW_BLOCK
 })
 
-export const downloadFileIpfsStorage = (hash: string) =>
+export const downloadIpfsFile = (hash: string) =>
   action(constants.IPFS_STORAGE_DOWNLOAD_FILE, { hash })

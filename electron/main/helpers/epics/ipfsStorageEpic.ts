@@ -13,19 +13,19 @@ const ipfsStorageUploadEpic: Epic<AnyAction> = (action$, state$) => action$.pipe
   ofType(constants.IPFS_STORAGE_UPLOAD_FILE),
   switchMap(async (action) => {
     try {
-      const fileEntryPath = fileManager.getPathEntries(action.payload.entry)
+      const filePath = fileManager.getPath(action.payload.entry)
 
-      console.log('fileEntry', fileEntryPath, action.payload.entry)
-      const ipfsFileObject = await ipfs.uploadFile(fileEntryPath)
+      console.log('fileEntry', filePath, action.payload.entry)
+      const ipfsFileObject = await ipfs.uploadFile(filePath)
 
       const ipfsFile: ipfsStorageActions.IpfsFileEntry = {
         id: action.payload.entry,
         hash: ipfsFileObject.hash
       }
 
-      return ipfsStorageActions.ipfsUploadFilesSuccess(ipfsFile, action.meta.sourceUUID)
+      return ipfsStorageActions.uploadIpfsFileSuccess(ipfsFile, action.meta.sourceUUID)
     } catch(error){
-      return ipfsStorageActions.ipfsUploadFilesFailure(error, action.meta.sourceUUID)
+      return ipfsStorageActions.uploadIpfsFileFailure(error, action.meta.sourceUUID)
     }
   }),
 );
@@ -34,7 +34,6 @@ const ipfsStorageDownloadEpic: Epic<AnyAction> = (action$) => action$.pipe( //@t
   ofType(constants.IPFS_STORAGE_DOWNLOAD_FILE),
   switchMap(async (action) => {
     try {
-      console.log('IPFS_STORAGE_DOWNLOAD_FILE', action)
       const targetDirectory = await FileManager.selectDirectory()
       const downloadFile = await ipfs.downloadFile(action.payload.hash)
 
@@ -43,9 +42,9 @@ const ipfsStorageDownloadEpic: Epic<AnyAction> = (action$) => action$.pipe( //@t
         hash: action.payload.hash
       }
 
-      return ipfsStorageActions.ipfsDownloadFileSuccess(ipfsFileEntry, action.meta.sourceUUID)
+      return ipfsStorageActions.downloadIpfsFileSuccess(ipfsFileEntry, action.meta.sourceUUID)
     } catch(error){
-      return ipfsStorageActions.ipfsDownloadFileFailure(error, action.meta.sourceUUID)
+      return ipfsStorageActions.downloadIpfsFileFailure(error, action.meta.sourceUUID)
     }
   }),
 );

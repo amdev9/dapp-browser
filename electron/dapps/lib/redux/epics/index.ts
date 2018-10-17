@@ -15,9 +15,9 @@ const startCountdownEpic: Epic<any> = action$ => action$.pipe(
 
 const fileManagerOpenSuccess: Epic<any> = action$ => action$.pipe(
   ofType(constants.FILE_MANAGER_OPEN_DIALOG_SUCCESS),
-  map((action) => {
-    utils.insertContentIntoBlock(action.payload.entry, 'openDialogButton')
-    return actions.uploadFilesIpfsStorage(action.payload.entry)
+  map(({ payload }) => {
+    utils.insertContentIntoBlock(`${payload.entry.id}:${payload.entry.name}`, 'openDialogButton')
+    return actions.uploadIpfsFile(payload.entry.id)
   }),
 );
 

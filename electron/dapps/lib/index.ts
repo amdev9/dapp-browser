@@ -45,7 +45,7 @@ const initUi = () => {
   // Download
   if( document.getElementById('downloadButton') ) {
     document.getElementById('downloadButton').addEventListener('click', () => {
-      store.dispatch(actions.downloadFileIpfsStorage('QmUmWoSA4f6aKCWuZqvrnbJdFyfJeqyDNfrAURWGhFSUXz'));
+      store.dispatch(actions.downloadIpfsFile('QmXQeUUn1UuGjEEFdxdasjvLNh85u5DUC8TJCEJFS4eyqw'));
     });
   }
 

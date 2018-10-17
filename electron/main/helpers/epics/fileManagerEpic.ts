@@ -13,9 +13,14 @@ const fileManagerOpenDialogEpic: Epic<AnyAction> = action$ => action$.pipe( //@t
   ofType(constants.FILE_MANAGER_OPEN_DIALOG),
   switchMap(async (action) => {
     try {
-      const fileId = await fileManagerInstance.openFile()
-      console.log('fileManagerOpenDialogEpic', fileId)
-      return fileManagerActions.openDialogSuccess(fileId, action.meta.sourceUUID)
+      const fileEntry = await fileManagerInstance.openFile()
+
+      if (!fileEntry){
+        throw Error('File not selected')
+      }
+
+      console.log('fileManagerOpenDialogEpic', fileEntry)
+      return fileManagerActions.openDialogSuccess(fileEntry, action.meta.sourceUUID)
     } catch(error){
       return fileManagerActions.openDialogFailure(error, action.meta.sourceUUID)
     }
