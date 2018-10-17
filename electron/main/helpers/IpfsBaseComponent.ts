@@ -2,32 +2,29 @@ import * as fs from 'fs';
 import * as IPFS from 'ipfs';
 import * as path from 'path';
 
+import Ipfs from './IpfsInstance'
+
 export default class IpfsBaseComponent {
   ipfs: IPFS;
   status: boolean = false;
   readyState: Promise<any>;
 
   constructor(configuration: IPFS.Options) {
-    this.ipfs = new IPFS(configuration);
-
-    IpfsBaseComponent.cleanLocks(configuration.repo || this.ipfs.repo.path())
 
     this.readyState = new Promise((resolve, reject) => {
-      this.ipfs.on('ready', () => {
-        if (this.ipfs.isOnline()) {
+      Ipfs.on('ready', () => {
+        if (Ipfs.isOnline()) {
           console.log('online');
           resolve()
         } else {
           console.log('offline, try to start');
-          this.ipfs.start();
+          Ipfs.start();
         }
       });
 
-      this.ipfs.on('error', (error: Error) => {
+      Ipfs.on('error', (error: Error) => {
         reject(error);
       });
-
-
     })
 
   }
