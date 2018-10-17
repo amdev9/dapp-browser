@@ -1,5 +1,5 @@
 
-export type Permission = "ipfs" | "network" | "storage" | "filesystem";
+export type Permission = "ipfs" | "network" | "storage" | "filesystem" | "logger";
 export interface PermissionManager {
   isOpen: boolean,
   items: Permission[],

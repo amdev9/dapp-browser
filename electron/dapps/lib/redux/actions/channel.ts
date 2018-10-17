@@ -11,7 +11,14 @@ export const showFileEntries = () => action(constants.SHOW_FILE_ENTRIES)
 
 export const networkGetBlock = () => action(constants.NETWORK_GET_BLOCK)
 
+ 
+
+export const writeToConsole = (message: string) =>  action(constants.LOGGER_WRITE, { message })
+
+ 
+ 
 export const showBlock = () => action(constants.SHOW_BLOCK)
 
 export const downloadIpfsFile = (hash: string) =>
   action(constants.IPFS_STORAGE_DOWNLOAD_FILE, { hash })
+ 
