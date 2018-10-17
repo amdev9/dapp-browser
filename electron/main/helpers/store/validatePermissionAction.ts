@@ -1,9 +1,9 @@
 import { Dispatch } from 'redux';
 import { Action } from './configureStore';
 import { RendererConf } from '../../createDappView';
- 
+
 import * as constants from '../constants';
-import {IState, Permission} from "../reducers/state";
+import { IState, Permission } from '../reducers/state';
 
 const dappActions: string[] = [
   constants.INTENT_OPEN_CHANNELS,
@@ -13,9 +13,14 @@ const dappActions: string[] = [
   constants.FILE_MANAGER_OPEN_DIALOG,
   constants.FILE_MANAGER_OPEN_DIALOG_SUCCESS,
   constants.FILE_MANAGER_OPEN_DIALOG_FAILURE,
-  constants.IPFS_STORAGE_UPLOAD_FILES,
-  constants.IPFS_STORAGE_UPLOAD_FILES_SUCCESS,
-  constants.IPFS_STORAGE_UPLOAD_FILES_FAILURE,
+
+  constants.IPFS_STORAGE_UPLOAD_FILE,
+  constants.IPFS_STORAGE_UPLOAD_FILE_SUCCESS,
+  constants.IPFS_STORAGE_UPLOAD_FILE_FAILURE,
+  constants.IPFS_STORAGE_DOWNLOAD_FILE,
+  constants.IPFS_STORAGE_DOWNLOAD_FILE_SUCCESS,
+  constants.IPFS_STORAGE_DOWNLOAD_FILE_FAILURE,
+
   constants.SHOW_FILE_ENTRIES,
   constants.NETWORK_GET_BLOCK,
   constants.SHOW_BLOCK,
@@ -37,9 +42,12 @@ const networkActions: string[] = [
 ];
 
 const ipfsActions: string[] = [
-  constants.IPFS_STORAGE_UPLOAD_FILES,
-  constants.IPFS_STORAGE_UPLOAD_FILES_SUCCESS,
-  constants.IPFS_STORAGE_UPLOAD_FILES_FAILURE,
+  constants.IPFS_STORAGE_UPLOAD_FILE,
+  constants.IPFS_STORAGE_UPLOAD_FILE_SUCCESS,
+  constants.IPFS_STORAGE_UPLOAD_FILE_FAILURE,
+  constants.IPFS_STORAGE_DOWNLOAD_FILE,
+  constants.IPFS_STORAGE_DOWNLOAD_FILE_SUCCESS,
+  constants.IPFS_STORAGE_DOWNLOAD_FILE_FAILURE,
 ];
 
 const pmActions: string[] = [
@@ -77,7 +85,7 @@ const checkGranted = (state: IState, dappName: string, actionType: string) => {
 
 const checkGrantedForPermission = (state: IState, dappName: string, permissionName: Permission) => {
   if (state.permissionManager.grantedApps.includes(dappName) &&
-    state.permissionManager.permissions[dappName] && 
+    state.permissionManager.permissions[dappName] &&
     state.permissionManager.permissions[dappName].includes(permissionName)) {
     console.log(`Dapp "${dappName}" has privileges to use ${permissionName}}. OK`);
     return true;
@@ -103,7 +111,7 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
           console.log("Cancelled for dapp " + action.type);
         } else {
           const dappName = getSourceDappName(globalId, action);
-          
+
           if (checkGranted(store.getState(), dappName, action.type)) {
             return next(action);
           } else {
@@ -142,11 +150,11 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
           default:
             console.log("Cancelled for client: ", action.type);
         }
-      } else if (action.payload.status === 'permission_manager') {    
-        if(pmActions.includes(action.type)) { 
+      } else if (action.payload.status === 'permission_manager') {
+        if (pmActions.includes(action.type)) {
           return next(action);
         } else {
-          console.log("Cancelled for permission manager " + action.type); 
+          console.log("Cancelled for permission manager " + action.type);
         }
       }
     } else {

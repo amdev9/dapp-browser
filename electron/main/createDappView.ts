@@ -12,7 +12,7 @@ export type BindedConf = Map<string, ChannelsConf>;
 export type BindedListConf = Array<BindedConf>;
 export interface RendererConf {
   id: string;
-  name: string;
+  name?: string;
   status: string;
   winId: number;
   dappView?: BrowserView;
