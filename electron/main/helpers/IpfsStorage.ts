@@ -80,7 +80,7 @@ class IpfsComponent {
   };
 
 
-  async uploadFile(filePath: Path): Promise<IpfsFileObject> {
+  async uploadFile(filePath: Path): Promise<IpfsFileObject | null> {
     if (!filePath){
       return
     }
@@ -97,6 +97,10 @@ class IpfsComponent {
     }
 
     const ipfsFiles = await this.ipfs.files.add([file], options)
+
+    if (!ipfsFiles || !ipfsFiles.length){
+      return null
+    }
 
     return ipfsFiles[ipfsFiles.length - 1]
   }

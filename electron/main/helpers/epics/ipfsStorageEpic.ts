@@ -15,6 +15,10 @@ const ipfsStorageUploadEpic: Epic<AnyAction> = (action$) => action$.pipe( //@tod
 
       const ipfsFileObject = await ipfs.uploadFile(filePath)
 
+      if (!ipfsFileObject){
+        throw Error('Ipfs file object is empty')
+      }
+
       const ipfsFile: ipfsStorageActions.IpfsFileEntry = {
         id: action.payload.entry,
         hash: ipfsFileObject.hash
