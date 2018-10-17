@@ -76,14 +76,6 @@ const initUi = () => {
       store.dispatch(actions.writeToConsole(input.value));
     })
   }
-
-
-  //@todo add 
-  // INTENT_CHANNEL_DATA_PASS(FM)
-  // ACCEPT_CHANNEL_DATA_PASS(ChannelId)
-  // through new channelId
-  // FM_OPEN_FILE
-  // FM_OPEN_FILE_SUCCESS
 };
 
 initUi();
