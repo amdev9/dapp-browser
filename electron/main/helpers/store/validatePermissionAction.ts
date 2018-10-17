@@ -127,6 +127,7 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
           case constants.TOGGLE_LOADER_PANEL:
           case constants.TOGGLE_SETTINGS_PANEL:
           case constants.TOGGLE_STATUS_BAR_PANEL:
+          case constants.LOGGER_WRITE_SUCCESS:
           case constants.TOGGLE_PEERS_BAR_PANEL:
           case constants.TOGGLE_HOME:
           case constants.TOGGLE_APP_HOME:
@@ -139,7 +140,7 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
           case constants.REMOVE_TRAY_ITEM:
             return next(action);
           default:
-            console.log("Cancelled for client");
+            console.log("Cancelled for client: ", action.type);
         }
       } else if (action.payload.status === 'permission_manager') {    
         if(pmActions.includes(action.type)) { 

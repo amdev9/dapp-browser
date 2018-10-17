@@ -1,12 +1,13 @@
 import { StatusBarItem } from "../../redux/model"
 import * as React from "react"
 import { Bar } from "./bar"
+import {Logger} from "../../Logger";
 
 interface StatusBarProps {
   items?: { [index: string]: StatusBarItem; },
   isOpen?: boolean,
   toggleStatusBar?: () => void,
-  statusBarMessages?: string[],
+  loggerWrite?: boolean,
   peersBarIsOpen?: boolean
 }
 
@@ -41,8 +42,7 @@ export class StatusBar extends React.Component<StatusBarProps> {
   }
   
   public getMessages(): JSX.Element[] {
-    const {statusBarMessages} = this.props;
-    return statusBarMessages.map((itemKey, index) => <div key={`${itemKey}-${index}`}>{itemKey}</div>); 
+    return Logger.messages.map((itemKey, index) => <div key={`${itemKey}-${index}`}>{itemKey}</div>);
   }
 
   public render() {

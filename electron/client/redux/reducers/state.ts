@@ -38,7 +38,7 @@ export interface StatusBarPanel {
   items: { [index: string]: StatusBarItem; },
   isOpen: boolean,
   isPeersOpen: boolean,
-  messages: string[]
+  loggerWrite: boolean
 }
 
 export interface SearchPanel {

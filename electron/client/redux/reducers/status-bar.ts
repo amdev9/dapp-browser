@@ -1,4 +1,4 @@
-import {TOGGLE_PEERS_BAR_PANEL, TOGGLE_STATUS_BAR_PANEL, LOGGER_WRITE} from '../constants';
+import {TOGGLE_PEERS_BAR_PANEL, TOGGLE_STATUS_BAR_PANEL, LOGGER_WRITE, LOGGER_WRITE_SUCCESS} from '../constants';
  
 import { StatusBarPanel } from './state';
 
@@ -34,7 +34,7 @@ const initialState: StatusBarPanel = {
   },
   isOpen: false,
   isPeersOpen: false,
-  messages: []
+  loggerWrite: false
 };
 
 export default function statusBar(state: StatusBarPanel = initialState, action: any) { //@todo combine with notification.ts
@@ -49,8 +49,11 @@ export default function statusBar(state: StatusBarPanel = initialState, action: 
     case TOGGLE_PEERS_BAR_PANEL:
       return { ...state, isPeersOpen: !state.isPeersOpen };
       
-    case LOGGER_WRITE: 
-      return {...state, messages: [...state.messages, action.payload.message]};
+    case LOGGER_WRITE:
+      return {...state, loggerWrite: false};
+      
+    case LOGGER_WRITE_SUCCESS:
+      return {...state, loggerWrite: true};
 
     default:
       return state;
