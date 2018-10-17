@@ -2,8 +2,8 @@ import * as fs from 'fs';
 import * as IPFS from 'ipfs';
 import * as pathModule from 'path';
 
-import { PathList, Path } from './FileManager'
-import {IPFSFile, IPFSGetResult} from "../types/ipfs";
+import { Path } from './FileManager'
+import { IPFSGetResult} from "../types/ipfs";
 
 export interface IpfsFileObject {
   hash: string;
@@ -19,7 +19,7 @@ class IpfsComponent {
   readyState: Promise<any>;
   url: string = 'https://ipfs.array.io/ipfs/';
 
-  constructor(configuration: any) {
+  constructor(configuration: IPFS.Options) {
     this.ipfs = new IPFS(configuration);
 
     this.cleanLocks()
@@ -88,8 +88,6 @@ class IpfsComponent {
     // Check online status
     await this.readyState
 
-    console.log('---> IPFS basename', pathModule.basename(filePath))
-
     const file = { path: pathModule.basename(filePath), content: fs.createReadStream(filePath) }
 
     const handler = (p: any) => { console.log(p); }
@@ -100,9 +98,6 @@ class IpfsComponent {
 
     const ipfsFiles = await this.ipfs.files.add([file], options)
 
-    console.log('---> IPFS FILE', ipfsFiles)
-
-    // Check paths with source path
     return ipfsFiles[ipfsFiles.length - 1]
   }
 

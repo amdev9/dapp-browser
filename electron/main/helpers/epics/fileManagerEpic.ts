@@ -17,7 +17,6 @@ const fileManagerOpenDialogEpic: Epic<AnyAction> = action$ => action$.pipe( //@t
         throw Error('File not selected')
       }
 
-      console.log('fileManagerOpenDialogEpic', fileEntry)
       return fileManagerActions.openDialogSuccess(fileEntry, action.meta.sourceUUID)
     } catch(error){
       return fileManagerActions.openDialogFailure(error, action.meta.sourceUUID)

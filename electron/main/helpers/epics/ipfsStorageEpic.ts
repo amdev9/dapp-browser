@@ -7,15 +7,13 @@ import * as constants from '../constants';
 import {FileManager, FileObject} from '../FileManager'
 import ipfs from '../IpfsStorage'
 
-const ipfsStorageUploadEpic: Epic<AnyAction> = (action$, state$) => action$.pipe( //@todo fix action type
+const ipfsStorageUploadEpic: Epic<AnyAction> = (action$) => action$.pipe( //@todo fix action type
   ofType(constants.IPFS_STORAGE_UPLOAD_FILE),
   switchMap(async (action) => {
     try {
       const filePath = FileManager.getPath(action.payload.entry)
 
       const ipfsFileObject = await ipfs.uploadFile(filePath)
-      console.log('fileEntry', filePath, action.payload.entry)
-      console.log('ipfsFileObject', ipfsFileObject)
 
       const ipfsFile: ipfsStorageActions.IpfsFileEntry = {
         id: action.payload.entry,
