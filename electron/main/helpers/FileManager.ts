@@ -24,9 +24,8 @@ export interface FileObject {
   content?: Buffer;
 }
 
-const entryMap: Map<FileId, Path> = new Map();
-
 export class FileManager {
+  entryMap: Map<FileId, Path> = new Map();
 
   static generateFileEntryId() {
     return uuidv4();
@@ -39,29 +38,29 @@ export class FileManager {
   static async selectDirectory(): Promise<Path> {
      const paths = await dialog.showOpenDialog({ properties: ['openDirectory', 'createDirectory'] })
 
-    if (!paths || paths.length === 0) {
+    if (!paths || !paths.length) {
       return
     }
 
     return paths[0]
   }
 
-  static _setPathEntry(path: Path): FileId {
+  _setPathEntry(path: Path): FileId {
     const pathId = FileManager.generateFileEntryId();
-    entryMap.set(pathId, path);
+    this.entryMap.set(pathId, path);
 
     return pathId;
   }
 
-  static getPath(id: FileId): Path {
-    if (!entryMap.has(id)) {
+  getPath(id: FileId): Path {
+    if (!this.entryMap.has(id)) {
       return;
     }
 
-    return entryMap.get(id)
+    return this.entryMap.get(id)
   }
 
-  static async openFile(): Promise<FileEntry | undefined> {
+  async openFile(): Promise<FileEntry | undefined> {
     const file = await FileManager.selectFile()
 
     if (!file || !file.length) {
@@ -69,18 +68,19 @@ export class FileManager {
     }
 
     return {
-      id: FileManager._setPathEntry(file[0]),
+      id: this._setPathEntry(file[0]),
       name: path.basename(file[0])
     }
   }
 
-  static saveFile(dir: Path, file: FileObject) {
+  saveFile(dir: Path, file: FileObject) {
 
     const location = path.join(dir, file.name)
 
     fs.writeFileSync(location, file.content)
 
-    return FileManager._setPathEntry(location)
+    return this._setPathEntry(location)
   }
 }
 
+export default new FileManager()

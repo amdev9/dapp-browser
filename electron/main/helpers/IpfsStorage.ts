@@ -2,8 +2,9 @@ import * as fs from 'fs';
 import * as IPFS from 'ipfs';
 import * as pathModule from 'path';
 
-import { Path } from './FileManager'
-import { IPFSGetResult} from "../types/ipfs";
+import { Path } from './FileManager';
+import { IPFSGetResult} from '../types/ipfs';
+import { remoteConfig } from './config/ipfs'
 
 export interface IpfsFileObject {
   hash: string;
@@ -22,6 +23,7 @@ class IpfsComponent {
   constructor(configuration: IPFS.Options) {
     this.ipfs = new IPFS(configuration);
 
+    console.log('---> IPFS constructor')
     this.cleanLocks()
 
     this.readyState = new Promise((resolve, reject) => {
@@ -124,35 +126,5 @@ class IpfsComponent {
 
 }
 
-const remoteConf = {
-  start: true,
-  EXPERIMENTAL: {
-    pubsub: true
-  },
-  config: {
-    Bootstrap: [
-      "/ip4/35.204.17.104/tcp/4001/ipfs/QmWCsxqpvYMKCeCejvXLc7TbWrraLwmAKMxWgcsKQ8xUL3"
-    ],
-    Addresses: {
-      Swarm: [
-        "/ip4/0.0.0.0/tcp/4001",
-        "/ip6/::/tcp/4001",
-        "/dns4/discovery.libp2p.array.io/tcp/9091/wss/p2p-websocket-star/"
-      ],
-      API: "/ip4/127.0.0.1/tcp/5001",
-      Gateway: "/ip4/127.0.0.1/tcp/8080"
-    }
-  }
-};
 
-const localConf = {
-  // repo: '/Users/pidgin/dev/boilerplate/ipfsTest',
-  config: {
-    Addresses: {
-      API: "/ip4/127.0.0.1/tcp/5001",
-    }
-  }
-};
-
-
-export default new IpfsComponent(remoteConf);
+export default new IpfsComponent(remoteConfig);
