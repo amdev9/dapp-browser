@@ -35,9 +35,20 @@ const initUi = () => {
     });
   }
 
+  //Open files (File Manager)
   if( document.getElementById('openDialogButton') ) {
     document.getElementById('openDialogButton').addEventListener('click', () => {
       store.dispatch(actions.openFileManagerDialog());
+    });
+  }
+
+  // Download
+  if( document.getElementById('downloadButton') ) {
+    document.getElementById('downloadButton').addEventListener('click', () => {
+      const ipfsHashElement = <HTMLInputElement> document.getElementById('ipfsHash')
+      if (ipfsHashElement.value) {
+        store.dispatch(actions.downloadIpfsFile(ipfsHashElement.value));
+      }
     });
   }
 

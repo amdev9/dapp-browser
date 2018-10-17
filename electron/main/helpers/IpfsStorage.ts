@@ -1,5 +1,9 @@
 import * as fs from 'fs';
 import * as IPFS from 'ipfs';
+import * as pathModule from 'path';
+
+import { Path } from './FileManager'
+import { IPFSGetResult} from "../types/ipfs";
 
 export interface IpfsFileObject {
   hash: string;
@@ -15,8 +19,10 @@ class IpfsComponent {
   readyState: Promise<any>;
   url: string = 'https://ipfs.array.io/ipfs/';
 
-  constructor(configuration: any) {
+  constructor(configuration: IPFS.Options) {
     this.ipfs = new IPFS(configuration);
+
+    this.cleanLocks()
 
     this.readyState = new Promise((resolve, reject) => {
       this.ipfs.on('ready', () => {
@@ -39,8 +45,21 @@ class IpfsComponent {
     this.ipfs.on('start', this.startFunction.bind(this));
   }
 
-  async errorFunction(error: Error) {
-    console.error('Something went terribly wrong!', error);
+  cleanLocks () {
+    const repoPath = this.ipfs.repo.path()
+    // This fixes a bug on Windows, where the daemon seems
+    // not to be exiting correctly, hence the file is not
+    // removed.
+    console.log('Cleaning repo.lock file')
+    const lockPath = pathModule.join(repoPath, 'repo.lock')
+
+    if (fs.existsSync(lockPath)) {
+      try {
+        fs.unlinkSync(lockPath)
+      } catch (err) {
+        console.warn('Could not remove repo.lock. Daemon might be running')
+      }
+    }
   }
 
   async startFunction() {
@@ -60,28 +79,49 @@ class IpfsComponent {
     console.log('Version:', version.version);
   };
 
-  async uploadFilesMethod(pathsList: Array<string>): Promise<IpfsFileObjectList> {
-    const files = pathsList.map((path) => ({ path, content: fs.createReadStream(path) }))
 
-    const handler = (p: any) => { console.log(p); };
+  async uploadFile(filePath: Path): Promise<IpfsFileObject | null> {
+    if (!filePath){
+      return
+    }
+
+    // Check online status
+    await this.readyState
+
+    const file = { path: pathModule.basename(filePath), content: fs.createReadStream(filePath) }
+
+    const handler = (p: any) => { console.log(p); }
     const options = {
       progress: handler,
-    };
+      wrapWithDirectory: true,
+    }
 
-    const result = await this.ipfs.files.add(files, options)
+    const ipfsFiles = await this.ipfs.files.add([file], options)
 
-    return result
+    if (!ipfsFiles || !ipfsFiles.length){
+      return null
+    }
+
+    return ipfsFiles[ipfsFiles.length - 1]
   }
 
-  async uploadFiles(pathsList: Array<string>): Promise<IpfsFileObjectList> {
-    return this.readyState.then(() => {
-      return this.uploadFilesMethod(pathsList)
-    })
+  async downloadFile(hash: string): Promise<IPFSGetResult | null> {
+    if (!hash) {
+      return
+    }
+
+    // Check online status
+    await this.readyState
+
+    const files = <IPFSGetResult[]> await this.ipfs.files.get(hash)
+
+    if (!files || !files.length){
+      return null
+    }
+
+    return files[files.length - 1]
   }
 
-  downloadFile(hash: string) {
-    console.log(this.url.concat(hash));
-  }
 }
 
 const remoteConf = {

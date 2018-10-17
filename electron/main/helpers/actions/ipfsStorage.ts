@@ -1,21 +1,25 @@
 import { action } from 'typesafe-actions';
 import * as constants from '../constants';
-import { FileEntryId } from '../FileManager';
+import {FileIdList, FileId} from '../FileManager';
 
 export interface IpfsFileEntry {
-  id: FileEntryId;
+  id: FileId;
   hash: string;
 }
 
 export type IpfsFileEntryList = Array<IpfsFileEntry>
 
-export const ipfsUploadFilesSuccess = (entryList: IpfsFileEntryList, targetUUID? :string) =>
-  action(constants.IPFS_STORAGE_UPLOAD_FILES_SUCCESS, entryList, { targetUUID });
+export const uploadIpfsFileSuccess = (ipfsEntry: IpfsFileEntry, targetUUID? :string) =>
+  action(constants.IPFS_STORAGE_UPLOAD_FILE_SUCCESS, { ipfsEntry }, { targetUUID });
 
-export const ipfsUploadFilesFailure = (error: string, targetUUID? :string) =>
-  action(constants.IPFS_STORAGE_UPLOAD_FILES_FAILURE, error, { targetUUID });
+export const uploadIpfsFileFailure = (error: string, targetUUID? :string) =>
+  action(constants.IPFS_STORAGE_UPLOAD_FILE_FAILURE, error, { targetUUID });
 
 export const openDialog = () =>
   action(constants.FILE_MANAGER_OPEN_DIALOG);
 
+export const downloadIpfsFileSuccess = (file: IpfsFileEntry, targetUUID: string) =>
+  action(constants.IPFS_STORAGE_DOWNLOAD_FILE_SUCCESS, { file }, { targetUUID})
 
+export const downloadIpfsFileFailure = (error: string, targetUUID: string) =>
+  action(constants.IPFS_STORAGE_DOWNLOAD_FILE_FAILURE, error, { targetUUID})
