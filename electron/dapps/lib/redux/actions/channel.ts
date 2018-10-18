@@ -21,4 +21,7 @@ export const showBlock = () => action(constants.SHOW_BLOCK)
 
 export const downloadIpfsFile = (hash: string) =>
   action(constants.IPFS_STORAGE_DOWNLOAD_FILE, { hash })
- 
+
+export const keychainCreate = (key: string, cipher: string, curve: string) => action(constants.KEYCHAIN_CREATE)
+export const keychainList = () => action(constants.KEYCHAIN_LIST)
+export const keychainSign = (key: string, chainId: string, transaction: string) => action(constants.KEYCHAIN_SIGN)

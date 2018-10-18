@@ -36,3 +36,7 @@ export const SHOW_BLOCK = 'SHOW_BLOCK';
 
 
 export const LOGGER_WRITE = 'LOGGER_WRITE';
+
+export const KEYCHAIN_CREATE = "KEYCHAIN_CREATE";
+export const KEYCHAIN_LIST = "KEYCHAIN_LIST";
+export const KEYCHAIN_SIGN = "KEYCHAIN_SIGN";

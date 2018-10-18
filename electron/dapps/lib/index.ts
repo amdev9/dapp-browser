@@ -76,6 +76,22 @@ const initUi = () => {
       store.dispatch(actions.writeToConsole(input.value));
     })
   }
+
+  if (document.getElementById("keychainCreateButton")) {
+    document.getElementById("keychainCreateButton").addEventListener('click', () => {
+      const input = <HTMLInputElement>document.getElementById("keychainKey");
+      store.dispatch(actions.keychainCreate(input.value, "CIPHER_AES256", "CURVE_SECP256K1"));
+    })
+    document.getElementById("keychainListButton").addEventListener('click', () => {
+      store.dispatch(actions.keychainList());
+    })
+    document.getElementById("keychainSignButton").addEventListener('click', () => {
+      const keyInput = <HTMLInputElement>document.getElementById("keychainKey");
+      const chainIdInput = <HTMLInputElement>document.getElementById("keychainChainId");
+      const transactionIdInput = <HTMLInputElement>document.getElementById("keychainTransactionId");
+      store.dispatch(actions.keychainSign(keyInput.value, chainIdInput.value, transactionIdInput.value));
+    })
+  }
 };
 
 initUi();
