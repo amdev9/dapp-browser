@@ -42,7 +42,7 @@ export class DappFrame {
     if (this._state.statusBar.isOpen) {
       offset += 250;
     }
-    if (this._state.statusBar.isPeersOpen) {  //@todo account items.count . Now this functions works correctly only for 3 items
+    if (this._state.statusBar.isPeersOpen) {  //@todo refactor account items.count . Now this functions works correctly only for 3 items
       offset += 100
     }
     if (this._state.search.isOpen) {

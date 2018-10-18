@@ -9,7 +9,7 @@ const initialState: LoaderPanel = {
  
 export type LoaderPanelAction = ActionType<typeof loaderActions>;
 
-export default function loader(state: LoaderPanel = initialState, action: LoaderPanelAction) { //@todo combine loader, notfication, statusbar?
+export default function loader(state: LoaderPanel = initialState, action: LoaderPanelAction) { //@todo refactor combine loader, notfication, statusbar?
   switch (action.type) {
     case TOGGLE_LOADER_PANEL:
       if (action.payload && action.payload.hasOwnProperty('isOpen')) {

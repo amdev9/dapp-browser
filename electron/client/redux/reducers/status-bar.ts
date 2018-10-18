@@ -37,7 +37,7 @@ const initialState: StatusBarPanel = {
   loggerWrite: false
 };
 
-export default function statusBar(state: StatusBarPanel = initialState, action: any) { //@todo combine with notification.ts
+export default function statusBar(state: StatusBarPanel = initialState, action: any) { //@todo refactor combine with notification.ts
   switch (action.type) {
     case TOGGLE_STATUS_BAR_PANEL:
       //if (action.payload && action.payload.hasOwnProperty('isOpen')) {

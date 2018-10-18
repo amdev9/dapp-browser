@@ -30,6 +30,17 @@ export type Client = {
   }
 }
 
+// @todo refactor
+// export interface ToggleStatus {
+//   isHome 
+//   notification isOpen
+//   loader isOpen
+//   statusBar isOpen
+//   statusBar isPeersOpen 
+//   search isOpen
+//   fileDialog isOpen
+// }
+
 export interface IState {
   channel: {};
   client: Client;
@@ -40,7 +51,5 @@ export interface IState {
     grantedApps: string[],
   };
   tray: {};
-
-  //@todo add MapPermissions
 }
 

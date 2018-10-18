@@ -18,7 +18,7 @@ const initialState: Client = {
   fileDialog: {isOpen: false}
 };
 
-export function client(state: Client = initialState, action: any) { //@todo add actions to client.ts
+export function client(state: Client = initialState, action: any) { //@todo refactor add actions to client.ts, remove isOpen
   switch (action.type) {
  
     case constants.SWITCH_DAPP:
