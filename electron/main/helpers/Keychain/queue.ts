@@ -1,12 +1,12 @@
-import { spawn, ChildProcess } from "child_process";
+import { ChildProcess, spawn } from "child_process";
 import { EOL } from "os";
 
 export const RESPONSE_TIMEOUT = 1000;
 export const MAX_RETRIES = 3;
 
 export interface Task {
-  command: "CMD_CREATE" | "CMD_SIGN" | "CMD_LIST",
-  params?: any,
+  command: "CMD_CREATE" | "CMD_SIGN" | "CMD_LIST";
+  params?: any;
   promise: {
     resolve: any,
     reject: any,
@@ -14,9 +14,9 @@ export interface Task {
 }
 
 export class TaskProcess {
-  retries: number;
-  queue: Queue;
-  task: Task;
+  public task: Task;
+  public retries: number;
+  private queue: Queue;
 
   constructor(queue: Queue, task: Task) {
     this.retries = MAX_RETRIES;
@@ -64,7 +64,7 @@ export class TaskProcess {
         const deserialized = JSON.parse(response);
 
         if (deserialized.error) {
-          handleError(new Error(deserialized.error))
+          handleError(new Error(deserialized.error));
         } else {
           cleanup();
           resolve(deserialized.result);
@@ -79,15 +79,15 @@ export class TaskProcess {
       await stdin.write(serialized);
       await stdin.write(EOL);
       stdin.end();
-    })
+    });
   }
 }
 
 export class Queue {
-  activeProcess?: TaskProcess;
-  keychain: ChildProcess;
-  queue: Task[];
-  path: string;
+  private activeProcess?: TaskProcess;
+  public keychain: ChildProcess;
+  private queue: Task[];
+  private path: string;
 
   constructor(path: string) {
     this.keychain = spawn(path);
@@ -95,7 +95,7 @@ export class Queue {
     this.queue = [];
   }
 
-  push(task: Task) {
+  public push(task: Task) {
     this.queue.push(task);
 
     if (!this.activeProcess) {
@@ -103,9 +103,9 @@ export class Queue {
     }
   }
 
-  async next() {
+  private async next() {
     if (!this.activeProcess) {
-      let task = this.queue.shift();
+      const task = this.queue.shift();
 
       if (task) {
         this.activeProcess = new TaskProcess(this, task);

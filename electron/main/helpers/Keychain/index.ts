@@ -1,21 +1,18 @@
-import { spawn, ChildProcess } from "child_process";
-import { Queue, TaskProcess, Task } from "./queue";
-import { EOL, platform } from "os";
+import { platform } from "os";
+import { Queue, Task, TaskProcess } from "./queue";
 
 export { Queue, TaskProcess, Task };
-const RESPONSE_TIMEOUT = 1000;
-const MAX_RETRIES = 3;
 
-export function getDefaultExecPath():string {
+export function getDefaultExecPath(): string {
   const info = platform();
 
   switch (info) {
     case "linux":
-      return "./bin/keychain.ubuntu"
+      return "./bin/keychain.ubuntu";
     case "darwin":
-      return "./bin/keychain.macos"
+      return "./bin/keychain.macos";
     case "win32":
-      return "bin/keychain.exe"
+      return "bin/keychain.exe";
     default:
       return "unknown";
   }
@@ -23,54 +20,58 @@ export function getDefaultExecPath():string {
 
 export class Keychain {
   // Path to keychain bin
-  path: string;
+  private path: string;
   // Tick based keychain task manager
-  queue: Queue;
+  private queue: Queue;
 
   constructor(path?: string) {
     this.path = path ? path : getDefaultExecPath();
     this.queue = new Queue(this.path);
   }
 
-  sign(key: Keychain.Key, chainId: Keychain.ChainId, transaction: Keychain.Transaction): Promise<Keychain.Signed> {
+  public sign(
+    key: Keychain.Key,
+    chainId: Keychain.ChainId,
+    transaction: Keychain.Transaction,
+  ): Promise<Keychain.Signed> {
     return new Promise((resolve, reject) => {
-      let properties = {
+      const properties = {
         chainid: chainId,
         keyname: key,
         transaction,
       };
 
       this.queue.push({
-        promise: { resolve, reject },
         command: "CMD_SIGN",
         params: properties,
+        promise: { resolve, reject },
       });
-    })
+    });
   }
 
-  create(key: Keychain.Key, cipher: Keychain.Cipher, curve: Keychain.Curve): Promise<boolean> {
+  public create(key: Keychain.Key, cipher: Keychain.Cipher, curve: Keychain.Curve): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      let properties = {
-        keyname: key,
+      const properties = {
         algo: cipher,
         curve,
+        keyname: key,
       };
 
       this.queue.push({
-        promise: { resolve, reject },
         command: "CMD_CREATE",
         params: properties,
+        promise: { resolve, reject },
       });
-    })
+    });
   }
 
-  list(): Promise<Keychain.Key[]> {
+  public list(): Promise<Keychain.Key[]> {
     return new Promise((resolve, reject) => {
       this.queue.push({
+        command: "CMD_LIST",
         promise: { resolve, reject },
-        command: "CMD_LIST"
       });
-    })
+    });
   }
 }
 
