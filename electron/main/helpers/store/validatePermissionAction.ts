@@ -27,6 +27,18 @@ const dappActions: string[] = [
   constants.LOGGER_WRITE,
   constants.LOGGER_WRITE_SUCCESS,
   constants.LOGGER_WRITE_FAILURE,
+
+  constants.KEYCHAIN_CREATE,
+  constants.KEYCHAIN_CREATE_SUCCESS,
+  constants.KEYCHAIN_CREATE_FAILURE,
+  constants.KEYCHAIN_LIST,
+  constants.KEYCHAIN_LIST_SUCCESS,
+  constants.KEYCHAIN_LIST_FAILURE,
+  constants.KEYCHAIN_SIGN,
+  constants.KEYCHAIN_SIGN_SUCCESS,
+  constants.KEYCHAIN_SIGN_FAILURE,
+
+  constants.KEYCHAIN_SHOW_RESULT
 ];
 
 const fileManagerActions: string[] = [
@@ -60,7 +72,19 @@ const pmActions: string[] = [
 const loggerActions: string[] = [
   constants.LOGGER_WRITE,
   constants.LOGGER_WRITE_SUCCESS,
-  constants.LOGGER_WRITE_FAILURE
+  constants.LOGGER_WRITE_FAILURE,
+];
+
+const keychainActions: string[] = [
+  constants.KEYCHAIN_CREATE,
+  constants.KEYCHAIN_CREATE_SUCCESS,
+  constants.KEYCHAIN_CREATE_FAILURE,
+  constants.KEYCHAIN_LIST,
+  constants.KEYCHAIN_LIST_SUCCESS,
+  constants.KEYCHAIN_LIST_FAILURE,
+  constants.KEYCHAIN_SIGN,
+  constants.KEYCHAIN_SIGN_SUCCESS,
+  constants.KEYCHAIN_SIGN_FAILURE,
 ];
 
 const checkGranted = (state: IState, dappName: string, actionType: string) => {
@@ -76,6 +100,9 @@ const checkGranted = (state: IState, dappName: string, actionType: string) => {
   }
   if (loggerActions.includes(actionType)) {
     permissionName = constants.PERMISSION_NAME_LOGGER;
+  }
+  if (keychainActions.includes(actionType)) {
+    permissionName = constants.PERMISSION_NAME_KEYCHAIN;
   }
   if (permissionName) {
     return checkGrantedForPermission(state, dappName, permissionName);
