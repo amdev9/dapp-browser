@@ -21,7 +21,7 @@ export const list = () =>
   action(constants.KEYCHAIN_LIST);
 
 
-export const signSuccess = (result: boolean, targetUUID?: string) =>
+export const signSuccess = (result: string, targetUUID?: string) =>
   action(constants.KEYCHAIN_SIGN_SUCCESS, result, targetUUID);
 
 export const signFailure = (error: string, targetUUID?: string) =>

@@ -8,8 +8,6 @@ import * as keychainActions from '../actions/keychain';
 import * as constants from '../constants';
 
 const KEYCHAIN_PATH = path.join(__dirname, "..", "helpers", "Keychain", getDefaultExecPath());
-console.log("KEYCHAIN_PATH: ", KEYCHAIN_PATH);
-console.log("__dirname: ", __dirname);
 
 const keychainCreateEpic: Epic<AnyAction> = action$ => action$.pipe( //@todo fix action type
   ofType(constants.KEYCHAIN_CREATE),
@@ -21,7 +19,6 @@ const keychainCreateEpic: Epic<AnyAction> = action$ => action$.pipe( //@todo fix
       const keychainInstance = new Keychain(KEYCHAIN_PATH);
 
       const result = await keychainInstance.create(key, cipher, curve);
-      console.log("Keychain Create result: ", result);
       return keychainActions.createSuccess(result, action.meta.sourceUUID)
     } catch(error){
       return keychainActions.createFailure(error, action.meta.sourceUUID)
@@ -36,7 +33,6 @@ const keychainListEpic: Epic<AnyAction> = action$ => action$.pipe( //@todo fix a
       const keychainInstance = new Keychain(KEYCHAIN_PATH);
 
       const result = await keychainInstance.list();
-      console.log("Keychain list epic result: ", result);
       return keychainActions.listSuccess(result, action.meta.sourceUUID)
     } catch(error){
       return keychainActions.listFailure(error, action.meta.sourceUUID)
@@ -54,8 +50,7 @@ const keychainSignEpic: Epic<AnyAction> = action$ => action$.pipe( //@todo fix a
       const keychainInstance = new Keychain(KEYCHAIN_PATH);
 
       const result = await keychainInstance.sign(key, chainId, transaction);
-      console.log("Keychain sign result: ", result);
-      return keychainActions.signSuccess(action.meta.sourceUUID);
+      return keychainActions.signSuccess(result, action.meta.sourceUUID);
     } catch(error){
       return keychainActions.signFailure(error, action.meta.sourceUUID);
     }
