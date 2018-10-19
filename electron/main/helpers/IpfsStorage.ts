@@ -15,7 +15,7 @@ export type IpfsFileObjectList = Array<IpfsFileObject>
 
 const EXEC_TIMEOUT = 10000
 
-const functionPromiseTimeout = (f, timeout) => {
+const functionPromiseTimeout = (f: () => Promise<any>, timeout: number) => {
   if (!(f instanceof Function)){
     throw Error('First argument is not a function')
   }
