@@ -13,6 +13,31 @@ export interface IpfsFileObject {
 
 export type IpfsFileObjectList = Array<IpfsFileObject>
 
+const EXEC_TIMEOUT = 10000
+
+const functionPromiseTimeout = (f: () => Promise<any>, timeout: number) => {
+  if (!(f instanceof Function)){
+    throw Error('First argument is not a function')
+  }
+
+  const result = f()
+
+  if (!(result instanceof Promise)){
+    return result
+  }
+
+  return new Promise((resolve, reject) => {
+    const timerId = setTimeout(() => {
+      reject('Timeout error')
+    }, timeout)
+
+    result
+      .then((data) => resolve(data))
+      .catch((error) => reject(error))
+      .finally(() => clearTimeout(timerId))
+  })
+}
+
 class IpfsComponent {
   ipfs: IPFS;
   status: boolean = false;
@@ -113,10 +138,12 @@ class IpfsComponent {
     // Check online status
     await this.readyState
 
-    const files = <IPFSGetResult[]> await this.ipfs.files.get(hash)
+    const files = await functionPromiseTimeout(() => {
+      return this.ipfs.files.get(hash)
+    }, EXEC_TIMEOUT)
 
     if (!files || !files.length){
-      return null
+      throw Error('File with current hash does not exist')
     }
 
     return files[files.length - 1]
