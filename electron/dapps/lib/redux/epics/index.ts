@@ -35,11 +35,53 @@ const networkGetBlockSuccess: Epic<any> = action$ => action$.pipe(
   mapTo(actions.showBlock())
 );
 
+const keychainCreateSuccess: Epic<any> = action$ => action$.pipe(
+  ofType(constants.KEYCHAIN_CREATE_SUCCESS),
+  tap((action) => utils.insertContentIntoBlock(JSON.stringify(action.payload),'keychainSignButton')),
+  mapTo(actions.keychainShowResult()) 
+);
+
+const keychainCreateFailure: Epic<any> = action$ => action$.pipe(
+  ofType(constants.KEYCHAIN_CREATE_FAILURE),
+  tap((action) => utils.insertContentIntoBlock(JSON.stringify(action.payload),'keychainSignButton')),
+  mapTo(actions.keychainShowResult()) 
+);
+
+const keychainListSuccess: Epic<any> = action$ => action$.pipe(
+  ofType(constants.KEYCHAIN_LIST_SUCCESS),
+  tap((action) => utils.insertContentIntoBlock(JSON.stringify(action.payload),'keychainSignButton')),
+  mapTo(actions.keychainShowResult())
+);
+
+const keychainListFailure: Epic<any> = action$ => action$.pipe(
+  ofType(constants.KEYCHAIN_LIST_FAILURE),
+  tap((action) => utils.insertContentIntoBlock(JSON.stringify(action.payload),'keychainSignButton')),
+  mapTo(actions.keychainShowResult())
+);
+
+const keychainSignSuccess: Epic<any> = action$ => action$.pipe(
+  ofType(constants.KEYCHAIN_SIGN_SUCCESS),
+  tap((action) => utils.insertContentIntoBlock(JSON.stringify(action.payload),'keychainSignButton')),
+  mapTo(actions.keychainShowResult())
+);
+
+const keychainSignFailure: Epic<any> = action$ => action$.pipe(
+  ofType(constants.KEYCHAIN_SIGN_FAILURE),
+  tap((action) => utils.insertContentIntoBlock(JSON.stringify(action.payload),'keychainSignButton')),
+  mapTo(actions.keychainShowResult())
+);
+
 
 export const rootEpic = combineEpics(
   fileManagerOpenSuccess,
   startCountdownEpic,
   uploadFileIpfsStorageSuccess,
   networkGetBlockSuccess,
+  keychainCreateSuccess,
+  keychainCreateFailure,
+  keychainListSuccess,
+  keychainListFailure,
+  keychainSignSuccess,
+  keychainSignFailure,
 );
 

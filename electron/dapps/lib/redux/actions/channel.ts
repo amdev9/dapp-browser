@@ -28,3 +28,5 @@ export const keychainList = () => action(constants.KEYCHAIN_LIST)
 
 export const keychainSign = (key: string, chainId: string, transaction: string) =>
   action(constants.KEYCHAIN_SIGN, {key, chainId, transaction})
+
+export const keychainShowResult = () => action(constants.KEYCHAIN_SHOW_RESULT)

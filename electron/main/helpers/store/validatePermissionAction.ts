@@ -37,6 +37,8 @@ const dappActions: string[] = [
   constants.KEYCHAIN_SIGN,
   constants.KEYCHAIN_SIGN_SUCCESS,
   constants.KEYCHAIN_SIGN_FAILURE,
+
+  constants.KEYCHAIN_SHOW_RESULT
 ];
 
 const fileManagerActions: string[] = [
