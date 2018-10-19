@@ -1,1 +1,0 @@
-import IpfsRoom from '../IpfsRoom'

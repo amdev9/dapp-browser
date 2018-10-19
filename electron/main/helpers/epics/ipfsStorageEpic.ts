@@ -6,34 +6,6 @@ import * as ipfsStorageActions  from '../actions/ipfsStorage';
 import * as constants from '../constants';
 import fileManager, { FileManager, FileObject} from '../FileManager'
 import ipfs from '../IpfsStorage'
-import IpfsRoom from '../IpfsRoom'
-// import '../../systemComponents/src/ipfsComponent/ipfsRoom'
-
-const channel = 'ipfs-pubsub-demo'
-
-IpfsRoom.create(channel).then((room) => {
-  room.subscribe({
-    onMessage: (message) => console.log('onMessage', message.data.toString()),
-    onJoined: (peer) => console.log('onJoined', peer),
-    onLeft: (peer) => console.log('onLeft', peer),
-    onSubscribed: () => console.log('onSubscribed')
-  })
-
-  room.subscribe({
-    onJoined: (peer) => room.sendTo(peer, 'Hello ' + peer + '!')
-  })
-})
-
-setTimeout(() => {
-  IpfsRoom.create(channel).then((room) => {
-    room.subscribe({
-      onMessage: (message) => console.log('onMessage newRoom', message.data.toString()),
-      onJoined: (peer) => console.log('onJoined newRoom', peer),
-      onLeft: (peer) => console.log('onLeft newRoom', peer),
-      onSubscribed: () => console.log('onSubscribed newRoom')
-    })
-  })
-}, 10000)
 
 
 const ipfsStorageUploadEpic: Epic<AnyAction> = (action$) => action$.pipe( //@todo fix action type
