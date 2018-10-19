@@ -116,7 +116,7 @@ class IpfsComponent {
     const files = <IPFSGetResult[]> await this.ipfs.files.get(hash)
 
     if (!files || !files.length){
-      return null
+      throw Error('File with current hash does not exist')
     }
 
     return files[files.length - 1]
