@@ -15,8 +15,8 @@ const keychainCreateEpic: Epic<AnyAction> = action$ => action$.pipe( //@todo fix
   ofType(constants.KEYCHAIN_CREATE),
   switchMap(async (action) => {
     try {
-      const key = "some_key";
-      const cipher = Keychain.Cipher.AES256;
+      const key = action.payload.key;
+      const cipher = Keychain.Cipher.AES256; // todo do we need to pass 'cipher' and 'curve' parameters from a dapp?
       const curve = Keychain.Curve.SECP256K1;
       const keychainInstance = new Keychain(KEYCHAIN_PATH);
 
@@ -48,9 +48,9 @@ const keychainSignEpic: Epic<AnyAction> = action$ => action$.pipe( //@todo fix a
   ofType(constants.KEYCHAIN_SIGN),
   switchMap(async (action) => {
     try {
-      const key = "some_key";
-      const chainId = "de5f4d8974715e20f47c8bb609547c9e66b0b9e31d521199b3d8d6af6da74cb1";
-      const transaction = "871689d060721b5cec5a010080841e00000000000011130065cd1d0000000000000000";
+      const key = action.payload.key;
+      const chainId = action.payload.chainId;
+      const transaction = action.transaction;
       const keychainInstance = new Keychain(KEYCHAIN_PATH);
 
       const result = await keychainInstance.sign(key, chainId, transaction);

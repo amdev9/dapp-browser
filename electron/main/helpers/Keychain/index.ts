@@ -20,9 +20,9 @@ export function getDefaultExecPath(): string {
 
 export class Keychain {
   // Path to keychain bin
-  private path: string;
+  path: string;
   // Tick based keychain task manager
-  private queue: Queue;
+  queue: Queue;
 
   constructor(path?: string) {
     this.path = path ? path : getDefaultExecPath();

@@ -11,17 +11,20 @@ export const showFileEntries = () => action(constants.SHOW_FILE_ENTRIES)
 
 export const networkGetBlock = () => action(constants.NETWORK_GET_BLOCK)
 
- 
 
 export const writeToConsole = (message: string) =>  action(constants.LOGGER_WRITE, { message })
 
- 
- 
+
 export const showBlock = () => action(constants.SHOW_BLOCK)
 
 export const downloadIpfsFile = (hash: string) =>
   action(constants.IPFS_STORAGE_DOWNLOAD_FILE, { hash })
 
-export const keychainCreate = (key: string, cipher: string, curve: string) => action(constants.KEYCHAIN_CREATE)
+
+export const keychainCreate = (key: string, cipher: string, curve: string) =>
+  action(constants.KEYCHAIN_CREATE, {key, cipher, curve})
+
 export const keychainList = () => action(constants.KEYCHAIN_LIST)
-export const keychainSign = (key: string, chainId: string, transaction: string) => action(constants.KEYCHAIN_SIGN)
+
+export const keychainSign = (key: string, chainId: string, transaction: string) =>
+  action(constants.KEYCHAIN_SIGN, {key, chainId, transaction})
