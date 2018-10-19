@@ -138,7 +138,7 @@ class IpfsComponent {
     // Check online status
     await this.readyState
 
-    const files = await functionPromiseTimeout(() => {
+    const files: any = await functionPromiseTimeout(() => {
       return this.ipfs.files.get(hash)
     }, EXEC_TIMEOUT)
 
