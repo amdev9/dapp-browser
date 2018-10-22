@@ -17,6 +17,21 @@
 	<button id="sendchannel1">Send data through channel 1</button>
 	<br />
 	<button id="sendchannel2">Send data through channel 2</button>
-	
+
+	<br />
+	<br />
+	<br />
+	<form id="ipfsRoomSubscribe">
+		<input id="ipfsRoomName" name="ipfsRoomName" value="Room"/>
+		<button id="ipfsRoomSubscribeButton">Subscribe on room</button>
+	</form>
+
+	<div>Chat log:</div>
+	<div id="ipfsRoomLog" style="border: 1px; max-height: 400px; width: 100%;"></div>
+	<form id="ipfsRoomTextForm">
+		<input name="ipfsRoomText" placeholder="Enter text"/>
+		<button id="ipfsRoomTextSend">Send</button>
+	</form>
+
 	<script src="../../../lib/build/app.bundle.js"></script>
 </body>

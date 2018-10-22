@@ -35,11 +35,19 @@ const networkGetBlockSuccess: Epic<any> = action$ => action$.pipe(
   mapTo(actions.showBlock())
 );
 
+const ipfsRoomSendMessage: Epic<any> = action$ => action$.pipe(
+  ofType(constants.IPFS_ROOM_SEND_MESSAGE_TO_DAPP),
+  tap((action) =>
+    utils.appendContentIntoBlock(`[${new Date().toLocaleString()}] ${action.payload.message}\r\n`,'ipfsRoomLog')),
+  mapTo(actions.showBlock())
+);
+
 
 export const rootEpic = combineEpics(
   fileManagerOpenSuccess,
   startCountdownEpic,
   uploadFileIpfsStorageSuccess,
   networkGetBlockSuccess,
+  ipfsRoomSendMessage,
 );
 

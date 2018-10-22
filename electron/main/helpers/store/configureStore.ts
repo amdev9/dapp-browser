@@ -4,6 +4,7 @@ import { isFSA } from 'flux-standard-action';
 // import { triggerAlias } from 'electron-redux';
 import { createEpicMiddleware } from 'redux-observable';
 import { persistStore,  persistReducer } from 'redux-persist';
+import thunk from 'redux-thunk';
 
 import { validatePermissionAction } from './validatePermissionAction';
 import rootEpic from '../epics';
@@ -184,6 +185,7 @@ const replyActionMain = (store: Store<{}>, globalId: RendererConf[]) => {
     const uuidObj = globalId.find(renObj => renObj.id === uuid);
 
     if (uuidObj) {
+      console.log('replyAction', action)
       const statusObj = { status: uuidObj.status };
       const metadata = { sourceUUID: uuid, name: uuidObj.name }
       action.payload = (action.payload) ? Object.assign(action.payload, statusObj) : statusObj;
@@ -210,7 +212,7 @@ const replyActionMain = (store: Store<{}>, globalId: RendererConf[]) => {
 
 export const configureStore = (state: IState = initialState, globalId?: RendererConf[]) => {
   const middleware: Middleware[] = [];
-  middleware.push(validatePermissionAction(globalId), epicMiddleware, forwardToRendererWrapper(globalId));
+  middleware.push(thunk, validatePermissionAction(globalId), epicMiddleware, forwardToRendererWrapper(globalId));
   const enhanced = [applyMiddleware(...middleware)];
   const enhancer: GenericStoreEnhancer = compose(...enhanced);
 

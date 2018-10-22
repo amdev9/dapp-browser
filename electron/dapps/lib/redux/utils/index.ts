@@ -17,3 +17,11 @@ export const insertContentIntoBlock = (content: string = '', buttonId: string) =
   }
 
 }
+export const appendContentIntoBlock = (content: string = '', blockId: string) => {
+  const blockElement = document.getElementById(blockId)
+  console.log('elements', blockElement)
+
+  if (blockElement){
+    blockElement.innerText += content
+  }
+}

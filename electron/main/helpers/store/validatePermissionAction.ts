@@ -20,6 +20,11 @@ const dappActions: string[] = [
   constants.IPFS_STORAGE_DOWNLOAD_FILE,
   constants.IPFS_STORAGE_DOWNLOAD_FILE_SUCCESS,
   constants.IPFS_STORAGE_DOWNLOAD_FILE_FAILURE,
+  constants.IPFS_ROOM_SUBSCRIBE,
+  constants.IPFS_ROOM_SUBSCRIBE_SUCCESS,
+  constants.IPFS_ROOM_SUBSCRIBE_FAILURE,
+  constants.IPFS_ROOM_SEND_MESSAGE_TO_ROOM,
+  constants.IPFS_ROOM_SEND_MESSAGE_TO_DAPP,
 
   constants.SHOW_FILE_ENTRIES,
   constants.NETWORK_GET_BLOCK,
@@ -45,6 +50,11 @@ const ipfsActions: string[] = [
   constants.IPFS_STORAGE_DOWNLOAD_FILE,
   constants.IPFS_STORAGE_DOWNLOAD_FILE_SUCCESS,
   constants.IPFS_STORAGE_DOWNLOAD_FILE_FAILURE,
+  constants.IPFS_ROOM_SUBSCRIBE,
+  constants.IPFS_ROOM_SUBSCRIBE_SUCCESS,
+  constants.IPFS_ROOM_SUBSCRIBE_FAILURE,
+  constants.IPFS_ROOM_SEND_MESSAGE_TO_ROOM,
+  constants.IPFS_ROOM_SEND_MESSAGE_TO_DAPP,
 ];
 
 const pmActions: string[] = [

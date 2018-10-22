@@ -1,10 +1,12 @@
 import * as IPFS from 'ipfs';
+import * as Room from 'ipfs-pubsub-room';
+import {remoteConfig} from "./config/ipfs";
 
-import { remoteConfig } from './config/ipfs'
+// import { remoteConfig } from './config/ipfs'
 
 const ipfs = new IPFS({
   ...remoteConfig,
-  repo: `ipfs/pubsub/${Math.random()}`
+  repo: `ipfs/pubsub/${Math.random()}`,
 });
 
 export const readyState = new Promise((resolve, reject) => {

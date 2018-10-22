@@ -7,6 +7,7 @@ import IpfsBaseComponent from './IpfsBaseComponent'
 
 export type RoomName = string
 export type RoomInstance = Room
+export type DappUUID = string
 
 export interface SubscribeOptions {
   onMessage?: (message: { from: string, data: Buffer }) => void;
@@ -16,6 +17,39 @@ export interface SubscribeOptions {
 }
 
 const rooms: Map<RoomName, Room> = new Map()
+
+type DappRooms = { [roomName:string]: Room }
+type DappMap = { [dappUUID:string]: DappRooms }
+
+class RoomStorage {
+  rooms: DappMap
+
+  constructor() {
+    this.rooms = {}
+  }
+
+  getRoom(dappUUID: DappUUID, roomName: RoomName): Room {
+    return this.rooms[dappUUID] && this.rooms[dappUUID][roomName]
+  }
+
+  addRoom(dappUUID: DappUUID, roomName: RoomName, room: Room): void {
+    if (!this.rooms[dappUUID]) {
+      this.rooms[dappUUID] = {}
+    }
+
+
+    this.rooms[dappUUID][roomName] = room
+
+    console.log('RoomStorage.addRoom:', dappUUID, roomName, !!room)
+    console.log('RoomStorage.rooms:',
+      Object.keys(this.rooms).map((key) =>
+        `DAPP:${key} - ${Object.keys(this.rooms[key]).join(',')}`).join(' ||| ')
+    )
+
+  }
+}
+
+const RoomMapInstance = new RoomStorage()
 
 // const repo = `ipfs/pubsub-demo/${Math.random()}`
 
@@ -27,16 +61,27 @@ export default class IpfsRoom {
 
   constructor(room?: Room) {
     this.room = room || null
+
   }
 
-  static async create(name?: RoomName): Promise<IpfsRoom> {
-    if (!name) {
+  static async create(dappUUID: string, name?: RoomName): Promise<IpfsRoom> {
+    if (!dappUUID || !name) {
       return new IpfsRoom()
     }
 
     await readyState
 
-    return new IpfsRoom(Room(Ipfs, name))
+    const room = Room(Ipfs, name)
+
+    RoomMapInstance.addRoom(dappUUID, name, room)
+
+    return new IpfsRoom(room)
+  }
+
+  static get(dappUUID: string, name?: RoomName): IpfsRoom {
+    console.log("DAPPS", RoomMapInstance.rooms)
+    const room = RoomMapInstance.getRoom(dappUUID, name)
+    return room && new IpfsRoom(room)
   }
 
   setRoom(room: Room): void {
@@ -55,7 +100,6 @@ export default class IpfsRoom {
   async broadcast(message: string) {
     if (this.room) {
       await readyState
-
       this.room.broadcast(message)
     }
   }

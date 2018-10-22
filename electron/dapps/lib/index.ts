@@ -70,6 +70,28 @@ const initUi = () => {
     });
   }
 
+  if( document.getElementById('ipfsRoomSubscribe') ) {
+    document.getElementById('ipfsRoomSubscribe').addEventListener('submit', (e) => {
+      e.preventDefault()
+      const formElements = e.target.elements
+      const roomName = formElements.ipfsRoomName && formElements.ipfsRoomName.value
+      store.dispatch(actions.ipfsRoomSubscribe(roomName))
+    });
+  }
+
+  if( document.getElementById('ipfsRoomTextForm') ) {
+    document.getElementById('ipfsRoomTextForm').addEventListener('submit', (e) => {
+      e.preventDefault()
+      const formElements = e.target.elements
+      const message = formElements.ipfsRoomText && formElements.ipfsRoomText.value || ''
+
+      const roomNameElement = <HTMLInputElement> document.getElementById('ipfsRoomName')
+      const roomName = roomNameElement && roomNameElement.value || ''
+      console.log('topic', roomName, message)
+      store.dispatch(actions.ipfsRoomSendMessage(message, roomName))
+    });
+  }
+
 
   //@todo add 
   // INTENT_CHANNEL_DATA_PASS(FM)

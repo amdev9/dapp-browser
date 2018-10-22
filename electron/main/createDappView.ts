@@ -4,6 +4,7 @@ import * as uuidv4 from 'uuid/v4';
 import { AppItem } from './helpers/AppsManager';
 
 let dappView: Electron.BrowserView = null;
+let devToolView = null
 
 const DAPPS_PATH: string = path.join(__dirname, '..', '..', 'dapps', 'download');
 
@@ -43,6 +44,11 @@ export function createDappView(globalUUIDList: RendererConf[], dapp: AppItem) { 
   dappView = new BrowserView({
     webPreferences: webPrefObj,
   });
+
+  devToolView = new BrowserWindow()
+  dappView.webContents.setDevToolsWebContents(devToolView.webContents)
+  dappView.webContents.openDevTools({mode: 'detach'})
+
 
   // console.log('entry: ', path.join(DAPPS_PATH, dapp.appName, dapp.main));
 
