@@ -37,14 +37,14 @@ import * as ipfsRoomActions from '../actions/ipfsRoom'
 
 const ipfsRoomCreateThunk = (topic: string, sourceUUID: string) => async (dispatch: any) => {
   try {
-    let room = IpfsRoom.get(sourceUUID, topic)
+    let room = IpfsRoom.get(sourceUUID, topic);
 
     if (!room){
-      room = await IpfsRoom.create(sourceUUID, topic)
+      room = await IpfsRoom.create(sourceUUID, topic);
       room.subscribe({
         onMessage: (message) => {
-          console.log('onMessage', message, message.data.toString())
-          dispatch(ipfsRoomActions.ipfsRoomSendMessage(message.data.toString(), topic, sourceUUID))
+          console.log('onMessage', message, message.data.toString());
+          dispatch(ipfsRoomActions.ipfsRoomSendMessage(message.data.toString(), topic, sourceUUID));
         },
         onJoined: (peer) => console.log('onJoined', peer),
         onLeft: (peer) => console.log('onLeft', peer),
@@ -52,14 +52,14 @@ const ipfsRoomCreateThunk = (topic: string, sourceUUID: string) => async (dispat
       })
 
     } else {
-      dispatch(ipfsRoomActions.ipfsRoomSubscribeSuccess(topic, sourceUUID))
+      dispatch(ipfsRoomActions.ipfsRoomSubscribeSuccess(topic, sourceUUID));
     }
 
 
   } catch (error) {
-    dispatch(ipfsRoomActions.ipfsRoomSubscribeFailure(error, sourceUUID))
+    dispatch(ipfsRoomActions.ipfsRoomSubscribeFailure(error, sourceUUID));
   }
-}
+};
 
 const ipfsRoomsSubscribe: Epic<AnyAction> = (action$, state$) => action$.pipe( //@todo fix action type
   ofType(constants.IPFS_ROOM_SUBSCRIBE),
@@ -70,15 +70,15 @@ const ipfsSendToRoomMessage: Epic<AnyAction> = (action$, state$) => action$.pipe
   ofType(constants.IPFS_ROOM_SEND_MESSAGE_TO_ROOM),
   switchMap(async (action) => {
     try {
-      let room = IpfsRoom.get(action.meta.sourceUUID, action.payload.roomName)
+      let room = IpfsRoom.get(action.meta.sourceUUID, action.payload.roomName);
 
-      console.log('IPFS_ROOM_SEND_MESSAGE_TO_ROOM', action, !!room)
+      console.log('IPFS_ROOM_SEND_MESSAGE_TO_ROOM', action, !!room);
 
       if (!room){
-        throw Error('Room has not exist')
+        throw Error('Room has not exist');
       }
 
-      await room.broadcast(action.payload.message)
+      await room.broadcast(action.payload.message);
 
       return { type: 'ipfsSendToRoomMessageEpicSuccess'}
 

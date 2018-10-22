@@ -123,7 +123,7 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
       bindChannel(intentObj.winId, channelReceiver, channelSender);
     }
 
-    const targetUUID = action.payload && action.payload.uuid || action.meta && action.meta.targetUUID
+    const targetUUID = action.payload && action.payload.uuid || action.meta && action.meta.targetUUID;
 
     if (targetUUID) {
       // loop through all action uuid's passed in payload {
@@ -132,13 +132,13 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
         const resolver = targetWebContents(uuidObj.winId);
         // console.log(resolver);
         if (resolver) {
-          const copyAction = Object.assign({}, rendererAction)
+          const copyAction = Object.assign({}, rendererAction);
 
           if (copyAction.meta){
-            delete copyAction.meta
+            delete copyAction.meta.sourceUUID;
           }
 
-          console.log('targetUUID', targetUUID, copyAction, resolver)
+          console.log('targetUUID', targetUUID, copyAction, resolver);
 
           resolver.send('redux-action', copyAction);
 
