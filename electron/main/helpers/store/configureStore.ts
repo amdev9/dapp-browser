@@ -133,9 +133,9 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
         if (resolver) {
           const copyAction = Object.assign({}, rendererAction)
 
-          if (copyAction.meta){
-            delete copyAction.meta
-          }
+          // if (copyAction.meta){
+          //   delete copyAction.meta
+          // }
 
           resolver.send('redux-action', copyAction);
 
