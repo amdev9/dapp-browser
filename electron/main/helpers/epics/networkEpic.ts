@@ -2,19 +2,21 @@ import { AnyAction } from 'redux';
 import { combineEpics, Epic, ofType } from 'redux-observable';
 import { switchMap } from 'rxjs/operators';
 
-import { Network } from '../Network'
+import { NetworkAPI } from '../Network';
 import * as networkActions from '../actions/network';
 import * as constants from '../constants';
 
-
-const networkInstance = new Network();
-
-const networkGetBlockEpic: Epic<AnyAction> = action$ => action$.pipe( //@todo fix action type
+const networkGetBlockEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
   ofType(constants.NETWORK_GET_BLOCK),
   switchMap(async (action) => {
     try {
+      const networkInstance = new NetworkAPI();
+      networkInstance.init();
       const block = await networkInstance.getBlock();
-      return networkActions.getBlockSuccess(block, action.meta.sourceUUID)
+      // networkInstance.addListener(() => {
+      //   console.log("Network instance listener triggered");
+      // });
+      return networkActions.getBlockSuccess(JSON.stringify(block), action.meta.sourceUUID)
     } catch(error){
       return networkActions.getBlockFailure(error, action.meta.sourceUUID)
     }
