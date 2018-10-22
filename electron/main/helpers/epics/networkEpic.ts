@@ -29,9 +29,9 @@ const networkGetWitnessEpic: Epic<AnyAction> = action$ => action$.pipe(
     try {
       const networkInstance = new NetworkAPI();
       networkInstance.init();
-      const witness = await networkInstance.getWitness('b6b83a593686087531ce581540564d20b2f75ff9879e9dd2eccfa9a79744b949');
-      console.log('networkGetWitnessEpic witness: ', witness);
-      return networkActions.getWitnessSuccess('stub_witness', action.meta.sourceUUID);
+      const witnessId = action.payload.witnessId;
+      const witness = await networkInstance.getWitness(witnessId);
+      return networkActions.getWitnessSuccess(JSON.stringify(witness), action.meta.sourceUUID);
     } catch (error) {
       return networkActions.getWitnessFailure(error, action.meta.sourceUUID);
     }

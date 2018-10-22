@@ -37,7 +37,8 @@ const initUi = () => {
 
   if( document.getElementById('networkGetWitnessButton') ) {
     document.getElementById('networkGetWitnessButton').addEventListener('click', () => {
-      store.dispatch(actions.networkGetWitness());
+      const witnessIdInput = <HTMLInputElement>document.getElementById("networkWitnessId");
+      store.dispatch(actions.networkGetWitness(witnessIdInput.value));
     });
   }
 
