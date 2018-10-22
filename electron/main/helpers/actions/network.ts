@@ -9,3 +9,12 @@ export const getBlockFailure = (error: string, targetUUID? :string) =>
 
 export const getBlock = () =>
   action(constants.NETWORK_GET_BLOCK);
+
+export const getWitnessSuccess = (witness: string, targetUUID? :string) =>
+  action(constants.NETWORK_GET_WITNESS_SUCCESS, witness, targetUUID);
+
+export const getWitnessFailure = (error: string, targetUUID? :string) =>
+  action(constants.NETWORK_GET_WITNESS_FAILURE, error, targetUUID);
+
+export const getWitness = (id: string) =>
+  action(constants.NETWORK_GET_WITNESS, id);

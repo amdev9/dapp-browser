@@ -35,6 +35,12 @@ const initUi = () => {
     });
   }
 
+  if( document.getElementById('networkGetWitnessButton') ) {
+    document.getElementById('networkGetWitnessButton').addEventListener('click', () => {
+      store.dispatch(actions.networkGetWitness());
+    });
+  }
+
   //Open files (File Manager)
   if( document.getElementById('openDialogButton') ) {
     document.getElementById('openDialogButton').addEventListener('click', () => {
