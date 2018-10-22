@@ -37,8 +37,10 @@ const networkGetBlockSuccess: Epic<any> = action$ => action$.pipe(
 
 const ipfsRoomSendMessage: Epic<any> = action$ => action$.pipe(
   ofType(constants.IPFS_ROOM_SEND_MESSAGE_TO_DAPP),
-  tap((action) =>
-    utils.appendContentIntoBlock(`[${new Date().toLocaleString()}] ${action.payload.message}\r\n`,'ipfsRoomLog')),
+  tap((action) => {
+    console.log('MSGTODAPP', action)
+    utils.appendContentIntoBlock(`[${new Date().toLocaleString()}] ${action.payload.message}\r\n`,'ipfsRoomLog')
+  }),
   mapTo(actions.showBlock())
 );
 

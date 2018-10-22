@@ -138,6 +138,8 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
             delete copyAction.meta
           }
 
+          console.log('targetUUID', targetUUID, copyAction, resolver)
+
           resolver.send('redux-action', copyAction);
 
         } else {

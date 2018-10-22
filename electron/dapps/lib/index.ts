@@ -75,6 +75,13 @@ const initUi = () => {
       e.preventDefault()
       const formElements = e.target.elements
       const roomName = formElements.ipfsRoomName && formElements.ipfsRoomName.value
+
+      console.log('SUBSCRIBE')
+      const logElement = document.getElementById('ipfsRoomLog')
+
+      if (logElement){
+        logElement.innerText = ''
+      }
       store.dispatch(actions.ipfsRoomSubscribe(roomName))
     });
   }
