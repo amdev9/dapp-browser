@@ -49,8 +49,6 @@ export class NetworkAPI {
   async init() {
     await Apis.instance('ws://hawking.array.io:8090/ws', true).init_promise
       .then((response) => ChainStore.init());
-
-    ChainStore.subscribe(this.broadcast);
   }
 
   async close() {
@@ -106,12 +104,18 @@ export class NetworkAPI {
 
   addSubscriber(uuid: string) {
     NetworkAPI.subscribers.push(uuid);
+    if (NetworkAPI.subscribers.length === 1) { // after the first subscriber added, run broadcast method
+      ChainStore.subscribe(this.broadcast);
+    }
   }
 
   removeSubscriber(uuid: string) {
     const index = NetworkAPI.subscribers.indexOf(uuid);
     if (index > -1) {
       NetworkAPI.subscribers.splice(index, 1);
+      if (NetworkAPI.subscribers.length === 0) { // if there is no more subscribers, stop broadcast method
+        ChainStore.unsubscribe(this.broadcast);
+      }
     }
   }
 }

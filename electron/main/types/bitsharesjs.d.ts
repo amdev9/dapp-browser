@@ -2,6 +2,7 @@ declare module "bitsharesjs" {
     export class ChainStore {
         static getObject(id: any, force?: boolean, autosubscribe?: boolean, no_full_account?: boolean): any;
         static subscribe(cb: (updateObject: any) => void):void;
+        static unsubscribe(cb: (updateObject: any) => void):void;
         static init(): Promise<any>;
     }
 } 
