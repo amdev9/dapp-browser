@@ -1,5 +1,8 @@
 import { ChainStore } from 'bitsharesjs';
 import { Apis, Block } from 'bitsharesjs-ws';
+import { Store } from 'redux';
+import { IState } from './reducers/state';
+import * as constants from './constants';
 
 const DEFAULT_BLOCKCHAIN_URI = 'ws://hawking.array.io:8090/ws';
 
@@ -18,17 +21,19 @@ function normalize(height: number, block: Block, witness: string): NetworkAPI.En
 }
 
 export class NetworkAPI {
-  listeners: NetworkAPI.Listener[];
   dynamicGlobal: any;
   blocks: Block[];
+  static store: Store<IState>;
   uri: string;
   apis: any;
   ws: any;
   static subscribers: string[] = [];
 
-  constructor(uri?: string) {
+  constructor(store?: Store<IState>, uri?: string) {
     this.uri = uri ? uri : DEFAULT_BLOCKCHAIN_URI;
-    this.listeners = [];
+    if (store) {
+      NetworkAPI.store = store;
+    }
     this.blocks = [];
 
     this.updateGlobal = this.updateGlobal.bind(this);
@@ -78,7 +83,6 @@ export class NetworkAPI {
     return normalize(height, block, witness);
   }
 
-
   private async getDataBlock(): Promise<NetworkAPI.Enriched> {
     this.updateGlobal();
 
@@ -94,17 +98,10 @@ export class NetworkAPI {
   private async broadcast() {
     try {
       const broadcastBlock = await this.getDataBlock();
-      this.listeners.forEach(cb => cb(broadcastBlock));
+      NetworkAPI.subscribers.forEach((dapp) => {
+        NetworkAPI.store.dispatch({ type: constants.NETWORK_BLOCK_CREATED, payload: { block: JSON.stringify(broadcastBlock) }, meta: { targetUUID: dapp } });
+      });
     } catch (error) {}
-  }
-
-  addListener(listener: NetworkAPI.Listener) {
-    this.listeners.push(listener);
-  }
-
-  removeListener(listener: NetworkAPI.Listener) {
-    this.listeners = this.listeners
-      .filter((entry) => (entry != listener));
   }
 
   addSubscriber(uuid: string) {

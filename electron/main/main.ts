@@ -49,7 +49,7 @@ if (process.env.ELECTRON_ENV === 'development') {
   sourceMapSupport.install();
 }
 
-//Enables full sandbox mode
+// Enables full sandbox mode
 app.enableSandbox();
 
 app.on('window-all-closed', () => {
@@ -100,13 +100,8 @@ app.on('ready', async () => {
     clientWindow.focus();
   });
 
-  const networkAPI = new NetworkAPI();
+  const networkAPI = new NetworkAPI(store);
   networkAPI.init();
-  networkAPI.addListener((block) => {
-    NetworkAPI.subscribers.forEach((dapp) => {
-      store.dispatch({ type: 'NETWORK_BLOCK_CREATED', payload: { block: JSON.stringify(block) }, meta: { targetUUID: dapp } });
-    });
-  });
 
   store.subscribe(() => {
     const storeState = store.getState();
