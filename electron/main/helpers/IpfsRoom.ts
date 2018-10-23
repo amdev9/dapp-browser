@@ -79,7 +79,6 @@ export default class IpfsRoom {
   }
 
   static get(dappUUID: string, name?: RoomName): IpfsRoom {
-    console.log("DAPPS", RoomMapInstance.rooms)
     const room = RoomMapInstance.getRoom(dappUUID, name)
     return room && new IpfsRoom(room)
   }
@@ -97,16 +96,22 @@ export default class IpfsRoom {
     }
   }
 
-  async broadcast(message: string) {
+  async broadcast(message: string | Buffer) {
     if (this.room) {
       await readyState
       this.room.broadcast(message)
     }
   }
 
-  sendTo(peer: string, message: string) {
+  sendTo(peer: string, message: string | Buffer) {
     if (this.room) {
       this.room.sendTo(peer, message)
+    }
+  }
+
+  leave() {
+    if (this.room) {
+      this.room.leave()
     }
   }
 

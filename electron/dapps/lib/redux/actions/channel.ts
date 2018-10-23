@@ -1,5 +1,7 @@
-import { action } from 'typesafe-actions'
-import * as constants from '../constants'
+import { action } from 'typesafe-actions';
+import * as uuidv4 from 'uuid/v4';
+
+import * as constants from '../constants';
 
 export const openChannelIntent = () => action(constants.INTENT_OPEN_CHANNELS)
 
@@ -19,5 +21,5 @@ export const downloadIpfsFile = (hash: string) =>
 export const ipfsRoomSubscribe = (topic: string) =>
   action(constants.IPFS_ROOM_SUBSCRIBE, { topic })
 
-export const ipfsRoomSendMessage = (message: string, roomName: string) =>
-  action(constants.IPFS_ROOM_SEND_MESSAGE_TO_ROOM, { message, roomName })
+export const ipfsRoomSendMessageBroadcast = (message: string, roomName: string) =>
+  action(constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST, { message, roomName, messageId: uuidv4() })

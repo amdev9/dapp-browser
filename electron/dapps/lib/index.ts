@@ -95,7 +95,7 @@ const initUi = () => {
       const roomNameElement = <HTMLInputElement> document.getElementById('ipfsRoomName')
       const roomName = roomNameElement && roomNameElement.value || ''
       console.log('topic', roomName, message)
-      store.dispatch(actions.ipfsRoomSendMessage(message, roomName))
+      store.dispatch(actions.ipfsRoomSendMessageBroadcast(message, roomName))
     });
   }
 

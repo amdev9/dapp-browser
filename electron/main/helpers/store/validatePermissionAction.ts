@@ -23,7 +23,7 @@ const dappActions: string[] = [
   constants.IPFS_ROOM_SUBSCRIBE,
   constants.IPFS_ROOM_SUBSCRIBE_SUCCESS,
   constants.IPFS_ROOM_SUBSCRIBE_FAILURE,
-  constants.IPFS_ROOM_SEND_MESSAGE_TO_ROOM,
+  constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST,
   constants.IPFS_ROOM_SEND_MESSAGE_TO_DAPP,
 
   constants.SHOW_FILE_ENTRIES,
@@ -53,7 +53,7 @@ const ipfsActions: string[] = [
   constants.IPFS_ROOM_SUBSCRIBE,
   constants.IPFS_ROOM_SUBSCRIBE_SUCCESS,
   constants.IPFS_ROOM_SUBSCRIBE_FAILURE,
-  constants.IPFS_ROOM_SEND_MESSAGE_TO_ROOM,
+  constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST,
   constants.IPFS_ROOM_SEND_MESSAGE_TO_DAPP,
 ];
 

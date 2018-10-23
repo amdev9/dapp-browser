@@ -9,18 +9,17 @@ export const remoteConfig = {
     ],
     Addresses: {
       Swarm: [
-        "/ip4/0.0.0.0/tcp/4001",
-        "/ip6/::/tcp/4001",
+        "/ip4/0.0.0.0/tcp/0",
         "/dns4/discovery.libp2p.array.io/tcp/9091/wss/p2p-websocket-star/"
       ],
-      API: "/ip4/127.0.0.1/tcp/5001",
-      Gateway: "/ip4/127.0.0.1/tcp/8080"
+      API: "/ip4/127.0.0.1/tcp/0",
+      Gateway: "/ip4/0.0.0.0/tcp/0"
     }
-  }
+  },
 };
 
 export const localConfig = {
-  // repo: '/Users/pidgin/dev/boilerplate/ipfsTest',
+  // repo: "/Users/pidgin/dev/boilerplate/ipfsTest",
   config: {
     Addresses: {
       API: "/ip4/127.0.0.1/tcp/5001",

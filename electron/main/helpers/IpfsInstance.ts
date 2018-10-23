@@ -1,8 +1,5 @@
 import * as IPFS from 'ipfs';
-import * as Room from 'ipfs-pubsub-room';
-import {remoteConfig} from "./config/ipfs";
-
-// import { remoteConfig } from './config/ipfs'
+import { remoteConfig } from "./config/ipfs";
 
 const ipfs = new IPFS({
   ...remoteConfig,
