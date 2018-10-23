@@ -8,11 +8,12 @@ import IpfsBaseComponent from './IpfsBaseComponent'
 export type RoomName = string
 export type RoomInstance = Room
 export type DappUUID = string
+export type Message = { from: string, data: Buffer }
 
 export interface SubscribeOptions {
-  onMessage?: (message: { from: string, data: Buffer }) => void;
-  onJoined?: (peer: any) => void;
-  onLeft?: (peer: any) => void;
+  onMessage?: (message: Message) => void;
+  onJoined?: (peer: string) => void;
+  onLeft?: (peer: string) => void;
   onSubscribed?: () => void;
 }
 

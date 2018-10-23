@@ -1,6 +1,7 @@
 import { action } from 'typesafe-actions';
 
 import * as constants from '../constants';
+import { Message } from '../IpfsRoom'
 
 export const ipfsRoomSubscribe = (topic: string, targetUUID: string) =>
   action(constants.IPFS_ROOM_SUBSCRIBE, { topic }, { targetUUID })
@@ -11,10 +12,10 @@ export const ipfsRoomSubscribeSuccess = (topic: string, targetUUID: string) =>
 export const ipfsRoomSubscribeFailure = (error: string, targetUUID: string) =>
   action(constants.IPFS_ROOM_SUBSCRIBE_FAILURE, { error }, { targetUUID })
 
-export const ipfsRoomSendMessageToDapp = (message: string, roomName: string, targetUUID: string) =>
+export const ipfsRoomSendMessageToDapp = (message: Message, roomName: string, targetUUID: string) =>
   action(constants.IPFS_ROOM_SEND_MESSAGE_TO_DAPP, { message, roomName }, { targetUUID })
 
-export const ipfsRoomSendMessageBroadcast = (messageId: string, message: string, roomName: string, targetUUID: string) =>
+export const ipfsRoomSendMessageBroadcast = (messageId: string, message: string | Buffer, roomName: string, targetUUID: string) =>
   action(constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST, { messageId, message, roomName }, { targetUUID })
 
 export const ipfsRoomSendMessageBroadcastSuccess = (messageId: string, targetUUID: string) =>
@@ -23,7 +24,7 @@ export const ipfsRoomSendMessageBroadcastSuccess = (messageId: string, targetUUI
 export const ipfsRoomSendMessageBroadcastFailure = (error: string, messageId: string, targetUUID: string) =>
   action(constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST_FAILURE, { error, messageId }, { targetUUID })
 
-export const ipfsRoomSendMessageToPeer = (messageId: string, message: string, roomName: string, peer: string, targetUUID: string) =>
+export const ipfsRoomSendMessageToPeer = (messageId: string, message: string | Buffer, roomName: string, peer: string, targetUUID: string) =>
   action(constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER, { message, messageId, roomName, peer }, { targetUUID })
 
 export const ipfsRoomSendMessageToPeerSuccess = (messageId: string, targetUUID: string) =>

@@ -86,16 +86,36 @@ const initUi = () => {
     });
   }
 
-  if( document.getElementById('ipfsRoomTextForm') ) {
-    document.getElementById('ipfsRoomTextForm').addEventListener('submit', (e) => {
+  if( document.getElementById('ipfsRoomSendBroadcastTextForm') ) {
+    document.getElementById('ipfsRoomSendBroadcastTextForm').addEventListener('submit', (e) => {
       e.preventDefault()
       const formElements = e.target.elements
-      const message = formElements.ipfsRoomText && formElements.ipfsRoomText.value || ''
+      const message = formElements.message && formElements.message.value || ''
 
       const roomNameElement = <HTMLInputElement> document.getElementById('ipfsRoomName')
       const roomName = roomNameElement && roomNameElement.value || ''
       console.log('topic', roomName, message)
       store.dispatch(actions.ipfsRoomSendMessageBroadcast(message, roomName))
+    });
+  }
+
+  if( document.getElementById('ipfsRoomSendToPeerTextForm') ) {
+    document.getElementById('ipfsRoomSendToPeerTextForm').addEventListener('submit', (e: Event) => {
+      e.preventDefault()
+      const formElements = e.currentTarget.elements
+      const { message, peerHash } = formElements
+
+      const roomNameElement = <HTMLInputElement> document.getElementById('ipfsRoomName')
+      store.dispatch(
+        actions.ipfsRoomSendMessageToPeer(message.value || '', roomNameElement.value || '', peerHash.value || '')
+      )
+    });
+  }
+
+  if( document.getElementById('ipfsRoomLeaveButton') ) {
+    document.getElementById('ipfsRoomLeaveButton').addEventListener('click', (e: Event) => {
+      const roomNameElement = <HTMLInputElement> document.getElementById('ipfsRoomName')
+      store.dispatch(actions.ipfsRoomLeave(roomNameElement.value || ''))
     });
   }
 
