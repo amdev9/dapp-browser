@@ -35,6 +35,12 @@ const networkGetBlockSuccess: Epic<any> = action$ => action$.pipe(
   mapTo(actions.showBlock())
 );
 
+const networkBlockCreated: Epic<any> = action$ => action$.pipe(
+  ofType(constants.NETWORK_BLOCK_CREATED),
+  tap((action) => utils.insertContentIntoBlock(action.payload.block,'networkGetWitnessButton')),
+  mapTo(actions.showBlock())
+);
+
 const networkGetWitnessSuccess: Epic<any> = action$ => action$.pipe(
   ofType(constants.NETWORK_GET_WITNESS_SUCCESS),
   tap((action) => utils.insertContentIntoBlock(action.payload,'networkGetWitnessButton')),
@@ -90,5 +96,6 @@ export const rootEpic = combineEpics(
   keychainListFailure,
   keychainSignSuccess,
   keychainSignFailure,
+  networkBlockCreated,
 );
 
