@@ -71,7 +71,7 @@ const initUi = () => {
   }
 
   if( document.getElementById('ipfsRoomSubscribe') ) {
-    document.getElementById('ipfsRoomSubscribe').addEventListener('submit', (e) => {
+    document.getElementById('ipfsRoomSubscribe').addEventListener('submit', (e: any) => {
       e.preventDefault()
       const formElements = e.target.elements
       const roomName = formElements.ipfsRoomName && formElements.ipfsRoomName.value
@@ -86,7 +86,7 @@ const initUi = () => {
   }
 
   if( document.getElementById('ipfsRoomSendBroadcastTextForm') ) {
-    document.getElementById('ipfsRoomSendBroadcastTextForm').addEventListener('submit', (e) => {
+    document.getElementById('ipfsRoomSendBroadcastTextForm').addEventListener('submit', (e: any) => {
       e.preventDefault()
       const formElements = e.target.elements
       const message = formElements.message && formElements.message.value || ''
@@ -99,7 +99,7 @@ const initUi = () => {
   }
 
   if( document.getElementById('ipfsRoomSendToPeerTextForm') ) {
-    document.getElementById('ipfsRoomSendToPeerTextForm').addEventListener('submit', (e: Event) => {
+    document.getElementById('ipfsRoomSendToPeerTextForm').addEventListener('submit', (e: any) => {
       e.preventDefault()
       const formElements = e.target.elements
       const { message, peerHash } = formElements
@@ -112,7 +112,7 @@ const initUi = () => {
   }
 
   if( document.getElementById('ipfsRoomLeaveButton') ) {
-    document.getElementById('ipfsRoomLeaveButton').addEventListener('click', (e: Event) => {
+    document.getElementById('ipfsRoomLeaveButton').addEventListener('click', (e: any) => {
       const roomNameElement = <HTMLInputElement> document.getElementById('ipfsRoomName')
       store.dispatch(actions.ipfsRoomLeave(roomNameElement.value || ''))
     });
