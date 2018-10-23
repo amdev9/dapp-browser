@@ -13,10 +13,11 @@ import { createClientWindow } from './createClientWindow';
 import { createPermissionWindow } from './createPermissionWindow';
 import { createDappView } from './createDappView';
 import { RendererConf } from './createDappView';
-import { IState, Client } from "./helpers/reducers/state";
+import { IState, Client } from './helpers/reducers/state';
 
 
 import * as nodeConsole from 'console';
+import { NetworkAPI } from './helpers/Network';
 const console = new nodeConsole.Console(process.stdout, process.stderr);
 
 const isProduction = process.env.ELECTRON_ENV !== 'development';
@@ -48,7 +49,7 @@ if (process.env.ELECTRON_ENV === 'development') {
   sourceMapSupport.install();
 }
 
-//Enables full sandbox mode
+// Enables full sandbox mode
 app.enableSandbox();
 
 app.on('window-all-closed', () => {
@@ -98,6 +99,9 @@ app.on('ready', async () => {
     clientWindow.show();
     clientWindow.focus();
   });
+
+  const networkAPI = new NetworkAPI(store);
+  networkAPI.init();
 
   store.subscribe(() => {
     const storeState = store.getState();

@@ -10,7 +10,9 @@ export const uploadIpfsFile = (entry: string) => action(constants.IPFS_STORAGE_U
 export const showFileEntries = () => action(constants.SHOW_FILE_ENTRIES)
 
 export const networkGetBlock = () => action(constants.NETWORK_GET_BLOCK)
-
+export const networkGetWitness = (witnessId: string) => action(constants.NETWORK_GET_WITNESS, {witnessId})
+export const networkSubscribe = () => action(constants.NETWORK_SUBSCRIBE)
+export const networkUnsubscribe = () => action(constants.NETWORK_UNSUBSCRIBE)
 
 export const writeToConsole = (message: string) =>  action(constants.LOGGER_WRITE, { message })
 

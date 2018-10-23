@@ -31,7 +31,19 @@ const uploadFileIpfsStorageSuccess: Epic<any> = action$ => action$.pipe(
 
 const networkGetBlockSuccess: Epic<any> = action$ => action$.pipe(
   ofType(constants.NETWORK_GET_BLOCK_SUCCESS),
-  tap((action) => utils.insertContentIntoBlock(action.payload,'networkGetBlockButton')),
+  tap((action) => utils.insertContentIntoBlock(action.payload,'networkGetWitnessButton')),
+  mapTo(actions.showBlock())
+);
+
+const networkBlockCreated: Epic<any> = action$ => action$.pipe(
+  ofType(constants.NETWORK_BLOCK_CREATED),
+  tap((action) => utils.insertContentIntoBlock(action.payload.block,'networkGetWitnessButton')),
+  mapTo(actions.showBlock())
+);
+
+const networkGetWitnessSuccess: Epic<any> = action$ => action$.pipe(
+  ofType(constants.NETWORK_GET_WITNESS_SUCCESS),
+  tap((action) => utils.insertContentIntoBlock(action.payload,'networkGetWitnessButton')),
   mapTo(actions.showBlock())
 );
 
@@ -77,11 +89,13 @@ export const rootEpic = combineEpics(
   startCountdownEpic,
   uploadFileIpfsStorageSuccess,
   networkGetBlockSuccess,
+  networkGetWitnessSuccess,
   keychainCreateSuccess,
   keychainCreateFailure,
   keychainListSuccess,
   keychainListFailure,
   keychainSignSuccess,
   keychainSignFailure,
+  networkBlockCreated,
 );
 

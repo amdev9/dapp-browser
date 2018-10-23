@@ -23,6 +23,9 @@ const dappActions: string[] = [
 
   constants.SHOW_FILE_ENTRIES,
   constants.NETWORK_GET_BLOCK,
+  constants.NETWORK_GET_WITNESS,
+  constants.NETWORK_SUBSCRIBE,
+  constants.NETWORK_UNSUBSCRIBE,
   constants.SHOW_BLOCK,
   constants.LOGGER_WRITE,
   constants.LOGGER_WRITE_SUCCESS,
@@ -38,7 +41,7 @@ const dappActions: string[] = [
   constants.KEYCHAIN_SIGN_SUCCESS,
   constants.KEYCHAIN_SIGN_FAILURE,
 
-  constants.KEYCHAIN_SHOW_RESULT
+  constants.KEYCHAIN_SHOW_RESULT,
 ];
 
 const fileManagerActions: string[] = [
