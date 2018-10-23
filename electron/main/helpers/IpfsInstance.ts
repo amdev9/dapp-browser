@@ -1,25 +1,25 @@
 import * as IPFS from 'ipfs';
 import { remoteConfig } from "./config/ipfs";
 
-const ipfs = new IPFS({
-  ...remoteConfig,
-  repo: `ipfs/pubsub/${Math.random()}`,
-});
-
-export const readyState = new Promise((resolve, reject) => {
-  ipfs.on('ready', () => {
-    if (ipfs.isOnline()) {
-      console.log('online');
-      resolve()
-    } else {
-      console.log('offline, try to start');
-      ipfs.start();
-    }
+export const getReadyIpfsInstance = (options: IPFS.Options = {}): Promise<IPFS> => {
+  const ipfs = new IPFS({
+    ...remoteConfig,
+    ...options,
   });
 
-  ipfs.on('error', (error: Error) => {
-    reject(error);
-  });
-})
+  return new Promise((resolve, reject) => {
+    ipfs.on('ready', () => {
+      if (ipfs.isOnline()) {
+        console.log('online');
+        resolve(ipfs)
+      } else {
+        console.log('offline, try to start');
+        ipfs.start();
+      }
+    });
 
-export default ipfs
+    ipfs.on('error', (error: Error) => {
+      reject(error);
+    });
+  })
+}

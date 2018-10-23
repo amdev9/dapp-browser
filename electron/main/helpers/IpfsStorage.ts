@@ -2,10 +2,10 @@ import * as fs from 'fs';
 import * as IPFS from 'ipfs';
 import * as pathModule from 'path';
 
-import IpfsBaseComponent from './IpfsBaseComponent'
 import { Path } from './FileManager';
 import { IPFSGetResult } from '../types/ipfs';
 import { remoteConfig } from './config/ipfs'
+import {getReadyIpfsInstance} from "./IpfsInstance";
 
 export interface IpfsFileObject {
   hash: string;
@@ -15,9 +15,11 @@ export interface IpfsFileObject {
 
 export type IpfsFileObjectList = Array<IpfsFileObject>
 
-class IpfsStorage extends IpfsBaseComponent {
+class IpfsStorage{
+  ipfs: Promise<IPFS>;
+
   constructor(configuration: IPFS.Options) {
-    super(configuration)
+    this.ipfs = getReadyIpfsInstance()
   }
 
   async uploadFile(filePath: Path): Promise<IpfsFileObject | null> {
@@ -25,8 +27,7 @@ class IpfsStorage extends IpfsBaseComponent {
       return
     }
 
-    // Check online status
-    await this.readyState
+    const ipfs = await this.ipfs
 
     const file = { path: pathModule.basename(filePath), content: fs.createReadStream(filePath) }
 
@@ -36,7 +37,7 @@ class IpfsStorage extends IpfsBaseComponent {
       wrapWithDirectory: true,
     }
 
-    const ipfsFiles = await this.ipfs.files.add([file], options)
+    const ipfsFiles = await ipfs.files.add([file], options)
 
     if (!ipfsFiles || !ipfsFiles.length){
       return null
@@ -50,10 +51,9 @@ class IpfsStorage extends IpfsBaseComponent {
       return
     }
 
-    // Check online status
-    await this.readyState
+    const ipfs = await this.ipfs
 
-    const files = <IPFSGetResult[]> await this.ipfs.files.get(hash)
+    const files = <IPFSGetResult[]> await ipfs.files.get(hash)
 
     if (!files || !files.length){
       return null

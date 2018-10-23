@@ -1,8 +1,7 @@
-import * as IPFS from 'ipfs'
 import * as Room from 'ipfs-pubsub-room'
 
 import { remoteConfig } from './config/ipfs'
-import Ipfs, { readyState } from './IpfsInstance'
+import { getReadyIpfsInstance }  from './IpfsInstance'
 import IpfsBaseComponent from './IpfsBaseComponent'
 
 export type RoomName = string
@@ -52,11 +51,6 @@ class RoomStorage {
 
 const RoomMapInstance = new RoomStorage()
 
-// const repo = `ipfs/pubsub-demo/${Math.random()}`
-
-
-// IpfsBaseComponent.cleanLocks(ipfs.repo.path())
-
 export default class IpfsRoom {
   room: Room
 
@@ -70,9 +64,9 @@ export default class IpfsRoom {
       return new IpfsRoom()
     }
 
-    await readyState
+    const ipfs = await getReadyIpfsInstance({ repo: `ipfs-room/repos/${Math.random()}`,})
 
-    const room = Room(Ipfs, name)
+    const room = Room(ipfs, name)
 
     RoomMapInstance.addRoom(dappUUID, name, room)
 
@@ -99,7 +93,6 @@ export default class IpfsRoom {
 
   async broadcast(message: string | Buffer) {
     if (this.room) {
-      await readyState
       this.room.broadcast(message)
     }
   }
