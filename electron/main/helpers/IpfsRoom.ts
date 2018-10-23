@@ -1,8 +1,6 @@
 import * as Room from 'ipfs-pubsub-room'
 
-import { remoteConfig } from './config/ipfs'
 import { getReadyIpfsInstance }  from './IpfsInstance'
-import IpfsBaseComponent from './IpfsBaseComponent'
 
 export type RoomName = string
 export type RoomInstance = Room
@@ -15,8 +13,6 @@ export interface SubscribeOptions {
   onLeft?: (peer: string) => void;
   onSubscribed?: () => void;
 }
-
-const rooms: Map<RoomName, Room> = new Map()
 
 type DappRooms = { [roomName:string]: Room }
 type DappMap = { [dappUUID:string]: DappRooms }
@@ -37,14 +33,7 @@ class RoomStorage {
       this.rooms[dappUUID] = {}
     }
 
-
     this.rooms[dappUUID][roomName] = room
-
-    console.log('RoomStorage.addRoom:', dappUUID, roomName, !!room)
-    console.log('RoomStorage.rooms:',
-      Object.keys(this.rooms).map((key) =>
-        `DAPP:${key} - ${Object.keys(this.rooms[key]).join(',')}`).join(' ||| ')
-    )
 
   }
 }

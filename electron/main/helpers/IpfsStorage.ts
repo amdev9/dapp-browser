@@ -13,8 +13,6 @@ export interface IpfsFileObject {
   size: number;
 }
 
-export type IpfsFileObjectList = Array<IpfsFileObject>
-
 class IpfsStorage{
   ipfs: Promise<IPFS>;
 

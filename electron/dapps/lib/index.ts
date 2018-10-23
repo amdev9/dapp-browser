@@ -76,7 +76,6 @@ const initUi = () => {
       const formElements = e.target.elements
       const roomName = formElements.ipfsRoomName && formElements.ipfsRoomName.value
 
-      console.log('SUBSCRIBE')
       const logElement = document.getElementById('ipfsRoomLog')
 
       if (logElement){
@@ -102,7 +101,7 @@ const initUi = () => {
   if( document.getElementById('ipfsRoomSendToPeerTextForm') ) {
     document.getElementById('ipfsRoomSendToPeerTextForm').addEventListener('submit', (e: Event) => {
       e.preventDefault()
-      const formElements = e.currentTarget.elements
+      const formElements = e.target.elements
       const { message, peerHash } = formElements
 
       const roomNameElement = <HTMLInputElement> document.getElementById('ipfsRoomName')
