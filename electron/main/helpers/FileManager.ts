@@ -33,17 +33,17 @@ export class FileManager {
   }
 
   static async selectFile(): Promise<PathList> {
-    return await dialog.showOpenDialog({ properties: ['openFile'] })
+    return await dialog.showOpenDialog({ properties: ['openFile'] });
   }
 
   static async selectDirectory(): Promise<Path> {
-     const paths = await dialog.showOpenDialog({ properties: ['openDirectory', 'createDirectory'] })
+    const paths = await dialog.showOpenDialog({ properties: ['openDirectory', 'createDirectory'] });
 
     if (!paths || paths.length === 0) {
-      return
+      return;
     }
 
-    return paths[0]
+    return paths[0];
   }
 
   static _setPathEntry(path: Path): FileId {
@@ -58,29 +58,28 @@ export class FileManager {
       return;
     }
 
-    return entryMap.get(id)
+    return entryMap.get(id);
   }
 
   static async openFile(): Promise<FileEntry | undefined> {
-    const file = await FileManager.selectFile()
+    const file = await FileManager.selectFile();
 
     if (!file || !file.length) {
-      return
+      return;
     }
 
     return {
       id: FileManager._setPathEntry(file[0]),
-      name: path.basename(file[0])
-    }
+      name: path.basename(file[0]),
+    };
   }
 
   static saveFile(dir: Path, file: FileObject) {
 
-    const location = path.join(dir, file.name)
+    const location = path.join(dir, file.name);
 
-    fs.writeFileSync(location, file.content)
+    fs.writeFileSync(location, file.content);
 
-    return FileManager._setPathEntry(location)
+    return FileManager._setPathEntry(location);
   }
 }
-

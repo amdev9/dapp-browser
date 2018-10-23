@@ -1,18 +1,18 @@
-import { Client } from "./reducers/state";
+import { Client } from './reducers/state';
 import Rectangle = Electron.Rectangle;
 
 interface WindowBounds {
-  width: number,
-  height: number
+  width: number;
+  height: number;
 }
 
 export class DappFrame {
   _state: Client;
   _windowBounds: WindowBounds;
-  searchOffset = 270; //Math.round((state.window.height - offset) / 2);
+  searchOffset = 270; // Math.round((state.window.height - offset) / 2);
 
   private static adjustElectronWindowBounds(windowBounds: Rectangle) {
-    return { width: windowBounds.width, height: windowBounds.height - 25 }
+    return { width: windowBounds.width, height: windowBounds.height - 25 };
   }
 
   constructor(state: Client, windowBounds?: Rectangle) {
@@ -32,7 +32,7 @@ export class DappFrame {
       offset += 300;
     }
     return this._windowBounds.width - offset;
-  };
+  }
 
   get height() {
     // if (storeState.client.settings.isOpen) {
@@ -42,19 +42,19 @@ export class DappFrame {
     if (this._state.statusBar.isOpen) {
       offset += 250;
     }
-    if (this._state.statusBar.isPeersOpen) {  //@todo refactor account items.count . Now this functions works correctly only for 3 items
-      offset += 100
+    if (this._state.statusBar.isPeersOpen) {  // @todo refactor account items.count . Now this functions works correctly only for 3 items
+      offset += 100;
     }
     if (this._state.search.isOpen) {
       offset += this.searchOffset;
     }
 
     return this._windowBounds.height - offset;
-  };
+  }
 
   get x() {
     return 70;
-  };
+  }
 
   get y() {
     let y = 60;
@@ -62,7 +62,6 @@ export class DappFrame {
       y += this.searchOffset;
     }
     return y;
-  };
+  }
 
 }
-

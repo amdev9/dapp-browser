@@ -53,7 +53,7 @@ const fileManagerActions: string[] = [
 
 const networkActions: string[] = [
   constants.NETWORK_GET_BLOCK,
-  constants.SHOW_BLOCK
+  constants.SHOW_BLOCK,
 ];
 
 const ipfsActions: string[] = [
@@ -127,7 +127,7 @@ const checkGrantedForPermission = (state: IState, dappName: string, permissionNa
 const getSourceDappName = (globalId: RendererConf[], action: any) => {
   const dapp = globalId.find(item => item.id === action.meta.sourceUUID);
   if (!dapp) {
-    console.log("Dapp not found in globalId by uuid: ", action.meta.sourceUUID);
+    console.log('Dapp not found in globalId by uuid: ', action.meta.sourceUUID);
     return null;
   }
   return dapp.name;
@@ -138,7 +138,7 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
     if (action.payload && action.payload.hasOwnProperty('status')) {
       if (action.payload.status === 'dapp') {
         if (!dappActions.includes(action.type)) {
-          console.log("Cancelled for dapp " + action.type);
+          console.log('Cancelled for dapp ' + action.type);
         } else {
           const dappName = getSourceDappName(globalId, action);
 
@@ -151,7 +151,7 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
       } else if (action.payload.status === 'client') {
         switch (action.type) {
           case constants.TOGGLE_NOTIFICATION_PANEL:
-            let clientObj = globalId.find(renObj => renObj.status === 'client');
+            const clientObj = globalId.find(renObj => renObj.status === 'client');
             if (clientObj) {
               const payloadUuidObj = {
                 uuid: clientObj.id,
@@ -178,20 +178,18 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
           case constants.REMOVE_TRAY_ITEM:
             return next(action);
           default:
-            console.log("Cancelled for client: ", action.type);
+            console.log('Cancelled for client: ', action.type);
         }
       } else if (action.payload.status === 'permission_manager') {
         if (pmActions.includes(action.type)) {
           return next(action);
         } else {
-          console.log("Cancelled for permission manager " + action.type);
+          console.log('Cancelled for permission manager ' + action.type);
         }
       }
     } else {
-      console.log("no status: ", action);
+      console.log('no status: ', action);
       return next(action);
     }
   };
 };
-
-

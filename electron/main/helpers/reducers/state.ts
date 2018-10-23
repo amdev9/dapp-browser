@@ -1,42 +1,42 @@
 // global main state
 // redux-persist integration here
 
-export type Permission = "ipfs" | "network" | "filesystem" | "storage" | "logger" | "keychain"; // todo can we get these values from ../constants ?
+export type Permission = 'ipfs' | 'network' | 'filesystem' | 'storage' | 'logger' | 'keychain'; // todo can we get these values from ../constants ?
 
 export type Client = {
   activeDapp: {
-    appName: any
+    appName: any,
   },
   isHome: boolean,
   notification: {
-    isOpen: boolean
+    isOpen: boolean,
   },
   statusBar: {
     isOpen: boolean,
-    isPeersOpen: boolean
+    isPeersOpen: boolean,
   },
   loader: {
-    isOpen: boolean
+    isOpen: boolean,
   },
   search: {
-    isOpen: boolean
+    isOpen: boolean,
   },
   window: {
     width: number,
-    height: number
+    height: number,
   },
   fileDialog: {
-    isOpen: boolean
-  }
-}
+    isOpen: boolean,
+  },
+};
 
 // @todo refactor
 // export interface ToggleStatus {
-//   isHome 
+//   isHome
 //   notification isOpen
 //   loader isOpen
 //   statusBar isOpen
-//   statusBar isPeersOpen 
+//   statusBar isPeersOpen
 //   search isOpen
 //   fileDialog isOpen
 // }
@@ -52,4 +52,3 @@ export interface IState {
   };
   tray: {};
 }
-

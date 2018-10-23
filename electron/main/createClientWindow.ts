@@ -9,30 +9,30 @@ const RENDERER_PATH: string = path.join(__dirname, '..', '..', 'client');
 
 export function createClientWindow(globalUUIDList: RendererConf[]) {
   const uuidClient = uuidv4();
-  const authorizedChannelsList = ['channelId1', 'channelId2']; //next todo get channels list from dapp manifest
+  const authorizedChannelsList = ['channelId1', 'channelId2']; // next todo get channels list from dapp manifest
 
   let webPrefObj = {
     nodeIntegration: false,
     preload: path.join(__dirname, '..', 'preload.js'),
     additionalArguments: [
       '--uuid-renderer='.concat(uuidClient),
-      '--channels='.concat(authorizedChannelsList.join(";"))
-    ]
+      '--channels='.concat(authorizedChannelsList.join(';')),
+    ],
   };
 
   if (process.env.ELECTRON_ENV !== 'development') {
-    webPrefObj = Object.assign(webPrefObj, { sandbox: true })
+    webPrefObj = Object.assign(webPrefObj, { sandbox: true });
   }
 
   clientWindow = new BrowserWindow({
-    title: "ARRAY | Client",
+    title: 'ARRAY | Client',
     show: false,
     x: 0,
     y: 0,
     width: 1200,
     height: 800,
-    webPreferences: webPrefObj
-  })
+    webPreferences: webPrefObj,
+  });
   clientWindow.loadURL('file://' + path.join(RENDERER_PATH, 'index.html'));
 
   // @TODO: Use 'ready-to-show' event
@@ -55,13 +55,13 @@ export function createClientWindow(globalUUIDList: RendererConf[]) {
     openDevTool(clientWindow, true);
   }
 
-  const renderIdClient = clientWindow.webContents.getProcessId(); //.webContents.getProcessId(); //.id,
-    let rendererObj: RendererConf = {
-      id: uuidClient,
-      status: 'client',
-      winId: renderIdClient
-    };
-    globalUUIDList.push(rendererObj);
+  const renderIdClient = clientWindow.webContents.getProcessId(); // .webContents.getProcessId(); //.id,
+  const rendererObj: RendererConf = {
+    id: uuidClient,
+    status: 'client',
+    winId: renderIdClient,
+  };
+  globalUUIDList.push(rendererObj);
 
   return clientWindow;
 }

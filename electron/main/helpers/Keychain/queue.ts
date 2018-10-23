@@ -1,11 +1,11 @@
-import { ChildProcess, spawn } from "child_process";
-import { EOL } from "os";
+import { ChildProcess, spawn } from 'child_process';
+import { EOL } from 'os';
 
 export const RESPONSE_TIMEOUT = 1000;
 export const MAX_RETRIES = 3;
 
 export interface Task {
-  command: "CMD_CREATE" | "CMD_SIGN" | "CMD_LIST";
+  command: 'CMD_CREATE' | 'CMD_SIGN' | 'CMD_LIST';
   params?: any;
   promise: {
     resolve: any,
@@ -29,7 +29,7 @@ export class TaskProcess {
       const { stdin, stdout } = this.queue.keychain;
       const { keychain } = this.queue;
 
-      keychain.on("close", (code: number, signal: string) => {
+      keychain.on('close', (code: number, signal: string) => {
         // self clean
         cleanup();
 
@@ -47,9 +47,9 @@ export class TaskProcess {
       });
 
       const cleanup = () => {
-        stdout.removeListener("data", handleResult);
-        stdout.removeListener("error", handleError);
-        stdin.removeListener("error", handleError);
+        stdout.removeListener('data', handleResult);
+        stdout.removeListener('error', handleError);
+        stdin.removeListener('error', handleError);
 
         keychain.removeAllListeners();
       };
@@ -71,9 +71,9 @@ export class TaskProcess {
         }
       };
 
-      stdout.addListener("data", handleResult);
-      stdout.addListener("error", handleError);
-      stdin.addListener("error", handleError);
+      stdout.addListener('data', handleResult);
+      stdout.addListener('error', handleError);
+      stdin.addListener('error', handleError);
 
       const serialized = JSON.stringify(this.task);
       await stdin.write(serialized);

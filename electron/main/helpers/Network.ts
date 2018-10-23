@@ -75,7 +75,7 @@ export class NetworkAPI {
   async getBlock(height = 1000): Promise<any> {
     const block = await Apis.instance()
       .db_api()
-      .exec('get_block', [ height ]);
+      .exec('get_block', [height]);
 
     const witness = await this.getWitness(block.witness);
     return normalize(height, block, witness);

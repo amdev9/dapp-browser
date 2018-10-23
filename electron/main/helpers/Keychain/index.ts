@@ -1,5 +1,5 @@
-import { platform } from "os";
-import { Queue, Task, TaskProcess } from "./queue";
+import { platform } from 'os';
+import { Queue, Task, TaskProcess } from './queue';
 
 export { Queue, TaskProcess, Task };
 
@@ -7,14 +7,14 @@ export function getDefaultExecPath(): string {
   const info = platform();
 
   switch (info) {
-    case "linux":
-      return "./bin/keychain.ubuntu";
-    case "darwin":
-      return "./bin/keychain.macos";
-    case "win32":
-      return "bin/keychain.exe";
+    case 'linux':
+      return './bin/keychain.ubuntu';
+    case 'darwin':
+      return './bin/keychain.macos';
+    case 'win32':
+      return 'bin/keychain.exe';
     default:
-      return "unknown";
+      return 'unknown';
   }
 }
 
@@ -36,13 +36,13 @@ export class Keychain {
   ): Promise<Keychain.Signed> {
     return new Promise((resolve, reject) => {
       const properties = {
+        transaction,
         chainid: chainId,
         keyname: key,
-        transaction,
       };
 
       this.queue.push({
-        command: "CMD_SIGN",
+        command: 'CMD_SIGN',
         params: properties,
         promise: { resolve, reject },
       });
@@ -52,13 +52,13 @@ export class Keychain {
   public create(key: Keychain.Key, cipher: Keychain.Cipher, curve: Keychain.Curve): Promise<boolean> {
     return new Promise((resolve, reject) => {
       const properties = {
-        algo: cipher,
         curve,
+        algo: cipher,
         keyname: key,
       };
 
       this.queue.push({
-        command: "CMD_CREATE",
+        command: 'CMD_CREATE',
         params: properties,
         promise: { resolve, reject },
       });
@@ -68,7 +68,7 @@ export class Keychain {
   public list(): Promise<Keychain.Key[]> {
     return new Promise((resolve, reject) => {
       this.queue.push({
-        command: "CMD_LIST",
+        command: 'CMD_LIST',
         promise: { resolve, reject },
       });
     });
@@ -82,10 +82,10 @@ export namespace Keychain {
   export type Key = string;
 
   export enum Cipher {
-    AES256 = "CIPHER_AES256",
+    AES256 = 'CIPHER_AES256',
   }
 
   export enum Curve {
-    SECP256K1 = "CURVE_SECP256K1",
+    SECP256K1 = 'CURVE_SECP256K1',
   }
 }
