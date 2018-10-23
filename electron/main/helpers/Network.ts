@@ -24,6 +24,7 @@ export class NetworkAPI {
   uri: string;
   apis: any;
   ws: any;
+  static subscribers: string[] = [];
 
   constructor(uri?: string) {
     this.uri = uri ? uri : DEFAULT_BLOCKCHAIN_URI;
@@ -104,6 +105,17 @@ export class NetworkAPI {
   removeListener(listener: NetworkAPI.Listener) {
     this.listeners = this.listeners
       .filter((entry) => (entry != listener));
+  }
+
+  addSubscriber(uuid: string) {
+    NetworkAPI.subscribers.push(uuid);
+  }
+
+  removeSubscriber(uuid: string) {
+    const index = NetworkAPI.subscribers.indexOf(uuid);
+    if (index > -1) {
+      NetworkAPI.subscribers.splice(index, 1);
+    }
   }
 }
 

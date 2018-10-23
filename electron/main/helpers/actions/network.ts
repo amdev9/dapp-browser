@@ -1,6 +1,18 @@
 import { action } from 'typesafe-actions';
 import * as constants from '../constants';
 
+export const subscribeSuccess = (targetUUID?: string) =>
+  action(constants.NETWORK_SUBSCRIBE_SUCCESS, targetUUID);
+
+export const subscribeFailure = (error: string, targetUUID?: string) =>
+  action(constants.NETWORK_SUBSCRIBE_FAILURE, error, targetUUID);
+
+export const unsubscribeSuccess = (targetUUID?: string) =>
+  action(constants.NETWORK_UNSUBSCRIBE_SUCCESS, targetUUID);
+
+export const unsubscribeFailure = (error: string, targetUUID?: string) =>
+  action(constants.NETWORK_UNSUBSCRIBE_FAILURE, error, targetUUID);
+
 export const getBlockSuccess = (block: string, targetUUID? :string) =>
   action(constants.NETWORK_GET_BLOCK_SUCCESS, block, targetUUID);
 

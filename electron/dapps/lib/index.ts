@@ -35,6 +35,18 @@ const initUi = () => {
     });
   }
 
+  if( document.getElementById('networkSubscribeButton') ) {
+    document.getElementById('networkSubscribeButton').addEventListener('click', () => {
+      store.dispatch(actions.networkSubscribe());
+    });
+  }
+
+  if( document.getElementById('networkUnsubscribeButton') ) {
+    document.getElementById('networkUnsubscribeButton').addEventListener('click', () => {
+      store.dispatch(actions.networkUnsubscribe());
+    });
+  }
+
   if( document.getElementById('networkGetWitnessButton') ) {
     document.getElementById('networkGetWitnessButton').addEventListener('click', () => {
       const witnessIdInput = <HTMLInputElement>document.getElementById("networkWitnessId");

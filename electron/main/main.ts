@@ -103,9 +103,8 @@ app.on('ready', async () => {
   const networkAPI = new NetworkAPI();
   networkAPI.init();
   networkAPI.addListener((block) => {
-    const globalDapps = globalUUIDList.filter(item => item.status === 'dapp');
-    globalDapps.forEach((dapp) => {
-      store.dispatch({ type: 'NETWORK_BLOCK_CREATED', payload: { block: JSON.stringify(block) }, meta: { targetUUID: dapp.id } });
+    NetworkAPI.subscribers.forEach((dapp) => {
+      store.dispatch({ type: 'NETWORK_BLOCK_CREATED', payload: { block: JSON.stringify(block) }, meta: { targetUUID: dapp } });
     });
   });
 
