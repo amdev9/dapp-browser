@@ -1,20 +1,19 @@
 const IPFS = require('ipfs');
 const Room = require('ipfs-pubsub-room');
-import ipfs from '../../../helpers/IpfsInstance'
 
-// const ipfs = new IPFS({
-//   repo: repo(),
-//   EXPERIMENTAL: {
-//     pubsub: true
-//   },
-//   config: {
-//     Addresses: {
-//       Swarm: [
-//         "/dns4/discovery.libp2p.array.io/tcp/9091/wss/p2p-websocket-star/"
-//       ]
-//     }
-//   }
-// });
+const ipfs = new IPFS({
+  repo: repo(),
+  EXPERIMENTAL: {
+    pubsub: true
+  },
+  config: {
+    Addresses: {
+      Swarm: [
+        "/dns4/discovery.libp2p.array.io/tcp/9091/wss/p2p-websocket-star/"
+      ]
+    }
+  }
+});
 
 ipfs.once('ready', () => ipfs.id((err, info) => {
   if (err) { throw err }
