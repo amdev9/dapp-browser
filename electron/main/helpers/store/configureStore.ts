@@ -226,9 +226,7 @@ export const configureStore = (state: IState = initialState, globalId?: Renderer
   };
   const pReducer = persistReducer(persistConfig, rootReducer);
 
-  /* tslint:disable */
   const store = createStore(pReducer, <any> state, enhancer);
-  /* tslint:enable */
   const persistor = persistStore(store);
 
   epicMiddleware.run(rootEpic);
