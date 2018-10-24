@@ -1,3 +1,5 @@
+// import   from '../types/ipfs-pubsub-room'
+// tslint:disable
 import * as Room from 'ipfs-pubsub-room'
 
 import { getReadyIpfsInstance }  from './IpfsInstance'
@@ -55,7 +57,9 @@ export default class IpfsRoom {
 
     const ipfs = await getReadyIpfsInstance({ repo: `ipfs-room/repos/${Math.random()}`,})
 
-    const room = Room(ipfs, name)
+    const getRoomInstance = <any> Room;
+
+    const room = getRoomInstance(ipfs,name);
 
     RoomMapInstance.addRoom(dappUUID, name, room)
 
