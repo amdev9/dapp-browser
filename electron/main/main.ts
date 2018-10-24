@@ -13,10 +13,10 @@ import { createClientWindow } from './createClientWindow';
 import { createPermissionWindow } from './createPermissionWindow';
 import { createDappView } from './createDappView';
 import { RendererConf } from './createDappView';
-import { IState, Client } from "./helpers/reducers/state";
-
+import { IState, Client } from './helpers/reducers/state';
 
 import * as nodeConsole from 'console';
+import { NetworkAPI } from './helpers/Network';
 const console = new nodeConsole.Console(process.stdout, process.stderr);
 
 const isProduction = process.env.ELECTRON_ENV !== 'development';
@@ -33,20 +33,21 @@ require('electron-context-menu')({
     label: 'Close app',
     // visible: params.mediaType === 'image'
     click: (e: any) => {
-      store.dispatch({ type: "REMOVE_TRAY_ITEM", payload: { targetDappName: "Game" } }); // todo how to determine app name where the click has been made?
-    }
-  }]
+      store.dispatch({ type: 'REMOVE_TRAY_ITEM', payload: { targetDappName: 'Game' } }); // todo how to determine app name where the click has been made?
+    },
+  }],
 });
 
 const globalUUIDList: RendererConf[] = [];
 let clientWindow: Electron.BrowserWindow = null;
 
-
-
 if (process.env.ELECTRON_ENV === 'development') {
   const sourceMapSupport = require('source-map-support'); // eslint-disable-line
   sourceMapSupport.install();
 }
+
+// Enables full sandbox mode
+app.enableSandbox();
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -95,6 +96,9 @@ app.on('ready', async () => {
     clientWindow.show();
     clientWindow.focus();
   });
+
+  const networkAPI = new NetworkAPI(store);
+  networkAPI.init();
 
   store.subscribe(() => {
     const storeState = store.getState();
@@ -170,4 +174,4 @@ const correctDappViewBounds = (clientState: Client) => {
   }
 };
 
-process.stdout.write("Main initialized");
+process.stdout.write('Main initialized');

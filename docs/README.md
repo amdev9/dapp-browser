@@ -518,7 +518,7 @@ const { IpfsStorage, FileManager } = require('array');
 let fmanager = new FileManager();
 let videoInstance = await fmanager.openFileDialog(); // request filepath from dapp user 
 let ipfs = new IpfsStorage();
-let response = await ipfs.transfer(videoInstance, 1000, function(error, result) {
+let response = ipfs.transfer(videoInstance, 1000, function(error, result) {
   if (!error) { console.log(result); }
 })
 .on("process", function() {

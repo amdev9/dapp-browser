@@ -25,19 +25,19 @@ export function createDappView(globalUUIDList: RendererConf[], dapp: AppItem) { 
     return;
   }
   const uuidDapp = uuidv4();
-  const authorizedChannelsList = ['channelId1', 'channelId2']; //next todo get channels list from dapp manifest
+  const authorizedChannelsList = ['channelId1', 'channelId2']; // next todo get channels list from dapp manifest
 
   let webPrefObj = {
     nodeIntegration: false,
     preload: path.join(__dirname, '..', 'preload.js'),
     additionalArguments: [
       '--uuid-renderer='.concat(uuidDapp),
-      '--channels='.concat(authorizedChannelsList.join(";"))
-    ]
+      '--channels='.concat(authorizedChannelsList.join(';')),
+    ],
   };
 
   if (process.env.ELECTRON_ENV !== 'development') {
-    webPrefObj = Object.assign(webPrefObj, { sandbox: true })
+    webPrefObj = Object.assign(webPrefObj, { sandbox: true });
   }
 
   dappView = new BrowserView({
@@ -46,7 +46,7 @@ export function createDappView(globalUUIDList: RendererConf[], dapp: AppItem) { 
 
   // console.log('entry: ', path.join(DAPPS_PATH, dapp.appName, dapp.main));
 
-  dappView.webContents.loadURL('file://' + path.join(DAPPS_PATH, dapp.appName, dapp.main)); //todo pass @param path to index.html
+  dappView.webContents.loadURL('file://' + path.join(DAPPS_PATH, dapp.appName, dapp.main)); // todo pass @param path to index.html
 
   const renderIdDapp = dappView.webContents.getProcessId();
 

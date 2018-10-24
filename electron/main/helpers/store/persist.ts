@@ -1,16 +1,16 @@
 /*
- * 
+ *
  * sequelize http://docs.sequelizejs.com/class/lib/model.js~Model.html
- * 
+ *
  * SQLite store adaptor designed to use with redux-persist. This small piece of code can also be used
  * as an interface between application and SQLite storage. Functions signature are same as AsyncStorage.
- * 
+ *
  * getItem(key);
  * setitem(key, value);
  * removeItem(key);
  * getAllKeys();
  * clear();
- * 
+ *
  * All the method above returns Promise object.
 
 */
@@ -18,7 +18,7 @@
 'use strict';
 
 import 'reflect-metadata';
-import {createConnection, ConnectionOptions} from 'typeorm';
+import { createConnection, ConnectionOptions } from 'typeorm';
 import { Store } from './model/Store';
 
 export interface SQLiteStorageConfig {
@@ -42,7 +42,7 @@ export default function SQLiteStorage(config?: SQLiteStorageConfig) {
   const getStoreRepository = async () => {
     const connection = await dbConnection;
     return connection.getRepository(storageEntity.name);
-  }
+  };
 
   const getItem = async (key: string) => {
     try {
@@ -53,7 +53,7 @@ export default function SQLiteStorage(config?: SQLiteStorageConfig) {
     } catch (e) {
       console.error(e);
     }
-  }
+  };
 
   const setItem = async (key: string, item: string) => {
     try {
@@ -115,9 +115,6 @@ export default function SQLiteStorage(config?: SQLiteStorageConfig) {
     removeItem,
     setItem,
     clear,
-    getAllKeys
-  }
+    getAllKeys,
+  };
 }
-
-
-

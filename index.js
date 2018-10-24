@@ -23,7 +23,7 @@ if (process.env.NODE_ENV === 'development') {
 } else {
 
   console.log('PRODUCTION mode\nproc.spawn should execute: ' + electron + '--enable-sandbox' + __dirname + "/electron/main/dist/main.js");
-  child = proc.spawn(electron , ["--enable-sandbox", __dirname + "/electron/main/dist/main.js"], {
+  child = proc.spawn(electron , [/** "--enable-sandbox", */ __dirname + "/electron/main/dist/main.js"], {
     env: Object.assign({ ELECTRON_ENV: 'production' }, process.env)
   });
 }

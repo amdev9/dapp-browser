@@ -2,7 +2,7 @@ import { BrowserWindow } from 'electron';
 import * as path from 'path';
 import * as uuidv4 from 'uuid/v4';
 import { openDevTool } from './helpers/devtools';
-import {RendererConf} from "./createDappView";
+import { RendererConf } from './createDappView';
 
 let permissionWindow: Electron.BrowserWindow = null;
 const PATH: string = path.join(__dirname, '..', '..', 'permissionManager');
@@ -26,7 +26,7 @@ export function createPermissionWindow(globalUUIDList: RendererConf[], mainWindo
 
   permissionWindow = new BrowserWindow({
     parent: mainWindow,
-    title: appName + " | Permissions",
+    title: appName + ' | Permissions',
     alwaysOnTop: true,
     // center: true,
     show: true,
@@ -44,7 +44,6 @@ export function createPermissionWindow(globalUUIDList: RendererConf[], mainWindo
   if (process.env.ELECTRON_ENV === 'development') {
     openDevTool(permissionWindow, true);
   }
-
 
   const renderIdDapp = permissionWindow.webContents.getProcessId();
 

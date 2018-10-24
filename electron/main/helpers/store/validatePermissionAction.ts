@@ -38,7 +38,25 @@ const dappActions: string[] = [
 
   constants.SHOW_FILE_ENTRIES,
   constants.NETWORK_GET_BLOCK,
+  constants.NETWORK_GET_WITNESS,
+  constants.NETWORK_SUBSCRIBE,
+  constants.NETWORK_UNSUBSCRIBE,
   constants.SHOW_BLOCK,
+  constants.LOGGER_WRITE,
+  constants.LOGGER_WRITE_SUCCESS,
+  constants.LOGGER_WRITE_FAILURE,
+
+  constants.KEYCHAIN_CREATE,
+  constants.KEYCHAIN_CREATE_SUCCESS,
+  constants.KEYCHAIN_CREATE_FAILURE,
+  constants.KEYCHAIN_LIST,
+  constants.KEYCHAIN_LIST_SUCCESS,
+  constants.KEYCHAIN_LIST_FAILURE,
+  constants.KEYCHAIN_SIGN,
+  constants.KEYCHAIN_SIGN_SUCCESS,
+  constants.KEYCHAIN_SIGN_FAILURE,
+
+  constants.KEYCHAIN_SHOW_RESULT,
 ];
 
 const fileManagerActions: string[] = [
@@ -50,7 +68,7 @@ const fileManagerActions: string[] = [
 
 const networkActions: string[] = [
   constants.NETWORK_GET_BLOCK,
-  constants.SHOW_BLOCK
+  constants.SHOW_BLOCK,
 ];
 
 const ipfsActions: string[] = [
@@ -84,19 +102,43 @@ const pmActions: string[] = [
   constants.LOAD_PERMISSIONS,
 ];
 
-const FILE_MANAGER_PERMISSION_NAME = "filesystem";
-const NETWORK_PERMISSION_NAME = "network";
-const IPFS_PERMISSION_NAME = "ipfs";
+const loggerActions: string[] = [
+  constants.LOGGER_WRITE,
+  constants.LOGGER_WRITE_SUCCESS,
+  constants.LOGGER_WRITE_FAILURE,
+];
+
+const keychainActions: string[] = [
+  constants.KEYCHAIN_CREATE,
+  constants.KEYCHAIN_CREATE_SUCCESS,
+  constants.KEYCHAIN_CREATE_FAILURE,
+  constants.KEYCHAIN_LIST,
+  constants.KEYCHAIN_LIST_SUCCESS,
+  constants.KEYCHAIN_LIST_FAILURE,
+  constants.KEYCHAIN_SIGN,
+  constants.KEYCHAIN_SIGN_SUCCESS,
+  constants.KEYCHAIN_SIGN_FAILURE,
+];
 
 const checkGranted = (state: IState, dappName: string, actionType: string) => {
+  let permissionName: Permission = null;
   if (fileManagerActions.includes(actionType)) {
-    return checkGrantedForPermission(state, dappName, FILE_MANAGER_PERMISSION_NAME);
+    permissionName = constants.PERMISSION_NAME_FILE_MANAGER;
   }
   if (networkActions.includes(actionType)) {
-    return checkGrantedForPermission(state, dappName, NETWORK_PERMISSION_NAME);
+    permissionName = constants.PERMISSION_NAME_NETWORK;
   }
   if (ipfsActions.includes(actionType)) {
-    return checkGrantedForPermission(state, dappName, IPFS_PERMISSION_NAME);
+    permissionName = constants.PERMISSION_NAME_IPFS;
+  }
+  if (loggerActions.includes(actionType)) {
+    permissionName = constants.PERMISSION_NAME_LOGGER;
+  }
+  if (keychainActions.includes(actionType)) {
+    permissionName = constants.PERMISSION_NAME_KEYCHAIN;
+  }
+  if (permissionName) {
+    return checkGrantedForPermission(state, dappName, permissionName);
   }
   return true;
 };
@@ -115,7 +157,7 @@ const checkGrantedForPermission = (state: IState, dappName: string, permissionNa
 const getSourceDappName = (globalId: RendererConf[], action: any) => {
   const dapp = globalId.find(item => item.id === action.meta.sourceUUID);
   if (!dapp) {
-    console.log("Dapp not found in globalId by uuid: ", action.meta.sourceUUID);
+    console.log('Dapp not found in globalId by uuid: ', action.meta.sourceUUID);
     return null;
   }
   return dapp.name;
@@ -126,7 +168,7 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
     if (action.payload && action.payload.hasOwnProperty('status')) {
       if (action.payload.status === 'dapp') {
         if (!dappActions.includes(action.type)) {
-          console.log("Cancelled for dapp " + action.type);
+          console.log('Cancelled for dapp ' + action.type);
         } else {
           const dappName = getSourceDappName(globalId, action);
 
@@ -139,7 +181,7 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
       } else if (action.payload.status === 'client') {
         switch (action.type) {
           case constants.TOGGLE_NOTIFICATION_PANEL:
-            let clientObj = globalId.find(renObj => renObj.status === 'client');
+            const clientObj = globalId.find(renObj => renObj.status === 'client');
             if (clientObj) {
               const payloadUuidObj = {
                 uuid: clientObj.id,
@@ -153,6 +195,7 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
           case constants.TOGGLE_LOADER_PANEL:
           case constants.TOGGLE_SETTINGS_PANEL:
           case constants.TOGGLE_STATUS_BAR_PANEL:
+          case constants.LOGGER_WRITE_SUCCESS:
           case constants.TOGGLE_PEERS_BAR_PANEL:
           case constants.TOGGLE_HOME:
           case constants.TOGGLE_APP_HOME:
@@ -165,20 +208,18 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
           case constants.REMOVE_TRAY_ITEM:
             return next(action);
           default:
-            console.log("Cancelled for client");
+            console.log('Cancelled for client: ', action.type);
         }
       } else if (action.payload.status === 'permission_manager') {
         if (pmActions.includes(action.type)) {
           return next(action);
         } else {
-          console.log("Cancelled for permission manager " + action.type);
+          console.log('Cancelled for permission manager ' + action.type);
         }
       }
     } else {
-      console.log("no status: ", action);
+      console.log('no status: ', action);
       return next(action);
     }
   };
 };
-
-

@@ -1,4 +1,4 @@
-import {Action} from "redux";
+import { Action } from 'redux';
 import {
   TOGGLE_PERMISSION,
   CLOSE_MANAGER,
@@ -30,7 +30,7 @@ export function permissionManager(state: PermissionsState = null, action: Permis
       if (!appPermissions) {
         appPermissions = [];
       }
-      const permissions = {...state.permissions};
+      const permissions = { ...state.permissions };
       if (checked) {
         if (appPermissions.indexOf(permissionName) === -1) {
           permissions[appName] = [...appPermissions, permissionName];
@@ -38,19 +38,19 @@ export function permissionManager(state: PermissionsState = null, action: Permis
       } else {
         permissions[appName] = appPermissions.filter(item => item !== permissionName);
       }
-      return {...state, permissions};
+      return { ...state, permissions };
     }
     case CLOSE_MANAGER:
-      return {...state, isOpen: false};
+      return { ...state, isOpen: false };
     case LOAD_PERMISSIONS:
-      return {...state, isOpen: true};  
+      return { ...state, isOpen: true };
     case GRANT_PERMISSIONS:
       const appName = action.payload.appName;
       const grantedApps = [...state.grantedApps];
       if (state.grantedApps.indexOf(appName) === -1) {
         grantedApps.push(appName);
       }
-      return {...state, isOpen: false, grantedApps};
+      return { grantedApps, ...state, isOpen: false };
 
     default:
       return state;

@@ -1,5 +1,5 @@
-import {Action} from "redux";
-import {ADD_APP_ITEM} from "../../../client/redux/constants";
+import { Action } from 'redux';
+import { ADD_APP_ITEM } from '../../../client/redux/constants';
 
 interface TrayAction extends Action {
   payload?: {
@@ -16,7 +16,7 @@ interface AppItem {
   pin?: boolean;
 }
 
-export function tray(state: {items: AppItem[]} = {items: []}, action: TrayAction) {
+export function tray(state: {items: AppItem[]} = { items: [] }, action: TrayAction) {
   switch (action.type) {
     case ADD_APP_ITEM:
       const appItem = action.payload.item;

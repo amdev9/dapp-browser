@@ -12,6 +12,12 @@ export const uploadIpfsFile = (entry: string) => action(constants.IPFS_STORAGE_U
 export const showFileEntries = () => action(constants.SHOW_FILE_ENTRIES)
 
 export const networkGetBlock = () => action(constants.NETWORK_GET_BLOCK)
+export const networkGetWitness = (witnessId: string) => action(constants.NETWORK_GET_WITNESS, {witnessId})
+export const networkSubscribe = () => action(constants.NETWORK_SUBSCRIBE)
+export const networkUnsubscribe = () => action(constants.NETWORK_UNSUBSCRIBE)
+
+export const writeToConsole = (message: string) =>  action(constants.LOGGER_WRITE, { message })
+
 
 export const showBlock = () => action(constants.SHOW_BLOCK)
 
@@ -30,3 +36,14 @@ export const ipfsRoomSendMessageToPeer = (message: string | Buffer, roomName: st
 
 export const ipfsRoomLeave = (roomName: string) =>
   action(constants.IPFS_ROOM_LEAVE, { roomName } )
+
+
+export const keychainCreate = (key: string, cipher: string, curve: string) =>
+  action(constants.KEYCHAIN_CREATE, {key, cipher, curve})
+
+export const keychainList = () => action(constants.KEYCHAIN_LIST)
+
+export const keychainSign = (key: string, chainId: string, transaction: string) =>
+  action(constants.KEYCHAIN_SIGN, {key, chainId, transaction})
+
+export const keychainShowResult = () => action(constants.KEYCHAIN_SHOW_RESULT)

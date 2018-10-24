@@ -10,10 +10,28 @@
 	<br />
 	<br />
 	<button id="sendchannel2">Send data through channel</button>
-
+	
+	<h4>Network</h4>
+	<label>Witness ID: <input id="networkWitnessId" type="text"></label> <span>1.5.8</span><br />
 	<button id="networkGetBlockButton">Network Get Block</button>
- 
-
+	<button id="networkGetWitnessButton">Network Get Witness</button>
+	<button id="networkSubscribeButton">Network Subscribe</button>
+	<button id="networkUnsubscribeButton">Network Unsubscribe</button>
+	<br />
+	
+	<h4>Console</h4>
+	<input id="consoleText" type="text"><button id="sendToConsoleButton">Send to Console</button>
+	<br />
+	
+	<h4>Keychain</h4>
+	<label>Key: <input id="keychainKey" type="text"></label> <span>some_key</span><br />
+	<label>ChainId: <input id="keychainChainId" type="text"></label> <span>de5f4d8974715e20f47c8bb609547c9e66b0b9e31d521199b3d8d6af6da74cb1</span><br />
+	<label>Transaction: <input id="keychainTransactionId" type="text"></label> <span>871689d060721b5cec5a010080841e00000000000011130065cd1d0000000000000000</span><br />
+	<button id="keychainCreateButton">Create</button>
+	<button id="keychainListButton">List</button>
+	<button id="keychainSignButton">Sign</button>
+	<br />
+	<br />
 	<!-- system component part -->
 
 	<button id="intent_channel">Intent channel data pass</button>

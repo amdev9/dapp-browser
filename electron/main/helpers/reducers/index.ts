@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
- 
+
 import { channel } from './channel';
 import { client } from './client';
 import { feed } from './feed';

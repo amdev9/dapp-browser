@@ -36,26 +36,26 @@ export const initialState: IState = {
   channel: {},
   client: {
     activeDapp: {
-      appName: null
+      appName: null,
     },
     isHome: true,
-    notification: {isOpen: false},
-    loader: {isOpen: false},
-    statusBar: {isOpen: false, isPeersOpen: false},
-    search: {isOpen: false},
-    window: {width: 0, height: 0},
-    fileDialog: {isOpen: false}
+    notification: { isOpen: false },
+    loader: { isOpen: false },
+    statusBar: { isOpen: false, isPeersOpen: false },
+    search: { isOpen: false },
+    window: { width: 0, height: 0 },
+    fileDialog: { isOpen: false },
   },
   feed: {},
-  permissionManager: {isOpen: true, permissions: {}, grantedApps: []},
-  tray: {items: []},
+  permissionManager: { isOpen: true, permissions: {}, grantedApps: [] },
+  tray: { items: [] },
 };
 
 declare global {
   namespace NodeJS {
     interface Global {
-      getReduxState: () => string,
-      state: IState
+      getReduxState: () => string;
+      state: IState;
     }
   }
 }
@@ -70,14 +70,14 @@ const epicMiddleware = createEpicMiddleware();
 
 const validateAction = (action: Action) => {
   return isFSA(action);
-}
+};
 
 const targetWebContents = (targetId: number) => {
   const allWebContents = webContents.getAllWebContents();
   // console.log('webContents chrome proc Id\'s: ', allWebContents.map((contents) => contents.getProcessId()) );
   const targetContents = allWebContents.find(contents => contents.getProcessId() === targetId);
   return targetContents;
-}
+};
 
 const forwardToRendererWrapper = (globalId: RendererConf[]) => {
   return () => (next: Dispatch<void>) => <A extends Action>(action: A) => {
@@ -89,37 +89,37 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
       meta: {
         ...action.meta,
         scope: 'local',
-      }
+      },
     });
 
-    if (action.type == 'INTENT_OPEN_CHANNELS') {
+    if (action.type === 'INTENT_OPEN_CHANNELS') {
 
       uuidChannelMapList = [
         {
           uuid: action.payload.uuidSend,
-          channel: 'testChannel1'
+          channel: 'testChannel1',
         },
         {
           uuid: action.payload.uuidRec,
-          channel: 'testChannel2'
-        }
+          channel: 'testChannel2',
+        },
       ];
 
-      globalId.forEach(function(renObj, i, arr) {
-        if (renObj.id == action.payload.uuidSend) {
+      globalId.forEach(function (renObj, i, arr) {
+        if (renObj.id === action.payload.uuidSend) {
           arr[i].intent = action.payload.uuidRec;
         }
-        if (renObj.id == action.payload.uuidRec) {
+        if (renObj.id === action.payload.uuidRec) {
           arr[i].intent = action.payload.uuidSend;
         }
       });
     }
 
-    if (action.type == 'OPEN_CHANNEL') {
-      let uuidObj = globalId.find(renObj => renObj.id === action.payload.uuid);
-      let intentObj = globalId.find(renObj => renObj.id === uuidObj.intent);
-      const channelSender = uuidChannelMapList.find(uuidChannelMap => uuidChannelMap.uuid == uuidObj.id).channel;
-      const channelReceiver = uuidChannelMapList.find(uuidChannelMap => uuidChannelMap.uuid == uuidObj.intent).channel;
+    if (action.type === 'OPEN_CHANNEL') {
+      const uuidObj = globalId.find(renObj => renObj.id === action.payload.uuid);
+      const intentObj = globalId.find(renObj => renObj.id === uuidObj.intent);
+      const channelSender = uuidChannelMapList.find(uuidChannelMap => uuidChannelMap.uuid === uuidObj.id).channel;
+      const channelReceiver = uuidChannelMapList.find(uuidChannelMap => uuidChannelMap.uuid === uuidObj.intent).channel;
       bindChannel(intentObj.winId, channelReceiver, channelSender);
     }
 
@@ -127,7 +127,7 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
 
     if (targetUUID) {
       // loop through all action uuid's passed in payload {
-      let uuidObj = globalId.find(renObj => renObj.id === targetUUID);
+      const uuidObj = globalId.find(renObj => renObj.id === targetUUID);
       if (uuidObj) {
         const resolver = targetWebContents(uuidObj.winId);
         // console.log(resolver);
@@ -164,7 +164,7 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
     // return next(action);
 
   };
-}
+};
 
 const bindChannel = (webId: number, channelReceiver: string, channelSender: string) => {
   ipcMain.on(channelSender, (event: Electron.Event, payload: string) => {
@@ -176,39 +176,38 @@ const bindChannel = (webId: number, channelReceiver: string, channelSender: stri
     }
 
   });
-}
+};
 
 const replyActionMain = (store: Store<{}>, globalId: RendererConf[]) => {
   global.getReduxState = () => JSON.stringify(store.getState());
- 
+
   ipcMain.on('redux-action', (event: Electron.Event, uuid: string, action: any) => {
     const uuidObj = globalId.find(renObj => renObj.id === uuid);
 
     if (uuidObj) {
-      console.log('replyAction', action)
       const statusObj = { status: uuidObj.status };
-      const metadata = { sourceUUID: uuid, name: uuidObj.name }
+      const metadata = { sourceUUID: uuid, name: uuidObj.name };
       action.payload = (action.payload) ? Object.assign(action.payload, statusObj) : statusObj;
-      action.meta = action.meta ? Object.assign(action.meta, metadata) : metadata
+      action.meta = action.meta ? Object.assign(action.meta, metadata) : metadata;
       // uuid resolver
- 
+
       const uuidTargetObj = globalId.find(renObj => renObj.name === action.payload.targetDapp && renObj.status === 'dapp');
- 
+
       if (uuidTargetObj) {
         const payloadUuidObj = {
           uuidRec: uuidTargetObj.id,
           uuidSend: uuid,
         };
- 
-        action.payload = Object.assign(action.payload, payloadUuidObj)
- 
+
+        action.payload = Object.assign(action.payload, payloadUuidObj);
+
       }
       store.dispatch(action);
     } else {
-      console.log("Spoofing detected");
+      console.log('Spoofing detected');
     }
   });
-}
+};
 
 export const configureStore = (state: IState = initialState, globalId?: RendererConf[]) => {
   const middleware: Middleware[] = [];
@@ -217,18 +216,18 @@ export const configureStore = (state: IState = initialState, globalId?: Renderer
   const enhancer: GenericStoreEnhancer = compose(...enhanced);
 
   const storeEngine = SQLiteStorage({
-    database: 'temp/sqliteStorage.db'
+    database: 'temp/sqliteStorage.db',
   });
 
   const persistConfig = {
     key: 'root',
     storage: storeEngine, // storage,
-    debug: true
+    debug: true,
   };
   const pReducer = persistReducer(persistConfig, rootReducer);
 
   const store = createStore(pReducer, state, enhancer);
-  let persistor = persistStore(store)
+  const persistor = persistStore(store);
 
   epicMiddleware.run(rootEpic);
   replyActionMain(store, globalId);
