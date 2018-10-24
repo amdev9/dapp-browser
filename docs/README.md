@@ -30,7 +30,7 @@
   - [array.Logger](#arraylogger)
   - [array.Keychain](#arraykeychain)
   - [array.Network](#arraynetwork)
-  - [Library implementation notes](#library-implementation-notes)
+
 
 # Architecture  
 
@@ -614,78 +614,6 @@ web3 events api: <br />
  https://web3js.readthedocs.io/en/1.0/callbacks-promises-events.html?highlight=eventEmitter
  https://web3js.readthedocs.io/en/1.0/web3-eth-subscribe.html?highlight=eventEmitter
  https://github.com/ethereum/web3.js/blob/develop/lib/web3.js
-
-
-# Library implementation notes
-
-FileManager
------------
-
-new FileManager()
-```javascript
-  class FileManager() {
-    constructor() {
-
-      this.channelDataPass(); // run method right from constructor
-    }
-  }
-```
-
-```javascript
-  let videoInstance: string = await fmanager.openFileDialog(); // generated string as file 
-```
-```
-      FM_OPEN_FILE
-  [main]   <---------  [dapp]
-    |
-    |
-  process dialog opening ..
-    |
-  user interact with UI
-    |
-  got paths for all selected files
-    |     FM_OPEN_FILE_SUCCESS (generatedId)
-   [.]    ----------->
-```
-
-Generate uniq UUID with stripped "-".
-
-IPFS
------------
-
-1) new IpfsStorage();
-2) ...
-
-```
- [.]  <---- TRANSFER_FILE(id)
-  |
-  |  
-process file with generated id
-
-
----> TRANSFER_SUCCESS(KBytes), id
----> TRANSFER_SUCCESS(KBytes), id // emites in our promiEvent instance
-    <---- TRANSFER_CANCEL // call method, await method response with resolve result = CANCEL
-
-
-new Promise(resolve, reject)
- __    
-| ---> TRANSFER_DONE -> emit connect result resolve
-|
-| ---> TRANSFER_FAIL -> emit connect error reject
-|__
-```
-
-
-Dapp side epic responsible for emit propagating.
-
-
-
- Method function promisification https://stackoverflow.com/questions/29933088/trigger-promise-when-an-event-fires
- 
-
-Redux-observable main side will catch TRANSFER_CANCEL with `takeUntil` rxjs operator.
-Each system component will have own epic aka protocol handler.
 
  
 __________________________
