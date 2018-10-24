@@ -12,9 +12,9 @@ export interface FileEntry {
   path?: Path;
   name?: FileName;
 }
-export type FileEntryList = Array<FileEntry>;
-export type FileIdList = Array<FileId>;
-export type PathList = Array<Path>;
+export type FileEntryList = FileEntry[];
+export type FileIdList = FileId[];
+export type PathList = Path[];
 
 export interface FileObject {
   name: string;
@@ -24,9 +24,13 @@ export interface FileObject {
   content?: Buffer;
 }
 
-const entryMap: Map<FileId, Path> = new Map();
-
 export class FileManager {
+  entryMap: Map<FileId, Path>;
+
+  constructor() {
+    this.entryMap = new Map();
+
+  }
 
   static generateFileEntryId() {
     return uuidv4();
@@ -46,22 +50,22 @@ export class FileManager {
     return paths[0];
   }
 
-  static _setPathEntry(path: Path): FileId {
+  _setPathEntry(path: Path): FileId {
     const pathId = FileManager.generateFileEntryId();
-    entryMap.set(pathId, path);
+    this.entryMap.set(pathId, path);
 
     return pathId;
   }
 
-  static getPath(id: FileId): Path {
-    if (!entryMap.has(id)) {
+  getPath(id: FileId): Path {
+    if (!this.entryMap.has(id)) {
       return;
     }
 
-    return entryMap.get(id);
+    return this.entryMap.get(id);
   }
 
-  static async openFile(): Promise<FileEntry | undefined> {
+  async openFile(): Promise<FileEntry | undefined> {
     const file = await FileManager.selectFile();
 
     if (!file || !file.length) {
@@ -69,17 +73,19 @@ export class FileManager {
     }
 
     return {
-      id: FileManager._setPathEntry(file[0]),
+      id: this._setPathEntry(file[0]),
       name: path.basename(file[0]),
     };
   }
 
-  static saveFile(dir: Path, file: FileObject) {
+  saveFile(dir: Path, file: FileObject) {
 
     const location = path.join(dir, file.name);
 
     fs.writeFileSync(location, file.content);
 
-    return FileManager._setPathEntry(location);
+    return this._setPathEntry(location);
   }
 }
+
+export default new FileManager();

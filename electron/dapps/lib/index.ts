@@ -89,6 +89,54 @@ const initUi = () => {
     });
   }
 
+  if( document.getElementById('ipfsRoomSubscribe') ) {
+    document.getElementById('ipfsRoomSubscribe').addEventListener('submit', (e: any) => {
+      e.preventDefault()
+      const formElements = e.target.elements
+      const roomName = formElements.ipfsRoomName && formElements.ipfsRoomName.value
+
+      const logElement = document.getElementById('ipfsRoomLog')
+
+      if (logElement){
+        logElement.innerText = ''
+      }
+      store.dispatch(actions.ipfsRoomSubscribe(roomName))
+    });
+  }
+
+  if( document.getElementById('ipfsRoomSendBroadcastTextForm') ) {
+    document.getElementById('ipfsRoomSendBroadcastTextForm').addEventListener('submit', (e: any) => {
+      e.preventDefault()
+      const formElements = e.target.elements
+      const message = formElements.message && formElements.message.value || ''
+
+      const roomNameElement = <HTMLInputElement> document.getElementById('ipfsRoomName')
+      const roomName = roomNameElement && roomNameElement.value || ''
+      console.log('topic', roomName, message)
+      store.dispatch(actions.ipfsRoomSendMessageBroadcast(message, roomName))
+    });
+  }
+
+  if( document.getElementById('ipfsRoomSendToPeerTextForm') ) {
+    document.getElementById('ipfsRoomSendToPeerTextForm').addEventListener('submit', (e: any) => {
+      e.preventDefault()
+      const formElements = e.target.elements
+      const { message, peerHash } = formElements
+
+      const roomNameElement = <HTMLInputElement> document.getElementById('ipfsRoomName')
+      store.dispatch(
+        actions.ipfsRoomSendMessageToPeer(message.value || '', roomNameElement.value || '', peerHash.value || '')
+      )
+    });
+  }
+
+  if( document.getElementById('ipfsRoomLeaveButton') ) {
+    document.getElementById('ipfsRoomLeaveButton').addEventListener('click', (e: any) => {
+      const roomNameElement = <HTMLInputElement> document.getElementById('ipfsRoomName')
+      store.dispatch(actions.ipfsRoomLeave(roomNameElement.value || ''))
+    });
+  }
+
   if (document.getElementById("sendToConsoleButton")) {
     document.getElementById("sendToConsoleButton").addEventListener('click', () => {
       const input = <HTMLInputElement>document.getElementById("consoleText");

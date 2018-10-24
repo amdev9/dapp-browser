@@ -20,6 +20,21 @@ const dappActions: string[] = [
   constants.IPFS_STORAGE_DOWNLOAD_FILE,
   constants.IPFS_STORAGE_DOWNLOAD_FILE_SUCCESS,
   constants.IPFS_STORAGE_DOWNLOAD_FILE_FAILURE,
+  constants.IPFS_ROOM_SUBSCRIBE,
+  constants.IPFS_ROOM_SUBSCRIBE_SUCCESS,
+  constants.IPFS_ROOM_SUBSCRIBE_FAILURE,
+  constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST,
+  constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST_SUCCESS,
+  constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST_FAILURE,
+  constants.IPFS_ROOM_SEND_MESSAGE_TO_DAPP,
+  constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER,
+  constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER_SUCCESS,
+  constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER_FAILURE,
+  constants.IPFS_ROOM_PEER_JOINED,
+  constants.IPFS_ROOM_PEER_LEFT,
+  constants.IPFS_ROOM_LEAVE,
+  constants.IPFS_ROOM_LEAVE_SUCCESS,
+  constants.IPFS_ROOM_LEAVE_FAILURE,
 
   constants.SHOW_FILE_ENTRIES,
   constants.NETWORK_GET_BLOCK,
@@ -63,6 +78,21 @@ const ipfsActions: string[] = [
   constants.IPFS_STORAGE_DOWNLOAD_FILE,
   constants.IPFS_STORAGE_DOWNLOAD_FILE_SUCCESS,
   constants.IPFS_STORAGE_DOWNLOAD_FILE_FAILURE,
+  constants.IPFS_ROOM_SUBSCRIBE,
+  constants.IPFS_ROOM_SUBSCRIBE_SUCCESS,
+  constants.IPFS_ROOM_SUBSCRIBE_FAILURE,
+  constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST,
+  constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST_SUCCESS,
+  constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST_FAILURE,
+  constants.IPFS_ROOM_SEND_MESSAGE_TO_DAPP,
+  constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER,
+  constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER_SUCCESS,
+  constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER_FAILURE,
+  constants.IPFS_ROOM_PEER_JOINED,
+  constants.IPFS_ROOM_PEER_LEFT,
+  constants.IPFS_ROOM_LEAVE,
+  constants.IPFS_ROOM_LEAVE_SUCCESS,
+  constants.IPFS_ROOM_LEAVE_FAILURE,
 ];
 
 const pmActions: string[] = [
@@ -134,19 +164,18 @@ const getSourceDappName = (globalId: RendererConf[], action: any) => {
 };
 
 export const validatePermissionAction = (globalId: RendererConf[]) => {
-  return (store: any) => (next: Dispatch<void>) => <A extends Action>(action: A) => {
+  return (store: any) => (next: Dispatch<Action>) => <A extends Action>(action: A) => {
     if (action.payload && action.payload.hasOwnProperty('status')) {
       if (action.payload.status === 'dapp') {
         if (!dappActions.includes(action.type)) {
-          console.log('Cancelled for dapp ' + action.type);
+          console.log(`Cancelled for dapp ${action.type}`);
         } else {
           const dappName = getSourceDappName(globalId, action);
 
           if (checkGranted(store.getState(), dappName, action.type)) {
             return next(action);
-          } else {
-            console.log(`Action "${action.type}" is not granted for dapp "${dappName}"`);
           }
+          console.log(`Action "${action.type}" is not granted for dapp "${dappName}"`);
         }
       } else if (action.payload.status === 'client') {
         switch (action.type) {
@@ -183,9 +212,8 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
       } else if (action.payload.status === 'permission_manager') {
         if (pmActions.includes(action.type)) {
           return next(action);
-        } else {
-          console.log('Cancelled for permission manager ' + action.type);
         }
+        console.log(`Cancelled for permission manager ${action.type}`);
       }
     } else {
       console.log('no status: ', action);

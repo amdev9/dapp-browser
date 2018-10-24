@@ -4,14 +4,15 @@ import { switchMap } from 'rxjs/operators';
 
 import * as ipfsStorageActions  from '../actions/ipfsStorage';
 import * as constants from '../constants';
-import { FileManager, FileObject } from '../FileManager';
+import fileManager, { FileManager, FileObject} from '../FileManager';
 import ipfs from '../IpfsStorage';
 
-const ipfsStorageUploadEpic: Epic<AnyAction> = (action$) => action$.pipe( // @todo fix action type
+
+const ipfsStorageUploadEpic: Epic<AnyAction> = (action$) => action$.pipe( //@todo fix action type
   ofType(constants.IPFS_STORAGE_UPLOAD_FILE),
   switchMap(async (action) => {
     try {
-      const filePath = FileManager.getPath(action.payload.entry);
+      const filePath = fileManager.getPath(action.payload.entry);
 
       const ipfsFileObject = await ipfs.uploadFile(filePath);
 
@@ -25,26 +26,30 @@ const ipfsStorageUploadEpic: Epic<AnyAction> = (action$) => action$.pipe( // @to
       };
 
       return ipfsStorageActions.uploadIpfsFileSuccess(ipfsFile, action.meta.sourceUUID);
-    } catch (error) {
+    } catch(error) {
       return ipfsStorageActions.uploadIpfsFileFailure(error, action.meta.sourceUUID);
     }
   }),
 );
 
-const ipfsStorageDownloadEpic: Epic<AnyAction> = (action$) => action$.pipe( // @todo fix action type
+const ipfsStorageDownloadEpic: Epic<AnyAction> = (action$) => action$.pipe(
   ofType(constants.IPFS_STORAGE_DOWNLOAD_FILE),
   switchMap(async (action) => {
     try {
       const targetDirectory = await FileManager.selectDirectory();
       const downloadFile = await ipfs.downloadFile(action.payload.hash);
 
+      if (!downloadFile) {
+        throw Error('File with current hash does not exist');
+      }
+
       const ipfsFileEntry: ipfsStorageActions.IpfsFileEntry = {
-        id: FileManager.saveFile(targetDirectory, <FileObject> downloadFile),
+        id: fileManager.saveFile(targetDirectory, <FileObject> downloadFile),
         hash: action.payload.hash,
       };
 
       return ipfsStorageActions.downloadIpfsFileSuccess(ipfsFileEntry, action.meta.sourceUUID);
-    } catch (error) {
+    } catch(error) {
       return ipfsStorageActions.downloadIpfsFileFailure(error, action.meta.sourceUUID);
     }
   }),

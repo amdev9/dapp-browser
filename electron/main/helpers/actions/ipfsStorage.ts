@@ -7,7 +7,7 @@ export interface IpfsFileEntry {
   hash: string;
 }
 
-export type IpfsFileEntryList = Array<IpfsFileEntry>;
+export type IpfsFileEntryList = IpfsFileEntry[];
 
 export const uploadIpfsFileSuccess = (ipfsEntry: IpfsFileEntry, targetUUID? :string) =>
   action(constants.IPFS_STORAGE_UPLOAD_FILE_SUCCESS, { ipfsEntry }, { targetUUID });

@@ -7,6 +7,7 @@ import fileManagerEpic from './fileManagerEpic';
 import ipfsStorageEpic from './ipfsStorageEpic';
 import networkEpic from './networkEpic';
 import keychainEpic from './keychainEpic';
+import ipfsRoomEpic from './ipfsRoomEpic';
 
 // todo fix https://github.com/piotrwitek/react-redux-typescript-guide#async-flow
 
@@ -17,5 +18,7 @@ export default combineEpics(
   fileManagerEpic,
   ipfsStorageEpic,
   networkEpic,
+  ipfsRoomEpic,
   keychainEpic,
 );
+ 

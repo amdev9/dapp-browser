@@ -1,17 +1,16 @@
 import { webContents, ipcMain } from 'electron';
-import { createStore, applyMiddleware, compose, Store, Middleware, GenericStoreEnhancer, Dispatch } from 'redux';
+import { createStore, applyMiddleware, compose, Store, Middleware, Dispatch } from 'redux';
 import { isFSA } from 'flux-standard-action';
 // import { triggerAlias } from 'electron-redux';
 import { createEpicMiddleware } from 'redux-observable';
 import { persistStore,  persistReducer } from 'redux-persist';
+import thunk from 'redux-thunk';
 
 import { validatePermissionAction } from './validatePermissionAction';
 import rootEpic from '../epics';
 import { rootReducer } from '../reducers';
 import { RendererConf } from '../../createDappView';
-
 import { IState } from '../reducers/state';
-
 import SQLiteStorage from './persist';
 
 export interface Action {
@@ -58,11 +57,11 @@ declare global {
   }
 }
 
-interface uuidChannelMap {
+interface UuidChannelMap {
   uuid: string;
   channel: string;
 }
-let uuidChannelMapList: Array<uuidChannelMap>;
+let UuidChannelMapList: UuidChannelMap[];
 
 const epicMiddleware = createEpicMiddleware();
 
@@ -78,7 +77,7 @@ const targetWebContents = (targetId: number) => {
 };
 
 const forwardToRendererWrapper = (globalId: RendererConf[]) => {
-  return () => (next: Dispatch<void>) => <A extends Action>(action: A) => {
+  return () => (next: Dispatch<Action>) => <A extends Action>(action: A) => {
     if (!validateAction(action)) return next(action);
     if (action.meta && action.meta.scope === 'local') return next(action);
 
@@ -92,7 +91,7 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
 
     if (action.type === 'INTENT_OPEN_CHANNELS') {
 
-      uuidChannelMapList = [
+      UuidChannelMapList = [
         {
           uuid: action.payload.uuidSend,
           channel: 'testChannel1',
@@ -116,8 +115,8 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
     if (action.type === 'OPEN_CHANNEL') {
       const uuidObj = globalId.find(renObj => renObj.id === action.payload.uuid);
       const intentObj = globalId.find(renObj => renObj.id === uuidObj.intent);
-      const channelSender = uuidChannelMapList.find(uuidChannelMap => uuidChannelMap.uuid === uuidObj.id).channel;
-      const channelReceiver = uuidChannelMapList.find(uuidChannelMap => uuidChannelMap.uuid === uuidObj.intent).channel;
+      const channelSender = UuidChannelMapList.find(UuidChannelMap => UuidChannelMap.uuid === uuidObj.id).channel;
+      const channelReceiver = UuidChannelMapList.find(UuidChannelMap => UuidChannelMap.uuid === uuidObj.intent).channel;
       bindChannel(intentObj.winId, channelReceiver, channelSender);
     }
 
@@ -132,9 +131,9 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
         if (resolver) {
           const copyAction = Object.assign({}, rendererAction);
 
-          // if (copyAction.meta){
-          //   delete copyAction.meta
-          // }
+          if (copyAction.meta) {
+            delete copyAction.meta.sourceUUID;
+          }
 
           resolver.send('redux-action', copyAction);
 
@@ -209,9 +208,9 @@ const replyActionMain = (store: Store<{}>, globalId: RendererConf[]) => {
 
 export const configureStore = (state: IState = initialState, globalId?: RendererConf[]) => {
   const middleware: Middleware[] = [];
-  middleware.push(validatePermissionAction(globalId), epicMiddleware, forwardToRendererWrapper(globalId));
+  middleware.push(thunk, validatePermissionAction(globalId), epicMiddleware, forwardToRendererWrapper(globalId));
   const enhanced = [applyMiddleware(...middleware)];
-  const enhancer: GenericStoreEnhancer = compose(...enhanced);
+  const enhancer: any = compose(...enhanced);
 
   const storeEngine = SQLiteStorage({
     database: 'temp/sqliteStorage.db',
@@ -224,10 +223,10 @@ export const configureStore = (state: IState = initialState, globalId?: Renderer
   };
   const pReducer = persistReducer(persistConfig, rootReducer);
 
-  const store = createStore(pReducer, state, enhancer);
+  const store = createStore(pReducer, <any> state, enhancer);
   const persistor = persistStore(store);
 
   epicMiddleware.run(rootEpic);
   replyActionMain(store, globalId);
-  return store;
+  return <Store<IState>> store;
 };

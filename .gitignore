@@ -14,3 +14,4 @@ keychain.dms
 .log
 temp/
 electron/dapps/lib/dist
+ipfs-room/

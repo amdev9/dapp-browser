@@ -2,16 +2,16 @@ import * as fs from 'fs';
 import * as IPFS from 'ipfs';
 import * as pathModule from 'path';
 
-import { Path } from './FileManager'
+import { Path } from './FileManager';
 import { IPFSGetResult } from '../types/ipfs';
+import { remoteConfig } from './config/ipfs';
+import { getReadyIpfsInstance } from './IpfsInstance';
 
 export interface IpfsFileObject {
   hash: string;
   path: string;
   size: number;
 }
-
-export type IpfsFileObjectList = Array<IpfsFileObject>;
 
 const EXEC_TIMEOUT = 10000;
 
@@ -32,75 +32,17 @@ const functionPromiseTimeout = (f: () => Promise<any>, timeout: number) => {
     }, timeout);
 
     result
-      .then((data) => resolve(data))
-      .catch((error) => reject(error))
+      .then(data => resolve(data))
+      .catch(error => reject(error))
       .finally(() => clearTimeout(timerId));
   });
 };
 
-class IpfsComponent {
-  ipfs: IPFS;
-  status: boolean = false;
-  readyState: Promise<any>;
-  url: string = 'https://ipfs.array.io/ipfs/';
+class IpfsStorage{
+  ipfs: Promise<IPFS>;
 
   constructor(configuration: IPFS.Options) {
-    this.ipfs = new IPFS(configuration);
-
-    this.cleanLocks();
-
-    this.readyState = new Promise((resolve, reject) => {
-      this.ipfs.on('ready', () => {
-        if (this.ipfs.isOnline()) {
-          console.log('online');
-          resolve();
-        } else {
-          console.log('offline, try to start');
-          this.ipfs.start();
-        }
-      });
-
-      this.ipfs.on('error', (error: Error) => {
-        reject(error);
-      });
-
-    });
-
-    this.ipfs.on('start', this.startFunction.bind(this));
-  }
-
-  cleanLocks () {
-    const repoPath = this.ipfs.repo.path();
-    // This fixes a bug on Windows, where the daemon seems
-    // not to be exiting correctly, hence the file is not
-    // removed.
-    console.log('Cleaning repo.lock file');
-    const lockPath = pathModule.join(repoPath, 'repo.lock');
-
-    if (fs.existsSync(lockPath)) {
-      try {
-        fs.unlinkSync(lockPath);
-      } catch (err) {
-        console.warn('Could not remove repo.lock. Daemon might be running');
-      }
-    }
-  }
-
-  async startFunction() {
-    console.log('Node started!');
-  }
-
-  async readyFunction() {
-    if (this.ipfs.isOnline()) {
-      console.log('online');
-      this.status = true;
-    } else {
-      console.log('offline, try to start');
-      this.ipfs.start();
-    }
-
-    const version = await this.ipfs.version();
-    console.log('Version:', version.version);
+    this.ipfs = getReadyIpfsInstance();
   }
 
   async uploadFile(filePath: Path): Promise<IpfsFileObject | null> {
@@ -108,8 +50,7 @@ class IpfsComponent {
       return;
     }
 
-    // Check online status
-    await this.readyState;
+    const ipfs = await this.ipfs;
 
     const file = { path: pathModule.basename(filePath), content: fs.createReadStream(filePath) };
 
@@ -119,7 +60,7 @@ class IpfsComponent {
       wrapWithDirectory: true,
     };
 
-    const ipfsFiles = await this.ipfs.files.add([file], options);
+    const ipfsFiles = await ipfs.files.add([file], options);
 
     if (!ipfsFiles || !ipfsFiles.length) {
       return null;
@@ -133,11 +74,10 @@ class IpfsComponent {
       return;
     }
 
-    // Check online status
-    await this.readyState;
+    const ipfs = await this.ipfs;
 
     const files: any = await functionPromiseTimeout(() => {
-      return this.ipfs.files.get(hash);
+      return ipfs.files.get(hash);
     }, EXEC_TIMEOUT);
 
     if (!files || !files.length) {
@@ -149,34 +89,4 @@ class IpfsComponent {
 
 }
 
-const remoteConf = {
-  start: true,
-  EXPERIMENTAL: {
-    pubsub: true,
-  },
-  config: {
-    Bootstrap: [
-      '/ip4/35.204.17.104/tcp/4001/ipfs/QmWCsxqpvYMKCeCejvXLc7TbWrraLwmAKMxWgcsKQ8xUL3',
-    ],
-    Addresses: {
-      Swarm: [
-        '/ip4/0.0.0.0/tcp/4001',
-        '/ip6/::/tcp/4001',
-        '/dns4/discovery.libp2p.array.io/tcp/9091/wss/p2p-websocket-star/',
-      ],
-      API: '/ip4/127.0.0.1/tcp/5001',
-      Gateway: '/ip4/127.0.0.1/tcp/8080',
-    },
-  },
-};
-
-const localConf = {
-  // repo: '/Users/pidgin/dev/boilerplate/ipfsTest',
-  config: {
-    Addresses: {
-      API: '/ip4/127.0.0.1/tcp/5001',
-    },
-  },
-};
-
-export default new IpfsComponent(remoteConf);
+export default new IpfsStorage(remoteConfig);
