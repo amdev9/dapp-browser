@@ -50,7 +50,7 @@ export function permissionManager(state: PermissionsState = null, action: Permis
       if (state.grantedApps.indexOf(appName) === -1) {
         grantedApps.push(appName);
       }
-      return { grantedApps, ...state, isOpen: false };
+      return { ...state, grantedApps, isOpen: false };
 
     default:
       return state;
