@@ -7,7 +7,6 @@
 - [Architecture](#architecture)
   - [Infrastructure description](#infrastructure-description)
   - [Client front-end](#client-front-end)
-  - [Events action signals](#events-action-signals)
   - [UUID store resolver](#uuid-store-resolver)
   - [Redux middleware for permission check](#redux-middleware-for-permission-check)
   - [Dapp communication protocol](#dapp-communication-protocol)
@@ -103,10 +102,6 @@ The main reason to use Redux-Observable / RxJs is that it allows to halt the pro
 Dynamic permission mechanizm<br />
 *In case we change permissions on the fly, if the application is running, it is necessary to "load" the new permissions and, accordingly, the channels.*
 Start-stop channels: https://github.com/MichaelVasseur/electron-ipc-bus
-
-## Events action signals
-
-All component events go through the channels via the `ipcMain`-`ipcRenderer` mechanizm.
  
 ## UUID store resolver
 
