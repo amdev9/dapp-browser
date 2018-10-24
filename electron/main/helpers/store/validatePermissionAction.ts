@@ -44,6 +44,27 @@ const dappActions: string[] = [
   constants.KEYCHAIN_SHOW_RESULT,
 ];
 
+const clientActions: string[] = [
+  constants.TOGGLE_NOTIFICATION_PANEL,
+  constants.CLEAR_NOTIFICATION,
+  constants.CLEAR_ALL_NOTIFICATIONS,
+  constants.TOGGLE_LOADER_PANEL,
+  constants.TOGGLE_SETTINGS_PANEL,
+  constants.TOGGLE_STATUS_BAR_PANEL,
+  constants.LOGGER_WRITE_SUCCESS,
+  constants.TOGGLE_PEERS_BAR_PANEL,
+  constants.TOGGLE_HOME,
+  constants.TOGGLE_APP_HOME,
+  constants.TOGGLE_SEARCH_PANEL,
+  constants.SWITCH_DAPP,
+  constants.ADD_APP_ITEM,
+  constants.APPS_FEED_RESIZE,
+  constants.SET_TRAY_COUNTER,
+  constants.SET_TRAY_PROGRESS,
+  constants.REMOVE_TRAY_ITEM,
+  constants.MARKET_DOWNLOAD_DAPP,
+];
+
 const fileManagerActions: string[] = [
   constants.FILE_MANAGER_OPEN_DIALOG,
   constants.FILE_MANAGER_OPEN_DIALOG_SUCCESS,
@@ -136,56 +157,39 @@ const getSourceDappName = (globalId: RendererConf[], action: any) => {
 export const validatePermissionAction = (globalId: RendererConf[]) => {
   return (store: any) => (next: Dispatch<void>) => <A extends Action>(action: A) => {
     if (action.payload && action.payload.hasOwnProperty('status')) {
+
       if (action.payload.status === 'dapp') {
         if (!dappActions.includes(action.type)) {
-          console.log('Cancelled for dapp ' + action.type);
+          console.log('Cancelled for dapp ', action.type);
         } else {
           const dappName = getSourceDappName(globalId, action);
 
           if (checkGranted(store.getState(), dappName, action.type)) {
             return next(action);
-          } else {
-            console.log(`Action "${action.type}" is not granted for dapp "${dappName}"`);
+          }
+          console.log(`Action "${action.type}" is not granted for dapp "${dappName}"`);
+        }
+
+      } else if (action.payload.status === 'client') {
+        if (action.type === constants.TOGGLE_NOTIFICATION_PANEL) { // why this logic applied only for TOGGLE_NOTIFICATION_PANEL action? Do we need this logic?
+          const clientObj = globalId.find(renObj => renObj.status === 'client');
+          if (clientObj) {
+            const payloadUuidObj = {
+              uuid: clientObj.id,
+            };
+            action.payload = Object.assign(action.payload, payloadUuidObj);
           }
         }
-      } else if (action.payload.status === 'client') {
-        switch (action.type) {
-          case constants.TOGGLE_NOTIFICATION_PANEL:
-            const clientObj = globalId.find(renObj => renObj.status === 'client');
-            if (clientObj) {
-              const payloadUuidObj = {
-                uuid: clientObj.id,
-              };
-              action.payload = Object.assign(action.payload, payloadUuidObj);
-            }
-            return next(action);
-
-          case constants.CLEAR_NOTIFICATION:
-          case constants.CLEAR_ALL_NOTIFICATIONS:
-          case constants.TOGGLE_LOADER_PANEL:
-          case constants.TOGGLE_SETTINGS_PANEL:
-          case constants.TOGGLE_STATUS_BAR_PANEL:
-          case constants.LOGGER_WRITE_SUCCESS:
-          case constants.TOGGLE_PEERS_BAR_PANEL:
-          case constants.TOGGLE_HOME:
-          case constants.TOGGLE_APP_HOME:
-          case constants.TOGGLE_SEARCH_PANEL:
-          case constants.SWITCH_DAPP:
-          case constants.ADD_APP_ITEM:
-          case constants.APPS_FEED_RESIZE:
-          case constants.SET_TRAY_COUNTER:
-          case constants.SET_TRAY_PROGRESS:
-          case constants.REMOVE_TRAY_ITEM:
-            return next(action);
-          default:
-            console.log('Cancelled for client: ', action.type);
+        if (clientActions.includes(action.type)) {
+          return next(action);
         }
+        console.log('Cancelled for client: ', action.type);
+
       } else if (action.payload.status === 'permission_manager') {
         if (pmActions.includes(action.type)) {
           return next(action);
-        } else {
-          console.log('Cancelled for permission manager ' + action.type);
         }
+        console.log('Cancelled for permission manager ', action.type);
       }
     } else {
       console.log('no status: ', action);

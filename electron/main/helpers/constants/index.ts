@@ -13,6 +13,8 @@ export const SET_TRAY_PROGRESS = 'SET_TRAY_PROGRESS';
 export const REMOVE_TRAY_ITEM = 'REMOVE_TRAY_ITEM';
 export const APPS_FEED_RESIZE = 'APPS_FEED_RESIZE';
 
+export const MARKET_DOWNLOAD_DAPP = 'MARKET_DOWNLOAD_DAPP';
+
 // Dapp communication protocol
 export const INTENT_OPEN_CHANNELS = 'INTENT_OPEN_CHANNELS';
 export const OPEN_CHANNEL = 'OPEN_CHANNEL';
