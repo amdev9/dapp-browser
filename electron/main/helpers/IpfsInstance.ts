@@ -1,5 +1,5 @@
 import * as IPFS from 'ipfs';
-import { remoteConfig } from "./config/ipfs";
+import { remoteConfig } from './config/ipfs';
 
 export const getReadyIpfsInstance = (options: IPFS.Options = {}): Promise<IPFS> => {
   const ipfs = new IPFS({
@@ -11,7 +11,7 @@ export const getReadyIpfsInstance = (options: IPFS.Options = {}): Promise<IPFS> 
     ipfs.on('ready', () => {
       if (ipfs.isOnline()) {
         console.log('online');
-        resolve(ipfs)
+        resolve(ipfs);
       } else {
         console.log('offline, try to start');
         ipfs.start();
@@ -21,5 +21,5 @@ export const getReadyIpfsInstance = (options: IPFS.Options = {}): Promise<IPFS> 
     ipfs.on('error', (error: Error) => {
       reject(error);
     });
-  })
-}
+  });
+};

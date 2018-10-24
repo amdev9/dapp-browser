@@ -48,7 +48,7 @@ export class NetworkAPI {
 
   async init() {
     await Apis.instance('ws://hawking.array.io:8090/ws', true).init_promise
-      .then((response) => ChainStore.init());
+      .then(response => ChainStore.init());
   }
 
   async close() {

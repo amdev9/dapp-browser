@@ -12,9 +12,9 @@ export interface FileEntry {
   path?: Path;
   name?: FileName;
 }
-export type FileEntryList = Array<FileEntry>;
-export type FileIdList = Array<FileId>;
-export type PathList = Array<Path>;
+export type FileEntryList = FileEntry[];
+export type FileIdList = FileId[];
+export type PathList = Path[];
 
 export interface FileObject {
   name: string;
@@ -25,9 +25,9 @@ export interface FileObject {
 }
 
 export class FileManager {
-  entryMap: Map<FileId, Path>
+  entryMap: Map<FileId, Path>;
 
-  constructor(){
+  constructor() {
     this.entryMap = new Map();
 
   }
@@ -75,7 +75,7 @@ export class FileManager {
     return {
       id: this._setPathEntry(file[0]),
       name: path.basename(file[0]),
-    }
+    };
   }
 
   saveFile(dir: Path, file: FileObject) {
@@ -84,8 +84,8 @@ export class FileManager {
 
     fs.writeFileSync(location, file.content);
 
-    return this._setPathEntry(location)
+    return this._setPathEntry(location);
   }
 }
 
-export default new FileManager()
+export default new FileManager();

@@ -4,8 +4,8 @@ import * as pathModule from 'path';
 
 import { Path } from './FileManager';
 import { IPFSGetResult } from '../types/ipfs';
-import { remoteConfig } from './config/ipfs'
-import {getReadyIpfsInstance} from "./IpfsInstance";
+import { remoteConfig } from './config/ipfs';
+import { getReadyIpfsInstance } from './IpfsInstance';
 
 export interface IpfsFileObject {
   hash: string;
@@ -32,8 +32,8 @@ const functionPromiseTimeout = (f: () => Promise<any>, timeout: number) => {
     }, timeout);
 
     result
-      .then((data) => resolve(data))
-      .catch((error) => reject(error))
+      .then(data => resolve(data))
+      .catch(error => reject(error))
       .finally(() => clearTimeout(timerId));
   });
 };
@@ -50,7 +50,7 @@ class IpfsStorage{
       return;
     }
 
-    const ipfs = await this.ipfs
+    const ipfs = await this.ipfs;
 
     const file = { path: pathModule.basename(filePath), content: fs.createReadStream(filePath) };
 
@@ -74,7 +74,7 @@ class IpfsStorage{
       return;
     }
 
-    const ipfs = await this.ipfs
+    const ipfs = await this.ipfs;
 
     const files: any = await functionPromiseTimeout(() => {
       return ipfs.files.get(hash);
@@ -88,6 +88,5 @@ class IpfsStorage{
   }
 
 }
-
 
 export default new IpfsStorage(remoteConfig);

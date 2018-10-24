@@ -168,15 +168,14 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
     if (action.payload && action.payload.hasOwnProperty('status')) {
       if (action.payload.status === 'dapp') {
         if (!dappActions.includes(action.type)) {
-          console.log('Cancelled for dapp ' + action.type);
+          console.log(`Cancelled for dapp ${action.type}`);
         } else {
           const dappName = getSourceDappName(globalId, action);
 
           if (checkGranted(store.getState(), dappName, action.type)) {
             return next(action);
-          } else {
-            console.log(`Action "${action.type}" is not granted for dapp "${dappName}"`);
           }
+          console.log(`Action "${action.type}" is not granted for dapp "${dappName}"`);
         }
       } else if (action.payload.status === 'client') {
         switch (action.type) {
@@ -213,9 +212,8 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
       } else if (action.payload.status === 'permission_manager') {
         if (pmActions.includes(action.type)) {
           return next(action);
-        } else {
-          console.log('Cancelled for permission manager ' + action.type);
         }
+        console.log(`Cancelled for permission manager ${action.type}`);
       }
     } else {
       console.log('no status: ', action);

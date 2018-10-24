@@ -1,5 +1,5 @@
 import { webContents, ipcMain } from 'electron';
-import {createStore, applyMiddleware, compose, Store, Middleware, Dispatch } from 'redux';
+import { createStore, applyMiddleware, compose, Store, Middleware, Dispatch } from 'redux';
 import { isFSA } from 'flux-standard-action';
 // import { triggerAlias } from 'electron-redux';
 import { createEpicMiddleware } from 'redux-observable';
@@ -10,11 +10,8 @@ import { validatePermissionAction } from './validatePermissionAction';
 import rootEpic from '../epics';
 import { rootReducer } from '../reducers';
 import { RendererConf } from '../../createDappView';
-
 import { IState } from '../reducers/state';
-
 import SQLiteStorage from './persist';
-
 
 export interface Action {
   type: string;
@@ -60,11 +57,11 @@ declare global {
   }
 }
 
-interface uuidChannelMap {
+interface UuidChannelMap {
   uuid: string;
   channel: string;
 }
-let uuidChannelMapList: Array<uuidChannelMap>;
+let UuidChannelMapList: UuidChannelMap[];
 
 const epicMiddleware = createEpicMiddleware();
 
@@ -94,7 +91,7 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
 
     if (action.type === 'INTENT_OPEN_CHANNELS') {
 
-      uuidChannelMapList = [
+      UuidChannelMapList = [
         {
           uuid: action.payload.uuidSend,
           channel: 'testChannel1',
@@ -118,8 +115,8 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
     if (action.type === 'OPEN_CHANNEL') {
       const uuidObj = globalId.find(renObj => renObj.id === action.payload.uuid);
       const intentObj = globalId.find(renObj => renObj.id === uuidObj.intent);
-      const channelSender = uuidChannelMapList.find(uuidChannelMap => uuidChannelMap.uuid === uuidObj.id).channel;
-      const channelReceiver = uuidChannelMapList.find(uuidChannelMap => uuidChannelMap.uuid === uuidObj.intent).channel;
+      const channelSender = UuidChannelMapList.find(UuidChannelMap => UuidChannelMap.uuid === uuidObj.id).channel;
+      const channelReceiver = UuidChannelMapList.find(UuidChannelMap => UuidChannelMap.uuid === uuidObj.intent).channel;
       bindChannel(intentObj.winId, channelReceiver, channelSender);
     }
 
@@ -134,7 +131,7 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
         if (resolver) {
           const copyAction = Object.assign({}, rendererAction);
 
-          if (copyAction.meta){
+          if (copyAction.meta) {
             delete copyAction.meta.sourceUUID;
           }
 
