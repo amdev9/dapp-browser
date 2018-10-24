@@ -5,7 +5,6 @@ import * as Room from 'ipfs-pubsub-room'
 import { getReadyIpfsInstance }  from './IpfsInstance'
 
 export type RoomName = string
-export type RoomInstance = Room
 export type DappUUID = string
 export type Message = { from: string, data: Buffer }
 

@@ -1,5 +1,5 @@
 import { webContents, ipcMain } from 'electron';
-import { createStore, applyMiddleware, compose, Store, Middleware, GenericStoreEnhancer, Dispatch } from 'redux';
+import {createStore, applyMiddleware, compose, Store, Middleware, Dispatch } from 'redux';
 import { isFSA } from 'flux-standard-action';
 // import { triggerAlias } from 'electron-redux';
 import { createEpicMiddleware } from 'redux-observable';
@@ -80,7 +80,7 @@ const targetWebContents = (targetId: number) => {
 };
 
 const forwardToRendererWrapper = (globalId: RendererConf[]) => {
-  return () => (next: Dispatch<void>) => <A extends Action>(action: A) => {
+  return () => (next: Dispatch<Action>) => <A extends Action>(action: A) => {
     if (!validateAction(action)) return next(action);
     if (action.meta && action.meta.scope === 'local') return next(action);
 
@@ -213,7 +213,7 @@ export const configureStore = (state: IState = initialState, globalId?: Renderer
   const middleware: Middleware[] = [];
   middleware.push(thunk, validatePermissionAction(globalId), epicMiddleware, forwardToRendererWrapper(globalId));
   const enhanced = [applyMiddleware(...middleware)];
-  const enhancer: GenericStoreEnhancer = compose(...enhanced);
+  const enhancer: any = compose(...enhanced);
 
   const storeEngine = SQLiteStorage({
     database: 'temp/sqliteStorage.db',
@@ -226,10 +226,12 @@ export const configureStore = (state: IState = initialState, globalId?: Renderer
   };
   const pReducer = persistReducer(persistConfig, rootReducer);
 
-  const store = createStore(pReducer, state, enhancer);
+  /* tslint:disable */
+  const store = createStore(pReducer, <any> state, enhancer);
+  /* tslint:enable */
   const persistor = persistStore(store);
 
   epicMiddleware.run(rootEpic);
   replyActionMain(store, globalId);
-  return store;
+  return <Store<IState>> store;
 };

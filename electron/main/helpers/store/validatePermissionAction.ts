@@ -164,7 +164,7 @@ const getSourceDappName = (globalId: RendererConf[], action: any) => {
 };
 
 export const validatePermissionAction = (globalId: RendererConf[]) => {
-  return (store: any) => (next: Dispatch<void>) => <A extends Action>(action: A) => {
+  return (store: any) => (next: Dispatch<Action>) => <A extends Action>(action: A) => {
     if (action.payload && action.payload.hasOwnProperty('status')) {
       if (action.payload.status === 'dapp') {
         if (!dappActions.includes(action.type)) {
