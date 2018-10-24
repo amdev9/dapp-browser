@@ -1,31 +1,5 @@
 import * as IPFS from 'ipfs';
 
-// declare type RoomType = (ipfs: IPFS, topic: string) => any
-
-// declare namespace IpfsPubsubRoom {
-//   export interface LogOptions {
-//     verbose?: boolean;
-//   }
-// }
-//
-// declare global {
-//   /*~ Here, declare things that go in the global namespace, or augment
-//    *~ existing declarations in the global namespace
-//    */
-//   export type ipfsPubsubRoom = (ipfs: IPFS, topic: string) => any
-// }
-// declare module "ipfs-pubsub-room" {
-//   type ipfsPubsubRoom = () => any
-// }
-// type Room = () => any
-//
-// export = Room
-// //
-// declare const IpfsPubsubRoomD: Room;
-// declare function getFieldList(): string[];
-//
-// export = getFieldList;
-
 export as namespace ipfsPubsubRoom;
 
 export = IpfsPubsubRoom;
@@ -45,5 +19,4 @@ declare class IpfsPubsubRoom {
   on(event: 'peer left', callback: (peer: string) => void): void;
 }
 
-declare namespace IpfsPubsubRoom {
-}
+declare namespace IpfsPubsubRoom {}
