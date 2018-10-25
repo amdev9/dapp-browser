@@ -1,7 +1,8 @@
-import { dialog, OpenDialogOptions, app } from 'electron';
+import { dialog } from 'electron';
 import * as uuidv4 from 'uuid/v4';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as fse from 'fs-extra';
 
 export type FileId = string;
 export type Path = string;
@@ -90,8 +91,8 @@ export class FileManager {
 
   saveFolder(dir: Path, files: FileObject[]) {
     files.forEach(file => {
-      if (file.type === 'file') {
-        this.saveFile(dir, file);
+       if (file.type === 'file') {
+         fse.outputFile(path.join(dir, file.path), file.content);
       }
     })
   }

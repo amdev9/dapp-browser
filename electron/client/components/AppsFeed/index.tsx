@@ -34,7 +34,7 @@ export class AppsFeed extends React.Component<AppsFeedProps> {
             Your apps
           </div>
           <div className="action">
-            <span onClick={() => this.props.downloadDapp('Qmf6d371gvJxzEguCak7ETYrMEfCzx1bZr4GrQyaZ3vBTV')}>Go to market</span>
+            <span onClick={() => this.props.downloadDapp('QmYYBiLX4nXxJGxF45pGotdZDLeVpJqev4nAeZwz2nG6yJ')}>Go to market</span>
           </div>
         </div>
         <div className="list">
