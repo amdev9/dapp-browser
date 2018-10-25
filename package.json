@@ -11,10 +11,8 @@
     "build-dapps": "cd electron/dapps/lib && npm i && npm run build",
     "build-main": "cd electron/main && npm i && npm run build",
     "build-permission": "cd electron/permissionManager && npm i && npm run build",
-    "build": "npm i && npm run build-client && npm run build-main && npm run build-permission && npm run build-dapps",
-    "packager": "electron-packager . --overwrite --ignore=\"(\\.git(ignore|modules)?|node_modules|preload|config|\\.ts|\\.map|\\.json)\" --out=./release",
-    "default-packager": "electron-packager . --ignore=\"node_modules\" --overwrite --out ./release",
-    "default-packager-1": "electron-packager . --overwrite --out ./release",
+    "build-combine": "npm i && npm run build-client && npm run build-main && npm run build-permission && npm run build-dapps",
+    "build": "electron-packager . --overwrite --out ./release --prune=true",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "cypherpunk99",

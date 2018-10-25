@@ -4,6 +4,8 @@ import * as uuidv4 from 'uuid/v4';
 import { openDevTool } from './helpers/devtools';
 import { RendererConf } from './createDappView';
 
+const isProduction = process.env.ELECTRON_ENV !== 'development'
+
 let permissionWindow: Electron.BrowserWindow = null;
 const PATH: string = path.join(__dirname, '..', '..', 'permissionManager');
 
