@@ -89,12 +89,12 @@ export class FileManager {
     return this._setPathEntry(location);
   }
 
-  saveFolder(dir: Path, files: FileObject[]) {
-    files.forEach(file => {
-       if (file.type === 'file') {
-         fse.outputFile(path.join(dir, file.path), file.content);
-      }
-    })
+  async saveFolder(dir: Path, files: FileObject[]) {
+    for (const file of files) {
+      if (file.type === 'file') {
+        await fse.outputFile(path.join(dir, file.path), file.content);
+      }       
+    }
   }
 }
 

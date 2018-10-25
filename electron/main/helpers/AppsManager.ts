@@ -75,26 +75,29 @@ export class AppsManager {
     try {
       const dappsFolders = await readDir(DAPPS_PATH);
 
-      const promises = dappsFolders.map(async (file: any) => { // @todo rewrite with async lib
-        try {
-          const fileContent = await readFile(path.join(DAPPS_PATH, file, 'manifest.json'));
-          const itemWithResolvedPath = AppsManager.resolvePath(JSON.parse(fileContent));
-          // console.log(itemWithResolvedPath);
-          AppsManager.dapps.push(itemWithResolvedPath); // @todo 1 add icon resolver
-
-        } catch (err) {
-          if (err instanceof SyntaxError) {
-            console.log('Please check your js syntax: \n'); // @todo put it into console logs
-            console.log(err);
-          } else {
-            console.log('other error: ', err);
-          }
-        }
+      const promises = dappsFolders.map(async (folder: string) => { // @todo rewrite with async lib
+        this.parseDapp(folder);
       });
       await Promise.all(promises);
 
     } catch (err) {
       console.log('Catched', err);
+    }
+  }
+  
+  static async parseDapp(folder: string) {
+    try {
+      const fileContent = await readFile(path.join(DAPPS_PATH, folder, 'manifest.json'));
+      const itemWithResolvedPath = AppsManager.resolvePath(JSON.parse(fileContent));
+      AppsManager.dapps.push(itemWithResolvedPath);
+
+    } catch (err) {
+      if (err instanceof SyntaxError) {
+        console.log('Please check your js syntax: \n'); // @todo put it into console logs
+        console.log(err);
+      } else {
+        console.log('other error: ', err);
+      }
     }
   }
 }
