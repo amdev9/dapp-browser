@@ -3,7 +3,7 @@ const nodeExternals = require("webpack-node-externals");
 
 
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   target: 'electron-main',
   externals: [
     nodeExternals(),
@@ -16,22 +16,22 @@ module.exports = {
     filename: 'main.js',
     path: __dirname + '/dist'
   },
-
+  
   // Enable sourcemaps for debugging webpack's output.
   devtool: 'source-map',
-
+  
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
     extensions: ['.ts', '.tsx', '.js', '.json']
   },
-
+  
   module: {
     rules: [
       { test: /\.ts$/, loader: 'awesome-typescript-loader' },
-			{ enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' }
+      { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' }
     ]
   },
-  watch: true,
+  watch: false,
   node: {
     __dirname: false,
     __filename: false

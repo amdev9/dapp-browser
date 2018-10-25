@@ -5,7 +5,7 @@ export as namespace ipfsPubsubRoom;
 export = IpfsPubsubRoom;
 
 declare class IpfsPubsubRoom {
-  constructor(ipfs: IPFS, topic: string, options?: { pollInterval: number });
+  constructor(ipfs: IPFS, topic: string, options?: { pollInterval: number })
 
   leave(): void;
   sendTo(peer: string, message: string | Buffer): void;

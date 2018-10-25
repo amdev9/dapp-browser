@@ -3,7 +3,7 @@
   Uses process.stdout.write instead of console.log so we can cleanly catch the output in the parent process.
 */
 
-import { app, BrowserView, ipcMain, screen, BrowserWindow, dialog } from 'electron';
+import { app, BrowserWindow } from 'electron';
 import { Store } from 'redux';
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer';
 import { configureStore, initialState } from './helpers/store/configureStore';
@@ -20,7 +20,6 @@ import { NetworkAPI } from './helpers/Network';
 const console = new nodeConsole.Console(process.stdout, process.stderr);
 
 const isProduction = process.env.ELECTRON_ENV !== 'development';
-
 let store: Store<IState>;
 
 require('electron-context-menu')({

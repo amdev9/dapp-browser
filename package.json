@@ -2,17 +2,29 @@
   "name": "array-io-client",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "./electron/main/dist/main.js",
   "scripts": {
     "setup": "concurrently --kill-others \"cd electron/client && npm i && cross-env NODE_ENV=development node --max_old_space_size=2096 server.js\" \"cd electron/dapps/lib && npm i && npm run webpack\" \"cd electron/main && npm i && npm run rebuild && npm run webpack\" \"cd electron/permissionManager && npm i && npm run webpack\" ",
     "dev": "NODE_ENV=development npm start",
     "start": "node index.js",
+    "build-client": "cd electron/client && npm i && npm run build",
+    "build-dapps": "cd electron/dapps/lib && npm i && npm run build",
+    "build-main": "cd electron/main && npm i && npm run build",
+    "build-permission": "cd electron/permissionManager && npm i && npm run build",
+    "build": "npm i && npm run build-client && npm run build-main && npm run build-permission && npm run build-dapps",
+    "packager": "electron-packager . --overwrite --ignore=\"(\\.git(ignore|modules)?|node_modules|preload|config|\\.ts|\\.map|\\.json)\" --out=./release",
+    "default-packager": "electron-packager . --ignore=\"node_modules\" --overwrite --out ./release",
+    "default-packager-1": "electron-packager . --overwrite --out ./release",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "cypherpunk99",
   "license": "MIT",
   "dependencies": {
     "concurrently": "^4.0.1",
+    "electron": "4.0.0-beta.3",
     "cross-env": "^5.2.0"
+  },
+  "devDependencies": {
+    "electron-packager": "^12.2.0"
   }
 }
