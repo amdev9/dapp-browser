@@ -41,6 +41,14 @@ const networkBlockCreated: Epic<any> = action$ => action$.pipe(
   mapTo(actions.showBlock())
 );
 
+const ipfsRoomSendMessageBroadcast: Epic<any> = action$ => action$.pipe(
+  ofType(constants.IPFS_ROOM_SEND_MESSAGE_TO_DAPP),
+  tap(({ payload }) => {
+    utils.appendContentIntoBlock(`[${new Date().toLocaleString()}] ${payload.message.data.toString()}\r\n`,'ipfsRoomLog')
+  }),
+  mapTo(actions.showBlock())
+);
+
 const networkGetWitnessSuccess: Epic<any> = action$ => action$.pipe(
   ofType(constants.NETWORK_GET_WITNESS_SUCCESS),
   tap((action) => utils.insertContentIntoBlock(action.payload,'networkGetWitnessButton')),
@@ -50,13 +58,13 @@ const networkGetWitnessSuccess: Epic<any> = action$ => action$.pipe(
 const keychainCreateSuccess: Epic<any> = action$ => action$.pipe(
   ofType(constants.KEYCHAIN_CREATE_SUCCESS),
   tap((action) => utils.insertContentIntoBlock(JSON.stringify(action.payload),'keychainSignButton')),
-  mapTo(actions.keychainShowResult()) 
+  mapTo(actions.keychainShowResult())
 );
 
 const keychainCreateFailure: Epic<any> = action$ => action$.pipe(
   ofType(constants.KEYCHAIN_CREATE_FAILURE),
   tap((action) => utils.insertContentIntoBlock(JSON.stringify(action.payload),'keychainSignButton')),
-  mapTo(actions.keychainShowResult()) 
+  mapTo(actions.keychainShowResult())
 );
 
 const keychainListSuccess: Epic<any> = action$ => action$.pipe(
@@ -89,6 +97,7 @@ export const rootEpic = combineEpics(
   startCountdownEpic,
   uploadFileIpfsStorageSuccess,
   networkGetBlockSuccess,
+  ipfsRoomSendMessageBroadcast,
   networkGetWitnessSuccess,
   keychainCreateSuccess,
   keychainCreateFailure,

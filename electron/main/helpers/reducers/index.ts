@@ -7,7 +7,7 @@ import { tray } from './tray';
 import { permissionManager } from './permissionManager';
 import { IState } from './state';
 
-export const rootReducer = combineReducers<IState>({
+export const rootReducer = combineReducers({
   channel,
   client,
   feed,

@@ -7,9 +7,9 @@ let dappView: Electron.BrowserView = null;
 
 const DAPPS_PATH: string = path.join(__dirname, '..', '..', 'dapps', 'download');
 
-export type ChannelsConf = Array<string>;
+export type ChannelsConf = string[];
 export type BindedConf = Map<string, ChannelsConf>;
-export type BindedListConf = Array<BindedConf>;
+export type BindedListConf = BindedConf[];
 export interface RendererConf {
   id: string;
   name?: string;
