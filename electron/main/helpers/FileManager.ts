@@ -22,6 +22,7 @@ export interface FileObject {
   hash: Buffer | string;
   size: number;
   content?: Buffer;
+  type: 'file' | string;
 }
 
 export class FileManager {
@@ -85,6 +86,14 @@ export class FileManager {
     fs.writeFileSync(location, file.content);
 
     return this._setPathEntry(location);
+  }
+
+  saveFolder(dir: Path, files: FileObject[]) {
+    files.forEach(file => {
+      if (file.type === 'file') {
+        this.saveFile(dir, file);
+      }
+    })
   }
 }
 
