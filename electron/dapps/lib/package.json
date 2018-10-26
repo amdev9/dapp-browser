@@ -2,11 +2,11 @@
   "name": "dapps",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "postinstall": "webpack",
     "webpack": "webpack --watch",
-    "build": "webpack --config webpack.config.build.js",
+    "build": "webpack --mode production --config webpack.config.build.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

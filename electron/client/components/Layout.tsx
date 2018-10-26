@@ -9,6 +9,7 @@ import * as StatusBarActions from '../redux/actions/status-bar';
 import * as AppsFeedActions from "../redux/actions/appsFeed";
 import * as SearchActions from "../redux/actions/search";
 import * as SettingsActions from "../redux/actions/settings";
+import * as MarketActions from '../redux/actions/market';
 
 import { AppItem, NotifyItem, StatusBarItem, FeedItem, SearchItem } from '../redux/model';
 import { HeaderBar } from './HeaderBar'
@@ -50,7 +51,8 @@ interface AppProps {
   loggerWrite: boolean,
   onResizeAppsFeed: (width: number, height: number) => any,
   isProduction: boolean,
-  locationPath: string
+  locationPath: string;
+  downloadDapp: (ipfsHash: string) => void;
 }
 
 class App extends React.Component<AppProps> {
@@ -65,8 +67,8 @@ class App extends React.Component<AppProps> {
       onTogglePanel, openNotificationPanel, openStatusBarPanel, openPeersBarPanel, openSettingsPanel, openSearchPanel, clearNotification, clearAllNotifications,
       onAddAppItem, onSwitchDapp, onToggleHome, statusBarToggle, peersBarToggle, onToggleAppHome, onToggleSearch, searchItems,
       trayItems, feedItems, notifyItems, statusBarItems, onToggleLoaderPanel, openLoaderPanel, onToggleSettingsPanel, locationPath, loggerWrite,
+      downloadDapp,
     } = this.props;
-
 
     return (
       <div>
@@ -108,19 +110,17 @@ class App extends React.Component<AppProps> {
           {(() => {
             switch (locationPath) {
               case ROUTES.SETTINGS:
-                return <SettingsPanel /*isOpen={openSettingsPanel}*/ />
-                break;
+                return <SettingsPanel /*isOpen={openSettingsPanel}*/ />;
 
               default:
-                return <AppsFeed items={feedItems} toggleAppHome={onToggleAppHome} /*settingsPanelIsOpen={openSettingsPanel}*/ />
-                break;
+                return <AppsFeed items={feedItems} toggleAppHome={onToggleAppHome} /*settingsPanelIsOpen={openSettingsPanel}*/ downloadDapp={downloadDapp}/>;
             }
           })()}
 
         </div>
         <StatusBar isOpen={openStatusBarPanel} items={statusBarItems} toggleStatusBar={statusBarToggle} peersBarIsOpen={openPeersBarPanel} loggerWrite={loggerWrite}/>
       </div>
-    )
+    );
   }
 
   private resize() {
@@ -130,13 +130,13 @@ class App extends React.Component<AppProps> {
   componentDidMount() {
     if (!this.props.isProduction) {
       this.resize();
-      window.addEventListener('resize', this.resize)
+      window.addEventListener('resize', this.resize);
     }
   }
 
   componentWillUnmount() {
     if (!this.props.isProduction) {
-      window.removeEventListener('resize', this.resize)
+      window.removeEventListener('resize', this.resize);
     }
   }
 }
@@ -153,7 +153,7 @@ const mapStateToProps = (state: IState) => ({
   statusBarItems: state.statusBar.items,
   trayItems: state.tray.items,
   feedItems: state.feed.items,
-  searchItems: state.search.items
+  searchItems: state.search.items,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
@@ -169,7 +169,8 @@ const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
   onToggleHome: TrayActions.toggleHome,
   onToggleAppHome: TrayActions.toggleAppHome,
   onResizeAppsFeed: AppsFeedActions.resize,
-  onToggleSearch: SearchActions.toggle
+  onToggleSearch: SearchActions.toggle,
+  downloadDapp: MarketActions.downloadDapp,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

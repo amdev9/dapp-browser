@@ -26,4 +26,5 @@ module.exports = {
       onBuildEnd: 'bash afterBuild.sh'
     })
   ],
+  watch: false
 };

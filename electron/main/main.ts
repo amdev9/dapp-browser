@@ -71,7 +71,7 @@ app.on('ready', async () => {
   store = configureStore({
     ...initialState,
     feed: { items: AppsManager.dapps },
-  }, globalUUIDList); // @todo pass parsed dapps
+  }, globalUUIDList);
 
   let pmIsOpen = false;
   const closePermissionManager = () => {
