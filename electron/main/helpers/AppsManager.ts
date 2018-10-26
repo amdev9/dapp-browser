@@ -16,7 +16,7 @@ const DAPPS_PATH: string = path.join(__dirname, '..', '..', 'dapps', 'download')
 
 async function readDir(path: string) {
   return new Promise((res: any, rej: any) => {
-    fs.readdir(path, (err: Error, data: any) => {
+    fs.readdir(path, (err, data) => {
       if (err) rej(err);
       else res(data);
     });
@@ -25,7 +25,7 @@ async function readDir(path: string) {
 
 async function readFile(path: string, opts = 'utf8') {
   return new Promise((res: any, rej: any) => {
-    fs.readFile(path, opts, (err: Error, data: any) => {
+    fs.readFile(path, opts, (err, data) => {
       if (err) rej(err);
       else res(data);
     });
@@ -73,28 +73,30 @@ export class AppsManager {
 
   static async parseDapps() {
     try {
-      const dappsFolders = await readDir(DAPPS_PATH);
+      const dappsFolders: string[] = await readDir(DAPPS_PATH);
 
-      const promises = dappsFolders.map(async (file: any) => { // @todo rewrite with async lib
-        try {
-          const fileContent = await readFile(path.join(DAPPS_PATH, file, 'manifest.json'));
-          const itemWithResolvedPath = AppsManager.resolvePath(JSON.parse(fileContent));
-          // console.log(itemWithResolvedPath);
-          AppsManager.dapps.push(itemWithResolvedPath); // @todo 1 add icon resolver
-
-        } catch (err) {
-          if (err instanceof SyntaxError) {
-            console.log('Please check your js syntax: \n'); // @todo put it into console logs
-            console.log(err);
-          } else {
-            console.log('other error: ', err);
-          }
-        }
-      });
+      const promises = dappsFolders.map(folder => this.parseDapp(folder)); // @todo rewrite with async lib
       await Promise.all(promises);
 
     } catch (err) {
       console.log('Catched', err);
+    }
+  }
+  
+  static async parseDapp(folder: string) {
+    try {
+      const fileContent = await readFile(path.join(DAPPS_PATH, folder, 'manifest.json'));
+      const itemWithResolvedPath = AppsManager.resolvePath(JSON.parse(fileContent));
+      AppsManager.dapps.push(itemWithResolvedPath);
+      return itemWithResolvedPath;
+
+    } catch (err) {
+      if (err instanceof SyntaxError) {
+        console.log('Please check your js syntax: \n'); // @todo put it into console logs
+        console.log(err);
+      } else {
+        console.log('other error: ', err);
+      }
     }
   }
 }
