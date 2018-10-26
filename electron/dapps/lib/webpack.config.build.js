@@ -1,8 +1,9 @@
 var path = require('path');
 var webpack = require('webpack');
+var WebpackShellPlugin = require('webpack-shell-plugin');
 
 module.exports = {
-  mode: 'development',
+  mode: 'production',
   entry: './index.ts',
   output: {
     path: path.resolve(__dirname, 'build'),
@@ -20,5 +21,10 @@ module.exports = {
     // Add '.ts' and '.tsx' as resolvable extensions.
     extensions: ['.ts', '.tsx', '.js', '.json']
   },
-  devtool: 'source-map',
+  plugins: [
+    new WebpackShellPlugin({
+      onBuildEnd: 'bash afterBuild.sh'
+    })
+  ],
+  watch: false
 };
