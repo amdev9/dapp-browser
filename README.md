@@ -12,3 +12,10 @@ Spawn new shell & wait for build process finish:
 ```
 npm run dev
 ```
+
+**Build application**
+
+```
+npm run build
+```
+and get executable file from ./release folder.
