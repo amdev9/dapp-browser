@@ -16,7 +16,7 @@ const DAPPS_PATH: string = path.join(__dirname, '..', '..', 'dapps', 'download')
 
 async function readDir(path: string) {
   return new Promise((res: any, rej: any) => {
-    fs.readdir(path, (err: Error, data: any) => {
+    fs.readdir(path, (err, data) => {
       if (err) rej(err);
       else res(data);
     });
@@ -25,7 +25,7 @@ async function readDir(path: string) {
 
 async function readFile(path: string, opts = 'utf8') {
   return new Promise((res: any, rej: any) => {
-    fs.readFile(path, opts, (err: Error, data: any) => {
+    fs.readFile(path, opts, (err, data) => {
       if (err) rej(err);
       else res(data);
     });
@@ -73,11 +73,9 @@ export class AppsManager {
 
   static async parseDapps() {
     try {
-      const dappsFolders = await readDir(DAPPS_PATH);
+      const dappsFolders: string[] = await readDir(DAPPS_PATH);
 
-      const promises = dappsFolders.map(async (folder: string) => { // @todo rewrite with async lib
-        this.parseDapp(folder);
-      });
+      const promises = dappsFolders.map(folder => this.parseDapp(folder)); // @todo rewrite with async lib
       await Promise.all(promises);
 
     } catch (err) {
