@@ -16,6 +16,7 @@ npm run dev
 **Build application**
 
 ```
+npm install
 npm run build
 ```
 and get executable file from ./release folder.
