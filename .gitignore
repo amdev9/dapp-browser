@@ -15,3 +15,5 @@ keychain.dms
 temp/
 electron/dapps/lib/dist
 ipfs-room/
+release/
+
