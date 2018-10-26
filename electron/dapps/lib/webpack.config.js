@@ -21,5 +21,4 @@ module.exports = {
     extensions: ['.ts', '.tsx', '.js', '.json']
   },
   devtool: 'source-map',
-  watch: false
 };
