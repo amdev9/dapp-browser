@@ -1,7 +1,8 @@
-import { dialog, OpenDialogOptions, app } from 'electron';
+import { dialog } from 'electron';
 import * as uuidv4 from 'uuid/v4';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as fse from 'fs-extra';
 
 export type FileId = string;
 export type Path = string;
@@ -22,6 +23,7 @@ export interface FileObject {
   hash: Buffer | string;
   size: number;
   content?: Buffer;
+  type: 'file' | string;
 }
 
 export class FileManager {
@@ -85,6 +87,14 @@ export class FileManager {
     fs.writeFileSync(location, file.content);
 
     return this._setPathEntry(location);
+  }
+
+  static async saveFolder(dir: Path, files: FileObject[]) {
+    for (const file of files) {
+      if (file.type === 'file') {
+        await fse.outputFile(path.join(dir, file.path), file.content);
+      }       
+    }
   }
 }
 

@@ -87,6 +87,22 @@ class IpfsStorage{
     return files[files.length - 1];
   }
 
+  async downloadFolder(hash: string): Promise<IPFSGetResult[] | null> {
+    if (!hash) {
+      return;
+    }
+
+    const ipfs = await this.ipfs;
+     
+    const files: any = await ipfs.files.get(hash);
+    
+    if (!files || !files.length) {
+      throw Error('File with current hash does not exist');
+    }
+
+    return files;
+  }
+
 }
 
 export default new IpfsStorage(remoteConfig);
