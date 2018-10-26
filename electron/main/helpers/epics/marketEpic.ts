@@ -5,7 +5,7 @@ import * as path from 'path';
 
 import * as marketActions  from '../actions/market';
 import * as constants from '../constants';
-import fileManager, { FileObject} from '../FileManager';
+import { FileObject, FileManager } from '../FileManager';
 import ipfs from '../IpfsStorage';
 import {AppsManager} from "../AppsManager";
 
@@ -20,10 +20,10 @@ const marketDownloadAppEpic: Epic<AnyAction> = (action$) => action$.pipe(
         throw Error('Folder with current hash does not exist');
       }
       
-      await fileManager.saveFolder(targetDirectory, downloadFiles);
-      await AppsManager.parseDapp(action.payload.ipfsHash);
+      await FileManager.saveFolder(targetDirectory, downloadFiles);
+      const parsedDapp = await AppsManager.parseDapp(action.payload.ipfsHash);
 
-      return marketActions.downloadDappSuccess(undefined);
+      return marketActions.downloadDappSuccess(parsedDapp);
     } catch(error) {
       return marketActions.downloadDappFailure(error, action.meta.sourceUUID);
     }

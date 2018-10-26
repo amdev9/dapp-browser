@@ -88,6 +88,7 @@ export class AppsManager {
       const fileContent = await readFile(path.join(DAPPS_PATH, folder, 'manifest.json'));
       const itemWithResolvedPath = AppsManager.resolvePath(JSON.parse(fileContent));
       AppsManager.dapps.push(itemWithResolvedPath);
+      return itemWithResolvedPath;
 
     } catch (err) {
       if (err instanceof SyntaxError) {
