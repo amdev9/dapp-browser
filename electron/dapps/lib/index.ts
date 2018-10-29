@@ -138,8 +138,8 @@ const initUi = async () => {
       store.dispatch({
         type: 'INTENT_OPEN_CHANNELS',
         payload: {
-          targetDapp: 'Game';
-        }
+          targetDapp: 'Game',
+        },
       });
     });
   }
