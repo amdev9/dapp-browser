@@ -230,7 +230,10 @@ System components are proxy classes and wrapper classes that are isolated for se
 
 # Local Storage
 
-This component allows to store local data in the BrowserWindow. It is particularly useful for dapps that do not require persistent Internet connection or for dapps that need to store large amounts of data (e.g. a catalog of DVDs in a lending library).
+Allow dapp to persist data which have to be accessed on dapp initialization (settings, game scores, chat room's list etc.).
+For large amounts of data have to use [IPFS component](#arrayipfsstorage).
+
+<!-- This component allows to store local data in the BrowserWindow. It is particularly useful for dapps that do not require persistent Internet connection or for dapps that need to store large amounts of data (e.g. a catalog of DVDs in a lending library).
 
 After Local Storage permission is granted and the dapp process is started off, we provide a ready-to-initialize instance of Localforage storage with an IndexedDb adapter. 
 
@@ -258,7 +261,7 @@ var store = localforage.createInstance({
 
 ## External refferences:
 https://github.com/localForage/localForage<br>
-https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Basic_Concepts_Behind_IndexedDB<br/>
+https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Basic_Concepts_Behind_IndexedDB<br/> -->
 
 -------------------------
 
@@ -421,7 +424,7 @@ Returns
 
 ``EventEmitter`` - A Subscription instance
 
-Example // Fix to use redux store
+Example
 -------
 
 ```javascript
@@ -480,22 +483,8 @@ https://electronjs.org/docs/api/dialog
 
 
 # array.LocalStorage
-Local Storage gives you the opportunity to store data on the renderer side. 
-
-
- 
-Example usage
--------------
-
-```javascript
-  const { LocalStorage } = require('array');
-  localDb = new LocalStorage();
-  try {
-    var response = await localDb.post({ data: 'save me please!' });
-  } catch (err) {
-    console.log(err);
-  }
-```
+Local Storage gives you the opportunity to persist data. 
+We use `redux-persist` in combination with `SQLite`. 
 
 # array.IpfsStorage
 `IpfsStorage` lets you interact with the IPFS storage.
