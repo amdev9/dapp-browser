@@ -47,6 +47,7 @@
   "devDependencies": {
     "@types/async": "^2.0.49",
     "@types/bluebird": "^3.5.23",
+    "@types/elliptic": "^6.4.0",
     "@types/electron-devtools-installer": "^2.2.0",
     "@types/fs-extra": "^5.0.4",
     "@types/orbit-db": "git+https://github.com/willemneal/types-orbit-db.git",
