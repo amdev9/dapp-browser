@@ -1,106 +1,235 @@
-import { store, sendDataChannel1, sendDataChannel2, receiveDataChannel } from './array';
-import * as actions from './redux/actions/channel'
+import { AnyAction } from 'redux';
+import * as uuidv4 from 'uuid/v4';
+import { store, sendDataChannel1, sendDataChannel2, receiveDataChannel, emitter } from './array';
+import * as actions from './redux/actions/channel';
 
-const renderState = () => {
-  //next todo library object dapp will emit events on store pub-sub actions in: `dapp.emit('event-name', ...)`
- 
+type actionWrapper = (entry?: any, targetUUID?: string) => AnyAction;
+
+class FileManager {
+  store: any;
+  emitter: any;
+
+  constructor(store: any, emitter: any) {
+    this.store = store;
+    this.emitter = emitter;
+  }
+
+  handleUidPromise = (actionFlow: actionWrapper[], params?: any) => {
+    const uid = uuidv4();
+    return (resolve: any, reject: any) => {
+
+      this.emitter.on(uid, function (action: AnyAction) {
+        if (action.meta.uid === uid) {
+          if (action.type === actionFlow[1]().type) {
+            resolve(action.payload);
+          } else if (action.type === actionFlow[2]().type) {
+            reject(action.payload);
+          }
+        } else {
+          console.log('Uid spoofing');
+        }
+      });
+
+      this.store.dispatch(actionFlow[0](uid, ...params));
+    };
+  }
+
+  openFileManager = async () => {
+    return new Promise(
+      this.handleUidPromise([
+        actions.openFileManagerDialog,
+        actions.openDialogSuccess,
+        actions.openDialogFailure,
+      ]),
+    );
+  }
+
+  networkGetBlock = async () => {
+    return new Promise(
+      this.handleUidPromise([
+        actions.networkGetBlock,
+        actions.getBlockSuccess,
+        actions.getBlockFailure,
+      ]),
+    );
+  }
+
+  writeToConsole = async (message: string) => {
+    return new Promise(
+      this.handleUidPromise([
+        actions.writeToConsole,
+        actions.loggerWriteSuccess,
+        actions.loggerWriteFailure,
+      ], [message]),
+    );
+  }
+
+  // downloadIpfsByHash = async (hash: string) => {
+  //   return new Promise(
+  //     this.handleUidPromise([ //@todo pass arguments
+  //       actions.downloadIpfsFile,
+  //       actions.downloadIpfsFileSuccess,
+  //       actions.downloadIpfsFileFailure
+  //     ])
+  //   );
+  // }
+
+  // openFileManager = async () => {
+  //   return new Promise((resolve, reject) => {
+
+  //     // set  this.currentAction on trigger() call
+  //     // listen for currentAction -> search for promise callback by id -> actionResolver run 
+  //     this.emitter.on("success", function(payload: any) {
+  //       resolve(payload);
+  //     });
+  //     this.emitter.on("failure", function(err: any) {
+  //       reject(err);
+  //     });
+  //     this.store.dispatch(actions.openFileManagerDialog());
+  //   })
+  // }
+
+  // networkGetBlock = async () => {
+  //   return new Promise((resolve, reject) => {
+  //     this.emitter.on("success", function (payload: any) {
+  //       resolve(payload);
+  //     });
+  //     this.emitter.on("failure", function (err: any) {
+  //       reject(err);
+  //     });
+  //     this.store.dispatch(actions.networkGetBlock());
+  //   });
+  // }
+
+  downloadIpfsByHash = async (hash: string) => {
+    return new Promise((resolve, reject) => {
+      this.emitter.on('success', function (payload: any) {
+        resolve(payload);
+      });
+      this.emitter.on('failure', function (err: any) {
+        reject(err);
+      });
+      this.store.dispatch(actions.downloadIpfsFile(hash));
+    });
+  }
+
 }
 
-const initUi = () => {
+const fmanager = new FileManager(store, emitter);
+
+const renderState = () => {
+  // next todo library object dapp will emit events on store pub-sub actions in: `dapp.emit('event-name', ...)`
+};
+
+const initUi = async () => {
   renderState();
   store.subscribe(renderState);
 
   receiveDataChannel('testChannel2', (channelData: any) => {
     document.getElementById('area').innerHTML = channelData;
-  })
+  });
 
   receiveDataChannel('testChannel1', (channelData: any) => {
     document.getElementById('messageId').innerHTML = channelData;
-  })
+  });
 
-  if( document.getElementById('communicate') ) {
+  if ( document.getElementById('communicate') ) {
     document.getElementById('communicate').addEventListener('click', () => {
       store.dispatch({
         type: 'INTENT_OPEN_CHANNELS',
         payload: {
-          targetDapp: 'Game'
+          targetDapp: 'Game';
         }
       });
     });
   }
 
-  if( document.getElementById('networkGetBlockButton') ) {
-    document.getElementById('networkGetBlockButton').addEventListener('click', () => {
-      store.dispatch(actions.networkGetBlock());
+  if ( document.getElementById('networkGetBlockButton') ) {
+    document.getElementById('networkGetBlockButton').addEventListener('click', async () => {
+      try {
+        const block = await fmanager.networkGetBlock();
+        console.log('networkGetBlock method\n block: ', block);
+      } catch (error) {
+        console.log('networkGetBlock method\n error: ', error);
+      }
+      // store.dispatch(actions.networkGetBlock());
     });
   }
 
-  if( document.getElementById('networkSubscribeButton') ) {
+  if ( document.getElementById('networkSubscribeButton') ) {
     document.getElementById('networkSubscribeButton').addEventListener('click', () => {
       store.dispatch(actions.networkSubscribe());
     });
   }
 
-  if( document.getElementById('networkUnsubscribeButton') ) {
+  if ( document.getElementById('networkUnsubscribeButton') ) {
     document.getElementById('networkUnsubscribeButton').addEventListener('click', () => {
       store.dispatch(actions.networkUnsubscribe());
     });
   }
 
-  if( document.getElementById('networkGetWitnessButton') ) {
+  if ( document.getElementById('networkGetWitnessButton') ) {
     document.getElementById('networkGetWitnessButton').addEventListener('click', () => {
-      const witnessIdInput = <HTMLInputElement>document.getElementById("networkWitnessId");
+      const witnessIdInput = <HTMLInputElement>document.getElementById('networkWitnessId');
       store.dispatch(actions.networkGetWitness(witnessIdInput.value));
     });
   }
 
-  //Open files (File Manager)
-  if( document.getElementById('openDialogButton') ) {
-    document.getElementById('openDialogButton').addEventListener('click', () => {
-      store.dispatch(actions.openFileManagerDialog());
+  // Open files (File Manager)
+  if ( document.getElementById('openDialogButton') ) {
+    document.getElementById('openDialogButton').addEventListener('click', async () => {
+      const fileId = await fmanager.openFileManager();
+      console.log('openFileManager method\n fileId: ', fileId);
+      // store.dispatch(actions.openFileManagerDialog());
     });
   }
 
   // Download
-  if( document.getElementById('downloadButton') ) {
-    document.getElementById('downloadButton').addEventListener('click', () => {
-      const ipfsHashElement = <HTMLInputElement> document.getElementById('ipfsHash')
+  if ( document.getElementById('downloadButton') ) {
+    document.getElementById('downloadButton').addEventListener('click', async () => {
+      const ipfsHashElement = <HTMLInputElement> document.getElementById('ipfsHash');
       if (ipfsHashElement.value) {
-        store.dispatch(actions.downloadIpfsFile(ipfsHashElement.value));
+        try {
+          const fileDownloaded = await fmanager.downloadIpfsByHash(ipfsHashElement.value);
+          console.log('downloadIpfsByHash method\n fileDownloaded: ', fileDownloaded);
+        } catch (error) {
+          console.log('downloadIpfsByHash method\n error: ', error);
+        }
+        // store.dispatch(actions.downloadIpfsFile(ipfsHashElement.value));
       }
     });
   }
 
-  if( document.getElementById('sendchannel1') ) {
+  if ( document.getElementById('sendchannel1') ) {
     document.getElementById('sendchannel1').addEventListener('click', () => {
       sendDataChannel1('testdata 1');
     });
   }
-  
-  if( document.getElementById('sendchannel2') ) {
+
+  if ( document.getElementById('sendchannel2') ) {
     document.getElementById('sendchannel2').addEventListener('click', () => {
       sendDataChannel2('testdata 2');
     });
   }
 
-  if( document.getElementById('send_channel') ) {
+  if ( document.getElementById('send_channel') ) {
     document.getElementById('send_channel').addEventListener('click', () => {
       //sendDataChannelId('channelId', action);
     });
   }
 
-  if( document.getElementById('ipfsRoomSubscribe') ) {
+  if ( document.getElementById('ipfsRoomSubscribe') ) {
     document.getElementById('ipfsRoomSubscribe').addEventListener('submit', (e: any) => {
-      e.preventDefault()
-      const formElements = e.target.elements
+      e.preventDefault();
+      const formElements = e.target.elements;
       const roomName = formElements.ipfsRoomName && formElements.ipfsRoomName.value
 
       const logElement = document.getElementById('ipfsRoomLog')
 
-      if (logElement){
-        logElement.innerText = ''
+      if (logElement) {
+        logElement.innerText = '';
       }
-      store.dispatch(actions.ipfsRoomSubscribe(roomName))
+      store.dispatch(actions.ipfsRoomSubscribe(roomName));
     });
   }
 
@@ -137,11 +266,12 @@ const initUi = () => {
     });
   }
 
-  if (document.getElementById("sendToConsoleButton")) {
-    document.getElementById("sendToConsoleButton").addEventListener('click', () => {
-      const input = <HTMLInputElement>document.getElementById("consoleText");
-      store.dispatch(actions.writeToConsole(input.value));
-    })
+  if (document.getElementById('sendToConsoleButton')) {
+    document.getElementById('sendToConsoleButton').addEventListener('click', () => {
+      const input = <HTMLInputElement>document.getElementById('consoleText');
+      // store.dispatch(actions.writeToConsole(input.value));
+      fmanager.writeToConsole(input.value);
+    });
   }
 
   if (document.getElementById("keychainCreateButton")) {
