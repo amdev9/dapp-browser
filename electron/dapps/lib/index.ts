@@ -1,12 +1,76 @@
-import { store, sendDataChannel1, sendDataChannel2, receiveDataChannel } from './array';
+import { AnyAction } from 'redux';
+import * as uuidv4 from 'uuid/v4';
+import { store, sendDataChannel1, sendDataChannel2, receiveDataChannel, emitter } from './array';
 import * as actions from './redux/actions/channel';
 
-const renderState = () => {
-  //next todo library object dapp will emit events on store pub-sub actions in: `dapp.emit('event-name', ...)`
+type actionWrapper = (entry?: any, targetUUID?: string) => AnyAction;
 
+class Array {
+  store: any;
+  emitter: any;
+
+  constructor(store: any, emitter: any) {
+    this.store = store;
+    this.emitter = emitter;
+  }
+
+  handleUidPromise = (actionFlow: actionWrapper[], params?: any) => {
+    const uid = uuidv4();
+    return (resolve: any, reject: any) => {
+
+      this.emitter.on(uid, function (action: AnyAction) {
+        if (action.meta.uid === uid) {
+          if (action.type === actionFlow[1]().type) {
+            resolve(action.payload);
+          } else if (action.type === actionFlow[2]().type) {
+            reject(action.payload);
+          }
+        } else {
+          console.log('Uid spoofing');
+        }
+      });
+      this.store.dispatch(actionFlow[0](uid, ...params));
+    };
+  }
+
+  openFileManager = async () => {
+    return new Promise(
+      this.handleUidPromise([
+        actions.openFileManagerDialog,
+        actions.openDialogSuccess,
+        actions.openDialogFailure,
+      ], []),
+    );
+  }
+
+  networkGetBlock = async () => {
+    return new Promise(
+      this.handleUidPromise([
+        actions.networkGetBlock,
+        actions.getBlockSuccess,
+        actions.getBlockFailure,
+      ], []),
+    );
+  }
+
+  writeToConsole = async (message: string) => {
+    return new Promise(
+      this.handleUidPromise([
+        actions.writeToConsole,
+        actions.loggerWriteSuccess,
+        actions.loggerWriteFailure,
+      ], [message]),
+    );
+  }
+}
+
+const array = new Array(store, emitter);
+
+const renderState = () => {
+  // next todo library object dapp will emit events on store pub-sub actions in: `dapp.emit('event-name', ...)`
 };
 
-const initUi = () => {
+const initUi = async () => {
   renderState();
   store.subscribe(renderState);
 
@@ -23,19 +87,25 @@ const initUi = () => {
       store.dispatch({
         type: 'INTENT_OPEN_CHANNELS',
         payload: {
-          targetDapp: 'Game'
-        }
+          targetDapp: 'Game',
+        },
       });
     });
   }
 
-  if (document.getElementById('networkGetBlockButton')) {
-    document.getElementById('networkGetBlockButton').addEventListener('click', () => {
-      store.dispatch(actions.networkGetBlock());
+  if ( document.getElementById('networkGetBlockButton') ) {
+    document.getElementById('networkGetBlockButton').addEventListener('click', async () => {
+      try {
+        const block = await array.networkGetBlock();
+        console.log('networkGetBlock method\n block: ', block);
+      } catch (error) {
+        console.log('networkGetBlock method\n error: ', error);
+      }
+      // store.dispatch(actions.networkGetBlock());
     });
   }
 
-  if (document.getElementById('networkSubscribeButton')) {
+  if ( document.getElementById('networkSubscribeButton') ) {
     document.getElementById('networkSubscribeButton').addEventListener('click', () => {
       store.dispatch(actions.networkSubscribe());
     });
@@ -49,24 +119,33 @@ const initUi = () => {
 
   if (document.getElementById('networkGetWitnessButton')) {
     document.getElementById('networkGetWitnessButton').addEventListener('click', () => {
-      const witnessIdInput = <HTMLInputElement>document.getElementById("networkWitnessId");
+      const witnessIdInput = <HTMLInputElement>document.getElementById('networkWitnessId');
       store.dispatch(actions.networkGetWitness(witnessIdInput.value));
     });
   }
 
-  //Open files (File Manager)
-  if (document.getElementById('openDialogButton')) {
-    document.getElementById('openDialogButton').addEventListener('click', () => {
-      store.dispatch(actions.openFileManagerDialog());
+  // Open files (File Manager)
+  if ( document.getElementById('openDialogButton') ) {
+    document.getElementById('openDialogButton').addEventListener('click', async () => {
+      const fileId = await array.openFileManager();
+      console.log('openFileManager method\n fileId: ' + fileId);
+      // store.dispatch(actions.openFileManagerDialog());
     });
   }
 
   // Download
-  if (document.getElementById('downloadButton')) {
-    document.getElementById('downloadButton').addEventListener('click', () => {
+  if ( document.getElementById('downloadButton') ) {
+    document.getElementById('downloadButton').addEventListener('click', async () => {
       const ipfsHashElement = <HTMLInputElement> document.getElementById('ipfsHash');
       if (ipfsHashElement.value) {
-        store.dispatch(actions.downloadIpfsFile(ipfsHashElement.value));
+        try {
+          alert('Not implemented');
+          // const fileDownloaded = await array.downloadIpfsByHash(ipfsHashElement.value);
+          // console.log('downloadIpfsByHash method\n fileDownloaded: ', fileDownloaded);
+        } catch (error) {
+          console.log('downloadIpfsByHash method\n error: ', error);
+        }
+        // store.dispatch(actions.downloadIpfsFile(ipfsHashElement.value));
       }
     });
   }
@@ -85,7 +164,7 @@ const initUi = () => {
 
   if (document.getElementById('send_channel')) {
     document.getElementById('send_channel').addEventListener('click', () => {
-      //sendDataChannelId('channelId', action);
+      // sendDataChannelId('channelId', action);
     });
   }
 
@@ -140,7 +219,8 @@ const initUi = () => {
   if (document.getElementById('sendToConsoleButton')) {
     document.getElementById('sendToConsoleButton').addEventListener('click', () => {
       const input = <HTMLInputElement>document.getElementById('consoleText');
-      store.dispatch(actions.writeToConsole(input.value));
+      // store.dispatch(actions.writeToConsole(input.value));
+      array.writeToConsole(input.value);
     });
   }
 
