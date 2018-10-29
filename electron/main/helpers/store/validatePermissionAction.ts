@@ -57,6 +57,22 @@ const dappActions: string[] = [
   constants.KEYCHAIN_SIGN_FAILURE,
 
   constants.KEYCHAIN_SHOW_RESULT,
+
+  constants.ORBIT_DB_CREATE_DATABASE,
+  constants.ORBIT_DB_CREATE_DATABASE_SUCCESS,
+  constants.ORBIT_DB_CREATE_DATABASE_FAILURE,
+  constants.ORBIT_DB_OPEN_DATABASE,
+  constants.ORBIT_DB_OPEN_DATABASE_SUCCESS,
+  constants.ORBIT_DB_OPEN_DATABASE_FAILURE,
+  constants.ORBIT_DB_ADD_ENTRY,
+  constants.ORBIT_DB_ADD_ENTRY_SUCCESS,
+  constants.ORBIT_DB_ADD_ENTRY_FAILURE,
+  constants.ORBIT_DB_GET_ENTRY,
+  constants.ORBIT_DB_GET_ENTRY_SUCCESS,
+  constants.ORBIT_DB_GET_ENTRY_FAILURE,
+  constants.ORBIT_DB_GET_ALL_ENTRIES,
+  constants.ORBIT_DB_GET_ALL_ENTRIES_SUCCESS,
+  constants.ORBIT_DB_GET_ALL_ENTRIES_FAILURE,
 ];
 
 const clientActions: string[] = [
@@ -141,6 +157,24 @@ const keychainActions: string[] = [
   constants.KEYCHAIN_SIGN_FAILURE,
 ];
 
+const orbitDbActions: string[] = [
+  constants.ORBIT_DB_CREATE_DATABASE,
+  constants.ORBIT_DB_CREATE_DATABASE_SUCCESS,
+  constants.ORBIT_DB_CREATE_DATABASE_FAILURE,
+  constants.ORBIT_DB_OPEN_DATABASE,
+  constants.ORBIT_DB_OPEN_DATABASE_SUCCESS,
+  constants.ORBIT_DB_OPEN_DATABASE_FAILURE,
+  constants.ORBIT_DB_ADD_ENTRY,
+  constants.ORBIT_DB_ADD_ENTRY_SUCCESS,
+  constants.ORBIT_DB_ADD_ENTRY_FAILURE,
+  constants.ORBIT_DB_GET_ENTRY,
+  constants.ORBIT_DB_GET_ENTRY_SUCCESS,
+  constants.ORBIT_DB_GET_ENTRY_FAILURE,
+  constants.ORBIT_DB_GET_ALL_ENTRIES,
+  constants.ORBIT_DB_GET_ALL_ENTRIES_SUCCESS,
+  constants.ORBIT_DB_GET_ALL_ENTRIES_FAILURE,
+];
+
 const checkGranted = (state: IState, dappName: string, actionType: string) => {
   let permissionName: Permission = null;
   if (fileManagerActions.includes(actionType)) {
@@ -157,6 +191,9 @@ const checkGranted = (state: IState, dappName: string, actionType: string) => {
   }
   if (keychainActions.includes(actionType)) {
     permissionName = constants.PERMISSION_NAME_KEYCHAIN;
+  }
+  if (orbitDbActions.includes(actionType)) {
+    permissionName = constants.PERMISSION_NAME_ORBIT_DB;
   }
   if (permissionName) {
     return checkGrantedForPermission(state, dappName, permissionName);
