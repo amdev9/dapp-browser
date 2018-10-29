@@ -2,11 +2,10 @@ import { AnyAction, Action } from 'redux';
 import { combineEpics, Epic, ofType } from 'redux-observable';
 import { switchMap } from 'rxjs/operators';
 
-import * as ipfsStorageActions  from '../actions/ipfsStorage';
+import * as ipfsStorageActions from '../actions/ipfsStorage';
 import * as constants from '../constants';
-import fileManager, { FileManager, FileObject} from '../FileManager';
+import fileManager, { FileManager, FileObject } from '../FileManager';
 import ipfs from '../IpfsStorage';
-
 
 const ipfsStorageUploadEpic: Epic<AnyAction> = (action$) => action$.pipe( //@todo fix action type
   ofType(constants.IPFS_STORAGE_UPLOAD_FILE),
@@ -26,7 +25,7 @@ const ipfsStorageUploadEpic: Epic<AnyAction> = (action$) => action$.pipe( //@tod
       };
 
       return ipfsStorageActions.uploadIpfsFileSuccess(ipfsFile, action.meta.sourceUUID);
-    } catch(error) {
+    } catch (error) {
       return ipfsStorageActions.uploadIpfsFileFailure(error, action.meta.sourceUUID);
     }
   }),
@@ -49,7 +48,7 @@ const ipfsStorageDownloadEpic: Epic<AnyAction> = (action$) => action$.pipe(
       };
 
       return ipfsStorageActions.downloadIpfsFileSuccess(ipfsFileEntry, action.meta.sourceUUID);
-    } catch(error) {
+    } catch (error) {
       return ipfsStorageActions.downloadIpfsFileFailure(error, action.meta.sourceUUID);
     }
   }),

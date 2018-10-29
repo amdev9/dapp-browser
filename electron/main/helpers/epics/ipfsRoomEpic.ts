@@ -1,11 +1,11 @@
-import {combineEpics, Epic, ofType, ActionsObservable } from 'redux-observable';
-import {AnyAction} from 'redux';
+import { combineEpics, Epic, ofType, ActionsObservable } from 'redux-observable';
+import { AnyAction } from 'redux';
 import { of } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import IpfsRoom from '../IpfsRoom'
-import * as constants from '../constants'
-import * as ipfsRoomActions from '../actions/ipfsRoom'
+import IpfsRoom from '../IpfsRoom';
+import * as constants from '../constants';
+import * as ipfsRoomActions from '../actions/ipfsRoom';
 
 const ipfsRoomCreateThunk = (topic: string, sourceUUID: string) => async (dispatch: any) => {
   try {
@@ -14,10 +14,10 @@ const ipfsRoomCreateThunk = (topic: string, sourceUUID: string) => async (dispat
     if (!room) {
       room = await IpfsRoom.create(sourceUUID, topic);
       room.subscribe({
-        onMessage: (message) => dispatch(ipfsRoomActions.ipfsRoomSendMessageToDapp(message, topic, sourceUUID)),
-        onJoined: (peer) => dispatch(ipfsRoomActions.ipfsRoomPeerJoined(peer, sourceUUID)),
-        onLeft: (peer) => dispatch(ipfsRoomActions.ipfsRoomPeerLeft(peer, sourceUUID)),
-        onSubscribed: () => dispatch(ipfsRoomActions.ipfsRoomSubscribeSuccess(topic, sourceUUID))
+        onMessage: message => dispatch(ipfsRoomActions.ipfsRoomSendMessageToDapp(message, topic, sourceUUID)),
+        onJoined: peer => dispatch(ipfsRoomActions.ipfsRoomPeerJoined(peer, sourceUUID)),
+        onLeft: peer => dispatch(ipfsRoomActions.ipfsRoomPeerLeft(peer, sourceUUID)),
+        onSubscribed: () => dispatch(ipfsRoomActions.ipfsRoomSubscribeSuccess(topic, sourceUUID)),
       });
 
     } else {
@@ -40,15 +40,15 @@ const ipfsRoomSendBroadcastMessage: Epic<AnyAction> = (action$, state$) => actio
     try {
       let room = IpfsRoom.get(action.meta.sourceUUID, action.payload.roomName);
 
-      if (!room){
+      if (!room) {
         throw Error('Room has not exist');
       }
 
       await room.broadcast(action.payload.message);
 
-      return ipfsRoomActions.ipfsRoomSendMessageBroadcastSuccess(action.payload.messageId, action.meta.sourceUUID)
+      return ipfsRoomActions.ipfsRoomSendMessageBroadcastSuccess(action.payload.messageId, action.meta.sourceUUID);
     } catch (error) {
-      return ipfsRoomActions.ipfsRoomSendMessageBroadcastFailure(error, action.payload.messageId, action.meta.sourceUUID)
+      return ipfsRoomActions.ipfsRoomSendMessageBroadcastFailure(error, action.payload.messageId, action.meta.sourceUUID);
 
     }
   }),
@@ -66,9 +66,9 @@ const ipfsRoomSendToPeerMessage: Epic<AnyAction> = (action$, state$) => action$.
 
       await room.sendTo(action.payload.peer, action.payload.message);
 
-      return ipfsRoomActions.ipfsRoomSendMessageToPeerSuccess(action.payload.messageId, action.meta.sourceUUID)
+      return ipfsRoomActions.ipfsRoomSendMessageToPeerSuccess(action.payload.messageId, action.meta.sourceUUID);
     } catch (error) {
-      return ipfsRoomActions.ipfsRoomSendMessageToPeerFailure(error, action.payload.messageId, action.meta.sourceUUID)
+      return ipfsRoomActions.ipfsRoomSendMessageToPeerFailure(error, action.payload.messageId, action.meta.sourceUUID);
 
     }
   }),
@@ -84,11 +84,11 @@ const ipfsRoomLeave: Epic<AnyAction> = (action$, state$) => action$.pipe( //@tod
         throw Error('Room has not exist');
       }
 
-      await room.leave()
+      await room.leave();
 
-      return ipfsRoomActions.ipfsRoomLeaveSuccess(action.payload.roomName, action.meta.sourceUUID)
+      return ipfsRoomActions.ipfsRoomLeaveSuccess(action.payload.roomName, action.meta.sourceUUID);
     } catch (error) {
-      return ipfsRoomActions.ipfsRoomLeaveFailure(error, action.payload.roomName, action.meta.sourceUUID)
+      return ipfsRoomActions.ipfsRoomLeaveFailure(error, action.payload.roomName, action.meta.sourceUUID);
     }
   }),
 );
@@ -98,4 +98,4 @@ export default combineEpics(
   ipfsRoomSendBroadcastMessage,
   ipfsRoomSendToPeerMessage,
   ipfsRoomLeave,
-)
+);

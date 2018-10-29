@@ -39,5 +39,32 @@
 		<button>Send to peer</button>
 	</form>
 
+	<form id="orbitDbCreateDatabase">
+		<input name="dbName" placeholder="Enter database name"/>
+		<button>Create database</button>
+	</form>
+
+	<form id="orbitDbOpenDatabase">
+		<input name="dbName" placeholder="Enter database name"/>
+		<button>Open database and subscribe</button>
+	</form>
+
+	<form id="orbitDbAddEntry">
+		<input name="dbName" placeholder="Enter database"/>
+		<input name="json" placeholder="Enter JSON" value='{"name":"John"}'/>
+		<button>Add entry</button>
+	</form>
+
+	<form id="orbitDbGetEntry">
+		<input name="dbName" placeholder="Enter database"/>
+		<input name="hash" placeholder="Enter hash entry"/>
+		<button>Get entry</button>
+	</form>
+
+	<form id="orbitDbGetAllEntries">
+		<input name="dbName" placeholder="Enter database"/>
+		<button>Get all entries</button>
+	</form>
+
 	<script src="../../../lib/build/app.bundle.js"></script>
 </body>
