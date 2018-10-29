@@ -47,3 +47,13 @@ export const keychainSign = (key: string, chainId: string, transaction: string) 
   action(constants.KEYCHAIN_SIGN, {key, chainId, transaction})
 
 export const keychainShowResult = () => action(constants.KEYCHAIN_SHOW_RESULT)
+
+export const orbitDbCreateDatabase = (database: string) => action(constants.ORBIT_DB_CREATE_DATABASE, { database })
+
+export const orbitDbOpenDatabase = (database: string) => action(constants.ORBIT_DB_OPEN_DATABASE, { database })
+
+export const orbitDbAddEntry = (database: string, entry: any) => action(constants.ORBIT_DB_ADD_ENTRY, { database, entry })
+
+export const orbitDbGetEntry = (hash: string) => action(constants.ORBIT_DB_GET_ENTRY)
+
+export const orbitDbGetAllEntries = (database: string) => action(constants.ORBIT_DB_GET_ALL_ENTRIES, { database })

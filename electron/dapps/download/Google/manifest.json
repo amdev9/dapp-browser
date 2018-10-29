@@ -8,5 +8,5 @@
   "categories": [
     "games"
   ],
-  "permissions": ["ipfs", "storage", "filesystem"]
+  "permissions": ["ipfs", "storage", "filesystem", "orbitdb"]
 }
