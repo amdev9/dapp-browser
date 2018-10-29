@@ -54,6 +54,6 @@ export const orbitDbOpenDatabase = (database: string) => action(constants.ORBIT_
 
 export const orbitDbAddEntry = (database: string, entry: any) => action(constants.ORBIT_DB_ADD_ENTRY, { database, entry })
 
-export const orbitDbGetEntry = (hash: string) => action(constants.ORBIT_DB_GET_ENTRY)
+export const orbitDbGetEntry = (database: string, hash: string) => action(constants.ORBIT_DB_GET_ENTRY, { database, hash })
 
 export const orbitDbGetAllEntries = (database: string) => action(constants.ORBIT_DB_GET_ALL_ENTRIES, { database })

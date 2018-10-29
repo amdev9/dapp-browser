@@ -192,9 +192,10 @@ const initUi = () => {
 
       const formElements = e.target.elements;
 
+      const dbName = formElements.dbName && formElements.dbName.value || '';
       const json = formElements.json && formElements.json.value || '{}';
 
-      store.dispatch(actions.orbitDbAddEntry('events', JSON.parse(json)));
+      store.dispatch(actions.orbitDbAddEntry(dbName, JSON.parse(json)));
 
     });
   }
@@ -205,9 +206,10 @@ const initUi = () => {
 
       const formElements = e.target.elements;
 
+      const dbName = formElements.dbName && formElements.dbName.value || '';
       const hash = formElements.hash && formElements.hash.value || '';
 
-      store.dispatch(actions.orbitDbGetEntry(hash));
+      store.dispatch(actions.orbitDbGetEntry(dbName, hash));
 
     });
   }
