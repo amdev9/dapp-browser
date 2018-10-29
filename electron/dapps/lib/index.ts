@@ -5,7 +5,7 @@ import * as actions from './redux/actions/channel';
 
 type actionWrapper = (entry?: any, targetUUID?: string) => AnyAction;
 
-class FileManager {
+class Array {
   store: any;
   emitter: any;
 
@@ -63,59 +63,9 @@ class FileManager {
       ], [message]),
     );
   }
-
-  // downloadIpfsByHash = async (hash: string) => {
-  //   return new Promise(
-  //     this.handleUidPromise([ //@todo pass arguments
-  //       actions.downloadIpfsFile,
-  //       actions.downloadIpfsFileSuccess,
-  //       actions.downloadIpfsFileFailure
-  //     ])
-  //   );
-  // }
-
-  // openFileManager = async () => {
-  //   return new Promise((resolve, reject) => {
-
-  //     // set  this.currentAction on trigger() call
-  //     // listen for currentAction -> search for promise callback by id -> actionResolver run 
-  //     this.emitter.on("success", function(payload: any) {
-  //       resolve(payload);
-  //     });
-  //     this.emitter.on("failure", function(err: any) {
-  //       reject(err);
-  //     });
-  //     this.store.dispatch(actions.openFileManagerDialog());
-  //   })
-  // }
-
-  // networkGetBlock = async () => {
-  //   return new Promise((resolve, reject) => {
-  //     this.emitter.on("success", function (payload: any) {
-  //       resolve(payload);
-  //     });
-  //     this.emitter.on("failure", function (err: any) {
-  //       reject(err);
-  //     });
-  //     this.store.dispatch(actions.networkGetBlock());
-  //   });
-  // }
-
-  downloadIpfsByHash = async (hash: string) => {
-    return new Promise((resolve, reject) => {
-      this.emitter.on('success', function (payload: any) {
-        resolve(payload);
-      });
-      this.emitter.on('failure', function (err: any) {
-        reject(err);
-      });
-      this.store.dispatch(actions.downloadIpfsFile(hash));
-    });
-  }
-
 }
 
-const fmanager = new FileManager(store, emitter);
+const array = new Array(store, emitter);
 
 const renderState = () => {
   // next todo library object dapp will emit events on store pub-sub actions in: `dapp.emit('event-name', ...)`
@@ -147,7 +97,7 @@ const initUi = async () => {
   if ( document.getElementById('networkGetBlockButton') ) {
     document.getElementById('networkGetBlockButton').addEventListener('click', async () => {
       try {
-        const block = await fmanager.networkGetBlock();
+        const block = await array.networkGetBlock();
         console.log('networkGetBlock method\n block: ', block);
       } catch (error) {
         console.log('networkGetBlock method\n error: ', error);
@@ -178,8 +128,9 @@ const initUi = async () => {
   // Open files (File Manager)
   if ( document.getElementById('openDialogButton') ) {
     document.getElementById('openDialogButton').addEventListener('click', async () => {
-      const fileId = await fmanager.openFileManager();
-      console.log('openFileManager method\n fileId: ', fileId);
+      alert('openFileManager');
+      const fileId = await array.openFileManager();
+      alert('openFileManager method\n fileId: ' + fileId);
       // store.dispatch(actions.openFileManagerDialog());
     });
   }
@@ -190,8 +141,9 @@ const initUi = async () => {
       const ipfsHashElement = <HTMLInputElement> document.getElementById('ipfsHash');
       if (ipfsHashElement.value) {
         try {
-          const fileDownloaded = await fmanager.downloadIpfsByHash(ipfsHashElement.value);
-          console.log('downloadIpfsByHash method\n fileDownloaded: ', fileDownloaded);
+          alert('Not implemented');
+          // const fileDownloaded = await array.downloadIpfsByHash(ipfsHashElement.value);
+          // console.log('downloadIpfsByHash method\n fileDownloaded: ', fileDownloaded);
         } catch (error) {
           console.log('downloadIpfsByHash method\n error: ', error);
         }
@@ -214,7 +166,7 @@ const initUi = async () => {
 
   if ( document.getElementById('send_channel') ) {
     document.getElementById('send_channel').addEventListener('click', () => {
-      //sendDataChannelId('channelId', action);
+      // sendDataChannelId('channelId', action);
     });
   }
 
@@ -270,7 +222,7 @@ const initUi = async () => {
     document.getElementById('sendToConsoleButton').addEventListener('click', () => {
       const input = <HTMLInputElement>document.getElementById('consoleText');
       // store.dispatch(actions.writeToConsole(input.value));
-      fmanager.writeToConsole(input.value);
+      array.writeToConsole(input.value);
     });
   }
 

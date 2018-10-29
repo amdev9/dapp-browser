@@ -10,7 +10,7 @@ export const openDialogSuccess = (entry: any, targetUUID? :string) =>
   action(constants.FILE_MANAGER_OPEN_DIALOG_SUCCESS, { entry }, { targetUUID });
 export const openDialogFailure = (error: string, targetUUID? :string) =>
   action(constants.FILE_MANAGER_OPEN_DIALOG_FAILURE, error, { targetUUID });
-export const uploadIpfsFile = (entry: string) => action(constants.IPFS_STORAGE_UPLOAD_FILE, {entry})
+export const uploadIpfsFile = (entry: string) => action(constants.IPFS_STORAGE_UPLOAD_FILE, {entry});
 
 export const showFileEntries = () => action(constants.SHOW_FILE_ENTRIES);
 

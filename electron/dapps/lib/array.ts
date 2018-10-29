@@ -64,39 +64,9 @@ const forwardToMain = (store: Store<any>) => (next: Dispatch<void>) => <A extend
 };
 export const emitter = new EventEmitter();
 const promiseHandlerMiddleware = (emitter: any) => {
-  return (store: Store<any>) => (next: Dispatch<void>) => <A extends Action>(action: A) => {  
-    // console.log('dispatching', action);
-
+  return (store: Store<any>) => (next: Dispatch<void>) => <A extends Action>(action: A) => {
     emitter.emit(action.meta.uid, action);
     return next(action);
-    // switch (action.type) {
-    //   case constants.FILE_MANAGER_OPEN_DIALOG_SUCCESS:
-    //     emitter.emit("success", action.payload); //@todo replace to FileManager.trigger(action)
-    //     return next(action);
-
-    //   case constants.FILE_MANAGER_OPEN_DIALOG_FAILURE:
-    //     emitter.emit("failure", action.payload);
-    //     return next(action);
-
-    //   case constants.IPFS_STORAGE_DOWNLOAD_FILE_SUCCESS:
-    //     emitter.emit("success", action.payload);
-    //     return next(action);
-
-    //   case constants.IPFS_STORAGE_DOWNLOAD_FILE_FAILURE:
-    //     emitter.emit("failure", action.payload);
-    //     return next(action);
-
-    //   case constants.NETWORK_GET_BLOCK_SUCCESS:
-    //     emitter.emit("success", action.payload);
-    //     return next(action);
-
-    //   case constants.NETWORK_GET_BLOCK_FAILURE:
-    //     emitter.emit("failure", action.payload);
-    //     return next(action);
-
-    //   default:
-    //     return next(action);
-    // }
   };
 };
 const configureStore = (initialState?: any) => {
@@ -104,7 +74,7 @@ const configureStore = (initialState?: any) => {
   const enhanced = [
     applyMiddleware(...middleware),
   ];
-  const enhancer: GenericStoreEnhancer = compose(...enhanced); 
+  const enhancer: GenericStoreEnhancer = compose(...enhanced);
   const store = createStore(rootReducer, initialState, enhancer);
   epicMiddleware.run(rootEpic);
   electronManager.replyActionRenderer(store);

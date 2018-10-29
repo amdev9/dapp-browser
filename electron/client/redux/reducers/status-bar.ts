@@ -48,10 +48,10 @@ export default function statusBar(state: StatusBarPanel = initialState, action: 
 
     case TOGGLE_PEERS_BAR_PANEL:
       return { ...state, isPeersOpen: !state.isPeersOpen };
-      
+
     case LOGGER_WRITE:
       return {...state, loggerWrite: false};
-      
+
     case LOGGER_WRITE_SUCCESS:
       return {...state, loggerWrite: true};
 
