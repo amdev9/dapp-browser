@@ -29,7 +29,6 @@ class Array {
           console.log('Uid spoofing');
         }
       });
-
       this.store.dispatch(actionFlow[0](uid, ...params));
     };
   }
@@ -40,7 +39,7 @@ class Array {
         actions.openFileManagerDialog,
         actions.openDialogSuccess,
         actions.openDialogFailure,
-      ]),
+      ], []),
     );
   }
 
@@ -50,7 +49,7 @@ class Array {
         actions.networkGetBlock,
         actions.getBlockSuccess,
         actions.getBlockFailure,
-      ]),
+      ], []),
     );
   }
 
@@ -128,9 +127,8 @@ const initUi = async () => {
   // Open files (File Manager)
   if ( document.getElementById('openDialogButton') ) {
     document.getElementById('openDialogButton').addEventListener('click', async () => {
-      alert('openFileManager');
       const fileId = await array.openFileManager();
-      alert('openFileManager method\n fileId: ' + fileId);
+      console.log('openFileManager method\n fileId: ' + fileId);
       // store.dispatch(actions.openFileManagerDialog());
     });
   }
