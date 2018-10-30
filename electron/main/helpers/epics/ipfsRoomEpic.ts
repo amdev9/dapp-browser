@@ -7,21 +7,21 @@ import IpfsRoom from '../IpfsRoom';
 import * as constants from '../constants';
 import * as ipfsRoomActions from '../actions/ipfsRoom';
 
-const ipfsRoomCreateThunk = (topic: string, sourceUUID: string) => async (dispatch: any) => {
+const ipfsRoomCreateThunk = (topic: string, uid: string, sourceUUID: string) => async (dispatch: any) => {
   try {
     let room = IpfsRoom.get(sourceUUID, topic);
 
     if (!room) {
       room = await IpfsRoom.create(sourceUUID, topic);
       room.subscribe({
-        onMessage: message => dispatch(ipfsRoomActions.ipfsRoomSendMessageToDapp(message, topic, sourceUUID)),
-        onJoined: peer => dispatch(ipfsRoomActions.ipfsRoomPeerJoined(peer, sourceUUID)),
-        onLeft: peer => dispatch(ipfsRoomActions.ipfsRoomPeerLeft(peer, sourceUUID)),
-        onSubscribed: () => dispatch(ipfsRoomActions.ipfsRoomSubscribeSuccess(topic, sourceUUID)),
+        onMessage: message => dispatch(ipfsRoomActions.ipfsRoomSendMessageToDapp(message, topic, uid, sourceUUID)),
+        onJoined: peer => dispatch(ipfsRoomActions.ipfsRoomPeerJoined(peer, uid, sourceUUID)),
+        onLeft: peer => dispatch(ipfsRoomActions.ipfsRoomPeerLeft(peer, uid, sourceUUID)),
+        onSubscribed: () => dispatch(ipfsRoomActions.ipfsRoomSubscribeSuccess(topic, uid, sourceUUID)),
       });
 
     } else {
-      dispatch(ipfsRoomActions.ipfsRoomSubscribeSuccess(topic, sourceUUID));
+      dispatch(ipfsRoomActions.ipfsRoomSubscribeSuccess(topic, uid, sourceUUID));
     }
 
   } catch (error) {
@@ -31,7 +31,7 @@ const ipfsRoomCreateThunk = (topic: string, sourceUUID: string) => async (dispat
 
 const ipfsRoomsSubscribe = (action$: ActionsObservable<AnyAction>) => action$.pipe( //@todo fix action type
   ofType(constants.IPFS_ROOM_SUBSCRIBE),
-  map((action) => ipfsRoomCreateThunk(action.payload.topic, action.meta.sourceUUID)),
+  map((action) => ipfsRoomCreateThunk(action.payload.topic, action.meta.uid, action.meta.sourceUUID)),
 );
 
 const ipfsRoomSendBroadcastMessage: Epic<AnyAction> = (action$, state$) => action$.pipe( //@todo fix action type
