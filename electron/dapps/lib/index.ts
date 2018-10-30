@@ -258,7 +258,7 @@ const initUi = async () => {
       const ipfsHashElement = <HTMLInputElement> document.getElementById('ipfsHash');
       if (ipfsHashElement.value) {
         try {
-          alert('Not implemented');
+          store.dispatch(actions.downloadIpfsFile(ipfsHashElement.value));
           // const fileDownloaded = await array.downloadIpfsByHash(ipfsHashElement.value);
           // console.log('downloadIpfsByHash method\n fileDownloaded: ', fileDownloaded);
         } catch (error) {

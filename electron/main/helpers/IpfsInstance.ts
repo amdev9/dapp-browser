@@ -4,33 +4,34 @@ import * as path from 'path';
 
 import { remoteConfig } from './config/ipfs';
 
-const ipfs = new IPFS({
-  ...remoteConfig,
-  repo: `ipfs/repo/${Math.random()}`
-});
+// const ipfs = new IPFS({
+//   ...remoteConfig,
+//   repo: `ipfs/repo/${Math.random()}`
+// });
 
 const cleanRepo = (repoPath: string) => {
   // This fixes a bug on Windows, where the daemon seems
   // not to be exiting correctly, hence the file is not
   // removed.
-  console.log('Cleaning repo.lock file')
-  const lockPath = path.join(repoPath, 'repo.lock')
+  console.log('Cleaning repo.lock file');
+  const lockPath = path.join(repoPath, 'repo.lock');
 
   if (fs.existsSync(lockPath)) {
     try {
-      fs.unlinkSync(lockPath)
+      fs.unlinkSync(lockPath);
     } catch (err) {
-      console.warn('Could not remove repo.lock. Daemon might be running')
+      console.warn('Could not remove repo.lock. Daemon might be running');
     }
   }
-}
+};
 
-export const getReadyIpfsInstance = (options: IPFS.Options = { repo: `ipfs/repo/${Math.random()}`}): Promise<IPFS> => {
+export const getReadyIpfsInstance = (options: IPFS.Options = { repo: path.join(__dirname, 'ipfs', 'repo') }): Promise<IPFS> => {
   const ipfs = new IPFS({
     ...remoteConfig,
-    ...options,
+    repo: path.join(options.repo, Math.random().toString()),
   });
 
+  cleanRepo(options.repo);
   return new Promise((resolve, reject) => {
     ipfs.on('ready', () => {
       if (ipfs.isOnline()) {
