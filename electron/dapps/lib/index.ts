@@ -3,7 +3,7 @@ import * as uuidv4 from 'uuid/v4';
 import { store, sendDataChannel1, sendDataChannel2, receiveDataChannel, emitter } from './array';
 import * as actions from './redux/actions/channel';
 
-type actionWrapper = (entry?: any, targetUUID?: string) => AnyAction;
+type actionWrapper = (uid?: string, entry?: any, targetUUID?: string) => AnyAction;
 
 class Array {
   store: any;
@@ -60,6 +60,16 @@ class Array {
         actions.loggerWriteSuccess,
         actions.loggerWriteFailure,
       ], [message]),
+    );
+  }
+
+  storageSave = async (key: string, value: string) => {
+    return new Promise(
+      this.handleUidPromise([
+        actions.storageSave,
+        actions.storageSaveSuccess,
+        actions.storageSaveFailure,
+      ], [key, value]),
     );
   }
 }
@@ -128,7 +138,7 @@ const initUi = async () => {
   if ( document.getElementById('openDialogButton') ) {
     document.getElementById('openDialogButton').addEventListener('click', async () => {
       const fileId = await array.openFileManager();
-      console.log('openFileManager method\n fileId: ' + fileId);
+      console.log('openFileManager method\n fileId: ', fileId);
       // store.dispatch(actions.openFileManagerDialog());
     });
   }
@@ -204,7 +214,7 @@ const initUi = async () => {
 
       const roomNameElement = <HTMLInputElement> document.getElementById('ipfsRoomName');
       store.dispatch(
-        actions.ipfsRoomSendMessageToPeer(message.value || '', roomNameElement.value || '', peerHash.value || '')
+        actions.ipfsRoomSendMessageToPeer(message.value || '', roomNameElement.value || '', peerHash.value || ''),
       );
     });
   }
@@ -304,6 +314,14 @@ const initUi = async () => {
 
       store.dispatch(actions.orbitDbGetAllEntries(dbName));
 
+    });
+  }
+
+  if (document.getElementById('storageSaveButton')) {
+    document.getElementById('storageSaveButton').addEventListener('click', (e: any) => {
+      const keyElement = <HTMLInputElement>document.getElementById('storageKey');
+      const valueElement = <HTMLInputElement>document.getElementById('storageValue');
+      array.storageSave(keyElement.value, valueElement.value);
     });
   }
 };

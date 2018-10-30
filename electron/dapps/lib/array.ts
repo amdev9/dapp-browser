@@ -38,7 +38,7 @@ const electronManager = window.ipc;
 
 const validateAction = (action: Action) => {
   return isFSA(action);
-}
+};
 
 // const forwardToMain = (store: Store<any>) => (next: Dispatch<any>) => <A extends Action>(action: A) => {
 const forwardToMain = (store: Store<any>) => (next: Dispatch<void>) => <A extends Action>(action: A) => {
