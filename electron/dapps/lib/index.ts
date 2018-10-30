@@ -29,7 +29,7 @@ class Array {
           console.log('Uid spoofing');
         }
       });
-      this.store.dispatch(actionFlow[0](uid, ...params));
+      this.store.dispatch(actionFlow[0](uid, params));
     };
   }
 
@@ -69,7 +69,7 @@ class Array {
         actions.storageSave,
         actions.storageSaveSuccess,
         actions.storageSaveFailure,
-      ], [key, value]),
+      ], {key, value}),
     );
   }
 }
