@@ -43,7 +43,7 @@ export type AppItem = {
   permissions: string[]
 };
 
-const _dapps: AppItem[] = [];
+const dappsGlobal: AppItem[] = [];
 
 export class AppsManager {
   id: number;
@@ -51,8 +51,7 @@ export class AppsManager {
   permissions: any[];
 
   static getAppItem(appName: string) {
-    // console.log('_dapps', _dapps, appName);
-    const targetDapp = _dapps.find((item: AppItem) => item.appName === appName);
+    const targetDapp = dappsGlobal.find((item: AppItem) => item.appName === appName);
     const randomKey = Math.floor(Math.random() * 1000);
 
     return Object.assign({}, targetDapp, {
@@ -62,7 +61,7 @@ export class AppsManager {
   }
 
   static get dapps() {
-    return _dapps;
+    return dappsGlobal;
   }
 
   static resolvePath(item: AppItem) {
@@ -82,7 +81,7 @@ export class AppsManager {
       console.log('Catched', err);
     }
   }
-  
+
   static async parseDapp(folder: string) {
     try {
       const fileContent = await readFile(path.join(DAPPS_PATH, folder, 'manifest.json'));

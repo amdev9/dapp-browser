@@ -38,7 +38,7 @@ const functionPromiseTimeout = (f: () => Promise<any>, timeout: number) => {
   });
 };
 
-class IpfsStorage{
+class IpfsStorage {
   ipfs: Promise<IPFS>;
 
   constructor(configuration: IPFS.Options) {

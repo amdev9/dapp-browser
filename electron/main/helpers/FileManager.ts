@@ -31,7 +31,6 @@ export class FileManager {
 
   constructor() {
     this.entryMap = new Map();
-
   }
 
   static generateFileEntryId() {
@@ -44,18 +43,15 @@ export class FileManager {
 
   static async selectDirectory(): Promise<Path> {
     const paths = await dialog.showOpenDialog({ properties: ['openDirectory', 'createDirectory'] });
-
     if (!paths || paths.length === 0) {
       return;
     }
-
     return paths[0];
   }
 
-  _setPathEntry(path: Path): FileId {
+  setPathEntry(path: Path): FileId {
     const pathId = FileManager.generateFileEntryId();
     this.entryMap.set(pathId, path);
-
     return pathId;
   }
 
@@ -63,7 +59,6 @@ export class FileManager {
     if (!this.entryMap.has(id)) {
       return;
     }
-
     return this.entryMap.get(id);
   }
 
@@ -75,25 +70,24 @@ export class FileManager {
     }
 
     return {
-      id: this._setPathEntry(file[0]),
+      id: this.setPathEntry(file[0]),
       name: path.basename(file[0]),
     };
   }
 
-  saveFile(dir: Path, file: FileObject) {
-
+  async saveFile(dir: Path, file: FileObject) {
     const location = path.join(dir, file.name);
-
-    fs.writeFileSync(location, file.content);
-
-    return this._setPathEntry(location);
+    await fs.writeFile(location, file.content, (err) => {
+      if (err) { console.warn(`unable to save file here: ${location}`); }
+    });
+    return this.setPathEntry(location);
   }
 
   static async saveFolder(dir: Path, files: FileObject[]) {
     for (const file of files) {
       if (file.type === 'file') {
         await fse.outputFile(path.join(dir, file.path), file.content);
-      }       
+      }
     }
   }
 }
