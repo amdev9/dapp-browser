@@ -6,14 +6,14 @@ import { Message } from '../IpfsRoom'
 export const ipfsRoomSubscribe = (topic: string, targetUUID: string) =>
   action(constants.IPFS_ROOM_SUBSCRIBE, { topic }, { targetUUID })
 
-export const ipfsRoomSubscribeSuccess = (topic: string, targetUUID: string) =>
-  action(constants.IPFS_ROOM_SUBSCRIBE_SUCCESS, { topic }, { targetUUID })
+export const ipfsRoomSubscribeSuccess = (topic: string, uid: string, targetUUID: string) =>
+  action(constants.IPFS_ROOM_SUBSCRIBE_SUCCESS, { topic }, { uid, targetUUID })
 
 export const ipfsRoomSubscribeFailure = (error: string, targetUUID: string) =>
   action(constants.IPFS_ROOM_SUBSCRIBE_FAILURE, { error }, { targetUUID })
 
-export const ipfsRoomSendMessageToDapp = (message: Message, roomName: string, targetUUID: string) =>
-  action(constants.IPFS_ROOM_SEND_MESSAGE_TO_DAPP, { message, roomName }, { targetUUID })
+export const ipfsRoomSendMessageToDapp = (message: Message, roomName: string, uid: string, targetUUID: string) =>
+  action(constants.IPFS_ROOM_SEND_MESSAGE_TO_DAPP, { message, roomName }, { uid, targetUUID })
 
 export const ipfsRoomSendMessageBroadcast = (messageId: string, message: string | Buffer, roomName: string, targetUUID: string) =>
   action(constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST, { messageId, message, roomName }, { targetUUID })
@@ -33,11 +33,11 @@ export const ipfsRoomSendMessageToPeerSuccess = (messageId: string, targetUUID: 
 export const ipfsRoomSendMessageToPeerFailure = (error: string, messageId: string, targetUUID: string) =>
   action(constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER_FAILURE, { error, messageId }, { targetUUID })
 
-export const ipfsRoomPeerJoined = (peer: string, targetUUID: string) =>
-  action(constants.IPFS_ROOM_PEER_JOINED, { peer }, { targetUUID })
+export const ipfsRoomPeerJoined = (peer: string, uid: string, targetUUID: string) =>
+  action(constants.IPFS_ROOM_PEER_JOINED, { peer }, { uid, targetUUID })
 
-export const ipfsRoomPeerLeft = (peer: string, targetUUID: string) =>
-  action(constants.IPFS_ROOM_PEER_LEFT, { peer }, { targetUUID })
+export const ipfsRoomPeerLeft = (peer: string, uid: string, targetUUID: string) =>
+  action(constants.IPFS_ROOM_PEER_LEFT, { peer }, { uid, targetUUID })
 
 export const ipfsRoomLeave = (roomName: string, targetUUID: string) =>
   action(constants.IPFS_ROOM_LEAVE, { roomName }, { targetUUID })

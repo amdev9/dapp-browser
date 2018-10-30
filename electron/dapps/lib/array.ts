@@ -65,6 +65,7 @@ const forwardToMain = (store: Store<any>) => (next: Dispatch<void>) => <A extend
 export const emitter = new EventEmitter();
 const promiseHandlerMiddleware = (emitter: any) => {
   return (store: Store<any>) => (next: Dispatch<void>) => <A extends Action>(action: A) => {
+    console.log('promiseHandlerMiddleware', action)
     emitter.emit(action.meta.uid, action);
     return next(action);
   };

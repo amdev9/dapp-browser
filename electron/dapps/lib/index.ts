@@ -1,11 +1,12 @@
-import { AnyAction } from 'redux';
 import * as uuidv4 from 'uuid/v4';
+import { AnyAction } from 'redux';
 import { store, sendDataChannel1, sendDataChannel2, receiveDataChannel, emitter } from './array';
 import * as actions from './redux/actions/channel';
+import * as constants from './redux/constants';
 
 type actionWrapper = (entry?: any, targetUUID?: string) => AnyAction;
 
-class Array {
+class ArrayIO {
   store: any;
   emitter: any;
 
@@ -31,7 +32,7 @@ class Array {
       });
       this.store.dispatch(actionFlow[0](uid, ...params));
     };
-  }
+  };
 
   openFileManager = async () => {
     return new Promise(
@@ -41,7 +42,7 @@ class Array {
         actions.openDialogFailure,
       ], []),
     );
-  }
+  };
 
   networkGetBlock = async () => {
     return new Promise(
@@ -51,7 +52,7 @@ class Array {
         actions.getBlockFailure,
       ], []),
     );
-  }
+  };
 
   writeToConsole = async (message: string) => {
     return new Promise(
@@ -61,14 +62,132 @@ class Array {
         actions.loggerWriteFailure,
       ], [message]),
     );
-  }
+  };
 }
 
-const array = new Array(store, emitter);
+const array = new ArrayIO(store, emitter);
 
 const renderState = () => {
   // next todo library object dapp will emit events on store pub-sub actions in: `dapp.emit('event-name', ...)`
 };
+
+interface ActionFlow {
+  onStart: AnyAction;
+  successType: string;
+  failureType: string;
+}
+
+interface SubscribeOptions {
+  onMessage: (message: any) => void;
+  onJoined: (peer: string) => void;
+  onLeft: (peer: string) => void;
+  onSubscribe: () => void;
+}
+
+class Chat {
+  store: any;
+  emitter: any;
+  topic: string;
+  uid: string;
+  // Callbacks for removing listeners
+  unsubscribeOnMessage: () => void | null;
+  unsubscribeOnLeft: () => void | null;
+  unsubscribeOnJoined: () => void | null;
+
+  constructor(store: any, emitter: any) {
+    this.store = store;
+    this.emitter = emitter;
+  }
+
+  onUIDEvent(uid: string, callback: (action: any) => void) {
+    const listener = (action: AnyAction) => {
+      if (action.meta.uid === uid) {
+        callback(action);
+      } else {
+        console.log('Uid spoofing');
+      }
+    };
+    this.emitter.on(uid, listener);
+
+    return () => this.emitter.removeListener(uid, listener);
+  }
+
+  onAction(actionType: string, uid: string, callback: (message: any) => void) {
+    return this.onUIDEvent(uid, (action) => {
+      if (actionType && action.type === actionType) {
+        callback(action);
+      }
+    });
+  }
+
+  handleUIDAction(uid: string, options: ActionFlow) {
+    if (!options) {
+      return;
+    }
+
+    const copyAction = Object.assign({}, options.onStart, { meta: { uid } });
+
+    return new Promise((resolve, reject) => {
+      options.successType && this.onAction(options.successType, this.uid, (action) => resolve(action));
+      options.failureType && this.onAction(options.failureType, this.uid, (action) => reject(action));
+      options.onStart && this.store.dispatch(copyAction);
+    });
+  }
+
+  async subscribe(topic: string, options: SubscribeOptions) {
+    const uid = uuidv4();
+    this.topic = topic;
+    this.uid = uid;
+
+    if (!options) {
+      return;
+    }
+
+    await this.handleUIDAction(uid, {
+      onStart: actions.ipfsRoomSubscribe(topic),
+      successType: constants.IPFS_ROOM_SUBSCRIBE_SUCCESS,
+      failureType: constants.IPFS_ROOM_SUBSCRIBE_FAILURE,
+    });
+
+    this.unsubscribeOnMessage = this.onAction(constants.IPFS_ROOM_SEND_MESSAGE_TO_DAPP, uid, (action) => options.onMessage(action.payload.message));
+    this.unsubscribeOnJoined = this.onAction(constants.IPFS_ROOM_PEER_JOINED, uid, (action) => options.onJoined(action.payload.peer));
+    this.unsubscribeOnLeft = this.onAction(constants.IPFS_ROOM_PEER_LEFT, uid, (action) => options.onLeft(action.payload.peer));
+
+    options.onSubscribe && options.onSubscribe();
+  }
+
+  async sendMessageBroadcast(message: string, room: string) {
+    return this.handleUIDAction(this.uid, {
+      onStart: actions.ipfsRoomSendMessageBroadcast(message, room),
+      successType: constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST_SUCCESS,
+      failureType: constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST_FAILURE,
+    });
+  }
+
+  async sendMessageTo(message: string, room: string, peer: string) {
+    return this.handleUIDAction(this.uid, {
+      onStart: actions.ipfsRoomSendMessageToPeer(message, room, peer),
+      successType: constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER_SUCCESS,
+      failureType: constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER_FAILURE,
+    });
+  }
+
+  leave() {
+    this.store.dispatch(actions.ipfsRoomLeave(this.topic));
+    this.unsubscribeOnMessage && this.unsubscribeOnMessage();
+    this.unsubscribeOnJoined && this.unsubscribeOnJoined();
+    this.unsubscribeOnLeft && this.unsubscribeOnLeft();
+  }
+}
+
+const chat = new Chat(store, emitter);
+
+chat.subscribe('topic', {
+  onSubscribe: () => console.log('subscribed!'),
+  onJoined: peer => console.log('onjoined', peer),
+  onLeft: peer => console.log('onleft', peer),
+  onMessage: message => console.log('onmessage', message),
+});
 
 const initUi = async () => {
   renderState();
@@ -93,7 +212,7 @@ const initUi = async () => {
     });
   }
 
-  if ( document.getElementById('networkGetBlockButton') ) {
+  if (document.getElementById('networkGetBlockButton')) {
     document.getElementById('networkGetBlockButton').addEventListener('click', async () => {
       try {
         const block = await array.networkGetBlock();
@@ -105,7 +224,7 @@ const initUi = async () => {
     });
   }
 
-  if ( document.getElementById('networkSubscribeButton') ) {
+  if (document.getElementById('networkSubscribeButton')) {
     document.getElementById('networkSubscribeButton').addEventListener('click', () => {
       store.dispatch(actions.networkSubscribe());
     });
@@ -125,7 +244,7 @@ const initUi = async () => {
   }
 
   // Open files (File Manager)
-  if ( document.getElementById('openDialogButton') ) {
+  if (document.getElementById('openDialogButton')) {
     document.getElementById('openDialogButton').addEventListener('click', async () => {
       const fileId = await array.openFileManager();
       console.log('openFileManager method\n fileId: ' + fileId);
@@ -134,7 +253,7 @@ const initUi = async () => {
   }
 
   // Download
-  if ( document.getElementById('downloadButton') ) {
+  if (document.getElementById('downloadButton')) {
     document.getElementById('downloadButton').addEventListener('click', async () => {
       const ipfsHashElement = <HTMLInputElement> document.getElementById('ipfsHash');
       if (ipfsHashElement.value) {
