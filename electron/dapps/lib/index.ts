@@ -289,7 +289,7 @@ const initUi = async () => {
 
   if (document.getElementById('ipfsRoomSubscribe')) {
     document.getElementById('ipfsRoomSubscribe').addEventListener('submit', (e: any) => {
-      e.preventDefault();
+      // e.preventDefault();
       const formElements = e.target.elements;
       const roomName = formElements.ipfsRoomName && formElements.ipfsRoomName.value;
 
@@ -304,7 +304,7 @@ const initUi = async () => {
 
   if (document.getElementById('ipfsRoomSendBroadcastTextForm')) {
     document.getElementById('ipfsRoomSendBroadcastTextForm').addEventListener('submit', (e: any) => {
-      e.preventDefault();
+      // e.preventDefault();
       const formElements = e.target.elements;
       const message = formElements.message && formElements.message.value || '';
 
@@ -317,7 +317,7 @@ const initUi = async () => {
 
   if (document.getElementById('ipfsRoomSendToPeerTextForm')) {
     document.getElementById('ipfsRoomSendToPeerTextForm').addEventListener('submit', (e: any) => {
-      e.preventDefault();
+      // e.preventDefault();
       const formElements = e.target.elements;
       const { message, peerHash } = formElements;
 
@@ -361,7 +361,7 @@ const initUi = async () => {
 
   if (document.getElementById('orbitDbCreateDatabase')) {
     document.getElementById('orbitDbCreateDatabase').addEventListener('submit', (e: any) => {
-      e.preventDefault();
+      // e.preventDefault();
 
       const formElements = e.target.elements;
 
@@ -374,7 +374,7 @@ const initUi = async () => {
 
   if (document.getElementById('orbitDbOpenDatabase')) {
     document.getElementById('orbitDbOpenDatabase').addEventListener('submit', (e: any) => {
-      e.preventDefault();
+      // e.preventDefault();
 
       const formElements = e.target.elements;
 
@@ -387,7 +387,7 @@ const initUi = async () => {
 
   if (document.getElementById('orbitDbAddEntry')) {
     document.getElementById('orbitDbAddEntry').addEventListener('submit', (e: any) => {
-      e.preventDefault();
+      // e.preventDefault();
 
       const formElements = e.target.elements;
 
@@ -401,7 +401,7 @@ const initUi = async () => {
 
   if (document.getElementById('orbitDbGetEntry')) {
     document.getElementById('orbitDbGetEntry').addEventListener('submit', (e: any) => {
-      e.preventDefault();
+      // e.preventDefault();
 
       const formElements = e.target.elements;
 
@@ -415,7 +415,7 @@ const initUi = async () => {
 
   if (document.getElementById('orbitDbGetAllEntries')) {
     document.getElementById('orbitDbGetAllEntries').addEventListener('submit', (e: any) => {
-      e.preventDefault();
+      // e.preventDefault();
 
       const formElements = e.target.elements;
 
