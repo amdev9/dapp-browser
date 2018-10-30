@@ -48,6 +48,11 @@ export function createDappView(globalUUIDList: RendererConf[], dapp: AppItem) { 
 
   dappView.webContents.loadURL('file://' + path.join(DAPPS_PATH, dapp.appName, dapp.main)); // todo pass @param path to index.html
 
+  let devtools = new BrowserWindow()
+
+  dappView.webContents.setDevToolsWebContents(devtools.webContents);
+  dappView.webContents.openDevTools({ mode: 'detach' });
+
   const renderIdDapp = dappView.webContents.getProcessId();
 
   const rendererObj: RendererConf = {

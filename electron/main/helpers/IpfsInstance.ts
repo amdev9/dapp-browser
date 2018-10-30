@@ -4,11 +4,6 @@ import * as path from 'path';
 
 import { remoteConfig } from './config/ipfs';
 
-const ipfs = new IPFS({
-  ...remoteConfig,
-  repo: `ipfs/repo/${Math.random()}`
-});
-
 const cleanRepo = (repoPath: string) => {
   // This fixes a bug on Windows, where the daemon seems
   // not to be exiting correctly, hence the file is not

@@ -1,8 +1,12 @@
+import * as React from 'react';
 import * as uuidv4 from 'uuid/v4';
 import { AnyAction } from 'redux';
 import { store, sendDataChannel1, sendDataChannel2, receiveDataChannel, emitter } from './array';
 import * as actions from './redux/actions/channel';
 import * as constants from './redux/constants';
+
+// Import business logic for Chat app
+import './chat/chat';
 
 type actionWrapper = (entry?: any, targetUUID?: string) => AnyAction;
 
@@ -65,6 +69,7 @@ class ArrayIO {
   };
 }
 
+
 const array = new ArrayIO(store, emitter);
 
 const renderState = () => {
@@ -84,7 +89,7 @@ interface SubscribeOptions {
   onSubscribe: () => void;
 }
 
-class Chat {
+export class Chat {
   store: any;
   emitter: any;
   topic: string;
@@ -94,7 +99,7 @@ class Chat {
   unsubscribeOnLeft: () => void | null;
   unsubscribeOnJoined: () => void | null;
 
-  constructor(store: any, emitter: any) {
+  constructor() {
     this.store = store;
     this.emitter = emitter;
   }
@@ -180,7 +185,7 @@ class Chat {
   }
 }
 
-const chat = new Chat(store, emitter);
+const chat = new Chat();
 
 chat.subscribe('topic', {
   onSubscribe: () => console.log('subscribed!'),
