@@ -46,7 +46,7 @@ if (process.env.ELECTRON_ENV === 'development') {
 }
 
 // Enables full sandbox mode
-app.enableSandbox();
+//app.enableSandbox();
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
