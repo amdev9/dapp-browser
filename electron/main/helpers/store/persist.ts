@@ -21,12 +21,10 @@ import 'reflect-metadata';
 import { createConnection, ConnectionOptions } from 'typeorm';
 import * as os from 'os';
 import * as path from 'path';
-
-import * as packageJson from '../../package.json';
 import { Store } from './model/Store';
 
-const appTempPath = path.join(os.tmpdir(), packageJson && packageJson.name || 'array-io-client-temp', 'db');
-console.log('App temp path:', appTempPath)
+const appTempPath = path.join(os.tmpdir(), 'array-io-client-temp', 'db');
+console.log('App temp path:', appTempPath);
 
 export interface SQLiteStorageConfig {
   database?: string;
