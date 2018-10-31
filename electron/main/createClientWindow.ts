@@ -1,5 +1,6 @@
 import { BrowserWindow } from 'electron';
 import * as path from 'path';
+import * as url from 'url';
 import * as uuidv4 from 'uuid/v4';
 import { openDevTool } from './helpers/devtools';
 import { RendererConf } from './createDappView';
@@ -33,7 +34,12 @@ export function createClientWindow(globalUUIDList: RendererConf[]) {
     height: 800,
     webPreferences: webPrefObj,
   });
-  clientWindow.loadURL('file://' + path.join(RENDERER_PATH, 'index.html'));
+  const clientPath = path.join(RENDERER_PATH, 'index.html');
+  const clientPathUrl = url.format({
+    protocol: 'file',
+    hostname: clientPath,
+  });
+  clientWindow.loadURL(clientPathUrl);
 
   // @TODO: Use 'ready-to-show' event
   //        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event

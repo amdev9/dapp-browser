@@ -1,10 +1,11 @@
 import { BrowserWindow } from 'electron';
 import * as path from 'path';
+import * as url from 'url';
 import * as uuidv4 from 'uuid/v4';
 import { openDevTool } from './helpers/devtools';
 import { RendererConf } from './createDappView';
 
-const isProduction = process.env.ELECTRON_ENV !== 'development'
+const isProduction = process.env.ELECTRON_ENV !== 'development';
 
 let permissionWindow: Electron.BrowserWindow = null;
 const PATH: string = path.join(__dirname, '..', '..', 'permissionManager');
@@ -41,7 +42,13 @@ export function createPermissionWindow(globalUUIDList: RendererConf[], mainWindo
     modal: true,
   });
   permissionWindow.setMenu(null);
-  permissionWindow.loadURL('file://' + path.join(PATH, 'index.html'));
+
+  const permissionWPath = path.join(PATH, 'index.html');
+  const permissionWPathUrl = url.format({
+    protocol: 'file',
+    hostname: permissionWPath,
+  });
+  permissionWindow.loadURL(permissionWPathUrl);
 
   if (process.env.ELECTRON_ENV === 'development') {
     openDevTool(permissionWindow, true);

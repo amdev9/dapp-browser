@@ -7,12 +7,13 @@
     "setup": "concurrently --kill-others \"cd electron/client && npm i && cross-env NODE_ENV=development node --max_old_space_size=2096 server.js\" \"cd electron/dapps/lib && npm i && npm run webpack\" \"cd electron/main && npm i && npm run rebuild && npm run webpack\" \"cd electron/permissionManager && npm i && npm run webpack\" ",
     "dev": "NODE_ENV=development npm start",
     "start": "node index.js",
+    "clean": "rimraf release",
     "build-client": "cd electron/client && npm i && npm run build",
     "build-dapps": "cd electron/dapps/lib && npm i && npm run build",
     "build-main": "cd electron/main && npm i && npm run build",
     "build-permission": "cd electron/permissionManager && npm i && npm run build",
     "build-combine": "npm i && npm run build-client && npm run build-main && npm run build-permission && npm run build-dapps",
-    "build": "npm run build-combine && electron-packager . --overwrite --out ./release --prune=true",
+    "build": "npm run clean && npm run build-combine && electron-packager . --overwrite --out ./release --prune=true",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "cypherpunk99",
@@ -20,7 +21,8 @@
   "dependencies": {
     "concurrently": "^4.0.1",
     "cross-env": "^5.2.0",
-    "electron": "4.0.0-beta.3"
+    "electron": "3.0.6",
+    "rimraf": "^2.6.2"
   },
   "devDependencies": {
     "electron-packager": "^12.2.0"

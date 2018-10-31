@@ -38,7 +38,7 @@ const functionPromiseTimeout = (f: () => Promise<any>, timeout: number) => {
   });
 };
 
-class IpfsStorage{
+class IpfsStorage {
   ipfs: Promise<IPFS>;
 
   constructor(configuration: IPFS.Options) {
@@ -91,18 +91,13 @@ class IpfsStorage{
     if (!hash) {
       return;
     }
-
     const ipfs = await this.ipfs;
-     
     const files: any = await ipfs.files.get(hash);
-    
     if (!files || !files.length) {
       throw Error('File with current hash does not exist');
     }
-
     return files;
   }
-
 }
 
 export default new IpfsStorage(remoteConfig);

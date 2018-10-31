@@ -3,7 +3,7 @@
   Uses process.stdout.write instead of console.log so we can cleanly catch the output in the parent process.
 */
 
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, Menu } from 'electron';
 import { Store } from 'redux';
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer';
 import { configureStore, initialState } from './helpers/store/configureStore';
@@ -11,8 +11,7 @@ import { AppsManager, AppItem } from './helpers/AppsManager';
 import { DappFrame } from './helpers/DappFrame';
 import { createClientWindow } from './createClientWindow';
 import { createPermissionWindow } from './createPermissionWindow';
-import { createDappView } from './createDappView';
-import { RendererConf } from './createDappView';
+import { createDappView, RendererConf } from './createDappView';
 import { IState, Client } from './helpers/reducers/state';
 
 import * as nodeConsole from 'console';
@@ -37,6 +36,46 @@ require('electron-context-menu')({
   }],
 });
 
+let template: any[] = [];
+if (process.platform === 'darwin') {
+  // OS X
+  template.unshift({
+    label: 'Array.io',
+    submenu: [
+      {
+        label: 'About Array.io',
+        role: 'about',
+      },
+      {
+        label: 'Quit',
+        accelerator: 'Command+Q',
+        click() { app.quit(); },
+      },
+      {
+        label: 'Edit',
+        submenu: [
+          { label: 'Undo', accelerator: 'CmdOrCtrl+Z', selector: 'undo:' },
+          { label: 'Redo', accelerator: 'Shift+CmdOrCtrl+Z', selector: 'redo:' },
+          { type: 'separator' },
+          { label: 'Cut', accelerator: 'CmdOrCtrl+X', selector: 'cut:' },
+          { label: 'Copy', accelerator: 'CmdOrCtrl+C', selector: 'copy:' },
+          { label: 'Paste', accelerator: 'CmdOrCtrl+V', selector: 'paste:' },
+          { label: 'Select All', accelerator: 'CmdOrCtrl+A', selector: 'selectAll:' },
+        ]},
+    ],
+  });
+} else {
+  // Win, Linux
+  template = [{
+    label: 'Array.io',
+    submenu: [{
+      label: 'Выход',
+      accelerator: 'Command+Q',
+      click() { app.quit(); },
+    }],
+  }];
+}
+
 const globalUUIDList: RendererConf[] = [];
 let clientWindow: Electron.BrowserWindow = null;
 
@@ -46,7 +85,7 @@ if (process.env.ELECTRON_ENV === 'development') {
 }
 
 // Enables full sandbox mode
-app.enableSandbox();
+// app.enableSandbox();
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -60,6 +99,10 @@ app.on('ready', async () => {
     const devtools = await installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS]);
     console.log(`Added Extension: ${devtools}`);
   }
+
+  const menu = Menu.buildFromTemplate(template);
+  Menu.setApplicationMenu(menu);
+
   app.on('activate', () => {
     // On OS X it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
