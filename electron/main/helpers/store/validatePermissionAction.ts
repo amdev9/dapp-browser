@@ -55,8 +55,9 @@ const dappActions: string[] = [
   constants.KEYCHAIN_SIGN,
   constants.KEYCHAIN_SIGN_SUCCESS,
   constants.KEYCHAIN_SIGN_FAILURE,
-
   constants.KEYCHAIN_SHOW_RESULT,
+
+  constants.STORAGE_SAVE,
 
   constants.ORBIT_DB_CREATE_DATABASE,
   constants.ORBIT_DB_CREATE_DATABASE_SUCCESS,
