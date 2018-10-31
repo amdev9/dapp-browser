@@ -65,9 +65,9 @@ if (process.platform === 'darwin') {
     ],
   });
 } else {
-  // Win
+  // Win, Linux
   template = [{
-    label: name,
+    label: 'Array.io',
     submenu: [{
       label: 'Выход',
       accelerator: 'Command+Q',
