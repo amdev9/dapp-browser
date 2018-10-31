@@ -252,6 +252,12 @@ const initUi = async () => {
     });
   }
 
+  if (document.getElementById('networkUnsubscribeButtonDapp')) {
+    document.getElementById('networkUnsubscribeButtonDapp').addEventListener('click', () => {
+      store.dispatch(actions.networkUnsubscribe());
+    });
+  }
+
   if (document.getElementById('networkSubscribeButton')) {
     document.getElementById('networkSubscribeButton').addEventListener('click', () => {
       array.networkSubscribe();

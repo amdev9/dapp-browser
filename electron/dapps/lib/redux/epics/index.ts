@@ -37,6 +37,7 @@ const networkGetBlockSuccess: Epic<any> = action$ => action$.pipe(
 
 const networkBlockCreated: Epic<any> = action$ => action$.pipe(
   ofType(constants.NETWORK_BLOCK_CREATED),
+  tap((action) => utils.appendBlock(action.payload.block)),
   tap((action) => utils.insertContentIntoBlock(action.payload.block, 'networkUnsubscribeButton')),
   mapTo(actions.showBlock()),
 );
