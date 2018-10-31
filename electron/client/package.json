@@ -58,6 +58,7 @@
     "flux-standard-action": "^2.0.3",
     "http-server": "^0.10.0",
     "minimist": "^1.2.0",
+    "module-alias": "^2.1.0",
     "moment": "^2.22.2",
     "prop-types": "^15.5.10",
     "rc-dropdown": "^2.2.0",

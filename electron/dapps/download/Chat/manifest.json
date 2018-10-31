@@ -1,0 +1,14 @@
+{
+  "title": "IPFS Chat application",
+  "main": "index.html",
+  "appName": "Chat",
+  "assets/": ["app/images/**"],
+  "icon": "app/images/contact.svg",
+  "preview": "app/images/thumb.png",
+  "categories": [
+    "tools"
+  ],
+  "permissions": [
+    "ipfs"
+  ]
+}

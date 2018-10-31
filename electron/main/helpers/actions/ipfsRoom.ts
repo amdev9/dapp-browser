@@ -6,8 +6,8 @@ import { Message } from '../IpfsRoom'
 export const ipfsRoomSubscribe = (topic: string, targetUUID: string) =>
   action(constants.IPFS_ROOM_SUBSCRIBE, { topic }, { targetUUID })
 
-export const ipfsRoomSubscribeSuccess = (topic: string, uid: string, targetUUID: string) =>
-  action(constants.IPFS_ROOM_SUBSCRIBE_SUCCESS, { topic }, { uid, targetUUID })
+export const ipfsRoomSubscribeSuccess = (peerId: string, topic: string, uid: string, targetUUID: string) =>
+  action(constants.IPFS_ROOM_SUBSCRIBE_SUCCESS, { peerId, topic }, { uid, targetUUID })
 
 export const ipfsRoomSubscribeFailure = (error: string, targetUUID: string) =>
   action(constants.IPFS_ROOM_SUBSCRIBE_FAILURE, { error }, { targetUUID })

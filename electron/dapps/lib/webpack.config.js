@@ -5,12 +5,17 @@ module.exports = {
   mode: 'development',
   entry: './index.ts',
   output: {
-    path: path.resolve(__dirname, 'build'),
+    path: __dirname + '/build',
     filename: 'app.bundle.js'
   },
   module: {
     rules: [
-      { test: /\.ts$/, loader: 'awesome-typescript-loader' }
+      { test: /\.(ts|tsx)$/, loader: 'ts-loader' },
+      {
+        test: /\.css$/,
+        loader:'style-loader!css-loader',
+        exclude: /node_modules/
+      }
     ]
   },
   stats: {
