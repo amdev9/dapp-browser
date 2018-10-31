@@ -52,7 +52,17 @@ class ArrayIO {
         actions.getBlockFailure,
       ], []),
     );
-  };
+  }
+
+  networkSubscribe = async () => {
+    return new Promise(
+      this.handleUidPromise([
+        actions.networkSubscribe,
+        actions.networkSubscribeSuccess,
+        actions.networkSubscribeFailure,
+      ], []),
+    );
+  }
 
   writeToConsole = async (message: string) => {
     return new Promise(
@@ -234,9 +244,23 @@ const initUi = async () => {
     });
   }
 
+  if (document.getElementById('networkSubscribeButtonDapp')) {
+    array.networkSubscribe(); // subscribe on Dapp load
+
+    document.getElementById('networkSubscribeButtonDapp').addEventListener('click', () => {
+      array.networkSubscribe();
+    });
+  }
+
+  if (document.getElementById('networkUnsubscribeButtonDapp')) {
+    document.getElementById('networkUnsubscribeButtonDapp').addEventListener('click', () => {
+      store.dispatch(actions.networkUnsubscribe());
+    });
+  }
+
   if (document.getElementById('networkSubscribeButton')) {
     document.getElementById('networkSubscribeButton').addEventListener('click', () => {
-      store.dispatch(actions.networkSubscribe());
+      array.networkSubscribe();
     });
   }
 

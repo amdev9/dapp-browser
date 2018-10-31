@@ -3,7 +3,7 @@ export const insertContentIntoBlock = (content: string = '', buttonId: string) =
   const blockElement = document.getElementById(blockId);
   const buttonElement = document.getElementById(buttonId);
 
-  if (!content) {
+  if (!content || !buttonElement) {
     return;
   }
 
@@ -23,5 +23,21 @@ export const appendContentIntoBlock = (content: string = '', blockId: string) =>
 
   if (blockElement) {
     blockElement.innerText += content;
+  }
+};
+
+export const appendBlock = (block: string) => {
+  const tbody = document.querySelector('#tbody');
+  if (tbody) {
+    const blockObject = JSON.parse(block).block;
+    const row = document.createElement('tr');
+    const tableHTML = `
+        <td>${blockObject.blockID}</td>
+        <td>${blockObject.transactionsCount}</td>
+        <td>${blockObject.witnessName}</td>
+        <td>${new Date(blockObject.timestamp).toLocaleString('en-US', {})}</td>
+    `;
+    row.innerHTML = tableHTML;
+    tbody.appendChild(row);
   }
 };

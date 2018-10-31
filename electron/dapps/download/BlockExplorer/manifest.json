@@ -1,0 +1,14 @@
+{
+  "title": "Block Explorer",
+  "main": "app/index.html",
+  "appName": "BlockExplorer",
+  "assets/": ["app/images/**"],
+  "icon": "app/images/favicon.png",
+  "preview": "app/images/thumb.png",
+  "categories": [
+    "tools"
+  ],
+  "permissions": [
+    "network"
+  ]
+}

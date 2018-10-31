@@ -105,7 +105,15 @@ const fileManagerActions: string[] = [
 ];
 
 const networkActions: string[] = [
+  constants.NETWORK_SUBSCRIBE,
+  constants.NETWORK_SUBSCRIBE_SUCCESS,
+  constants.NETWORK_SUBSCRIBE_FAILURE,
+  constants.NETWORK_UNSUBSCRIBE,
+  constants.NETWORK_UNSUBSCRIBE_SUCCESS,
+  constants.NETWORK_UNSUBSCRIBE_FAILURE,
   constants.NETWORK_GET_BLOCK,
+  constants.NETWORK_GET_BLOCK_SUCCESS,
+  constants.NETWORK_GET_BLOCK_FAILURE,
   constants.SHOW_BLOCK,
 ];
 
