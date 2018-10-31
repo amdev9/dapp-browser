@@ -118,6 +118,11 @@ export class NetworkAPI {
       }
     }
   }
+
+  removeAllSubscribers() {
+    NetworkAPI.subscribers = [];
+    ChainStore.unsubscribe(this.broadcast);
+  }
 }
 
 export namespace NetworkAPI {
