@@ -87,10 +87,14 @@ if (process.env.ELECTRON_ENV === 'development') {
 // Enables full sandbox mode
 // app.enableSandbox();
 
+let networkAPI: NetworkAPI;
+
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
   }
+
+  networkAPI.removeAllSubscribers();
 });
 
 app.on('ready', async () => {
@@ -139,7 +143,7 @@ app.on('ready', async () => {
     clientWindow.focus();
   });
 
-  const networkAPI = new NetworkAPI(store);
+  networkAPI = new NetworkAPI(store);
   networkAPI.init();
 
   store.subscribe(() => {
