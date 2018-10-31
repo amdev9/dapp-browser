@@ -22,7 +22,8 @@ import { createConnection, ConnectionOptions } from 'typeorm';
 import { Store } from './model/Store';
 
 export interface SQLiteStorageConfig {
-  database: string;
+  database?: string;
+  entities?: any[];
   logging?: boolean;
   logger?: ConnectionOptions['logger'];
 }
@@ -35,8 +36,8 @@ export default function SQLiteStorage(config?: SQLiteStorageConfig) {
     database: 'temp/sqliteStorage.db',
     type: 'sqlite',
     synchronize: true,
-    ...config,
     entities: [storageEntity],
+    ...config,
   });
 
   const getStoreRepository = async () => {

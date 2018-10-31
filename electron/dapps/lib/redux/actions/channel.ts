@@ -26,9 +26,14 @@ export const networkUnsubscribe = () => action(constants.NETWORK_UNSUBSCRIBE);
 export const writeToConsole = (uid:string, message: string) =>  action(constants.LOGGER_WRITE, { message }, { uid });
 export const loggerWriteSuccess = (result: any, targetUUID? :string) =>
   action(constants.LOGGER_WRITE_SUCCESS, { result }, targetUUID);
-
 export const loggerWriteFailure = (error: string, targetUUID? :string) =>
   action(constants.LOGGER_WRITE_FAILURE, error, targetUUID);
+
+export const storageSave = (uid: string, entry: {key: string, value: string}) => action(constants.STORAGE_SAVE, entry, {uid});
+export const storageSaveSuccess = (result: any, targetUUID?: string) =>
+  action(constants.STORAGE_SAVE_SUCCESS, {result}, targetUUID);
+export const storageSaveFailure = (error: string, targetUUID?: string) =>
+  action(constants.STORAGE_SAVE_FAILURE, error, targetUUID);
 
 export const showBlock = () => action(constants.SHOW_BLOCK);
 

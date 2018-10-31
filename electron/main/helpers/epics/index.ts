@@ -10,6 +10,7 @@ import keychainEpic from './keychainEpic';
 import ipfsRoomEpic from './ipfsRoomEpic';
 import marketEpic from './marketEpic';
 import orbitDBEpic from './orbitDBEpic';
+import storageEpic from './storageEpic';
 
 // todo fix https://github.com/piotrwitek/react-redux-typescript-guide#async-flow
 
@@ -24,4 +25,5 @@ export default combineEpics(
   keychainEpic,
   marketEpic,
   orbitDBEpic,
+  storageEpic,
 );
