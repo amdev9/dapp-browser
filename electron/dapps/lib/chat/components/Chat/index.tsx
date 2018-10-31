@@ -9,6 +9,9 @@ import { Chat as ArrayChat } from '../../../';
 
 import './styles.css';
 
+const ON_JOIN_USER_MESSAGE = 'User has joined'
+const ON_LEFT_USER_MESSAGE = 'User has left'
+
 const mapStateToProps = (state: any) => ({
   selectedRoom: state.main.selectedRoom,
 });
@@ -26,15 +29,7 @@ class Chat extends React.Component<any, any> {
     this.state = {
       chat: null,
       myId: null,
-      messages: [{
-        from: 'QmfV4a3ok6gWdYixGvNvx57Kd1WtFtFvc7L6iaygbYKGqQ',
-        message: 'ololo'
-      },
-        {
-          from: 'QmfV4a3ok6gWdYixGvNvx57Kd1WtFtFvc7L6iaygbYKGqQ',
-          message: 'alala'
-        }
-        ],
+      messages: [],
     };
   }
 
@@ -48,7 +43,6 @@ class Chat extends React.Component<any, any> {
         this.setState({ myId: peerId });
       },
       onMessage: (message) => {
-        console.log('CHAT:message', message);
         this.setState({
           messages: [
             ...this.state.messages,
@@ -56,8 +50,22 @@ class Chat extends React.Component<any, any> {
           ]
         });
       },
-      onLeft: (peer) => console.log('CHAT:onleft', peer),
-      onJoined: (peer) => console.log('CHAT:onjoined', peer),
+      onLeft: (peer) => {
+        this.setState({
+          messages: [
+            ...this.state.messages,
+            this.formatMessage({ from: peer, data: ON_LEFT_USER_MESSAGE })
+          ]
+        });
+      },
+      onJoined: (peer) => {
+        this.setState({
+          messages: [
+            ...this.state.messages,
+            this.formatMessage({ from: peer, data: ON_JOIN_USER_MESSAGE })
+          ]
+        });
+      },
     });
     this.setState({ chat });
   }
@@ -69,13 +77,10 @@ class Chat extends React.Component<any, any> {
     };
   }
 
-  renderMessage() {
-
-  }
-
   componentWillUnmount() {
     if (this.state.chat) {
       this.state.chat.leave();
+      console.log('leave from', this.props.selectedRoom)
     }
   }
 
@@ -112,8 +117,14 @@ class Chat extends React.Component<any, any> {
     return (
       <div className="chatWrapper">
         <div className="chatNavigation">
-          <span>{selectedRoom}</span>
-          <button onClick={actions.navigateToMain}>Close chat</button>
+          <h1>
+            {selectedRoom}
+            <button
+              className="roomLeftButton"
+              onClick={actions.navigateToMain}>
+              Leave room
+            </button>
+          </h1>
         </div>
         <div className="chatWindow">
           { messages && messages.map((msg: any, i: number) => this.renderMessageBlock(msg, i)) }

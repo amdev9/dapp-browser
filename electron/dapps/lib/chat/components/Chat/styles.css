@@ -44,6 +44,7 @@
     border: none;
     font-size: 32px;
     cursor: pointer;
+    outline: none;
 }
 
 .messageBlock {
@@ -51,14 +52,12 @@
     flex-direction: column;
     align-items: start;
     margin: 0 10px 10px;
-    max-width: 425px;
 }
 
 .messageBlock_selfMessage {
     border-radius: 20px;
-    margin: 1px auto;
     padding: 8px 14px;
-    float: right;
+    align-items: flex-end;
 }
 
 .messageBlockFrom {
@@ -72,11 +71,24 @@
     background-color: rgb(204, 204, 204);
     border-radius: 20px;
     margin-left: 2px;
-    max-width: 425px;
     padding: 8px 14px;
 }
 
 .messageBlock_selfMessage .messageBlockContent {
     background-color:rgb(0, 132, 255);
+    color: #fff;
+}
+
+.roomLeftButton {
+    float: right;
+    vertical-align: middle;
+    line-height: 36px;
+    padding: 0 15px;
+    margin-right: 10px;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    border-radius: 18px;
+    background: rgb(255, 158, 0);
     color: #fff;
 }
