@@ -21,10 +21,10 @@
   "dependencies": {
     "concurrently": "^4.0.1",
     "cross-env": "^5.2.0",
-    "electron": "3.0.6",
     "rimraf": "^2.6.2"
   },
   "devDependencies": {
+    "electron": "3.0.6",
     "electron-packager": "^12.2.0"
   }
 }
