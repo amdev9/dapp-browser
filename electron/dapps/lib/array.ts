@@ -1,4 +1,4 @@
-import { combineReducers, createStore, applyMiddleware, compose, GenericStoreEnhancer, Store, Dispatch } from 'redux';
+import { combineReducers, createStore, applyMiddleware, compose, Store, Dispatch, AnyAction } from 'redux';
 import { EventEmitter } from 'events';
 import { isFSA } from 'flux-standard-action';
 import { createEpicMiddleware } from 'redux-observable';
@@ -41,7 +41,7 @@ const validateAction = (action: Action) => {
 };
 
 // const forwardToMain = (store: Store<any>) => (next: Dispatch<any>) => <A extends Action>(action: A) => {
-const forwardToMain = (store: Store<any>) => (next: Dispatch<void>) => <A extends Action>(action: A) => {
+const forwardToMain = (store: Store<any>) => (next: Dispatch<AnyAction>) => <A extends Action>(action: A) => {
   if (!validateAction(action)) return next(action);
 
   if (
@@ -64,7 +64,7 @@ const forwardToMain = (store: Store<any>) => (next: Dispatch<void>) => <A extend
 };
 export const emitter = new EventEmitter();
 const promiseHandlerMiddleware = (emitter: any) => {
-  return (store: Store<any>) => (next: Dispatch<void>) => <A extends Action>(action: A) => {
+  return (store: Store<any>) => (next: Dispatch<AnyAction>) => <A extends Action>(action: A) => {
     emitter.emit(action.meta.uid, action);
     return next(action);
   };
@@ -74,7 +74,7 @@ const configureStore = (initialState?: any) => {
   const enhanced = [
     applyMiddleware(...middleware),
   ];
-  const enhancer: GenericStoreEnhancer = compose(...enhanced);
+  const enhancer: any = compose(...enhanced);
   const store = createStore(rootReducer, initialState, enhancer);
   epicMiddleware.run(rootEpic);
   electronManager.replyActionRenderer(store);
