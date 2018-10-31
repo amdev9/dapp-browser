@@ -1,22 +1,35 @@
-import { DappStore } from './store/model/Store';
-import { getConnection } from 'typeorm';
+import { Store } from './store/model/Store';
+import { createConnection, getConnection } from 'typeorm';
 
 export class Storage {
+  name: string;
+  constructor(name: string) {
+    this.name = name;
+  }
+
+  async getRepository() {
+    let connection;
+    try {
+      connection = await getConnection(this.name);
+    } catch (e) {
+      connection = await createConnection({
+        name: this.name,
+        database: `temp/${this.name}`,
+        type: 'sqlite',
+        synchronize: true,
+        entities: [Store],
+      });
+    }
+    return connection.getRepository(Store.name);
+  }
 
   async save(key: string, value: string) {
-    const connection = await getConnection();
-    const storeRepository = connection.getRepository(DappStore.name);
-    const stories = await storeRepository.find();
-    console.log('stories: ', stories);
+    const repository = await this.getRepository();
+    return await repository.save({ key, value });
+  }
 
-    const storeDb = new DappStore();
-    storeDb.key = key;
-    storeDb.value = value;
-    await storeRepository.save(storeDb);
-
-    const stories2 = await storeRepository.find();
-    console.log('stories2: ', stories2);
+  async findAll() {
+    const repository = await this.getRepository();
+    return await repository.find();
   }
 }
-
-export default new Storage();

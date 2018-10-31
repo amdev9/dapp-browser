@@ -19,7 +19,7 @@
 
 import 'reflect-metadata';
 import { createConnection, ConnectionOptions } from 'typeorm';
-import { Store, DappStore } from './model/Store';
+import { Store } from './model/Store';
 
 export interface SQLiteStorageConfig {
   database?: string;
@@ -36,7 +36,7 @@ export default function SQLiteStorage(config?: SQLiteStorageConfig) {
     database: 'temp/sqliteStorage.db',
     type: 'sqlite',
     synchronize: true,
-    entities: [storageEntity, DappStore],
+    entities: [storageEntity],
     ...config,
   });
 

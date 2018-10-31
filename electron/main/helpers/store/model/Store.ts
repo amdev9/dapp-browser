@@ -8,12 +8,3 @@ export class Store {
   @Column()
   value: string;
 }
-// { database: 'dappDB' }
-@Entity()
-export class DappStore {
-  @PrimaryColumn()
-  key: string;
-
-  @Column()
-  value: string;
-}
