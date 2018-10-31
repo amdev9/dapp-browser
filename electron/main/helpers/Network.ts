@@ -42,8 +42,12 @@ export class NetworkAPI {
   }
 
   private updateGlobal() {
-    this.dynamicGlobal = ChainStore.getObject('2.1.0');
-    this.ws = this.dynamicGlobal ? this.dynamicGlobal.toJS() : this.dynamicGlobal;
+    try {
+      this.dynamicGlobal = ChainStore.getObject('2.1.0');
+      this.ws = this.dynamicGlobal ? this.dynamicGlobal.toJS() : this.dynamicGlobal;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async init() {
@@ -82,14 +86,18 @@ export class NetworkAPI {
   }
 
   private async getDataBlock(): Promise<NetworkAPI.Enriched> {
-    this.updateGlobal();
+    try {
+      this.updateGlobal();
 
-    if (this.ws) {
-      const block = await this.getBlock(this.ws.head_block_number);
-      this.blocks.push(block);
-      return block;
-    } else {
-      throw new Error('ws connection was broken');
+      if (this.ws) {
+        const block = await this.getBlock(this.ws.head_block_number);
+        this.blocks.push(block);
+        return block;
+      } else {
+        throw new Error('ws connection was broken');
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -99,7 +107,9 @@ export class NetworkAPI {
       NetworkAPI.subscribers.forEach((dapp) => {
         NetworkAPI.store.dispatch({ type: constants.NETWORK_BLOCK_CREATED, payload: { block: JSON.stringify(broadcastBlock) }, meta: { targetUUID: dapp } });
       });
-    } catch (error) {}
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   addSubscriber(uuid: string) {
@@ -123,8 +133,12 @@ export class NetworkAPI {
   }
 
   removeAllSubscribers() {
-    NetworkAPI.subscribers = [];
-    ChainStore.unsubscribe(this.broadcast);
+    try {
+      NetworkAPI.subscribers = [];
+      ChainStore.unsubscribe(this.broadcast);
+    } catch (error) {
+      console.log(error)
+    }
   }
 }
 

@@ -212,9 +212,7 @@ export const configureStore = (state: IState = initialState, globalId?: Renderer
   const enhanced = [applyMiddleware(...middleware)];
   const enhancer: any = compose(...enhanced);
 
-  const storeEngine = SQLiteStorage({
-    database: 'temp/sqliteStorage.db',
-  });
+  const storeEngine = SQLiteStorage();
 
   const persistConfig = {
     key: 'root',
