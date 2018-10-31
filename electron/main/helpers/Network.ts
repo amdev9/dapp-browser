@@ -96,19 +96,25 @@ export class NetworkAPI {
   private async broadcast() {
     try {
       const broadcastBlock = await this.getDataBlock();
+      console.log('BEFORE FOR')
       NetworkAPI.subscribers.forEach((dapp) => {
         NetworkAPI.store.dispatch({ type: constants.NETWORK_BLOCK_CREATED, payload: { block: JSON.stringify(broadcastBlock) }, meta: { targetUUID: dapp } });
       });
+      console.log('AFTER FOR')
     } catch (error) {}
   }
 
   addSubscriber(uuid: string) {
+    console.log('adsubscriber')
     if (NetworkAPI.subscribers.includes(uuid)) {
+      console.log('adsubscriber includes')
       return;
     }
     NetworkAPI.subscribers.push(uuid);
+    console.log('SUBSCRIBER PUSH')
     if (NetworkAPI.subscribers.length === 1) { // after the first subscriber added, run broadcast method
       ChainStore.subscribe(this.broadcast);
+      console.log('SUBSCRIBER LENGTH')
     }
   }
 
