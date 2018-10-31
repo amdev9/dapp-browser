@@ -20,7 +20,13 @@ export const getBlockSuccess = (block: string, targetUUID? :string) =>
 export const getBlockFailure = (error: string, targetUUID? :string) =>
   action(constants.NETWORK_GET_BLOCK_FAILURE, error, targetUUID);
 export const networkGetWitness = (witnessId: string) => action(constants.NETWORK_GET_WITNESS, {witnessId});
+
 export const networkSubscribe = () => action(constants.NETWORK_SUBSCRIBE);
+export const networkSubscribeSuccess = (result: any, targetUUID? :string) =>
+  action(constants.NETWORK_SUBSCRIBE_SUCCESS, { result }, targetUUID);
+export const networkSubscribeFailure = (error: string, targetUUID? :string) =>
+  action(constants.NETWORK_SUBSCRIBE_FAILURE, error, targetUUID);
+
 export const networkUnsubscribe = () => action(constants.NETWORK_UNSUBSCRIBE);
 
 export const writeToConsole = (uid:string, message: string) =>  action(constants.LOGGER_WRITE, { message }, { uid });
