@@ -6,7 +6,13 @@ import { NetworkAPI } from '../Network';
 import * as networkActions from '../actions/network';
 import * as constants from '../constants';
 
-const networkInstance = new NetworkAPI();
+let networkInstance: NetworkAPI;
+
+try {
+  networkInstance = new NetworkAPI();
+} catch (error) {
+  console.log('Error creating NetworkAPI instance', error)
+}
 
 const networkGetBlockEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
   ofType(constants.NETWORK_GET_BLOCK),
