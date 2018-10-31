@@ -103,6 +103,9 @@ export class NetworkAPI {
   }
 
   addSubscriber(uuid: string) {
+    if (NetworkAPI.subscribers.includes(uuid)) {
+      return;
+    }
     NetworkAPI.subscribers.push(uuid);
     if (NetworkAPI.subscribers.length === 1) { // after the first subscriber added, run broadcast method
       ChainStore.subscribe(this.broadcast);
