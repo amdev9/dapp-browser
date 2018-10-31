@@ -1,5 +1,5 @@
 import * as Room from 'ipfs-pubsub-room';
-
+import * as path from 'path';
 import { getReadyIpfsInstance }  from './IpfsInstance';
 
 export type RoomName = string;
@@ -49,15 +49,10 @@ export default class IpfsRoom {
     if (!dappUUID || !name) {
       return new IpfsRoom();
     }
-
-    const ipfs = await getReadyIpfsInstance({ repo: `ipfs-room/repos/${Math.random()}` });
-
+    const ipfs = await getReadyIpfsInstance({ repo: path.join(__dirname, 'ipfs-room', 'repos') });
     const getRoomInstance = <any> Room;
-
     const room = getRoomInstance(ipfs, name);
-
     RoomMapInstance.addRoom(dappUUID, name, room);
-
     return new IpfsRoom(room);
   }
 

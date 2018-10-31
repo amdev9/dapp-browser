@@ -22,7 +22,7 @@ export class OrbitDbClass {
     return new OrbitDB(ipfs);
   }
 
-  static async createDatabase(name: string, options: CreateDatabaseOptions = {write: ['*'], type: 'eventlog'}) {
+  static async createDatabase(name: string, options: CreateDatabaseOptions = { write: ['*'], type: 'eventlog' }) {
 
     const ipfs = await getReadyIpfsInstance();
     const orbitdb = await OrbitDbClass.getOrbitDbInstance();
