@@ -2,10 +2,8 @@ import * as React from 'react';
 import { Store } from 'redux';
 import { Provider } from 'react-redux';
 import { Router, Route, browserHistory, Switch } from 'react-router';
-// import {
-//   HashRouter,
-//   Route,
-// } from "react-router-dom";
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
+
 import { syncHistoryWithStore, ConnectedRouter } from 'react-router-redux';
 
 import Main from './Main';
@@ -19,21 +17,20 @@ interface IRootType {
 
 const store = configureStore();
 
-console.log('Co', ConnectedRouter)
-console.log('Co', Switch)
-console.log('Co', store, history)
-
-export default class Root extends React.Component {
-  render() {
-    return (
-      <Provider store={store}>
-        <ConnectedRouter history={history}>
+export default () => (
+  <Provider store={store}>
+    <ConnectedRouter history={history}>
+      {/*<TransitionGroup>*/}
+        {/*<CSSTransition*/}
+          {/*timeout={300}*/}
+          {/*classNames="fade"*/}
+        {/*>*/}
           <Switch>
+            <Route path="/chat" component={Chat}/>
             <Route path="/" component={Main}/>
-            <Route path="chat" component={Chat}/>
           </Switch>
-        </ConnectedRouter>
-      </Provider>
-    );
-  }
-}
+        {/*</CSSTransition>*/}
+      {/*</TransitionGroup>*/}
+    </ConnectedRouter>
+  </Provider>
+)

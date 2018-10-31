@@ -9,7 +9,7 @@ import reducers from './reducers/index';
 export const history = createHashHistory();
 
 export const configureStore = (initialState: any = {}) => {
-  const middleware = [thunk, logger, routerMiddleware(history)];
+  const middleware = [thunk, routerMiddleware(history), logger];
 
   const store = createStore(reducers, initialState, applyMiddleware(...middleware));
   //

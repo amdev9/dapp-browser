@@ -11,7 +11,14 @@ module.exports = {
   },
   module: {
     rules: [
-      { test: /\.ts$/, loader: 'awesome-typescript-loader' }
+      { test: /\.ts$/, loader: 'awesome-typescript-loader' },
+      {
+        test: /\.css$/,
+        use: [
+          { loader: "style-loader" },
+          { loader: "css-loader" }
+        ]
+      }
     ]
   },
   stats: {

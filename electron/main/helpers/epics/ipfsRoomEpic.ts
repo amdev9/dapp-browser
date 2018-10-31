@@ -13,15 +13,22 @@ const ipfsRoomCreateThunk = (topic: string, uid: string, sourceUUID: string) => 
 
     if (!room) {
       room = await IpfsRoom.create(sourceUUID, topic);
+      // Id = peer id
+      const { id } = await room.room._ipfs.id()
+      console.log('peer Id', id)
+
       room.subscribe({
         onMessage: message => dispatch(ipfsRoomActions.ipfsRoomSendMessageToDapp(message, topic, uid, sourceUUID)),
         onJoined: peer => dispatch(ipfsRoomActions.ipfsRoomPeerJoined(peer, uid, sourceUUID)),
         onLeft: peer => dispatch(ipfsRoomActions.ipfsRoomPeerLeft(peer, uid, sourceUUID)),
-        onSubscribed: () => dispatch(ipfsRoomActions.ipfsRoomSubscribeSuccess(topic, uid, sourceUUID)),
       });
+      dispatch(ipfsRoomActions.ipfsRoomSubscribeSuccess(id, topic, uid, sourceUUID))
 
     } else {
-      dispatch(ipfsRoomActions.ipfsRoomSubscribeSuccess(topic, uid, sourceUUID));
+      // Id = peer id
+      const { id } = await room.room._ipfs.id()
+      console.log('peer Id', id)
+      dispatch(ipfsRoomActions.ipfsRoomSubscribeSuccess(id, topic, uid, sourceUUID));
     }
 
   } catch (error) {

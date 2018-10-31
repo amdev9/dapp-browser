@@ -6,12 +6,12 @@ import * as constants from '../constants';
 
 interface InitialState {
   chatList: [];
-  selectedChat: string | null;
+  selectedRoom: string | null;
 }
 
 const initialState: InitialState = {
   chatList: [],
-  selectedChat: null,
+  selectedRoom: null,
 }
 
 const main = (state: InitialState = initialState, action: any) => {

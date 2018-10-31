@@ -1,7 +1,8 @@
 import { action } from 'typesafe-actions';
 import { push } from 'react-router-redux';
 
-import { Chat } from '../../../';
+
+import { history } from '../store';
 import * as constants from '../constants';
 
 export const setRoomName = (roomName: string) =>
@@ -10,17 +11,17 @@ export const setRoomName = (roomName: string) =>
 export const resetRoomName = () =>
   action(constants.RESET_ROOM_NAME);
 
-export const navigateToMain = () => (dispatch: any) => {
-  dispatch(push('/'));
+export const navigateToMain = () => {
+  history.push('/');
 }
 
-export const navigateToChat = () => (dispatch: any) => {
-  dispatch(push('/chat'));
+export const navigateToChat = () => {
+  history.push('/chat');
 }
 
 export const onSubmitMainFormThunk = (roomName: string) => async (dispatch: any) => {
   dispatch(setRoomName(roomName));
 
-  dispatch(navigateToChat());
+  navigateToChat();
 
 };

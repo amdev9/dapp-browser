@@ -84,9 +84,9 @@ interface ActionFlow {
 
 interface SubscribeOptions {
   onMessage: (message: any) => void;
-  onJoined: (peer: string) => void;
-  onLeft: (peer: string) => void;
-  onSubscribe: () => void;
+  onJoined?: (peer: string) => void;
+  onLeft?: (peer: string) => void;
+  onSubscribe?: (peer: string) => void;
 }
 
 export class Chat {
@@ -148,7 +148,7 @@ export class Chat {
       return;
     }
 
-    await this.handleUIDAction(uid, {
+    const action: any = await this.handleUIDAction(uid, {
       onStart: actions.ipfsRoomSubscribe(topic),
       successType: constants.IPFS_ROOM_SUBSCRIBE_SUCCESS,
       failureType: constants.IPFS_ROOM_SUBSCRIBE_FAILURE,
@@ -158,20 +158,21 @@ export class Chat {
     this.unsubscribeOnJoined = this.onAction(constants.IPFS_ROOM_PEER_JOINED, uid, (action) => options.onJoined(action.payload.peer));
     this.unsubscribeOnLeft = this.onAction(constants.IPFS_ROOM_PEER_LEFT, uid, (action) => options.onLeft(action.payload.peer));
 
-    options.onSubscribe && options.onSubscribe();
+    options.onSubscribe && options.onSubscribe(action.payload.peerId);
   }
 
-  async sendMessageBroadcast(message: string, room: string) {
+  async sendMessageBroadcast(message: string) {
+    console.log('sendMessageBroadcast', message, this.topic)
     return this.handleUIDAction(this.uid, {
-      onStart: actions.ipfsRoomSendMessageBroadcast(message, room),
+      onStart: actions.ipfsRoomSendMessageBroadcast(message, this.topic),
       successType: constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST_SUCCESS,
       failureType: constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST_FAILURE,
     });
   }
 
-  async sendMessageTo(message: string, room: string, peer: string) {
+  async sendMessageTo(message: string, peer: string) {
     return this.handleUIDAction(this.uid, {
-      onStart: actions.ipfsRoomSendMessageToPeer(message, room, peer),
+      onStart: actions.ipfsRoomSendMessageToPeer(message, this.topic, peer),
       successType: constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER_SUCCESS,
       failureType: constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER_FAILURE,
     });
@@ -185,14 +186,14 @@ export class Chat {
   }
 }
 
-const chat = new Chat();
-
-chat.subscribe('topic', {
-  onSubscribe: () => console.log('subscribed!'),
-  onJoined: peer => console.log('onjoined', peer),
-  onLeft: peer => console.log('onleft', peer),
-  onMessage: message => console.log('onmessage', message),
-});
+// const chat = new Chat();
+//
+// chat.subscribe('topic', {
+//   onSubscribe: () => console.log('subscribed!'),
+//   onJoined: peer => console.log('onjoined', peer),
+//   onLeft: peer => console.log('onleft', peer),
+//   onMessage: message => console.log('onmessage', message),
+// });
 
 const initUi = async () => {
   renderState();

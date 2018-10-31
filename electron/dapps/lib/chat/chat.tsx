@@ -2,11 +2,13 @@ import * as React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import Root from './components/Root';
-console.log('ROOT', Root)
-render(
+
+if (document.getElementById('Chat-IPFS-app-container')) {
+  render(
     <Root/>,
-  document.getElementById('Chat-IPFS-app-container')
-);
+    document.getElementById('Chat-IPFS-app-container')
+  );
+}
 //
 // if ((module as any).hot) {
 //   (module as any).hot.accept('./components/Root', () => {
