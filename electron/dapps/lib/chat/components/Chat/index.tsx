@@ -70,7 +70,7 @@ class Chat extends React.Component<any, any> {
     this.setState({ chat });
   }
 
-  formatMessage(message: { from: string, data: Buffer }) {
+  formatMessage(message: { from: string, data: Buffer | string }) {
     return {
       from: message.from,
       message: message.data.toString(),

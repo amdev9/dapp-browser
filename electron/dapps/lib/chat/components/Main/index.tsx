@@ -49,8 +49,8 @@ class Main extends React.Component<InjectedFormProps> {
 
 }
 
-const validate = values => {
-  const errors = {};
+const validate = (values: any) => {
+  const errors: any = {};
   if (!values['room-name']) {
     errors['room-name'] = 'Required';
   }
@@ -58,7 +58,7 @@ const validate = values => {
 };
 
 const form: any = reduxForm({
-  form: constants.MAIN_PAGE_FORM,
   validate,
+  form: constants.MAIN_PAGE_FORM,
 })(Main);
 export default connect(null, mapDispatchToProps)(form);

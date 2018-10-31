@@ -45,7 +45,7 @@ const ipfsRoomSendBroadcastMessage: Epic<AnyAction> = (action$, state$) => actio
   ofType(constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST),
   switchMap(async (action) => {
     try {
-      let room = IpfsRoom.get(action.meta.sourceUUID, action.payload.roomName);
+      const room = IpfsRoom.get(action.meta.sourceUUID, action.payload.roomName);
 
       if (!room) {
         throw Error('Room has not exist');
