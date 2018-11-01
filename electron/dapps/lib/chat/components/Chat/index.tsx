@@ -116,7 +116,59 @@ class Chat extends React.Component<any, any> {
 
   renderLoading() {
     return (
-      <div>Loading...</div>
+      <div className="chatLoadingBlock">Connecting...</div>
+    );
+  }
+
+  renderChatNavigation() {
+    const { selectedRoom } = this.props;
+
+    return (
+      <div className="chatNavigation">
+        <h1>
+          {selectedRoom}
+          <button
+            className="roomLeftButton"
+            onClick={actions.navigateToMain}>
+            Leave room
+          </button>
+        </h1>
+      </div>
+    );
+  }
+
+  renderChatWindow() {
+    const { messages } = this.state;
+
+    return (
+      <div className="chatWindow">
+        {messages && messages.map((msg: any, i: number) => this.renderMessageBlock(msg, i))}
+      </div>
+    );
+  }
+
+  renderChatControls() {
+    const { handleSubmit } = this.props;
+
+    return (
+      <form
+        onSubmit={handleSubmit(this.handleSubmit.bind(this))}
+        className="chatControls"
+      >
+        <Field
+          name="message"
+          type="text"
+          className="chatControlsInput"
+          component="input"
+          placeholder="Enter message..."
+        />
+        <button
+          className="chatControlsSubmit"
+          type="submit"
+        >
+          Send
+        </button>
+      </form>
     );
   }
 
@@ -125,42 +177,18 @@ class Chat extends React.Component<any, any> {
     const { messages, fetching } = this.state;
 
     if (fetching) {
-      return this.renderLoading();
+      return (
+        <div className="chatWrapper">
+          {this.renderLoading()}
+        </div>
+      );
     }
 
     return (
       <div className="chatWrapper">
-        <div className="chatNavigation">
-          <h1>
-            {selectedRoom}
-            <button
-              className="roomLeftButton"
-              onClick={actions.navigateToMain}>
-              Leave room
-            </button>
-          </h1>
-        </div>
-        <div className="chatWindow">
-          {messages && messages.map((msg: any, i: number) => this.renderMessageBlock(msg, i))}
-        </div>
-        <form
-          onSubmit={handleSubmit(this.handleSubmit.bind(this))}
-          className="chatControls"
-        >
-          <Field
-            name="message"
-            type="text"
-            className="chatControlsInput"
-            component="input"
-            placeholder="Enter message..."
-          />
-          <button
-            className="chatControlsSubmit"
-            type="submit"
-          >
-            Send
-          </button>
-        </form>
+        {this.renderChatNavigation()}
+        {this.renderChatWindow()}
+        {this.renderChatControls()}
       </div>
     );
   }

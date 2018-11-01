@@ -47,6 +47,10 @@
     outline: none;
 }
 
+.chatLoadingBlock {
+    font-size: 18px;
+}
+
 .messageBlock {
     display: flex;
     flex-direction: column;
