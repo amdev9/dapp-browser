@@ -1,19 +1,19 @@
 import * as React from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { StateType } from 'typesafe-actions';
- 
+
 import { PermissionAction } from '../redux/reducers';
 import rootReducer from '../redux/reducers';
- 
+
 export type RootState = StateType<typeof rootReducer>;
 export type RootAction = PermissionAction;
- 
+
 import { connect } from 'react-redux';
 
 import * as permissionActions from '../redux/actions/permission';
- 
+
 import { PermissionBox } from './PermissionBox';
-import { Permission } from "../redux/reducers/state";
+import { Permission } from '../redux/reducers/state';
 
 export interface PermissionLayoutProps {
   permissions: string[];
@@ -44,27 +44,27 @@ export class PermissionLayout extends React.Component<PermissionLayoutProps>  {
 
     const permissionItems: JSX.Element[] = this.props.permissions.map(
       (value: string): JSX.Element => (
-        <PermissionBox 
-          key={`${value}`} 
-          item={value} 
+        <PermissionBox
+          key={`${value}`}
+          item={value}
           appName={this.props.appName}
           onTogglePerm={this.props.onTogglePerm}
         />
-      )      
+      ),
     );
 
     return (
       <div>
-        <span>{permissionItems} </span>
-        <button type="button" onClick={this.handleGrant}>{`Grant`}</button>
-        <button type="button" onClick={this.handleCancel}>{`Cancel`}</button>
+        <h1>Grant permissions for {this.props.appName}:</h1>
+        {permissionItems}
+        <button type="button" onClick={this.handleGrant}>{'Grant'}</button>
+        <button type="button" onClick={this.handleCancel}>{'Cancel'}</button>
       </div>
     );
   }
 
   componentDidMount() {
     this.props.onLoadPermissions();
-    console.log("componentDidMount");
   }
 }
 
@@ -76,12 +76,8 @@ const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => bindActionCreator
   onTogglePerm: permissionActions.togglePermission,
   onCloseManager: permissionActions.closeManager,
   onGrantPermissions: permissionActions.grantPermissions,
-  onLoadPermissions: permissionActions.loadPermissions
+  onLoadPermissions: permissionActions.loadPermissions,
 }, dispatch);
 
 export const PermissionLayoutConnected =
   connect(mapStateToProps, mapDispatchToProps)(PermissionLayout);
-
-
-
-
