@@ -9,8 +9,8 @@ import { Chat as ArrayChat } from '../../../';
 
 import './styles.css';
 
-const ON_JOIN_USER_MESSAGE = 'User has joined'
-const ON_LEFT_USER_MESSAGE = 'User has left'
+const ON_JOIN_USER_MESSAGE = 'User has joined';
+const ON_LEFT_USER_MESSAGE = 'User has left';
 
 const mapStateToProps = (state: any) => ({
   selectedRoom: state.main.selectedRoom,
@@ -30,6 +30,7 @@ class Chat extends React.Component<any, any> {
       chat: null,
       myId: null,
       messages: [],
+      fetching: true,
     };
   }
 
@@ -40,7 +41,10 @@ class Chat extends React.Component<any, any> {
     chat.subscribe(selectedRoom, {
       onSubscribe: (peerId) => {
         console.log('myid', peerId);
-        this.setState({ myId: peerId });
+        this.setState({
+          myId: peerId,
+          fetching: false,
+        });
       },
       onMessage: (message) => {
         this.setState({
@@ -80,7 +84,7 @@ class Chat extends React.Component<any, any> {
   componentWillUnmount() {
     if (this.state.chat) {
       this.state.chat.leave();
-      console.log('leave from', this.props.selectedRoom)
+      console.log('leave from', this.props.selectedRoom);
     }
   }
 
@@ -96,7 +100,7 @@ class Chat extends React.Component<any, any> {
   }
 
   renderMessageBlock(msg: any, i: number) {
-    const { myId } = this.state
+    const { myId } = this.state;
     const selfMessage = myId && msg.from === myId;
 
     return (
@@ -104,49 +108,87 @@ class Chat extends React.Component<any, any> {
         className={cn('messageBlock', { messageBlock_selfMessage: selfMessage })}
         key={i}
       >
-        { !selfMessage && <div className="messageBlockFrom">{msg.from}</div> }
+        {!selfMessage && <div className="messageBlockFrom">{msg.from}</div>}
         <div className="messageBlockContent">{msg.message}</div>
       </div>
     );
   }
 
-  render() {
-    const { handleSubmit, selectedRoom } = this.props;
+  renderLoading() {
+    return (
+      <div className="chatLoadingBlock">Connecting...</div>
+    );
+  }
+
+  renderChatNavigation() {
+    const { selectedRoom } = this.props;
+
+    return (
+      <div className="chatNavigation">
+        <h1>
+          {selectedRoom}
+          <button
+            className="roomLeftButton"
+            onClick={actions.navigateToMain}>
+            Leave room
+          </button>
+        </h1>
+      </div>
+    );
+  }
+
+  renderChatWindow() {
     const { messages } = this.state;
 
     return (
-      <div className="chatWrapper">
-        <div className="chatNavigation">
-          <h1>
-            {selectedRoom}
-            <button
-              className="roomLeftButton"
-              onClick={actions.navigateToMain}>
-              Leave room
-            </button>
-          </h1>
-        </div>
-        <div className="chatWindow">
-          { messages && messages.map((msg: any, i: number) => this.renderMessageBlock(msg, i)) }
-        </div>
-        <form
-          onSubmit={handleSubmit(this.handleSubmit.bind(this))}
-          className="chatControls"
+      <div className="chatWindow">
+        {messages && messages.map((msg: any, i: number) => this.renderMessageBlock(msg, i))}
+      </div>
+    );
+  }
+
+  renderChatControls() {
+    const { handleSubmit } = this.props;
+
+    return (
+      <form
+        onSubmit={handleSubmit(this.handleSubmit.bind(this))}
+        className="chatControls"
+      >
+        <Field
+          name="message"
+          type="text"
+          className="chatControlsInput"
+          component="input"
+          placeholder="Enter message..."
+        />
+        <button
+          className="chatControlsSubmit"
+          type="submit"
         >
-          <Field
-            name="message"
-            type="text"
-            className="chatControlsInput"
-            component="input"
-            placeholder="Enter message..."
-          />
-          <button
-            className="chatControlsSubmit"
-            type="submit"
-          >
-            Send
-          </button>
-        </form>
+          Send
+        </button>
+      </form>
+    );
+  }
+
+  render() {
+    const { handleSubmit, selectedRoom } = this.props;
+    const { messages, fetching } = this.state;
+
+    if (fetching) {
+      return (
+        <div className="chatWrapper">
+          {this.renderLoading()}
+        </div>
+      );
+    }
+
+    return (
+      <div className="chatWrapper">
+        {this.renderChatNavigation()}
+        {this.renderChatWindow()}
+        {this.renderChatControls()}
       </div>
     );
   }
