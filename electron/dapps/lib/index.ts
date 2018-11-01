@@ -56,7 +56,7 @@ class ArrayIO {
         actions.getBlockFailure,
       ], []),
     );
-  }
+  };
 
   networkSubscribe = async () => {
     return new Promise(
@@ -66,7 +66,7 @@ class ArrayIO {
         actions.networkSubscribeFailure,
       ], []),
     );
-  }
+  };
 
   writeToConsole = async (message: string) => {
     return new Promise(
@@ -76,7 +76,7 @@ class ArrayIO {
         actions.loggerWriteFailure,
       ], [message]),
     );
-  }
+  };
 
   storageSave = async (key: string, value: string) => {
     return new Promise(
@@ -84,9 +84,9 @@ class ArrayIO {
         actions.storageSave,
         actions.storageSaveSuccess,
         actions.storageSaveFailure,
-      ], {key, value}),
+      ], { key, value }),
     );
-  }
+  };
 }
 
 
@@ -182,7 +182,7 @@ export class Chat {
   }
 
   async sendMessageBroadcast(message: string) {
-    console.log('sendMessageBroadcast', message, this.topic)
+    console.log('sendMessageBroadcast', message, this.topic);
     return this.handleUIDAction(this.uid, {
       onStart: actions.ipfsRoomSendMessageBroadcast(message, this.topic),
       successType: constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST_SUCCESS,

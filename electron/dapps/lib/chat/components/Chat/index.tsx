@@ -30,48 +30,56 @@ class Chat extends React.Component<any, any> {
       chat: null,
       myId: null,
       messages: [],
-      fetching: true,
+      isChatCreating: true,
+      chatCreateSuccess: null,
+      chatCreateFailure: null,
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { selectedRoom } = this.props;
 
-    const chat = new ArrayChat();
-    chat.subscribe(selectedRoom, {
-      onSubscribe: (peerId) => {
-        console.log('myid', peerId);
-        this.setState({
-          myId: peerId,
-          fetching: false,
-        });
-      },
-      onMessage: (message) => {
-        this.setState({
-          messages: [
-            ...this.state.messages,
-            this.formatMessage(message)
-          ]
-        });
-      },
-      onLeft: (peer) => {
-        this.setState({
-          messages: [
-            ...this.state.messages,
-            this.formatMessage({ from: peer, data: ON_LEFT_USER_MESSAGE })
-          ]
-        });
-      },
-      onJoined: (peer) => {
-        this.setState({
-          messages: [
-            ...this.state.messages,
-            this.formatMessage({ from: peer, data: ON_JOIN_USER_MESSAGE })
-          ]
-        });
-      },
-    });
-    this.setState({ chat });
+    try {
+      const chat = new ArrayChat();
+      this.setState({ chat });
+      await chat.subscribe(selectedRoom, {
+        onSubscribe: (peerId) => {
+          console.log('myid', peerId);
+          this.setState({
+            myId: peerId,
+            isChatCreating: false,
+            chatCreateSuccess: true,
+          });
+        },
+        onMessage: (message) => {
+          this.setState({
+            messages: [
+              ...this.state.messages,
+              this.formatMessage(message)
+            ]
+          });
+        },
+        onLeft: (peer) => {
+          this.setState({
+            messages: [
+              ...this.state.messages,
+              this.formatMessage({ from: peer, data: ON_LEFT_USER_MESSAGE })
+            ]
+          });
+        },
+        onJoined: (peer) => {
+          this.setState({
+            messages: [
+              ...this.state.messages,
+              this.formatMessage({ from: peer, data: ON_JOIN_USER_MESSAGE })
+            ]
+          });
+        },
+      })
+    } catch (error) {
+      console.log(error)
+      this.setState({ chatCreateFailure: error && error.message, isChatCreating: false });
+    }
   }
 
   formatMessage(message: { from: string, data: Buffer | string }) {
@@ -111,12 +119,6 @@ class Chat extends React.Component<any, any> {
         {!selfMessage && <div className="messageBlockFrom">{msg.from}</div>}
         <div className="messageBlockContent">{msg.message}</div>
       </div>
-    );
-  }
-
-  renderLoading() {
-    return (
-      <div className="chatLoadingBlock">Connecting...</div>
     );
   }
 
@@ -172,16 +174,37 @@ class Chat extends React.Component<any, any> {
     );
   }
 
+  renderLoading() {
+    return (
+      <div className="chatWrapper">
+        <div className="chatLoadingBlock">Opening chat room...</div>
+      </div>
+    );
+  }
+
+  renderError() {
+    const { chatCreateFailure } = this.state;
+
+    return (
+      <div className="chatWrapper">
+        <div className="chatError">
+          <div className="chatErrorTitle">Open chat room error:</div>
+          <div>{chatCreateFailure}</div>
+        </div>
+      </div>
+    );
+  }
+
   render() {
     const { handleSubmit, selectedRoom } = this.props;
-    const { messages, fetching } = this.state;
+    const { messages, isChatCreating, chatCreateSuccess, chatCreateFailure } = this.state;
 
-    if (fetching) {
-      return (
-        <div className="chatWrapper">
-          {this.renderLoading()}
-        </div>
-      );
+    if (isChatCreating) {
+      return this.renderLoading();
+    }
+
+    if (chatCreateFailure) {
+      return this.renderError();
     }
 
     return (
