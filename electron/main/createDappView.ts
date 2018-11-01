@@ -3,10 +3,11 @@ import * as path from 'path';
 import * as url from 'url';
 import * as uuidv4 from 'uuid/v4';
 import { AppItem } from './helpers/AppsManager';
+import { DAPPS_PATH } from './helpers/constants/appPaths';
 
 let dappView: Electron.BrowserView = null;
 
-const DAPPS_PATH: string = path.join(__dirname, '..', '..', 'dapps', 'download');
+// const DAPPS_PATH: string = path.join(__dirname, '..', '..', 'dapps', 'download');
 
 export type ChannelsConf = string[];
 export type BindedConf = Map<string, ChannelsConf>;

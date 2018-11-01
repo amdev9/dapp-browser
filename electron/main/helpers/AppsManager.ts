@@ -2,6 +2,8 @@ import * as Bluebird from 'bluebird';
 import * as path from 'path';
 import * as fs from 'fs';
 
+import { DAPPS_PATH } from './constants/appPaths';
+// const DAPPS_PATH: string = path.join(__dirname, '..', '..', 'dapps', 'download');
 // Bluebird as global Promise
 declare global {
   export interface Promise<T> extends Bluebird<T> { }
@@ -11,8 +13,6 @@ declare global {
 }
 
 declare const Promise: any;
-
-const DAPPS_PATH: string = path.join(__dirname, '..', '..', 'dapps', 'download');
 
 async function readDir(path: string) {
   return new Promise((res: any, rej: any) => {
@@ -73,6 +73,7 @@ export class AppsManager {
   static async parseDapps() {
     try {
       const dappsFolders: string[] = await readDir(DAPPS_PATH);
+      console.log('PATH', DAPPS_PATH)
 
       const promises = dappsFolders.map(folder => this.parseDapp(folder)); // @todo rewrite with async lib
       await Promise.all(promises);

@@ -4,11 +4,10 @@ import * as url from 'url';
 import * as uuidv4 from 'uuid/v4';
 import { openDevTool } from './helpers/devtools';
 import { RendererConf } from './createDappView';
-
-const isProduction = process.env.ELECTRON_ENV !== 'development';
+import { PERMISSION_PATH } from './helpers/constants/appPaths';
 
 let permissionWindow: Electron.BrowserWindow = null;
-const PATH: string = path.join(__dirname, '..', '..', 'permissionManager');
+// const PATH: string = path.join(__dirname, 'permissionManager');
 
 export function createPermissionWindow(globalUUIDList: RendererConf[], mainWindow: Electron.BrowserWindow, appName: string, permissions: string[]) {
   const uuid = uuidv4();
@@ -43,7 +42,7 @@ export function createPermissionWindow(globalUUIDList: RendererConf[], mainWindo
   });
   permissionWindow.setMenu(null);
 
-  const permissionWPath = path.join(PATH, 'index.html');
+  const permissionWPath = path.join(PERMISSION_PATH, 'index.html');
   const permissionWPathUrl = url.format({
     protocol: 'file',
     hostname: permissionWPath,

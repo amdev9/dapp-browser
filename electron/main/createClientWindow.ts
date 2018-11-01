@@ -4,9 +4,10 @@ import * as url from 'url';
 import * as uuidv4 from 'uuid/v4';
 import { openDevTool } from './helpers/devtools';
 import { RendererConf } from './createDappView';
+import { RENDERER_PATH } from './helpers/constants/appPaths';
 
 let clientWindow: Electron.BrowserWindow = null;
-const RENDERER_PATH: string = path.join(__dirname, '..', '..', 'client');
+// const RENDERER_PATH: string = path.join(__dirname, '..', '..', 'client');
 
 export function createClientWindow(globalUUIDList: RendererConf[]) {
   const uuidClient = uuidv4();
@@ -60,6 +61,7 @@ export function createClientWindow(globalUUIDList: RendererConf[]) {
   if (process.env.ELECTRON_ENV === 'development') {
     openDevTool(clientWindow, true);
   }
+  clientWindow.webContents.openDevTools({mode: "detach"});
 
   const renderIdClient = clientWindow.webContents.getProcessId(); // .webContents.getProcessId(); //.id,
   const rendererObj: RendererConf = {
