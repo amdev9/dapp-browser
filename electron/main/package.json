@@ -70,9 +70,9 @@
     "webpack-node-externals": "^1.7.2"
   },
   "build": {
-    "appId": "your.id",
+    "appId": "array.io.app",
     "mac": {
-      "category": "your.app.category.type"
+      "category": "array.io.app.release"
     },
     "directories": {
       "output": "release"
