@@ -22,6 +22,8 @@ const mapDispatchToProps = (dispatch: any) => ({
 });
 
 class Chat extends React.Component<any, any> {
+  chatWindowEnd: any;
+  messageInput: any;
 
   constructor(props: any) {
     super(props);
@@ -38,6 +40,8 @@ class Chat extends React.Component<any, any> {
 
   async componentDidMount() {
     const { selectedRoom } = this.props;
+
+    this.focus();
 
     try {
       const chat = new ArrayChat();
@@ -57,6 +61,8 @@ class Chat extends React.Component<any, any> {
               ...this.state.messages,
               this.formatMessage(message)
             ]
+          }, () => {
+            this.scrollToBottom();
           });
         },
         onLeft: (peer) => {
@@ -65,6 +71,8 @@ class Chat extends React.Component<any, any> {
               ...this.state.messages,
               this.formatMessage({ from: peer, data: ON_LEFT_USER_MESSAGE })
             ]
+          }, () => {
+            this.scrollToBottom();
           });
         },
         onJoined: (peer) => {
@@ -73,11 +81,13 @@ class Chat extends React.Component<any, any> {
               ...this.state.messages,
               this.formatMessage({ from: peer, data: ON_JOIN_USER_MESSAGE })
             ]
+          }, () => {
+            this.scrollToBottom();
           });
         },
-      })
+      });
     } catch (error) {
-      console.log(error)
+      console.log(error);
       this.setState({ chatCreateFailure: error && error.message, isChatCreating: false });
     }
   }
@@ -104,6 +114,22 @@ class Chat extends React.Component<any, any> {
     if (chat && values.message) {
       chat.sendMessageBroadcast(values.message);
       reset && reset();
+    }
+
+    this.focus();
+  }
+
+  scrollToBottom() {
+    console.log('scroll');
+    if (this.chatWindowEnd) {
+      this.chatWindowEnd.scrollIntoView({ behavior: 'smooth' });
+      // // console.log('scroll ok');
+      // console.log('scrrrrr', this.chatWindowEnd)
+      // const scrollHeight = this.chatWindowEnd.scrollHeight;
+      // const height = this.chatWindowEnd.clientHeight;
+      // const maxScrollTop = scrollHeight - height;
+      // this.chatWindowEnd.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
+
     }
   }
 
@@ -145,6 +171,7 @@ class Chat extends React.Component<any, any> {
     return (
       <div className="chatWindow">
         {messages && messages.map((msg: any, i: number) => this.renderMessageBlock(msg, i))}
+        <div ref={(ref) => { this.chatWindowEnd = ref; }}></div>
       </div>
     );
   }
@@ -154,15 +181,21 @@ class Chat extends React.Component<any, any> {
 
     return (
       <form
-        onSubmit={handleSubmit(this.handleSubmit.bind(this))}
+        onBlur={(e) => console.log('FORM BLUR')}
+        onSubmit={(...params) => {
+          params[0] && params[0].preventDefault()
+          return handleSubmit(this.handleSubmit.bind(this))(...params)
+        }}
         className="chatControls"
       >
         <Field
           name="message"
           type="text"
+          ref="messageInput"
           className="chatControlsInput"
           component="input"
           placeholder="Enter message..."
+          autoFocus
         />
         <button
           className="chatControlsSubmit"
@@ -172,6 +205,12 @@ class Chat extends React.Component<any, any> {
         </button>
       </form>
     );
+  }
+
+  focus() {
+    if (this.messageInput) {
+      this.messageInput.focus();
+    }
   }
 
   renderLoading() {

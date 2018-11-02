@@ -19,13 +19,13 @@ export const ipfsRoomSendMessageBroadcast = (messageId: string, message: string 
   action(constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST, { messageId, message, roomName }, { targetUUID })
 
 export const ipfsRoomSendMessageBroadcastSuccess = (messageId: string, targetUUID: string) =>
-  action(constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST_SUCCESS, { messageId }, { targetUUID })
+  action(constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST_SUCCESS, { messageId }, {  targetUUID, uid: messageId })
 
 export const ipfsRoomSendMessageBroadcastFailure = (error: string, messageId: string, targetUUID: string) =>
   action(constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST_FAILURE, { error, messageId }, { targetUUID })
 
 export const ipfsRoomSendMessageToPeer = (messageId: string, message: string | Buffer, roomName: string, peer: string, targetUUID: string) =>
-  action(constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER, { message, messageId, roomName, peer }, { targetUUID })
+  action(constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER, { message, messageId, roomName, peer }, { targetUUID, uid: messageId })
 
 export const ipfsRoomSendMessageToPeerSuccess = (messageId: string, targetUUID: string) =>
   action(constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER_SUCCESS, { messageId })

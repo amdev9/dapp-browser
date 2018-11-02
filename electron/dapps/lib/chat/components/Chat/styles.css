@@ -21,6 +21,7 @@
 
 .chatWindow {
     flex: 1;
+    overflow-y: scroll;
 }
 .chatControls {
     height: 100px;

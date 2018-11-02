@@ -13,7 +13,7 @@
     "build-main": "cd electron/main && npm i && npm run build",
     "build-permission": "cd electron/permissionManager && npm i && npm run build",
     "build-combine": "npm i && npm run build-client && npm run build-main && npm run build-permission && npm run build-dapps",
-    "build": "npm run clean && npm run build-combine && electron-packager . --overwrite --out ./release --prune=true",
+    "build": "npm run clean && npm run build-combine && cd electron/main && npm run dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "cypherpunk99",
