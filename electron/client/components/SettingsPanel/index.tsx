@@ -1,5 +1,6 @@
 import * as React from "react"
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import { PermissionsTab } from './PermissionsTab';
 
 interface SettingsPanelProps {
   items?: { [index: string]: SettingsPanelProps; },
@@ -41,6 +42,7 @@ export class SettingsPanel extends React.Component<SettingsPanelProps, SettingsP
             <Tab>Access</Tab>
             <Tab>Network</Tab>
             <Tab>Dev Mode</Tab>
+            <Tab>Permissions</Tab>
           </TabList>
           <TabPanel>
             <form className="form-settings">
@@ -260,6 +262,9 @@ export class SettingsPanel extends React.Component<SettingsPanelProps, SettingsP
                 </div>
               </div>
             </form>
+          </TabPanel>
+          <TabPanel>
+            <PermissionsTab />
           </TabPanel>
         </Tabs>
       </div>
