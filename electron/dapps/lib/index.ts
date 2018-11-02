@@ -190,7 +190,7 @@ export class Chat {
   async sendMessageBroadcast(message: string) {
     const messageId = uuidv4();
     return this.actionPromise(messageId, {
-      onStart: actions.ipfsRoomSendMessageBroadcast(message, messageId, this.topic),
+      onStart: actions.ipfsRoomSendMessageBroadcast(message, this.topic, messageId),
       successType: constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST_SUCCESS,
       failureType: constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST_FAILURE,
     });
@@ -200,7 +200,7 @@ export class Chat {
   async sendMessageTo(message: string, peer: string) {
     const messageId = uuidv4();
     return this.actionPromise(messageId, {
-      onStart: actions.ipfsRoomSendMessageToPeer(message, messageId, this.topic, peer),
+      onStart: actions.ipfsRoomSendMessageToPeer(message, this.topic, peer, messageId),
       successType: constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER_SUCCESS,
       failureType: constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER_FAILURE,
     });
