@@ -114,7 +114,12 @@ class App extends React.Component<AppProps> {
           {(() => {
             switch (locationPath) {
               case ROUTES.SETTINGS:
-                return <SettingsPanel togglePermission={togglePermission} grantPermissions={grantPermissions} permissions={permissions} /*isOpen={openSettingsPanel}*/ />;
+                return <SettingsPanel
+                        togglePermission={togglePermission}
+                        grantPermissions={grantPermissions}
+                        permissions={permissions}
+                        feedItems={feedItems}
+                      />;
 
               default:
                 return <AppsFeed items={feedItems} toggleAppHome={onToggleAppHome} /*settingsPanelIsOpen={openSettingsPanel}*/ downloadDapp={downloadDapp}/>;
