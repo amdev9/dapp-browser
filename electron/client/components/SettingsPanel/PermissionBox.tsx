@@ -1,27 +1,19 @@
 import * as React from 'react';
+import { Permission, PermissionsPanel } from '../../redux/reducers/state';
 
 interface PermissionBoxProps {
-  item: string;
+  item: Permission;
   appName: string;
   onTogglePerm: (permissionName: string, checked: boolean, appName: string) => void;
+  permissions: PermissionsPanel;
 }
 
 // @todo read data & assets from AppsManager for icons preview
-export class PermissionBox extends React.Component<PermissionBoxProps, { checked?: boolean }> {
-  constructor(props: PermissionBoxProps) {
-    super(props);
-    this.state = {
-      checked: false,
-    };
-    this.handleInputChange = this.handleInputChange.bind(this);
-  }
-
-  handleInputChange() {
-    this.props.onTogglePerm(this.props.item, !this.state.checked, this.props.appName);
-    this.setState({ checked: !this.state.checked });
-  }
+export class PermissionBox extends React.Component<PermissionBoxProps> {
 
   public render() {
+    const appPermissions = this.props.permissions.permissions[this.props.appName];
+    const checked = appPermissions && appPermissions.includes(this.props.item);
     const checkboxId = `input_${this.props.appName}_${this.props.item}`;
     return (
       <div className="form-group">
@@ -30,9 +22,9 @@ export class PermissionBox extends React.Component<PermissionBoxProps, { checked
             type="checkbox"
             id={ checkboxId }
             name={ this.props.item }
-            checked={ this.state.checked }
+            checked={ checked }
             className="custom-control-input"
-            onChange={ this.handleInputChange }
+            onChange={ () => this.props.onTogglePerm(this.props.item, !checked, this.props.appName) }
           />
           <label htmlFor={ checkboxId } className="custom-control-label">{this.props.item}</label>
         </div>

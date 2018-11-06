@@ -47,8 +47,7 @@ export interface SearchPanel {
 }
 
 export interface PermissionsPanel {
-  items: Permission[];
-  grantedApps: string[];
+  permissions: {[index: string]: Permission[]};
 }
 
 export interface IState {

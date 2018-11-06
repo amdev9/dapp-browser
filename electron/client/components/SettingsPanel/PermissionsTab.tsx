@@ -14,7 +14,7 @@ export class PermissionsTab extends React.Component<PermissionsTabProps> {
 
   public render() {
     const appCardsList: JSX.Element[] = this.props.feedItems.map((item): JSX.Element => (
-      <AppPermissions key={`feedItem_${item.appName}`} feedItem={item} onTogglePerm={this.props.togglePermission} />
+      <AppPermissions key={`feedItem_${item.appName}`} feedItem={item} onTogglePerm={this.props.togglePermission} permissions={this.props.permissions}/>
     ));
 
     return (
