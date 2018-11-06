@@ -4,12 +4,11 @@
   "description": "",
   "main": "./dist/main.js",
   "scripts": {
-    "postinstall": "install-app-deps",
     "webpack": "webpack --watch",
     "build": "webpack --config webpack.config.build.js",
     "rebuild": "electron-rebuild -f -w sqlite3",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder .",
+    "pack": "install-app-deps && electron-builder --dir",
+    "dist": "install-app-deps && electron-builder .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

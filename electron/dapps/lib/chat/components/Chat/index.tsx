@@ -63,6 +63,7 @@ class Chat extends React.Component<any, any> {
             ]
           }, () => {
             this.scrollToBottom();
+            this.focus();
           });
         },
         onLeft: (peer) => {
@@ -73,6 +74,7 @@ class Chat extends React.Component<any, any> {
             ]
           }, () => {
             this.scrollToBottom();
+            this.focus();
           });
         },
         onJoined: (peer) => {
@@ -83,6 +85,7 @@ class Chat extends React.Component<any, any> {
             ]
           }, () => {
             this.scrollToBottom();
+            this.focus();
           });
         },
       });
@@ -119,16 +122,8 @@ class Chat extends React.Component<any, any> {
   }
 
   scrollToBottom() {
-    console.log('scroll');
     if (this.chatWindowEnd) {
       this.chatWindowEnd.scrollIntoView({ behavior: 'smooth' });
-      // // console.log('scroll ok');
-      // console.log('scrrrrr', this.chatWindowEnd)
-      // const scrollHeight = this.chatWindowEnd.scrollHeight;
-      // const height = this.chatWindowEnd.clientHeight;
-      // const maxScrollTop = scrollHeight - height;
-      // this.chatWindowEnd.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
-
     }
   }
 
@@ -170,7 +165,9 @@ class Chat extends React.Component<any, any> {
     return (
       <div className="chatWindow">
         {messages && messages.map((msg: any, i: number) => this.renderMessageBlock(msg, i))}
-        <div ref={(ref) => { this.chatWindowEnd = ref; }}></div>
+        <div ref={(ref) => {
+          this.chatWindowEnd = ref;
+        }}></div>
       </div>
     );
   }
@@ -180,21 +177,20 @@ class Chat extends React.Component<any, any> {
 
     return (
       <form
-        onBlur={(e) => console.log('FORM BLUR')}
-        onSubmit={(...params) => {
-          params[0] && params[0].preventDefault()
-          return handleSubmit(this.handleSubmit.bind(this))(...params)
-        }}
+        onSubmit={handleSubmit(this.handleSubmit.bind(this))}
         className="chatControls"
       >
         <Field
           name="message"
           type="text"
-          ref="messageInput"
+          ref={(ref: any) => {
+            this.messageInput = ref;
+          }}
           className="chatControlsInput"
           component="input"
           placeholder="Enter message..."
           autoFocus
+          withRef
         />
         <button
           className="chatControlsSubmit"
@@ -207,8 +203,9 @@ class Chat extends React.Component<any, any> {
   }
 
   focus() {
-    if (this.messageInput) {
-      this.messageInput.focus();
+    console.log('rerere', this.messageInput)
+    if (this.messageInput && this.messageInput.getRenderedComponent) {
+      this.messageInput.getRenderedComponent().focus();
     }
   }
 
