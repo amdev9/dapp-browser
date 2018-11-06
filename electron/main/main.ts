@@ -28,13 +28,13 @@ require('electron-context-menu')({
     // Only show it when right-clicking images
     // visible: params.mediaType === 'image'
   },
-    {
-      label: 'Close app',
+  {
+    label: 'Close app',
       // visible: params.mediaType === 'image'
-      click: (e: any) => {
-        store.dispatch({ type: 'REMOVE_TRAY_ITEM', payload: { targetDappName: 'Game' } }); // todo how to determine app name where the click has been made?
-      },
-    }],
+    click: (e: any) => {
+      store.dispatch({ type: 'REMOVE_TRAY_ITEM', payload: { targetDappName: 'Game' } }); // todo how to determine app name where the click has been made?
+    },
+  }],
 });
 
 let template: any[] = [];
@@ -64,7 +64,7 @@ if (process.platform === 'darwin') {
           { label: 'Copy', accelerator: 'CmdOrCtrl+C', selector: 'copy:' },
           { label: 'Paste', accelerator: 'CmdOrCtrl+V', selector: 'paste:' },
           { label: 'Select All', accelerator: 'CmdOrCtrl+A', selector: 'selectAll:' },
-        ]
+        ],
       },
     ],
   });
@@ -103,13 +103,18 @@ app.on('window-all-closed', () => {
   try {
     networkAPI.removeAllSubscribers();
   } catch (error) {
-    console.log(error)
+    console.log(error);
     dialog.showMessageBox(clientWindow, {
       type: 'warning',
       title: 'Warning',
       message: 'NetworkAPI problems',
     });
   }
+});
+
+// Mac OS X sends url to open via this event
+app.on('open-url', (e, url) => {
+  console.log('open-url', url);
 });
 
 app.on('ready', async () => {
@@ -162,7 +167,7 @@ app.on('ready', async () => {
     networkAPI = new NetworkAPI(store);
     networkAPI.init();
   } catch (error) {
-    console.log(error)
+    console.log(error);
     dialog.showMessageBox(clientWindow, {
       type: 'warning',
       title: 'Warning',
