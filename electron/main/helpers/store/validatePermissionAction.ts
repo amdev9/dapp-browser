@@ -95,6 +95,8 @@ const clientActions: string[] = [
   constants.SET_TRAY_PROGRESS,
   constants.REMOVE_TRAY_ITEM,
   constants.MARKET_DOWNLOAD_DAPP,
+  constants.TOGGLE_PERMISSION,
+  constants.GRANT_PERMISSIONS,
 ];
 
 const fileManagerActions: string[] = [

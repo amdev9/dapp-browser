@@ -1,15 +1,22 @@
-import * as React from "react"
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import * as React from 'react';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import { PermissionsTab } from './PermissionsTab';
+import { Permission, PermissionsPanel } from '../../redux/reducers/state';
+import { DApp } from '../../redux/model';
 
 interface SettingsPanelProps {
-  items?: { [index: string]: SettingsPanelProps; },
-  //isOpen?: boolean,
-  toggleStatusBar?: () => void,
-  peersBarIsOpen?: boolean
+  items?: { [index: string]: SettingsPanelProps; };
+  // isOpen?: boolean;
+  toggleStatusBar?: () => void;
+  peersBarIsOpen?: boolean;
+  togglePermission: (permissionName: Permission, checked: boolean, appName: string) => void;
+  grantPermissions: (appName: string) => void;
+  permissions: PermissionsPanel;
+  feedItems: DApp[];
 }
 
 interface SettingsPanelState {
-  activeTab: string
+  activeTab: string;
 }
 
 export class SettingsPanel extends React.Component<SettingsPanelProps, SettingsPanelState> {
@@ -17,7 +24,7 @@ export class SettingsPanel extends React.Component<SettingsPanelProps, SettingsP
     super(props);
 
     this.switchTab = this.switchTab.bind(this);
-    this.state = { activeTab: 'general' } //@todo fix it to have a global state, dispatch action when switch tabs
+    this.state = { activeTab: 'general' }; // @todo fix it to have a global state, dispatch action when switch tabs
   }
 
   private switchTab(tabName: string): void {
@@ -41,6 +48,7 @@ export class SettingsPanel extends React.Component<SettingsPanelProps, SettingsP
             <Tab>Access</Tab>
             <Tab>Network</Tab>
             <Tab>Dev Mode</Tab>
+            <Tab>Permissions</Tab>
           </TabList>
           <TabPanel>
             <form className="form-settings">
@@ -261,8 +269,16 @@ export class SettingsPanel extends React.Component<SettingsPanelProps, SettingsP
               </div>
             </form>
           </TabPanel>
+          <TabPanel>
+            <PermissionsTab
+              togglePermission={this.props.togglePermission}
+              grantPermissions={this.props.grantPermissions}
+              permissions={this.props.permissions}
+              feedItems={this.props.feedItems}
+            />
+          </TabPanel>
         </Tabs>
       </div>
-    )
+    );
   }
 }

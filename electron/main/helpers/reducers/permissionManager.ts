@@ -5,6 +5,7 @@ import {
   GRANT_PERMISSIONS,
   LOAD_PERMISSIONS,
 } from '../constants';
+import { togglePermissions } from './common';
 
 interface PermissionAction extends Action {
   payload: {
@@ -23,21 +24,7 @@ interface PermissionsState {
 export function permissionManager(state: PermissionsState = null, action: PermissionAction) {
   switch (action.type) {
     case TOGGLE_PERMISSION: {
-      const appName = action.payload.appName;
-      const permissionName = action.payload.permissionName;
-      const checked = action.payload.checked;
-      let appPermissions = state.permissions[appName];
-      if (!appPermissions) {
-        appPermissions = [];
-      }
-      const permissions = { ...state.permissions };
-      if (checked) {
-        if (appPermissions.indexOf(permissionName) === -1) {
-          permissions[appName] = [...appPermissions, permissionName];
-        }
-      } else {
-        permissions[appName] = appPermissions.filter(item => item !== permissionName);
-      }
+      const permissions = togglePermissions(action, state.permissions);
       return { ...state, permissions };
     }
     case CLOSE_MANAGER:

@@ -28,7 +28,6 @@
     "ipfs": "0.33.0-rc.3",
     "ipfs-pubsub-room": "^1.4.0",
     "node-abi": "^2.4.5",
-    "node-gyp": "^3.8.0",
     "npm": "^6.2.0",
     "orbit-db": "^0.19.9",
     "react": "^16.4.1",
@@ -75,6 +74,15 @@
     "mac": {
       "category": "array.io.app.release"
     },
+    "protocols": [
+      {
+        "name": "arr",
+        "role": "Viewer",
+        "schemes": [
+          "arr"
+        ]
+      }
+    ],
     "buildDependenciesFromSource": true,
     "nodeGypRebuild": false,
     "npmRebuild": false,

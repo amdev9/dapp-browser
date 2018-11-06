@@ -1,4 +1,4 @@
-import { BrowserWindow } from 'electron';
+import { BrowserWindow, protocol } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 import * as uuidv4 from 'uuid/v4';
@@ -35,6 +35,27 @@ export function createClientWindow(globalUUIDList: RendererConf[]) {
     height: 800,
     webPreferences: webPrefObj,
   });
+
+  clientWindow.once('show', () => {
+    console.log('show event'); // @todo https://stackoverflow.com/questions/42292608/electron-loading-animation
+  });
+
+  // This application opens links that start with this protocol
+  const PROTOCOL = 'arr://';
+  const PROTOCOL_PREFIX = PROTOCOL.split(':')[0];
+
+  protocol.registerHttpProtocol(PROTOCOL_PREFIX, (req, cb) => {
+    const url = req.url;
+    console.log(url);
+  }, (err) => {
+    if (!err) {
+      console.log('registered arr protocol');
+    } else {
+      console.error('could not register arr protocol');
+      console.error(err);
+    }
+  });
+
   const clientPath = path.join(RENDERER_PATH, 'index.html');
   const clientPathUrl = url.format({
     protocol: 'file',
