@@ -35,6 +35,10 @@ export function createClientWindow(globalUUIDList: RendererConf[]) {
     webPreferences: webPrefObj,
   });
 
+  clientWindow.once('show', () => {
+    console.log('show event'); // @todo https://stackoverflow.com/questions/42292608/electron-loading-animation
+  });
+
   // This application opens links that start with this protocol
   const PROTOCOL = 'arr://';
   const PROTOCOL_PREFIX = PROTOCOL.split(':')[0];
