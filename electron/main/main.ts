@@ -30,7 +30,7 @@ require('electron-context-menu')({
   },
   {
     label: 'Close app',
-    // visible: params.mediaType === 'image'
+      // visible: params.mediaType === 'image'
     click: (e: any) => {
       store.dispatch({ type: 'REMOVE_TRAY_ITEM', payload: { targetDappName: 'Game' } }); // todo how to determine app name where the click has been made?
     },
@@ -110,6 +110,11 @@ app.on('window-all-closed', () => {
       message: 'NetworkAPI problems',
     });
   }
+});
+
+// Mac OS X sends url to open via this event
+app.on('open-url', (e, url) => {
+  console.log('open-url', url);
 });
 
 app.on('ready', async () => {
