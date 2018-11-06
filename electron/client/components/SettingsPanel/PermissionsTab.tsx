@@ -11,8 +11,6 @@ interface PermissionsTabProps {
 export class PermissionsTab extends React.Component<PermissionsTabProps> {
 
   public render() {
-    console.log('Permissions: ', this.props.permissions);
-
     return (
       <div>
         <h4>Game</h4>
@@ -20,23 +18,9 @@ export class PermissionsTab extends React.Component<PermissionsTabProps> {
         <PermissionBox item={'storage'} appName={'Game'}  onTogglePerm={this.props.togglePermission} />
 
         <h4>Google</h4>
-        <form className="form-settings">
-          <div className="form-group">
-            <div className="custom-control custom-checkbox">
-              <input type="checkbox" id="input-proxy-1" defaultChecked={true} className="custom-control-input" />
-              <label htmlFor="input-proxy-1" className="custom-control-label">Test 1</label>
-            </div>
-          </div>
-          <div className="form-group">
-            <div className="custom-control custom-checkbox">
-              <input type="checkbox" id="input-proxy-2" defaultChecked={true} className="custom-control-input" />
-              <label htmlFor="input-proxy-2" className="custom-control-label">Test 2</label>
-            </div>
-          </div>
-          <div className="form-group text-left">
-            <button type="submit" className="btn btn-primary btn-lg">Save</button>
-          </div>
-        </form>
+        <PermissionBox item={'ipfs'} appName={'Google'}  onTogglePerm={this.props.togglePermission} />
+        <PermissionBox item={'storage'} appName={'Google'}  onTogglePerm={this.props.togglePermission} />
+        <PermissionBox item={'network'} appName={'Google'}  onTogglePerm={this.props.togglePermission} />
       </div>
     );
   }

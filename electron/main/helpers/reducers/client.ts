@@ -2,7 +2,6 @@ import { ActionType } from 'typesafe-actions';
 import * as constants from '../constants';
 import * as clientActions from '../actions/client';
 import { Client } from './state';
-import { togglePermissions } from './common';
 
 export type ClientAction = ActionType<typeof clientActions>;
 
@@ -92,16 +91,6 @@ export function client(state: Client = initialState, action: any) { // @todo ref
 
     case constants.APPS_FEED_RESIZE:
       return { ...state, window: action.payload };
-
-    case constants.TOGGLE_PERMISSION: {
-      if (!state.permissions) {
-        return { ...state };
-      }
-      const statePermissions = state.permissions.permissions;
-      const permissions = togglePermissions(action, statePermissions);
-
-      return { ...state, permissions: { ...state.permissions, permissions } };
-    }
 
     default:
       return state;

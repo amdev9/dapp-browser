@@ -8,6 +8,7 @@ import tray from './tray';
 import feed from './feed';
 import search from './search';
 import settings from './settings';
+import permissions from './permissions';
 
 import { IState } from './state';
 
@@ -19,6 +20,7 @@ const rootReducer = combineReducers<IState>({
   feed,
   search,
   settings,
+  permissions,
 });
 
 export default rootReducer;
