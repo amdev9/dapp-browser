@@ -42,6 +42,7 @@ export const initialState: IState = {
     search: { isOpen: false },
     window: { width: 0, height: 0 },
     fileDialog: { isOpen: false },
+    permissions: { permissions: {} },
   },
   feed: {},
   permissionManager: { isOpen: true, permissions: {}, grantedApps: [] },

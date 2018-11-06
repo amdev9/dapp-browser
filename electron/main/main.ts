@@ -183,6 +183,9 @@ app.on('ready', async () => {
     if (storeState.client.isHome) {
       clientWindow.setBrowserView(null);
     } else {
+      if (!storeState.client.activeDapp) { // this happends when Settings panel opens from Home screen
+        return;
+      }
       const activeDappName: string = storeState.client.activeDapp.appName;
 
       const targetDappObj: AppItem = AppsManager.dapps.find(dappObj => dappObj.appName === activeDappName);

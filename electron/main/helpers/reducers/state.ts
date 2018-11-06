@@ -28,6 +28,9 @@ export type Client = {
   fileDialog: {
     isOpen: boolean,
   },
+  permissions: {
+    permissions: {[index:string]: Permission[]},
+  },
 };
 
 // @todo refactor

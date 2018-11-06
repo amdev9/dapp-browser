@@ -1,3 +1,4 @@
+import { Permission } from '../reducers/state';
 
 export type DApp = {
   // Dapp name
@@ -7,5 +8,8 @@ export type DApp = {
   // icon (eg for tray)
   icon: string
   // Categories
-  categories: string[]
-}
+  categories: string[],
+
+  title?: string,
+  permissions?: Permission[];
+};

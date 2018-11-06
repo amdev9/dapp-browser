@@ -1,12 +1,12 @@
 import { AppItem, NotifyItem, ActiveDapp, StatusBarItem, FeedItem, SearchItem } from '../model';
 
-// @todo 
+// @todo
 // export interface ToggleStatus {
 //   NotificationPanel isOpen
 //   LoaderPanel isOpen
 //   SettingsPanel isOpen
 //   StatusBarPanel isOpen
-//   StatusBarPanel isPeersOpen 
+//   StatusBarPanel isPeersOpen
 //   SearchPanel isOpen
 // }
 
@@ -18,32 +18,36 @@ export interface Tray {
   items: AppItem[],
   activeDapp: ActiveDapp,
   pinned: string[],
-  isHome: boolean
+  isHome: boolean;
 }
 
 export interface NotificationPanel {
   items: NotifyItem[],
-  isOpen: boolean
+  isOpen: boolean;
 }
 
 export interface LoaderPanel {
-  isOpen: boolean
+  isOpen: boolean;
 }
 
 export interface SettingsPanel {
-  isOpen: boolean
+  isOpen: boolean;
 }
 
 export interface StatusBarPanel {
   items: { [index: string]: StatusBarItem; },
   isOpen: boolean,
   isPeersOpen: boolean,
-  loggerWrite: boolean
+  loggerWrite: boolean;
 }
 
 export interface SearchPanel {
-  items: { [groupName: string]: SearchItem[]; },
-  isOpen: boolean
+  items: { [groupName: string]: SearchItem[]; };
+  isOpen: boolean;
+}
+
+export interface PermissionsPanel {
+  permissions: {[index: string]: Permission[]};
 }
 
 export interface IState {
@@ -54,4 +58,7 @@ export interface IState {
   feed: Feed;
   settings: SettingsPanel;
   search: SearchPanel;
+  permissions: PermissionsPanel;
 }
+
+export type Permission = 'ipfs' | 'network' | 'storage' | 'filesystem' | 'logger' | 'keychain';

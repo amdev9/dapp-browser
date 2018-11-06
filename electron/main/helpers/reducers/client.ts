@@ -16,6 +16,7 @@ const initialState: Client = {
   search: { isOpen: false },
   window: { width: 0, height: 0 },
   fileDialog: { isOpen: false },
+  permissions: { permissions: {} },
 };
 
 export function client(state: Client = initialState, action: any) { // @todo refactor add actions to client.ts, remove isOpen
