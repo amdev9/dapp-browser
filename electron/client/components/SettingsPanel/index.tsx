@@ -1,16 +1,19 @@
-import * as React from "react"
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import * as React from 'react';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { PermissionsTab } from './PermissionsTab';
+import { Permission } from '../../redux/reducers/state';
 
 interface SettingsPanelProps {
-  items?: { [index: string]: SettingsPanelProps; },
-  //isOpen?: boolean,
-  toggleStatusBar?: () => void,
-  peersBarIsOpen?: boolean
+  items?: { [index: string]: SettingsPanelProps; };
+  // isOpen?: boolean;
+  toggleStatusBar?: () => void;
+  peersBarIsOpen?: boolean;
+  togglePermission: (permissionName: Permission, checked: boolean, appName: string) => void;
+  grantPermissions: (appName: string) => void;
 }
 
 interface SettingsPanelState {
-  activeTab: string
+  activeTab: string;
 }
 
 export class SettingsPanel extends React.Component<SettingsPanelProps, SettingsPanelState> {
@@ -18,7 +21,7 @@ export class SettingsPanel extends React.Component<SettingsPanelProps, SettingsP
     super(props);
 
     this.switchTab = this.switchTab.bind(this);
-    this.state = { activeTab: 'general' } //@todo fix it to have a global state, dispatch action when switch tabs
+    this.state = { activeTab: 'general' }; // @todo fix it to have a global state, dispatch action when switch tabs
   }
 
   private switchTab(tabName: string): void {
@@ -264,10 +267,10 @@ export class SettingsPanel extends React.Component<SettingsPanelProps, SettingsP
             </form>
           </TabPanel>
           <TabPanel>
-            <PermissionsTab />
+            <PermissionsTab togglePermission={this.props.togglePermission} grantPermissions={this.props.grantPermissions}/>
           </TabPanel>
         </Tabs>
       </div>
-    )
+    );
   }
 }

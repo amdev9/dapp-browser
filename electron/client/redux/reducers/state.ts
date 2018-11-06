@@ -55,3 +55,5 @@ export interface IState {
   settings: SettingsPanel;
   search: SearchPanel;
 }
+
+export type Permission = 'ipfs' | 'network' | 'storage' | 'filesystem' | 'logger' | 'keychain';

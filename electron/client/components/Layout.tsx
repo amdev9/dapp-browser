@@ -6,22 +6,23 @@ import * as NotificationActions from '../redux/actions/notification';
 import * as LoaderActions from '../redux/actions/loader';
 import * as TrayActions from '../redux/actions/tray';
 import * as StatusBarActions from '../redux/actions/status-bar';
-import * as AppsFeedActions from "../redux/actions/appsFeed";
-import * as SearchActions from "../redux/actions/search";
-import * as SettingsActions from "../redux/actions/settings";
+import * as AppsFeedActions from '../redux/actions/appsFeed';
+import * as SearchActions from '../redux/actions/search';
+import * as SettingsActions from '../redux/actions/settings';
 import * as MarketActions from '../redux/actions/market';
+import * as PermissionsActions from '../redux/actions/permissions';
 
 import { AppItem, NotifyItem, StatusBarItem, FeedItem, SearchItem } from '../redux/model';
-import { HeaderBar } from './HeaderBar'
-import { NotificationPanel } from "./NotificationPanel"
-import { LoaderPanel } from './LoaderPanel'
-import { SettingsPanel } from './SettingsPanel'
-import { StatusBar } from "./StatusBar"
+import { HeaderBar } from './HeaderBar';
+import { NotificationPanel } from './NotificationPanel';
+import { LoaderPanel } from './LoaderPanel';
+import { SettingsPanel } from './SettingsPanel';
+import { StatusBar } from './StatusBar';
 import { Tray } from './Tray';
 import { AppsFeed } from './AppsFeed';
-import { IState } from '../redux/reducers/state';
+import { IState, Permission } from '../redux/reducers/state';
 
-import * as ROUTES from "../router/routes"
+import * as ROUTES from '../router/routes';
 
 interface AppProps {
   openNotificationPanel: boolean,
@@ -53,6 +54,8 @@ interface AppProps {
   isProduction: boolean,
   locationPath: string;
   downloadDapp: (ipfsHash: string) => void;
+  togglePermission: (permissionName: Permission, checked: boolean, appName: string) => void;
+  grantPermissions: (appName: string) => void;
 }
 
 class App extends React.Component<AppProps> {
@@ -67,7 +70,7 @@ class App extends React.Component<AppProps> {
       onTogglePanel, openNotificationPanel, openStatusBarPanel, openPeersBarPanel, openSettingsPanel, openSearchPanel, clearNotification, clearAllNotifications,
       onAddAppItem, onSwitchDapp, onToggleHome, statusBarToggle, peersBarToggle, onToggleAppHome, onToggleSearch, searchItems,
       trayItems, feedItems, notifyItems, statusBarItems, onToggleLoaderPanel, openLoaderPanel, onToggleSettingsPanel, locationPath, loggerWrite,
-      downloadDapp,
+      downloadDapp, togglePermission, grantPermissions,
     } = this.props;
 
     return (
@@ -110,7 +113,7 @@ class App extends React.Component<AppProps> {
           {(() => {
             switch (locationPath) {
               case ROUTES.SETTINGS:
-                return <SettingsPanel /*isOpen={openSettingsPanel}*/ />;
+                return <SettingsPanel togglePermission={togglePermission} grantPermissions={grantPermissions}/*isOpen={openSettingsPanel}*/ />;
 
               default:
                 return <AppsFeed items={feedItems} toggleAppHome={onToggleAppHome} /*settingsPanelIsOpen={openSettingsPanel}*/ downloadDapp={downloadDapp}/>;
@@ -171,6 +174,8 @@ const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
   onResizeAppsFeed: AppsFeedActions.resize,
   onToggleSearch: SearchActions.toggle,
   downloadDapp: MarketActions.downloadDapp,
+  togglePermission: PermissionsActions.togglePermission,
+  grantPermissions: PermissionsActions.grantPermissions,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

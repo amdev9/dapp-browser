@@ -8,6 +8,7 @@ import tray from './tray';
 import feed from './feed';
 import search from './search';
 import settings from './settings';
+
 import { IState } from './state';
 
 const rootReducer = combineReducers<IState>({
@@ -17,7 +18,7 @@ const rootReducer = combineReducers<IState>({
   tray,
   feed,
   search,
-  settings
+  settings,
 });
 
 export default rootReducer;
