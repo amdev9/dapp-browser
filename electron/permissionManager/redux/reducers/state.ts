@@ -1,16 +1,14 @@
 
-export type Permission = "ipfs" | "network" | "storage" | "filesystem" | "logger" | "keychain";
+export type Permission = 'ipfs' | 'network' | 'storage' | 'filesystem' | 'logger' | 'keychain';
+
 export interface PermissionManager {
-  isOpen: boolean,
-  items: Permission[],
-  grantedApps: string[]
+  isOpen: boolean;
+  items: Permission[];
+  grantedApps: string[];
 }
 export interface IState {
-  permissionManager: PermissionManager
+  permissionManager: PermissionManager;
 }
-  
-
-
 
 // import { Permission } from './model';
 // interface ComponentProps {
@@ -24,4 +22,3 @@ export interface IState {
 //   type: Permission,
 //   granted: boolean
 // }
-

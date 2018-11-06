@@ -28,13 +28,13 @@ require('electron-context-menu')({
     // Only show it when right-clicking images
     // visible: params.mediaType === 'image'
   },
-    {
-      label: 'Close app',
-      // visible: params.mediaType === 'image'
-      click: (e: any) => {
-        store.dispatch({ type: 'REMOVE_TRAY_ITEM', payload: { targetDappName: 'Game' } }); // todo how to determine app name where the click has been made?
-      },
-    }],
+  {
+    label: 'Close app',
+    // visible: params.mediaType === 'image'
+    click: (e: any) => {
+      store.dispatch({ type: 'REMOVE_TRAY_ITEM', payload: { targetDappName: 'Game' } }); // todo how to determine app name where the click has been made?
+    },
+  }],
 });
 
 let template: any[] = [];
@@ -64,7 +64,7 @@ if (process.platform === 'darwin') {
           { label: 'Copy', accelerator: 'CmdOrCtrl+C', selector: 'copy:' },
           { label: 'Paste', accelerator: 'CmdOrCtrl+V', selector: 'paste:' },
           { label: 'Select All', accelerator: 'CmdOrCtrl+A', selector: 'selectAll:' },
-        ]
+        ],
       },
     ],
   });
@@ -103,7 +103,7 @@ app.on('window-all-closed', () => {
   try {
     networkAPI.removeAllSubscribers();
   } catch (error) {
-    console.log(error)
+    console.log(error);
     dialog.showMessageBox(clientWindow, {
       type: 'warning',
       title: 'Warning',
@@ -162,7 +162,7 @@ app.on('ready', async () => {
     networkAPI = new NetworkAPI(store);
     networkAPI.init();
   } catch (error) {
-    console.log(error)
+    console.log(error);
     dialog.showMessageBox(clientWindow, {
       type: 'warning',
       title: 'Warning',
@@ -178,6 +178,9 @@ app.on('ready', async () => {
     if (storeState.client.isHome) {
       clientWindow.setBrowserView(null);
     } else {
+      if (!storeState.client.activeDapp) { // this happends when Settings panel opens from Home screen
+        return;
+      }
       const activeDappName: string = storeState.client.activeDapp.appName;
 
       const targetDappObj: AppItem = AppsManager.dapps.find(dappObj => dappObj.appName === activeDappName);

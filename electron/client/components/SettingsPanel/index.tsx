@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { PermissionsTab } from './PermissionsTab';
-import { Permission } from '../../redux/reducers/state';
+import { Permission, PermissionsPanel } from '../../redux/reducers/state';
 
 interface SettingsPanelProps {
   items?: { [index: string]: SettingsPanelProps; };
@@ -10,6 +10,7 @@ interface SettingsPanelProps {
   peersBarIsOpen?: boolean;
   togglePermission: (permissionName: Permission, checked: boolean, appName: string) => void;
   grantPermissions: (appName: string) => void;
+  permissions: PermissionsPanel;
 }
 
 interface SettingsPanelState {
@@ -267,7 +268,11 @@ export class SettingsPanel extends React.Component<SettingsPanelProps, SettingsP
             </form>
           </TabPanel>
           <TabPanel>
-            <PermissionsTab togglePermission={this.props.togglePermission} grantPermissions={this.props.grantPermissions}/>
+            <PermissionsTab
+              togglePermission={this.props.togglePermission}
+              grantPermissions={this.props.grantPermissions}
+              permissions={this.props.permissions}
+            />
           </TabPanel>
         </Tabs>
       </div>

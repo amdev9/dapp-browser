@@ -24,16 +24,18 @@ export class PermissionBox extends React.Component<PermissionBoxProps, { checked
   public render() {
     const checkboxId = `input_${this.props.appName}_${this.props.item}`;
     return (
-      <div className="custom-control custom-checkbox">
-        <input
-          type="checkbox"
-          id={ checkboxId }
-          name={ this.props.item }
-          checked={ this.state.checked }
-          className="custom-control-input"
-          onChange={ this.handleInputChange }
-        />
-        <label htmlFor={ checkboxId } className="custom-control-label">{this.props.item}</label>
+      <div className="form-group">
+        <div className="custom-control custom-checkbox">
+          <input
+            type="checkbox"
+            id={ checkboxId }
+            name={ this.props.item }
+            checked={ this.state.checked }
+            className="custom-control-input"
+            onChange={ this.handleInputChange }
+          />
+          <label htmlFor={ checkboxId } className="custom-control-label">{this.props.item}</label>
+        </div>
       </div>
     );
   }

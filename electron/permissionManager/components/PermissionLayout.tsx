@@ -2,8 +2,7 @@ import * as React from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { StateType } from 'typesafe-actions';
 
-import { PermissionAction } from '../redux/reducers';
-import rootReducer from '../redux/reducers';
+import rootReducer, { PermissionAction } from '../redux/reducers';
 
 export type RootState = StateType<typeof rootReducer>;
 export type RootAction = PermissionAction;

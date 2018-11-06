@@ -20,42 +20,43 @@ import { SettingsPanel } from './SettingsPanel';
 import { StatusBar } from './StatusBar';
 import { Tray } from './Tray';
 import { AppsFeed } from './AppsFeed';
-import { IState, Permission } from '../redux/reducers/state';
+import { IState, Permission, PermissionsPanel } from '../redux/reducers/state';
 
 import * as ROUTES from '../router/routes';
 
 interface AppProps {
-  openNotificationPanel: boolean,
-  openLoaderPanel: boolean,
-  openStatusBarPanel: boolean,
-  openPeersBarPanel: boolean,
-  openSettingsPanel: boolean,
-  openSearchPanel: boolean,
+  openNotificationPanel: boolean;
+  openLoaderPanel: boolean;
+  openStatusBarPanel: boolean;
+  openPeersBarPanel: boolean;
+  openSettingsPanel: boolean;
+  openSearchPanel: boolean;
 
-  trayItems: AppItem[],
-  feedItems: FeedItem[],
-  notifyItems: NotifyItem[],
-  searchItems: { [index: string]: SearchItem[] },
-  statusBarItems?: { [index: string]: StatusBarItem },
-  statusBarToggle: () => void,
-  peersBarToggle: () => void,
-  onToggleSettingsPanel: (openStatus?: boolean) => any,
-  onTogglePanel: (openStatus?: boolean) => any,
-  onToggleHome: (openStatus?: boolean) => any,
-  onToggleLoaderPanel: (openStatus?: boolean) => any,
-  onToggleSearch: (openStatus?: boolean) => any,
-  clearNotification: (id?: number) => void,
-  clearAllNotifications: () => void,
-  onAddAppItem: (appItem?: AppItem) => any,
-  onSwitchDapp: (targetDappName?: string) => any,
-  onToggleAppHome: (dappName: string) => any,
-  loggerWrite: boolean,
-  onResizeAppsFeed: (width: number, height: number) => any,
-  isProduction: boolean,
+  trayItems: AppItem[];
+  feedItems: FeedItem[];
+  notifyItems: NotifyItem[];
+  searchItems: { [index: string]: SearchItem[] };
+  statusBarItems?: { [index: string]: StatusBarItem };
+  statusBarToggle: () => void;
+  peersBarToggle: () => void;
+  onToggleSettingsPanel: (openStatus?: boolean) => any;
+  onTogglePanel: (openStatus?: boolean) => any;
+  onToggleHome: (openStatus?: boolean) => any;
+  onToggleLoaderPanel: (openStatus?: boolean) => any;
+  onToggleSearch: (openStatus?: boolean) => any;
+  clearNotification: (id?: number) => void;
+  clearAllNotifications: () => void;
+  onAddAppItem: (appItem?: AppItem) => any;
+  onSwitchDapp: (targetDappName?: string) => any;
+  onToggleAppHome: (dappName: string) => any;
+  loggerWrite: boolean;
+  onResizeAppsFeed: (width: number, height: number) => any;
+  isProduction: boolean;
   locationPath: string;
   downloadDapp: (ipfsHash: string) => void;
   togglePermission: (permissionName: Permission, checked: boolean, appName: string) => void;
   grantPermissions: (appName: string) => void;
+  permissions: PermissionsPanel;
 }
 
 class App extends React.Component<AppProps> {
@@ -70,7 +71,7 @@ class App extends React.Component<AppProps> {
       onTogglePanel, openNotificationPanel, openStatusBarPanel, openPeersBarPanel, openSettingsPanel, openSearchPanel, clearNotification, clearAllNotifications,
       onAddAppItem, onSwitchDapp, onToggleHome, statusBarToggle, peersBarToggle, onToggleAppHome, onToggleSearch, searchItems,
       trayItems, feedItems, notifyItems, statusBarItems, onToggleLoaderPanel, openLoaderPanel, onToggleSettingsPanel, locationPath, loggerWrite,
-      downloadDapp, togglePermission, grantPermissions,
+      downloadDapp, togglePermission, grantPermissions, permissions,
     } = this.props;
 
     return (
@@ -113,7 +114,7 @@ class App extends React.Component<AppProps> {
           {(() => {
             switch (locationPath) {
               case ROUTES.SETTINGS:
-                return <SettingsPanel togglePermission={togglePermission} grantPermissions={grantPermissions}/*isOpen={openSettingsPanel}*/ />;
+                return <SettingsPanel togglePermission={togglePermission} grantPermissions={grantPermissions} permissions={permissions} /*isOpen={openSettingsPanel}*/ />;
 
               default:
                 return <AppsFeed items={feedItems} toggleAppHome={onToggleAppHome} /*settingsPanelIsOpen={openSettingsPanel}*/ downloadDapp={downloadDapp}/>;
@@ -157,6 +158,7 @@ const mapStateToProps = (state: IState) => ({
   trayItems: state.tray.items,
   feedItems: state.feed.items,
   searchItems: state.search.items,
+  permissions: state.permissions,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
