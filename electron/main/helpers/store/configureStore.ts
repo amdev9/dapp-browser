@@ -11,7 +11,7 @@ import rootEpic from '../epics';
 import { rootReducer } from '../reducers';
 import { RendererConf } from '../../createDappView';
 import { IState } from '../reducers/state';
-// import SQLiteStorage from './persist';
+import SQLiteStorage from './persist';
 
 export interface Action {
   type: string;
@@ -212,17 +212,17 @@ export const configureStore = (state: IState = initialState, globalId?: Renderer
   const enhanced = [applyMiddleware(...middleware)];
   const enhancer: any = compose(...enhanced);
 
-  // const storeEngine = SQLiteStorage();
+  const storeEngine = SQLiteStorage();
 
-  // const persistConfig = {
-  //   key: 'root',
-  //   storage: storeEngine, // storage,
-  //   debug: true,
-  // };
-  // const pReducer = persistReducer(persistConfig, rootReducer);
+  const persistConfig = {
+    key: 'root',
+    storage: storeEngine, // storage,
+    debug: true,
+  };
+  const pReducer = persistReducer(persistConfig, rootReducer);
 
-  const store = createStore(rootReducer, <any> state, enhancer);
-  // const persistor = persistStore(store);
+  const store = createStore(pReducer, <any> state, enhancer);
+  const persistor = persistStore(store);
 
   epicMiddleware.run(rootEpic);
   replyActionMain(store, globalId);

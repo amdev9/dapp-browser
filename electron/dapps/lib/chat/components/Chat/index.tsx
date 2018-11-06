@@ -87,8 +87,7 @@ class Chat extends React.Component<any, any> {
         },
       });
     } catch (error) {
-      console.log(error);
-      this.setState({ chatCreateFailure: error && error.message, isChatCreating: false });
+      this.setState({ chatCreateFailure: error && error.message || 'Error', isChatCreating: false });
     }
   }
 

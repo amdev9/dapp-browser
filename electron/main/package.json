@@ -4,7 +4,7 @@
   "description": "",
   "main": "./dist/main.js",
   "scripts": {
-    "postinstall": "electron-builder install-app-deps",
+    "postinstall": "install-app-deps",
     "webpack": "webpack --watch",
     "build": "webpack --config webpack.config.build.js",
     "rebuild": "electron-rebuild -f -w sqlite3",
@@ -40,6 +40,7 @@
     "reflect-metadata": "^0.1.12",
     "rxjs": "^6.2.2",
     "source-map-support": "^0.5.6",
+    "sqlite3": "^4.0.3",
     "tslint": "^5.11.0",
     "typeorm": "^0.2.7",
     "typesafe-actions": "^2.0.4",
@@ -74,9 +75,13 @@
     "mac": {
       "category": "array.io.app.release"
     },
+    "buildDependenciesFromSource": true,
+    "nodeGypRebuild": false,
+    "npmRebuild": false,
     "directories": {
       "output": "release"
     },
+    "electronVersion": "3.0.6",
     "asar": false,
     "files": [
       "dist/client/**",

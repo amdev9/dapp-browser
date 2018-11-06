@@ -1,3 +1,4 @@
+import * as IPFS from 'ipfs';
 import * as Room from 'ipfs-pubsub-room';
 import * as path from 'path';
 import { getReadyIpfsInstance } from './IpfsInstance';
@@ -55,6 +56,13 @@ export default class IpfsRoom {
 
   static async create(dappUUID: string, roomName: RoomName): Promise<IpfsRoom> {
     const ipfs = await getReadyIpfsInstance({ repo: path.join(__dirname, 'ipfs-room', 'repos') });
+
+    const similarRoom = RoomMapInstance.getRoom(dappUUID, roomName);
+    
+    if (similarRoom) {
+      return similarRoom && new IpfsRoom(similarRoom, { dappUUID, roomName });
+    }
+
     const getRoomInstance = <any> Room;
     const room = getRoomInstance(ipfs, roomName);
     RoomMapInstance.addRoom(dappUUID, roomName, room);
@@ -64,6 +72,10 @@ export default class IpfsRoom {
   static get(dappUUID: string, roomName?: RoomName): IpfsRoom {
     const room = RoomMapInstance.getRoom(dappUUID, roomName);
     return room && new IpfsRoom(room, { dappUUID, roomName });
+  }
+
+  async getPeerId(): Promise<IPFS.Id> {
+    return this.room && this.room._ipfs.id();
   }
 
   subscribe(options: SubscribeOptions = {}): void {

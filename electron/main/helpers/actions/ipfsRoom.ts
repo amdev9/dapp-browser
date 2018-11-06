@@ -1,7 +1,7 @@
 import { action } from 'typesafe-actions';
 
 import * as constants from '../constants';
-import { Message } from '../IpfsRoom'
+import { Message } from '../IpfsRoom';
 
 export const ipfsRoomSubscribe = (topic: string, targetUUID: string) =>
   action(constants.IPFS_ROOM_SUBSCRIBE, { topic }, { targetUUID })
@@ -9,8 +9,8 @@ export const ipfsRoomSubscribe = (topic: string, targetUUID: string) =>
 export const ipfsRoomSubscribeSuccess = (peerId: string, topic: string, uid: string, targetUUID: string) =>
   action(constants.IPFS_ROOM_SUBSCRIBE_SUCCESS, { peerId, topic }, { uid, targetUUID })
 
-export const ipfsRoomSubscribeFailure = (error: string, targetUUID: string) =>
-  action(constants.IPFS_ROOM_SUBSCRIBE_FAILURE, { error }, { targetUUID })
+export const ipfsRoomSubscribeFailure = (error: string, targetUUID: string, uid: string) =>
+  action(constants.IPFS_ROOM_SUBSCRIBE_FAILURE, { error }, { targetUUID, uid })
 
 export const ipfsRoomSendMessageToDapp = (message: Message, roomName: string, uid: string, targetUUID: string) =>
   action(constants.IPFS_ROOM_SEND_MESSAGE_TO_DAPP, { message, roomName }, { uid, targetUUID })
@@ -47,3 +47,12 @@ export const ipfsRoomLeaveSuccess = (roomName: string, targetUUID: string) =>
 
 export const ipfsRoomLeaveFailure = (error: string, roomName: string, targetUUID: string) =>
   action(constants.IPFS_ROOM_LEAVE_FAILURE, { error, roomName }, { targetUUID })
+
+export const ipfsRoomCreate = (topic: string, sourceUUID: string, uid: string) =>
+  action(constants.IPFS_ROOM_CREATE, { topic }, { sourceUUID, uid })
+
+export const ipfsRoomCreateSuccess = (topic: string, sourceUUID: string, uid: string) =>
+  action(constants.IPFS_ROOM_CREATE_SUCCESS, { topic }, { sourceUUID, uid })
+
+export const ipfsRoomCreateFailure = (topic: string, sourceUUID: string, uid: string) =>
+  action(constants.IPFS_ROOM_CREATE_FAILURE, { topic }, { sourceUUID, uid })

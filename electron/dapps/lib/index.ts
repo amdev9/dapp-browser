@@ -152,7 +152,7 @@ export class Chat {
     const copyAction = Object.assign({}, onStart, { meta: { uid } });
 
     return new Promise((resolve, reject) => {
-      const unsubscribe = this.subscribeActions(successType, uid, (action) => {
+      const unsubscribe = this.subscribeActions([successType, failureType], uid, (action) => {
         unsubscribe && unsubscribe();
         if (action.type === successType) {
           resolve(action);
