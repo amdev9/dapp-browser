@@ -1,5 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
+var WebpackShellPlugin = require('webpack-shell-plugin');
 
 module.exports = {
   mode: 'development',

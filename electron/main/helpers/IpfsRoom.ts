@@ -1,6 +1,7 @@
+import * as IPFS from 'ipfs';
 import * as Room from 'ipfs-pubsub-room';
 import * as path from 'path';
-import { getReadyIpfsInstance }  from './IpfsInstance';
+import { getReadyIpfsInstance } from './IpfsInstance';
 
 export type RoomName = string;
 export type DappUUID = string;
@@ -13,8 +14,8 @@ export interface SubscribeOptions {
   onSubscribed?: () => void;
 }
 
-type DappRooms = { [roomName:string]: Room };
-type DappMap = { [dappUUID:string]: DappRooms };
+type DappRooms = { [roomName: string]: Room };
+type DappMap = { [dappUUID: string]: DappRooms };
 
 class RoomStorage {
   rooms: DappMap;
@@ -33,36 +34,48 @@ class RoomStorage {
     }
     this.rooms[dappUUID][roomName] = room;
   }
+
+  removeRoom(dappUUID: DappUUID, roomName: RoomName) {
+    delete this.rooms[dappUUID][roomName];
+  }
 }
 
 const RoomMapInstance = new RoomStorage();
 
 export default class IpfsRoom {
   room: Room;
+  dappUUID: string;
+  roomName: string;
 
-  constructor(room?: Room) {
+  constructor(room: Room, options: { dappUUID: string, roomName: string }) {
     this.room = room || null;
 
+    this.dappUUID = options && options.dappUUID || null;
+    this.roomName = options && options.roomName || null;
   }
 
-  static async create(dappUUID: string, name?: RoomName): Promise<IpfsRoom> {
-    if (!dappUUID || !name) {
-      return new IpfsRoom();
-    }
+  static async create(dappUUID: string, roomName: RoomName): Promise<IpfsRoom> {
     const ipfs = await getReadyIpfsInstance({ repo: path.join(__dirname, 'ipfs-room', 'repos') });
+
+    const similarRoom = RoomMapInstance.getRoom(dappUUID, roomName);
+    
+    if (similarRoom) {
+      return similarRoom && new IpfsRoom(similarRoom, { dappUUID, roomName });
+    }
+
     const getRoomInstance = <any> Room;
-    const room = getRoomInstance(ipfs, name);
-    RoomMapInstance.addRoom(dappUUID, name, room);
-    return new IpfsRoom(room);
+    const room = getRoomInstance(ipfs, roomName);
+    RoomMapInstance.addRoom(dappUUID, roomName, room);
+    return new IpfsRoom(room, { dappUUID, roomName });
   }
 
-  static get(dappUUID: string, name?: RoomName): IpfsRoom {
-    const room = RoomMapInstance.getRoom(dappUUID, name);
-    return room && new IpfsRoom(room);
+  static get(dappUUID: string, roomName?: RoomName): IpfsRoom {
+    const room = RoomMapInstance.getRoom(dappUUID, roomName);
+    return room && new IpfsRoom(room, { dappUUID, roomName });
   }
 
-  setRoom(room: Room): void {
-    this.room = room;
+  async getPeerId(): Promise<IPFS.Id> {
+    return this.room && this.room._ipfs.id();
   }
 
   subscribe(options: SubscribeOptions = {}): void {
@@ -89,6 +102,7 @@ export default class IpfsRoom {
   leave() {
     if (this.room) {
       this.room.leave();
+      RoomMapInstance.removeRoom(this.dappUUID, this.roomName);
     }
   }
 

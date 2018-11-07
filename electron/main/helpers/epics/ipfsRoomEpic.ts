@@ -1,7 +1,7 @@
 import { combineEpics, Epic, ofType, ActionsObservable } from 'redux-observable';
 import { AnyAction } from 'redux';
 import { of } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
+import { switchMap, map, catchError } from 'rxjs/operators';
 
 import IpfsRoom from '../IpfsRoom';
 import * as constants from '../constants';
@@ -9,36 +9,42 @@ import * as ipfsRoomActions from '../actions/ipfsRoom';
 
 const ipfsRoomCreateThunk = (topic: string, uid: string, sourceUUID: string) => async (dispatch: any) => {
   try {
-    let room = IpfsRoom.get(sourceUUID, topic);
+    const room = IpfsRoom.get(sourceUUID, topic);
+    const { id } = await room.getPeerId();
 
-    if (!room) {
-      room = await IpfsRoom.create(sourceUUID, topic);
-      // Id = peer id
-      const { id } = await room.room._ipfs.id()
-      console.log('peer Id', id)
-
-      room.subscribe({
-        onMessage: message => dispatch(ipfsRoomActions.ipfsRoomSendMessageToDapp(message, topic, uid, sourceUUID)),
-        onJoined: peer => dispatch(ipfsRoomActions.ipfsRoomPeerJoined(peer, uid, sourceUUID)),
-        onLeft: peer => dispatch(ipfsRoomActions.ipfsRoomPeerLeft(peer, uid, sourceUUID)),
-      });
-      dispatch(ipfsRoomActions.ipfsRoomSubscribeSuccess(id, topic, uid, sourceUUID))
-
-    } else {
-      // Id = peer id
-      const { id } = await room.room._ipfs.id()
-      console.log('peer Id', id)
-      dispatch(ipfsRoomActions.ipfsRoomSubscribeSuccess(id, topic, uid, sourceUUID));
-    }
+    room.subscribe({
+      onMessage: message => dispatch(ipfsRoomActions.ipfsRoomSendMessageToDapp(message, topic, uid, sourceUUID)),
+      onJoined: peer => dispatch(ipfsRoomActions.ipfsRoomPeerJoined(peer, uid, sourceUUID)),
+      onLeft: peer => dispatch(ipfsRoomActions.ipfsRoomPeerLeft(peer, uid, sourceUUID)),
+    });
+    dispatch(ipfsRoomActions.ipfsRoomSubscribeSuccess(id, topic, uid, sourceUUID));
 
   } catch (error) {
-    dispatch(ipfsRoomActions.ipfsRoomSubscribeFailure(error, sourceUUID));
+    dispatch(ipfsRoomActions.ipfsRoomSubscribeFailure(error, sourceUUID, uid));
   }
 };
 
 const ipfsRoomsSubscribe = (action$: ActionsObservable<AnyAction>) => action$.pipe( //@todo fix action type
   ofType(constants.IPFS_ROOM_SUBSCRIBE),
-  map((action) => ipfsRoomCreateThunk(action.payload.topic, action.meta.uid, action.meta.sourceUUID)),
+  switchMap(action => (async (action) => {
+    const sourceUUID = action.meta.sourceUUID;
+    const uid = action.meta.uid;
+    const topic = action.payload.topic;
+
+    try {
+      const room = IpfsRoom.get(sourceUUID, topic);
+
+      if (!room) {
+        await IpfsRoom.create(action.meta.sourceUUID, action.payload.topic);
+      }
+
+      return action;
+    } catch (error) {
+      throw ipfsRoomActions.ipfsRoomSubscribeFailure(error, sourceUUID, uid);
+    }
+  })(action)),
+  map(action => ipfsRoomCreateThunk(action.payload.topic, action.meta.uid, action.meta.sourceUUID)),
+  catchError(errorAction => of(errorAction)),
 );
 
 const ipfsRoomSendBroadcastMessage: Epic<AnyAction> = (action$, state$) => action$.pipe( //@todo fix action type

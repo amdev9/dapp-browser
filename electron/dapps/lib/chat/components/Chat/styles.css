@@ -21,6 +21,7 @@
 
 .chatWindow {
     flex: 1;
+    overflow-y: scroll;
 }
 .chatControls {
     height: 100px;
@@ -49,6 +50,18 @@
 
 .chatLoadingBlock {
     font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+.chatError {
+    color: red;
+    flex: 1;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
 }
 
 .messageBlock {

@@ -50,11 +50,11 @@ export const ipfsRoomSubscribe = (topic: string) =>
   action(constants.IPFS_ROOM_SUBSCRIBE, { topic });
 
 // MessageId need to resolve message sending status
-export const ipfsRoomSendMessageBroadcast = (message: string, roomName: string) =>
-  action(constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST, { message, roomName, messageId: uuidv4() });
+export const ipfsRoomSendMessageBroadcast = (message: string, roomName: string, messageId: string = '') =>
+  action(constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST, { message, roomName, messageId });
 
-export const ipfsRoomSendMessageToPeer = (message: string | Buffer, roomName: string, peer: string) =>
-  action(constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER, { message, messageId: uuidv4(), roomName, peer });
+export const ipfsRoomSendMessageToPeer = (message: string | Buffer, roomName: string, peer: string, messageId: string = '') =>
+  action(constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER, { message, messageId, roomName, peer });
 
 export const ipfsRoomLeave = (roomName: string) =>
   action(constants.IPFS_ROOM_LEAVE, { roomName } );

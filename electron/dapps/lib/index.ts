@@ -56,7 +56,7 @@ class ArrayIO {
         actions.getBlockFailure,
       ], []),
     );
-  }
+  };
 
   networkSubscribe = async () => {
     return new Promise(
@@ -66,7 +66,7 @@ class ArrayIO {
         actions.networkSubscribeFailure,
       ], []),
     );
-  }
+  };
 
   writeToConsole = async (message: string) => {
     return new Promise(
@@ -76,7 +76,7 @@ class ArrayIO {
         actions.loggerWriteFailure,
       ], [message]),
     );
-  }
+  };
 
   storageSave = async (key: string, value: string) => {
     return new Promise(
@@ -84,9 +84,9 @@ class ArrayIO {
         actions.storageSave,
         actions.storageSaveSuccess,
         actions.storageSaveFailure,
-      ], {key, value}),
+      ], { key, value }),
     );
-  }
+  };
 }
 
 
@@ -113,7 +113,6 @@ export class Chat {
   store: any;
   emitter: any;
   topic: string;
-  uid: string;
   // Callbacks for removing listeners
   unsubscribeOnMessage: () => void | null;
   unsubscribeOnLeft: () => void | null;
@@ -124,7 +123,7 @@ export class Chat {
     this.emitter = emitter;
   }
 
-  onUIDEvent(uid: string, callback: (action: any) => void) {
+  onUIDEvent(uid: string, callback: (action: any) => void): () => void {
     const listener = (action: AnyAction) => {
       if (action.meta.uid === uid) {
         callback(action);
@@ -137,62 +136,71 @@ export class Chat {
     return () => this.emitter.removeListener(uid, listener);
   }
 
-  onAction(actionType: string, uid: string, callback: (message: any) => void) {
+  subscribeActions(actionTypes: string | string[], uid: string, callback: (action: AnyAction) => void) {
     return this.onUIDEvent(uid, (action) => {
-      if (actionType && action.type === actionType) {
+      if (actionTypes && [].concat(actionTypes).includes(action.type)) {
         callback(action);
       }
     });
   }
 
-  handleUIDAction(uid: string, options: ActionFlow) {
-    if (!options) {
+  actionPromise(uid: string, { onStart, successType, failureType }: ActionFlow) {
+    if (!onStart || !successType || !failureType) {
       return;
     }
 
-    const copyAction = Object.assign({}, options.onStart, { meta: { uid } });
+    const copyAction = Object.assign({}, onStart, { meta: { uid } });
 
     return new Promise((resolve, reject) => {
-      options.successType && this.onAction(options.successType, this.uid, (action) => resolve(action));
-      options.failureType && this.onAction(options.failureType, this.uid, (action) => reject(action));
-      options.onStart && this.store.dispatch(copyAction);
+      const unsubscribe = this.subscribeActions([successType, failureType], uid, (action) => {
+        unsubscribe && unsubscribe();
+        if (action.type === successType) {
+          resolve(action);
+        }
+
+        if (action.type === failureType) {
+          reject(action);
+        }
+      });
+      onStart && this.store.dispatch(copyAction);
     });
   }
 
   async subscribe(topic: string, options: SubscribeOptions) {
     const uid = uuidv4();
     this.topic = topic;
-    this.uid = uid;
 
     if (!options) {
       return;
     }
 
-    const action: any = await this.handleUIDAction(uid, {
+    const action: any = await this.actionPromise(uid, {
       onStart: actions.ipfsRoomSubscribe(topic),
       successType: constants.IPFS_ROOM_SUBSCRIBE_SUCCESS,
       failureType: constants.IPFS_ROOM_SUBSCRIBE_FAILURE,
     });
 
-    this.unsubscribeOnMessage = this.onAction(constants.IPFS_ROOM_SEND_MESSAGE_TO_DAPP, uid, (action) => options.onMessage(action.payload.message));
-    this.unsubscribeOnJoined = this.onAction(constants.IPFS_ROOM_PEER_JOINED, uid, (action) => options.onJoined(action.payload.peer));
-    this.unsubscribeOnLeft = this.onAction(constants.IPFS_ROOM_PEER_LEFT, uid, (action) => options.onLeft(action.payload.peer));
+    this.unsubscribeOnMessage = this.subscribeActions(constants.IPFS_ROOM_SEND_MESSAGE_TO_DAPP, uid, (action) => options.onMessage(action.payload.message));
+    this.unsubscribeOnJoined = this.subscribeActions(constants.IPFS_ROOM_PEER_JOINED, uid, (action) => options.onJoined(action.payload.peer));
+    this.unsubscribeOnLeft = this.subscribeActions(constants.IPFS_ROOM_PEER_LEFT, uid, (action) => options.onLeft(action.payload.peer));
 
     options.onSubscribe && options.onSubscribe(action.payload.peerId);
   }
 
   async sendMessageBroadcast(message: string) {
-    console.log('sendMessageBroadcast', message, this.topic)
-    return this.handleUIDAction(this.uid, {
-      onStart: actions.ipfsRoomSendMessageBroadcast(message, this.topic),
+    const messageId = uuidv4();
+    return this.actionPromise(messageId, {
+      onStart: actions.ipfsRoomSendMessageBroadcast(message, this.topic, messageId),
       successType: constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST_SUCCESS,
       failureType: constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST_FAILURE,
     });
+
   }
 
   async sendMessageTo(message: string, peer: string) {
-    return this.handleUIDAction(this.uid, {
-      onStart: actions.ipfsRoomSendMessageToPeer(message, this.topic, peer),
+    const messageId = uuidv4();
+    return this.actionPromise(messageId, {
+      onStart: actions.ipfsRoomSendMessageToPeer(message, this.topic, peer, messageId),
       successType: constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER_SUCCESS,
       failureType: constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER_FAILURE,
     });

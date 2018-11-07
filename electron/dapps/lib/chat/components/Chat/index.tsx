@@ -22,6 +22,8 @@ const mapDispatchToProps = (dispatch: any) => ({
 });
 
 class Chat extends React.Component<any, any> {
+  chatWindowEnd: any;
+  messageInput: any;
 
   constructor(props: any) {
     super(props);
@@ -30,48 +32,66 @@ class Chat extends React.Component<any, any> {
       chat: null,
       myId: null,
       messages: [],
-      fetching: true,
+      isChatCreating: true,
+      chatCreateSuccess: null,
+      chatCreateFailure: null,
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { selectedRoom } = this.props;
 
-    const chat = new ArrayChat();
-    chat.subscribe(selectedRoom, {
-      onSubscribe: (peerId) => {
-        console.log('myid', peerId);
-        this.setState({
-          myId: peerId,
-          fetching: false,
-        });
-      },
-      onMessage: (message) => {
-        this.setState({
-          messages: [
-            ...this.state.messages,
-            this.formatMessage(message)
-          ]
-        });
-      },
-      onLeft: (peer) => {
-        this.setState({
-          messages: [
-            ...this.state.messages,
-            this.formatMessage({ from: peer, data: ON_LEFT_USER_MESSAGE })
-          ]
-        });
-      },
-      onJoined: (peer) => {
-        this.setState({
-          messages: [
-            ...this.state.messages,
-            this.formatMessage({ from: peer, data: ON_JOIN_USER_MESSAGE })
-          ]
-        });
-      },
-    });
-    this.setState({ chat });
+    this.focus();
+
+    try {
+      const chat = new ArrayChat();
+      this.setState({ chat });
+      await chat.subscribe(selectedRoom, {
+        onSubscribe: (peerId) => {
+          console.log('myid', peerId);
+          this.setState({
+            myId: peerId,
+            isChatCreating: false,
+            chatCreateSuccess: true,
+          });
+        },
+        onMessage: (message) => {
+          this.setState({
+            messages: [
+              ...this.state.messages,
+              this.formatMessage(message)
+            ]
+          }, () => {
+            this.scrollToBottom();
+            this.focus();
+          });
+        },
+        onLeft: (peer) => {
+          this.setState({
+            messages: [
+              ...this.state.messages,
+              this.formatMessage({ from: peer, data: ON_LEFT_USER_MESSAGE })
+            ]
+          }, () => {
+            this.scrollToBottom();
+            this.focus();
+          });
+        },
+        onJoined: (peer) => {
+          this.setState({
+            messages: [
+              ...this.state.messages,
+              this.formatMessage({ from: peer, data: ON_JOIN_USER_MESSAGE })
+            ]
+          }, () => {
+            this.scrollToBottom();
+            this.focus();
+          });
+        },
+      });
+    } catch (error) {
+      this.setState({ chatCreateFailure: error && error.message || 'Error', isChatCreating: false });
+    }
   }
 
   formatMessage(message: { from: string, data: Buffer | string }) {
@@ -97,6 +117,14 @@ class Chat extends React.Component<any, any> {
       chat.sendMessageBroadcast(values.message);
       reset && reset();
     }
+
+    this.focus();
+  }
+
+  scrollToBottom() {
+    if (this.chatWindowEnd) {
+      this.chatWindowEnd.scrollIntoView({ behavior: 'smooth' });
+    }
   }
 
   renderMessageBlock(msg: any, i: number) {
@@ -111,12 +139,6 @@ class Chat extends React.Component<any, any> {
         {!selfMessage && <div className="messageBlockFrom">{msg.from}</div>}
         <div className="messageBlockContent">{msg.message}</div>
       </div>
-    );
-  }
-
-  renderLoading() {
-    return (
-      <div className="chatLoadingBlock">Connecting...</div>
     );
   }
 
@@ -143,6 +165,9 @@ class Chat extends React.Component<any, any> {
     return (
       <div className="chatWindow">
         {messages && messages.map((msg: any, i: number) => this.renderMessageBlock(msg, i))}
+        <div ref={(ref) => {
+          this.chatWindowEnd = ref;
+        }}></div>
       </div>
     );
   }
@@ -158,9 +183,14 @@ class Chat extends React.Component<any, any> {
         <Field
           name="message"
           type="text"
+          ref={(ref: any) => {
+            this.messageInput = ref;
+          }}
           className="chatControlsInput"
           component="input"
           placeholder="Enter message..."
+          autoFocus
+          withRef
         />
         <button
           className="chatControlsSubmit"
@@ -172,16 +202,44 @@ class Chat extends React.Component<any, any> {
     );
   }
 
+  focus() {
+    console.log('rerere', this.messageInput)
+    if (this.messageInput && this.messageInput.getRenderedComponent) {
+      this.messageInput.getRenderedComponent().focus();
+    }
+  }
+
+  renderLoading() {
+    return (
+      <div className="chatWrapper">
+        <div className="chatLoadingBlock">Opening chat room...</div>
+      </div>
+    );
+  }
+
+  renderError() {
+    const { chatCreateFailure } = this.state;
+
+    return (
+      <div className="chatWrapper">
+        <div className="chatError">
+          <div className="chatErrorTitle">Open chat room error:</div>
+          <div>{chatCreateFailure}</div>
+        </div>
+      </div>
+    );
+  }
+
   render() {
     const { handleSubmit, selectedRoom } = this.props;
-    const { messages, fetching } = this.state;
+    const { messages, isChatCreating, chatCreateSuccess, chatCreateFailure } = this.state;
 
-    if (fetching) {
-      return (
-        <div className="chatWrapper">
-          {this.renderLoading()}
-        </div>
-      );
+    if (isChatCreating) {
+      return this.renderLoading();
+    }
+
+    if (chatCreateFailure) {
+      return this.renderError();
     }
 
     return (

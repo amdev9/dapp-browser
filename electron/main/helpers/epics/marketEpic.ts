@@ -8,12 +8,13 @@ import * as constants from '../constants';
 import { FileObject, FileManager } from '../FileManager';
 import ipfs from '../IpfsStorage';
 import { AppsManager } from '../AppsManager';
+import { DAPPS_PATH } from '../constants/appPaths';
 
 const marketDownloadAppEpic: Epic<AnyAction> = (action$) => action$.pipe(
   ofType(constants.MARKET_DOWNLOAD_DAPP),
   switchMap(async (action) => {
     try {
-      const targetDirectory = path.join(__dirname, '..', '..', 'dapps', 'download');
+      const targetDirectory = DAPPS_PATH;
       const downloadFiles: FileObject[] = await ipfs.downloadFolder(action.payload.ipfsHash);
 
       if (!downloadFiles) {
