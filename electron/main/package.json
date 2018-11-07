@@ -71,7 +71,12 @@
   "build": {
     "appId": "array.io.app",
     "mac": {
-      "category": "array.io.app.release"
+      "category": "array.io.app.release",
+      "icon": "./icons/icon.icns"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "./icons/icon.ico"
     },
     "protocols": [
       {
