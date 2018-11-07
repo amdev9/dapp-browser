@@ -8,7 +8,7 @@ import { IState } from './state';
 export type PermissionAction = ActionType<typeof permission>;
 
 const rootReducer = combineReducers<IState, PermissionAction>({
-  permissionManager
+  permissionManager,
 });
 
 export default rootReducer;

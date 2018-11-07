@@ -21,6 +21,7 @@ export interface PermissionLayoutProps {
   onCloseManager: () => any;
   onGrantPermissions: (appName: string) => any;
   onLoadPermissions: () => any;
+  checkedPermissions: {[index: string]: string[]};
 }
 
 export class PermissionLayout extends React.Component<PermissionLayoutProps>  {
@@ -31,8 +32,15 @@ export class PermissionLayout extends React.Component<PermissionLayoutProps>  {
     this.handleCancel = this.handleCancel.bind(this);
   }
 
+  hasCheckedPermissions() {
+    const checkedPermissions = this.props.checkedPermissions[this.props.appName];
+    return checkedPermissions && checkedPermissions.length > 0;
+  }
+
   handleGrant() {
-    this.props.onGrantPermissions(this.props.appName);
+    if (this.hasCheckedPermissions()) {
+      this.props.onGrantPermissions(this.props.appName);
+    }
   }
 
   handleCancel() {
@@ -56,7 +64,7 @@ export class PermissionLayout extends React.Component<PermissionLayoutProps>  {
       <div>
         <h1>Grant permissions for {this.props.appName}:</h1>
         {permissionItems}
-        <button type="button" onClick={this.handleGrant}>{'Grant'}</button>
+        <button type="button" onClick={this.handleGrant} disabled={!this.hasCheckedPermissions()}>{'Grant'}</button>
         <button type="button" onClick={this.handleCancel}>{'Cancel'}</button>
       </div>
     );
@@ -68,7 +76,7 @@ export class PermissionLayout extends React.Component<PermissionLayoutProps>  {
 }
 
 const mapStateToProps = (state: RootState) => ({
-  // count: state.counters.reduxCounter,
+  checkedPermissions: state.permissionManager.permissions,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => bindActionCreators({

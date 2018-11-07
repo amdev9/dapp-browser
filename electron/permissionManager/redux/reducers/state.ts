@@ -3,7 +3,7 @@ export type Permission = 'ipfs' | 'network' | 'storage' | 'filesystem' | 'logger
 
 export interface PermissionManager {
   isOpen: boolean;
-  items: Permission[];
+  permissions: {[index: string]: string[]};
   grantedApps: string[];
 }
 export interface IState {
