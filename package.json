@@ -7,7 +7,7 @@
     "setup": "concurrently --kill-others \"cd electron/client && npm i && cross-env NODE_ENV=development node --max_old_space_size=2096 server.js\" \"cd electron/dapps/lib && npm i && npm run webpack\" \"cd electron/main && npm i && npm run rebuild && npm run webpack\" \"cd electron/permissionManager && npm i && npm run webpack\" ",
     "dev": "NODE_ENV=development npm start",
     "start": "node index.js",
-    "clean": "rimraf release",
+    "clean": "rimraf release && rimraf electron/main/release",
     "build-client": "cd electron/client && npm i && npm run build",
     "build-dapps": "cd electron/dapps/lib && npm i && npm run build",
     "build-main": "cd electron/main && npm i && npm run build",
