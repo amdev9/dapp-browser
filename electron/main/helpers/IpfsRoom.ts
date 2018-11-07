@@ -2,6 +2,7 @@ import * as IPFS from 'ipfs';
 import * as Room from 'ipfs-pubsub-room';
 import * as path from 'path';
 import { getReadyIpfsInstance } from './IpfsInstance';
+import { appTempPath } from './constants/appPaths';
 
 export type RoomName = string;
 export type DappUUID = string;
@@ -55,7 +56,7 @@ export default class IpfsRoom {
   }
 
   static async create(dappUUID: string, roomName: RoomName): Promise<IpfsRoom> {
-    const ipfs = await getReadyIpfsInstance({ repo: path.join(__dirname, 'ipfs-room', 'repos') });
+    const ipfs = await getReadyIpfsInstance({ repo: path.join(appTempPath, 'ipfs-room', 'repos') });
 
     const similarRoom = RoomMapInstance.getRoom(dappUUID, roomName);
     

@@ -19,12 +19,12 @@
 
 import 'reflect-metadata';
 import { createConnection, ConnectionOptions } from 'typeorm';
-import * as os from 'os';
 import * as path from 'path';
 import { Store } from './model/Store';
+import { appTempPath } from '../constants/appPaths';
 
-const appTempPath = path.join(os.tmpdir(), 'array-io-client-temp', 'db');
-console.log('App temp path:', appTempPath);
+const dbPath = path.join(appTempPath, 'db');
+console.log('App temp path:', dbPath);
 
 export interface SQLiteStorageConfig {
   database?: string;
@@ -38,7 +38,7 @@ export default function SQLiteStorage(config?: SQLiteStorageConfig) {
   const storageEntity = Store;
 
   const dbConnection = createConnection({
-    database: appTempPath,
+    database: dbPath,
     type: 'sqlite',
     synchronize: true,
     entities: [storageEntity],
