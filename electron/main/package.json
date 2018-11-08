@@ -1,7 +1,7 @@
 {
-  "name": "main",
-  "version": "1.0.0",
-  "description": "",
+  "name": "arrayio",
+  "version": "0.1.15",
+  "description": "Array.io client",
   "main": "./dist/main.js",
   "scripts": {
     "webpack": "webpack --watch",
@@ -11,7 +11,7 @@
     "dist": "install-app-deps && electron-builder .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Array.io team",
   "license": "ISC",
   "dependencies": {
     "assert": "^1.4.1",
