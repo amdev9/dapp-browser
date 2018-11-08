@@ -24,6 +24,7 @@
     "@types/redux-form": "^7.4.11",
     "@types/redux-logger": "^3.0.6",
     "@types/uuid": "^3.4.3",
+    "circular-dependency-plugin": "^5.0.2",
     "http-server": "^0.10.0",
     "react-hot-loader": "^4.3.11",
     "source-map-loader": "^0.2.4",

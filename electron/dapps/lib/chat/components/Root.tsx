@@ -3,19 +3,17 @@ import { Store } from 'redux';
 import { Provider } from 'react-redux';
 import { Router, Route, browserHistory, Switch } from 'react-router';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-
 import { syncHistoryWithStore, ConnectedRouter } from 'react-router-redux';
 
 import Main from './Main';
 import Chat from './Chat';
-import { configureStore, history } from '../redux/store';
+import { store } from '../redux/store';
+import history from '../redux/history';
 
 interface IRootType {
   store: Store<any>; // Redux.Store<any>;
   isProduction: boolean;
 }
-
-const store = configureStore();
 
 export default () => (
   <Provider store={store}>

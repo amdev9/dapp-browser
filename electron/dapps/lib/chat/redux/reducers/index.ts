@@ -7,11 +7,13 @@ import * as constants from '../constants';
 interface InitialState {
   chatList: [];
   selectedRoom: string | null;
+  appInit: boolean;
 }
 
 const initialState: InitialState = {
   chatList: [],
   selectedRoom: null,
+  appInit: false,
 }
 
 const main = (state: InitialState = initialState, action: any) => {
@@ -21,6 +23,12 @@ const main = (state: InitialState = initialState, action: any) => {
       return {
         ...state,
         selectedRoom: action.payload.roomName,
+      }
+
+    case constants.INIT_APP:
+      return {
+        ...state,
+        appInit: true,
       }
 
     default:

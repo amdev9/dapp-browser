@@ -12,6 +12,7 @@ let dappView: Electron.BrowserView = null;
 export type ChannelsConf = string[];
 export type BindedConf = Map<string, ChannelsConf>;
 export type BindedListConf = BindedConf[];
+
 export interface RendererConf {
   id: string;
   name?: string;
@@ -23,7 +24,7 @@ export interface RendererConf {
 }
 
 export function createDappView(globalUUIDList: RendererConf[], dapp: AppItem) { // entryPath: string, appName: string
-  if (globalUUIDList.findIndex(item => item.name === dapp.appName && item.status === 'dapp') !== -1) { // Skip creating a new BrowserView for the same dapp
+  if (dapp && globalUUIDList.findIndex(item => item.name === dapp.appName && item.status === 'dapp') !== -1) { // Skip creating a new BrowserView for the same dapp
     return;
   }
   const uuidDapp = uuidv4();
@@ -54,12 +55,10 @@ export function createDappView(globalUUIDList: RendererConf[], dapp: AppItem) { 
   });
   dappView.webContents.loadURL(dappPathUrl); // todo pass @param path to index.html
 
- 
-  // let devtools = new BrowserWindow()
+  // const devtools = new BrowserWindow();
 
   // dappView.webContents.setDevToolsWebContents(devtools.webContents);
   // dappView.webContents.openDevTools({ mode: 'detach' });
- 
 
   const renderIdDapp = dappView.webContents.getProcessId();
 

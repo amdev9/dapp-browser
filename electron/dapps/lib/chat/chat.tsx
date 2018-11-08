@@ -2,12 +2,16 @@ import * as React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import Root from './components/Root';
+import { initDappSuccess } from '../array';
+import { initApp } from './redux/store';
 
-if (document.getElementById('Chat-IPFS-app-container')) {
-  render(
-    <Root/>,
-    document.getElementById('Chat-IPFS-app-container')
-  );
+const rootElement = document.getElementById('Chat-IPFS-app-container');
+
+if (rootElement) {
+  render(<Root/>, rootElement, () => {
+    initDappSuccess();
+    initApp();
+  });
 }
 //
 // if ((module as any).hot) {

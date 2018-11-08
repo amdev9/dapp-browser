@@ -5,12 +5,17 @@ import { createEpicMiddleware } from 'redux-observable';
 import { logger } from 'redux-logger';
 import { rootEpic } from './redux/epics';
 import { rootReducer } from './redux/reducers';
+import * as actions from './redux/actions/channel';
 
 interface ElectronManager {
   sendActionMain(action: any): void;
+
   replyActionRenderer(store: any): void;
+
   getGlobalState(): () => string;
+
   sendDataChannel(channelId: string, data: string): () => any;
+
   receiveDataChannel(channelId: string, callback: () => any): () => any;
 }
 
@@ -103,9 +108,12 @@ const receiveDataChannel = (channelId: string, callback: any) => {
 
 const store = initStore();
 
+const initDappSuccess = () => store.dispatch(actions.toggleAppHomeSuccess())
+
 export {
   store,
   sendDataChannel1,
   sendDataChannel2,
   receiveDataChannel,
+  initDappSuccess,
 };

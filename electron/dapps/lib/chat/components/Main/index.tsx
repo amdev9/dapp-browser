@@ -2,7 +2,6 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 
-import { Chat } from '../../../index';
 import * as constants from '../../redux/constants';
 import * as actions from '../../redux/actions';
 

@@ -5,11 +5,13 @@ import * as uuidv4 from 'uuid/v4';
 import { openDevTool } from './helpers/devtools';
 import { RendererConf } from './createDappView';
 import { RENDERER_PATH } from './helpers/constants/appPaths';
+import * as httpProtocolActions from './helpers/actions/httpProtocol';
 
 let clientWindow: Electron.BrowserWindow = null;
+
 // const RENDERER_PATH: string = path.join(__dirname, '..', '..', 'client');
 
-export function createClientWindow(globalUUIDList: RendererConf[]) {
+export function createClientWindow(globalUUIDList: RendererConf[], store: any) {
   const uuidClient = uuidv4();
   const authorizedChannelsList = ['channelId1', 'channelId2']; // next todo get channels list from dapp manifest
 
@@ -45,8 +47,13 @@ export function createClientWindow(globalUUIDList: RendererConf[]) {
   const PROTOCOL_PREFIX = PROTOCOL.split(':')[0];
 
   protocol.registerHttpProtocol(PROTOCOL_PREFIX, (req, cb) => {
-    const url = req.url;
-    console.log(url);
+    const link = req.url.replace(PROTOCOL, '');
+    const params = link.split('/').filter(item => item)
+    console.log('registerHttpProtocol', params, link, req)
+    console.log('store', httpProtocolActions, store)
+    store.dispatch(httpProtocolActions.httpProtocolOpenLink(params));
+
+    console.log('protocol link url:', params);
   }, (err) => {
     if (!err) {
       console.log('registered arr protocol');
@@ -79,9 +86,9 @@ export function createClientWindow(globalUUIDList: RendererConf[]) {
   });
 
   // console.log(process.env);
-  if (process.env.ELECTRON_ENV === 'development') {
+  // if (process.env.ELECTRON_ENV === 'development') {
     openDevTool(clientWindow, true);
-  }
+  // }
 
   const renderIdClient = clientWindow.webContents.getProcessId(); // .webContents.getProcessId(); //.id,
   const rendererObj: RendererConf = {
