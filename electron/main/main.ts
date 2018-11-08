@@ -16,6 +16,7 @@ import { IState, Client } from './helpers/reducers/state';
 
 import * as nodeConsole from 'console';
 import { NetworkAPI } from './helpers/Network';
+import * as httpProtocolActions from './helpers/actions/httpProtocol';
 
 const console = new nodeConsole.Console(process.stdout, process.stderr);
 
@@ -114,6 +115,7 @@ app.on('window-all-closed', () => {
 
 // Mac OS X sends url to open via this event
 app.on('open-url', (e, url) => {
+  e.preventDefault;
   console.log('open-url', url);
 });
 
@@ -127,18 +129,32 @@ app.on('ready', async () => {
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
 
-  // app.on('activate', () => {
-  //   // On OS X it's common to re-create a window in the app when the
-  //   // dock icon is clicked and there are no other windows open.
-  //   clientWindow = createClientWindow(globalUUIDList);
-  // });
-  clientWindow = createClientWindow(globalUUIDList);
   await AppsManager.parseDapps();
 
   store = configureStore({
     ...initialState,
     feed: { items: AppsManager.dapps },
   }, globalUUIDList);
+
+  // Mac OS X sends url to open via this event
+  // app.on('open-url', (e, url) => {
+  //   e.preventDefault()
+
+    // console.log('ONREADY OPEN-URL', url);
+
+    // const link = url.replace('arr://', '');
+    // const params = link.split('/').filter(item => item)
+    // console.log('registerHttpProtocol', params, link, url)
+    // console.log('store', httpProtocolActions, store)
+    // store.dispatch(httpProtocolActions.httpProtocolOpenLink(params));
+  // });
+
+  app.on('activate', () => {
+    // On OS X it's common to re-create a window in the app when the
+    // dock icon is clicked and there are no other windows open.
+    // clientWindow = createClientWindow(globalUUIDList, store);
+  });
+  clientWindow = createClientWindow(globalUUIDList, store);
 
   let pmIsOpen = false;
   const closePermissionManager = () => {

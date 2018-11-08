@@ -5,7 +5,7 @@ import * as cn from 'classnames';
 
 import * as constants from '../../redux/constants';
 import * as actions from '../../redux/actions';
-import { Chat as ArrayChat } from '../../../';
+import { Chat as ArrayChat } from '../../../baseClasses';
 
 import './styles.css';
 
@@ -38,10 +38,26 @@ class Chat extends React.Component<any, any> {
     };
   }
 
-  async componentDidMount() {
-    const { selectedRoom } = this.props;
+  componentWillReceiveProps(nextProps: any) {
+    if (this.props.selectedRoom !== nextProps.selectedRoom) {
+      this.subscribeRoom(nextProps.selectedRoom);
+    }
+    console.log('willrecprops', nextProps.selectedRoom, this.props.selectedRoom);
+  }
 
-    this.focus();
+  async subscribeRoom(selectedRoom: string) {
+    if (!selectedRoom) {
+      return;
+    }
+
+    this.setState({
+      isChatCreating: true,
+      messages: [],
+    });
+
+    if (this.state.chat) {
+      this.state.chat.leave();
+    }
 
     try {
       const chat = new ArrayChat();
@@ -92,6 +108,14 @@ class Chat extends React.Component<any, any> {
     } catch (error) {
       this.setState({ chatCreateFailure: error && error.message || 'Error', isChatCreating: false });
     }
+
+    this.focus();
+  }
+
+  componentDidMount() {
+    console.log('componentDidMount');
+    this.subscribeRoom(this.props.selectedRoom);
+
   }
 
   formatMessage(message: { from: string, data: Buffer | string }) {
@@ -203,7 +227,7 @@ class Chat extends React.Component<any, any> {
   }
 
   focus() {
-    console.log('rerere', this.messageInput)
+    console.log('rerere', this.messageInput);
     if (this.messageInput && this.messageInput.getRenderedComponent) {
       this.messageInput.getRenderedComponent().focus();
     }
