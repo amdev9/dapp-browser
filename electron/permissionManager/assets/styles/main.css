@@ -103,6 +103,7 @@ h1 {
 }
 
 .button-failure {
+  background-color: white;
   font-size: 12px;
   color: #4a89fc;
   position: relative;
@@ -114,8 +115,7 @@ h1 {
   cursor: pointer;
 }
 
-button:disabled,
-button[disabled]{
+button:disabled {
   background-color: #cccccc;
   color: #666666;
   cursor: default;
