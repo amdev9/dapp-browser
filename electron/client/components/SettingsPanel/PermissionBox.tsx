@@ -19,8 +19,12 @@ export class PermissionBox extends React.Component<PermissionBoxProps> {
   }
 
   componentWillMount() {
-    const appPermissions = this.props.permissions.permissions[this.props.appName];
-    this.checked  = appPermissions && appPermissions.includes(this.props.item);
+    if (!this.props.permissions) {
+      this.checked = false;
+    } else {
+      const appPermissions = this.props.permissions.permissions[this.props.appName];
+      this.checked  = appPermissions && appPermissions.includes(this.props.item);
+    }
   }
 
   handleInputChange() {

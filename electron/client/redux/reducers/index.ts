@@ -9,10 +9,16 @@ import feed from './feed';
 import search from './search';
 import settings from './settings';
 import permissions from './permissions';
+import isHome from './is-home';
+import window from './window';
+import activeDapp from './active-dapp';
 
 import { IState } from './state';
 
 const rootReducer = combineReducers<IState>({
+  isHome,
+  activeDapp,
+  window,
   notification,
   loader,
   statusBar,

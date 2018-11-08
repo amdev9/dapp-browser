@@ -1,22 +1,22 @@
-import { StatusBarItem } from "../../redux/model"
-import * as React from "react"
-import { Bar } from "./bar"
-import {Logger} from "../../Logger";
+import { StatusBarItem } from '../../redux/model';
+import * as React from 'react';
+import { Bar } from './bar';
+import {Logger} from '../../Logger';
 
 interface StatusBarProps {
-  items?: { [index: string]: StatusBarItem; },
-  isOpen?: boolean,
-  toggleStatusBar?: () => void,
-  loggerWrite?: boolean,
-  peersBarIsOpen?: boolean
+  items?: { [index: string]: StatusBarItem; };
+  isOpen?: boolean;
+  toggleStatusBar?: () => void;
+  loggerWrite?: boolean;
+  peersBarIsOpen?: boolean;
 }
 
 export class StatusBar extends React.Component<StatusBarProps> {
   constructor(props: StatusBarProps) {
     super(props);
 
-    this.getList = this.getList.bind(this)
-    this.getMessages = this.getMessages.bind(this)
+    this.getList = this.getList.bind(this);
+    this.getMessages = this.getMessages.bind(this);
   }
 
   public getList(): JSX.Element[] {
@@ -40,35 +40,45 @@ export class StatusBar extends React.Component<StatusBarProps> {
       ]
     }
   }
-  
+
   public getMessages(): JSX.Element[] {
     return Logger.messages.map((itemKey, index) => <div key={`${itemKey}-${index}`}>{itemKey}</div>);
   }
 
   public render() {
-    let { isOpen, items, toggleStatusBar } = this.props;
+    const { isOpen, items, toggleStatusBar } = this.props;
 
     const props: any = {
       style: {
-        display: isOpen ? "block": "none"
+        display: isOpen ? 'block' : 'none',
       },
     };
 
-    const keys = Object.keys(items);
+    if (items) {
+      const keys = Object.keys(items);
 
-    return (
-      <div className="statusbar">
-        <Bar
-          key={`${keys[0]}-${0}`}
-          item={items[keys[0]]}
-          visible={true}
-          toggleStatusBar={toggleStatusBar}
-        />
-        {this.getList()}
-        <div className="console" {...props} >
-          {this.getMessages()}
+      return (
+        <div className="statusbar">
+          <Bar
+            key={`${keys[0]}-${0}`}
+            item={items[keys[0]]}
+            visible={true}
+            toggleStatusBar={toggleStatusBar}
+          />
+          {this.getList()}
+          <div className="console" {...props} >
+            {this.getMessages()}
+          </div>
         </div>
-      </div>
-    )
+      );
+    } else {
+      return (
+        <div className="statusbar">
+          <div className="console" {...props} >
+            {this.getMessages()}
+          </div>
+        </div>
+      );
+    }
   }
 }

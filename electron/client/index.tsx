@@ -2,18 +2,15 @@ import * as React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import Root from './containers/Root';
-//import './app.global.scss';
 
-import "./assets/styles/main.sass"
-import store from "./array-client";
-import { isProduction } from "./array-client";
-
+import './assets/styles/main.sass';
+import store, { isProduction } from './array-client';
 
 render(
   <AppContainer>
     <Root store={store} isProduction={isProduction()}/>
   </AppContainer>,
-  document.getElementById('root')
+  document.getElementById('root'),
 );
 
 if ((module as any).hot) {
@@ -23,7 +20,7 @@ if ((module as any).hot) {
       <AppContainer>
         <NextRoot store={store}   />
       </AppContainer>,
-      document.getElementById('root')
+      document.getElementById('root'),
     );
   });
 }
