@@ -6,7 +6,7 @@ import { PermissionLayoutConnected } from './components/PermissionLayout';
 
 import store, { getPermissions, getAppName } from './array-permission';
 import './assets/styles/main.css';
-
+ 
 render(
   <Provider store={store}>
     <PermissionLayoutConnected permissions={getPermissions} appName={getAppName}/>
