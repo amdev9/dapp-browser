@@ -77,7 +77,7 @@ h1 {
 
 .layout {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   flex-direction: column;
   justify-content: center;
 }
@@ -118,4 +118,5 @@ button:disabled,
 button[disabled]{
   background-color: #cccccc;
   color: #666666;
+  cursor: default;
 }

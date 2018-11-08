@@ -61,9 +61,11 @@ export class PermissionLayout extends React.Component<PermissionLayoutProps>  {
     );
 
     return (
-      <div className="layout">
+      <div>
         <h1>Grant permissions for {this.props.appName}</h1>
+        <div className="layout">
         {permissionItems}
+        </div>
         <div className="btn-layout">
           <button className="button-success" onClick={this.handleGrant} disabled={!this.hasCheckedPermissions()}>{'Grant'}</button>
           <button className="button-failure" onClick={this.handleCancel}>{'Cancel'}</button>
