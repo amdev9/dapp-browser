@@ -34,7 +34,7 @@ export class AppPermissions extends React.Component<AppPermissionsProps>  {
   public render() {
     return (
       <div>
-        <div style={{margin: '5px'}}>
+        <div style={{margin: '5px', fontSize: '20px'}}>
           <b>{this.props.feedItem.appName}</b>
         </div>
         {this.getPermissions()}

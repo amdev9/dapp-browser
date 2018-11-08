@@ -1,7 +1,6 @@
 import { AnyAction } from 'redux';
 import { combineEpics, Epic, ofType } from 'redux-observable';
 import { switchMap } from 'rxjs/operators';
-import * as path from 'path';
 
 import * as marketActions  from '../actions/market';
 import * as constants from '../constants';
@@ -9,6 +8,8 @@ import { FileObject, FileManager } from '../FileManager';
 import ipfs from '../IpfsStorage';
 import { AppsManager } from '../AppsManager';
 import { DAPPS_PATH } from '../constants/appPaths';
+import * as fs from 'fs';
+import * as path from 'path';
 
 const marketDownloadAppEpic: Epic<AnyAction> = (action$) => action$.pipe(
   ofType(constants.MARKET_DOWNLOAD_DAPP),
@@ -22,8 +23,9 @@ const marketDownloadAppEpic: Epic<AnyAction> = (action$) => action$.pipe(
       }
 
       await FileManager.saveFolder(targetDirectory, downloadFiles);
-      const parsedDapp = await AppsManager.parseDapp(action.payload.ipfsHash);
 
+      fs.renameSync(path.join(targetDirectory, action.payload.ipfsHash), path.join(targetDirectory, 'Game'));
+      const parsedDapp = await AppsManager.parseDapp('Game');
       return marketActions.downloadDappSuccess(parsedDapp);
     } catch (error) {
       return marketActions.downloadDappFailure(error, action.meta.sourceUUID);

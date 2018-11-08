@@ -5,16 +5,16 @@ import { Tray } from './state';
  
 export type TrayAction = ActionType<typeof trayActions>;
 
-const initialState: Tray = {
-  items: [],
-  activeDapp: {
-    appName: null
-  },
-  pinned: [],
-  isHome: true
-}
+// const initialState: Tray = {
+//   items: [],
+//   activeDapp: {
+//     appName: null
+//   },
+//   pinned: [],
+//   isHome: true
+// }
 
-export default function tray(state: Tray = initialState, action: TrayAction) {
+export default function tray(state: Tray = null, action: TrayAction) {
   switch (action.type) {
     case constants.SWITCH_DAPP:
 

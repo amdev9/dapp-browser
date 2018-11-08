@@ -16,7 +16,6 @@ body {
   -ms-user-select: none;
   user-select: none;
 }
-
 /* Hide the browser's default checkbox */
 .container input {
   position: absolute;
@@ -78,7 +77,7 @@ h1 {
 
 .layout {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   flex-direction: column;
   justify-content: center;
 }
@@ -104,6 +103,7 @@ h1 {
 }
 
 .button-failure {
+  background-color: white;
   font-size: 12px;
   color: #4a89fc;
   position: relative;
@@ -113,4 +113,10 @@ h1 {
   border-radius: 4px;
   margin: 10px;
   cursor: pointer;
+}
+
+button:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: default;
 }

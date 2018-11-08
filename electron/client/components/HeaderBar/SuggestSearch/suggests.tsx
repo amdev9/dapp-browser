@@ -33,11 +33,11 @@ export class Suggests extends React.Component<SuggestProps> {
   }
 
   public state: SuggestState = {
-    value: "",
+    value: '',
   };
 
   private getItems(): SuggestItem[] {
-    let items = this.props.searchItems;
+    const items = this.props.searchItems;
 
     const result = Object.keys(items).map(groupName => {
       const groupItems = items[groupName];

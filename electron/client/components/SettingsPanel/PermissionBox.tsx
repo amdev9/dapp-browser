@@ -18,28 +18,27 @@ export class PermissionBox extends React.Component<PermissionBoxProps> {
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
-  componentWillMount() {
-    const appPermissions = this.props.permissions.permissions[this.props.appName];
-    this.checked  = appPermissions && appPermissions.includes(this.props.item);
-  }
-
   handleInputChange() {
     this.props.onTogglePerm(this.props.item, !this.checked, this.props.appName);
   }
 
   public render() {
     const checkboxId = `input_${this.props.appName}_${this.props.item}`;
+    const appPermissions = this.props.permissions.permissions[this.props.appName];
+    this.checked  = appPermissions && appPermissions.includes(this.props.item);
     return (
       <div className="custom-control custom-checkbox">
-        <input
-          type="checkbox"
-          id={ checkboxId }
-          name={ this.props.item }
-          checked={ this.checked }
-          className="custom-control-input"
-          onChange={ this.handleInputChange }
-        />
-        <label htmlFor={ checkboxId } className="custom-control-label">{this.props.item}</label>
+        <label className="container">
+          {this.props.item}
+          <input
+            type="checkbox"
+            id={ checkboxId }
+            name={ this.props.item }
+            checked={ this.checked }
+            onChange={ this.handleInputChange }
+          />
+          <span className="checkmark"></span>
+        </label>
       </div>
     );
   }

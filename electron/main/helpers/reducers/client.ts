@@ -2,24 +2,24 @@ import { ActionType } from 'typesafe-actions';
 import * as constants from '../constants';
 import * as clientActions from '../actions/client';
 import { Client } from './state';
+import { togglePermissions } from './common';
 
 export type ClientAction = ActionType<typeof clientActions>;
 
-const initialState: Client = {
-  activeDapp: {
-    appName: null,
-  },
-  isHome: true,
-  notification: { isOpen: false },
-  loader: { isOpen: false },
-  statusBar: { isOpen: false, isPeersOpen: false },
-  search: { isOpen: false },
-  window: { width: 0, height: 0 },
-  fileDialog: { isOpen: false },
-  permissions: { permissions: {} },
-};
+// const initialState: Client = {
+//   activeDapp: {
+//     appName: null,
+//   },
+//   isHome: true,
+//   notification: { isOpen: false },
+//   loader: { isOpen: false },
+//   statusBar: { isOpen: false, isPeersOpen: false },
+//   search: { isOpen: false },
+//   window: { width: 0, height: 0 },
+//   permissions: { permissions: {} },
+// };
 
-export function client(state: Client = initialState, action: any) { // @todo refactor add actions to client.ts, remove isOpen
+export function client(state: Client = null, action: any) { // @todo refactor add actions to client.ts, remove isOpen
   switch (action.type) {
 
     case constants.SWITCH_DAPP:
@@ -51,7 +51,7 @@ export function client(state: Client = initialState, action: any) { // @todo ref
       return {
         ...state,
         notification: {
-          isOpen: !state.notification.isOpen,
+          isOpen: state.notification ? !state.notification.isOpen : true,
         },
       };
 
@@ -68,7 +68,7 @@ export function client(state: Client = initialState, action: any) { // @todo ref
         ...state,
         statusBar: {
           ...state.statusBar,
-          isOpen: !state.statusBar.isOpen,
+          isOpen: state.statusBar ? !state.statusBar.isOpen : true,
         },
       };
 
@@ -77,7 +77,7 @@ export function client(state: Client = initialState, action: any) { // @todo ref
         ...state,
         statusBar: {
           ...state.statusBar,
-          isPeersOpen: !state.statusBar.isPeersOpen,
+          isPeersOpen: state.statusBar ? !state.statusBar.isPeersOpen : true,
         },
       };
 
@@ -85,12 +85,21 @@ export function client(state: Client = initialState, action: any) { // @todo ref
       return {
         ...state,
         search: {
-          isOpen: !state.search.isOpen,
+          isOpen: state.search ? !state.search.isOpen : true,
         },
       };
 
     case constants.APPS_FEED_RESIZE:
       return { ...state, window: action.payload };
+
+    case constants.TOGGLE_PERMISSION: {
+      if (!state.permissions || !state.permissions.permissions) {
+        return { ...state };
+      }
+      const statePermissions = state.permissions.permissions;
+      const permissions = togglePermissions(action, statePermissions);
+      return { ...state, permissions: { ...state.permissions, permissions } };
+    }
 
     default:
       return state;

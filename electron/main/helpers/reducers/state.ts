@@ -25,9 +25,6 @@ export type Client = {
     width: number,
     height: number,
   },
-  fileDialog: {
-    isOpen: boolean,
-  },
   permissions: {
     permissions: {[index:string]: Permission[]},
   },
@@ -41,7 +38,6 @@ export type Client = {
 //   statusBar isOpen
 //   statusBar isPeersOpen
 //   search isOpen
-//   fileDialog isOpen
 // }
 
 export interface IState {

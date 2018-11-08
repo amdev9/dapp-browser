@@ -25,7 +25,21 @@ export function permissionManager(state: PermissionsState = null, action: Permis
   switch (action.type) {
     case TOGGLE_PERMISSION: {
       const permissions = togglePermissions(action, state.permissions);
-      return { ...state, permissions };
+      const appName = action.payload.appName;
+      const grantedApps = [...state.grantedApps];
+      if (permissions[appName] && permissions[appName].length > 0) {
+        if (!state.grantedApps.includes(appName)) {
+          grantedApps.push(appName);
+        }
+      } else {
+        if (state.grantedApps.includes(appName)) {
+          const index = grantedApps.indexOf(appName); // remove from granted Apps
+          if (index !== -1) {
+            grantedApps.splice(index, 1);
+          }
+        }
+      }
+      return { ...state, permissions, grantedApps };
     }
     case CLOSE_MANAGER:
       return { ...state, isOpen: false };

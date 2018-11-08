@@ -38,7 +38,9 @@ class ElectronManager {
 
     const getGlobalState = () => {
       const globalState = electron.remote.getGlobal('getReduxState');
-      return globalState;
+      const gs = JSON.parse(globalState()); // todo remove JSON.parse / stringify
+      return () => (JSON.stringify({...gs.client, feed: gs.feed, tray: gs.tray, permissions: gs.permissionManager}));
+      // return globalState;
     }
 
     const sendActionMain = (action) => {

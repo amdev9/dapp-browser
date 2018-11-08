@@ -61,4 +61,13 @@ export interface IState {
   permissions: PermissionsPanel;
 }
 
+export type IsHome = boolean;
+ export interface Window {
+  height: number;
+  weight: number;
+}
+ export interface ActiveDapp {
+  appName: string;
+}
+
 export type Permission = 'ipfs' | 'network' | 'storage' | 'filesystem' | 'logger' | 'keychain';

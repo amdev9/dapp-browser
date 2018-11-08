@@ -26,9 +26,9 @@ export class DappFrame {
 
   get width() {
     let offset = 70;
-    if (this._state.notification.isOpen) {
+    if (this._state.notification && this._state.notification.isOpen) {
       offset += 300;
-    } else if (this._state.loader.isOpen) {
+    } else if (this._state.loader && this._state.loader.isOpen) {
       offset += 300;
     }
     return this._windowBounds.width - offset;
@@ -39,13 +39,13 @@ export class DappFrame {
     //   return 0;
     // }
     let offset = 110;
-    if (this._state.statusBar.isOpen) {
+    if (this._state.statusBar && this._state.statusBar.isOpen) {
       offset += 250;
     }
-    if (this._state.statusBar.isPeersOpen) {  // @todo refactor account items.count . Now this functions works correctly only for 3 items
+    if (this._state.statusBar && this._state.statusBar.isPeersOpen) {  // @todo refactor account items.count . Now this functions works correctly only for 3 items
       offset += 100;
     }
-    if (this._state.search.isOpen) {
+    if (this._state.search && this._state.search.isOpen) {
       offset += this.searchOffset;
     }
 
@@ -58,7 +58,7 @@ export class DappFrame {
 
   get y() {
     let y = 60;
-    if (this._state.search.isOpen) {
+    if (this._state.search && this._state.search.isOpen) {
       y += this.searchOffset;
     }
     return y;

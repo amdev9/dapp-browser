@@ -1,0 +1,20 @@
+{
+  "title": "exampleApp2",
+  "main": "index2.html",
+  "appName": "Game",
+  "assets/": ["app/images/**"],
+  "icon": "app/images/favicon.png",
+  "preview": "app/images/thumb.png",
+  "categories": [
+    "games",
+    "tools"
+  ],
+  "permissions": [
+    "storage",
+    "filesystem",
+    "logger", 
+    "ipfs",
+    "network",
+    "keychain"
+  ]
+}

@@ -10,10 +10,14 @@ interface PermissionsPanel {
 
 export type PermissionPanelAction = ActionType<typeof permissionActions>;
 
-export default function permissions(state: PermissionsPanel = { permissions: {} }, action: PermissionPanelAction) {
+export default function permissions(state: PermissionsPanel = null, action: PermissionPanelAction) {
   switch (action.type) {
     case constants.TOGGLE_PERMISSION: {
-      const statePermissions = state.permissions;
+      let statePermissions = {};
+      if (state && state.permissions) {
+        statePermissions = state.permissions;
+      }
+
       const permissions = togglePermissions(action, statePermissions);
 
       return { ...state, permissions };
