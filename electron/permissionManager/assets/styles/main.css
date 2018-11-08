@@ -1,7 +1,8 @@
 body {
-    margin-left: 20px;
-    margin-top: 20px;
+  margin-left: 20px;
+  margin-top: 20px;
 }
+
 /* Customize the label (the container) */
 .container {
   display: block;
@@ -15,7 +16,6 @@ body {
   -ms-user-select: none;
   user-select: none;
 }
-  
 /* Hide the browser's default checkbox */
 .container input {
   position: absolute;
@@ -37,12 +37,12 @@ body {
 
 /* On mouse-over, add a grey background color */
 /* .container:hover input ~ .checkmark {
-  background-color: #ccc;
-} */
+    background-color: #ccc;
+  } */
 
 /* When the checkbox is checked, add a blue background */
-.container input:checked ~ .checkmark {
-  background-color: #2196F3;
+.container input:checked~.checkmark {
+  background-color: #4a89fc;
 }
 
 /* Create the checkmark/indicator (hidden when not checked) */
@@ -53,7 +53,7 @@ body {
 }
 
 /* Show the checkmark when checked */
-.container input:checked ~ .checkmark:after {
+.container input:checked~.checkmark:after {
   display: block;
 }
 
@@ -70,16 +70,48 @@ body {
   transform: rotate(45deg);
 }
 
-button {
-  background-color: #008CBA; /* Green */
-  border: none;
+h1 {
+  font-size: 25px;
+  color: #4a89fc;
+}
+
+.layout {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.btn-layout {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.button-success {
+  background-color: #4a89fc;
+  font-size: 12px;
   color: white;
-  padding: 15px 10px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px;
+  position: relative;
+  border: 0;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  border-radius: 4px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.button-failure {
+  font-size: 12px;
+  color: #4a89fc;
+  position: relative;
+  border: 1px solid #4a89fc;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  border-radius: 4px;
+  margin: 10px;
+  cursor: pointer;
 }
 
 button:disabled,

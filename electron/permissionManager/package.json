@@ -32,8 +32,11 @@
     "@types/react-redux": "^6.0.7",
     "@types/redux": "^3.6.0",
     "@types/redux-logger": "^3.0.6",
+    "node-sass": "^4.10.0",
+    "sass-loader": "^7.1.0",
     "ts-loader": "^5.1.0",
     "typescript": "^3.0.3",
+    "url-loader": "^1.1.2",
     "webpack": "^4.20.2",
     "webpack-cli": "^3.1.1",
     "webpack-shell-plugin": "^0.5.0"

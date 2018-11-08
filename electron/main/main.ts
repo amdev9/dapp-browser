@@ -127,11 +127,11 @@ app.on('ready', async () => {
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
 
-  app.on('activate', () => {
-    // On OS X it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
-    clientWindow = createClientWindow(globalUUIDList);
-  });
+  // app.on('activate', () => {
+  //   // On OS X it's common to re-create a window in the app when the
+  //   // dock icon is clicked and there are no other windows open.
+  //   clientWindow = createClientWindow(globalUUIDList);
+  // });
   clientWindow = createClientWindow(globalUUIDList);
   await AppsManager.parseDapps();
 
@@ -163,6 +163,11 @@ app.on('ready', async () => {
     clientWindow.focus();
   });
 
+  clientWindow.on('closed', () => {
+    clientWindow = null;
+    app.quit();
+  });
+
   try {
     networkAPI = new NetworkAPI(store);
     networkAPI.init();
@@ -187,17 +192,7 @@ app.on('ready', async () => {
         return;
       }
       const activeDappName: string = storeState.client.activeDapp.appName;
-
       const targetDappObj: AppItem = AppsManager.dapps.find(dappObj => dappObj.appName === activeDappName);
-
-      // @todo pass approved permissions back, close created window on 'APPROVE' button clicked,
-      // add data from permissionManager to state, on next action dispatch check state for permissions data exists,
-      // do not open permissionManager window if so.
-
-      // if (approve)
-      // permissionWindow.close();
-
-      // @todo create on permissions granted
       createDappView(globalUUIDList, targetDappObj);
 
       const nameObj: RendererConf = globalUUIDList.find(renObj => renObj.name === activeDappName && renObj.status === 'dapp');
@@ -231,11 +226,11 @@ app.on('ready', async () => {
     correctDappViewBounds(storeState.client);
   });
 
-  if (isProduction) {
-    clientWindow.on('resize', () => correctDappViewBounds(store.getState().client));
-    clientWindow.on('maximize', () => correctDappViewBounds(store.getState().client));
-    clientWindow.on('restore', () => correctDappViewBounds(store.getState().client));
-  }
+  // if (isProduction) {
+  //   clientWindow.on('resize', () => correctDappViewBounds(store.getState().client));
+  //   clientWindow.on('maximize', () => correctDappViewBounds(store.getState().client));
+  //   clientWindow.on('restore', () => correctDappViewBounds(store.getState().client));
+  // }
 });
 
 const correctDappViewBounds = (clientState: Client) => {
