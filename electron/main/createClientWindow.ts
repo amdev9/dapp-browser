@@ -63,21 +63,6 @@ export function createClientWindow(globalUUIDList: RendererConf[]) {
   });
   clientWindow.loadURL(clientPathUrl);
 
-  // @TODO: Use 'ready-to-show' event
-  //        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event
-  clientWindow.webContents.on('did-finish-load', () => {
-    if (!clientWindow) {
-      throw new Error('"clientWindow" is not defined');
-    }
-    clientWindow.show();
-    clientWindow.focus();
-  });
-
-  clientWindow.on('closed', () => {
-    clientWindow = null;
-    // remove from global
-  });
-
   // console.log(process.env);
   if (process.env.ELECTRON_ENV === 'development') {
     openDevTool(clientWindow, true);

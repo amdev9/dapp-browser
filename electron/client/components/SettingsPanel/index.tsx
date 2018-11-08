@@ -32,31 +32,20 @@ export class SettingsPanel extends React.Component<SettingsPanelProps, SettingsP
   }
 
   public render() {
-    // let { isOpen } = this.props;
-
-    // const props: any = {
-    //   style: {
-    //     display: isOpen ? "block" : "none"
-    //   },
-    // };
-
     return (
-      <div className="settingsbar" /*{...props}*/>
+      <div className="settingsbar">
         <Tabs>
           <TabList>
-            <Tab>General</Tab>
+            {/* <Tab>General</Tab>
             <Tab>Access</Tab>
             <Tab>Network</Tab>
-            <Tab>Dev Mode</Tab>
+            <Tab>Dev Mode</Tab> */}
             <Tab>Permissions</Tab>
           </TabList>
-          <TabPanel>
+          {/* <TabPanel>
             <form className="form-settings">
               <div className="form-group"><label>Language</label>
-                {/*<select name="language" style={{display: "none"}}>*/}
-                {/*<option value="en">English</option>*/}
-                {/*<option value="ru">Russian</option>*/}
-                {/*</select>*/}
+                 
                 <div className="nice-select" tabIndex={0}><span className="current">English</span>
                   <ul className="list">
                     <li data-value="en" className="option selected">English</li>
@@ -65,11 +54,7 @@ export class SettingsPanel extends React.Component<SettingsPanelProps, SettingsP
                 </div>
               </div>
               <div className="form-group"><label>Preferred unit of account</label>
-                {/*<select name="units" style={{display: "none"}}>*/}
-                {/*<option value="bts">BTS</option>*/}
-                {/*<option value="usd">USD</option>*/}
-                {/*<option value="rub">RUB</option>*/}
-                {/*</select>*/}
+                 
                 <div className="nice-select" tabIndex={0}><span className="current">BTS</span>
                   <ul className="list">
                     <li data-value="bts" className="option selected">BTS</li>
@@ -268,7 +253,7 @@ export class SettingsPanel extends React.Component<SettingsPanelProps, SettingsP
                 </div>
               </div>
             </form>
-          </TabPanel>
+          </TabPanel> */}
           <TabPanel>
             <PermissionsTab
               togglePermission={this.props.togglePermission}
