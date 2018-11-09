@@ -78,12 +78,15 @@
       "target": "nsis",
       "icon": "./icons/icon.ico"
     },
-    "protocols": {
-      "name": "arr",
-      "schemes": [
-        "arr"
-      ]
-    },
+    "protocols": [
+      {
+        "name": "arr",
+        "role": "Viewer",
+        "schemes": [
+          "arr"
+        ]
+      }
+    ],
     "buildDependenciesFromSource": true,
     "nodeGypRebuild": false,
     "npmRebuild": false,
