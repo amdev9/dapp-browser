@@ -50,7 +50,6 @@ const initUi = async () => {
       } catch (error) {
         console.log('networkGetBlock method\n error: ', error);
       }
-      // store.dispatch(actions.networkGetBlock());
     });
   }
 
@@ -63,8 +62,8 @@ const initUi = async () => {
   }
 
   if (document.getElementById('networkUnsubscribeButtonDapp')) {
-    document.getElementById('networkUnsubscribeButtonDapp').addEventListener('click', () => {
-      store.dispatch(actions.networkUnsubscribe());
+    document.getElementById('networkUnsubscribeButtonDapp').addEventListener('click', async () => {
+      array.networkUnsubscribe();
     });
   }
 

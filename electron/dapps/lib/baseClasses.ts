@@ -42,7 +42,7 @@ export class ArrayIO {
         actions.openDialogFailure,
       ], []),
     );
-  };
+  }
 
   networkGetBlock = async () => {
     return new Promise(
@@ -52,7 +52,7 @@ export class ArrayIO {
         actions.getBlockFailure,
       ], []),
     );
-  };
+  }
 
   networkSubscribe = async () => {
     return new Promise(
@@ -62,7 +62,17 @@ export class ArrayIO {
         actions.networkSubscribeFailure,
       ], []),
     );
-  };
+  }
+
+  networkUnsubscribe = async () => {
+    return new Promise(
+      this.handleUidPromise([
+        actions.networkUnsubscribe,
+        actions.networkUnsubscribeSuccess,
+        actions.networkUnsubscribeFailure,
+      ], []),
+    );
+  }
 
   writeToConsole = async (message: string) => {
     return new Promise(
@@ -72,7 +82,7 @@ export class ArrayIO {
         actions.loggerWriteFailure,
       ], [message]),
     );
-  };
+  }
 
   storageSave = async (key: string, value: string) => {
     return new Promise(
@@ -82,9 +92,8 @@ export class ArrayIO {
         actions.storageSaveFailure,
       ], { key, value }),
     );
-  };
+  }
 }
-
 
 interface ActionFlow {
   onStart: AnyAction;

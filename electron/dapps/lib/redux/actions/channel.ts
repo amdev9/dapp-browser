@@ -28,6 +28,10 @@ export const networkSubscribeFailure = (error: string, targetUUID? :string) =>
   action(constants.NETWORK_SUBSCRIBE_FAILURE, error, targetUUID);
 
 export const networkUnsubscribe = () => action(constants.NETWORK_UNSUBSCRIBE);
+export const networkUnsubscribeSuccess = (result: any, targetUUID? :string) =>
+  action(constants.NETWORK_UNSUBSCRIBE_SUCCESS, { result }, targetUUID);
+export const networkUnsubscribeFailure = (error: string, targetUUID? :string) =>
+  action(constants.NETWORK_UNSUBSCRIBE_FAILURE, error, targetUUID);
 
 export const writeToConsole = (uid:string, message: string) =>  action(constants.LOGGER_WRITE, { message }, { uid });
 export const loggerWriteSuccess = (result: any, targetUUID? :string) =>
@@ -67,7 +71,7 @@ export const keychainList = () => action(constants.KEYCHAIN_LIST);
 export const keychainSign = (key: string, chainId: string, transaction: string) =>
   action(constants.KEYCHAIN_SIGN, {key, chainId, transaction});
 
-export const keychainShowResult = () => action(constants.KEYCHAIN_SHOW_RESULT)
+export const keychainShowResult = () => action(constants.KEYCHAIN_SHOW_RESULT);
 
 export const orbitDbCreateDatabase = (database: string) => action(constants.ORBIT_DB_CREATE_DATABASE, { database })
 
