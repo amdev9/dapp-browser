@@ -35,9 +35,9 @@ export interface SettingsPanel {
 }
 
 export interface StatusBarPanel {
-  items: { [index: string]: StatusBarItem; },
-  isOpen: boolean,
-  isPeersOpen: boolean,
+  items: { [index: string]: StatusBarItem; };
+  isOpen: boolean;
+  isPeersOpen: boolean;
   loggerWrite: boolean;
 }
 

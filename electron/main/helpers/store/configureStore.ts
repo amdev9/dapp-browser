@@ -10,8 +10,9 @@ import { validatePermissionAction } from './validatePermissionAction';
 import rootEpic from '../epics';
 import { rootReducer } from '../reducers';
 import { RendererConf } from '../../createDappView';
-import { IState } from '../reducers/state';
+import { Client, IState } from '../reducers/state';
 import SQLiteStorage from './persist';
+import { SearchPanel, StatusBarPanel, NotificationPanel } from '../../../client/redux/reducers/state'; // todo remove the references to client
 
 export interface Action {
   type: string;
@@ -29,20 +30,115 @@ export interface Action {
   };
 }
 
+const statusBarInitialState: StatusBarPanel = {
+  items: {
+    'Russia, Moscow': {
+      status: 0,
+      peers: 25,
+      name: 'Russia, Moscow',
+      nodesTotal: 56430,
+      nodes: 76,
+      timeTotal: 120000,
+      time: 28000,
+    },
+    'Germany, Berlin': {
+      status: 1,
+      peers: 34,
+      name: 'Germany, Berlin',
+      nodesTotal: 26530,
+      nodes: 457,
+      timeTotal: 120000,
+      time: 66000,
+    },
+    'Germany, Berlin123': {
+      status: 1,
+      peers: 34,
+      name: 'Germany, Berlin123',
+      nodesTotal: 26530,
+      nodes: 457,
+      timeTotal: 120000,
+      time: 66000,
+    },
+  },
+  isOpen: false,
+  isPeersOpen: false,
+  loggerWrite: false,
+};
+
+const searchInitialState: SearchPanel = {
+  items:
+  {
+    applications: [
+      {
+        icon: `<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 128 128"><defs><style>.cls-1{fill:url(#radial-gradient);}.cls-2{fill:url(#radial-gradient-2);}.cls-3{fill:url(#linear-gradient);}</style><radialGradient id="radial-gradient" cx="133.38" cy="-4.61" r="185.11" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fd0"/><stop offset="0.45" stop-color="#ff7c55"/><stop offset="1" stop-color="#ff00c1"/></radialGradient><radialGradient id="radial-gradient-2" cx="99.29" cy="31.66" r="169.7" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fff"/><stop offset="0.39" stop-color="#fff" stop-opacity="0.62"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient><linearGradient id="linear-gradient" x1="-11.54" y1="8.29" x2="87.74" y2="90.95" xlink:href="#radial-gradient-2"/></defs><title>Game_color</title><rect class="cls-1" x="0.41" y="0.41" width="127.18" height="127.18" rx="20" ry="20"/><path class="cls-2" d="M78.9,26H51.22A29.29,29.29,0,0,0,21.93,55.29V99.61c0,4.81,2.78,6,6.18,2.56l4-4a21.74,21.74,0,0,1,15.37-6.37H78.9a29.29,29.29,0,0,0,29.29-29.29V55.29A29.29,29.29,0,0,0,78.9,26Z"/><path class="cls-3" d="M28.11,102.17l4-4a21.74,21.74,0,0,1,15.37-6.37H78.9a29.29,29.29,0,0,0,29.29-29.29V55.29A29.21,29.21,0,0,0,96.68,32C51.47,34.28,21.93,60.2,21.93,99.61,21.93,104.42,24.71,105.57,28.11,102.17Z"/></svg>`,
+        uri: 'chat://sendMessage/satan/',
+        network: 'mainnet',
+        app: 'Chat1',
+      },
+      {
+        icon: `<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 128 128"><defs><style>.cls-1{fill:url(#radial-gradient);}.cls-2{fill:url(#radial-gradient-2);}.cls-3{fill:url(#linear-gradient);}</style><radialGradient id="radial-gradient" cx="133.38" cy="-4.61" r="185.11" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fd0"/><stop offset="0.45" stop-color="#ff7c55"/><stop offset="1" stop-color="#ff00c1"/></radialGradient><radialGradient id="radial-gradient-2" cx="99.29" cy="31.66" r="169.7" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fff"/><stop offset="0.39" stop-color="#fff" stop-opacity="0.62"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient><linearGradient id="linear-gradient" x1="-11.54" y1="8.29" x2="87.74" y2="90.95" xlink:href="#radial-gradient-2"/></defs><title>Game_color</title><rect class="cls-1" x="0.41" y="0.41" width="127.18" height="127.18" rx="20" ry="20"/><path class="cls-2" d="M78.9,26H51.22A29.29,29.29,0,0,0,21.93,55.29V99.61c0,4.81,2.78,6,6.18,2.56l4-4a21.74,21.74,0,0,1,15.37-6.37H78.9a29.29,29.29,0,0,0,29.29-29.29V55.29A29.29,29.29,0,0,0,78.9,26Z"/><path class="cls-3" d="M28.11,102.17l4-4a21.74,21.74,0,0,1,15.37-6.37H78.9a29.29,29.29,0,0,0,29.29-29.29V55.29A29.21,29.21,0,0,0,96.68,32C51.47,34.28,21.93,60.2,21.93,99.61,21.93,104.42,24.71,105.57,28.11,102.17Z"/></svg>`,
+        uri: 'exchange://send-file/',
+        network: 'testnet',
+        app: 'Exchange',
+      },
+    ],
+    marketplace: [
+      {
+        icon: `<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 128 128"><defs><style>.cls-1{fill:url(#radial-gradient);}.cls-2{fill:url(#radial-gradient-2);}.cls-3{fill:url(#linear-gradient);}</style><radialGradient id="radial-gradient" cx="133.38" cy="-4.61" r="185.11" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fd0"/><stop offset="0.45" stop-color="#ff7c55"/><stop offset="1" stop-color="#ff00c1"/></radialGradient><radialGradient id="radial-gradient-2" cx="99.29" cy="31.66" r="169.7" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fff"/><stop offset="0.39" stop-color="#fff" stop-opacity="0.62"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient><linearGradient id="linear-gradient" x1="-11.54" y1="8.29" x2="87.74" y2="90.95" xlink:href="#radial-gradient-2"/></defs><title>Game_color</title><rect class="cls-1" x="0.41" y="0.41" width="127.18" height="127.18" rx="20" ry="20"/><path class="cls-2" d="M78.9,26H51.22A29.29,29.29,0,0,0,21.93,55.29V99.61c0,4.81,2.78,6,6.18,2.56l4-4a21.74,21.74,0,0,1,15.37-6.37H78.9a29.29,29.29,0,0,0,29.29-29.29V55.29A29.29,29.29,0,0,0,78.9,26Z"/><path class="cls-3" d="M28.11,102.17l4-4a21.74,21.74,0,0,1,15.37-6.37H78.9a29.29,29.29,0,0,0,29.29-29.29V55.29A29.21,29.21,0,0,0,96.68,32C51.47,34.28,21.93,60.2,21.93,99.61,21.93,104.42,24.71,105.57,28.11,102.17Z"/></svg>`,
+        uri: 'chat://marketplace/install?name=Chat',
+        network: 'mainnet',
+        app: 'Chat',
+      },
+      {
+        icon: `<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 128 128"><defs><style>.cls-1{fill:url(#radial-gradient);}.cls-2{fill:url(#radial-gradient-2);}.cls-3{fill:url(#linear-gradient);}</style><radialGradient id="radial-gradient" cx="133.38" cy="-4.61" r="185.11" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fd0"/><stop offset="0.45" stop-color="#ff7c55"/><stop offset="1" stop-color="#ff00c1"/></radialGradient><radialGradient id="radial-gradient-2" cx="99.29" cy="31.66" r="169.7" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fff"/><stop offset="0.39" stop-color="#fff" stop-opacity="0.62"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient><linearGradient id="linear-gradient" x1="-11.54" y1="8.29" x2="87.74" y2="90.95" xlink:href="#radial-gradient-2"/></defs><title>Game_color</title><rect class="cls-1" x="0.41" y="0.41" width="127.18" height="127.18" rx="20" ry="20"/><path class="cls-2" d="M78.9,26H51.22A29.29,29.29,0,0,0,21.93,55.29V99.61c0,4.81,2.78,6,6.18,2.56l4-4a21.74,21.74,0,0,1,15.37-6.37H78.9a29.29,29.29,0,0,0,29.29-29.29V55.29A29.29,29.29,0,0,0,78.9,26Z"/><path class="cls-3" d="M28.11,102.17l4-4a21.74,21.74,0,0,1,15.37-6.37H78.9a29.29,29.29,0,0,0,29.29-29.29V55.29A29.21,29.21,0,0,0,96.68,32C51.47,34.28,21.93,60.2,21.93,99.61,21.93,104.42,24.71,105.57,28.11,102.17Z"/></svg>`,
+        uri: 'chat://marketplace/install?name=Exchange',
+        network: 'testnet',
+        app: 'Exchange',
+      },
+    ],
+  },
+  isOpen: false,
+};
+
+// const chatIcon = require('../../../client/assets/app-icons/chat.svg') as string;
+// const contactIcon = require('../../../client/assets/app-icons/contact.svg') as string;
+
+const notificationsInitialState: NotificationPanel = {
+  items: [
+    {
+      id: 1,
+      message: 'Ipsum delorem new as lorem ipsum, we go to hell',
+      created: new Date(),
+      icon: 'chatIcon',
+      appName: 'Chat',
+    },
+    {
+      id: 2,
+      message: 'Delorem new as lorem ipsum, we go to hell',
+      created: new Date(),
+      icon: 'contactIcon',
+      appName: 'Chat',
+    },
+  ],
+  isOpen: false,
+};
+
+const clientInitialState: Client = {
+  activeDapp: {
+    appName: null,
+  },
+  isHome: true,
+  notification: notificationsInitialState,
+  loader: { isOpen: false },
+  statusBar: statusBarInitialState,
+  search: searchInitialState,
+  window: { width: 0, height: 0 },
+  permissions: undefined,
+};
+
 export const initialState: IState = {
   channel: {},
-  client: {
-    activeDapp: {
-      appName: null,
-    },
-    isHome: true,
-    notification: undefined, // initializes in the Client reducer { isOpen: false },
-    loader: { isOpen: false },
-    statusBar: undefined, // initializes in the Client reducer { isOpen: false, isPeersOpen: false, items: null },
-    search: undefined, // { isOpen: false, items: null },
-    window: { width: 0, height: 0 },
-    permissions: undefined,
-  },
+  client: clientInitialState,
   feed: {},
   permissionManager: { isOpen: true, permissions: {}, grantedApps: [] },
   tray: { items: [] },

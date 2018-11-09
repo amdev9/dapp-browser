@@ -2,42 +2,42 @@ import {TOGGLE_PEERS_BAR_PANEL, TOGGLE_STATUS_BAR_PANEL, LOGGER_WRITE, LOGGER_WR
  
 import { StatusBarPanel } from './state';
 
-const initialState: StatusBarPanel = {
-  items: {
-    'Russia, Moscow': {
-      status: 0,
-      peers: 25,
-      name: 'Russia, Moscow',
-      nodesTotal: 56430,
-      nodes: 76,
-      timeTotal: 120000,
-      time: 28000
-    },
-    'Germany, Berlin': {
-      status: 1,
-      peers: 34,
-      name: 'Germany, Berlin',
-      nodesTotal: 26530,
-      nodes: 457,
-      timeTotal: 120000,
-      time: 66000
-    },
-    'Germany, Berlin123': {
-      status: 1,
-      peers: 34,
-      name: 'Germany, Berlin123',
-      nodesTotal: 26530,
-      nodes: 457,
-      timeTotal: 120000,
-      time: 66000
-    }
-  },
-  isOpen: false,
-  isPeersOpen: false,
-  loggerWrite: false
-};
+// const initialState: StatusBarPanel = {
+//   items: {
+//     'Russia, Moscow': {
+//       status: 0,
+//       peers: 25,
+//       name: 'Russia, Moscow',
+//       nodesTotal: 56430,
+//       nodes: 76,
+//       timeTotal: 120000,
+//       time: 28000
+//     },
+//     'Germany, Berlin': {
+//       status: 1,
+//       peers: 34,
+//       name: 'Germany, Berlin',
+//       nodesTotal: 26530,
+//       nodes: 457,
+//       timeTotal: 120000,
+//       time: 66000
+//     },
+//     'Germany, Berlin123': {
+//       status: 1,
+//       peers: 34,
+//       name: 'Germany, Berlin123',
+//       nodesTotal: 26530,
+//       nodes: 457,
+//       timeTotal: 120000,
+//       time: 66000
+//     }
+//   },
+//   isOpen: false,
+//   isPeersOpen: false,
+//   loggerWrite: false
+// };
 
-export default function statusBar(state: StatusBarPanel = initialState, action: any) { //@todo refactor combine with notification.ts
+export default function statusBar(state: StatusBarPanel = null, action: any) { // @todo refactor combine with notification.ts
   switch (action.type) {
     case TOGGLE_STATUS_BAR_PANEL:
       //if (action.payload && action.payload.hasOwnProperty('isOpen')) {
