@@ -3,8 +3,9 @@
   Uses process.stdout.write instead of console.log so we can cleanly catch the output in the parent process.
 */
 
-import { app, BrowserWindow, Menu, dialog } from 'electron';
+import { app, BrowserWindow, Menu, dialog, protocol } from 'electron';
 import { Store } from 'redux';
+import { ReplaySubject } from 'rxjs';
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer';
 import { configureStore, initialState } from './helpers/store/configureStore';
 import { AppsManager, AppItem } from './helpers/AppsManager';
@@ -16,7 +17,7 @@ import { IState, Client } from './helpers/reducers/state';
 
 import * as nodeConsole from 'console';
 import { NetworkAPI } from './helpers/Network';
-import * as httpProtocolActions from './helpers/actions/httpProtocol';
+import { httpProtocolOpenLink } from './helpers/actions/httpProtocol';
 
 const console = new nodeConsole.Console(process.stdout, process.stderr);
 
@@ -113,9 +114,11 @@ app.on('window-all-closed', () => {
   }
 });
 
+const replayOpenUrls = new ReplaySubject();
 // Mac OS X sends url to open via this event
 app.on('open-url', (e, url) => {
-  e.preventDefault;
+  // e.preventDefault();
+  replayOpenUrls.next(url);
   console.log('open-url', url);
 });
 
@@ -137,17 +140,12 @@ app.on('ready', async () => {
   }, globalUUIDList);
 
   // Mac OS X sends url to open via this event
-  // app.on('open-url', (e, url) => {
-  //   e.preventDefault()
+  replayOpenUrls.subscribe((value: string) => {
 
-    // console.log('ONREADY OPEN-URL', url);
-
-    // const link = url.replace('arr://', '');
-    // const params = link.split('/').filter(item => item)
-    // console.log('registerHttpProtocol', params, link, url)
-    // console.log('store', httpProtocolActions, store)
-    // store.dispatch(httpProtocolActions.httpProtocolOpenLink(params));
-  // });
+    const link = value.replace('arr://', '');
+    const params = link.split('/').filter(item => item);
+    store.dispatch(httpProtocolOpenLink(params));
+  });
 
   app.on('activate', () => {
     // On OS X it's common to re-create a window in the app when the

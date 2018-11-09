@@ -7,7 +7,7 @@
     "webpack": "webpack --watch",
     "build": "webpack --config webpack.config.build.js",
     "rebuild": "electron-rebuild -f -w sqlite3",
-    "pack": "install-app-deps && electron-builder --dir",
+    "pack": "electron-builder .",
     "dist": "install-app-deps && electron-builder .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -78,15 +78,12 @@
       "target": "nsis",
       "icon": "./icons/icon.ico"
     },
-    "protocols": [
-      {
-        "name": "arr",
-        "role": "Viewer",
-        "schemes": [
-          "arr"
-        ]
-      }
-    ],
+    "protocols": {
+      "name": "arr",
+      "schemes": [
+        "arr"
+      ]
+    },
     "buildDependenciesFromSource": true,
     "nodeGypRebuild": false,
     "npmRebuild": false,
