@@ -5,30 +5,7 @@ import { NotificationPanel } from './state';
 
 export type NotificationPanelAction = ActionType<typeof notificationActions>;
 
-
-const chatIcon = require("../../assets/app-icons/chat.svg");
-const contactIcon = require("../../assets/app-icons/contact.svg");
-
-const initialState: NotificationPanel = {
-  items: [{
-    id: 1,
-    message: 'Ipsum delorem new as lorem ipsum, we go to hell',
-    created: new Date(),
-    icon: chatIcon,
-    appName: 'Chat'
-  },
-  {
-    id: 2,
-    message: 'Delorem new as lorem ipsum, we go to hell',
-    created: new Date(),
-    icon: contactIcon,
-    appName: 'Chat'
-  }
-  ],
-  isOpen: false,
-}
-
-export default function notification(state: NotificationPanel = initialState, action: NotificationPanelAction) {
+export default function notification(state: NotificationPanel = null, action: NotificationPanelAction) {
   switch (action.type) {
     case constants.TOGGLE_NOTIFICATION_PANEL:
       if (action.payload && action.payload.hasOwnProperty('isOpen')) {
