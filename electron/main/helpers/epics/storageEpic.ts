@@ -23,6 +23,35 @@ const storageSaveEpic: Epic<AnyAction> = action$ => action$.pipe(
   }),
 );
 
+const storageRemoveEpic: Epic<AnyAction> = action$ => action$.pipe(
+  ofType(constants.STORAGE_REMOVE),
+  switchMap(async (action) => {
+    try {
+      const key = action.payload.key;
+      const storage = new Storage(action.meta.sourceUUID);
+      await storage.remove(key);
+      return storageActions.removeSuccess(key);
+    } catch (error) {
+      return storageActions.removeFailure(error, action.meta.sourceUUID);
+    }
+  }),
+);
+
+const storageFindAllEpic: Epic<AnyAction> = action$ => action$.pipe(
+  ofType(constants.STORAGE_FIND_ALL),
+  switchMap(async (action) => {
+    try {
+      const storage = new Storage(action.meta.sourceUUID);
+      const result = await storage.findAll();
+      return storageActions.findAllSuccess(result);
+    } catch (error) {
+      return storageActions.findAllFailure(error, action.meta.sourceUUID);
+    }
+  }),
+);
+
 export default combineEpics(
   storageSaveEpic,
+  storageRemoveEpic,
+  storageFindAllEpic,
 );

@@ -93,6 +93,26 @@ export class ArrayIO {
       ], { key, value }),
     );
   }
+
+  storageFindAll = async () => {
+    return new Promise(
+      this.handleUidPromise([
+        actions.storageFindAll,
+        actions.storageFindAllSuccess,
+        actions.storageFindAllFailure,
+      ], []),
+    );
+  }
+
+  storageRemove = async (key: string) => {
+    return new Promise(
+      this.handleUidPromise([
+        actions.storageRemove,
+        actions.storageRemoveSuccess,
+        actions.storageRemoveFailure,
+      ], {key}),
+    );
+  }
 }
 
 interface ActionFlow {

@@ -45,6 +45,17 @@ export const storageSaveSuccess = (result: any, targetUUID?: string) =>
 export const storageSaveFailure = (error: string, targetUUID?: string) =>
   action(constants.STORAGE_SAVE_FAILURE, error, targetUUID);
 
+export const storageFindAll = (uid: string) => action(constants.STORAGE_FIND_ALL, {uid});
+export const storageFindAllSuccess = (result: any, targetUUID?: string) =>
+  action(constants.STORAGE_FIND_ALL_SUCCESS, {result}, targetUUID);
+export const storageFindAllFailure = (error: string, targetUUID?: string) =>
+  action(constants.STORAGE_FIND_ALL_FAILURE, error, targetUUID);
+export const storageRemove = (uid: string, key: string) => action(constants.STORAGE_REMOVE, key, {uid});
+export const storageRemoveSuccess = (result: any, targetUUID?: string) =>
+  action(constants.STORAGE_REMOVE_SUCCESS, {result}, targetUUID);
+export const storageRemoveFailure = (error: string, targetUUID?: string) =>
+  action(constants.STORAGE_REMOVE_FAILURE, error, targetUUID);
+
 export const showBlock = () => action(constants.SHOW_BLOCK);
 
 export const downloadIpfsFile = (hash: string) =>
