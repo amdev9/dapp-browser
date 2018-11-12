@@ -7,7 +7,9 @@ module.exports = {
   entry: './index.ts',
   output: {
     path: path.resolve(__dirname, 'build'),
-    filename: 'app.bundle.js'
+    filename: 'app.bundle.js',
+    library: 'dappsLib',
+    libraryTarget: 'umd',
   },
   module: {
     rules: [

@@ -8,7 +8,9 @@ module.exports = {
   entry: './index.ts',
   output: {
     path: __dirname + '/build',
-    filename: 'app.bundle.js'
+    filename: 'app.bundle.js',
+    library: 'ArrayIO',
+    libraryTarget: 'umd',
   },
   module: {
     rules: [
