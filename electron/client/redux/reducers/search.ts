@@ -1,6 +1,5 @@
 import { ActionType } from 'typesafe-actions';
-import { SearchPanel } from "./state";
-import { TOGGLE_SEARCH_PANEL } from "../constants";
+import { SearchPanel } from './state';
 import * as searchActions from '../actions/search';
 
 export type SearchAction = ActionType<typeof searchActions>;
@@ -43,12 +42,6 @@ export type SearchAction = ActionType<typeof searchActions>;
 
 export default function search(state: SearchPanel = null, action: SearchAction) {
   switch (action.type) {
-    case TOGGLE_SEARCH_PANEL:
-      if (action.payload && action.payload.hasOwnProperty('isOpen')) {
-        return { ...state, isOpen: action.payload.isOpen };
-      } else {
-        return { ...state, isOpen: !state.isOpen };
-      }
 
     default:
       return state;

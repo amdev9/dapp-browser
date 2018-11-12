@@ -60,8 +60,6 @@ const statusBarInitialState: StatusBarPanel = {
       time: 66000,
     },
   },
-  isOpen: false,
-  isPeersOpen: false,
   loggerWrite: false,
 };
 
@@ -97,7 +95,6 @@ const searchInitialState: SearchPanel = {
       },
     ],
   },
-  isOpen: false,
 };
 
 // const chatIcon = require('../../../client/assets/app-icons/chat.svg') as string;
@@ -120,7 +117,6 @@ const notificationsInitialState: NotificationPanel = {
       appName: 'Chat',
     },
   ],
-  isOpen: false,
 };
 
 const clientInitialState: Client = {
@@ -134,6 +130,13 @@ const clientInitialState: Client = {
   search: searchInitialState,
   window: { width: 0, height: 0 },
   permissions: undefined,
+  isOpen: {
+    notification: false,
+    loader: false,
+    statusBar: false,
+    statusBarPeers: false,
+    search: false,
+  },
 };
 
 export const initialState: IState = {

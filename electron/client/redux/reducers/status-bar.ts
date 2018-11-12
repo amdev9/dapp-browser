@@ -39,15 +39,6 @@ import { StatusBarPanel } from './state';
 
 export default function statusBar(state: StatusBarPanel = null, action: any) { // @todo refactor combine with notification.ts
   switch (action.type) {
-    case TOGGLE_STATUS_BAR_PANEL:
-      //if (action.payload && action.payload.hasOwnProperty('isOpen')) {
-      //return { ...state, isOpen: action.payload.isOpen };
-      //} else {
-      return { ...state, isOpen: !state.isOpen };
-    //}
-
-    case TOGGLE_PEERS_BAR_PANEL:
-      return { ...state, isPeersOpen: !state.isPeersOpen };
 
     case LOGGER_WRITE:
       return {...state, loggerWrite: false};

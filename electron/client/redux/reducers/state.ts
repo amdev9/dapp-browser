@@ -1,49 +1,42 @@
 import { AppItem, NotifyItem, ActiveDapp, StatusBarItem, FeedItem, SearchItem } from '../model';
 
-// @todo refactor
-// export interface ToggleStatus {
-//   NotificationPanel isOpen
-//   LoaderPanel isOpen
-//   SettingsPanel isOpen
-//   StatusBarPanel isOpen
-//   StatusBarPanel isPeersOpen
-//   SearchPanel isOpen
-// }
+export interface ToggleStatus {
+  notification: boolean;
+  loader: boolean;
+  settings: boolean;
+  statusBar: boolean;
+  statusBarPeers: boolean;
+  search: boolean;
+}
 
 export interface Feed {
-  items: FeedItem[]
+  items: FeedItem[];
 }
 
 export interface Tray {
-  items: AppItem[],
-  activeDapp: ActiveDapp,
-  pinned: string[],
+  items: AppItem[];
+  activeDapp: ActiveDapp;
+  pinned: string[];
   isHome: boolean;
 }
 
 export interface NotificationPanel {
-  items: NotifyItem[],
-  isOpen: boolean;
+  items: NotifyItem[];
 }
 
 export interface LoaderPanel {
-  isOpen: boolean;
 }
 
 export interface SettingsPanel {
-  isOpen: boolean;
 }
 
 export interface StatusBarPanel {
   items: { [index: string]: StatusBarItem; };
-  isOpen: boolean;
-  isPeersOpen: boolean;
   loggerWrite: boolean;
 }
 
 export interface SearchPanel {
   items: { [groupName: string]: SearchItem[]; };
-  isOpen: boolean;
 }
 
 export interface PermissionsPanel {
@@ -59,6 +52,7 @@ export interface IState {
   settings: SettingsPanel;
   search: SearchPanel;
   permissions: PermissionsPanel;
+  isOpen: ToggleStatus;
 }
 
 export type IsHome = boolean;

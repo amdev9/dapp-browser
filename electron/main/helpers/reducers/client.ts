@@ -50,42 +50,45 @@ export function client(state: Client = null, action: any) { // @todo refactor ad
     case constants.TOGGLE_NOTIFICATION_PANEL:
       return {
         ...state,
-        notification: {
-          isOpen: state.notification ? !state.notification.isOpen : true,
+        isOpen: {
+          ...state.isOpen,
+          notification: !state.isOpen.notification,
         },
       };
 
     case constants.TOGGLE_LOADER_PANEL:
       return {
         ...state,
-        loader: {
-          isOpen: !state.loader.isOpen,
+        isOpen: {
+          ...state.isOpen,
+          loader: !state.isOpen.loader,
         },
       };
 
     case constants.TOGGLE_STATUS_BAR_PANEL:
       return {
         ...state,
-        statusBar: {
-          ...state.statusBar,
-          isOpen: state.statusBar ? !state.statusBar.isOpen : true,
+        isOpen: {
+          ...state.isOpen,
+          statusBar: !state.isOpen.statusBar,
         },
       };
 
     case constants.TOGGLE_PEERS_BAR_PANEL:
       return {
         ...state,
-        statusBar: {
-          ...state.statusBar,
-          isPeersOpen: state.statusBar ? !state.statusBar.isPeersOpen : true,
+        isOpen: {
+          ...state.isOpen,
+          statusBarPeers: !state.isOpen.statusBarPeers,
         },
       };
 
     case constants.TOGGLE_SEARCH_PANEL:
       return {
         ...state,
-        search: {
-          isOpen: state.search ? !state.search.isOpen : true,
+        isOpen: {
+          ...state.isOpen,
+          search: !state.isOpen.statusBarPeers,
         },
       };
 
