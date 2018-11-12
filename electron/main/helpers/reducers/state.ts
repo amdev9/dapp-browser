@@ -9,17 +9,12 @@ export type Client = {
   },
   isHome: boolean,
   notification: {
-    isOpen: boolean,
   },
   statusBar: {
-    isOpen: boolean,
-    isPeersOpen: boolean,
   },
   loader: {
-    isOpen: boolean,
   },
   search: {
-    isOpen: boolean,
   },
   window: {
     width: number,
@@ -28,17 +23,14 @@ export type Client = {
   permissions: {
     permissions: {[index:string]: Permission[]},
   },
+  isOpen: {
+    notification: boolean,
+    statusBar: boolean,
+    statusBarPeers: boolean,
+    loader: boolean,
+    search: boolean,
+  },
 };
-
-// @todo refactor
-// export interface ToggleStatus {
-//   isHome
-//   notification isOpen
-//   loader isOpen
-//   statusBar isOpen
-//   statusBar isPeersOpen
-//   search isOpen
-// }
 
 export interface IState {
   channel: {};

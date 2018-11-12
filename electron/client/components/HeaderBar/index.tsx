@@ -1,26 +1,24 @@
-import * as React from "react";
+import * as React from 'react';
 import { NotificationWidget } from './NotificationWidget';
 import { HomeWidget } from './HomeWidget';
 import { DownloadWidget } from './DownloadWidget';
 import { SettingsWidget } from './SettingsWidget';
 import { NetworkWidget } from './NetworkWidget';
 import { SuggestSearch } from './SuggestSearch';
-import {SearchItem} from "../../redux/model";
+import {SearchItem} from '../../redux/model';
 
 interface HeaderBarProps {
-  isOpen?: boolean,
-  searchItems: { [index: string]: SearchItem[] },
-  isSearchPanelOpen: boolean,
-  isSettingsPanelOpen: boolean,
-  isStatusBarOpen: boolean,
-  isPeersBarOpen: boolean,
-  toggleSearchPanel(): void,
-  toggleSettingsPanel?(): void,
-  togglePanel?(): void,
-  toggleLoaderPanel?(): void,
-  toggleHome?(): void
-  toggleStatusBar(): void
-  togglePeersBar(): void
+  isOpen?: boolean;
+  searchItems: { [index: string]: SearchItem[] };
+  isSearchPanelOpen: boolean;
+  isStatusBarOpen: boolean;
+  isPeersBarOpen: boolean;
+  toggleSearchPanel(): void;
+  togglePanel?(): void;
+  toggleLoaderPanel?(): void;
+  toggleHome?(): void;
+  toggleStatusBar(): void;
+  togglePeersBar(): void;
 }
 export class HeaderBar extends React.Component<HeaderBarProps> {
   public render() {
@@ -28,15 +26,13 @@ export class HeaderBar extends React.Component<HeaderBarProps> {
       togglePanel,
       toggleHome,
       toggleLoaderPanel,
-      toggleSettingsPanel,
       searchItems,
       toggleSearchPanel,
       isSearchPanelOpen,
-      isSettingsPanelOpen,
       isStatusBarOpen,
       toggleStatusBar,
       isPeersBarOpen,
-      togglePeersBar
+      togglePeersBar,
     } = this.props;
     return (
       <div className="headerbar">
@@ -63,6 +59,6 @@ export class HeaderBar extends React.Component<HeaderBarProps> {
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
