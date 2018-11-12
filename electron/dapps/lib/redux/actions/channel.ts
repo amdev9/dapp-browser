@@ -28,6 +28,10 @@ export const networkSubscribeFailure = (error: string, targetUUID? :string) =>
   action(constants.NETWORK_SUBSCRIBE_FAILURE, error, targetUUID);
 
 export const networkUnsubscribe = () => action(constants.NETWORK_UNSUBSCRIBE);
+export const networkUnsubscribeSuccess = (result: any, targetUUID? :string) =>
+  action(constants.NETWORK_UNSUBSCRIBE_SUCCESS, { result }, targetUUID);
+export const networkUnsubscribeFailure = (error: string, targetUUID? :string) =>
+  action(constants.NETWORK_UNSUBSCRIBE_FAILURE, error, targetUUID);
 
 export const writeToConsole = (uid:string, message: string) =>  action(constants.LOGGER_WRITE, { message }, { uid });
 export const loggerWriteSuccess = (result: any, targetUUID? :string) =>
@@ -40,6 +44,17 @@ export const storageSaveSuccess = (result: any, targetUUID?: string) =>
   action(constants.STORAGE_SAVE_SUCCESS, {result}, targetUUID);
 export const storageSaveFailure = (error: string, targetUUID?: string) =>
   action(constants.STORAGE_SAVE_FAILURE, error, targetUUID);
+
+export const storageFindAll = (uid: string) => action(constants.STORAGE_FIND_ALL, {uid});
+export const storageFindAllSuccess = (result: any, targetUUID?: string) =>
+  action(constants.STORAGE_FIND_ALL_SUCCESS, {result}, targetUUID);
+export const storageFindAllFailure = (error: string, targetUUID?: string) =>
+  action(constants.STORAGE_FIND_ALL_FAILURE, error, targetUUID);
+export const storageRemove = (uid: string, key: string) => action(constants.STORAGE_REMOVE, key, {uid});
+export const storageRemoveSuccess = (result: any, targetUUID?: string) =>
+  action(constants.STORAGE_REMOVE_SUCCESS, {result}, targetUUID);
+export const storageRemoveFailure = (error: string, targetUUID?: string) =>
+  action(constants.STORAGE_REMOVE_FAILURE, error, targetUUID);
 
 export const showBlock = () => action(constants.SHOW_BLOCK);
 
@@ -67,7 +82,7 @@ export const keychainList = () => action(constants.KEYCHAIN_LIST);
 export const keychainSign = (key: string, chainId: string, transaction: string) =>
   action(constants.KEYCHAIN_SIGN, {key, chainId, transaction});
 
-export const keychainShowResult = () => action(constants.KEYCHAIN_SHOW_RESULT)
+export const keychainShowResult = () => action(constants.KEYCHAIN_SHOW_RESULT);
 
 export const orbitDbCreateDatabase = (database: string) => action(constants.ORBIT_DB_CREATE_DATABASE, { database })
 

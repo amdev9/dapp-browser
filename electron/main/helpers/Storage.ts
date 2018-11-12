@@ -32,4 +32,10 @@ export class Storage {
     const repository = await this.getRepository();
     return await repository.find();
   }
+
+  async remove(key: string) {
+    const repository = await this.getRepository();
+    const storeToRemove = await repository.findOne(key);
+    return repository.remove(storeToRemove);
+  }
 }

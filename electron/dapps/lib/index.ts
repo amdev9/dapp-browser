@@ -50,7 +50,6 @@ const initUi = async () => {
       } catch (error) {
         console.log('networkGetBlock method\n error: ', error);
       }
-      // store.dispatch(actions.networkGetBlock());
     });
   }
 
@@ -63,8 +62,8 @@ const initUi = async () => {
   }
 
   if (document.getElementById('networkUnsubscribeButtonDapp')) {
-    document.getElementById('networkUnsubscribeButtonDapp').addEventListener('click', () => {
-      store.dispatch(actions.networkUnsubscribe());
+    document.getElementById('networkUnsubscribeButtonDapp').addEventListener('click', async () => {
+      array.networkUnsubscribe();
     });
   }
 
@@ -277,6 +276,16 @@ const initUi = async () => {
       array.storageSave(keyElement.value, valueElement.value);
     });
   }
+
+  document.getElementById('storageDeleteButton').addEventListener('click', (e: any) => {
+    const keyElement = <HTMLInputElement>document.getElementById('storageKey');
+    array.storageRemove(keyElement.value);
+  });
+
+  document.getElementById('storageFindAllButton').addEventListener('click', async (e: any) => {
+    const result = await array.storageFindAll();
+    console.log(`findAll result: ${result}`);
+  });
 };
 
 initUi();

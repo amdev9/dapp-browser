@@ -62,6 +62,14 @@ const dappActions: string[] = [
   constants.KEYCHAIN_SHOW_RESULT,
 
   constants.STORAGE_SAVE,
+  constants.STORAGE_SAVE_SUCCESS,
+  constants.STORAGE_SAVE_FAILURE,
+  constants.STORAGE_REMOVE,
+  constants.STORAGE_REMOVE_SUCCESS,
+  constants.STORAGE_REMOVE_FAILURE,
+  constants.STORAGE_FIND_ALL,
+  constants.STORAGE_FIND_ALL_SUCCESS,
+  constants.STORAGE_FIND_ALL_FAILURE,
 
   constants.ORBIT_DB_CREATE_DATABASE,
   constants.ORBIT_DB_CREATE_DATABASE_SUCCESS,
