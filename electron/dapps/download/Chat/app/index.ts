@@ -1,2 +1,1 @@
-console.log('hello', require('array-io'))
-
+const ArrayIO = require('array-io');
