@@ -73,7 +73,7 @@ export class AppsManager {
   static async parseDapps() {
     try {
       const dappsFolders: string[] = await readDir(DAPPS_PATH);
-      console.log('PATH', DAPPS_PATH)
+      console.log('PATH', DAPPS_PATH);
 
       const promises = dappsFolders.map(folder => this.parseDapp(folder)); // @todo rewrite with async lib
       await Promise.all(promises);

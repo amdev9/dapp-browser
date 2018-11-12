@@ -1,7 +1,7 @@
 import { StatusBarItem } from '../../redux/model';
 import * as React from 'react';
 import { Bar } from './bar';
-import {Logger} from '../../Logger';
+import { Logger } from '../../Logger';
 
 interface StatusBarProps {
   items?: { [index: string]: StatusBarItem; };
@@ -21,7 +21,6 @@ export class StatusBar extends React.Component<StatusBarProps> {
 
   public getList(): JSX.Element[] {
     const { items, peersBarIsOpen, toggleStatusBar } = this.props;
-
     if (items) {
       return Object.keys(items)
         .filter((key, index) => index !== 0) // don't take first element as it always visible
@@ -33,12 +32,8 @@ export class StatusBar extends React.Component<StatusBarProps> {
           toggleStatusBar={toggleStatusBar}
         />
       ))
-    } else {
-      // @todo replace next
-      return [
-
-      ]
     }
+    return [];
   }
 
   public getMessages(): JSX.Element[] {

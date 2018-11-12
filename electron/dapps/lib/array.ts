@@ -75,7 +75,7 @@ const promiseHandlerMiddleware = (emitter: any) => {
   };
 };
 const configureStore = (initialState?: any) => {
-  const middleware = [forwardToMain, epicMiddleware, logger, promiseHandlerMiddleware(emitter)]; // @todo add promiseHandlerMiddleware
+  const middleware = [forwardToMain, epicMiddleware, logger, promiseHandlerMiddleware(emitter)]; 
   const enhanced = [
     applyMiddleware(...middleware),
   ];

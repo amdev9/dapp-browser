@@ -1,6 +1,6 @@
 import { AppItem, NotifyItem, ActiveDapp, StatusBarItem, FeedItem, SearchItem } from '../model';
 
-// @todo
+// @todo refactor
 // export interface ToggleStatus {
 //   NotificationPanel isOpen
 //   LoaderPanel isOpen

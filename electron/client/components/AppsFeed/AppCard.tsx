@@ -1,7 +1,6 @@
 import * as React from "react"
 import { DApp } from '../../redux/model';
-
-// import { MoonLoader } from "react-spinners"
+// import { MoonLoader } from "react-spinners";
 
 interface AppCardProps {
   dapp?: DApp,
@@ -10,23 +9,9 @@ interface AppCardProps {
 
 export class AppCard extends React.Component<AppCardProps>  {
   constructor(props: AppCardProps) {
-    super(props)
-
-    this.getCategories = this.getCategories.bind(this)
-    // this.actionHandle = this.actionHandle.bind(this)
-
+    super(props);  
+    this.getCategories = this.getCategories.bind(this);
   }
-
-  // public state: AppCard.State = {
-  //   status: None,
-  // }
-
-  // private async actionHandle() {
-  //   // @TODO: add functionaly cb wrapper here\
-  //   this.setState({
-  //     status: Some(AppCard.ActionStatus.Update),
-  //   })
-  // }
 
   private getCategories(): JSX.Element {
     const { dapp } = this.props;
@@ -46,17 +31,11 @@ export class AppCard extends React.Component<AppCardProps>  {
     return (
       <div className="app-card" onClick={() => toggleAppHome(dapp.appName)}>
         <div className="header" style={{ backgroundImage: `url('${dapp.preview}')` }}>
-
-
-          {/* @TODO: add addittional network tags */
-
-          }
         </div>
         <div className="content">
           <div className="title">{dapp.appName}</div>
           <div className="footer">
             {this.getCategories()}
-
           </div>
         </div>
       </div>

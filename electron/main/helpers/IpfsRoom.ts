@@ -59,7 +59,7 @@ export default class IpfsRoom {
     const ipfs = await getReadyIpfsInstance({ repo: path.join(appTempPath, 'ipfs-room', 'repos') });
 
     const similarRoom = RoomMapInstance.getRoom(dappUUID, roomName);
-    
+
     if (similarRoom) {
       return similarRoom && new IpfsRoom(similarRoom, { dappUUID, roomName });
     }
