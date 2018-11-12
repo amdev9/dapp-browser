@@ -7,6 +7,7 @@ export interface ToggleStatus {
   statusBar: boolean;
   statusBarPeers: boolean;
   search: boolean;
+  [key: string]: boolean;
 }
 
 export interface Feed {
