@@ -125,7 +125,7 @@ const clientInitialState: Client = {
   },
   isHome: true,
   notification: notificationsInitialState,
-  loader: { isOpen: false },
+  loader: {},
   statusBar: statusBarInitialState,
   search: searchInitialState,
   window: { width: 0, height: 0 },
