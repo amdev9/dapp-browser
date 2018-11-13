@@ -20,6 +20,9 @@ const initUi = async () => {
   renderState();
   store.subscribe(renderState);
   console.log('INIT DAPP SUCCESS')
+  document.addEventListener('DOMContentLoaded', (event) => {
+    store.dispatch(actions.dappContentLoaded());
+  });
   // setTimeout(() => {
 
   // }, 1000)

@@ -17,6 +17,7 @@ const dappActions: string[] = [
   constants.HTTP_PROTOCOL_OPEN_LINK,
   constants.DAPP_ACTION_OPEN_LINK,
   constants.DAPP_ACTION_OPEN_LINK_SUCCESS,
+  constants.DAPP_CONTENT_LOADED,
 
   constants.IPFS_STORAGE_UPLOAD_FILE,
   constants.IPFS_STORAGE_UPLOAD_FILE_SUCCESS,

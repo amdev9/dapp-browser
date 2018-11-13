@@ -95,3 +95,5 @@ export const orbitDbGetEntry = (database: string, hash: string) => action(consta
 export const orbitDbGetAllEntries = (database: string) => action(constants.ORBIT_DB_GET_ALL_ENTRIES, { database })
 
 export const toggleAppHomeSuccess = () => action(constants.TOGGLE_APP_HOME_SUCCESS)
+
+export const dappContentLoaded = () => action(constants.DAPP_CONTENT_LOADED)

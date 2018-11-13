@@ -9,6 +9,7 @@ const rootElement = document.getElementById('Chat-IPFS-app-container');
 
 if (rootElement) {
   render(<Root/>, rootElement, () => {
+    console.log('CHAT INIT')
     initDappSuccess();
     initApp();
   });
