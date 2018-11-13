@@ -12,10 +12,17 @@ interface KeychainPanelProps {
   toggleLoaderPanel?(openStatus: boolean): void;
 }
 
-export class KeychainPanel extends React.Component<KeychainPanelProps> {
+interface KeychainPanelState {
+  inputValue: string;
+}
+
+export class KeychainPanel extends React.Component<KeychainPanelProps, KeychainPanelState> {
   constructor(props: KeychainPanelProps) {
     super(props);
     this.getList = this.getList.bind(this);
+    this.state = {
+      inputValue: '',
+    };
   }
 
   private getList(): JSX.Element[] | JSX.Element {
@@ -34,6 +41,12 @@ export class KeychainPanel extends React.Component<KeychainPanelProps> {
         />
       );
     }
+  }
+
+  updateInputValue(evt: React.ChangeEvent<HTMLInputElement>) {
+    this.setState({
+      inputValue: evt.target.value
+    });
   }
 
   render() {
@@ -67,8 +80,8 @@ export class KeychainPanel extends React.Component<KeychainPanelProps> {
             {this.getList()}
           </div>
           <div>
-            <input type="text" style={ {margin: '10px'} } ></input>
-            <button onClick={ () => this.props.createKey('hello')  }>Create</button>
+            <input value={this.state.inputValue} style={{ margin: '10px' }} onChange={evt => this.updateInputValue(evt)} ></input>
+            <button onClick={ () => this.props.createKey(this.state.inputValue) }>Create</button>
           </div>
         </div>
       </Menu>

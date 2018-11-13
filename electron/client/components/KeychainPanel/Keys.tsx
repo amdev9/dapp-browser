@@ -16,7 +16,7 @@ export class Keys extends React.Component<KeysProps> {
 
     if (items) {
       return items.map((item) => (
-        <div className="item" onClick={ () => this.props.removeKey('hello')}>
+        <div className="item" onClick={ () => this.props.removeKey(item)}>
           <div className="title">
             <span className="app">{item}</span>
           </div>
