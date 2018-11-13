@@ -24,7 +24,11 @@
     "rimraf": "^2.6.2"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
     "electron": "3.0.6",
-    "electron-packager": "^12.2.0"
+    "electron-packager": "^12.2.0",
+    "mocha": "^5.2.0",
+    "spectron": "^5.0.0"
   }
 }
