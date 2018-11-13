@@ -40,6 +40,7 @@ export class PermissionLayout extends React.Component<PermissionLayoutProps>  {
   handleGrant() {
     if (this.hasCheckedPermissions()) {
       this.props.onGrantPermissions(this.props.appName);
+      this.props.onCloseManager();
     }
   }
 

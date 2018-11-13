@@ -122,7 +122,7 @@ class App extends React.Component<AppProps> {
                       />;
 
               default:
-                return <AppsFeed items={feedItems} toggleAppHome={onToggleAppHome} /*settingsPanelIsOpen={openSettingsPanel}*/ downloadDapp={downloadDapp}/>;
+                return <AppsFeed items={feedItems} switchDapp={onSwitchDapp} /*settingsPanelIsOpen={openSettingsPanel}*/ downloadDapp={downloadDapp}/>;
             }
           })()}
 

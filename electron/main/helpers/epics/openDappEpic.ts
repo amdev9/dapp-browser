@@ -6,12 +6,8 @@ import { AppsManager } from '../AppsManager';
 import { addAppItem, switchDapp } from '../actions/client';
 
 const openDappEpic: Epic<any> = action$ => action$.pipe(
-  ofType(constants.TOGGLE_APP_HOME),
-  concatMap((action: any) => of(
-    addAppItem(AppsManager.getAppItem(action.payload.targetDappName)),
-  )
-    .pipe(merge(of(switchDapp(action.payload.targetDappName)))),
-  ),
+  ofType(constants.SWITCH_DAPP),
+  concatMap((action: any) => of(addAppItem(AppsManager.getAppItem(action.payload.targetDappName)))),
 );
 
 export default combineEpics(

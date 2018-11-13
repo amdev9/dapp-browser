@@ -16,7 +16,7 @@ export type BindedListConf = BindedConf[];
 export interface RendererConf {
   id: string;
   name?: string;
-  status: string;
+  status: 'permission_manager' | 'client' | 'dapp';
   winId: number;
   dappView?: BrowserView;
   intent?: string;
@@ -24,8 +24,10 @@ export interface RendererConf {
 }
 
 export function createDappView(globalUUIDList: RendererConf[], dapp: AppItem) { // entryPath: string, appName: string
-  if (dapp && globalUUIDList.findIndex(item => item.name === dapp.appName && item.status === 'dapp') !== -1) { // Skip creating a new BrowserView for the same dapp
-    return;
+  const createdDapp = dapp && globalUUIDList.find(item => item.name === dapp.appName && item.status === 'dapp');
+
+  if (createdDapp) { // Skip creating a new BrowserView for the same dapp
+    return createdDapp;
   }
   const uuidDapp = uuidv4();
   const authorizedChannelsList = ['channelId1', 'channelId2']; // next todo get channels list from dapp manifest
@@ -71,4 +73,5 @@ export function createDappView(globalUUIDList: RendererConf[], dapp: AppItem) { 
   };
   globalUUIDList.push(rendererObj);
 
+  return rendererObj;
 }

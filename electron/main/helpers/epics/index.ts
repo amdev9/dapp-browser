@@ -1,4 +1,4 @@
-import { combineEpics } from 'redux-observable';
+import { combineEpics, Epic } from 'redux-observable';
 
 import openChannelEpic from './openChannelEpic';
 import bindOpenChannelsEpic from './bindOpenChannelsEpic';
@@ -12,10 +12,14 @@ import marketEpic from './marketEpic';
 import orbitDBEpic from './orbitDBEpic';
 import storageEpic from './storageEpic';
 import httpProtocolEpic from './httpProtocolEpic';
+import appMainEpic from './appMainEpic';
+import { ChannelAction } from "../reducers/channel";
+import { ignoreElements } from "rxjs/operators";
 
 // todo fix https://github.com/piotrwitek/react-redux-typescript-guide#async-flow
 
 export default combineEpics(
+  appMainEpic,
   openChannelEpic,
   bindOpenChannelsEpic,
   openDappEpic,

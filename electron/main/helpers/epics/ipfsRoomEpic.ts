@@ -1,7 +1,7 @@
 import { combineEpics, Epic, ofType, ActionsObservable } from 'redux-observable';
 import { AnyAction } from 'redux';
 import { of } from 'rxjs';
-import { switchMap, map, catchError } from 'rxjs/operators';
+import { switchMap, map, catchError, ignoreElements, tap } from 'rxjs/operators';
 
 import IpfsRoom from '../IpfsRoom';
 import * as constants from '../constants';

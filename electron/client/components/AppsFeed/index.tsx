@@ -4,7 +4,7 @@ import { DApp } from "../../redux/model";
 
 interface AppsFeedProps {
   items?: DApp[],
-  toggleAppHome?: (dappName?: string) => any,
+  switchDapp?: (dappName?: string) => void,
   resizeAppsFeed?: (width: number, height: number) => any;
   downloadDapp: (ipfsHash: string) => void;
   //settingsPanelIsOpen: boolean
@@ -22,7 +22,7 @@ export class AppsFeed extends React.Component<AppsFeedProps> {
     //const { settingsPanelIsOpen } = this.props;
 
     const appCardsList: JSX.Element[] = this.props.items.map((item): JSX.Element => (
-      <AppCard key={item.appName} dapp={item} toggleAppHome={this.props.toggleAppHome} />
+      <AppCard key={item.appName} dapp={item} switchDapp={() => this.props.switchDapp(item.appName)} />
     ));
 
     //const props = { style: { display: settingsPanelIsOpen ? "none" : "block" } };
