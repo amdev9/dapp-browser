@@ -74,6 +74,15 @@ export function client(state: Client = null, action: any) { // @todo refactor ad
         },
       };
 
+    case constants.TOGGLE_KEYCHAIN_PANEL:
+      return {
+        ...state,
+        isOpen: {
+          ...state.isOpen,
+          keychain: !state.isOpen.keychain,
+        },
+      };
+
     case constants.TOGGLE_PEERS_BAR_PANEL:
       return {
         ...state,
@@ -103,6 +112,12 @@ export function client(state: Client = null, action: any) { // @todo refactor ad
       const permissions = togglePermissions(action, statePermissions);
       return { ...state, permissions: { ...state.permissions, permissions } };
     }
+
+    case constants.KEYCHAIN_CREATE_KEY:
+      return { ...state, keychain: { items: [...state.keychain.items, action.payload.name] } };
+
+    case constants.KEYCHAIN_REMOVE_KEY:
+      return { ...state, keychain: { items: state.keychain.items.filter(item => item !== action.payload.name) } };
 
     default:
       return state;
