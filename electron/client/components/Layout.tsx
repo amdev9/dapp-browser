@@ -46,6 +46,8 @@ interface AppProps {
   onToggleHome: (openStatus?: boolean) => any;
   onToggleLoaderPanel: (openStatus?: boolean) => any;
   onToggleSearch: (openStatus?: boolean) => any;
+  keychainCreateKey: (name: string) => void;
+  keychainRemoveKey: (name: string) => void;
   clearNotification: (id?: number) => void;
   clearAllNotifications: () => void;
   onAddAppItem: (appItem?: AppItem) => any;
@@ -73,7 +75,7 @@ class App extends React.Component<AppProps> {
       onTogglePanel, openNotificationPanel, openKeychainPanel, openStatusBarPanel, openPeersBarPanel, openSearchPanel, clearNotification, clearAllNotifications,
       onAddAppItem, onSwitchDapp, onToggleHome, statusBarToggle, peersBarToggle, keychainToggle, onToggleAppHome, onToggleSearch, searchItems,
       trayItems, feedItems, notifyItems, keychainItems, statusBarItems, onToggleLoaderPanel, openLoaderPanel, locationPath, loggerWrite,
-      downloadDapp, togglePermission, grantPermissions, permissions,
+      downloadDapp, togglePermission, grantPermissions, permissions, keychainCreateKey, keychainRemoveKey,
     } = this.props;
 
     return (
@@ -97,6 +99,8 @@ class App extends React.Component<AppProps> {
           items={keychainItems}
           isOpen={openKeychainPanel}
           togglePanel={(openStatus) => onTogglePanel(openStatus)}
+          createKey={(name) => keychainCreateKey(name)}
+          removeKey={(name) => keychainRemoveKey(name)}
           isLoaderPanelOpen={openLoaderPanel}
           toggleLoaderPanel={(openStatus) => onToggleLoaderPanel(openStatus)}
           key="root-keychain" />
@@ -183,6 +187,8 @@ const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
   statusBarToggle: StatusBarActions.toggle,
   peersBarToggle: StatusBarActions.togglePeers,
   keychainToggle: KeychainActions.toggle,
+  keychainCreateKey: KeychainActions.createKey,
+  keychainRemoveKey: KeychainActions.removeKey,
   onAddAppItem: TrayActions.addAppItem,
   onSwitchDapp: TrayActions.switchDapp,
   onToggleHome: TrayActions.toggleHome,

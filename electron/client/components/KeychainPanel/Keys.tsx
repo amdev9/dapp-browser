@@ -2,6 +2,7 @@ import * as React from 'react';
 
 interface KeysProps {
   items: string[];
+  removeKey: (name: string) => void;
 }
 
 export class Keys extends React.Component<KeysProps> {
@@ -15,7 +16,7 @@ export class Keys extends React.Component<KeysProps> {
 
     if (items) {
       return items.map((item) => (
-        <div className="item">
+        <div className="item" onClick={ () => this.props.removeKey('hello')}>
           <div className="title">
             <span className="app">{item}</span>
           </div>

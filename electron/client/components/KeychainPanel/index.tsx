@@ -6,6 +6,8 @@ interface KeychainPanelProps {
   isOpen?: boolean;
   items?: string[];
   togglePanel?(openStatus: boolean): void;
+  createKey(name: string): void;
+  removeKey(name: string): void;
   isLoaderPanelOpen?: boolean;
   toggleLoaderPanel?(openStatus: boolean): void;
 }
@@ -22,13 +24,13 @@ export class KeychainPanel extends React.Component<KeychainPanelProps> {
     if (!items || items.length === 0) {
       return (
         <div className="empty">
-
         </div>
       );
     } else {
       return (
         <Keys
           items={items}
+          removeKey={this.props.removeKey}
         />
       );
     }
@@ -63,6 +65,10 @@ export class KeychainPanel extends React.Component<KeychainPanelProps> {
           </div>
           <div className="groups">
             {this.getList()}
+          </div>
+          <div>
+            <input type="text" style={ {margin: '10px'} } ></input>
+            <button onClick={ () => this.props.createKey('hello')  }>Create</button>
           </div>
         </div>
       </Menu>
