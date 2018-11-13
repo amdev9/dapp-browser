@@ -5,7 +5,8 @@ import { DownloadWidget } from './DownloadWidget';
 import { SettingsWidget } from './SettingsWidget';
 import { NetworkWidget } from './NetworkWidget';
 import { SuggestSearch } from './SuggestSearch';
-import {SearchItem} from '../../redux/model';
+import { Keychain } from './Keychain';
+import { SearchItem } from '../../redux/model';
 
 interface HeaderBarProps {
   isOpen?: boolean;
@@ -52,7 +53,7 @@ export class HeaderBar extends React.Component<HeaderBarProps> {
           />
           <div className="unions">
             <NetworkWidget />
-            {/* <Keychain /> */}
+            <Keychain />
             <SettingsWidget /*isOpen*/ toggleHome={toggleHome} />
             <NotificationWidget isOpen togglePanel={togglePanel} />
             <DownloadWidget isOpen togglePanel={toggleLoaderPanel} />
