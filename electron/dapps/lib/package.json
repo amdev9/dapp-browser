@@ -11,6 +11,7 @@
   },
   "author": "",
   "license": "ISC",
+  "types": "./types/app.d.ts",
   "devDependencies": {
     "@types/classnames": "^2.2.6",
     "@types/history": "^4.7.2",

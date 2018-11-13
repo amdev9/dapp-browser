@@ -15,6 +15,7 @@ const renderState = () => {
   // next todo library object dapp will emit events on store pub-sub actions in: `dapp.emit('event-name', ...)`
 };
 
+export { Chat } from './baseClasses';
 const initUi = async () => {
   renderState();
   store.subscribe(renderState);
@@ -277,15 +278,19 @@ const initUi = async () => {
     });
   }
 
-  document.getElementById('storageDeleteButton').addEventListener('click', (e: any) => {
-    const keyElement = <HTMLInputElement>document.getElementById('storageKey');
-    array.storageRemove(keyElement.value);
-  });
+  if (document.getElementById('storageDeleteButton')) {
+    document.getElementById('storageDeleteButton').addEventListener('click', (e: any) => {
+      const keyElement = <HTMLInputElement>document.getElementById('storageKey');
+      array.storageRemove(keyElement.value);
+    });
+  }
 
-  document.getElementById('storageFindAllButton').addEventListener('click', async (e: any) => {
-    const result = await array.storageFindAll();
-    console.log(`findAll result: ${result}`);
-  });
+  if (document.getElementById('storageFindAllButton')) {
+    document.getElementById('storageFindAllButton').addEventListener('click', async (e: any) => {
+      const result = await array.storageFindAll();
+      console.log(`findAll result: ${result}`);
+    });
+  }
 };
 
 initUi();
