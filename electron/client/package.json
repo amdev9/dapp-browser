@@ -61,7 +61,6 @@
     "module-alias": "^2.1.0",
     "moment": "^2.22.2",
     "prop-types": "^15.5.10",
-    "rc-dropdown": "^2.2.1",
     "rc-progress": "^2.2.6",
     "react": "^16.4.0",
     "react-autocomplete": "^1.8.1",

@@ -5,7 +5,7 @@ import { DownloadWidget } from './DownloadWidget';
 import { SettingsWidget } from './SettingsWidget';
 import { NetworkWidget } from './NetworkWidget';
 import { SuggestSearch } from './SuggestSearch';
-import { Keychain } from './Keychain';
+import { KeychainWidget } from './KeychainWidget';
 import { SearchItem } from '../../redux/model';
 
 interface HeaderBarProps {
@@ -20,6 +20,7 @@ interface HeaderBarProps {
   toggleHome?(): void;
   toggleStatusBar(): void;
   togglePeersBar(): void;
+  toggleKeychain(): void;
 }
 export class HeaderBar extends React.Component<HeaderBarProps> {
   public render() {
@@ -34,6 +35,7 @@ export class HeaderBar extends React.Component<HeaderBarProps> {
       toggleStatusBar,
       isPeersBarOpen,
       togglePeersBar,
+      toggleKeychain,
     } = this.props;
     return (
       <div className="headerbar">
@@ -53,7 +55,7 @@ export class HeaderBar extends React.Component<HeaderBarProps> {
           />
           <div className="unions">
             <NetworkWidget />
-            <Keychain />
+            <KeychainWidget togglePanel={toggleKeychain} />
             <SettingsWidget /*isOpen*/ toggleHome={toggleHome} />
             <NotificationWidget isOpen togglePanel={togglePanel} />
             <DownloadWidget isOpen togglePanel={toggleLoaderPanel} />

@@ -122,6 +122,7 @@ const clientInitialState: Client = {
   },
   isHome: true,
   notification: notificationsInitialState,
+  keychain: { items: ['TEST1', 'TEST2'] },
   loader: {},
   statusBar: statusBarInitialState,
   search: searchInitialState,
@@ -133,6 +134,7 @@ const clientInitialState: Client = {
     statusBar: false,
     statusBarPeers: false,
     search: false,
+    keychain: false,
   },
 };
 

@@ -3,6 +3,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 
 import * as NotificationActions from '../redux/actions/notification';
+import * as KeychainActions from '../redux/actions/keychain';
 import * as LoaderActions from '../redux/actions/loader';
 import * as TrayActions from '../redux/actions/tray';
 import * as StatusBarActions from '../redux/actions/status-bar';
@@ -15,6 +16,7 @@ import { AppItem, NotifyItem, StatusBarItem, FeedItem, SearchItem } from '../red
 import { HeaderBar } from './HeaderBar';
 import { NotificationPanel } from './NotificationPanel';
 import { LoaderPanel } from './LoaderPanel';
+import { KeychainPanel } from './KeychainPanel';
 import { SettingsPanel } from './SettingsPanel';
 import { StatusBar } from './StatusBar';
 import { Tray } from './Tray';
@@ -29,14 +31,17 @@ interface AppProps {
   openStatusBarPanel: boolean;
   openPeersBarPanel: boolean;
   openSearchPanel: boolean;
+  openKeychainPanel: boolean;
 
   trayItems: AppItem[];
   feedItems: FeedItem[];
   notifyItems: NotifyItem[];
+  keychainItems: string[];
   searchItems: { [index: string]: SearchItem[] };
   statusBarItems?: { [index: string]: StatusBarItem };
   statusBarToggle: () => void;
   peersBarToggle: () => void;
+  keychainToggle: (openStatus?: boolean) => void;
   onTogglePanel: (openStatus?: boolean) => any;
   onToggleHome: (openStatus?: boolean) => any;
   onToggleLoaderPanel: (openStatus?: boolean) => any;
@@ -65,9 +70,9 @@ class App extends React.Component<AppProps> {
 
   render() {
     const {
-      onTogglePanel, openNotificationPanel, openStatusBarPanel, openPeersBarPanel, openSearchPanel, clearNotification, clearAllNotifications,
-      onAddAppItem, onSwitchDapp, onToggleHome, statusBarToggle, peersBarToggle, onToggleAppHome, onToggleSearch, searchItems,
-      trayItems, feedItems, notifyItems, statusBarItems, onToggleLoaderPanel, openLoaderPanel, locationPath, loggerWrite,
+      onTogglePanel, openNotificationPanel, openKeychainPanel, openStatusBarPanel, openPeersBarPanel, openSearchPanel, clearNotification, clearAllNotifications,
+      onAddAppItem, onSwitchDapp, onToggleHome, statusBarToggle, peersBarToggle, keychainToggle, onToggleAppHome, onToggleSearch, searchItems,
+      trayItems, feedItems, notifyItems, keychainItems, statusBarItems, onToggleLoaderPanel, openLoaderPanel, locationPath, loggerWrite,
       downloadDapp, togglePermission, grantPermissions, permissions,
     } = this.props;
 
@@ -88,6 +93,13 @@ class App extends React.Component<AppProps> {
           isNotificationPanelOpen={openNotificationPanel}
           toggleNotificationPanel={(openStatus) => onTogglePanel(openStatus)}
           key="root-loader" />
+        <KeychainPanel
+          items={keychainItems}
+          isOpen={openKeychainPanel}
+          togglePanel={(openStatus) => onTogglePanel(openStatus)}
+          isLoaderPanelOpen={openLoaderPanel}
+          toggleLoaderPanel={(openStatus) => onToggleLoaderPanel(openStatus)}
+          key="root-keychain" />
         <HeaderBar
           isOpen={openNotificationPanel}
           togglePanel={() => onTogglePanel()}
@@ -100,6 +112,7 @@ class App extends React.Component<AppProps> {
           toggleStatusBar={statusBarToggle}
           isPeersBarOpen={openPeersBarPanel}
           togglePeersBar={peersBarToggle}
+          toggleKeychain={keychainToggle}
           key="root-headerbar" />
         <div className="content-zone" key="root-content" id="root-container">
 
@@ -147,7 +160,9 @@ class App extends React.Component<AppProps> {
 
 const mapStateToProps = (state: IState) => ({
   notifyItems: state.notification.items,
+  keychainItems: state.keychain.items,
   openNotificationPanel: state.isOpen.notification,
+  openKeychainPanel: state.isOpen.keychain,
   openLoaderPanel: state.isOpen.loader,
   openStatusBarPanel: state.isOpen.statusBar,
   openPeersBarPanel: state.isOpen.statusBarPeers,
@@ -167,6 +182,7 @@ const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
   onToggleLoaderPanel: LoaderActions.toggle,
   statusBarToggle: StatusBarActions.toggle,
   peersBarToggle: StatusBarActions.togglePeers,
+  keychainToggle: KeychainActions.toggle,
   onAddAppItem: TrayActions.addAppItem,
   onSwitchDapp: TrayActions.switchDapp,
   onToggleHome: TrayActions.toggleHome,
