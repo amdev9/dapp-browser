@@ -14,6 +14,9 @@ import { createClientWindow } from './createClientWindow';
 import { createPermissionWindow } from './createPermissionWindow';
 import { createDappView, RendererConf } from './createDappView';
 import { IState, Client } from './helpers/reducers/state';
+import { getDefaultExecPath, Keychain } from './helpers/Keychain';
+import * as path from 'path';
+const KEYCHAIN_PATH = path.join(__dirname, '..', 'helpers', 'Keychain', getDefaultExecPath());
 
 import * as nodeConsole from 'console';
 import { NetworkAPI } from './helpers/Network';
@@ -134,8 +137,17 @@ app.on('ready', async () => {
 
   await AppsManager.parseDapps();
 
+  let keysList: string[] = [];
+  try {
+    const keychainInstance = new Keychain(KEYCHAIN_PATH);
+    keysList = await keychainInstance.list();
+  } catch (e) {
+    console.log('keychain error: ', e);
+  }
+
   store = configureStore({
     ...initialState,
+    client: { ...initialState.client, keychain: { items: keysList } },
     feed: { items: AppsManager.dapps },
   }, globalUUIDList);
 
