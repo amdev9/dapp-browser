@@ -113,8 +113,8 @@ export function client(state: Client = null, action: any) { // @todo refactor ad
       return { ...state, permissions: { ...state.permissions, permissions } };
     }
 
-    case constants.KEYCHAIN_CREATE_KEY:
-      return { ...state, keychain: { items: [...state.keychain.items, action.payload.name] } };
+    case constants.KEYCHAIN_LIST_SUCCESS:
+      return { ...state, keychain: { items: action.payload } };
 
     case constants.KEYCHAIN_REMOVE_KEY:
       return { ...state, keychain: { items: state.keychain.items.filter(item => item !== action.payload.name) } };

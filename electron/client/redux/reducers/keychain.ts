@@ -7,15 +7,12 @@ export type KeychainPanelAction = ActionType<typeof keychainActions>;
 
 export default function keychain(state: KeychainPanel = null, action: KeychainPanelAction) {
   switch (action.type) {
-    case constants.KEYCHAIN_CREATE_KEY:
-      if (!state.items.includes(action.payload.name)) {
-        return { ...state, items: [...state.items, action.payload.name] };
-      } else {
-        return state;
-      }
 
     case constants.KEYCHAIN_REMOVE_KEY:
       return {...state, items: state.items.filter(item => item !== action.payload.name)};
+
+    case constants.KEYCHAIN_LIST_SUCCESS:
+      return {...state, items: action.payload};
 
     default:
       return state;

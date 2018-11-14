@@ -1,8 +1,12 @@
 import { action } from 'typesafe-actions';
-import { TOGGLE_KEYCHAIN_PANEL, KEYCHAIN_CREATE_KEY, KEYCHAIN_REMOVE_KEY } from '../constants';
+import { TOGGLE_KEYCHAIN_PANEL, KEYCHAIN_CREATE, KEYCHAIN_REMOVE_KEY, KEYCHAIN_LIST, KEYCHAIN_LIST_SUCCESS } from '../constants';
 
 export const toggle = (openStatus: boolean) => action(TOGGLE_KEYCHAIN_PANEL, { isOpen: openStatus });
 
-export const createKey = (name: string) => action(KEYCHAIN_CREATE_KEY, { name });
+export const createKey = (key: string) => action(KEYCHAIN_CREATE, { key });
 
 export const removeKey = (name: string) => action(KEYCHAIN_REMOVE_KEY, { name });
+
+export const list = () => action(KEYCHAIN_LIST);
+
+export const listSuccess = (items: string[]) => action(KEYCHAIN_LIST_SUCCESS, items);

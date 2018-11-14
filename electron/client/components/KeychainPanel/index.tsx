@@ -8,6 +8,7 @@ interface KeychainPanelProps {
   togglePanel?(openStatus: boolean): void;
   createKey(name: string): void;
   removeKey(name: string): void;
+  listKeys(): void;
   isLoaderPanelOpen?: boolean;
   toggleLoaderPanel?(openStatus: boolean): void;
 }
@@ -82,6 +83,7 @@ export class KeychainPanel extends React.Component<KeychainPanelProps, KeychainP
           <div>
             <input value={this.state.inputValue} style={{ margin: '10px' }} onChange={evt => this.updateInputValue(evt)} ></input>
             <button onClick={ () => this.props.createKey(this.state.inputValue) }>Create</button>
+            <button onClick={ () => this.props.listKeys() }>List</button>
           </div>
         </div>
       </Menu>
