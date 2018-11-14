@@ -5,10 +5,27 @@ interface KeysProps {
   removeKey: (name: string) => void;
 }
 
-export class Keys extends React.Component<KeysProps> {
+interface KeysState {
+  selectedKey: string;
+}
+
+export class Keys extends React.Component<KeysProps, KeysState> {
   constructor(props: KeysProps) {
     super(props);
     this.getList = this.getList.bind(this);
+    this.itemClickHandle = this.itemClickHandle.bind(this);
+    this.state = {
+      selectedKey: null,
+    };
+  }
+
+  itemClickHandle(item: string) {
+    // this.props.removeKey(item);
+    this.setState({selectedKey: item});
+  }
+
+  selectedClass(item: string) {
+    return item === this.state.selectedKey ? 'selected' : '';
   }
 
   private getList(): JSX.Element[] | null {
@@ -16,7 +33,7 @@ export class Keys extends React.Component<KeysProps> {
 
     if (items) {
       return items.map((item) => (
-        <div className="item" onClick={ () => this.props.removeKey(item)}>
+        <div className={`item ${this.selectedClass(item)}`} onClick={ () => this.itemClickHandle(item)}>
           <div className="title">
             <span className="app">{item}</span>
           </div>
