@@ -142,7 +142,7 @@ app.on('ready', async () => {
     const keychainInstance = new Keychain(KEYCHAIN_PATH);
     keysList = await keychainInstance.list();
   } catch (e) {
-    console.log('keychain error: ', e);
+    console.log('keychain list error: ', e);
   }
 
   store = configureStore({

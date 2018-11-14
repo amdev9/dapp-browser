@@ -73,15 +73,15 @@ export class KeychainPanel extends React.Component<KeychainPanelProps, KeychainP
 
     return (
       <Menu {...menuProps}>
-        <div className="notifications-popup">
+        <div className="keychain-popup">
           <div className="header">
             <h4>Wallet</h4>
           </div>
           <div className="groups">
             {this.getList()}
           </div>
-          <div>
-            <input value={this.state.inputValue} style={{ margin: '10px' }} onChange={evt => this.updateInputValue(evt)} ></input>
+          <div className="bottom">
+            <input value={this.state.inputValue} onChange={evt => this.updateInputValue(evt)} ></input>
             <button onClick={ () => this.props.createKey(this.state.inputValue) }>Create</button>
             <button onClick={ () => this.props.listKeys() }>List</button>
           </div>
