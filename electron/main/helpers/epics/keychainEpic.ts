@@ -46,7 +46,7 @@ const keychainSignEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix 
     try {
       const key = action.payload.key;
       const chainId = action.payload.chainId;
-      const transaction = action.transaction;
+      const transaction = action.payload.transaction;
       const keychainInstance = new Keychain(KEYCHAIN_PATH);
 
       const result = await keychainInstance.sign(key, chainId, transaction);

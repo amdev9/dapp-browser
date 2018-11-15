@@ -1,17 +1,18 @@
 import { combineReducers } from 'redux';
 
 import notification from './notification';
+import keychain from './keychain';
 import loader from './loader';
+import search from './search';
 import statusBar from './status-bar';
 
 import tray from './tray';
 import feed from './feed';
-import search from './search';
-import settings from './settings';
 import permissions from './permissions';
 import isHome from './is-home';
 import window from './window';
 import activeDapp from './active-dapp';
+import isOpen from './is-open';
 
 import { IState } from './state';
 
@@ -20,13 +21,14 @@ const rootReducer = combineReducers<IState>({
   activeDapp,
   window,
   notification,
+  keychain,
   loader,
   statusBar,
   tray,
   feed,
   search,
-  settings,
   permissions,
+  isOpen,
 });
 
 export default rootReducer;

@@ -3,12 +3,12 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 
 import * as NotificationActions from '../redux/actions/notification';
+import * as KeychainActions from '../redux/actions/keychain';
 import * as LoaderActions from '../redux/actions/loader';
 import * as TrayActions from '../redux/actions/tray';
 import * as StatusBarActions from '../redux/actions/status-bar';
 import * as AppsFeedActions from '../redux/actions/appsFeed';
 import * as SearchActions from '../redux/actions/search';
-import * as SettingsActions from '../redux/actions/settings';
 import * as MarketActions from '../redux/actions/market';
 import * as PermissionsActions from '../redux/actions/permissions';
 
@@ -16,6 +16,7 @@ import { AppItem, NotifyItem, StatusBarItem, FeedItem, SearchItem } from '../red
 import { HeaderBar } from './HeaderBar';
 import { NotificationPanel } from './NotificationPanel';
 import { LoaderPanel } from './LoaderPanel';
+import { KeychainPanel } from './KeychainPanel';
 import { SettingsPanel } from './SettingsPanel';
 import { StatusBar } from './StatusBar';
 import { Tray } from './Tray';
@@ -29,21 +30,26 @@ interface AppProps {
   openLoaderPanel: boolean;
   openStatusBarPanel: boolean;
   openPeersBarPanel: boolean;
-  openSettingsPanel: boolean;
   openSearchPanel: boolean;
+  openKeychainPanel: boolean;
 
   trayItems: AppItem[];
   feedItems: FeedItem[];
   notifyItems: NotifyItem[];
+  keychainItems: string[];
   searchItems: { [index: string]: SearchItem[] };
   statusBarItems?: { [index: string]: StatusBarItem };
   statusBarToggle: () => void;
   peersBarToggle: () => void;
-  onToggleSettingsPanel: (openStatus?: boolean) => any;
-  onTogglePanel: (openStatus?: boolean) => any;
+  onToggleKeychainPanel: () => void;
+  onTogglePanel: () => any;
   onToggleHome: (openStatus?: boolean) => any;
-  onToggleLoaderPanel: (openStatus?: boolean) => any;
+  onToggleLoaderPanel: () => any;
   onToggleSearch: (openStatus?: boolean) => any;
+  keychainCreateKey: (name: string) => void;
+  keychainRemoveKey: (name: string) => void;
+  keychainSignKey: (name: string) => void;
+  keychainList: () => void;
   clearNotification: (id?: number) => void;
   clearAllNotifications: () => void;
   onAddAppItem: (appItem?: AppItem) => any;
@@ -68,10 +74,10 @@ class App extends React.Component<AppProps> {
 
   render() {
     const {
-      onTogglePanel, openNotificationPanel, openStatusBarPanel, openPeersBarPanel, openSettingsPanel, openSearchPanel, clearNotification, clearAllNotifications,
-      onAddAppItem, onSwitchDapp, onToggleHome, statusBarToggle, peersBarToggle, onToggleAppHome, onToggleSearch, searchItems,
-      trayItems, feedItems, notifyItems, statusBarItems, onToggleLoaderPanel, openLoaderPanel, onToggleSettingsPanel, locationPath, loggerWrite,
-      downloadDapp, togglePermission, grantPermissions, permissions,
+      onTogglePanel, openNotificationPanel, openKeychainPanel, openStatusBarPanel, openPeersBarPanel, openSearchPanel, clearNotification, clearAllNotifications,
+      onAddAppItem, onSwitchDapp, onToggleHome, statusBarToggle, peersBarToggle, onToggleKeychainPanel, onToggleAppHome, onToggleSearch, searchItems,
+      trayItems, feedItems, notifyItems, keychainItems, statusBarItems, onToggleLoaderPanel, openLoaderPanel, locationPath, loggerWrite,
+      downloadDapp, togglePermission, grantPermissions, permissions, keychainCreateKey, keychainRemoveKey, keychainList, keychainSignKey,
     } = this.props;
 
     return (
@@ -81,30 +87,33 @@ class App extends React.Component<AppProps> {
           clearNotification={(id: number) => clearNotification(id)}
           items={notifyItems}
           isOpen={openNotificationPanel}
-          togglePanel={(openStatus) => onTogglePanel(openStatus)}
-          isLoaderPanelOpen={openLoaderPanel}
-          toggleLoaderPanel={(openStatus) => onToggleLoaderPanel(openStatus)}
+          togglePanel={onTogglePanel}
           key="root-notifications" />
         <LoaderPanel
           isOpen={openLoaderPanel}
-          togglePanel={(openStatus) => onToggleLoaderPanel(openStatus)}
-          isNotificationPanelOpen={openNotificationPanel}
-          toggleNotificationPanel={(openStatus) => onTogglePanel(openStatus)}
+          togglePanel={onToggleLoaderPanel}
           key="root-loader" />
+        <KeychainPanel
+          items={keychainItems}
+          isOpen={openKeychainPanel}
+          togglePanel={onToggleKeychainPanel}
+          createKey={(name) => keychainCreateKey(name)}
+          removeKey={(name) => keychainRemoveKey(name)}
+          signKey={(name) => keychainSignKey(name)}
+          listKeys={keychainList}
+          key="root-keychain" />
         <HeaderBar
-          isOpen={openNotificationPanel}
           togglePanel={() => onTogglePanel()}
           toggleLoaderPanel={onToggleLoaderPanel}
           toggleHome={() => onToggleHome(true)}
           searchItems={searchItems}
           isSearchPanelOpen={openSearchPanel}
           toggleSearchPanel={onToggleSearch}
-          isSettingsPanelOpen={openSettingsPanel}
-          toggleSettingsPanel={onToggleSettingsPanel}
           isStatusBarOpen={openStatusBarPanel}
           toggleStatusBar={statusBarToggle}
           isPeersBarOpen={openPeersBarPanel}
           togglePeersBar={peersBarToggle}
+          toggleKeychain={onToggleKeychainPanel}
           key="root-headerbar" />
         <div className="content-zone" key="root-content" id="root-container">
 
@@ -152,13 +161,14 @@ class App extends React.Component<AppProps> {
 
 const mapStateToProps = (state: IState) => ({
   notifyItems: state.notification.items,
-  openNotificationPanel: state.notification.isOpen,
-  openLoaderPanel: state.loader.isOpen,
-  openStatusBarPanel: state.statusBar.isOpen,
-  openPeersBarPanel: state.statusBar.isPeersOpen,
+  keychainItems: state.keychain.items,
+  openNotificationPanel: state.isOpen.notification,
+  openKeychainPanel: state.isOpen.keychain,
+  openLoaderPanel: state.isOpen.loader,
+  openStatusBarPanel: state.isOpen.statusBar,
+  openPeersBarPanel: state.isOpen.statusBarPeers,
   loggerWrite: state.statusBar.loggerWrite,
-  openSettingsPanel: state.settings.isOpen,
-  openSearchPanel: state.search.isOpen,
+  openSearchPanel: state.isOpen.search,
   statusBarItems: state.statusBar.items,
   trayItems: state.tray.items,
   feedItems: state.feed.items,
@@ -167,13 +177,17 @@ const mapStateToProps = (state: IState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
-  onToggleSettingsPanel: SettingsActions.toggle,
   onTogglePanel: NotificationActions.toggle,
   clearNotification: NotificationActions.clearNotification,
   clearAllNotifications: NotificationActions.clearAllNotifications,
   onToggleLoaderPanel: LoaderActions.toggle,
   statusBarToggle: StatusBarActions.toggle,
   peersBarToggle: StatusBarActions.togglePeers,
+  onToggleKeychainPanel: KeychainActions.toggle,
+  keychainCreateKey: KeychainActions.createKey,
+  keychainRemoveKey: KeychainActions.removeKey,
+  keychainSignKey: KeychainActions.signKey,
+  keychainList: KeychainActions.list,
   onAddAppItem: TrayActions.addAppItem,
   onSwitchDapp: TrayActions.switchDapp,
   onToggleHome: TrayActions.toggleHome,
