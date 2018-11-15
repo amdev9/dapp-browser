@@ -3,8 +3,7 @@ import * as React from 'react';
 const keyIcon = require('../../assets/icons/key.svg');
 
 interface KeychainWidgetProps {
-  isOpen?: boolean;
-  togglePanel?(): void;
+  togglePanel(): void;
 }
 export class KeychainWidget extends React.Component<KeychainWidgetProps> {
   public render() {

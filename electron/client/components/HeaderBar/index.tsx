@@ -9,15 +9,14 @@ import { KeychainWidget } from './KeychainWidget';
 import { SearchItem } from '../../redux/model';
 
 interface HeaderBarProps {
-  isOpen?: boolean;
   searchItems: { [index: string]: SearchItem[] };
   isSearchPanelOpen: boolean;
   isStatusBarOpen: boolean;
   isPeersBarOpen: boolean;
   toggleSearchPanel(): void;
-  togglePanel?(): void;
-  toggleLoaderPanel?(): void;
-  toggleHome?(): void;
+  togglePanel(): void;
+  toggleLoaderPanel(): void;
+  toggleHome(): void;
   toggleStatusBar(): void;
   togglePeersBar(): void;
   toggleKeychain(): void;
@@ -26,8 +25,9 @@ export class HeaderBar extends React.Component<HeaderBarProps> {
   public render() {
     const {
       togglePanel,
-      toggleHome,
       toggleLoaderPanel,
+      toggleKeychain,
+      toggleHome,
       searchItems,
       toggleSearchPanel,
       isSearchPanelOpen,
@@ -35,7 +35,6 @@ export class HeaderBar extends React.Component<HeaderBarProps> {
       toggleStatusBar,
       isPeersBarOpen,
       togglePeersBar,
-      toggleKeychain,
     } = this.props;
     return (
       <div className="headerbar">
@@ -56,9 +55,9 @@ export class HeaderBar extends React.Component<HeaderBarProps> {
           <div className="unions">
             <NetworkWidget />
             <KeychainWidget togglePanel={toggleKeychain} />
-            <SettingsWidget /*isOpen*/ toggleHome={toggleHome} />
-            <NotificationWidget isOpen togglePanel={togglePanel} />
-            <DownloadWidget isOpen togglePanel={toggleLoaderPanel} />
+            <SettingsWidget toggleHome={toggleHome} />
+            <NotificationWidget togglePanel={togglePanel} />
+            <DownloadWidget togglePanel={toggleLoaderPanel} />
           </div>
         </div>
       </div>

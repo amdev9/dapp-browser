@@ -41,10 +41,10 @@ interface AppProps {
   statusBarItems?: { [index: string]: StatusBarItem };
   statusBarToggle: () => void;
   peersBarToggle: () => void;
-  keychainToggle: (openStatus?: boolean) => void;
-  onTogglePanel: (openStatus?: boolean) => any;
+  onToggleKeychainPanel: () => void;
+  onTogglePanel: () => any;
   onToggleHome: (openStatus?: boolean) => any;
-  onToggleLoaderPanel: (openStatus?: boolean) => any;
+  onToggleLoaderPanel: () => any;
   onToggleSearch: (openStatus?: boolean) => any;
   keychainCreateKey: (name: string) => void;
   keychainRemoveKey: (name: string) => void;
@@ -75,7 +75,7 @@ class App extends React.Component<AppProps> {
   render() {
     const {
       onTogglePanel, openNotificationPanel, openKeychainPanel, openStatusBarPanel, openPeersBarPanel, openSearchPanel, clearNotification, clearAllNotifications,
-      onAddAppItem, onSwitchDapp, onToggleHome, statusBarToggle, peersBarToggle, keychainToggle, onToggleAppHome, onToggleSearch, searchItems,
+      onAddAppItem, onSwitchDapp, onToggleHome, statusBarToggle, peersBarToggle, onToggleKeychainPanel, onToggleAppHome, onToggleSearch, searchItems,
       trayItems, feedItems, notifyItems, keychainItems, statusBarItems, onToggleLoaderPanel, openLoaderPanel, locationPath, loggerWrite,
       downloadDapp, togglePermission, grantPermissions, permissions, keychainCreateKey, keychainRemoveKey, keychainList, keychainSignKey,
     } = this.props;
@@ -87,29 +87,22 @@ class App extends React.Component<AppProps> {
           clearNotification={(id: number) => clearNotification(id)}
           items={notifyItems}
           isOpen={openNotificationPanel}
-          togglePanel={(openStatus) => onTogglePanel(openStatus)}
-          isLoaderPanelOpen={openLoaderPanel}
-          toggleLoaderPanel={(openStatus) => onToggleLoaderPanel(openStatus)}
+          togglePanel={onTogglePanel}
           key="root-notifications" />
         <LoaderPanel
           isOpen={openLoaderPanel}
-          togglePanel={(openStatus) => onToggleLoaderPanel(openStatus)}
-          isNotificationPanelOpen={openNotificationPanel}
-          toggleNotificationPanel={(openStatus) => onTogglePanel(openStatus)}
+          togglePanel={onToggleLoaderPanel}
           key="root-loader" />
         <KeychainPanel
           items={keychainItems}
           isOpen={openKeychainPanel}
-          togglePanel={(openStatus) => onTogglePanel(openStatus)}
+          togglePanel={onToggleKeychainPanel}
           createKey={(name) => keychainCreateKey(name)}
           removeKey={(name) => keychainRemoveKey(name)}
           signKey={(name) => keychainSignKey(name)}
           listKeys={keychainList}
-          isLoaderPanelOpen={openLoaderPanel}
-          toggleLoaderPanel={(openStatus) => onToggleLoaderPanel(openStatus)}
           key="root-keychain" />
         <HeaderBar
-          isOpen={openNotificationPanel}
           togglePanel={() => onTogglePanel()}
           toggleLoaderPanel={onToggleLoaderPanel}
           toggleHome={() => onToggleHome(true)}
@@ -120,7 +113,7 @@ class App extends React.Component<AppProps> {
           toggleStatusBar={statusBarToggle}
           isPeersBarOpen={openPeersBarPanel}
           togglePeersBar={peersBarToggle}
-          toggleKeychain={keychainToggle}
+          toggleKeychain={onToggleKeychainPanel}
           key="root-headerbar" />
         <div className="content-zone" key="root-content" id="root-container">
 
@@ -190,7 +183,7 @@ const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
   onToggleLoaderPanel: LoaderActions.toggle,
   statusBarToggle: StatusBarActions.toggle,
   peersBarToggle: StatusBarActions.togglePeers,
-  keychainToggle: KeychainActions.toggle,
+  onToggleKeychainPanel: KeychainActions.toggle,
   keychainCreateKey: KeychainActions.createKey,
   keychainRemoveKey: KeychainActions.removeKey,
   keychainSignKey: KeychainActions.signKey,

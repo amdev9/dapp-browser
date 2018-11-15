@@ -1,10 +1,9 @@
-import * as React from "react"
+import * as React from 'react';
 
-const loaderIcon = require("../../assets/icons/cloud.svg")
+const loaderIcon = require('../../assets/icons/cloud.svg');
 
 interface DownloadWidgetProps {
-  isOpen?: boolean;
-  togglePanel?(): void
+  togglePanel(): void;
 }
 export class DownloadWidget extends React.Component<DownloadWidgetProps> {
   public render() {
@@ -13,6 +12,6 @@ export class DownloadWidget extends React.Component<DownloadWidgetProps> {
       <div className="app-loader" onClick={() => togglePanel()}>
         <img className="icon" src={loaderIcon} />
       </div>
-    )
+    );
   }
 }

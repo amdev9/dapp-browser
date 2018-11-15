@@ -10,11 +10,8 @@ interface IsOpenAction extends Action {
 
 const actionToFieldName: { [index:string] : string } = {
   [constants.TOGGLE_SEARCH_PANEL]: 'search',
-  [constants.TOGGLE_LOADER_PANEL]: 'loader',
-  [constants.TOGGLE_NOTIFICATION_PANEL]: 'notification',
   [constants.TOGGLE_STATUS_BAR_PANEL]: 'statusBar',
   [constants.TOGGLE_PEERS_BAR_PANEL]: 'statusBarPeers',
-  [constants.TOGGLE_KEYCHAIN_PANEL]: 'keychain',
 };
 
 export default function isOpen(state: ToggleStatus = null, action: IsOpenAction) {
@@ -22,6 +19,15 @@ export default function isOpen(state: ToggleStatus = null, action: IsOpenAction)
     const fieldName = actionToFieldName[action.type];
     return { ...state, [fieldName]: !state[fieldName] };
   } else {
-    return state;
+    switch (action.type) {
+      case constants.TOGGLE_LOADER_PANEL:
+        return {...state, loader: !state.loader, notification: false, keychain: false};
+      case constants.TOGGLE_NOTIFICATION_PANEL:
+      return {...state, loader: false, notification: !state.notification, keychain: false};
+      case constants.TOGGLE_KEYCHAIN_PANEL:
+      return {...state, loader: false, notification: false, keychain: !state.keychain};
+      default:
+        return state;
+    }
   }
 }

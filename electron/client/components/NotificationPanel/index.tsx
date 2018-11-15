@@ -1,19 +1,17 @@
-import * as React from "react";
-import { slide as Menu, Props as MenuProps } from "react-burger-menu";
-import { NotifyItem } from "../../redux/model";
-import { NotifyGroup } from "./NotifyGroup";
+import * as React from 'react';
+import { slide as Menu, Props as MenuProps } from 'react-burger-menu';
+import { NotifyItem } from '../../redux/model';
+import { NotifyGroup } from './NotifyGroup';
 
 // assets
-const filterIcon = require("../../assets/icons/filter.svg")
+const filterIcon = require('../../assets/icons/filter.svg');
 
 interface NotificationPanelProps {
-  isOpen?: boolean;
+  isOpen: boolean;
   items?: NotifyItem[];
-  togglePanel?(openStatus: boolean): void;
+  togglePanel(): void;
   clearNotification?(id: number): void;
   clearAllNotifications?(): void;
-  isLoaderPanelOpen?: boolean
-  toggleLoaderPanel?(openStatus: boolean): void
 }
 
 export class NotificationPanel extends React.Component<NotificationPanelProps> {
@@ -38,27 +36,24 @@ export class NotificationPanel extends React.Component<NotificationPanelProps> {
           clearNotification={this.props.clearNotification}
           clearAllNotifications={this.props.clearAllNotifications}
         />
-      )
+      );
     }
   }
 
   render() {
-    const { isOpen, togglePanel, isLoaderPanelOpen, toggleLoaderPanel } = this.props;
+    const { isOpen, togglePanel } = this.props;
 
     const menuProps: MenuProps = {
-      outerContainerId: "root-container",
-      pageWrapId: "content-wrap",
+      outerContainerId: 'root-container',
+      pageWrapId: 'content-wrap',
       customBurgerIcon: false,
       customCrossIcon: false,
       right: true,
       width: 300,
       isOpen,
       onStateChange: (value) => {
-        if (isOpen && isLoaderPanelOpen) {
-          toggleLoaderPanel(false);
-        }
         if (isOpen !== value.isOpen) {
-          togglePanel(value.isOpen);
+          togglePanel();
         }
       },
     };
@@ -77,8 +72,6 @@ export class NotificationPanel extends React.Component<NotificationPanelProps> {
           </div>
         </div>
       </Menu>
-    )
+    );
   }
 }
-
-

@@ -3,15 +3,13 @@ import { slide as Menu, Props as MenuProps } from 'react-burger-menu';
 import { Keys } from './Keys';
 
 interface KeychainPanelProps {
-  isOpen?: boolean;
-  items?: string[];
-  togglePanel?(openStatus: boolean): void;
+  isOpen: boolean;
+  items: string[];
+  togglePanel(): void;
   createKey(name: string): void;
   removeKey(name: string): void;
   signKey(name: string): void;
   listKeys(): void;
-  isLoaderPanelOpen?: boolean;
-  toggleLoaderPanel?(openStatus: boolean): void;
 }
 
 interface KeychainPanelState {
@@ -55,12 +53,12 @@ export class KeychainPanel extends React.Component<KeychainPanelProps, KeychainP
 
   updateInputValue(evt: React.ChangeEvent<HTMLInputElement>) {
     this.setState({
-      inputValue: evt.target.value
+      inputValue: evt.target.value,
     });
   }
 
   render() {
-    const { isOpen, togglePanel, isLoaderPanelOpen, toggleLoaderPanel } = this.props;
+    const { isOpen, togglePanel } = this.props;
 
     const menuProps: MenuProps = {
       outerContainerId: 'root-container',
@@ -71,11 +69,8 @@ export class KeychainPanel extends React.Component<KeychainPanelProps, KeychainP
       width: 300,
       isOpen,
       onStateChange: (value) => {
-        if (isOpen && isLoaderPanelOpen) {
-          toggleLoaderPanel(false);
-        }
         if (isOpen !== value.isOpen) {
-          togglePanel(value.isOpen);
+          togglePanel();
         }
       },
     };
