@@ -42,7 +42,7 @@ export class ArrayIO {
         actions.openDialogFailure,
       ], []),
     );
-  }
+  };
 
   networkGetBlock = async () => {
     return new Promise(
@@ -52,7 +52,7 @@ export class ArrayIO {
         actions.getBlockFailure,
       ], []),
     );
-  }
+  };
 
   networkSubscribe = async () => {
     return new Promise(
@@ -62,7 +62,7 @@ export class ArrayIO {
         actions.networkSubscribeFailure,
       ], []),
     );
-  }
+  };
 
   networkUnsubscribe = async () => {
     return new Promise(
@@ -72,7 +72,7 @@ export class ArrayIO {
         actions.networkUnsubscribeFailure,
       ], []),
     );
-  }
+  };
 
   writeToConsole = async (message: string) => {
     return new Promise(
@@ -82,7 +82,7 @@ export class ArrayIO {
         actions.loggerWriteFailure,
       ], [message]),
     );
-  }
+  };
 
   storageSave = async (key: string, value: string) => {
     return new Promise(
@@ -92,7 +92,7 @@ export class ArrayIO {
         actions.storageSaveFailure,
       ], { key, value }),
     );
-  }
+  };
 
   storageFindAll = async () => {
     return new Promise(
@@ -102,7 +102,7 @@ export class ArrayIO {
         actions.storageFindAllFailure,
       ], []),
     );
-  }
+  };
 
   storageRemove = async (key: string) => {
     return new Promise(
@@ -110,9 +110,9 @@ export class ArrayIO {
         actions.storageRemove,
         actions.storageRemoveSuccess,
         actions.storageRemoveFailure,
-      ], {key}),
+      ], { key }),
     );
-  }
+  };
 }
 
 interface ActionFlow {
@@ -169,7 +169,10 @@ export class Chat {
       return;
     }
 
-    const copyAction = Object.assign({}, onStart, { meta: { uid } });
+    const copyAction = {
+      ...onStart,
+      meta: onStart.meta ? { ...onStart.meta, uid } : { uid },
+    };
 
     return new Promise((resolve, reject) => {
       const unsubscribe = this.subscribeActions([successType, failureType], uid, (action) => {

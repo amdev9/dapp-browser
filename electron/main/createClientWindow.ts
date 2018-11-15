@@ -61,9 +61,9 @@ export function createClientWindow(globalUUIDList: RendererConf[], store: any) {
   clientWindow.loadURL(clientPathUrl);
 
   // console.log(process.env);
-  if (process.env.ELECTRON_ENV === 'development') {
+  // if (process.env.ELECTRON_ENV === 'development') {
     openDevTool(clientWindow, true);
-  }
+  // }
 
   const renderIdClient = clientWindow.webContents.getProcessId(); // .webContents.getProcessId(); //.id,
   const rendererObj: RendererConf = {

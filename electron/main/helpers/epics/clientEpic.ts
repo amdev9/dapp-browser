@@ -7,16 +7,9 @@ import ClientManager from '../ClientManager';
 import * as clientActions from '../actions/client';
 
 const openDappEpic: Epic<any> = action$ => action$.pipe(
-  ofType(constants.SWITCH_DAPP),
+  ofType(constants.SWITCH_DAPP_SUCCESS),
   switchMap(async (action) => {
-    try {
-      await ClientManager.isClientWindowLoaded;
-      await AppsManager.openDapp(action.payload.targetDappName, ClientManager.clientWindow, ClientManager.store.getState());
-      ClientManager.store.dispatch(clientActions.switchDappSuccess(action.payload.targetDappName));
-      ClientManager.store.dispatch(clientActions.addAppItem(AppsManager.getAppItem(action.payload.targetDappName)));
-    } catch (error) {
-      ClientManager.store.dispatch(clientActions.switchDappFailure(action.payload.targetDappName, error));
-    }
+    ClientManager.store.dispatch(clientActions.addAppItem(AppsManager.getAppItem(action.payload.targetDappName)));
   }),
   ignoreElements(),
 );

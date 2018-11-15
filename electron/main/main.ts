@@ -153,6 +153,7 @@ app.on('ready', async () => {
 
   clientWindow = ClientManager.createClientWindow();
 
+  // Subscribe on links after create client window
   replayOpenUrls.subscribe((value: string) => {
     store.dispatch(httpProtocolActions.httpProtocolOpenLink(value));
   });

@@ -24,6 +24,10 @@ export default class PermissionManager {
   }
 
   static async checkDappPermissions(targetDappName: string, dappsPermissions: string[], clientWindow: BrowserWindow, state: IState) {
+    if (PermissionManager.permissionWindow) {
+      throw Error('Permission window already opened');
+    }
+
     const activeDappGranted = state.permissionManager.grantedApps.includes(targetDappName);
     if (!activeDappGranted) {
       PermissionManager.createPermissionWindow(globalUUIDList, clientWindow, targetDappName, dappsPermissions);
