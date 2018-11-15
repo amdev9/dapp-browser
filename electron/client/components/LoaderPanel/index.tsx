@@ -1,17 +1,15 @@
-import * as React from "react";
+import * as React from 'react';
 import Dropzone from 'react-dropzone';
-import { Props as MenuProps, slide as Menu, State } from "react-burger-menu";
+import { Props as MenuProps, slide as Menu, State } from 'react-burger-menu';
 import { IoIosDocument, IoMdFolderOpen, IoMdCloudUpload, IoMdMenu } from 'react-icons/io';
 interface LoaderPanelProps {
-  isOpen?: boolean,
-  togglePanel?(openStatus: boolean): void,
-  isNotificationPanelOpen?: boolean,
-  toggleNotificationPanel?(openStatus: boolean): void
+  isOpen: boolean;
+  togglePanel(): void;
 }
 interface LoaderPanelState {
-  activeTab: string,
-  uploads: File[],
-  uploaded: File[]
+  activeTab: string;
+  uploads: File[];
+  uploaded: File[];
 }
 
 export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelState> {
@@ -20,16 +18,16 @@ export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelSt
 
     this.onDrop = this.onDrop.bind(this);
     this.switchTab = this.switchTab.bind(this);
-    this.state = { activeTab: 'uploads', uploads: [], uploaded: [] }
+    this.state = { activeTab: 'uploads', uploads: [], uploaded: [] };
   }
 
   private onDrop(uploads: File[]): void {
-    let uploaded = [...this.state.uploaded, ...uploads].filter(
-      (file, i, files) => files.findIndex(item => item.name === file.name) === i
+    const uploaded = [...this.state.uploaded, ...uploads].filter(
+      (file, i, files) => files.findIndex(item => item.name === file.name) === i,
     ); // only unique values
     this.setState({
       uploads,
-      uploaded
+      uploaded,
     });
   }
 
@@ -48,22 +46,19 @@ export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelSt
       uploadClass = activeClass;
     }
 
-    let { isOpen, togglePanel, isNotificationPanelOpen, toggleNotificationPanel } = this.props;
+    const { isOpen, togglePanel } = this.props;
 
     const menuProps: MenuProps = {
-      outerContainerId: "root-container",
-      pageWrapId: "content-wrap",
+      outerContainerId: 'root-container',
+      pageWrapId: 'content-wrap',
       customBurgerIcon: false,
       customCrossIcon: false,
       right: true,
       width: 300,
       isOpen,
       onStateChange: (value) => {
-        if (isOpen && isNotificationPanelOpen) {
-          toggleNotificationPanel(false);
-        }
         if (isOpen !== value.isOpen) {
-          togglePanel(value.isOpen);
+          togglePanel();
         }
       },
     };
@@ -129,7 +124,7 @@ export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelSt
                       <strong>{f.name}</strong>
                       <small>{f.size}</small>
                     </div>
-                  </li>
+                  </li>,
                   )
                 }
               </ul>
@@ -148,7 +143,7 @@ export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelSt
                       <strong>{f.name}</strong>
                       <small>{f.size}</small>
                     </div>
-                  </li>
+                  </li>,
                   )
                 }
               </ul>
@@ -156,6 +151,6 @@ export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelSt
           </div>
         </div>
       </Menu>
-    )
+    );
   }
 }

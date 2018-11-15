@@ -90,6 +90,11 @@ const dappActions: string[] = [
 
 const clientActions: string[] = [
   constants.TOGGLE_NOTIFICATION_PANEL,
+  constants.TOGGLE_KEYCHAIN_PANEL,
+  constants.KEYCHAIN_CREATE,
+  constants.KEYCHAIN_LIST,
+  constants.KEYCHAIN_SIGN,
+  constants.KEYCHAIN_REMOVE_KEY,
   constants.CLEAR_NOTIFICATION,
   constants.CLEAR_ALL_NOTIFICATIONS,
   constants.TOGGLE_LOADER_PANEL,

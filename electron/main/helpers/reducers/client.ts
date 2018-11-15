@@ -52,7 +52,9 @@ export function client(state: Client = null, action: any) { // @todo refactor ad
         ...state,
         isOpen: {
           ...state.isOpen,
+          loader: false,
           notification: !state.isOpen.notification,
+          keychain: false,
         },
       };
 
@@ -62,6 +64,8 @@ export function client(state: Client = null, action: any) { // @todo refactor ad
         isOpen: {
           ...state.isOpen,
           loader: !state.isOpen.loader,
+          notification: false,
+          keychain: false,
         },
       };
 
@@ -71,6 +75,17 @@ export function client(state: Client = null, action: any) { // @todo refactor ad
         isOpen: {
           ...state.isOpen,
           statusBar: !state.isOpen.statusBar,
+        },
+      };
+
+    case constants.TOGGLE_KEYCHAIN_PANEL:
+      return {
+        ...state,
+        isOpen: {
+          ...state.isOpen,
+          loader: false,
+          notification: false,
+          keychain: !state.isOpen.keychain,
         },
       };
 
@@ -103,6 +118,12 @@ export function client(state: Client = null, action: any) { // @todo refactor ad
       const permissions = togglePermissions(action, statePermissions);
       return { ...state, permissions: { ...state.permissions, permissions } };
     }
+
+    case constants.KEYCHAIN_LIST_SUCCESS:
+      return { ...state, keychain: { items: action.payload } };
+
+    case constants.KEYCHAIN_REMOVE_KEY:
+      return { ...state, keychain: { items: state.keychain.items.filter(item => item !== action.payload.name) } };
 
     default:
       return state;

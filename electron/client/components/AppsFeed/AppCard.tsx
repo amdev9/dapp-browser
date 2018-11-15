@@ -9,7 +9,7 @@ interface AppCardProps {
 
 export class AppCard extends React.Component<AppCardProps>  {
   constructor(props: AppCardProps) {
-    super(props);  
+    super(props);
     this.getCategories = this.getCategories.bind(this);
   }
 

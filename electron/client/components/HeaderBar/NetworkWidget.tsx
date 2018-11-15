@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 
 export class NetworkWidget extends React.Component<{}> {
   public render() {
@@ -6,7 +6,6 @@ export class NetworkWidget extends React.Component<{}> {
       <div className="network">
         MAINNET
       </div>
-    )
+    );
   }
 }
-

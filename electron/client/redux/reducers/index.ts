@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 
 import notification from './notification';
+import keychain from './keychain';
 import loader from './loader';
 import search from './search';
 import statusBar from './status-bar';
@@ -20,6 +21,7 @@ const rootReducer = combineReducers<IState>({
   activeDapp,
   window,
   notification,
+  keychain,
   loader,
   statusBar,
   tray,

@@ -7,6 +7,7 @@ export interface ToggleStatus {
   statusBar: boolean;
   statusBarPeers: boolean;
   search: boolean;
+  keychain: boolean;
   [key: string]: boolean;
 }
 
@@ -23,6 +24,10 @@ export interface Tray {
 
 export interface NotificationPanel {
   items: NotifyItem[];
+}
+
+export interface KeychainPanel {
+  items: string[];
 }
 
 export interface LoaderPanel {
@@ -46,6 +51,7 @@ export interface PermissionsPanel {
 
 export interface IState {
   notification: NotificationPanel;
+  keychain: KeychainPanel;
   loader: LoaderPanel;
   statusBar: StatusBarPanel;
   tray: Tray;
