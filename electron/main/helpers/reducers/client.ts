@@ -52,7 +52,9 @@ export function client(state: Client = null, action: any) { // @todo refactor ad
         ...state,
         isOpen: {
           ...state.isOpen,
+          loader: false,
           notification: !state.isOpen.notification,
+          keychain: false,
         },
       };
 
@@ -62,6 +64,8 @@ export function client(state: Client = null, action: any) { // @todo refactor ad
         isOpen: {
           ...state.isOpen,
           loader: !state.isOpen.loader,
+          notification: false,
+          keychain: false,
         },
       };
 
@@ -79,6 +83,8 @@ export function client(state: Client = null, action: any) { // @todo refactor ad
         ...state,
         isOpen: {
           ...state.isOpen,
+          loader: false,
+          notification: false,
           keychain: !state.isOpen.keychain,
         },
       };
