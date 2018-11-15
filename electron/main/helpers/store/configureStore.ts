@@ -179,7 +179,6 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
     if (!validateAction(action)) return next(action);
     if (action.meta && action.meta.scope === 'local') return next(action);
 
-    console.log('action', action)
     // change scope to avoid endless-loop
     const rendererAction = Object.assign({}, action, {
       meta: {

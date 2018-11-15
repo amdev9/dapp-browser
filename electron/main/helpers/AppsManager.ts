@@ -157,14 +157,12 @@ export class AppsManager {
   }
 
   static async createDapp(targetDappName: string, clientWindow: BrowserWindow, state: IState) {
-    console.log('onSwitchDapp start');
     const activeDapp = AppsManager.getDappItem(targetDappName);
     const activeDappRenderer = createDappView(globalUUIDList, activeDapp);
     const dappView = activeDappRenderer && activeDappRenderer.dappView || null;
     const isDappReady = AppsManager.isDappReady(targetDappName);
     const dappReadyPromise = !isDappReady ? onAction(constants.DAPP_CONTENT_LOADED, (action) => action.meta.sourceUUID === activeDappRenderer.id) : true;
 
-    console.log('onSwitchDapp: dappCreated', dappView);
     clientWindow.setBrowserView(dappView);
 
     AppsManager.correctDappViewBounds(clientWindow, state);

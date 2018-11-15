@@ -222,7 +222,6 @@ const checkGranted = (state: IState, dappName: string, actionType: string) => {
   if (orbitDbActions.includes(actionType)) {
     permissionName = constants.PERMISSION_NAME_ORBIT_DB;
   }
-  console.log('checkGranted', dappName, actionType, permissionName)
   if (permissionName) {
     return checkGrantedForPermission(state, dappName, permissionName);
   }

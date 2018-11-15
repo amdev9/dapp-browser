@@ -22,7 +22,7 @@ export class AppsFeed extends React.Component<AppsFeedProps> {
     //const { settingsPanelIsOpen } = this.props;
 
     const appCardsList: JSX.Element[] = this.props.items.map((item): JSX.Element => (
-      <AppCard key={item.appName} dapp={item} switchDapp={() => this.props.switchDapp(item.appName)} />
+      <AppCard key={item.appName} dapp={item} switchDapp={this.props.switchDapp.bind(item.appName)} />
     ));
 
     //const props = { style: { display: settingsPanelIsOpen ? "none" : "block" } };

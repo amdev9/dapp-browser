@@ -46,6 +46,4 @@ const httpProtocolOpenLink: Epic<any> = (action$, state$) => action$.pipe(
 
 export default combineEpics(
   httpProtocolOpenLink,
-  // subscribeToggleApp,
-  // openLinkEpic,
 );
