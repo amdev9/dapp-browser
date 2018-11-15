@@ -21,6 +21,8 @@ import * as nodeConsole from 'console';
 import { NetworkAPI } from './helpers/Network';
 import ClientManager from './helpers/ClientManager';
 import * as httpProtocolActions from './helpers/actions/httpProtocol';
+import { activeDappSelector } from './helpers/selectors';
+import * as clientActions from './helpers/actions/client';
 
 const console = new nodeConsole.Console(process.stdout, process.stderr);
 
@@ -178,6 +180,11 @@ app.on('ready', async () => {
     }
     clientWindow.show();
     clientWindow.focus();
+
+    const activeDapp = activeDappSelector(store.getState());
+    if (activeDapp) {
+      store.dispatch(clientActions.switchDapp(activeDapp));
+    }
   });
 
   clientWindow.on('closed', () => {
@@ -203,19 +210,5 @@ app.on('ready', async () => {
   //   clientWindow.on('restore', () => correctDappViewBounds(store.getState().client));
   // }
 });
-
-const correctDappViewBounds = (clientState: Client) => {
-  if (!clientWindow) {
-    process.stdout.write('Trying to send bounds of Dapp View while its parent window has not been initialized');
-    return;
-  }
-
-  const view = clientWindow.getBrowserView();
-  const windowBounds = clientWindow.getBounds();
-  if (view) {
-    const dappFrame: Electron.Rectangle = new DappFrame(clientState, isProduction ? windowBounds : null);
-    view.setBounds(dappFrame);
-  }
-};
 
 process.stdout.write('Main initialized');

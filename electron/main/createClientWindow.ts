@@ -3,7 +3,7 @@ import * as path from 'path';
 import * as url from 'url';
 import * as uuidv4 from 'uuid/v4';
 import { openDevTool } from './helpers/devtools';
-import { RendererConf, PROTOCOL_PREFIX } from './helpers/constants/globalVariables';
+import { RendererConf, HTTP_PROTOCOL_PREFIX } from './helpers/constants/globalVariables';
 import { RENDERER_PATH } from './helpers/constants/appPaths';
 import * as httpProtocolActions from './helpers/actions/httpProtocol';
 
@@ -42,7 +42,7 @@ export function createClientWindow(globalUUIDList: RendererConf[], store: any) {
     console.log('show event'); // @todo https://stackoverflow.com/questions/42292608/electron-loading-animation
   });
 
-  protocol.registerHttpProtocol(PROTOCOL_PREFIX, (req, cb) => {
+  protocol.registerHttpProtocol(HTTP_PROTOCOL_PREFIX, (req, cb) => {
     store.dispatch(httpProtocolActions.httpProtocolOpenLink(req.url));
   }, (err) => {
     if (!err) {
@@ -61,9 +61,9 @@ export function createClientWindow(globalUUIDList: RendererConf[], store: any) {
   clientWindow.loadURL(clientPathUrl);
 
   // console.log(process.env);
-  // if (process.env.ELECTRON_ENV === 'development') {
+  if (process.env.ELECTRON_ENV === 'development') {
     openDevTool(clientWindow, true);
-  // }
+  }
 
   const renderIdClient = clientWindow.webContents.getProcessId(); // .webContents.getProcessId(); //.id,
   const rendererObj: RendererConf = {

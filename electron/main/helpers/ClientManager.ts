@@ -21,13 +21,16 @@ export default class ClientManager {
 
   static async switchDapp(dappName: string) {
     try {
-      ClientManager.store.dispatch(clientActions.switchDapp(dappName));
       await ClientManager.isClientWindowLoaded;
       await AppsManager.openDapp(dappName, ClientManager.clientWindow, ClientManager.store.getState());
       ClientManager.store.dispatch(clientActions.switchDappSuccess(dappName));
     } catch (error) {
       ClientManager.store.dispatch(clientActions.switchDappFailure(dappName, error));
     }
+  }
+
+  static toggleHome() {
+    ClientManager.clientWindow.setBrowserView(null);
   }
 
   static setClientWindow(clientWindow: BrowserWindow) {
