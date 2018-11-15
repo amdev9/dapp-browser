@@ -1,12 +1,27 @@
+import { AnyAction } from 'redux';
 import * as Bluebird from 'bluebird';
 import * as path from 'path';
 import * as fs from 'fs';
+import { ofType } from 'redux-observable';
 
 import { DAPPS_PATH } from './constants/appPaths';
-// const DAPPS_PATH: string = path.join(__dirname, '..', '..', 'dapps', 'download');
-// Bluebird as global Promise
+import { RendererConf, globalUUIDList } from './constants/globalVariables';
+import { DappFrame } from './DappFrame';
+import { IState } from './reducers/state';
+
+import { storeObservable } from './epics/appMainEpic';
+import * as constants from './constants';
+import { createDappView } from '../createDappView';
+import { onAction } from './utils/actionUtils';
+import PermissionManager from './PermissionManager';
+
+import BrowserWindow = Electron.BrowserWindow;
+export const isProduction = process.env.ELECTRON_ENV !== 'development';
+
 declare global {
-  export interface Promise<T> extends Bluebird<T> { }
+  export interface Promise<T> extends Bluebird<T> {
+  }
+
   interface PromiseConstructor {
     delay: typeof Bluebird.prototype.delay;
   }
@@ -43,12 +58,18 @@ export type AppItem = {
   permissions: string[]
 };
 
+interface ReadyDapp {
+  name: string;
+  uuid: string;
+}
+
 const dappsGlobal: AppItem[] = [];
 
 export class AppsManager {
   id: number;
   icon: string;
   permissions: any[];
+  static readyDapps: ReadyDapp[] = [];
 
   static getAppItem(appName: string) {
     const targetDapp = dappsGlobal.find((item: AppItem) => item.appName === appName);
@@ -75,7 +96,7 @@ export class AppsManager {
       const dappsFolders: string[] = await readDir(DAPPS_PATH);
       console.log('PATH', DAPPS_PATH);
 
-      const promises = dappsFolders.map(folder => this.parseDapp(folder)); // @todo rewrite with async lib
+      const promises = dappsFolders.map(folder => AppsManager.parseDapp(folder)); // @todo rewrite with async lib
       await Promise.all(promises);
 
     } catch (err) {
@@ -99,4 +120,65 @@ export class AppsManager {
       }
     }
   }
+
+  // Get dapp item by name case insensitive
+  static getDappItem(dappName: string = ''): AppItem {
+    return AppsManager.dapps.find(dappObj => dappObj.appName && dappObj.appName.toLowerCase() === dappName.toLowerCase());
+  }
+
+  static getDappRenderer(dappName: string = ''): RendererConf {
+    return globalUUIDList.find(item => item.name === dappName && item.status === 'dapp');
+  }
+
+  static correctDappViewBounds(clientWindow: BrowserWindow, state: IState): void {
+    const view = clientWindow.getBrowserView();
+    const windowBounds = clientWindow.getBounds();
+    if (view) {
+      const dappFrame: Electron.Rectangle = new DappFrame(state.client, isProduction ? windowBounds : null);
+      view.setBounds(dappFrame);
+    }
+  }
+
+  // Find ready dapp name without case sensitive
+  static isDappReady(dappName: string = ''): ReadyDapp {
+    return AppsManager.readyDapps.find((dapp: ReadyDapp) => dapp.name.toLowerCase() === dappName.toLowerCase());
+  }
+
+  static addReadyDapp(sourceUUID: string, name: string): void {
+    AppsManager.readyDapps.push({ name, uuid: sourceUUID });
+  }
+
+  static onDappContentLoaded() {
+    storeObservable
+      .pipe(ofType(constants.DAPP_CONTENT_LOADED))
+      .subscribe(async (action: AnyAction) => {
+        AppsManager.addReadyDapp(action.meta.sourceUUID, action.meta.name);
+      });
+  }
+
+  static async createDapp(targetDappName: string, clientWindow: BrowserWindow, state: IState) {
+    console.log('onSwitchDapp start');
+    const activeDapp = AppsManager.getDappItem(targetDappName);
+    const activeDappRenderer = createDappView(globalUUIDList, activeDapp);
+    const dappView = activeDappRenderer && activeDappRenderer.dappView || null;
+    const isDappReady = AppsManager.isDappReady(targetDappName);
+    const dappReadyPromise = !isDappReady ? onAction(constants.DAPP_CONTENT_LOADED, (action) => action.meta.sourceUUID === activeDappRenderer.id) : true;
+
+    console.log('onSwitchDapp: dappCreated', dappView);
+    clientWindow.setBrowserView(dappView);
+
+    AppsManager.correctDappViewBounds(clientWindow, state);
+
+    // If dapp DOM hasn't loaded wait for loading dapp
+    await dappReadyPromise;
+  }
+
+  static async openDapp(dappName: string, clientWindow: BrowserWindow, state: IState) {
+    const dapp = AppsManager.getDappItem(dappName);
+
+    await PermissionManager.checkDappPermissions(dappName, dapp.permissions, clientWindow, state);
+    await AppsManager.createDapp(dappName, clientWindow, state);
+  }
 }
+
+AppsManager.onDappContentLoaded()

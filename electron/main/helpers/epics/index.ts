@@ -2,7 +2,7 @@ import { combineEpics, Epic } from 'redux-observable';
 
 import openChannelEpic from './openChannelEpic';
 import bindOpenChannelsEpic from './bindOpenChannelsEpic';
-import openDappEpic from './openDappEpic';
+import clientEpic from './clientEpic';
 import fileManagerEpic from './fileManagerEpic';
 import ipfsStorageEpic from './ipfsStorageEpic';
 import networkEpic from './networkEpic';
@@ -13,8 +13,7 @@ import orbitDBEpic from './orbitDBEpic';
 import storageEpic from './storageEpic';
 import httpProtocolEpic from './httpProtocolEpic';
 import appMainEpic from './appMainEpic';
-import { ChannelAction } from "../reducers/channel";
-import { ignoreElements } from "rxjs/operators";
+import permissionManagerEpic from './permissionManagerEpic';
 
 // todo fix https://github.com/piotrwitek/react-redux-typescript-guide#async-flow
 
@@ -22,7 +21,7 @@ export default combineEpics(
   appMainEpic,
   openChannelEpic,
   bindOpenChannelsEpic,
-  openDappEpic,
+  clientEpic,
   fileManagerEpic,
   ipfsStorageEpic,
   networkEpic,
@@ -32,4 +31,5 @@ export default combineEpics(
   orbitDBEpic,
   storageEpic,
   httpProtocolEpic,
+  permissionManagerEpic,
 );

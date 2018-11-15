@@ -3,7 +3,7 @@ import * as path from 'path';
 import * as url from 'url';
 import * as uuidv4 from 'uuid/v4';
 import { openDevTool } from './helpers/devtools';
-import { RendererConf } from './createDappView';
+import { RendererConf } from './helpers/constants/globalVariables';
 import { PERMISSION_PATH } from './helpers/constants/appPaths';
 
 let permissionWindow: Electron.BrowserWindow = null;

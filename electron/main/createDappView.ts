@@ -4,24 +4,11 @@ import * as url from 'url';
 import * as uuidv4 from 'uuid/v4';
 import { AppItem } from './helpers/AppsManager';
 import { DAPPS_PATH } from './helpers/constants/appPaths';
+import { RendererConf } from './helpers/constants/globalVariables';
 
 let dappView: Electron.BrowserView = null;
 
 // const DAPPS_PATH: string = path.join(__dirname, '..', '..', 'dapps', 'download');
-
-export type ChannelsConf = string[];
-export type BindedConf = Map<string, ChannelsConf>;
-export type BindedListConf = BindedConf[];
-
-export interface RendererConf {
-  id: string;
-  name?: string;
-  status: 'permission_manager' | 'client' | 'dapp';
-  winId: number;
-  dappView?: BrowserView;
-  intent?: string;
-  binded?: BindedListConf;
-}
 
 export function createDappView(globalUUIDList: RendererConf[], dapp: AppItem) { // entryPath: string, appName: string
   const createdDapp = dapp && globalUUIDList.find(item => item.name === dapp.appName && item.status === 'dapp');

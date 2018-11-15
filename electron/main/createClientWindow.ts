@@ -3,10 +3,9 @@ import * as path from 'path';
 import * as url from 'url';
 import * as uuidv4 from 'uuid/v4';
 import { openDevTool } from './helpers/devtools';
-import { RendererConf } from './createDappView';
+import { RendererConf, PROTOCOL_PREFIX } from './helpers/constants/globalVariables';
 import { RENDERER_PATH } from './helpers/constants/appPaths';
 import * as httpProtocolActions from './helpers/actions/httpProtocol';
-import AppMain from './helpers/AppMain';
 
 let clientWindow: Electron.BrowserWindow = null;
 
@@ -43,19 +42,8 @@ export function createClientWindow(globalUUIDList: RendererConf[], store: any) {
     console.log('show event'); // @todo https://stackoverflow.com/questions/42292608/electron-loading-animation
   });
 
-  // This application opens links that start with this protocol
-  const PROTOCOL = 'arr://';
-  const PROTOCOL_PREFIX = PROTOCOL.split(':')[0];
-
   protocol.registerHttpProtocol(PROTOCOL_PREFIX, (req, cb) => {
-    const link = req.url.replace(PROTOCOL, '');
-    const params = link.split('/').filter(item => item)
-    console.log('registerHttpProtocol', params, link, req)
-    console.log('store', httpProtocolActions, store)
-    // store.dispatch(httpProtocolActions.httpProtocolOpenLink(params));
-    AppMain.httpProtocolOpenLink(req.url);
-
-    console.log('protocol link url:', params);
+    store.dispatch(httpProtocolActions.httpProtocolOpenLink(req.url));
   }, (err) => {
     if (!err) {
       console.log('registered arr protocol');

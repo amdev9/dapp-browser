@@ -11,14 +11,13 @@ import { configureStore, initialState } from './helpers/store/configureStore';
 import { AppsManager, AppItem } from './helpers/AppsManager';
 import { DappFrame } from './helpers/DappFrame';
 import { createClientWindow } from './createClientWindow';
-import { createPermissionWindow } from './createPermissionWindow';
-import { createDappView, RendererConf } from './createDappView';
+import { RendererConf, globalUUIDList } from './helpers/constants/globalVariables';
 import { IState, Client } from './helpers/reducers/state';
 
 import * as nodeConsole from 'console';
 import { NetworkAPI } from './helpers/Network';
-import AppMain from './helpers/AppMain';
-import { httpProtocolOpenLink } from './helpers/actions/httpProtocol';
+import ClientManager from './helpers/ClientManager';
+import * as httpProtocolActions from './helpers/actions/httpProtocol';
 
 const console = new nodeConsole.Console(process.stdout, process.stderr);
 
@@ -85,7 +84,6 @@ if (process.platform === 'darwin') {
   }];
 }
 
-const globalUUIDList: RendererConf[] = [];
 let clientWindow: Electron.BrowserWindow = null;
 
 if (process.env.ELECTRON_ENV === 'development') {
@@ -132,7 +130,6 @@ app.on('ready', async () => {
 
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
-
   await AppsManager.parseDapps();
 
   store = configureStore({
@@ -152,14 +149,12 @@ app.on('ready', async () => {
     // clientWindow = createClientWindow(globalUUIDList, store);
   });
 
-  clientWindow = createClientWindow(globalUUIDList, store);
+  new ClientManager(store);
 
-  const appMain = new AppMain(store, globalUUIDList, clientWindow);
+  clientWindow = ClientManager.createClientWindow();
 
   replayOpenUrls.subscribe((value: string) => {
-
-    AppMain.httpProtocolOpenLink(value);
-    // store.dispatch(httpProtocolOpenLink(value));
+    store.dispatch(httpProtocolActions.httpProtocolOpenLink(value));
   });
 
   // @TODO: Use 'ready-to-show' event

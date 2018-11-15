@@ -1,7 +1,6 @@
 import { Dispatch } from 'redux';
 import { Action } from './configureStore';
-import { RendererConf } from '../../createDappView';
-
+import { RendererConf } from '../constants/globalVariables';
 import * as constants from '../constants';
 import { IState, Permission } from '../reducers/state';
 
