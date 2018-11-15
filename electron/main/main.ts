@@ -144,7 +144,7 @@ app.on('ready', async () => {
     const storeState = store.getState();
 
     process.stdout.write(JSON.stringify(storeState));
-  })
+  });
   // Mac OS X sends url to open via this event
   app.on('activate', () => {
     // On OS X it's common to re-create a window in the app when the
@@ -158,7 +158,6 @@ app.on('ready', async () => {
 
   replayOpenUrls.subscribe((value: string) => {
 
-    console.log('replayOpenUrls', value)
     AppMain.httpProtocolOpenLink(value);
     // store.dispatch(httpProtocolOpenLink(value));
   });

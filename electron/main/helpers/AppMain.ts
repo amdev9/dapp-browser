@@ -7,13 +7,13 @@ import { createSelector } from 'reselect';
 
 import { IState } from './reducers/state';
 import * as clientActions from './actions/client';
+import * as httpProtocolActions from './actions/httpProtocol';
 import { AppItem, AppsManager } from './AppsManager';
 import { createDappView, RendererConf } from '../createDappView';
 import { storeObservable } from './epics/appMainEpic';
 import * as constants from './constants';
 import { createPermissionWindow } from '../createPermissionWindow';
 import { DappFrame } from './DappFrame';
-import { constant } from "async";
 
 export const isProduction = process.env.ELECTRON_ENV !== 'development';
 
@@ -149,9 +149,9 @@ export default class AppMain {
     const activeDapp = activeDappSelector(state);
     const requestDappName = requestDapp.appName;
     const isDappOpen = activeDapp === requestDappName;
-    console.log('httpProtocolOpenLink link', link, clearLink);
-    console.log('httpProtocolOpenLink', activeDapp, !isDappOpen, !AppMain.isDappReady(requestDappName));
-    console.log('httpProtocolOpenLink requestDappName', requestDappName);
+    // console.log('httpProtocolOpenLink link', link, clearLink);
+    // console.log('httpProtocolOpenLink', activeDapp, !isDappOpen, !AppMain.isDappReady(requestDappName));
+    // console.log('httpProtocolOpenLink requestDappName', requestDappName);
 
     if (!isDappOpen || !AppMain.isDappReady(requestDappName)) {
       AppMain.store.dispatch(clientActions.switchDapp(requestDappName));
@@ -164,16 +164,9 @@ export default class AppMain {
 
     const createdDapp = AppMain.getDappUUUIDByName(requestDappName);
 
-    console.log('httpProtocolOpenLink resolve', createdDapp, params);
+    // console.log('httpProtocolOpenLink resolve', createdDapp, params);
     if (createdDapp) {
-      AppMain.store.dispatch(
-        {
-          type: constants.DAPP_ACTION_OPEN_LINK,
-          payload: { params },
-          meta: {
-            targetUUID: createdDapp.id
-          }
-        });
+      AppMain.store.dispatch(httpProtocolActions.dappActionOpenLink(params, createdDapp.id))
     }
   }
 
