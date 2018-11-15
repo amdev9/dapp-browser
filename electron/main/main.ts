@@ -146,13 +146,6 @@ app.on('ready', async () => {
     process.stdout.write(JSON.stringify(storeState));
   })
   // Mac OS X sends url to open via this event
-  replayOpenUrls.subscribe((value: string) => {
-
-    const link = value.replace('arr://', '');
-    const params = link.split('/').filter(item => item);
-    store.dispatch(httpProtocolOpenLink(params));
-  });
-
   app.on('activate', () => {
     // On OS X it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
@@ -162,6 +155,13 @@ app.on('ready', async () => {
   clientWindow = createClientWindow(globalUUIDList, store);
 
   const appMain = new AppMain(store, globalUUIDList, clientWindow);
+
+  replayOpenUrls.subscribe((value: string) => {
+
+    console.log('replayOpenUrls', value)
+    AppMain.httpProtocolOpenLink(value);
+    // store.dispatch(httpProtocolOpenLink(value));
+  });
 
   // @TODO: Use 'ready-to-show' event
   //        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event

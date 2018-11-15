@@ -6,6 +6,7 @@ import { openDevTool } from './helpers/devtools';
 import { RendererConf } from './createDappView';
 import { RENDERER_PATH } from './helpers/constants/appPaths';
 import * as httpProtocolActions from './helpers/actions/httpProtocol';
+import AppMain from "./helpers/AppMain";
 
 let clientWindow: Electron.BrowserWindow = null;
 
@@ -51,7 +52,8 @@ export function createClientWindow(globalUUIDList: RendererConf[], store: any) {
     const params = link.split('/').filter(item => item)
     console.log('registerHttpProtocol', params, link, req)
     console.log('store', httpProtocolActions, store)
-    store.dispatch(httpProtocolActions.httpProtocolOpenLink(params));
+    // store.dispatch(httpProtocolActions.httpProtocolOpenLink(params));
+    AppMain.httpProtocolOpenLink(req.url);
 
     console.log('protocol link url:', params);
   }, (err) => {
@@ -71,9 +73,9 @@ export function createClientWindow(globalUUIDList: RendererConf[], store: any) {
   clientWindow.loadURL(clientPathUrl);
 
   // console.log(process.env);
-  if (process.env.ELECTRON_ENV === 'development') {
+  // if (process.env.ELECTRON_ENV === 'development') {
     openDevTool(clientWindow, true);
-  }
+  // }
 
   const renderIdClient = clientWindow.webContents.getProcessId(); // .webContents.getProcessId(); //.id,
   const rendererObj: RendererConf = {

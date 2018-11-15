@@ -1,10 +1,18 @@
 import { ofType, Epic, combineEpics } from 'redux-observable';
 import { concat, map, mergeMap, switchMap } from 'rxjs/operators';
 import { BehaviorSubject, Observable, of } from 'rxjs';
+import { createSelector } from 'reselect';
 
 import * as clientActions from '../actions/client';
 import * as constants from '../constants';
 import { AppsManager } from '../AppsManager';
+import AppMain from '../AppMain';
+import { IState } from '../reducers/state';
+
+const activeDappSelector = createSelector(
+  (state: IState) => state.client.activeDapp,
+  activeDapp => activeDapp && activeDapp.appName && activeDapp.appName.toLowerCase(),
+);
 
 const openLinkEpic: Epic<any> = (action$, state$) => action$.pipe(
   ofType(constants.OPEN_DAPP_BY_HTTP_PROTOCOL),
@@ -56,21 +64,27 @@ const openLinkEpic: Epic<any> = (action$, state$) => action$.pipe(
 const subscribeToggleApp: Epic<any> = (action$, state$) => action$.pipe(
   ofType(constants.HTTP_PROTOCOL_OPEN_LINK),
   switchMap(async (action) => {
-    const [dappName, ...params] = action.payload.params;
-    const { activeDapp } = state$.value.client;
     const actionsMap = [];
-    const dappOpened = activeDapp && activeDapp.appName && activeDapp.appName.toLowerCase() === dappName.toLowerCase();
+
+    const clearLink = action.payload.link && action.payload.link.replace('arr://', '');
+    const [dappName, ...params] = clearLink.split('/').filter((item: string) => item);
+    const activeDapp = activeDappSelector(state$.value);
+    const isDappOpen = activeDapp === dappName.toLowerCase();
+
+    if (isDappOpen && AppMain.isDappReady(dappName)) {
+      AppMain.store.dispatch(clientActions.switchDapp(dappName));
+    }
 
     const openDappByHttpProtocolAction = {
       type: constants.OPEN_DAPP_BY_HTTP_PROTOCOL,
-      payload: { params, dappName, dappOpened },
+      payload: { params, dappName, isDappOpen },
     };
 
     actionsMap.push(openDappByHttpProtocolAction);
 
     const dapp = dappName ? AppsManager.dapps.find(dappObj => dappObj.appName.toLowerCase() === dappName.toLowerCase()) : null;
 
-    if (!dappOpened) {
+    if (!isDappOpen) {
       actionsMap.push(clientActions.toggleAppHome(dapp.appName));
     }
 
@@ -84,6 +98,6 @@ const subscribeToggleApp: Epic<any> = (action$, state$) => action$.pipe(
 );
 
 export default combineEpics(
-  subscribeToggleApp,
-  openLinkEpic,
+  // subscribeToggleApp,
+  // openLinkEpic,
 );
