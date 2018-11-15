@@ -92,9 +92,10 @@ export class KeychainPanel extends React.Component<KeychainPanelProps, KeychainP
           <div className="bottom">
             <input value={this.state.inputValue} onChange={evt => this.updateInputValue(evt)} ></input>
             <button onClick={ () => this.props.createKey(this.state.inputValue) }>Create</button>
-            <button onClick={ () => this.props.signKey(this.state.selectedKey) }>Sign</button>
-            <br/>
-            <button onClick={ () => this.props.listKeys() }>List</button>
+            <div className="lower-buttons">
+              <button onClick={ () => this.props.signKey(this.state.selectedKey) }>Sign</button>
+              <button onClick={ () => this.props.listKeys() }>List</button>
+            </div>
           </div>
         </div>
       </Menu>

@@ -36,6 +36,23 @@
 
     input
       margin: 10px
+      font-size: 12px
+      border-radius: 2px
+
+    .lower-buttons
+      margin-left: 5px
+
+    button
+      background-color: #4a89fc
+      font-size: 12px
+      color: white
+      position: relative
+      border: 0
+      text-transform: uppercase
+      padding: 5px 10px
+      border-radius: 4px
+      margin: 5px
+      cursor: pointer
 
   .groups
     transition: all 0.1s ease
@@ -66,6 +83,7 @@
         padding: 10px $notifications-padding-h
         transition: all 100ms ease-out
         overflow: hidden
+        +noselect
 
         &.selected
           background-color: LightSkyBlue
