@@ -48,6 +48,7 @@ interface AppProps {
   onToggleSearch: (openStatus?: boolean) => any;
   keychainCreateKey: (name: string) => void;
   keychainRemoveKey: (name: string) => void;
+  keychainSignKey: (name: string) => void;
   keychainList: () => void;
   clearNotification: (id?: number) => void;
   clearAllNotifications: () => void;
@@ -76,7 +77,7 @@ class App extends React.Component<AppProps> {
       onTogglePanel, openNotificationPanel, openKeychainPanel, openStatusBarPanel, openPeersBarPanel, openSearchPanel, clearNotification, clearAllNotifications,
       onAddAppItem, onSwitchDapp, onToggleHome, statusBarToggle, peersBarToggle, keychainToggle, onToggleAppHome, onToggleSearch, searchItems,
       trayItems, feedItems, notifyItems, keychainItems, statusBarItems, onToggleLoaderPanel, openLoaderPanel, locationPath, loggerWrite,
-      downloadDapp, togglePermission, grantPermissions, permissions, keychainCreateKey, keychainRemoveKey, keychainList,
+      downloadDapp, togglePermission, grantPermissions, permissions, keychainCreateKey, keychainRemoveKey, keychainList, keychainSignKey,
     } = this.props;
 
     return (
@@ -102,6 +103,7 @@ class App extends React.Component<AppProps> {
           togglePanel={(openStatus) => onTogglePanel(openStatus)}
           createKey={(name) => keychainCreateKey(name)}
           removeKey={(name) => keychainRemoveKey(name)}
+          signKey={(name) => keychainSignKey(name)}
           listKeys={keychainList}
           isLoaderPanelOpen={openLoaderPanel}
           toggleLoaderPanel={(openStatus) => onToggleLoaderPanel(openStatus)}
@@ -191,6 +193,7 @@ const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
   keychainToggle: KeychainActions.toggle,
   keychainCreateKey: KeychainActions.createKey,
   keychainRemoveKey: KeychainActions.removeKey,
+  keychainSignKey: KeychainActions.signKey,
   keychainList: KeychainActions.list,
   onAddAppItem: TrayActions.addAppItem,
   onSwitchDapp: TrayActions.switchDapp,

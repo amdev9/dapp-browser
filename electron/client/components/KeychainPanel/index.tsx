@@ -8,6 +8,7 @@ interface KeychainPanelProps {
   togglePanel?(openStatus: boolean): void;
   createKey(name: string): void;
   removeKey(name: string): void;
+  signKey(name: string): void;
   listKeys(): void;
   isLoaderPanelOpen?: boolean;
   toggleLoaderPanel?(openStatus: boolean): void;
@@ -15,15 +16,22 @@ interface KeychainPanelProps {
 
 interface KeychainPanelState {
   inputValue: string;
+  selectedKey: string;
 }
 
 export class KeychainPanel extends React.Component<KeychainPanelProps, KeychainPanelState> {
   constructor(props: KeychainPanelProps) {
     super(props);
     this.getList = this.getList.bind(this);
+    this.onKeySelect = this.onKeySelect.bind(this);
     this.state = {
       inputValue: '',
+      selectedKey: '',
     };
+  }
+
+  onKeySelect(key: string) {
+    this.setState({selectedKey: key});
   }
 
   private getList(): JSX.Element[] | JSX.Element {
@@ -39,6 +47,7 @@ export class KeychainPanel extends React.Component<KeychainPanelProps, KeychainP
         <Keys
           items={items}
           removeKey={this.props.removeKey}
+          onSelect={this.onKeySelect}
         />
       );
     }
@@ -83,6 +92,8 @@ export class KeychainPanel extends React.Component<KeychainPanelProps, KeychainP
           <div className="bottom">
             <input value={this.state.inputValue} onChange={evt => this.updateInputValue(evt)} ></input>
             <button onClick={ () => this.props.createKey(this.state.inputValue) }>Create</button>
+            <button onClick={ () => this.props.signKey(this.state.selectedKey) }>Sign</button>
+            <br/>
             <button onClick={ () => this.props.listKeys() }>List</button>
           </div>
         </div>

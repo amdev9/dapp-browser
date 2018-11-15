@@ -3,6 +3,7 @@ import * as React from 'react';
 interface KeysProps {
   items: string[];
   removeKey: (name: string) => void;
+  onSelect: (name: string) => void;
 }
 
 interface KeysState {
@@ -21,6 +22,7 @@ export class Keys extends React.Component<KeysProps, KeysState> {
 
   itemClickHandle(item: string) {
     // this.props.removeKey(item);
+    this.props.onSelect(item);
     this.setState({selectedKey: item});
   }
 
