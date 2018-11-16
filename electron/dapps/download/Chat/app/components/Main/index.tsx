@@ -2,8 +2,8 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 
-import * as constants from '../../redux/constants/index';
-import * as actions from '../../redux/actions/index';
+import * as constants from '../../redux/constants';
+import * as actions from '../../redux/actions';
 
 import './styles.css';
 

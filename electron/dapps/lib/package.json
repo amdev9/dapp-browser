@@ -6,7 +6,8 @@
   "scripts": {
     "postinstall": "webpack",
     "webpack": "webpack --watch",
-    "build": "webpack --mode production --config webpack.config.build.js",
+    "build-chat": "cd ../download/Chat && npm i && npm run build",
+    "build": "npm run build-chat && webpack --mode production --config webpack.config.build.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

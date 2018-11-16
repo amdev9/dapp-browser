@@ -5,7 +5,7 @@
   "main": "index.tsx",
   "scripts": {
     "webpack": "webpack --watch",
-    "build": "webpack --mode production --config webpack.config.js",
+    "build": "npm i && webpack --mode production --config webpack.config.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

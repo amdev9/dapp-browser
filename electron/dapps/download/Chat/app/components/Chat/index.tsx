@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 import * as cn from 'classnames';
 
-import * as constants from '../../redux/constants/index';
-import * as actions from '../../redux/actions/index';
+import * as constants from '../../redux/constants';
+import * as actions from '../../redux/actions';
 const ArrayIO = require('array-io');
 
 import './styles.css';
