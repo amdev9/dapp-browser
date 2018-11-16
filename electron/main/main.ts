@@ -150,12 +150,6 @@ app.on('ready', async () => {
     client: { ...initialState.client, keychain: { items: keysList } },
     feed: { items: AppsManager.dapps },
   }, globalUUIDList);
-
-  store.subscribe(() => {
-    const storeState = store.getState();
-
-    process.stdout.write(JSON.stringify(storeState));
-  });
   // Mac OS X sends url to open via this event
   app.on('activate', () => {
     // On OS X it's common to re-create a window in the app when the
@@ -166,6 +160,12 @@ app.on('ready', async () => {
   new ClientManager(store);
 
   clientWindow = ClientManager.createClientWindow();
+
+  store.subscribe(() => {
+    const storeState = store.getState();
+    AppsManager.correctDappViewBounds(clientWindow, storeState);
+    process.stdout.write(JSON.stringify(storeState));
+  });
 
   // Subscribe on links after create client window
   replayOpenUrls.subscribe((value: string) => {
