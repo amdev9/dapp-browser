@@ -1,0 +1,16 @@
+{
+  "title": "Signer Broadcaster application",
+  "main": "index.html",
+  "appName": "SignerBroadcaster",
+  "assets": ["app/images/**"],
+  "icon": "app/images/exchange.svg",
+  "preview": "app/images/thumb.png",
+  "categories": [
+    "tools"
+  ],
+  "permissions": [
+    "network",
+    "keychain"
+  ]
+}
+

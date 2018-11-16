@@ -8,6 +8,7 @@ import * as constants from './redux/constants';
 // Import business logic for Chat app
 import { ArrayIO } from './baseClasses';
 import './chat/chat';
+import './signerBroadcaster/signerBroadcaster';
 
 const array = new ArrayIO(store, emitter);
 
@@ -19,7 +20,7 @@ export { Chat } from './baseClasses';
 const initUi = async () => {
   renderState();
   store.subscribe(renderState);
-  console.log('INIT DAPP SUCCESS')
+  console.log('INIT DAPP SUCCESS');
   document.addEventListener('DOMContentLoaded', (event) => {
     store.dispatch(actions.dappContentLoaded());
   });
