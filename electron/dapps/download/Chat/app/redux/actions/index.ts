@@ -1,7 +1,7 @@
 import { action } from 'typesafe-actions';
 
 import history from '../history';
-import * as constants from '../constants';
+import * as constants from '../constants/index';
 
 export const setRoomName = (roomName: string) =>
   action(constants.SET_ROOM_NAME, { roomName });

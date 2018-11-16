@@ -1,8 +1,8 @@
 import { combineEpics, Epic, ofType } from 'redux-observable';
 import { map, tap } from 'rxjs/operators';
 
-import * as constants from '../constants';
-import * as actions from '../actions';
+import * as constants from '../constants/index';
+import * as actions from '../actions/index';
 
 const openLinkEpic: Epic<any> = (action$, state$) => action$.pipe(
   ofType(constants.DAPP_ACTION_OPEN_LINK),

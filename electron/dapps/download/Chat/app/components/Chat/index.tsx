@@ -3,12 +3,11 @@ import { connect } from 'react-redux';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 import * as cn from 'classnames';
 
-import * as constants from '../../redux/constants';
-import * as actions from '../../redux/actions';
-import { Chat as ArrayChat } from '../../../baseClasses';
+import * as constants from '../../redux/constants/index';
+import * as actions from '../../redux/actions/index';
+const ArrayIO = require('array-io');
 
 import './styles.css';
-
 const ON_JOIN_USER_MESSAGE = 'User has joined';
 const ON_LEFT_USER_MESSAGE = 'User has left';
 
@@ -60,11 +59,11 @@ class Chat extends React.Component<any, any> {
     }
 
     try {
-      const chat = new ArrayChat();
+      const chat: ArrayIO.IpfsRoom = new ArrayIO.IpfsRoom();
       this.setState({ chat });
       await chat.subscribe(selectedRoom, {
         onSubscribe: (peerId) => {
-          console.log('myid', peerId);
+          console.log('IpfsRoom: my id', peerId);
           this.setState({
             myId: peerId,
             isChatCreating: false,

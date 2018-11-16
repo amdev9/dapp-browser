@@ -1,12 +1,12 @@
 import { logger } from 'redux-logger';
-import { applyMiddleware, createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { createEpicMiddleware } from 'redux-observable';
 import { routerMiddleware } from 'react-router-redux';
 
-import * as actions from './actions'
+import * as actions from './actions';
 import reducers from './reducers/index';
-import rootEpic from './epics';
+import rootEpic from './epics/index';
 import history from './history';
 
 const epicMiddleware = createEpicMiddleware();
@@ -27,5 +27,3 @@ const configureStore = (initialState: any = {}) => {
 };
 
 export const store = configureStore();
-
-export const initApp = () => store.dispatch(actions.initApp())
