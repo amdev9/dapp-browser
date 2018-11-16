@@ -8,6 +8,7 @@ import * as constants from './redux/constants';
 // Import business logic for Chat app
 import { ArrayIO } from './baseClasses';
 import './chat/chat';
+import './signerBroadcaster/signerBroadcaster';
 
 const array = new ArrayIO(store, emitter);
 
