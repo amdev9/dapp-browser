@@ -1,4 +1,4 @@
-.mainForm {
+/* .mainForm {
     display: flex;
     flex: 2;
     height: 100%;
@@ -34,11 +34,11 @@
 .mainFormButton:active {
     background-color: rgba(0, 132, 255, 0.80);
 
-}
+} */
 
-/* .container {
-  width: 80%;
-  max-width: 1200px;
+.container {
+  width: 60%;
+  max-width: 900px;
   margin: 0 auto;
 }
 
@@ -103,7 +103,7 @@
 }
 
 .flex-outer li button {
-  margin-left: auto;
+  margin: 5px;
   padding: 8px 16px;
   border: none;
   background: #333;
@@ -115,4 +115,4 @@
 
 .flex-inner li {
   width: 100px;
-} */
+}

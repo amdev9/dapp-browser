@@ -25,28 +25,23 @@ class Main extends React.Component<InjectedFormProps> {
     const { handleSubmit } = this.props;
 
     return (
-      <div className="mainForm">
-        <div>Status: connected</div>
+      <div className="container">
         <form onSubmit={handleSubmit}>
-          <Field
-            name="room-name"
-            type="text"
-            className="amountInput"
-            component="input"
-            label="Amount"
-            placeholder="Enter amount..."
-          />
-
-          <button
-            className="mainFormButton"
-            type="submit">
-            Sign
-          </button>
-          <button
-            className="mainFormButton"
-            type="submit">
-            Send
-          </button>
+          <ul className="flex-outer">
+            <li>
+              <label>Amount</label>
+              <Field
+                name="amount"
+                type="text"
+                className="mainFormAmountInput"
+                component="input"
+                label="Amount"
+                placeholder="Enter amount..."
+              />
+              <button type="submit">Sign</button>
+              <button type="submit">Send</button>
+            </li>
+          </ul>
         </form>
       </div>
     );
