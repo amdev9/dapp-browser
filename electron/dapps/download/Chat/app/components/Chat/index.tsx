@@ -41,7 +41,6 @@ class Chat extends React.Component<any, any> {
     if (this.props.selectedRoom !== nextProps.selectedRoom) {
       this.subscribeRoom(nextProps.selectedRoom);
     }
-    console.log('willrecprops', nextProps.selectedRoom, this.props.selectedRoom);
   }
 
   async subscribeRoom(selectedRoom: string) {
@@ -112,7 +111,6 @@ class Chat extends React.Component<any, any> {
   }
 
   componentDidMount() {
-    console.log('componentDidMount');
     this.subscribeRoom(this.props.selectedRoom);
 
   }
@@ -127,7 +125,6 @@ class Chat extends React.Component<any, any> {
   componentWillUnmount() {
     if (this.state.chat) {
       this.state.chat.leave();
-      console.log('leave from', this.props.selectedRoom);
     }
   }
 
@@ -135,7 +132,6 @@ class Chat extends React.Component<any, any> {
     const { chat } = this.state;
     const { reset } = this.props;
 
-    console.log('values', values.message, this.props);
     if (chat && values.message) {
       chat.sendMessageBroadcast(values.message);
       reset && reset();
@@ -226,7 +222,6 @@ class Chat extends React.Component<any, any> {
   }
 
   focus() {
-    console.log('rerere', this.messageInput);
     if (this.messageInput && this.messageInput.getRenderedComponent) {
       this.messageInput.getRenderedComponent().focus();
     }

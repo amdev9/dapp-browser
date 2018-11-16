@@ -6,6 +6,7 @@ import * as actions from '../actions/channel';
 import * as constants from '../constants';
 import * as utils from '../utils';
 import Dapp from '../../classes/Dapp';
+import eventsEpic from './eventsEpic';
 
 const openChannelSuccess = () => ({ type: constants.OPEN_CHANNEL_SUCCESS });
 
@@ -93,14 +94,6 @@ const keychainSignFailure: Epic<any> = action$ => action$.pipe(
   mapTo(actions.keychainShowResult()),
 );
 
-const httpProtocolOpenLink: Epic<any> = action$ => action$.pipe(
-  ofType(constants.DAPP_ACTION_OPEN_LINK),
-  tap((action) => {
-    Dapp.emit('openLink', action.payload.params);
-  }),
-  ignoreElements(),
-);
-
 export const rootEpic = combineEpics(
   fileManagerOpenSuccess,
   startCountdownEpic,
@@ -115,5 +108,5 @@ export const rootEpic = combineEpics(
   keychainSignSuccess,
   keychainSignFailure,
   networkBlockCreated,
-  httpProtocolOpenLink,
+  eventsEpic,
 );

@@ -1,18 +1,14 @@
 import { logger } from 'redux-logger';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import { createEpicMiddleware } from 'redux-observable';
 import { routerMiddleware } from 'react-router-redux';
 
-import * as actions from './actions';
 import reducers from './reducers/index';
-import rootEpic from './epics/index';
 import history from './history';
-
-const epicMiddleware = createEpicMiddleware();
+import { subscribeOnEvents } from './events';
 
 const configureStore = (initialState: any = {}) => {
-  const middleware = [thunk, epicMiddleware, routerMiddleware(history), logger];
+  const middleware = [thunk, routerMiddleware(history), logger];
 
   const store = createStore(reducers, initialState, applyMiddleware(...middleware));
   //
@@ -21,7 +17,7 @@ const configureStore = (initialState: any = {}) => {
   //     store.replaceReducer(require('./redux/reducers')) // eslint-disable-line global-require
   //   );
   // }
-  epicMiddleware.run(rootEpic);
+  subscribeOnEvents(store);
 
   return store;
 };

@@ -1,12 +1,13 @@
+import * as actions from './actions';
+import * as constants from './constants';
+
 const ArrayIO = require('array-io');
 
-import { store } from './store';
+export const subscribeOnEvents = (store: any) => {
+  ArrayIO.Dapp.on(constants.EVENT_OPEN_LINK, (payload: { params: string[] }) => {
+    console.log('Chat dapp: open link', payload.params);
+    const [roomName] = payload.params;
 
-const dappClass: ArrayIO.DappClass = ArrayIO.DappClass;
-
-dappClass.on('openLink', (error, result) => {
-  if (!error) {
-    console.error('open link error', error);
-  }
-  console.log('OPEN LINK', result);
-});
+    store.dispatch(actions.onSubmitMainFormThunk(roomName));
+  });
+};

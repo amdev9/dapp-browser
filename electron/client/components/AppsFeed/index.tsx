@@ -32,6 +32,7 @@ export class AppsFeed extends React.Component<AppsFeedProps> {
         <div className="header">
           <div className="title">
             Your apps
+            <a href="arr://chat/sdf">asd</a>
           </div>
           <div className="action">
             <span onClick={() => this.props.downloadDapp('QmZdU95L4os5nrLhBm7envsXB746b8UHEe1imY5ZD87cgw')}>Go to market</span>

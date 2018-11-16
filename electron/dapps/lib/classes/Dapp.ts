@@ -11,7 +11,7 @@ class DappClass {
     return this.dappEventEmitter.emit(event, ...args);
   }
 
-  subscribe(event: string, callback: (error: any, result: any) => any) {
+  on(event: string, callback: (...args: any) => any) {
     return this.dappEventEmitter.on(event, callback);
   }
 }

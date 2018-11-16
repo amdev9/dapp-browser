@@ -10,12 +10,7 @@ module.exports = {
     filename: 'dapp.js',
   },
   externals: {
-    'array-io': {
-      root: 'ArrayIO',
-      commonjs2: 'array-io',
-      commonjs: 'array-io',
-      amd: 'array-io'
-    },
+    'array-io': 'ArrayIO'
   },
   module: {
     rules: [
