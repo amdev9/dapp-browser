@@ -1,89 +1,49 @@
 import { ofType, Epic, combineEpics } from 'redux-observable';
-import { concat, map, mergeMap, switchMap } from 'rxjs/operators';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { ignoreElements, switchMap } from 'rxjs/operators';
 
-import * as clientActions from '../actions/client';
 import * as constants from '../constants';
 import { AppsManager } from '../AppsManager';
+import ClientManager from '../ClientManager';
+import { HTTP_PROTOCOL } from '../constants/globalVariables';
+import * as httpProtocolActions from '../actions/httpProtocol';
+import { activeDappSelector } from '../selectors';
 
-const openLinkEpic: Epic<any> = (action$, state$) => action$.pipe(
-  ofType(constants.OPEN_DAPP_BY_HTTP_PROTOCOL),
-  switchMap(async (action) => {
-    const { dappName, params, dappOpened } = action.payload;
-    const { activeDapp } = state$.value.client;
-    const { grantedApps } = state$.value.permissionManager;
-    const dappNameLowerCase = dappName.toLowerCase();
-    const openedDapps = state$.value.tray.items;
-
-    const dappInTray = openedDapps.find((dapp: any) => dapp.appName.toLowerCase() === dappNameLowerCase);
-
-    const appInGrantedApps = grantedApps && grantedApps.find((appName: string) => appName.toLowerCase() === dappNameLowerCase);
-
-    // Check app opening
-    const toggleAppSuccess = new Promise((resolve, reject) => {
-      if (dappOpened) {
-        resolve(action);
-      } else {
-        const subscriber = action$.subscribe((action) => {
-          if (action.type === constants.TOGGLE_APP_HOME_SUCCESS && dappNameLowerCase === action.meta.name.toLowerCase()) {
-            resolve(action);
-            subscriber.unsubscribe();
-          }
-        });
-      }
-    });
-
-    // Waiting for check dapp permissions
-    const grantedPermissions = new Promise((resolve, reject) => {
-      if (appInGrantedApps) {
-        resolve();
-      } else {
-        const subscriber = action$.subscribe((action) => {
-          if (action.type === constants.GRANT_PERMISSIONS && action.meta.name.toLowerCase() === dappNameLowerCase) {
-            resolve(action);
-            subscriber.unsubscribe();
-          }
-        });
-      }
-    });
-
-    await Promise.all([toggleAppSuccess, grantedPermissions]);
-
-    return { type: constants.DAPP_ACTION_OPEN_LINK, payload: { params } };
-  }),
-);
-
-const subscribeToggleApp: Epic<any> = (action$, state$) => action$.pipe(
+const httpProtocolOpenLink: Epic<any> = (action$, state$) => action$.pipe(
   ofType(constants.HTTP_PROTOCOL_OPEN_LINK),
   switchMap(async (action) => {
-    const [dappName, ...params] = action.payload.params;
-    const { activeDapp } = state$.value.client;
-    const actionsMap = [];
-    const dappOpened = activeDapp && activeDapp.appName && activeDapp.appName.toLowerCase() === dappName.toLowerCase();
+    try {
+      const state = state$.value;
+      const { link } = action.payload;
+      const clearLink = link && link.replace(HTTP_PROTOCOL, '');
+      const [dappName, ...params] = clearLink.split('/').filter((item: string) => item);
+      const requestDapp = AppsManager.getDappItem(dappName);
 
-    const openDappByHttpProtocolAction = {
-      type: constants.OPEN_DAPP_BY_HTTP_PROTOCOL,
-      payload: { params, dappName, dappOpened },
-    };
+      if (!requestDapp) {
+        throw Error('Dapp does not exist');
+      }
 
-    actionsMap.push(openDappByHttpProtocolAction);
+      const activeDapp = activeDappSelector(state);
+      const requestDappName = requestDapp.appName;
+      const isDappOpen = activeDapp === requestDappName;
 
-    const dapp = dappName ? AppsManager.dapps.find(dappObj => dappObj.appName.toLowerCase() === dappName.toLowerCase()) : null;
+      if (!isDappOpen || !AppsManager.isDappReady(requestDappName)) {
+        await ClientManager.switchDapp(requestDappName);
+      }
 
-    if (!dappOpened) {
-      actionsMap.push(clientActions.toggleAppHome(dapp.appName));
+      const createdDapp = AppsManager.getDappRenderer(requestDappName);
+
+      if (createdDapp) {
+        ClientManager.store.dispatch(httpProtocolActions.dappActionOpenLink(params, createdDapp.id));
+      }
+
+      return httpProtocolActions.httpProtocolOpenLinkSuccess(link);
+    } catch (error) {
+      return httpProtocolActions.httpProtocolOpenLinkFailure(action.payload.link, error);
     }
-
-    if (dapp) {
-      return actionsMap;
-    }
-
-    return [{ type: constants.HTTP_PROTOCOL_OPEN_LINK_FAILURE }];
   }),
-  mergeMap((actions) => actions),
+  ignoreElements(),
 );
 
 export default combineEpics(
-  subscribeToggleApp,
-  openLinkEpic,
+  httpProtocolOpenLink,
 );

@@ -131,7 +131,7 @@ class App extends React.Component<AppProps> {
                       />;
 
               default:
-                return <AppsFeed items={feedItems} toggleAppHome={onToggleAppHome} downloadDapp={downloadDapp}/>;
+                return <AppsFeed items={feedItems} switchDapp={onSwitchDapp} downloadDapp={downloadDapp}/>;
             }
           })()}
 

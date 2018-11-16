@@ -9,7 +9,7 @@ import thunk from 'redux-thunk';
 import { validatePermissionAction } from './validatePermissionAction';
 import rootEpic from '../epics';
 import { rootReducer } from '../reducers';
-import { RendererConf } from '../../createDappView';
+import { RendererConf } from '../constants/globalVariables';
 import { Client, IState } from '../reducers/state';
 import SQLiteStorage from './persist';
 import { SearchPanel, StatusBarPanel, NotificationPanel } from '../../../client/redux/reducers/state'; // todo remove the references to client

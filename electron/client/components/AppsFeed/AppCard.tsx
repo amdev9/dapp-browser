@@ -4,7 +4,7 @@ import { DApp } from '../../redux/model';
 
 interface AppCardProps {
   dapp?: DApp,
-  toggleAppHome?: (dappName: string) => any
+  switchDapp: () => void;
 }
 
 export class AppCard extends React.Component<AppCardProps>  {
@@ -27,9 +27,9 @@ export class AppCard extends React.Component<AppCardProps>  {
     );
   }
   public render() {
-    const { dapp, toggleAppHome } = this.props;
+    const { dapp, switchDapp } = this.props;
     return (
-      <div className="app-card" onClick={() => toggleAppHome(dapp.appName)}>
+      <div className="app-card" onClick={switchDapp}>
         <div className="header" style={{ backgroundImage: `url('${dapp.preview}')` }}>
         </div>
         <div className="content">

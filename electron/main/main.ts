@@ -5,14 +5,13 @@
 
 import { app, BrowserWindow, Menu, dialog, protocol } from 'electron';
 import { Store } from 'redux';
-import { ReplaySubject } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer';
 import { configureStore, initialState } from './helpers/store/configureStore';
 import { AppsManager, AppItem } from './helpers/AppsManager';
 import { DappFrame } from './helpers/DappFrame';
 import { createClientWindow } from './createClientWindow';
-import { createPermissionWindow } from './createPermissionWindow';
-import { createDappView, RendererConf } from './createDappView';
+import { RendererConf, globalUUIDList } from './helpers/constants/globalVariables';
 import { IState, Client } from './helpers/reducers/state';
 import { getDefaultExecPath, Keychain } from './helpers/Keychain';
 import * as path from 'path';
@@ -20,11 +19,14 @@ const KEYCHAIN_PATH = path.join(__dirname, '..', 'helpers', 'Keychain', getDefau
 
 import * as nodeConsole from 'console';
 import { NetworkAPI } from './helpers/Network';
-import { httpProtocolOpenLink } from './helpers/actions/httpProtocol';
+import ClientManager from './helpers/ClientManager';
+import * as httpProtocolActions from './helpers/actions/httpProtocol';
+import { activeDappSelector } from './helpers/selectors';
+import * as clientActions from './helpers/actions/client';
 
 const console = new nodeConsole.Console(process.stdout, process.stderr);
 
-const isProduction = process.env.ELECTRON_ENV !== 'development';
+export const isProduction = process.env.ELECTRON_ENV !== 'development';
 let store: Store<IState>;
 
 require('electron-context-menu')({
@@ -33,13 +35,13 @@ require('electron-context-menu')({
     // Only show it when right-clicking images
     // visible: params.mediaType === 'image'
   },
-  {
-    label: 'Close app',
+    {
+      label: 'Close app',
       // visible: params.mediaType === 'image'
-    click: (e: any) => {
-      store.dispatch({ type: 'REMOVE_TRAY_ITEM', payload: { targetDappName: 'Game' } }); // todo how to determine app name where the click has been made?
-    },
-  }],
+      click: (e: any) => {
+        store.dispatch({ type: 'REMOVE_TRAY_ITEM', payload: { targetDappName: 'Game' } }); // todo how to determine app name where the click has been made?
+      },
+    }],
 });
 
 let template: any[] = [];
@@ -87,7 +89,6 @@ if (process.platform === 'darwin') {
   }];
 }
 
-const globalUUIDList: RendererConf[] = [];
 let clientWindow: Electron.BrowserWindow = null;
 
 if (process.env.ELECTRON_ENV === 'development') {
@@ -134,7 +135,6 @@ app.on('ready', async () => {
 
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
-
   await AppsManager.parseDapps();
 
   let keysList: string[] = [];
@@ -151,42 +151,40 @@ app.on('ready', async () => {
     feed: { items: AppsManager.dapps },
   }, globalUUIDList);
 
-  // Mac OS X sends url to open via this event
-  replayOpenUrls.subscribe((value: string) => {
+  store.subscribe(() => {
+    const storeState = store.getState();
 
-    const link = value.replace('arr://', '');
-    const params = link.split('/').filter(item => item);
-    store.dispatch(httpProtocolOpenLink(params));
+    process.stdout.write(JSON.stringify(storeState));
   });
-
+  // Mac OS X sends url to open via this event
   app.on('activate', () => {
     // On OS X it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
     // clientWindow = createClientWindow(globalUUIDList, store);
   });
-  clientWindow = createClientWindow(globalUUIDList, store);
 
-  let pmIsOpen = false;
-  const closePermissionManager = () => {
-    pmIsOpen = false;
-    if (permissionWindow) {
-      permissionWindow.close();
-      permissionWindow = null;
-    }
-  };
-  let permissionWindow: BrowserWindow;
+  new ClientManager(store);
 
-  let isClientWindowLoaded = false;
+  clientWindow = ClientManager.createClientWindow();
+
+  // Subscribe on links after create client window
+  replayOpenUrls.subscribe((value: string) => {
+    store.dispatch(httpProtocolActions.httpProtocolOpenLink(value));
+  });
 
   // @TODO: Use 'ready-to-show' event
   //        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event
   clientWindow.webContents.on('did-finish-load', () => {
-    isClientWindowLoaded = true;
     if (!clientWindow) {
       throw new Error('"clientWindow" is not defined');
     }
     clientWindow.show();
     clientWindow.focus();
+
+    const activeDapp = activeDappSelector(store.getState());
+    if (activeDapp) {
+      store.dispatch(clientActions.switchDapp(activeDapp));
+    }
   });
 
   clientWindow.on('closed', () => {
@@ -206,71 +204,11 @@ app.on('ready', async () => {
     });
   }
 
-  store.subscribe(() => {
-    const storeState = store.getState();
-
-    process.stdout.write(JSON.stringify(storeState));
-
-    if (storeState.client.isHome) {
-      clientWindow.setBrowserView(null);
-    } else {
-      if (!storeState.client.activeDapp) { // this happends when Settings panel opens from Home screen
-        return;
-      }
-      const activeDappName: string = storeState.client.activeDapp.appName;
-      const targetDappObj: AppItem = AppsManager.dapps.find(dappObj => dappObj.appName === activeDappName);
-      createDappView(globalUUIDList, targetDappObj);
-
-      const nameObj: RendererConf = globalUUIDList.find(renObj => renObj.name === activeDappName && renObj.status === 'dapp');
-      if (nameObj) {
-        const view = nameObj.dappView;
-        if (view) {
-          clientWindow.setBrowserView(view);
-          if (isClientWindowLoaded) {
-            if (!pmIsOpen) {  // Linux. If not to check isClientWindowLoaded, than permissionWindow loads before clientWindow and shows behind clientWindow
-              const activeDappGranted = storeState.permissionManager.grantedApps.indexOf(activeDappName) !== -1;
-              if (!activeDappGranted) {
-                permissionWindow = createPermissionWindow(globalUUIDList, clientWindow, targetDappObj.appName, targetDappObj.permissions);
-                permissionWindow.on('closed', () => {
-                  pmIsOpen = false;
-                  permissionWindow = null;
-                });
-                pmIsOpen = true;
-              }
-            } else {
-              if (!storeState.permissionManager.isOpen) {
-                closePermissionManager();
-              }
-            }
-          }
-        } else {
-          clientWindow.setBrowserView(null);
-          process.stdout.write('error: view is null');
-        }
-      }
-    }
-    correctDappViewBounds(storeState.client);
-  });
-
   // if (isProduction) {
   //   clientWindow.on('resize', () => correctDappViewBounds(store.getState().client));
   //   clientWindow.on('maximize', () => correctDappViewBounds(store.getState().client));
   //   clientWindow.on('restore', () => correctDappViewBounds(store.getState().client));
   // }
 });
-
-const correctDappViewBounds = (clientState: Client) => {
-  if (!clientWindow) {
-    process.stdout.write('Trying to send bounds of Dapp View while its parent window has not been initialized');
-    return;
-  }
-
-  const view = clientWindow.getBrowserView();
-  const windowBounds = clientWindow.getBounds();
-  if (view) {
-    const dappFrame: Electron.Rectangle = new DappFrame(clientState, isProduction ? windowBounds : null);
-    view.setBounds(dappFrame);
-  }
-};
 
 process.stdout.write('Main initialized');
