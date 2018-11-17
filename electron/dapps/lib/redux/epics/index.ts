@@ -1,28 +1,14 @@
 import 'rxjs';
 import { combineEpics, ofType, Epic } from 'redux-observable';
-import { mapTo, tap, map, mergeMap } from 'rxjs/operators';
+import { mapTo, tap, map, mergeMap, ignoreElements } from 'rxjs/operators';
 
 import * as actions from '../actions/channel';
 import * as constants from '../constants';
 import * as utils from '../utils';
-
-import { store as dappChatStore } from '../../chat/redux/store' ;
+import Dapp from '../../classes/Dapp';
+import eventsEpic from './eventsEpic';
 
 const openChannelSuccess = () => ({ type: constants.OPEN_CHANNEL_SUCCESS });
-
-const switchDappEpic: Epic<any> = action$ => action$.pipe(
-  ofType(constants.SWITCH_DAPP),
-  map((action) => {
-    const dappChatState = dappChatStore.getState();
-    console.log('SWITCH!', action, dappChatState.main);
-    if (action.payload.targetDappName === 'Chat' && dappChatState.main.appInit) {
-      console.log('SWITCH OK!', action);
-      return actions.toggleAppHomeSuccess()
-    }
-
-    return { type: constants.SWITCH_DAPP_SUCCESS }
-  }),
-);
 
 const startCountdownEpic: Epic<any> = action$ => action$.pipe(
   ofType(constants.OPEN_CHANNEL),
@@ -108,16 +94,7 @@ const keychainSignFailure: Epic<any> = action$ => action$.pipe(
   mapTo(actions.keychainShowResult()),
 );
 
-const httpProtocolOpenLink: Epic<any> = action$ => action$.pipe(
-  ofType(constants.DAPP_ACTION_OPEN_LINK),
-  tap((action) => {
-    dappChatStore.dispatch(action);
-  }),
-  mapTo({ type: 'DAPP_ACTION_OPEN_LINK_SUCCESS' }),
-);
-
 export const rootEpic = combineEpics(
-  switchDappEpic,
   fileManagerOpenSuccess,
   startCountdownEpic,
   uploadFileIpfsStorageSuccess,
@@ -131,5 +108,5 @@ export const rootEpic = combineEpics(
   keychainSignSuccess,
   keychainSignFailure,
   networkBlockCreated,
-  httpProtocolOpenLink,
+  eventsEpic,
 );

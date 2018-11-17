@@ -1,6 +1,6 @@
-// declare module 'array-io';
+declare module 'array-io';
 
-import { EventEmitter } from "events";
+export as namespace ArrayIO;
 
 interface SubscribeOptions {
   onMessage: (message: any) => void;
@@ -9,21 +9,20 @@ interface SubscribeOptions {
   onSubscribe?: (peer: string) => void;
 }
 
-declare class IpfsRoom {
+export class IpfsRoom {
   constructor()
 
   subscribe(topic: string, options: SubscribeOptions): Promise<void>;
+
   sendMessageBroadcast(message: string): Promise<any>;
+
   sendMessageTo(message: string, peer: string): Promise<any>;
+
   leave(): Promise<any>;
 }
 
-declare class DappClass {
-  constructor()
+export class DappClass {
+  constructor();
 
+  on(event: string, callback: (error: any, result: any) => void): any;
 }
-
-export {
-  IpfsRoom,
-  DappClass,
-};

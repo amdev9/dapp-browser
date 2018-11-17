@@ -5,10 +5,9 @@ import * as cn from 'classnames';
 
 import * as constants from '../../redux/constants';
 import * as actions from '../../redux/actions';
-import { Chat as ArrayChat } from '../../../baseClasses';
+const ArrayIO = require('array-io');
 
 import './styles.css';
-
 const ON_JOIN_USER_MESSAGE = 'User has joined';
 const ON_LEFT_USER_MESSAGE = 'User has left';
 
@@ -42,7 +41,6 @@ class Chat extends React.Component<any, any> {
     if (this.props.selectedRoom !== nextProps.selectedRoom) {
       this.subscribeRoom(nextProps.selectedRoom);
     }
-    console.log('willrecprops', nextProps.selectedRoom, this.props.selectedRoom);
   }
 
   async subscribeRoom(selectedRoom: string) {
@@ -60,11 +58,11 @@ class Chat extends React.Component<any, any> {
     }
 
     try {
-      const chat = new ArrayChat();
+      const chat: ArrayIO.IpfsRoom = new ArrayIO.IpfsRoom();
       this.setState({ chat });
       await chat.subscribe(selectedRoom, {
         onSubscribe: (peerId) => {
-          console.log('myid', peerId);
+          console.log('IpfsRoom: my id', peerId);
           this.setState({
             myId: peerId,
             isChatCreating: false,
@@ -113,7 +111,6 @@ class Chat extends React.Component<any, any> {
   }
 
   componentDidMount() {
-    console.log('componentDidMount');
     this.subscribeRoom(this.props.selectedRoom);
 
   }
@@ -128,7 +125,6 @@ class Chat extends React.Component<any, any> {
   componentWillUnmount() {
     if (this.state.chat) {
       this.state.chat.leave();
-      console.log('leave from', this.props.selectedRoom);
     }
   }
 
@@ -136,7 +132,6 @@ class Chat extends React.Component<any, any> {
     const { chat } = this.state;
     const { reset } = this.props;
 
-    console.log('values', values.message, this.props);
     if (chat && values.message) {
       chat.sendMessageBroadcast(values.message);
       reset && reset();
@@ -227,7 +222,6 @@ class Chat extends React.Component<any, any> {
   }
 
   focus() {
-    console.log('rerere', this.messageInput);
     if (this.messageInput && this.messageInput.getRenderedComponent) {
       this.messageInput.getRenderedComponent().focus();
     }

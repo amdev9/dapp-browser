@@ -12,7 +12,6 @@ const mapDispatchToProps = (dispatch: any) => ({
     const roomName = values['room-name'];
 
     dispatch(actions.onSubmitMainFormThunk(roomName));
-    // await dispatch(onSubmitCreateHWAccountPage(walletName));
   }
 });
 
