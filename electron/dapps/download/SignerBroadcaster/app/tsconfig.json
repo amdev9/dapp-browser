@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "lib": ["es2017", "dom", "scripthost"],
+    "noImplicitAny": true,
+    "outDir": "dist",
+    "baseUrl": ".",
+    "paths": {
+      "*": ["node_modules/*", "types/*"]
+    },
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "jsx": "react",
+    "sourceMap": true
+  },
+  "include": [
+    "./*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
