@@ -163,7 +163,6 @@ app.on('ready', async () => {
 
   store.subscribe(() => {
     const storeState = store.getState();
-    AppsManager.correctDappViewBounds(clientWindow, storeState);
     process.stdout.write(JSON.stringify(storeState));
   });
 
