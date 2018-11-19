@@ -7,7 +7,6 @@ import * as KeychainActions from '../redux/actions/keychain';
 import * as LoaderActions from '../redux/actions/loader';
 import * as TrayActions from '../redux/actions/tray';
 import * as StatusBarActions from '../redux/actions/status-bar';
-import * as AppsFeedActions from '../redux/actions/appsFeed';
 import * as SearchActions from '../redux/actions/search';
 import * as MarketActions from '../redux/actions/market';
 import * as PermissionsActions from '../redux/actions/permissions';
@@ -56,7 +55,6 @@ interface AppProps {
   onSwitchDapp: (targetDappName?: string) => any;
   onToggleAppHome: (dappName: string) => any;
   loggerWrite: boolean;
-  onResizeAppsFeed: (width: number, height: number) => any;
   isProduction: boolean;
   locationPath: string;
   downloadDapp: (ipfsHash: string) => void;
@@ -66,11 +64,6 @@ interface AppProps {
 }
 
 class App extends React.Component<AppProps> {
-
-  constructor(props: AppProps) {
-    super(props);
-    this.resize = this.resize.bind(this);
-  }
 
   render() {
     const {
@@ -140,23 +133,6 @@ class App extends React.Component<AppProps> {
       </div>
     );
   }
-
-  private resize() {
-    this.props.onResizeAppsFeed(window.innerWidth, window.innerHeight);
-  }
-
-  componentDidMount() {
-    if (!this.props.isProduction) {
-      this.resize();
-      window.addEventListener('resize', this.resize);
-    }
-  }
-
-  componentWillUnmount() {
-    if (!this.props.isProduction) {
-      window.removeEventListener('resize', this.resize);
-    }
-  }
 }
 
 const mapStateToProps = (state: IState) => ({
@@ -192,7 +168,6 @@ const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
   onSwitchDapp: TrayActions.switchDapp,
   onToggleHome: TrayActions.toggleHome,
   onToggleAppHome: TrayActions.toggleAppHome,
-  onResizeAppsFeed: AppsFeedActions.resize,
   onToggleSearch: SearchActions.toggle,
   downloadDapp: MarketActions.downloadDapp,
   togglePermission: PermissionsActions.togglePermission,

@@ -134,7 +134,7 @@ export class AppsManager {
     const view = clientWindow.getBrowserView();
     const windowBounds = clientWindow.getBounds();
     if (view) {
-      const dappFrame: Electron.Rectangle = new DappFrame(state.client, isProduction ? windowBounds : null);
+      const dappFrame: Electron.Rectangle = new DappFrame(state.client, windowBounds);
       view.setBounds(dappFrame);
     }
   }

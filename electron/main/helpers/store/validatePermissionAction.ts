@@ -106,7 +106,6 @@ const clientActions: string[] = [
   constants.TOGGLE_SEARCH_PANEL,
   constants.SWITCH_DAPP,
   constants.ADD_APP_ITEM,
-  constants.APPS_FEED_RESIZE,
   constants.SET_TRAY_COUNTER,
   constants.SET_TRAY_PROGRESS,
   constants.REMOVE_TRAY_ITEM,

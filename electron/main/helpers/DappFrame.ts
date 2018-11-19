@@ -15,13 +15,9 @@ export class DappFrame {
     return { width: windowBounds.width, height: windowBounds.height - 25 };
   }
 
-  constructor(state: Client, windowBounds?: Rectangle) {
+  constructor(state: Client, windowBounds: Rectangle) {
     this._state = state;
-    if (windowBounds) { // production mode, no devtools window. Rely on electron window dimensions
-      this._windowBounds = DappFrame.adjustElectronWindowBounds(windowBounds);
-    } else {
-      this._windowBounds = this._state.window;
-    }
+    this._windowBounds = DappFrame.adjustElectronWindowBounds(windowBounds);
   }
 
   get width() {

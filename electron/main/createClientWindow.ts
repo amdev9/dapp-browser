@@ -62,7 +62,9 @@ export function createClientWindow(globalUUIDList: RendererConf[], store: any) {
 
   // console.log(process.env);
   if (process.env.ELECTRON_ENV === 'development') {
-    openDevTool(clientWindow, true);
+    const devtools = new BrowserWindow();
+    clientWindow.webContents.setDevToolsWebContents(devtools.webContents);
+    clientWindow.webContents.openDevTools({ mode: 'detach' });
   }
 
   const renderIdClient = clientWindow.webContents.getProcessId(); // .webContents.getProcessId(); //.id,
