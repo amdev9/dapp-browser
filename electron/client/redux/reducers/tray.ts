@@ -82,17 +82,15 @@ export default function tray(state: Tray = null, action: TrayAction) {
         ...state,
         isHome: false,
         activeDapp: {
-          appName: action.payload.targetDappName
-        }
+          appName: action.payload.targetDappName,
+        },
       };
 
     case constants.REMOVE_TRAY_ITEM: {
       const dappName = action.payload.targetDappName;
-      const newItems = state.items.filter(item => item.appName !== dappName);
-
       return {
         ...state,
-        items: newItems
+        items: state.items.filter(item => item.appName !== dappName),
       };
     }
 
