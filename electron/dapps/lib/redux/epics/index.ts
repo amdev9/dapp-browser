@@ -94,6 +94,11 @@ const keychainSignFailure: Epic<any> = action$ => action$.pipe(
   mapTo(actions.keychainShowResult()),
 );
 
+const toggleHome: Epic<any> = action$ => action$.pipe(
+  ofType(constants.TOGGLE_HOME),
+  mapTo(actions.networkUnsubscribe()),
+);
+
 export const rootEpic = combineEpics(
   fileManagerOpenSuccess,
   startCountdownEpic,
@@ -109,4 +114,5 @@ export const rootEpic = combineEpics(
   keychainSignFailure,
   networkBlockCreated,
   eventsEpic,
+  toggleHome,
 );

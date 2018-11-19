@@ -1,5 +1,5 @@
 import { ofType, Epic, combineEpics } from 'redux-observable';
-import { merge, concatMap, ignoreElements, tap, switchMap, mapTo, map } from 'rxjs/operators';
+import { ignoreElements, tap, mapTo, map } from 'rxjs/operators';
 import * as constants from '../constants';
 import { AppsManager } from '../AppsManager';
 import ClientManager from '../ClientManager';
@@ -22,8 +22,14 @@ const toggleHomeEpic: Epic<any> = action$ => action$.pipe(
   ignoreElements(),
 );
 
+const removeTrayItemEpic: Epic<any> = action$ => action$.pipe(
+  ofType(constants.REMOVE_TRAY_ITEM),
+  mapTo(clientActions.toggleHome(true)),
+);
+
 export default combineEpics(
   openDappEpic,
   addAppItemEpic,
   toggleHomeEpic,
+  removeTrayItemEpic,
 );

@@ -28,6 +28,7 @@ const console = new nodeConsole.Console(process.stdout, process.stderr);
 
 export const isProduction = process.env.ELECTRON_ENV !== 'development';
 let store: Store<IState>;
+let rightClickTrayItem: string = null;
 
 require('electron-context-menu')({
   prepend: (params: any, browserWindow: BrowserWindow) => [{
@@ -35,13 +36,15 @@ require('electron-context-menu')({
     // Only show it when right-clicking images
     // visible: params.mediaType === 'image'
   },
-    {
-      label: 'Close app',
-      // visible: params.mediaType === 'image'
-      click: (e: any) => {
-        store.dispatch({ type: 'REMOVE_TRAY_ITEM', payload: { targetDappName: 'Game' } }); // todo how to determine app name where the click has been made?
-      },
-    }],
+  {
+    label: 'Close app',
+    // visible: params.mediaType === 'image'
+    click: (menuItem: any, broswerWindow: any, event: any) => {
+      if (rightClickTrayItem) {
+        store.dispatch({ type: 'REMOVE_TRAY_ITEM', payload: { targetDappName: rightClickTrayItem } });
+      }
+    },
+  }],
 });
 
 let template: any[] = [];
@@ -160,6 +163,10 @@ app.on('ready', async () => {
   new ClientManager(store);
 
   clientWindow = ClientManager.createClientWindow();
+
+  clientWindow.webContents.on('context-menu', (e, params) => {
+    rightClickTrayItem = params.titleText;
+  });
 
   store.subscribe(() => {
     const storeState = store.getState();
