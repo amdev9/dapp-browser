@@ -107,9 +107,6 @@ export function client(state: Client = null, action: any) { // @todo refactor ad
         },
       };
 
-    case constants.APPS_FEED_RESIZE:
-      return { ...state, window: action.payload };
-
     case constants.TOGGLE_PERMISSION: {
       if (!state.permissions || !state.permissions.permissions) {
         return { ...state };

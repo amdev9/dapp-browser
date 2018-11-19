@@ -163,6 +163,7 @@ app.on('ready', async () => {
 
   store.subscribe(() => {
     const storeState = store.getState();
+    AppsManager.correctDappViewBounds(clientWindow, storeState);
     process.stdout.write(JSON.stringify(storeState));
   });
 
@@ -203,11 +204,9 @@ app.on('ready', async () => {
     });
   }
 
-  // if (isProduction) {
-  //   clientWindow.on('resize', () => correctDappViewBounds(store.getState().client));
-  //   clientWindow.on('maximize', () => correctDappViewBounds(store.getState().client));
-  //   clientWindow.on('restore', () => correctDappViewBounds(store.getState().client));
-  // }
+  clientWindow.on('resize', () => AppsManager.correctDappViewBounds(clientWindow, store.getState()));
+  clientWindow.on('maximize', () => AppsManager.correctDappViewBounds(clientWindow, store.getState()));
+  clientWindow.on('restore', () => AppsManager.correctDappViewBounds(clientWindow, store.getState()));
 });
 
 process.stdout.write('Main initialized');
