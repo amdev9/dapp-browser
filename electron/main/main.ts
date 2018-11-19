@@ -28,23 +28,22 @@ const console = new nodeConsole.Console(process.stdout, process.stderr);
 
 export const isProduction = process.env.ELECTRON_ENV !== 'development';
 let store: Store<IState>;
-let rightClickTrayItem: string = null;
 
 require('electron-context-menu')({
   prepend: (params: any, browserWindow: BrowserWindow) => [{
-    label: 'Pin to top',
-    // Only show it when right-clicking images
-    // visible: params.mediaType === 'image'
-  },
-  {
+    //   label: 'Pin to top',
+    //   // Only show it when right-clicking images
+    //   visible: params.mediaType === 'image'
+    // },
     label: 'Close app',
-    // visible: params.mediaType === 'image'
+    // visible: params.titleText,
     click: (menuItem: any, broswerWindow: any, event: any) => {
-      if (rightClickTrayItem) {
-        store.dispatch({ type: 'REMOVE_TRAY_ITEM', payload: { targetDappName: rightClickTrayItem } });
-      }
+      store.dispatch({ type: 'REMOVE_TRAY_ITEM', payload: { targetDappName: params.titleText } });
     },
   }],
+  showSaveImageAs: false,
+  showInspectElement: false,
+  shouldShowMenu: (event:any , params: any) => params.titleText !== '',
 });
 
 let template: any[] = [];
@@ -163,10 +162,6 @@ app.on('ready', async () => {
   new ClientManager(store);
 
   clientWindow = ClientManager.createClientWindow();
-
-  clientWindow.webContents.on('context-menu', (e, params) => {
-    rightClickTrayItem = params.titleText;
-  });
 
   store.subscribe(() => {
     const storeState = store.getState();
