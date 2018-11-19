@@ -46,8 +46,6 @@ export const initUI = async () => {
   }
 
   if (document.getElementById('networkSubscribeButtonDapp')) {
-    array.networkSubscribe(); // subscribe on Dapp load
-
     document.getElementById('networkSubscribeButtonDapp').addEventListener('click', () => {
       array.networkSubscribe();
     });
