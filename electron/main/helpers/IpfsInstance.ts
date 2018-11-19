@@ -5,6 +5,8 @@ import * as path from 'path';
 import { remoteConfig } from './config/ipfs';
 import { appTempPath } from './constants/appPaths';
 
+let ipfsInstance: IPFS;
+
 const cleanRepo = async (repoPath: string) => {
   // This fixes a bug on Windows, where the daemon seems
   // not to be exiting correctly, hence the file is not
@@ -25,25 +27,33 @@ const cleanRepo = async (repoPath: string) => {
 };
 
 export const getReadyIpfsInstance = async (options: IPFS.Options = { repo: path.join(appTempPath, 'ipfs', 'repo') }): Promise<any> => {
-  const ipfs = new IPFS({
-    ...remoteConfig,
-    repo: path.join(options.repo, Math.random().toString()),
-  });
-
-  await cleanRepo(options.repo);
-  return new Promise((resolve, reject) => {
-    ipfs.on('ready', () => {
-      if (ipfs.isOnline()) {
-        console.log('online');
-        resolve(ipfs);
-      } else {
-        console.log('offline, try to start');
-        ipfs.start();
-      }
+  if (!ipfsInstance) {
+    ipfsInstance = new IPFS({
+      ...remoteConfig,
+      repo: path.join(options.repo, Math.random().toString()),
     });
 
-    ipfs.on('error', (error: Error) => {
-      reject(error);
+    await cleanRepo(options.repo);
+    return new Promise((resolve, reject) => {
+      ipfsInstance.on('start', () => {
+        resolve(ipfsInstance);
+      });
+
+      ipfsInstance.on('ready', () => {
+        if (ipfsInstance.isOnline()) {
+          console.log('online');
+        } else {
+          console.log('offline, try to start');
+          ipfsInstance.start();
+        }
+      });
+
+      ipfsInstance.on('error', (error: Error) => {
+        reject(error);
+      });
     });
-  });
+  }
+
+  return ipfsInstance;
+
 };
