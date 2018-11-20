@@ -40,11 +40,11 @@ const keychainListEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix 
   }),
 );
 
-const keychainSignEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
+const keychainSignEpic: Epic<AnyAction> = (action$, state$) => action$.pipe( // @todo fix action type
   ofType(constants.KEYCHAIN_SIGN),
   switchMap(async (action) => {
     try {
-      const key = action.payload.key;
+      const key = state$.value.client.keychain.selectedKey;
       const chainId = action.payload.chainId;
       const transaction = action.payload.transaction;
       const keychainInstance = new Keychain(KEYCHAIN_PATH);

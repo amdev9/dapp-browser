@@ -37,6 +37,8 @@ class Main extends React.Component<InjectedFormProps> {
                 label="Amount"
                 placeholder="Enter amount..."
               />
+            </li>
+            <li>
               <button type="submit">Sign</button>
               <button type="submit">Send</button>
             </li>

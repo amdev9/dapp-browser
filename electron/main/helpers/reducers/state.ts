@@ -10,7 +10,7 @@ export type Client = {
   isHome: boolean,
   notification: {
   },
-  keychain: { items: string[] }
+  keychain: { items: string[], selectedKey: string }
   statusBar: {
   },
   loader: {

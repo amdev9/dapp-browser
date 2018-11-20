@@ -149,7 +149,7 @@ app.on('ready', async () => {
 
   store = configureStore({
     ...initialState,
-    client: { ...initialState.client, keychain: { items: keysList } },
+    client: { ...initialState.client, keychain: { ...initialState.client.keychain, items: keysList } },
     feed: { items: AppsManager.dapps },
   }, globalUUIDList);
   // Mac OS X sends url to open via this event

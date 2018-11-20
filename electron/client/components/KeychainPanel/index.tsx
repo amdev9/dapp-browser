@@ -10,6 +10,7 @@ interface KeychainPanelProps {
   removeKey(name: string): void;
   signKey(name: string): void;
   listKeys(): void;
+  selectKey(name: string): void;
 }
 
 interface KeychainPanelState {
@@ -30,6 +31,7 @@ export class KeychainPanel extends React.Component<KeychainPanelProps, KeychainP
 
   onKeySelect(key: string) {
     this.setState({selectedKey: key});
+    this.props.selectKey(key);
   }
 
   private getList(): JSX.Element[] | JSX.Element {

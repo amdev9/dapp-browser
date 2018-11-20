@@ -119,6 +119,9 @@ export function client(state: Client = null, action: any) { // @todo refactor ad
     case constants.KEYCHAIN_LIST_SUCCESS:
       return { ...state, keychain: { items: action.payload } };
 
+    case constants.KEYCHAIN_SELECT_KEY:
+      return { ...state, keychain: { ...state.keychain, selectedKey: action.payload.key } };
+
     case constants.KEYCHAIN_REMOVE_KEY:
       return { ...state, keychain: { items: state.keychain.items.filter(item => item !== action.payload.name) } };
 
