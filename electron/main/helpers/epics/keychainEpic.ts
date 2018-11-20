@@ -44,7 +44,7 @@ const keychainSignEpic: Epic<AnyAction> = (action$, state$) => action$.pipe( // 
   ofType(constants.KEYCHAIN_SIGN),
   switchMap(async (action) => {
     try {
-      const key = state$.value.client.keychain.selectedKey;
+      const key = `${state$.value.client.keychain.selectedKey}`; // keys consitsted only of numbers throw 'Bad cast' exception. Converting everythin to string
       const chainId = action.payload.chainId;
       const transaction = action.payload.transaction;
       const keychainInstance = new Keychain(KEYCHAIN_PATH);

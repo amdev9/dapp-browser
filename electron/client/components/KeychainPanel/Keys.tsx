@@ -2,22 +2,16 @@ import * as React from 'react';
 
 interface KeysProps {
   items: string[];
+  selectedKey: string;
   removeKey: (name: string) => void;
   onSelect: (name: string) => void;
 }
 
-interface KeysState {
-  selectedKey: string;
-}
-
-export class Keys extends React.Component<KeysProps, KeysState> {
+export class Keys extends React.Component<KeysProps> {
   constructor(props: KeysProps) {
     super(props);
     this.getList = this.getList.bind(this);
     this.itemClickHandle = this.itemClickHandle.bind(this);
-    this.state = {
-      selectedKey: null,
-    };
   }
 
   itemClickHandle(item: string) {
@@ -27,7 +21,7 @@ export class Keys extends React.Component<KeysProps, KeysState> {
   }
 
   selectedClass(item: string) {
-    return item === this.state.selectedKey ? 'selected' : '';
+    return item === this.props.selectedKey ? 'selected' : '';
   }
 
   private getList(): JSX.Element[] | null {
