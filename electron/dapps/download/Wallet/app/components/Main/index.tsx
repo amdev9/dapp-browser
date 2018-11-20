@@ -9,10 +9,9 @@ import './styles.css';
 
 const mapDispatchToProps = (dispatch: any) => ({
   onSubmit: async (values: any) => {
-    const roomName = values['room-name'];
+    const roomName = values['amount'];
 
     dispatch(actions.onSubmitMainFormThunk(roomName));
-    // await dispatch(onSubmitCreateHWAccountPage(walletName));
   },
 });
 
@@ -51,8 +50,8 @@ class Main extends React.Component<InjectedFormProps> {
 
 const validate = (values: any) => {
   const errors: any = {};
-  if (!values['room-name']) {
-    errors['room-name'] = 'Required';
+  if (!values['amount']) {
+    errors['amount'] = 'Required';
   }
   return errors;
 };

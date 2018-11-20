@@ -1,8 +1,8 @@
 {
-  "title": "Signer Broadcaster application",
+  "title": "Wallet application",
   "main": "index.html",
-  "appName": "SignerBroadcaster",
-  "assets": ["app/images/**"],
+  "appName": "Wallet",
+  "assets/": ["app/images/**"],
   "icon": "app/images/exchange.svg",
   "preview": "app/images/thumb.png",
   "categories": [
@@ -13,4 +13,3 @@
     "keychain"
   ]
 }
-
