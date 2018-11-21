@@ -8,12 +8,14 @@ export interface Room {
 
 export interface RoomsState {
   selectedRoom: string | null;
-  roomList: { [roomId: string]: Room };
+  roomList: Room[];
+  filteredRoomList: Room[] | null;
 }
 
 const initialState: RoomsState = {
-  roomList: {},
   selectedRoom: null,
+  roomList: [],
+  filteredRoomList: null,
 };
 
 export default (state: RoomsState = initialState, action: any) => {
@@ -22,20 +24,29 @@ export default (state: RoomsState = initialState, action: any) => {
     case constants.ROOM_ADD:
       return {
         ...state,
-        roomList: {
+        roomList: [
           ...state.roomList,
-          [action.payload.roomId]: { ...action.payload },
-        },
+          { ...action.payload },
+        ],
       };
 
     case constants.ROOM_REMOVE:
       return {
         ...state,
-        roomList: {
-          ...state.roomList,
-          [action.payload.roomId]: null,
-        },
+        roomList: state.roomList.filter((room: Room) => room.roomId !== action.payload.roomId),
       };
+
+    case constants.ROOM_SET_FILTERED_ROOM_LIST:
+      return {
+        ...state,
+        filteredRoomList: action.payload.roomList,
+      }
+
+    case constants.ROOM_RESET_FILTERED_ROOM_LIST:
+      return {
+        ...state,
+        filteredRoomList: null,
+      }
 
     case constants.SELECT_ROOM:
       return {

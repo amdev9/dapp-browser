@@ -2,8 +2,10 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 
-import { RoomComponentStore } from '../../../services/RoomStoreService';
-import * as constants from '../../../redux/constants';
+import { RoomComponentStore } from '../../services/RoomStoreService';
+import * as constants from '../../redux/constants/index';
+
+import './styles.css';
 
 type FormProps<P> = P & InjectedFormProps<{}, P>;
 

@@ -6,7 +6,8 @@ import { AppItem } from './helpers/AppsManager';
 import { DAPPS_PATH } from './helpers/constants/appPaths';
 import { RendererConf } from './helpers/constants/globalVariables';
 
-let dappView: Electron.BrowserView = null;
+// let dappView: Electron.BrowserView = null;
+let dappView: any = null;
 
 // const DAPPS_PATH: string = path.join(__dirname, '..', '..', 'dapps', 'download');
 

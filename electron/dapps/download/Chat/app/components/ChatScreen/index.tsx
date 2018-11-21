@@ -1,15 +1,12 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { RoomComponent } from '../../services/RoomStoreService';
-import ChatView from './ChatView';
-import RoomsList from './RoomList';
-import CreateRoom from './CreateRoom';
+import ChatView from '../ChatView';
+import RoomsList from '../RoomList';
+import CreateRoom from '../CreateRoomScreen';
 import * as actions from '../../redux/actions';
 
-interface IProps {
-
-}
+import './styles.css';
 
 interface State {
   roomList: any[];
@@ -50,11 +47,7 @@ class Chat extends React.Component<Props, State> {
     const { selectedRoom } = this.props;
 
     return (
-      <div style={{
-        flex: 1,
-        flexDirection: 'row',
-        display: 'flex',
-      }}>
+      <div className="chatScreen">
         <RoomsList/>
         {selectedRoom ? <ChatView/> : <CreateRoom/>}
       </div>

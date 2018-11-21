@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { getSelectedRoomNameSelector } from '../../../redux/selectors';
-import * as actions from '../../../redux/actions';
+import { getSelectedRoomNameSelector } from '../../redux/selectors';
+import * as actions from '../../redux/actions';
+
+import './styles.css';
 
 interface StateProps {
   selectedRoomName: string;
@@ -10,6 +12,7 @@ interface StateProps {
 
 interface DispatchProps {
   deselectRoom: () => void;
+  leaveRoom: () => void;
 }
 
 const mapStateToProps = (state: any): StateProps => ({
@@ -18,6 +21,7 @@ const mapStateToProps = (state: any): StateProps => ({
 
 const mapDispatchToProps = (dispatch: any): DispatchProps => ({
   deselectRoom: () => dispatch(actions.deselectRoom()),
+  leaveRoom: () => dispatch(actions.removeSelectedRoomThunk()),
 });
 
 type Props = StateProps & DispatchProps;
@@ -25,15 +29,20 @@ type Props = StateProps & DispatchProps;
 class ChatHeader extends React.Component<Props> {
   render() {
     return (
-      <div className="chatNavigation">
-        <h1>
-          {this.props.selectedRoomName}
+      <div className="chatHeader">
+        <h1 className="chatHeaderText">{this.props.selectedRoomName}</h1>
+        <div className="chatHeaderButtonWrapper">
           <button
-            className="roomLeftButton"
+            className="chatHeaderButton chatHeaderButton_openButton"
             onClick={() => this.props.deselectRoom()}>
+            Open new room
+          </button>
+          <button
+            className="chatHeaderButton chatHeaderButton_closeButton"
+            onClick={() => this.props.leaveRoom()}>
             Leave room
           </button>
-        </h1>
+        </div>
       </div>
     );
   }

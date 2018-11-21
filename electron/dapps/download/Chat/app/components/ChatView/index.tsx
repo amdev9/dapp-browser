@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { RoomComponent } from '../../../services/RoomStoreService';
-import ChatHeader from './ChatHeader';
-import ChatWindow from './ChatWindow';
-import ChatControls from './ChatControls';
+import ChatHeader from '../ChatHeader';
+import ChatWindow from '../ChatWindow';
+import ChatControls from '../ChatControls';
 
 const ArrayIO = require('array-io');
 
@@ -30,13 +29,6 @@ class ChatView extends React.Component<Props> {
     if (!selectedRoom) {
       return 'Room has not selected';
     }
-    // if (isChatCreating) {
-    //   return this.renderLoading();
-    // }
-    //
-    // if (chatCreateFailure) {
-    //   return this.renderError();
-    // }
 
     return (
       <div className="chatWrapper">

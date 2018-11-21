@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import * as cn from 'classnames';
-import { Message } from '../../../services/RoomStoreService';
-import { getSelectedRoomMessages } from '../../../redux/selectors';
+import { Message } from '../../services/RoomStoreService';
+import { getSelectedRoomMessages } from '../../redux/selectors';
+
+import './styles.css';
 
 interface StateProps {
   messages: Message[];
@@ -21,7 +23,7 @@ class ChatHeader extends React.Component<StateProps> {
 
   scrollToBottom() {
     if (this.chatWindowEnd) {
-      this.chatWindowEnd.scrollIntoView({ behavior: 'smooth' });
+      this.chatWindowEnd.scrollIntoView(false);
     }
   }
 
@@ -37,10 +39,17 @@ class ChatHeader extends React.Component<StateProps> {
     );
   }
 
+  renderEmpty() {
+    return <div className="chatWindowEmpty">Message list is empty</div>;
+  }
+
   render() {
     const { messages } = this.props;
 
-    console.log('chatwindow', messages)
+    if (!messages || !messages.length) {
+      return this.renderEmpty();
+    }
+
     return (
       <div className="chatWindow">
         {messages && messages.map((msg: any, i: number) => this.renderMessageBlock(msg, i))}
