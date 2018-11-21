@@ -6,10 +6,7 @@ import * as constants from '../../redux/constants';
 import * as actions from '../../redux/actions';
 import* as thunks from '../../redux/thunks';
 
-
 import './styles.css';
-
-const SEARCH_ROOM_FIELD_NAME = 'searchRoom';
 
 interface DispatchProps {
   resetFilterRoomList: () => void;
@@ -19,7 +16,7 @@ interface DispatchProps {
 
 const mapDispatchToProps = (dispatch: any): DispatchProps => ({
   onSubmit: (values) => {
-    const searchString = values[SEARCH_ROOM_FIELD_NAME];
+    const searchString = values[constants.FIELD_FORM_CHAT_ROOMS_SEARCH_STRING];
     dispatch(thunks.filterRoomListThunk(searchString));
   },
   resetFilterRoomList: () => dispatch(actions.resetFilterRoomList()),
@@ -39,7 +36,7 @@ class RoomsSearch extends React.Component<FormProps<DispatchProps>> {
         className="roomsSearchWrapper"
       >
         <Field
-          name={SEARCH_ROOM_FIELD_NAME}
+          name={constants.FIELD_FORM_CHAT_ROOMS_SEARCH_STRING}
           type="text"
           className="roomsSearchInput"
           component="input"
@@ -60,7 +57,7 @@ class RoomsSearch extends React.Component<FormProps<DispatchProps>> {
 }
 
 const form: any = reduxForm<{}, DispatchProps>({
-  form: constants.FORM_CHAT_PAGE_ROOMS_SEARCH,
+  form: constants.FORM_CHAT_ROOMS_SEARCH,
   onChange: (values, dispatch, props) => {
     props.onSubmit(values);
   },

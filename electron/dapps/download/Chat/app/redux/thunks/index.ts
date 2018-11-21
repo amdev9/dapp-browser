@@ -1,3 +1,6 @@
+import { formValueSelector } from 'redux-form';
+
+import * as constants from '../constants';
 import { Message, RoomComponent, RoomComponentStore } from '../../services/RoomComponentService';
 import * as actions from '../actions';
 import { IState } from '../reducers';
@@ -39,6 +42,16 @@ export const roomRemoveThunk = (roomId: string) => (dispatch: any, getState: any
 
   room.leave();
   RoomComponentStore.removeRoom(roomId);
+  dispatch(updateFilterRoomListThunk());
+};
+
+export const updateFilterRoomListThunk = () => (dispatch: any, getState: any) => {
+  const state = getState();
+
+  const filterRoomsFormSelector = formValueSelector(constants.FORM_CHAT_ROOMS_SEARCH);
+
+  const searchString: string = filterRoomsFormSelector(state, constants.FIELD_FORM_CHAT_ROOMS_SEARCH_STRING);
+  dispatch(filterRoomListThunk(searchString));
 };
 
 export const filterRoomListThunk = (searchString: string) => (dispatch: any, getState: any) => {
