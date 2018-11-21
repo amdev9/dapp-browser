@@ -186,9 +186,9 @@ export const initUI = async () => {
     });
     document.getElementById('keychainSignButton').addEventListener('click', () => {
       // const keyInput = <HTMLInputElement>document.getElementById('keychainKey');
-      const chainIdInput = <HTMLInputElement>document.getElementById('keychainChainId');
-      const transactionIdInput = <HTMLInputElement>document.getElementById('keychainTransactionId');
-      store.dispatch(actions.keychainSign(null, chainIdInput.value, transactionIdInput.value));
+      // const chainIdInput = <HTMLInputElement>document.getElementById('keychainChainId');
+      // const transactionIdInput = <HTMLInputElement>document.getElementById('keychainTransactionId');
+      array.keychainSign();
     });
   }
 

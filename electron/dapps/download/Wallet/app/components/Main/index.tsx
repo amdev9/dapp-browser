@@ -4,14 +4,17 @@ import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 
 import * as constants from '../../redux/constants';
 import * as actions from '../../redux/actions';
+const ArrayIO = require('array-io');
+const keychain: ArrayIO.Keychain = new ArrayIO.Keychain();
 
 import './styles.css';
 
 const mapDispatchToProps = (dispatch: any) => ({
   onSubmit: async (values: any) => {
-    const roomName = values['amount'];
-
-    dispatch(actions.onSubmitMainFormThunk(roomName));
+    const amount = values['amount'];
+    const result = await keychain.sign();
+    console.log('sign result: ', result);
+    // dispatch(actions.onSubmitMainFormThunk(amount));
   },
 });
 
@@ -39,8 +42,8 @@ class Main extends React.Component<InjectedFormProps> {
               />
             </li>
             <li>
-              <button type="submit">Sign</button>
               <button type="submit">Send</button>
+              <button id="keychainSignButton" type="submit">Sign</button>
             </li>
           </ul>
         </form>
