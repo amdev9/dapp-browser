@@ -6,8 +6,7 @@ import { AppItem } from './helpers/AppsManager';
 import { DAPPS_PATH } from './helpers/constants/appPaths';
 import { RendererConf } from './helpers/constants/globalVariables';
 
-// let dappView: Electron.BrowserView = null;
-let dappView: any = null;
+let dappView: Electron.BrowserView = null;
 
 // const DAPPS_PATH: string = path.join(__dirname, '..', '..', 'dapps', 'download');
 
@@ -33,15 +32,8 @@ export function createDappView(globalUUIDList: RendererConf[], dapp: AppItem) { 
     webPrefObj = Object.assign(webPrefObj, { sandbox: true });
   }
 
-  // dappView = new BrowserView({
-  dappView = new BrowserWindow({
+  dappView = new BrowserView({
     webPreferences: webPrefObj,
-    show: true,
-    title: 'asdf',
-    x: 0,
-    y: 0,
-    width:1800,
-    height: 800,
   });
 
   // console.log('entry: ', path.join(DAPPS_PATH, dapp.appName, dapp.main));
@@ -54,8 +46,8 @@ export function createDappView(globalUUIDList: RendererConf[], dapp: AppItem) { 
 
   if (process.env.ELECTRON_ENV === 'development') {
     const devtools = new BrowserWindow();
-    // dappView.webContents.setDevToolsWebContents();
-    dappView.webContents.openDevTools();
+    dappView.webContents.setDevToolsWebContents(devtools.webContents);
+    dappView.webContents.openDevTools({ mode: 'detach' });
   }
 
   const renderIdDapp = dappView.webContents.getProcessId();
@@ -64,7 +56,7 @@ export function createDappView(globalUUIDList: RendererConf[], dapp: AppItem) { 
     id: uuidDapp,
     status: 'dapp',
     winId: renderIdDapp,
-    // dappView,
+    dappView,
     name: dapp.appName,
   };
   globalUUIDList.push(rendererObj);
