@@ -4,28 +4,44 @@ import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 
 import * as constants from '../../redux/constants';
 import * as actions from '../../redux/actions';
+const ArrayIO = require('array-io');
+const keychain: ArrayIO.Keychain = new ArrayIO.Keychain();
 
 import './styles.css';
 
+interface MainState {
+  signResult: string;
+}
+
 const mapDispatchToProps = (dispatch: any) => ({
   onSubmit: async (values: any) => {
-    const roomName = values['amount'];
-
-    dispatch(actions.onSubmitMainFormThunk(roomName));
+    // console.log('sign result: ', result);
+    // dispatch(actions.onSubmitMainFormThunk(amount));
   },
 });
 
-class Main extends React.Component<InjectedFormProps> {
+class Main extends React.Component<InjectedFormProps, MainState> {
   constructor(props: any) {
     super(props);
+    this.handleSign = this.handleSign.bind(this);
+    this.state = {
+      signResult: '',
+    };
+  }
+
+  async handleSign(e: any) {
+    e.preventDefault();
+    // const amount = values['amount'];
+    const result = await keychain.sign();
+    this.setState({signResult: result});
   }
 
   render() {
-    const { handleSubmit } = this.props;
+    // const { handleSubmit } = this.props;
 
     return (
       <div className="container">
-        <form onSubmit={handleSubmit}>
+        <form>
           <ul className="flex-outer">
             <li>
               <label>Amount</label>
@@ -37,8 +53,11 @@ class Main extends React.Component<InjectedFormProps> {
                 label="Amount"
                 placeholder="Enter amount..."
               />
-              <button type="submit">Sign</button>
+            </li>
+            <li>
               <button type="submit">Send</button>
+              <button type="submit" onClick={this.handleSign}>Sign</button>
+              <span>{ this.state.signResult }</span>
             </li>
           </ul>
         </form>

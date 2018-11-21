@@ -45,13 +45,12 @@
 
 .flex-outer > li > label,
 .flex-outer li p {
-  flex: 1 0 120px;
   max-width: 220px;
 }
 
 .flex-outer > li > label + *,
 .flex-inner {
-  flex: 1 0 220px;
+  /* flex: 1 0 220px; */
 }
 
 .flex-outer li p {

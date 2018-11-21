@@ -18,6 +18,11 @@ declare class IpfsRoom {
   leave(): Promise<any>;
 }
 
+declare class Keychain {
+  constructor();
+  sign(): Promise<any>;
+}
+
 declare class DappClass {
   constructor()
 
@@ -26,4 +31,5 @@ declare class DappClass {
 export {
   IpfsRoom,
   DappClass,
+  Keychain,
 };

@@ -36,6 +36,7 @@ interface AppProps {
   feedItems: FeedItem[];
   notifyItems: NotifyItem[];
   keychainItems: string[];
+  keychainSelectedKey: string;
   searchItems: { [index: string]: SearchItem[] };
   statusBarItems?: { [index: string]: StatusBarItem };
   statusBarToggle: () => void;
@@ -48,6 +49,7 @@ interface AppProps {
   keychainCreateKey: (name: string) => void;
   keychainRemoveKey: (name: string) => void;
   keychainSignKey: (name: string) => void;
+  keychainSelectKey: (name: string) => void;
   keychainList: () => void;
   clearNotification: (id?: number) => void;
   clearAllNotifications: () => void;
@@ -69,8 +71,8 @@ class App extends React.Component<AppProps> {
     const {
       onTogglePanel, openNotificationPanel, openKeychainPanel, openStatusBarPanel, openPeersBarPanel, openSearchPanel, clearNotification, clearAllNotifications,
       onAddAppItem, onSwitchDapp, onToggleHome, statusBarToggle, peersBarToggle, onToggleKeychainPanel, onToggleAppHome, onToggleSearch, searchItems,
-      trayItems, feedItems, notifyItems, keychainItems, statusBarItems, onToggleLoaderPanel, openLoaderPanel, locationPath, loggerWrite,
-      downloadDapp, togglePermission, grantPermissions, permissions, keychainCreateKey, keychainRemoveKey, keychainList, keychainSignKey,
+      trayItems, feedItems, notifyItems, keychainItems, keychainSelectedKey, statusBarItems, onToggleLoaderPanel, openLoaderPanel, locationPath, loggerWrite,
+      downloadDapp, togglePermission, grantPermissions, permissions, keychainCreateKey, keychainRemoveKey, keychainList, keychainSignKey, keychainSelectKey,
     } = this.props;
 
     return (
@@ -88,11 +90,13 @@ class App extends React.Component<AppProps> {
           key="root-loader" />
         <KeychainPanel
           items={keychainItems}
+          selectedKey={keychainSelectedKey}
           isOpen={openKeychainPanel}
           togglePanel={onToggleKeychainPanel}
           createKey={(name) => keychainCreateKey(name)}
           removeKey={(name) => keychainRemoveKey(name)}
           signKey={(name) => keychainSignKey(name)}
+          selectKey={(name) => keychainSelectKey(name)}
           listKeys={keychainList}
           key="root-keychain" />
         <HeaderBar
@@ -138,6 +142,7 @@ class App extends React.Component<AppProps> {
 const mapStateToProps = (state: IState) => ({
   notifyItems: state.notification.items,
   keychainItems: state.keychain.items,
+  keychainSelectedKey: state.keychain.selectedKey,
   openNotificationPanel: state.isOpen.notification,
   openKeychainPanel: state.isOpen.keychain,
   openLoaderPanel: state.isOpen.loader,
@@ -163,6 +168,7 @@ const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
   keychainCreateKey: KeychainActions.createKey,
   keychainRemoveKey: KeychainActions.removeKey,
   keychainSignKey: KeychainActions.signKey,
+  keychainSelectKey: KeychainActions.selectKey,
   keychainList: KeychainActions.list,
   onAddAppItem: TrayActions.addAppItem,
   onSwitchDapp: TrayActions.switchDapp,

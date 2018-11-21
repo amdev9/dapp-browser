@@ -94,6 +94,7 @@ const clientActions: string[] = [
   constants.KEYCHAIN_CREATE,
   constants.KEYCHAIN_LIST,
   constants.KEYCHAIN_SIGN,
+  constants.KEYCHAIN_SELECT_KEY,
   constants.KEYCHAIN_REMOVE_KEY,
   constants.CLEAR_NOTIFICATION,
   constants.CLEAR_ALL_NOTIFICATIONS,

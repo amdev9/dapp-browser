@@ -122,7 +122,7 @@ const clientInitialState: Client = {
   },
   isHome: true,
   notification: notificationsInitialState,
-  keychain: { items: [] },
+  keychain: { items: [], selectedKey: null },
   loader: {},
   statusBar: statusBarInitialState,
   search: searchInitialState,

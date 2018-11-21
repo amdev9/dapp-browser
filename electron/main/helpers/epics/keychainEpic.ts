@@ -40,19 +40,19 @@ const keychainListEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix 
   }),
 );
 
-const keychainSignEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
+const keychainSignEpic: Epic<AnyAction> = (action$, state$) => action$.pipe( // @todo fix action type
   ofType(constants.KEYCHAIN_SIGN),
   switchMap(async (action) => {
     try {
-      const key = action.payload.key;
-      const chainId = action.payload.chainId;
-      const transaction = action.payload.transaction;
+      const key = `${state$.value.client.keychain.selectedKey}`; // keys consitsted only of numbers throw 'Bad cast' exception. Converting everythin to string
+      // const chainId = action.payload.chainId;
+      // const transaction = action.payload.transaction;
       const keychainInstance = new Keychain(KEYCHAIN_PATH);
 
-      const result = await keychainInstance.sign(key, chainId, transaction);
-      return keychainActions.signSuccess(result, action.meta.sourceUUID);
+      const result = await keychainInstance.sign(key, '', '');
+      return keychainActions.signSuccess(result, action.meta.uid, action.meta.sourceUUID);
     } catch (error) {
-      return keychainActions.signFailure(error, action.meta.sourceUUID);
+      return keychainActions.signFailure(error, action.meta.uid, action.meta.sourceUUID);
     }
   }),
 );

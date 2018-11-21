@@ -28,6 +28,7 @@ export interface NotificationPanel {
 
 export interface KeychainPanel {
   items: string[];
+  selectedKey: string;
 }
 
 export interface LoaderPanel {
