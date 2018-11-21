@@ -6,8 +6,8 @@ import StoreUIDSubscriber from './StoreUIDSubscriber';
 
 export default class Keychain extends StoreUIDSubscriber {
   subscribePromise: Promise<any>;
-  async sign(doSomething: Function) {
-    console.log('Keychain sign start');
+
+  async sign() {
     const uid = uuidv4();
 
     this.subscribePromise = this.actionPromise(uid, {
@@ -17,7 +17,7 @@ export default class Keychain extends StoreUIDSubscriber {
     });
 
     const action: any = await this.subscribePromise;
-    console.log('action: ', action);
-    doSomething('doSomething three');
+
+    return action.payload;
   }
 }

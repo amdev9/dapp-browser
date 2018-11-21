@@ -19,11 +19,11 @@ export const listFailure = (error: string, targetUUID?: string) =>
 export const list = () =>
   action(constants.KEYCHAIN_LIST);
 
-export const signSuccess = (result: string, targetUUID?: string) =>
-  action(constants.KEYCHAIN_SIGN_SUCCESS, result, { targetUUID });
+export const signSuccess = (result: string, uid: string, targetUUID: string) =>
+  action(constants.KEYCHAIN_SIGN_SUCCESS, result, { uid, targetUUID });
 
-export const signFailure = (error: string, targetUUID?: string) =>
-  action(constants.KEYCHAIN_SIGN_FAILURE, error, { targetUUID });
+export const signFailure = (error: string, uid: string, targetUUID: string) =>
+  action(constants.KEYCHAIN_SIGN_FAILURE, error, { uid, targetUUID });
 
 export const sign = (key: string, chainId: string, transaction: string) =>
   action(constants.KEYCHAIN_CREATE);

@@ -4,5 +4,5 @@ export as namespace ArrayIO;
 
 export class Keychain {
   constructor();
-  sign(doSomething: Function): Promise<any>;
+  sign(): Promise<any>;
 }

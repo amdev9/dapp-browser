@@ -50,9 +50,9 @@ const keychainSignEpic: Epic<AnyAction> = (action$, state$) => action$.pipe( // 
       const keychainInstance = new Keychain(KEYCHAIN_PATH);
 
       const result = await keychainInstance.sign(key, '', '');
-      return keychainActions.signSuccess(result, action.meta.sourceUUID);
+      return keychainActions.signSuccess(result, action.meta.uid, action.meta.sourceUUID);
     } catch (error) {
-      return keychainActions.signFailure(error, action.meta.sourceUUID);
+      return keychainActions.signFailure(error, action.meta.uid, action.meta.sourceUUID);
     }
   }),
 );

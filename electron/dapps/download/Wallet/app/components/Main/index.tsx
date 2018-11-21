@@ -29,12 +29,11 @@ class Main extends React.Component<InjectedFormProps, MainState> {
     };
   }
 
-  handleSign(e: any) {
+  async handleSign(e: any) {
     e.preventDefault();
     // const amount = values['amount'];
-    keychain.sign((param: string) => {
-      this.setState({signResult: param});
-    });
+    const result = await keychain.sign();
+    this.setState({signResult: result});
   }
 
   render() {
