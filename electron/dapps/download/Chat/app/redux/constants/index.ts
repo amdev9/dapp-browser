@@ -1,10 +1,19 @@
-export const SET_ROOM_NAME = 'SET_ROOM_NAME';
-export const RESET_ROOM_NAME = 'RESET_ROOM_NAME';
+export const SELECT_ROOM = 'SELECT_ROOM';
+export const DESELECT_ROOM = 'DESELECT_ROOM';
 
 export const MAIN_PAGE_FORM = 'MAIN_PAGE_FORM';
 export const CHAT_PAGE_MESSAGE_FORM = 'CHAT_PAGE_MESSAGE_FORM';
+export const CHAT_PAGE_ROOMS_SEARCH_FORM = 'CHAT_PAGE_ROOMS_SEARCH_FORM';
 
 export const INIT_APP = 'INIT_APP';
 
 // Events
 export const EVENT_OPEN_LINK = 'openLink';
+
+export const SET_ROOM_SEARCH_STRING = 'SET_ROOM_SEARCH_STRING';
+
+export const ROOM_ADD_MESSAGE = 'ROOM_ADD_MESSAGE';
+export const ROOM_REMOVE_MESSAGES = 'ROOM_REMOVE_MESSAGES';
+
+export const ROOM_ADD = 'ROOM_ADD';
+export const ROOM_REMOVE = 'ROOM_REMOVE';

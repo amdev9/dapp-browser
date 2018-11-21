@@ -2,42 +2,17 @@ import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form';
 
-import * as constants from '../constants';
-
-interface InitialState {
-  chatList: [];
-  selectedRoom: string | null;
-  appInit: boolean;
+export interface IState {
+  messages: MessagesState;
+  rooms: RoomsState;
 }
 
-const initialState: InitialState = {
-  chatList: [],
-  selectedRoom: null,
-  appInit: false,
-}
-
-const main = (state: InitialState = initialState, action: any) => {
-  switch (action.type) {
-
-    case constants.SET_ROOM_NAME:
-      return {
-        ...state,
-        selectedRoom: action.payload.roomName,
-      }
-
-    case constants.INIT_APP:
-      return {
-        ...state,
-        appInit: true,
-      }
-
-    default:
-      return state;
-  }
-};
+import messages, { MessagesState } from './messages';
+import rooms, { RoomsState } from './rooms';
 
 export default combineReducers({
-  main,
+  messages,
+  rooms,
   routing: routerReducer,
   form: formReducer,
 });

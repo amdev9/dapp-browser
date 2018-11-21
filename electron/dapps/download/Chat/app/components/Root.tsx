@@ -3,8 +3,8 @@ import { Provider } from 'react-redux';
 import { Route, Switch } from 'react-router';
 import { ConnectedRouter } from 'react-router-redux';
 
-import Main from './Main/index';
-import Chat from './Chat/index';
+import CreateRoom from './Chat/CreateRoom';
+import Chat from './Chat';
 import { store } from '../redux/store';
 import history from '../redux/history';
 
@@ -13,8 +13,7 @@ export default function () {
     <Provider store={store}>
       <ConnectedRouter history={history}>
         <Switch>
-          <Route path="/chat" component={Chat}/>
-          <Route path="/" component={Main}/>
+          <Route path="/" component={Chat}/>
         </Switch>
       </ConnectedRouter>
     </Provider>

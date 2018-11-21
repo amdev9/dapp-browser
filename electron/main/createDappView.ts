@@ -32,8 +32,15 @@ export function createDappView(globalUUIDList: RendererConf[], dapp: AppItem) { 
     webPrefObj = Object.assign(webPrefObj, { sandbox: true });
   }
 
-  dappView = new BrowserView({
+  // dappView = new BrowserView({
+  dappView = new BrowserWindow({
     webPreferences: webPrefObj,
+    show: true,
+    title: 'asdf',
+    x: 0,
+    y: 0,
+    width:1800,
+    height: 800,
   });
 
   // console.log('entry: ', path.join(DAPPS_PATH, dapp.appName, dapp.main));
@@ -46,8 +53,8 @@ export function createDappView(globalUUIDList: RendererConf[], dapp: AppItem) { 
 
   if (process.env.ELECTRON_ENV === 'development') {
     const devtools = new BrowserWindow();
-    dappView.webContents.setDevToolsWebContents(devtools.webContents);
-    dappView.webContents.openDevTools({ mode: 'detach' });
+    // dappView.webContents.setDevToolsWebContents();
+    dappView.webContents.openDevTools();
   }
 
   const renderIdDapp = dappView.webContents.getProcessId();
@@ -56,7 +63,7 @@ export function createDappView(globalUUIDList: RendererConf[], dapp: AppItem) { 
     id: uuidDapp,
     status: 'dapp',
     winId: renderIdDapp,
-    dappView,
+    // dappView,
     name: dapp.appName,
   };
   globalUUIDList.push(rendererObj);
