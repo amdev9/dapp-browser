@@ -9,26 +9,40 @@ const keychain: ArrayIO.Keychain = new ArrayIO.Keychain();
 
 import './styles.css';
 
+interface MainState {
+  signResult: string;
+}
+
 const mapDispatchToProps = (dispatch: any) => ({
   onSubmit: async (values: any) => {
-    const amount = values['amount'];
-    keychain.sign();
     // console.log('sign result: ', result);
     // dispatch(actions.onSubmitMainFormThunk(amount));
   },
 });
 
-class Main extends React.Component<InjectedFormProps> {
+class Main extends React.Component<InjectedFormProps, MainState> {
   constructor(props: any) {
     super(props);
+    this.handleSign = this.handleSign.bind(this);
+    this.state = {
+      signResult: '',
+    };
+  }
+
+  handleSign(e: any) {
+    e.preventDefault();
+    // const amount = values['amount'];
+    keychain.sign((param: string) => {
+      this.setState({signResult: param});
+    });
   }
 
   render() {
-    const { handleSubmit } = this.props;
+    // const { handleSubmit } = this.props;
 
     return (
       <div className="container">
-        <form onSubmit={handleSubmit}>
+        <form>
           <ul className="flex-outer">
             <li>
               <label>Amount</label>
@@ -43,7 +57,8 @@ class Main extends React.Component<InjectedFormProps> {
             </li>
             <li>
               <button type="submit">Send</button>
-              <button id="keychainSignButton" type="submit">Sign</button>
+              <button type="submit" onClick={this.handleSign}>Sign</button>
+              <span>{ this.state.signResult }</span>
             </li>
           </ul>
         </form>

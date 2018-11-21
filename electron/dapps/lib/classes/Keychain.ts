@@ -5,16 +5,19 @@ import * as constants from '../redux/constants';
 import StoreUIDSubscriber from './StoreUIDSubscriber';
 
 export default class Keychain extends StoreUIDSubscriber {
-  // async sign() {
-  //   this.store.dispatch(actions.keychainSign(null, '', ''));
-  // }
+  subscribePromise: Promise<any>;
+  async sign(doSomething: Function) {
+    console.log('Keychain sign start');
+    const uid = uuidv4();
 
-  async sign() {
-    const messageId = uuidv4();
-    return this.actionPromise(messageId, {
-      onStart: actions.keychainSign(messageId), // , messageId
+    this.subscribePromise = this.actionPromise(uid, {
+      onStart: actions.keychainSign(),
       successType: constants.KEYCHAIN_SIGN_SUCCESS,
       failureType: constants.KEYCHAIN_SIGN_FAILURE,
     });
+
+    const action: any = await this.subscribePromise;
+    console.log('action: ', action);
+    doSomething('doSomething three');
   }
 }
