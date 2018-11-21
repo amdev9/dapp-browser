@@ -1,0 +1,44 @@
+.chatWindow {
+    flex: 1;
+    overflow-y: scroll;
+}
+
+.chatWindowEmpty {
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    color: #ddd;
+}
+
+.messageBlock {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin: 0 10px 10px;
+}
+
+.messageBlock_selfMessage {
+    border-radius: 20px;
+    padding: 8px 14px;
+    align-items: flex-end;
+}
+
+.messageBlockFrom {
+    margin: 0 0 5px;
+    font-size: 14px;
+    font-weight: 400;
+    color: rgb(153, 153, 153);
+}
+
+.messageBlockContent {
+    background-color: rgb(204, 204, 204);
+    border-radius: 20px;
+    margin-left: 2px;
+    padding: 8px 14px;
+}
+
+.messageBlock_selfMessage .messageBlockContent {
+    background-color:rgb(0, 132, 255);
+    color: #fff;
+}

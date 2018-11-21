@@ -1,4 +1,4 @@
-.mainForm {
+.createRoom {
     display: flex;
     flex: 1;
     height: 100%;
@@ -7,7 +7,7 @@
     text-align: center;
 }
 
-.mainFormInput {
+.createRoomInput {
     border: 1px solid #dddddd75;
     font-size: 16px;
     padding: 30px;
@@ -17,7 +17,7 @@
     outline: none;
 }
 
-.mainFormButton {
+.createRoomButton {
     background-color: rgb(0, 132, 255);
     border-width: 0;
     border-radius: 20px;
@@ -30,8 +30,18 @@
     margin-top: 20px;
 }
 
-.mainFormButton:hover,
-.mainFormButton:active {
+.createRoomButton:hover,
+.createRoomButton:active {
     background-color: rgba(0, 132, 255, 0.80);
 
+}
+
+.createRoomError {
+    color: red;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.createRoomLoading {
+    margin-top: 10px;
 }

@@ -1,0 +1,25 @@
+
+.chatControls {
+    height: 100px;
+    display: flex;
+    margin: 0 0 5px;
+    padding: 0 10px;
+    border-top: 1px solid #ddd;
+}
+
+.chatControlsInput {
+    flex: 1;
+    border: none;
+    font-size: 18px;
+    padding: 30px;
+    width: 100%;
+    outline: none;
+}
+
+.chatControlsSubmit {
+    background: transparent;
+    border: none;
+    font-size: 32px;
+    cursor: pointer;
+    outline: none;
+}

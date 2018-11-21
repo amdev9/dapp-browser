@@ -1,4 +1,4 @@
-import * as actions from './actions';
+import * as thunks from './thunks';
 import * as constants from './constants';
 
 const ArrayIO = require('array-io');
@@ -8,6 +8,8 @@ export const subscribeOnEvents = (store: any) => {
     console.log('Chat dapp: open link', payload.params);
     const [roomName] = payload.params;
 
-    store.dispatch(actions.onSubmitMainFormThunk(roomName));
+    if (roomName) {
+      store.dispatch(thunks.addRoomThunk(roomName));
+    }
   });
 };

@@ -20,6 +20,7 @@
     "@types/react-transition-group": "^2.0.14",
     "@types/redux-form": "^7.4.12",
     "@types/redux-logger": "^3.0.6",
+    "@types/uuid": "^3.4.4",
     "circular-dependency-plugin": "^5.0.2",
     "http-server": "^0.10.0",
     "react-hot-loader": "^4.3.11",
@@ -42,8 +43,10 @@
     "redux-logger": "^3.0.6",
     "redux-observable": "^1.0.0",
     "redux-thunk": "^2.3.0",
+    "reselect": "^4.0.0",
     "style-loader": "^0.23.1",
     "ts-loader": "^5.2.2",
-    "typesafe-actions": "^2.0.4"
+    "typesafe-actions": "^2.0.4",
+    "uuid": "^3.3.2"
   }
 }
