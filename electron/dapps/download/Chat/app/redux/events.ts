@@ -8,6 +8,8 @@ export const subscribeOnEvents = (store: any) => {
     console.log('Chat dapp: open link', payload.params);
     const [roomName] = payload.params;
 
-    store.dispatch(thunks.addRoomThunk(roomName));
+    if (roomName) {
+      store.dispatch(thunks.addRoomThunk(roomName));
+    }
   });
 };
