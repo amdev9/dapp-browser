@@ -12,8 +12,8 @@ import './styles.css';
 const mapDispatchToProps = (dispatch: any) => ({
   onSubmit: async (values: any) => {
     const amount = values['amount'];
-    const result = await keychain.sign();
-    console.log('sign result: ', result);
+    keychain.sign();
+    // console.log('sign result: ', result);
     // dispatch(actions.onSubmitMainFormThunk(amount));
   },
 });
