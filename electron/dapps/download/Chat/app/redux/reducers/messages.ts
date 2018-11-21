@@ -14,7 +14,7 @@ export default (state: MessagesState = initialState, action: any) => {
 
     case constants.MESSAGES_ADD_ROOM_MESSAGE:
       const { roomId, message } = action.payload;
-      console.log('adda', state.messageList, action.payload, state.messageList[action.payload.roomId])
+
       return {
         ...state,
         messageList: {

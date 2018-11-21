@@ -40,13 +40,13 @@ export default (state: RoomsState = initialState, action: any) => {
       return {
         ...state,
         filteredRoomList: action.payload.roomList,
-      }
+      };
 
     case constants.ROOMS_RESET_FILTERED_ROOMS_LIST:
       return {
         ...state,
         filteredRoomList: null,
-      }
+      };
 
     case constants.SELECT_ROOM:
       return {
