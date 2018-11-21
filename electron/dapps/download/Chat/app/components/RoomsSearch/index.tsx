@@ -1,8 +1,11 @@
 import { Field, InjectedFormProps, reduxForm } from 'redux-form';
 import * as React from 'react';
-import * as constants from "../../redux/constants/index";
-import { connect } from "react-redux";
-import * as actions from "../../redux/actions/index";
+import { connect } from 'react-redux';
+
+import * as constants from '../../redux/constants';
+import * as actions from '../../redux/actions';
+import* as thunks from '../../redux/thunks';
+
 
 import './styles.css';
 
@@ -17,10 +20,10 @@ interface DispatchProps {
 const mapDispatchToProps = (dispatch: any): DispatchProps => ({
   onSubmit: (values) => {
     const searchString = values[SEARCH_ROOM_FIELD_NAME];
-    dispatch(actions.filterRoomListThunk(searchString));
+    dispatch(thunks.filterRoomListThunk(searchString));
   },
   resetFilterRoomList: () => dispatch(actions.resetFilterRoomList()),
-  filterRoomList: (searchString: string) => dispatch(actions.filterRoomListThunk(searchString)),
+  filterRoomList: (searchString: string) => dispatch(thunks.filterRoomListThunk(searchString)),
 });
 
 type FormProps<P> = P & InjectedFormProps<{}, P>;
@@ -57,7 +60,7 @@ class RoomsSearch extends React.Component<FormProps<DispatchProps>> {
 }
 
 const form: any = reduxForm<{}, DispatchProps>({
-  form: constants.CHAT_PAGE_ROOMS_SEARCH_FORM,
+  form: constants.FORM_CHAT_PAGE_ROOMS_SEARCH,
   onChange: (values, dispatch, props) => {
     props.onSubmit(values);
   },

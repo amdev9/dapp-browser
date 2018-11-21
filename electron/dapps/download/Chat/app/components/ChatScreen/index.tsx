@@ -5,6 +5,7 @@ import ChatView from '../ChatView';
 import RoomsList from '../RoomList';
 import CreateRoom from '../CreateRoomScreen';
 import * as actions from '../../redux/actions';
+import { IState } from '../../redux/reducers';
 
 import './styles.css';
 
@@ -13,7 +14,7 @@ interface State {
 }
 
 interface StateProps {
-  selectedRoom: string;
+  selectedRoom: string | null;
   roomList: string[];
 }
 
@@ -23,7 +24,7 @@ interface DispatchProps {
 
 type Props = StateProps & DispatchProps;
 
-const mapStateToProps = (state: any): StateProps => ({
+const mapStateToProps = (state: IState): StateProps => ({
   selectedRoom: state.rooms.selectedRoom,
   roomList: Object.keys(state.rooms.roomList),
 });

@@ -1,7 +1,6 @@
 import * as uuid from 'uuid/v4';
 import { EventEmitter } from 'events';
 import { IpfsRoom } from '../../types/array-io';
-import { Room } from "../../../../../../docs/typing-declarations";
 
 const ArrayIO = require('array-io');
 
@@ -18,7 +17,6 @@ export type RoomComponentEvent = 'message';
 
 export class RoomComponent {
   id: string;
-  roomComponentList: RoomComponent[];
   roomName: string;
   chatInstance: IpfsRoom;
   messages: Message[] = [];
@@ -64,19 +62,15 @@ export class RoomComponent {
 
     await chatInstance.subscribe(roomName, {
       onSubscribe: (peerId) => {
-        console.log('IpfsRoom: my id', peerId);
         roomComponent.peerId = peerId;
       },
       onMessage: (message) => {
-        console.log('onMessage', message);
         roomComponent.receiveMessage(message);
       },
       onLeft: (peer) => {
-        console.log('onLeft', peer);
         roomComponent.receiveMessage({ from: peer, data: ON_LEFT_USER_MESSAGE });
       },
       onJoined: (peer) => {
-        console.log('onJoined', peer);
         roomComponent.receiveMessage({ from: peer, data: ON_JOIN_USER_MESSAGE });
       },
     });
@@ -85,7 +79,6 @@ export class RoomComponent {
   }
 
   async sendMessageBroadcast(message: string) {
-    console.log('sendmsgbroadcast', this, message);
     if (this.chatInstance) {
       await this.chatInstance.sendMessageBroadcast(message);
     }

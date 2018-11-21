@@ -21,7 +21,7 @@ const initialState: RoomsState = {
 export default (state: RoomsState = initialState, action: any) => {
   switch (action.type) {
 
-    case constants.ROOM_ADD:
+    case constants.ROOMS_ADD:
       return {
         ...state,
         roomList: [
@@ -30,19 +30,19 @@ export default (state: RoomsState = initialState, action: any) => {
         ],
       };
 
-    case constants.ROOM_REMOVE:
+    case constants.ROOMS_REMOVE:
       return {
         ...state,
         roomList: state.roomList.filter((room: Room) => room.roomId !== action.payload.roomId),
       };
 
-    case constants.ROOM_SET_FILTERED_ROOM_LIST:
+    case constants.ROOMS_SET_FILTERED_ROOMS_LIST:
       return {
         ...state,
         filteredRoomList: action.payload.roomList,
       }
 
-    case constants.ROOM_RESET_FILTERED_ROOM_LIST:
+    case constants.ROOMS_RESET_FILTERED_ROOMS_LIST:
       return {
         ...state,
         filteredRoomList: null,

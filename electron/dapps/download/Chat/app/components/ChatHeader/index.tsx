@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 
 import { getSelectedRoomNameSelector } from '../../redux/selectors';
 import * as actions from '../../redux/actions';
+import * as thunks from '../../redux/thunks';
+import { IState } from '../../redux/reducers';
 
 import './styles.css';
 
@@ -15,13 +17,13 @@ interface DispatchProps {
   leaveRoom: () => void;
 }
 
-const mapStateToProps = (state: any): StateProps => ({
+const mapStateToProps = (state: IState): StateProps => ({
   selectedRoomName: getSelectedRoomNameSelector(state),
 });
 
 const mapDispatchToProps = (dispatch: any): DispatchProps => ({
   deselectRoom: () => dispatch(actions.deselectRoom()),
-  leaveRoom: () => dispatch(actions.removeSelectedRoomThunk()),
+  leaveRoom: () => dispatch(thunks.removeSelectedRoomThunk()),
 });
 
 type Props = StateProps & DispatchProps;

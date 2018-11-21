@@ -2,18 +2,19 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 
-import { RoomComponentStore } from '../../services/RoomStoreService';
+import { RoomComponentStore } from '../../services/RoomComponentService';
 import * as constants from '../../redux/constants/index';
+import { IState } from '../../redux/reducers';
 
 import './styles.css';
 
 type FormProps<P> = P & InjectedFormProps<{}, P>;
 
 interface StateProps {
-  selectedRoom: string;
+  selectedRoom: string | null;
 }
 
-const mapStateToProps = (state: any): StateProps => ({
+const mapStateToProps = (state: IState): StateProps => ({
   selectedRoom: state.rooms.selectedRoom,
 });
 
@@ -22,6 +23,10 @@ class ChatControls extends React.Component<FormProps<StateProps>> {
 
   async handleSubmit(values: any) {
     const { reset, selectedRoom } = this.props;
+
+    if (!selectedRoom) {
+      return;
+    }
     const room = RoomComponentStore.getRoomById(selectedRoom);
 
     if (room && values.message) {
@@ -73,5 +78,5 @@ class ChatControls extends React.Component<FormProps<StateProps>> {
   }
 }
 
-const form: any = reduxForm<{}, StateProps>({ form: constants.CHAT_PAGE_MESSAGE_FORM })(ChatControls);
-export default connect(mapStateToProps, null)(form);
+const form: any = reduxForm<{}, StateProps>({ form: constants.FORM_CHAT_SUBMIT_MESSAGE })(ChatControls);
+export default connect(mapStateToProps)(form);

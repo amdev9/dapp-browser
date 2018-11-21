@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import ChatHeader from '../ChatHeader';
 import ChatWindow from '../ChatWindow';
 import ChatControls from '../ChatControls';
+import { IState } from '../../redux/reducers';
 
 const ArrayIO = require('array-io');
 
@@ -13,12 +14,12 @@ interface OwnProps {
 }
 
 interface StateProps {
-  selectedRoom: string;
+  selectedRoom: string | null;
 }
 
 type Props = StateProps & OwnProps;
 
-const mapStateToProps = (state: any): StateProps => ({
+const mapStateToProps = (state: IState): StateProps => ({
   selectedRoom: state.rooms.selectedRoom,
 });
 

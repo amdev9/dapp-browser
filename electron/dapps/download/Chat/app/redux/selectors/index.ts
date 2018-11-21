@@ -1,7 +1,6 @@
 import { createSelector } from 'reselect';
-import { RoomComponentStore } from '../../services/RoomStoreService';
+import { RoomComponentStore } from '../../services/RoomComponentService';
 import { IState } from '../reducers';
-import { Room } from "../reducers/rooms";
 
 export const getSelectedRoomNameSelector = createSelector(
   (state: IState) => state.rooms.selectedRoom,

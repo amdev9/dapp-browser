@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 import * as cn from 'classnames';
 
-import { RoomComponent } from '../../services/RoomStoreService';
-import * as actions from "../../redux/actions/index";
-import { IState } from "../../redux/reducers/index";
-import { Room } from "../../redux/reducers/rooms";
+import * as actions from '../../redux/actions';
+import* as thunks from '../../redux/thunks';
+import { IState } from '../../redux/reducers';
+import { Room } from '../../redux/reducers/rooms';
 import RoomsSearch from '../RoomsSearch/index';
 
 import './styles.css';
@@ -29,7 +29,7 @@ const mapStateToProps = (state: IState): StateProps => ({
 
 const mapDispatchToProps = (dispatch: any): DispatchProps => ({
   selectRoom: (roomId: string) => dispatch(actions.selectRoom(roomId)),
-  roomRemove: (roomId: string) => dispatch(actions.roomRemoveThunk(roomId)),
+  roomRemove: (roomId: string) => dispatch(thunks.roomRemoveThunk(roomId)),
 });
 
 type Props = StateProps & DispatchProps;

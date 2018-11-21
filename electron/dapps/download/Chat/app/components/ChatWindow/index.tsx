@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import * as cn from 'classnames';
-import { Message } from '../../services/RoomStoreService';
+import { Message } from '../../services/RoomComponentService';
 import { getSelectedRoomMessages } from '../../redux/selectors';
+import { IState } from '../../redux/reducers';
 
 import './styles.css';
 
@@ -10,7 +11,7 @@ interface StateProps {
   messages: Message[];
 }
 
-const mapStateToProps = (state: any): StateProps => ({
+const mapStateToProps = (state: IState): StateProps => ({
   messages: getSelectedRoomMessages(state),
 });
 

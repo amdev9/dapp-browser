@@ -1,4 +1,4 @@
-import { Message } from '../../services/RoomStoreService';
+import { Message } from '../../services/RoomComponentService';
 import * as constants from '../constants';
 
 export interface MessagesState {
@@ -12,7 +12,7 @@ const initialState: MessagesState = {
 export default (state: MessagesState = initialState, action: any) => {
   switch (action.type) {
 
-    case constants.ROOM_ADD_MESSAGE:
+    case constants.MESSAGES_ADD_ROOM_MESSAGE:
       const { roomId, message } = action.payload;
       console.log('adda', state.messageList, action.payload, state.messageList[action.payload.roomId])
       return {
@@ -26,7 +26,7 @@ export default (state: MessagesState = initialState, action: any) => {
         },
       };
 
-    case constants.ROOM_REMOVE_MESSAGES:
+    case constants.MESSAGES_REMOVE_ROOM_MESSAGES:
 
       return {
         ...state,

@@ -4,17 +4,18 @@ import { SubmissionError, Field, reduxForm, InjectedFormProps } from 'redux-form
 
 import * as constants from '../../redux/constants';
 import * as actions from '../../redux/actions';
+import * as thunks from '../../redux/thunks';
 
 import './styles.css';
 
 const ROOM_NAME_FIELD = 'room-name';
 
-const mapDispatchToProps = (dispatch: any, ownProps: any) => ({
+const mapDispatchToProps = (dispatch: any) => ({
   onSubmit: async (values: any) => {
     const roomName = values[ROOM_NAME_FIELD];
 
     try {
-      await dispatch(actions.addRoomThunk(roomName));
+      await dispatch(thunks.addRoomThunk(roomName));
     } catch (error) {
       throw new SubmissionError({ _error: error && error.message });
     }
@@ -71,6 +72,6 @@ const validate = (values: any) => {
 
 const form: any = reduxForm({
   validate,
-  form: constants.MAIN_PAGE_FORM,
+  form: constants.FORM_CREATE_ROOM,
 })(CreateRoomScreen);
 export default connect(null, mapDispatchToProps)(form);
