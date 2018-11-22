@@ -3,7 +3,7 @@
     border-right: 2px solid #ccc6;
     display: flex;
     flex-direction: column;
-    overflow: scroll;
+    overflow-y: scroll;
 }
 
 .roomListEmpty {
@@ -15,12 +15,15 @@
 
 .roomListItem {
     border-bottom: 1px solid #ccc6;
-    padding: 10px 30px 10px 20px;
+    padding: 10px;
     text-overflow: ellipsis;
     overflow: hidden;
     cursor: pointer;
     position: relative;
     line-height: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .roomListItem:hover {
@@ -31,21 +34,24 @@
     font-weight: bold;
 }
 
-.roomListRoomDelete {
-    position: absolute;
-    height: 100%;
-    line-height: 100%;
-    top: 0;
-    right: 0;
+.roomListRoomUnreadMessages {
+    background: rgb(0, 132, 255);
+    border-radius: 5px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 12px;
+    font-family: sans-serif;
+    min-width: 24px;
+    text-align: center;
+    line-height: 24px;
+    padding: 0 5px;
+    box-sizing: border-box;
     display: flex;
     justify-content: center;
-    flex-direction: column;
-    width: 30px;
-    align-items: center;
-    font-size: 15px;
-    font-weight: normal;
 }
 
-.roomListRoomDelete:hover {
-    background: #ccc6;
+.roomListRoomName {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }

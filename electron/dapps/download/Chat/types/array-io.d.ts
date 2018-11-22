@@ -21,8 +21,12 @@ export class IpfsRoom {
   leave(): Promise<any>;
 }
 
+type DappEvents = 'openLink' | 'setTrayCounter';
+
 export class DappClass {
   constructor();
 
-  on(event: string, callback: (error: any, result: any) => void): any;
+  on(event: DappEvents, callback: (error: any, result: any) => void): any;
+
+  emit(event: DappEvents, ...args: any[]): any;
 }

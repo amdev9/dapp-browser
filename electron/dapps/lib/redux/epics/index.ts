@@ -5,8 +5,6 @@ import { mapTo, tap, map, mergeMap, ignoreElements } from 'rxjs/operators';
 import * as actions from '../actions/channel';
 import * as constants from '../constants';
 import * as utils from '../utils';
-import Dapp from '../../classes/Dapp';
-import eventsEpic from './eventsEpic';
 
 const openChannelSuccess = () => ({ type: constants.OPEN_CHANNEL_SUCCESS });
 
@@ -113,6 +111,5 @@ export const rootEpic = combineEpics(
   keychainSignSuccess,
   keychainSignFailure,
   networkBlockCreated,
-  eventsEpic,
   toggleHome,
 );

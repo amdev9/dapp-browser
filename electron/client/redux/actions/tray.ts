@@ -19,8 +19,8 @@ export const toggleAppHome = (dappName: string) => action(constants.TOGGLE_APP_H
 });
 
 export const setTrayProgress = (dappName: string, indicator: string) => action(constants.SET_TRAY_PROGRESS, {
+  indicator,
   targetDappName: dappName,
-  indicator
 });
 
 export const removeTrayItem = (dappName: string) => action(constants.REMOVE_TRAY_ITEM, {
@@ -28,8 +28,6 @@ export const removeTrayItem = (dappName: string) => action(constants.REMOVE_TRAY
 });
 
 export const setTrayCounter = (dappName: string, counter: string) => action(constants.SET_TRAY_COUNTER, {
+  counter,
   targetDappName: dappName,
-  counter
 });
-
-

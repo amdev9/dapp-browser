@@ -1,4 +1,3 @@
-
 import { action } from 'typesafe-actions';
 import { AppItem } from '../AppsManager';
 import * as constants from '../constants';
@@ -26,4 +25,9 @@ export const toggleAppHome = (dappName: string) => action(constants.TOGGLE_APP_H
 
 export const addAppItem = (appItem: AppItem) => action(constants.ADD_APP_ITEM, {
   item: appItem,
+});
+
+export const setTrayCounter = (dappName: string, counter: string) => action(constants.SET_TRAY_COUNTER, {
+  counter,
+  targetDappName: dappName,
 });

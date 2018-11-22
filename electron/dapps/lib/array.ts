@@ -3,9 +3,11 @@ import { EventEmitter } from 'events';
 import { isFSA } from 'flux-standard-action';
 import { createEpicMiddleware } from 'redux-observable';
 import { logger } from 'redux-logger';
+import { Subject } from 'rxjs';
+
 import { rootEpic } from './redux/epics';
 import { rootReducer } from './redux/reducers';
-import * as actions from './redux/actions/channel';
+import bindDappEvents from './redux/events';
 
 interface ElectronManager {
   sendActionMain(action: any): void;
@@ -68,9 +70,13 @@ const forwardToMain = (store: Store<any>) => (next: Dispatch<AnyAction>) => <A e
   return next(action);
 };
 export const emitter = new EventEmitter();
+
+export const storeObservable: Subject<AnyAction> = new Subject();
+
 const promiseHandlerMiddleware = (emitter: any) => {
   return (store: Store<any>) => (next: Dispatch<AnyAction>) => <A extends Action>(action: A) => {
     emitter.emit(action.meta.uid, action);
+    storeObservable.next(action);
     return next(action);
   };
 };
@@ -83,6 +89,7 @@ const configureStore = (initialState?: any) => {
   const store = createStore(rootReducer, initialState, enhancer);
   epicMiddleware.run(rootEpic);
   electronManager.replyActionRenderer(store);
+  bindDappEvents(storeObservable, store);
   return store;
 };
 
@@ -108,12 +115,9 @@ const receiveDataChannel = (channelId: string, callback: any) => {
 
 const store = initStore();
 
-const initDappSuccess = () => store.dispatch(actions.toggleAppHomeSuccess())
-
 export {
   store,
   sendDataChannel1,
   sendDataChannel2,
   receiveDataChannel,
-  initDappSuccess,
 };

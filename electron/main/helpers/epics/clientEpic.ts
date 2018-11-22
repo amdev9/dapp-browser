@@ -27,9 +27,15 @@ const removeTrayItemEpic: Epic<any> = action$ => action$.pipe(
   mapTo(clientActions.toggleHome(true)),
 );
 
+const setTrayCounterEpic: Epic<any> = action$ => action$.pipe(
+  ofType(constants.DAPP_SET_TRAY_COUNTER),
+  map((action) => clientActions.setTrayCounter(action.meta.name, action.payload.counter)),
+);
+
 export default combineEpics(
   openDappEpic,
   addAppItemEpic,
   toggleHomeEpic,
   removeTrayItemEpic,
+  setTrayCounterEpic,
 );

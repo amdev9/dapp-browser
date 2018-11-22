@@ -1,5 +1,7 @@
 import { EventEmitter } from 'events';
 
+type DappEvents = 'openLink' | 'setTrayCounter';
+
 class DappClass {
   dappEventEmitter: EventEmitter;
 
@@ -7,11 +9,11 @@ class DappClass {
     this.dappEventEmitter = new EventEmitter();
   }
 
-  emit(event: string, ...args: any) {
+  emit(event: DappEvents, ...args: any[]) {
     return this.dappEventEmitter.emit(event, ...args);
   }
 
-  on(event: string, callback: (...args: any) => any) {
+  on(event: DappEvents, callback: (...args: any[]) => any) {
     return this.dappEventEmitter.on(event, callback);
   }
 }

@@ -4,6 +4,7 @@ export interface Room {
   roomId: string;
   roomName: string;
   dateCreated: Date;
+  unreadMessagesCount?: number;
 }
 
 export interface RoomsState {
@@ -20,6 +21,23 @@ const initialState: RoomsState = {
 
 export default (state: RoomsState = initialState, action: any) => {
   switch (action.type) {
+
+    case constants.ROOM_SET_UNREAD_MESSAGES:
+      const newRoomList = state.roomList.map((room) => {
+        if (room.roomId === action.payload.roomId) {
+          return {
+            ...room,
+            unreadMessagesCount: action.payload.counter,
+          };
+        }
+
+        return room;
+      });
+
+      return {
+        ...state,
+        roomList: newRoomList,
+      };
 
     case constants.ROOMS_ADD:
       return {
