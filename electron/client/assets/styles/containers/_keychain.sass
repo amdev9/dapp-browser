@@ -25,22 +25,15 @@
       left: auto !important
       right: 0px !important
 
-  .bottom
-    transition: all 0.4s ease
+  .create
     background-color: #ffffff
     min-height: $status-bar-height
     width: 100%
-    position: absolute
-    bottom: 80px
-    display: block
 
     input
       margin: 10px
-      font-size: 12px
+      padding: 2px
       border-radius: 2px
-
-    .lower-buttons
-      margin-left: 5px
 
     button
       background-color: #4a89fc
@@ -49,7 +42,7 @@
       position: relative
       border: 0
       text-transform: uppercase
-      padding: 5px 10px
+      padding: 8px 12px
       border-radius: 4px
       margin: 5px
       cursor: pointer
@@ -64,7 +57,7 @@
       background-color: $notifications-group-background
       padding: 0 $notifications-padding-h
       +flex(row, space-between, center)
-      height: 28px
+      height: 18px
       span
         font-size: $notifications-group-title-size
         color: $notifications-item-color
@@ -81,7 +74,6 @@
       .item
         border-bottom: 1px solid rgba(0,0,0, 0.05)
         padding: 10px $notifications-padding-h
-        transition: all 100ms ease-out
         overflow: hidden
         +noselect
 

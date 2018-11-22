@@ -5,13 +5,23 @@ interface KeysProps {
   selectedKey: string;
   removeKey: (name: string) => void;
   onSelect: (name: string) => void;
+  createKey(name: string): void;
 }
 
-export class Keys extends React.Component<KeysProps> {
+interface KeysState {
+  inputValue: string;
+  selectedKey: string;
+}
+
+export class Keys extends React.Component<KeysProps, KeysState> {
   constructor(props: KeysProps) {
     super(props);
     this.getList = this.getList.bind(this);
     this.itemClickHandle = this.itemClickHandle.bind(this);
+    this.state = {
+      inputValue: '',
+      selectedKey: '',
+    };
   }
 
   itemClickHandle(item: string) {
@@ -40,12 +50,22 @@ export class Keys extends React.Component<KeysProps> {
     }
   }
 
+  updateInputValue(evt: React.ChangeEvent<HTMLInputElement>) {
+    this.setState({
+      inputValue: evt.target.value,
+    });
+  }
+
   public render() {
-    const groupTimeLabel = '';
     return (
       <div className="group">
         <div className="title">
-          <span>{groupTimeLabel}</span>
+        </div>
+        <div className="create">
+          <input value={this.state.inputValue} onChange={evt => this.updateInputValue(evt)} ></input>
+          <button onClick={ () => this.props.createKey(this.state.inputValue) }>Create</button>
+        </div>
+        <div className="title">
         </div>
         <div className="items">
           {this.getList()}
