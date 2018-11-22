@@ -34,21 +34,52 @@
       display: block
 
     input
-      margin: 10px
-      padding: 2px
-      border-radius: 2px
+      -webkit-appearance: none
+      -moz-appearance: none
+      appearance: none
+      background: #fff
+      background-image: none
+      border: .05rem solid #bcc3ce
+      border-radius: .1rem
+      color: #3b4351
+      font-size: 1rem
+      height: 1.5rem
+      line-height: 1.2rem
+      max-width: 60%
+      outline: 0
+      padding: .25rem .4rem
+      position: relative
+      transition: background .2s,border .2s,box-shadow .2s,color .2s
+      margin: 5px
 
     button
-      background-color: #4a89fc
-      font-size: 12px
-      color: white
-      position: relative
-      border: 0
-      text-transform: uppercase
-      padding: 8px 12px
-      border-radius: 4px
-      margin: 5px
+      -webkit-appearance: none
+      -moz-appearance: none
+      appearance: none
+      background: #fff
+      border: .05rem solid #5755d9
+      border-radius: .1rem
+      color: #5755d9
       cursor: pointer
+      display: inline-block
+      font-size: .8rem
+      height: 1.8rem
+      line-height: 1.2rem
+      outline: 0
+      padding: .25rem .4rem
+      text-align: center
+      text-decoration: none
+      transition: background .2s,border .2s,box-shadow .2s,color .2s
+      -webkit-user-select: none
+      -moz-user-select: none
+      -ms-user-select: none
+      user-select: none
+      vertical-align: middle
+      white-space: nowrap
+      &.btn-primary
+        background: #5755d9
+        border-color: #4b48d6
+        color: #fff
 
   .groups
     flex-direction: column

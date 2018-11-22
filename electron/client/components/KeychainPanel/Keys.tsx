@@ -85,7 +85,7 @@ export class Keys extends React.Component<KeysProps, KeysState> {
         </div>
         <div className={`create ${this.getCreateInputClass()}`}>
           <input value={this.state.inputValue} onChange={evt => this.updateInputValue(evt)} ></input>
-          <button onClick={ () => this.afterKeyCreated() }>Create</button>
+          <button className="btn-primary" onClick={ () => this.afterKeyCreated() }>Create</button>
         </div>
         <div className="title">
         </div>
