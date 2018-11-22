@@ -11,6 +11,7 @@ interface KeysProps {
 interface KeysState {
   inputValue: string;
   selectedKey: string;
+  createButtonState: number;
 }
 
 export class Keys extends React.Component<KeysProps, KeysState> {
@@ -21,6 +22,7 @@ export class Keys extends React.Component<KeysProps, KeysState> {
     this.state = {
       inputValue: '',
       selectedKey: '',
+      createButtonState: 0,
     };
   }
 
@@ -34,12 +36,24 @@ export class Keys extends React.Component<KeysProps, KeysState> {
     return item === this.props.selectedKey ? 'selected' : '';
   }
 
+  getCreateBigButtonClass() {
+    return this.state.createButtonState === 1 ? '' : 'visible';
+  }
+
+  getCreateInputClass() {
+    return this.state.createButtonState === 1 ? 'visible' : '';
+  }
+
+  createButtonToState(stateNumber: number) {
+    this.setState({createButtonState: stateNumber});
+  }
+
   private getList(): JSX.Element[] | null {
     const { items } = this.props;
 
     if (items) {
       return items.map((item) => (
-        <div className={`item ${this.selectedClass(item)}`} onClick={ () => this.itemClickHandle(item)}>
+        <div key={`keys_${item}`} className={`item ${this.selectedClass(item)}`} onClick={ () => this.itemClickHandle(item)}>
           <div className="title">
             <span className="app">{item}</span>
           </div>
@@ -56,14 +70,22 @@ export class Keys extends React.Component<KeysProps, KeysState> {
     });
   }
 
+  afterKeyCreated() {
+    this.props.createKey(this.state.inputValue);
+    this.createButtonToState(0);
+  }
+
   public render() {
     return (
       <div className="group">
         <div className="title">
         </div>
-        <div className="create">
+        <div className={`create ${this.getCreateBigButtonClass()}`}>
+          <button onClick={ () => this.createButtonToState(1) }>Create Key</button>
+        </div>
+        <div className={`create ${this.getCreateInputClass()}`}>
           <input value={this.state.inputValue} onChange={evt => this.updateInputValue(evt)} ></input>
-          <button onClick={ () => this.props.createKey(this.state.inputValue) }>Create</button>
+          <button onClick={ () => this.afterKeyCreated() }>Create</button>
         </div>
         <div className="title">
         </div>
