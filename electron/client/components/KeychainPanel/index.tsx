@@ -14,15 +14,28 @@ interface KeychainPanelProps {
   selectKey(name: string): void;
 }
 
-export class KeychainPanel extends React.Component<KeychainPanelProps> {
+interface KeychainPanelState {
+  inputValue: string;
+}
+
+export class KeychainPanel extends React.Component<KeychainPanelProps, KeychainPanelState> {
   constructor(props: KeychainPanelProps) {
     super(props);
     this.getList = this.getList.bind(this);
     this.onKeySelect = this.onKeySelect.bind(this);
+    this.state = {
+      inputValue: '',
+    }
   }
 
   onKeySelect(key: string) {
     this.props.selectKey(key);
+  }
+
+  updateInputValue(evt: React.ChangeEvent<HTMLInputElement>) {
+    this.setState({
+      inputValue: evt.target.value,
+    });
   }
 
   private getList(): JSX.Element[] | JSX.Element {
@@ -38,7 +51,6 @@ export class KeychainPanel extends React.Component<KeychainPanelProps> {
         <Keys
           items={items}
           selectedKey={selectedKey}
-          createKey={this.props.createKey}
           removeKey={this.props.removeKey}
           onSelect={this.onKeySelect}
         />
@@ -69,6 +81,10 @@ export class KeychainPanel extends React.Component<KeychainPanelProps> {
         <div className="keychain-popup">
           <div className="header">
             <h4>Wallet</h4>
+          </div>
+          <div className="create">
+            <input value={this.state.inputValue} onChange={evt => this.updateInputValue(evt)}></input>
+            <button className="btn-primary" onClick={ () => this.props.createKey(this.state.inputValue) }>Create</button>
           </div>
           <div className="groups">
             {this.getList()}

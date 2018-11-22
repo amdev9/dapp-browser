@@ -5,13 +5,10 @@ interface KeysProps {
   selectedKey: string;
   removeKey: (name: string) => void;
   onSelect: (name: string) => void;
-  createKey(name: string): void;
 }
 
 interface KeysState {
-  inputValue: string;
   selectedKey: string;
-  createButtonState: number;
 }
 
 export class Keys extends React.Component<KeysProps, KeysState> {
@@ -20,9 +17,7 @@ export class Keys extends React.Component<KeysProps, KeysState> {
     this.getList = this.getList.bind(this);
     this.itemClickHandle = this.itemClickHandle.bind(this);
     this.state = {
-      inputValue: '',
       selectedKey: '',
-      createButtonState: 0,
     };
   }
 
@@ -34,18 +29,6 @@ export class Keys extends React.Component<KeysProps, KeysState> {
 
   selectedClass(item: string) {
     return item === this.props.selectedKey ? 'selected' : '';
-  }
-
-  getCreateBigButtonClass() {
-    return this.state.createButtonState === 1 ? '' : 'visible';
-  }
-
-  getCreateInputClass() {
-    return this.state.createButtonState === 1 ? 'visible' : '';
-  }
-
-  createButtonToState(stateNumber: number) {
-    this.setState({createButtonState: stateNumber});
   }
 
   private getList(): JSX.Element[] | null {
@@ -64,29 +47,9 @@ export class Keys extends React.Component<KeysProps, KeysState> {
     }
   }
 
-  updateInputValue(evt: React.ChangeEvent<HTMLInputElement>) {
-    this.setState({
-      inputValue: evt.target.value,
-    });
-  }
-
-  afterKeyCreated() {
-    this.props.createKey(this.state.inputValue);
-    this.createButtonToState(0);
-  }
-
   public render() {
     return (
       <div className="group">
-        <div className="title">
-        </div>
-        <div className={`create ${this.getCreateBigButtonClass()}`}>
-          <button onClick={ () => this.createButtonToState(1) }>Create Key</button>
-        </div>
-        <div className={`create ${this.getCreateInputClass()}`}>
-          <input value={this.state.inputValue} onChange={evt => this.updateInputValue(evt)} ></input>
-          <button className="btn-primary" onClick={ () => this.afterKeyCreated() }>Create</button>
-        </div>
         <div className="title">
         </div>
         <div className="items">
