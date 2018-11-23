@@ -14,6 +14,19 @@ export type TrayAction = ActionType<typeof trayActions>;
 //   isHome: true
 // }
 
+const cleanItems = (state: Tray) => {
+  return state.items.map((item) => {
+    if (item.statusIcon.includes('active')) {
+      return {
+        ...item,
+        statusIcon: item.statusIcon.filter(status => status !== 'active'),
+      };
+    } else {
+      return item;
+    }
+  });
+};
+
 export default function tray(state: Tray = null, action: TrayAction) {
   switch (action.type) {
     case constants.SWITCH_DAPP:
@@ -56,24 +69,24 @@ export default function tray(state: Tray = null, action: TrayAction) {
 
     case constants.TOGGLE_HOME:
       const isHome = action.payload.isHome;
-      const cleanItems = state.items.map((item) => {
-        if (item.statusIcon.includes('active')) {
-          return {
-            ...item,
-            statusIcon: item.statusIcon.filter(status => status !== 'active')
-          };
-        } else {
-          return item;
-        }
-      });
 
       return {
         ...state,
-        isHome: isHome,
+        isHome,
         activeDapp: {
-          appName: null
+          appName: null,
         },
-        items: cleanItems
+        items: cleanItems(state),
+      };
+
+    case constants.TOGGLE_SETTINGS_PANEL:
+      return {
+        ...state,
+        isHome: false,
+        activeDapp: {
+          appName: null,
+        },
+        items: cleanItems(state),
       };
 
     case constants.TOGGLE_APP_HOME:

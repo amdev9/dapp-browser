@@ -25,11 +25,17 @@ export class KeychainPanel extends React.Component<KeychainPanelProps, KeychainP
     this.onKeySelect = this.onKeySelect.bind(this);
     this.state = {
       inputValue: '',
-    };
+    }
   }
 
   onKeySelect(key: string) {
     this.props.selectKey(key);
+  }
+
+  updateInputValue(evt: React.ChangeEvent<HTMLInputElement>) {
+    this.setState({
+      inputValue: evt.target.value,
+    });
   }
 
   private getList(): JSX.Element[] | JSX.Element {
@@ -50,12 +56,6 @@ export class KeychainPanel extends React.Component<KeychainPanelProps, KeychainP
         />
       );
     }
-  }
-
-  updateInputValue(evt: React.ChangeEvent<HTMLInputElement>) {
-    this.setState({
-      inputValue: evt.target.value,
-    });
   }
 
   render() {
@@ -82,16 +82,12 @@ export class KeychainPanel extends React.Component<KeychainPanelProps, KeychainP
           <div className="header">
             <h4>Wallet</h4>
           </div>
+          <div className="create">
+            <input value={this.state.inputValue} onChange={evt => this.updateInputValue(evt)}></input>
+            <button className="btn-primary" onClick={ () => this.props.createKey(this.state.inputValue) }>Create</button>
+          </div>
           <div className="groups">
             {this.getList()}
-          </div>
-          <div className="bottom">
-            <input value={this.state.inputValue} onChange={evt => this.updateInputValue(evt)} ></input>
-            <button onClick={ () => this.props.createKey(this.state.inputValue) }>Create</button>
-            <div className="lower-buttons">
-              <button onClick={ () => this.props.signKey(this.props.selectedKey) }>Sign</button>
-              <button onClick={ () => this.props.listKeys() }>List</button>
-            </div>
           </div>
         </div>
       </Menu>

@@ -13,13 +13,19 @@ interface HeaderBarProps {
   isSearchPanelOpen: boolean;
   isStatusBarOpen: boolean;
   isPeersBarOpen: boolean;
+  isSettingsOpen: boolean;
+  isNotificationsPanelOpen: boolean;
+  isLoaderPanelOpen: boolean;
+  isKeychainPanelOpen: boolean;
   toggleSearchPanel(): void;
   togglePanel(): void;
   toggleLoaderPanel(): void;
   toggleHome(): void;
   toggleStatusBar(): void;
+  toggleSettingsPanel(): void;
   togglePeersBar(): void;
   toggleKeychain(): void;
+  isHome: boolean;
 }
 export class HeaderBar extends React.Component<HeaderBarProps> {
   public render() {
@@ -27,19 +33,25 @@ export class HeaderBar extends React.Component<HeaderBarProps> {
       togglePanel,
       toggleLoaderPanel,
       toggleKeychain,
+      toggleSettingsPanel,
       toggleHome,
       searchItems,
       toggleSearchPanel,
       isSearchPanelOpen,
       isStatusBarOpen,
+      isSettingsOpen,
+      isNotificationsPanelOpen,
+      isLoaderPanelOpen,
+      isKeychainPanelOpen,
       toggleStatusBar,
       isPeersBarOpen,
       togglePeersBar,
+      isHome,
     } = this.props;
     return (
       <div className="headerbar">
-        <HomeWidget toggleHome={toggleHome} />
-        <div className="title" title="hello">
+        <HomeWidget toggleHome={toggleHome} isHome={isHome}/>
+        <div className="title">
           Home
         </div>
         <div className="actions">
@@ -54,10 +66,10 @@ export class HeaderBar extends React.Component<HeaderBarProps> {
           />
           <div className="unions">
             <NetworkWidget />
-            <KeychainWidget togglePanel={toggleKeychain} />
-            <SettingsWidget toggleHome={toggleHome} />
-            <NotificationWidget togglePanel={togglePanel} />
-            <DownloadWidget togglePanel={toggleLoaderPanel} />
+            <KeychainWidget togglePanel={toggleKeychain} isOpen={isKeychainPanelOpen}/>
+            <SettingsWidget togglePanel={toggleSettingsPanel} isOpen={isSettingsOpen}/>
+            <NotificationWidget togglePanel={togglePanel} isOpen={isNotificationsPanelOpen}/>
+            <DownloadWidget togglePanel={toggleLoaderPanel} isOpen={isLoaderPanelOpen}/>
           </div>
         </div>
       </div>

@@ -14,6 +14,8 @@ export const toggleHome = (openStatus: boolean) => action(constants.TOGGLE_HOME,
   isHome: openStatus
 });
 
+export const toggleSettingsPanel = () => action(constants.TOGGLE_SETTINGS_PANEL);
+
 export const toggleAppHome = (dappName: string) => action(constants.TOGGLE_APP_HOME, {
   targetDappName: dappName
 });
