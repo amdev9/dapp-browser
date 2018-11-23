@@ -64,11 +64,11 @@ export interface IState {
 }
 
 export type IsHome = boolean;
- export interface Window {
+export interface Window {
   height: number;
   weight: number;
 }
- export interface ActiveDapp {
+export interface ActiveDapp {
   appName: string;
 }
 

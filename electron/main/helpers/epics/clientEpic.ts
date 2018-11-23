@@ -22,6 +22,12 @@ const toggleHomeEpic: Epic<any> = action$ => action$.pipe(
   ignoreElements(),
 );
 
+const toggleSettingsEpic: Epic<any> = action$ => action$.pipe(
+  ofType(constants.TOGGLE_SETTINGS_PANEL),
+  tap((action: any) => ClientManager.toggleHome()),
+  ignoreElements(),
+);
+
 const removeTrayItemEpic: Epic<any> = action$ => action$.pipe(
   ofType(constants.REMOVE_TRAY_ITEM),
   mapTo(clientActions.toggleHome(true)),
@@ -31,5 +37,6 @@ export default combineEpics(
   openDappEpic,
   addAppItemEpic,
   toggleHomeEpic,
+  toggleSettingsEpic,
   removeTrayItemEpic,
 );

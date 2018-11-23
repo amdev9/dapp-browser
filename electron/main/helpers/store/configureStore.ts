@@ -143,7 +143,7 @@ export const initialState: IState = {
   client: clientInitialState,
   feed: {},
   permissionManager: { isOpen: true, permissions: {}, grantedApps: [] },
-  tray: { items: [] },
+  tray: { items: [], isHome: true },
 };
 
 declare global {

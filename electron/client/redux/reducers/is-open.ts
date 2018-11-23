@@ -23,9 +23,15 @@ export default function isOpen(state: ToggleStatus = null, action: IsOpenAction)
       case constants.TOGGLE_LOADER_PANEL:
         return {...state, loader: !state.loader, notification: false, keychain: false};
       case constants.TOGGLE_NOTIFICATION_PANEL:
-      return {...state, loader: false, notification: !state.notification, keychain: false};
+        return {...state, loader: false, notification: !state.notification, keychain: false};
       case constants.TOGGLE_KEYCHAIN_PANEL:
-      return {...state, loader: false, notification: false, keychain: !state.keychain};
+        return {...state, loader: false, notification: false, keychain: !state.keychain};
+      case constants.TOGGLE_SETTINGS_PANEL:
+        return {...state, settings: true};
+      case constants.TOGGLE_HOME:
+        return {...state, settings: false};
+      case constants.SWITCH_DAPP:
+        return {...state, settings: false};
       default:
         return state;
     }

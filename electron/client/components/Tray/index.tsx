@@ -1,25 +1,30 @@
-import * as React from "react"
+import * as React from 'react';
 import { AppsList } from './AppsList';
-import { AppItem } from "../../redux/model";
+import { AppItem } from '../../redux/model';
 
-//@todo intergrate 
-import PerfectScrollbar from "react-perfect-scrollbar";
+// @todo intergrate
+// import PerfectScrollbar from "react-perfect-scrollbar";
 
-const indicatorIcon = require("../../assets/icons/indicator.svg");
-const closeIcon = require("../../assets/icons/close.svg");
+const indicatorIcon = require('../../assets/icons/indicator.svg');
+const consoleIcon = require('../../assets/icons/console.svg');
+const closeIcon = require('../../assets/icons/close.svg');
 
 interface TrayProps {
-  items?: AppItem[],
-  peersBarIsOpen: boolean
-  togglePeersBar?: () => void
-  toggleSwitch?: (targetDappName?: string) => any
+  items: AppItem[];
+  peersBarIsOpen: boolean;
+  statusBarOpen: boolean;
+  togglePeersBar: () => void;
+  toggleSwitch: (targetDappName: string) => any;
 }
 
 export class Tray extends React.Component<TrayProps> {
   private getBottomToggle(): JSX.Element {
-    let { peersBarIsOpen, togglePeersBar } = this.props;
+    const { peersBarIsOpen, togglePeersBar, statusBarOpen } = this.props;
 
-    const statusIcon = peersBarIsOpen ? closeIcon : indicatorIcon;
+    let statusIcon = peersBarIsOpen ? closeIcon : indicatorIcon;
+    if (statusBarOpen) {
+      statusIcon = consoleIcon;
+    }
 
     return (
       <div className="bottom" onClick={() => togglePeersBar()}>
@@ -27,7 +32,7 @@ export class Tray extends React.Component<TrayProps> {
           <img src={statusIcon} />
         </div>
       </div>
-    )
+    );
   }
 
   public render() {
@@ -36,6 +41,6 @@ export class Tray extends React.Component<TrayProps> {
         <AppsList {...this.props}/>
         {this.getBottomToggle()}
       </div>
-    )
+    );
   }
 }

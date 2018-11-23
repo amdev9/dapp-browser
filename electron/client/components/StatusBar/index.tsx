@@ -4,11 +4,11 @@ import { Bar } from './bar';
 import { Logger } from '../../Logger';
 
 interface StatusBarProps {
-  items?: { [index: string]: StatusBarItem; };
-  isOpen?: boolean;
-  toggleStatusBar?: () => void;
-  loggerWrite?: boolean;
-  peersBarIsOpen?: boolean;
+  items: { [index: string]: StatusBarItem; };
+  isOpen: boolean;
+  toggleStatusBar: () => void;
+  loggerWrite: boolean;
+  peersBarIsOpen: boolean;
 }
 
 export class StatusBar extends React.Component<StatusBarProps> {
@@ -31,7 +31,7 @@ export class StatusBar extends React.Component<StatusBarProps> {
           visible={peersBarIsOpen}
           toggleStatusBar={toggleStatusBar}
         />
-      ))
+      ));
     }
     return [];
   }
