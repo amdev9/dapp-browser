@@ -3,7 +3,7 @@
   Uses process.stdout.write instead of console.log so we can cleanly catch the output in the parent process.
 */
 
-import { app, BrowserWindow, Menu, dialog, protocol } from 'electron';
+import { app, BrowserWindow, Menu, dialog, MenuItem, protocol } from 'electron';
 import { Store } from 'redux';
 import { Observable, ReplaySubject } from 'rxjs';
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer';
@@ -23,13 +23,14 @@ import ClientManager from './helpers/ClientManager';
 import * as httpProtocolActions from './helpers/actions/httpProtocol';
 import { activeDappSelector } from './helpers/selectors';
 import * as clientActions from './helpers/actions/client';
+import contextMenu from './contextMenu';
 
 const console = new nodeConsole.Console(process.stdout, process.stderr);
 
 export const isProduction = process.env.ELECTRON_ENV !== 'development';
 let store: Store<IState>;
 
-require('electron-context-menu')({
+contextMenu({
   prepend: (params: any, browserWindow: BrowserWindow) => [{
     //   label: 'Pin to top',
     //   // Only show it when right-clicking images
@@ -37,11 +38,10 @@ require('electron-context-menu')({
     // },
     label: 'Close app',
     // visible: params.titleText,
-    click: (menuItem: any, broswerWindow: any, event: any) => {
+    click: (menuItem: MenuItem, browserWindow: BrowserWindow, event: Event) => {
       store.dispatch({ type: 'REMOVE_TRAY_ITEM', payload: { targetDappName: params.titleText } });
     },
   }],
-  showSaveImageAs: false,
   showInspectElement: false,
   shouldShowMenu: (event:any , params: any) => params.titleText !== '',
 });
