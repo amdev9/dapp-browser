@@ -83,8 +83,10 @@ export class KeychainPanel extends React.Component<KeychainPanelProps, KeychainP
             <h4>Wallet</h4>
           </div>
           <div className="create">
-            <input value={this.state.inputValue} onChange={evt => this.updateInputValue(evt)}></input>
-            <button className="btn-primary" onClick={ () => this.props.createKey(this.state.inputValue) }>Create</button>
+            <div className="input-group">
+              <div className="input-group-area"><input value={this.state.inputValue} onChange={evt => this.updateInputValue(evt)} /></div>
+              <div className="input-group-icon" onClick={ () => this.props.createKey(this.state.inputValue) }>Create</div>
+            </div>
           </div>
           <div className="groups">
             {this.getList()}

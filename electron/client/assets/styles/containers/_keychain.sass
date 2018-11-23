@@ -20,78 +20,36 @@
       margin: 0
 
   // Scrollbar hotfix
-  .scrollbar-container
-    .ps__rail-y
-      left: auto !important
-      right: 0px !important
+  // .scrollbar-container
+  //   .ps__rail-y
+  //     left: auto !important
+  //     right: 0px !important
 
   .create
-    background-color: #ffffff
-    min-height: $status-bar-height
-    width: 100%
-
-    input
-      -webkit-appearance: none
-      -moz-appearance: none
-      appearance: none
-      background: #fff
-      background-image: none
-      border: .05rem solid #bcc3ce
-      border-radius: .1rem
-      color: #3b4351
-      font-size: 1rem
-      height: 1.5rem
-      line-height: 1.2rem
-      max-width: 60%
-      outline: 0
-      padding: .25rem .4rem
-      position: relative
-      transition: background .2s,border .2s,box-shadow .2s,color .2s
-      margin-left: 10px
-      border-bottom-left-radius: 0
-      border-top-left-radius: 0
-
-    button
-      -webkit-appearance: none
-      -moz-appearance: none
-      appearance: none
-      background: #fff
-      border: .05rem solid #5755d9
-      border-radius: .1rem
-      color: #5755d9
-      cursor: pointer
-      display: inline-block
-      font-size: .8rem
-      height: 2.2rem
-      line-height: 1.2rem
-      outline: 0
-      padding: .25rem .4rem
-      text-align: center
-      text-decoration: none
-      transition: background .2s,border .2s,box-shadow .2s,color .2s
-      -webkit-user-select: none
-      -moz-user-select: none
-      -ms-user-select: none
-      user-select: none
+    .input-group
+      display: table
+      border-collapse: collapse
+      margin: 10px      
+    
+    .input-group > div
+      display: table-cell
+      border: 1px solid #ddd
       vertical-align: middle
-      white-space: nowrap
-      border-bottom-left-radius: 0
-      border-top-left-radius: 0
-      text-rendering: auto
-      color: initial
-      letter-spacing: normal
-      word-spacing: normal
-      text-transform: none
-      text-indent: 0px
-      text-shadow: none
-      display: inline-block
-      text-align: start
-      font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif
-      font: 400 13.3333px Arial
-      &.btn-primary
-        background: #5755d9
-        border-color: #4b48d6
-        color: #fff
+    
+    .input-group-icon
+      background:#eee
+      color: #777
+      padding: 0 12px
+    
+    .input-group input
+      border: 0
+      display: block
+      padding: 8px
+
+    .btn-primary
+      background: #5755d9
+      border-color: #4b48d6
+      color: #fff
 
   .groups
     flex-direction: column
