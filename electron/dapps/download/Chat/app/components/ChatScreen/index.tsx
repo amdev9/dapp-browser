@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import ChatView from '../ChatView';
 import RoomsList from '../RoomList';
 import CreateRoom from '../CreateRoomScreen';
-import * as actions from '../../redux/actions';
 import { IState } from '../../redux/reducers';
 
 import './styles.css';
@@ -18,19 +17,11 @@ interface StateProps {
   roomList: string[];
 }
 
-interface DispatchProps {
-  selectRoom: (roomId: string) => void;
-}
-
-type Props = StateProps & DispatchProps;
+type Props = StateProps;
 
 const mapStateToProps = (state: IState): StateProps => ({
   selectedRoom: state.rooms.selectedRoom,
   roomList: Object.keys(state.rooms.roomList),
-});
-
-const mapDispatchToProps = (dispatch: any): DispatchProps => ({
-  selectRoom: (roomId: string) => dispatch(actions.selectRoom(roomId))
 });
 
 class Chat extends React.Component<Props, State> {
@@ -56,4 +47,4 @@ class Chat extends React.Component<Props, State> {
   }
 }
 
-export default connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps)(Chat);
+export default connect<StateProps>(mapStateToProps)(Chat);

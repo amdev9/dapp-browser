@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as cn from 'classnames';
 
 import * as actions from '../../redux/actions';
-import* as thunks from '../../redux/thunks';
+import * as thunks from '../../redux/thunks';
 import { IState } from '../../redux/reducers';
 import { Room } from '../../redux/reducers/rooms';
 import RoomsSearch from '../RoomsSearch/index';
@@ -28,7 +28,7 @@ const mapStateToProps = (state: IState): StateProps => ({
 });
 
 const mapDispatchToProps = (dispatch: any): DispatchProps => ({
-  selectRoom: (roomId: string) => dispatch(actions.selectRoom(roomId)),
+  selectRoom: (roomId: string) => dispatch(thunks.selectRoom(roomId)),
   roomRemove: (roomId: string) => dispatch(thunks.roomRemoveThunk(roomId)),
 });
 
@@ -36,7 +36,7 @@ type Props = StateProps & DispatchProps;
 
 class RoomList extends React.Component<Props> {
   renderRoom(room: Room, i: number) {
-    const { selectRoom, selectedRoom, roomRemove } = this.props;
+    const { selectRoom, selectedRoom } = this.props;
     const isSelectedRoom = selectedRoom === room.roomId;
 
     return (
@@ -45,15 +45,12 @@ class RoomList extends React.Component<Props> {
         className={cn('roomListItem', { roomListItem_active: isSelectedRoom })}
         onClick={() => selectRoom(room.roomId)}
       >
-        {room.roomName}
-        <div
-          className="roomListRoomDelete"
-          onClick={(e) => {
-            e.stopPropagation();
-            roomRemove(room.roomId);
-          }}
-        >X
-        </div>
+        <div className="roomListRoomName">{room.roomName}</div>
+        {room.unreadMessagesCount ? (
+          <div className="roomListRoomUnreadMessages">
+            {room.unreadMessagesCount}
+          </div>
+        ) : null}
       </div>
     );
   }
@@ -77,7 +74,6 @@ class RoomList extends React.Component<Props> {
       return this.renderEmpty();
     }
 
-    console.log('roomlist', roomList);
     if (filteredRoomList) {
 
       return filteredRoomList.map(this.renderRoom.bind(this));

@@ -29,7 +29,6 @@ class RoomsSearch extends React.Component<FormProps<DispatchProps>> {
   render() {
     const { resetFilterRoomList, handleSubmit, dirty, reset } = this.props;
 
-    console.log('RoomsSearch', this.props);
     return (
       <form
         onSubmit={handleSubmit}
@@ -40,7 +39,7 @@ class RoomsSearch extends React.Component<FormProps<DispatchProps>> {
           type="text"
           className="roomsSearchInput"
           component="input"
-          placeholder="Enter room name..."
+          placeholder="Search room name..."
         />
         {dirty ? (
           <span

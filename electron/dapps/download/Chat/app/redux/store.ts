@@ -5,7 +5,7 @@ import { routerMiddleware } from 'react-router-redux';
 
 import reducers from './reducers/index';
 import history from './history';
-import { subscribeOnEvents } from './events';
+import bindEvents from './bindEvents';
 
 const configureStore = (initialState: any = {}) => {
   const middleware = [thunk, routerMiddleware(history), logger];
@@ -17,7 +17,7 @@ const configureStore = (initialState: any = {}) => {
   //     store.replaceReducer(require('./redux/reducers')) // eslint-disable-line global-require
   //   );
   // }
-  subscribeOnEvents(store);
+  bindEvents(store);
 
   return store;
 };

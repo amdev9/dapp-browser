@@ -86,6 +86,8 @@ const dappActions: string[] = [
   constants.ORBIT_DB_GET_ALL_ENTRIES,
   constants.ORBIT_DB_GET_ALL_ENTRIES_SUCCESS,
   constants.ORBIT_DB_GET_ALL_ENTRIES_FAILURE,
+
+  constants.DAPP_SET_TRAY_COUNTER,
 ];
 
 const clientActions: string[] = [

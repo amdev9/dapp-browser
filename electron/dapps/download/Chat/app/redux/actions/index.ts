@@ -34,3 +34,6 @@ export const removeRoomMessages = (roomId: string) =>
 export const setFilteredRoomList = (roomList: Room[]) => action(constants.ROOMS_SET_FILTERED_ROOMS_LIST, { roomList });
 
 export const resetFilterRoomList = () => action(constants.ROOMS_RESET_FILTERED_ROOMS_LIST);
+
+export const setRoomUnreadMessages = (roomId: string, counter: number) =>
+  action(constants.ROOM_SET_UNREAD_MESSAGES, { roomId, counter });

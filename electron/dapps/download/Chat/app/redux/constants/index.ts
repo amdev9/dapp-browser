@@ -10,10 +10,12 @@ export const FIELD_FORM_CHAT_ROOMS_SEARCH_STRING = 'FIELD_FORM_CHAT_ROOMS_SEARCH
 
 // Events
 export const EVENT_OPEN_LINK = 'openLink';
+export const EVENT_SET_TRAY_COUNTER = 'setTrayCounter';
 
 // Messages reducer
 export const MESSAGES_ADD_ROOM_MESSAGE = 'MESSAGES_ADD_ROOM_MESSAGE';
 export const MESSAGES_REMOVE_ROOM_MESSAGES = 'MESSAGES_REMOVE_ROOM_MESSAGES';
+export const ROOM_SET_UNREAD_MESSAGES = 'ROOM_SET_UNREAD_MESSAGES';
 
 // Rooms
 export const ROOMS_ADD = 'ROOMS_ADD';
