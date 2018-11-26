@@ -3,7 +3,7 @@ import { combineEpics, Epic, ofType } from 'redux-observable';
 import { switchMap } from 'rxjs/operators';
 import * as path from 'path';
 
-import { getDefaultExecPath, Keychain } from '../Keychain';
+import { getDefaultExecPath, Keychain } from '../systemComponents/Keychain';
 import * as keychainActions from '../actions/keychain';
 import * as constants from '../constants';
 

@@ -3,7 +3,7 @@ import { AnyAction } from 'redux';
 import { ofType } from 'redux-observable';
 import { filter } from 'rxjs/operators';
 import { storeObservable } from '../epics/appMainEpic';
-import ClientManager from "../ClientManager";
+import ClientManager from '../systemComponents/ClientManager';
 
 interface ActionFlow {
   successType: string;
@@ -17,7 +17,7 @@ export const onAction = (actionType: string, filterAction?: (action: AnyAction) 
     const subscriber = storeObservable
       .pipe(
         ofType(actionType),
-        filter((action) => filterAction && filterAction(action) || !!action),
+        filter(action => filterAction && filterAction(action) || !!action),
       )
       .subscribe((action) => {
         resolve(action);

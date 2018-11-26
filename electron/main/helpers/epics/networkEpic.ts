@@ -2,7 +2,7 @@ import { AnyAction } from 'redux';
 import { combineEpics, Epic, ofType } from 'redux-observable';
 import { switchMap } from 'rxjs/operators';
 
-import { NetworkAPI } from '../Network';
+import { NetworkAPI } from '../systemComponents/Network';
 import * as networkActions from '../actions/network';
 import * as constants from '../constants';
 
@@ -11,7 +11,7 @@ let networkInstance: NetworkAPI;
 try {
   networkInstance = new NetworkAPI();
 } catch (error) {
-  console.log('Error creating NetworkAPI instance', error)
+  console.log('Error creating NetworkAPI instance', error);
 }
 
 const networkGetBlockEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type

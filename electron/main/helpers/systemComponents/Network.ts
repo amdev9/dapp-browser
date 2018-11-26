@@ -1,8 +1,8 @@
 import { ChainStore } from 'bitsharesjs';
 import { Apis, Block } from 'bitsharesjs-ws';
 import { Store } from 'redux';
-import { IState } from './reducers/state';
-import * as constants from './constants';
+import { IState } from '../reducers/state';
+import * as constants from '../constants';
 
 const DEFAULT_BLOCKCHAIN_URI = 'ws://hawking.array.io:8090/ws';
 

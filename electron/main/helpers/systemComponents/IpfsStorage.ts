@@ -3,8 +3,8 @@ import * as IPFS from 'ipfs';
 import * as pathModule from 'path';
 
 import { Path } from './FileManager';
-import { IPFSGetResult } from '../types/ipfs';
-import { remoteConfig } from './config/ipfs';
+import { IPFSGetResult } from '../../types/ipfs';
+import { remoteConfig } from '../config/ipfs';
 import { getReadyIpfsInstance } from './IpfsInstance';
 
 export interface IpfsFileObject {

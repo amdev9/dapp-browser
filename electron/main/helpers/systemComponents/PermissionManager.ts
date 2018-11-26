@@ -1,9 +1,9 @@
-import { createPermissionWindow } from '../createPermissionWindow';
 import { BrowserWindow } from 'electron';
-import { RendererConf, globalUUIDList } from './constants/globalVariables';
-import { onAction } from './utils/actionUtils';
-import * as constants from './constants';
-import { IState } from './reducers/state';
+import { createPermissionWindow } from '../../createPermissionWindow';
+import { RendererConf, globalUUIDList } from '../constants/globalVariables';
+import { onAction } from '../utils/actionUtils';
+import * as constants from '../constants';
+import { IState } from '../reducers/state';
 
 export default class PermissionManager {
   static permissionWindow: BrowserWindow;
@@ -32,7 +32,7 @@ export default class PermissionManager {
     if (!activeDappGranted) {
       PermissionManager.createPermissionWindow(globalUUIDList, clientWindow, targetDappName, dappsPermissions);
 
-      await onAction(constants.GRANT_PERMISSIONS, (action) => action.payload.appName === targetDappName);
+      await onAction(constants.GRANT_PERMISSIONS, action => action.payload.appName === targetDappName);
     }
   }
 }

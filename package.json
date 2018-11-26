@@ -9,7 +9,7 @@
     "start": "node index.js",
     "clean": "rimraf release && rimraf electron/main/release",
     "webpack-client": "cd electron/client && npm i && cross-env NODE_ENV=development node --max_old_space_size=2096 server.js",
-    "webpack-dapps-lib": "cd electron/dapps/lib && npm i && npm run webpack",    
+    "webpack-dapps-lib": "cd electron/dapps/lib && npm i && npm run webpack",
     "webpack-dapps-download": "npm run webpack-dapps-Chat && npm run webpack-dapps-Wallet",
     "webpack-dapps-Chat": "cd electron/dapps/download/Chat && npm i && npm run webpack",
     "webpack-dapps-Wallet": "cd electron/dapps/download/Wallet && npm i && npm run webpack",

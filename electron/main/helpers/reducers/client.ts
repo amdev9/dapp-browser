@@ -6,19 +6,6 @@ import { togglePermissions } from './common';
 
 export type ClientAction = ActionType<typeof clientActions>;
 
-// const initialState: Client = {
-//   activeDapp: {
-//     appName: null,
-//   },
-//   isHome: true,
-//   notification: { isOpen: false },
-//   loader: { isOpen: false },
-//   statusBar: { isOpen: false, isPeersOpen: false },
-//   search: { isOpen: false },
-//   window: { width: 0, height: 0 },
-//   permissions: { permissions: {} },
-// };
-
 export function client(state: Client = null, action: any) { // @todo refactor add actions to client.ts, remove isOpen
   switch (action.type) {
 

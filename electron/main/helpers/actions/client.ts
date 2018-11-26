@@ -1,5 +1,5 @@
 import { action } from 'typesafe-actions';
-import { AppItem } from '../AppsManager';
+import { AppItem } from '../systemComponents/AppsManager';
 import * as constants from '../constants';
 
 export const switchDapp = (dappName: string) => action(constants.SWITCH_DAPP, {

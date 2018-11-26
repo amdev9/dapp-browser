@@ -1,8 +1,8 @@
 import { ofType, Epic, combineEpics } from 'redux-observable';
 import { ignoreElements, tap, mapTo, map } from 'rxjs/operators';
 import * as constants from '../constants';
-import { AppsManager } from '../AppsManager';
-import ClientManager from '../ClientManager';
+import { AppsManager } from '../systemComponents/AppsManager';
+import ClientManager from '../systemComponents/ClientManager';
 import * as clientActions from '../actions/client';
 
 const openDappEpic: Epic<any> = action$ => action$.pipe(
@@ -35,7 +35,7 @@ const removeTrayItemEpic: Epic<any> = action$ => action$.pipe(
 
 const setTrayCounterEpic: Epic<any> = action$ => action$.pipe(
   ofType(constants.DAPP_SET_TRAY_COUNTER),
-  map((action) => clientActions.setTrayCounter(action.meta.name, action.payload.counter)),
+  map(action => clientActions.setTrayCounter(action.meta.name, action.payload.counter)),
 );
 
 export default combineEpics(

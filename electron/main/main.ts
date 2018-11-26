@@ -3,28 +3,25 @@
   Uses process.stdout.write instead of console.log so we can cleanly catch the output in the parent process.
 */
 
-import { app, BrowserWindow, Menu, dialog, MenuItem, protocol } from 'electron';
+import { app, BrowserWindow, Menu, dialog, MenuItem } from 'electron';
 import { Store } from 'redux';
-import { Observable, ReplaySubject } from 'rxjs';
+import { ReplaySubject } from 'rxjs';
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer';
-import { configureStore, initialState } from './helpers/store/configureStore';
-import { AppsManager, AppItem } from './helpers/AppsManager';
-import { DappFrame } from './helpers/DappFrame';
-import { createClientWindow } from './createClientWindow';
-import { RendererConf, globalUUIDList } from './helpers/constants/globalVariables';
-import { IState, Client } from './helpers/reducers/state';
-import { getDefaultExecPath, Keychain } from './helpers/Keychain';
 import * as path from 'path';
-const KEYCHAIN_PATH = path.join(__dirname, '..', 'helpers', 'Keychain', getDefaultExecPath());
-
 import * as nodeConsole from 'console';
-import { NetworkAPI } from './helpers/Network';
-import ClientManager from './helpers/ClientManager';
-import * as httpProtocolActions from './helpers/actions/httpProtocol';
+import { configureStore, initialState } from './helpers/store/configureStore';
+import { globalUUIDList } from './helpers/constants/globalVariables';
+import { IState } from './helpers/reducers/state';
 import { activeDappSelector } from './helpers/selectors';
 import * as clientActions from './helpers/actions/client';
 import contextMenu from './contextMenu';
+import { getDefaultExecPath, Keychain } from './helpers/systemComponents/Keychain';
+import { NetworkAPI } from './helpers/systemComponents/Network';
+import ClientManager from './helpers/systemComponents/ClientManager';
+import { AppsManager } from './helpers/systemComponents/AppsManager';
+import * as httpProtocolActions from './helpers/actions/httpProtocol';
 
+const KEYCHAIN_PATH = path.join(__dirname, '..', 'helpers', 'Keychain', getDefaultExecPath());
 const console = new nodeConsole.Console(process.stdout, process.stderr);
 
 export const isProduction = process.env.ELECTRON_ENV !== 'development';
@@ -32,18 +29,13 @@ let store: Store<IState>;
 
 contextMenu({
   prepend: (params: any, browserWindow: BrowserWindow) => [{
-    //   label: 'Pin to top',
-    //   // Only show it when right-clicking images
-    //   visible: params.mediaType === 'image'
-    // },
     label: 'Close app',
-    // visible: params.titleText,
     click: (menuItem: MenuItem, browserWindow: BrowserWindow, event: Event) => {
       store.dispatch({ type: 'REMOVE_TRAY_ITEM', payload: { targetDappName: params.titleText } });
     },
   }],
   showInspectElement: false,
-  shouldShowMenu: (event:any , params: any) => params.titleText !== '',
+  shouldShowMenu: (event: any, params: any) => params.titleText !== '',
 });
 
 let template: any[] = [];

@@ -3,7 +3,7 @@ import { AnyAction } from 'redux';
 import { of } from 'rxjs';
 import { switchMap, map, catchError, ignoreElements, tap } from 'rxjs/operators';
 
-import IpfsRoom from '../IpfsRoom';
+import IpfsRoom from '../systemComponents/IpfsRoom';
 import * as constants from '../constants';
 import * as ipfsRoomActions from '../actions/ipfsRoom';
 
@@ -24,7 +24,7 @@ const ipfsRoomCreateThunk = (topic: string, uid: string, sourceUUID: string) => 
   }
 };
 
-const ipfsRoomsSubscribe = (action$: ActionsObservable<AnyAction>) => action$.pipe( //@todo fix action type
+const ipfsRoomsSubscribe = (action$: ActionsObservable<AnyAction>) => action$.pipe( // @todo fix action type
   ofType(constants.IPFS_ROOM_SUBSCRIBE),
   switchMap(action => (async (action) => {
     const sourceUUID = action.meta.sourceUUID;
@@ -47,7 +47,7 @@ const ipfsRoomsSubscribe = (action$: ActionsObservable<AnyAction>) => action$.pi
   catchError(errorAction => of(errorAction)),
 );
 
-const ipfsRoomSendBroadcastMessage: Epic<AnyAction> = (action$, state$) => action$.pipe( //@todo fix action type
+const ipfsRoomSendBroadcastMessage: Epic<AnyAction> = (action$, state$) => action$.pipe( // @todo fix action type
   ofType(constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST),
   switchMap(async (action) => {
     try {
@@ -67,11 +67,11 @@ const ipfsRoomSendBroadcastMessage: Epic<AnyAction> = (action$, state$) => actio
   }),
 );
 
-const ipfsRoomSendToPeerMessage: Epic<AnyAction> = (action$, state$) => action$.pipe( //@todo fix action type
+const ipfsRoomSendToPeerMessage: Epic<AnyAction> = (action$, state$) => action$.pipe( // @todo fix action type
   ofType(constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER),
   switchMap(async (action) => {
     try {
-      let room = IpfsRoom.get(action.meta.sourceUUID, action.payload.roomName);
+      const room = IpfsRoom.get(action.meta.sourceUUID, action.payload.roomName);
 
       if (!room) {
         throw Error('Room has not exist');
@@ -87,11 +87,11 @@ const ipfsRoomSendToPeerMessage: Epic<AnyAction> = (action$, state$) => action$.
   }),
 );
 
-const ipfsRoomLeave: Epic<AnyAction> = (action$, state$) => action$.pipe( //@todo fix action type
+const ipfsRoomLeave: Epic<AnyAction> = (action$, state$) => action$.pipe( // @todo fix action type
   ofType(constants.IPFS_ROOM_LEAVE),
   switchMap(async (action) => {
     try {
-      let room = IpfsRoom.get(action.meta.sourceUUID, action.payload.roomName);
+      const room = IpfsRoom.get(action.meta.sourceUUID, action.payload.roomName);
 
       if (!room) {
         throw Error('Room has not exist');

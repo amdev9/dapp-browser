@@ -2,8 +2,8 @@ import * as IPFS from 'ipfs';
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { remoteConfig } from './config/ipfs';
-import { appTempPath } from './constants/appPaths';
+import { remoteConfig } from '../config/ipfs';
+import { appTempPath } from '../constants/appPaths';
 
 let ipfsInstance: IPFS;
 
