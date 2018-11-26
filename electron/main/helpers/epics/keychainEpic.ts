@@ -7,7 +7,7 @@ import { getDefaultExecPath, Keychain } from '../systemComponents/Keychain';
 import * as keychainActions from '../actions/keychain';
 import * as constants from '../constants';
 
-const KEYCHAIN_PATH = path.join(__dirname, '..', 'helpers', 'Keychain', getDefaultExecPath());
+const KEYCHAIN_PATH = path.join(__dirname, '..', 'helpers', 'systemComponents', 'Keychain', getDefaultExecPath());
 
 const keychainCreateEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
   ofType(constants.KEYCHAIN_CREATE),

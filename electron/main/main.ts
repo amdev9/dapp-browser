@@ -21,7 +21,7 @@ import ClientManager from './helpers/systemComponents/ClientManager';
 import { AppsManager } from './helpers/systemComponents/AppsManager';
 import * as httpProtocolActions from './helpers/actions/httpProtocol';
 
-const KEYCHAIN_PATH = path.join(__dirname, '..', 'helpers', 'Keychain', getDefaultExecPath());
+const KEYCHAIN_PATH = path.join(__dirname, '..', 'helpers', 'systemComponents', 'Keychain', getDefaultExecPath());
 const console = new nodeConsole.Console(process.stdout, process.stderr);
 
 export const isProduction = process.env.ELECTRON_ENV !== 'development';

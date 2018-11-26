@@ -101,7 +101,7 @@
       "dist/dapps/**",
       "dist/permissionManager/**",
       "dist/main.js",
-      "helpers/Keychain/bin/**",
+      "helpers/systemComponents/Keychain/bin/**",
       "package.json",
       "preload.js",
       "preload-pm.js"
