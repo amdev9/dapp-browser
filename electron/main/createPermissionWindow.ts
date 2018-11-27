@@ -7,8 +7,6 @@ import { RendererConf } from './helpers/constants/globalVariables';
 import { PERMISSION_PATH } from './helpers/constants/appPaths';
 
 let permissionWindow: Electron.BrowserWindow = null;
-// const PATH: string = path.join(__dirname, 'permissionManager');
-
 export function createPermissionWindow(globalUUIDList: RendererConf[], mainWindow: Electron.BrowserWindow, appName: string, permissions: string[]) {
   const uuid = uuidv4();
 
@@ -27,17 +25,15 @@ export function createPermissionWindow(globalUUIDList: RendererConf[], mainWindo
   }
 
   permissionWindow = new BrowserWindow({
+    webPreferences,
     parent: mainWindow,
-    title: appName + ' | Permissions',
+    title: `${appName} | Permissions`,
     alwaysOnTop: true,
-    // center: true,
     show: true,
     x: 0,
     y: 0,
     width: 600,
     height: 600,
-    // resizable: false,
-    webPreferences,
     modal: true,
   });
   permissionWindow.setMenu(null);

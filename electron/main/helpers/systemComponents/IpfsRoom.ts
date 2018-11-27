@@ -1,9 +1,10 @@
 import * as IPFS from 'ipfs';
 import * as Room from 'ipfs-pubsub-room';
 import * as path from 'path';
-import { getReadyIpfsInstance } from './IpfsInstance';
-import { appTempPath } from './constants/appPaths';
 import * as uuid from 'uuid/v4';
+
+import { getReadyIpfsInstance } from './IpfsInstance';
+import { appTempPath } from '../constants/appPaths';
 
 export type RoomName = string;
 export type DappUUID = string;

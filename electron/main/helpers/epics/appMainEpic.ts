@@ -6,8 +6,8 @@ import { AnyAction } from 'redux';
 export const storeObservable: Subject<AnyAction> = new Subject();
 
 const appMainEpic: Epic<AnyAction> = action$ => action$.pipe(
-  tap((action) => storeObservable.next(action)),
+  tap(action => storeObservable.next(action)),
   ignoreElements(),
-)
+);
 
 export default appMainEpic;

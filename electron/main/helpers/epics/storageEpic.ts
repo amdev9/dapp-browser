@@ -4,7 +4,7 @@ import { switchMap } from 'rxjs/operators';
 
 import * as storageActions  from '../actions/storage';
 import * as constants from '../constants';
-import { Storage } from '../Storage';
+import { Storage } from '../systemComponents/Storage';
 
 const storageSaveEpic: Epic<AnyAction> = action$ => action$.pipe(
   ofType(constants.STORAGE_SAVE),

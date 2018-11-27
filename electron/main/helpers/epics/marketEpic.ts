@@ -4,14 +4,14 @@ import { switchMap } from 'rxjs/operators';
 
 import * as marketActions  from '../actions/market';
 import * as constants from '../constants';
-import { FileObject, FileManager } from '../FileManager';
-import ipfs from '../IpfsStorage';
-import { AppsManager } from '../AppsManager';
+import { FileObject, FileManager } from '../systemComponents/FileManager';
+import ipfs from '../systemComponents/IpfsStorage';
+import { AppsManager } from '../systemComponents/AppsManager';
 import { DAPPS_PATH } from '../constants/appPaths';
 import * as fs from 'fs';
 import * as path from 'path';
 
-const marketDownloadAppEpic: Epic<AnyAction> = (action$) => action$.pipe(
+const marketDownloadAppEpic: Epic<AnyAction> = action$ => action$.pipe(
   ofType(constants.MARKET_DOWNLOAD_DAPP),
   switchMap(async (action) => {
     try {

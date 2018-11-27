@@ -1,6 +1,5 @@
-import 'rxjs';
-import { combineEpics, ofType, Epic } from 'redux-observable';
 import { of } from 'rxjs';
+import { combineEpics, ofType, Epic } from 'redux-observable';
 import { merge, concatMap } from 'rxjs/operators';
 
 import * as constants from '../constants';

@@ -3,7 +3,7 @@ import { AnyAction } from 'redux';
 import { of } from 'rxjs';
 import { switchMap, map, catchError, ignoreElements, tap, mergeMap } from 'rxjs/operators';
 
-import IpfsRoom from '../IpfsRoom';
+import IpfsRoom from '../systemComponents/IpfsRoom';
 import * as constants from '../constants';
 import * as ipfsRoomActions from '../actions/ipfsRoom';
 
@@ -11,7 +11,6 @@ const ipfsRoomCreateThunk = (topic: string, roomId: string, uid: string, sourceU
   try {
     const room = IpfsRoom.get(sourceUUID, roomId);
     const { id } = await room.getPeerId();
-    console.log('ipfsRoomCreateThunk roomid', roomId, 'peerId', id, await room.getPeerId());
 
     room.subscribe({
       onMessage: message => dispatch(ipfsRoomActions.ipfsRoomSendMessageToDapp(message, topic, uid, sourceUUID)),

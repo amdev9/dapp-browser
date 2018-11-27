@@ -1,7 +1,5 @@
 import { platform } from 'os';
-import { Queue, Task, TaskProcess } from './queue';
-
-export { Queue, TaskProcess, Task };
+import { Queue } from './queue';
 
 export function getDefaultExecPath(): string {
   const info = platform();
@@ -34,13 +32,14 @@ export class Keychain {
     chainId: Keychain.ChainId,
     transaction: Keychain.Transaction,
   ): Promise<Keychain.Signed> {
-    return new Promise((resolve, reject) => {
-      const properties = {
-        transaction,
-        chainid: chainId,
-        keyname: key,
-      };
 
+    const properties = {
+      transaction,
+      chainid: chainId,
+      keyname: key,
+    };
+
+    return new Promise((resolve, reject) => {
       this.queue.push({
         command: 'CMD_SIGN',
         params: properties,
@@ -50,13 +49,13 @@ export class Keychain {
   }
 
   public create(key: Keychain.Key, cipher: Keychain.Cipher, curve: Keychain.Curve): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      const properties = {
-        curve,
-        algo: cipher,
-        keyname: key,
-      };
+    const properties = {
+      curve,
+      algo: cipher,
+      keyname: key,
+    };
 
+    return new Promise((resolve, reject) => {
       this.queue.push({
         command: 'CMD_CREATE',
         params: properties,

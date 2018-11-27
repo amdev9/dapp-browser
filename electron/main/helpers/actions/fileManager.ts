@@ -1,6 +1,6 @@
 import { action } from 'typesafe-actions';
 import * as constants from '../constants';
-import { FileEntry } from '../FileManager';
+import { FileEntry } from '../systemComponents/FileManager';
 
 export const openDialogSuccess = (entry: FileEntry, targetUUID? :string) =>
   action(constants.FILE_MANAGER_OPEN_DIALOG_SUCCESS, { entry }, { targetUUID });

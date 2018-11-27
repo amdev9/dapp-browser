@@ -1,9 +1,9 @@
-import { AnyAction, Store } from 'redux';
-import { IState } from './reducers/state';
-import { RendererConf, globalUUIDList } from './constants/globalVariables';
-import { createClientWindow } from '../createClientWindow';
+import { Store } from 'redux';
+import { IState } from '../reducers/state';
+import { globalUUIDList } from '../constants/globalVariables';
+import { createClientWindow } from '../../createClientWindow';
 import BrowserWindow = Electron.BrowserWindow;
-import * as clientActions from './actions/client';
+import * as clientActions from '../actions/client';
 import { AppsManager } from './AppsManager';
 
 export default class ClientManager {

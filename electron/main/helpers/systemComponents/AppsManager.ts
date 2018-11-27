@@ -4,15 +4,15 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { ofType } from 'redux-observable';
 
-import { DAPPS_PATH } from './constants/appPaths';
-import { RendererConf, globalUUIDList } from './constants/globalVariables';
+import { DAPPS_PATH } from '../constants/appPaths';
+import { RendererConf, globalUUIDList } from '../constants/globalVariables';
 import { DappFrame } from './DappFrame';
-import { IState } from './reducers/state';
+import { IState } from '../reducers/state';
 
-import { storeObservable } from './epics/appMainEpic';
-import * as constants from './constants';
-import { createDappView } from '../createDappView';
-import { onAction } from './utils/actionUtils';
+import { storeObservable } from '../epics/appMainEpic';
+import * as constants from '../constants';
+import { createDappView } from '../../createDappView';
+import { onAction } from '../utils/actionUtils';
 import PermissionManager from './PermissionManager';
 
 import BrowserWindow = Electron.BrowserWindow;
@@ -161,7 +161,7 @@ export class AppsManager {
     const activeDappRenderer = createDappView(globalUUIDList, activeDapp);
     const dappView = activeDappRenderer && activeDappRenderer.dappView || null;
     const isDappReady = AppsManager.isDappReady(targetDappName);
-    const dappReadyPromise = !isDappReady ? onAction(constants.DAPP_CONTENT_LOADED, (action) => action.meta.sourceUUID === activeDappRenderer.id) : true;
+    const dappReadyPromise = !isDappReady ? onAction(constants.DAPP_CONTENT_LOADED, action => action.meta.sourceUUID === activeDappRenderer.id) : true;
 
     clientWindow.setBrowserView(dappView);
 
@@ -179,4 +179,4 @@ export class AppsManager {
   }
 }
 
-AppsManager.onDappContentLoaded()
+AppsManager.onDappContentLoaded();

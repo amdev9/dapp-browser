@@ -22,7 +22,7 @@ export type Client = {
     height: number,
   },
   permissions: {
-    permissions: {[index:string]: Permission[]},
+    permissions: { [index: string]: Permission[] },
   },
   isOpen: {
     notification: boolean,
@@ -40,7 +40,7 @@ export interface IState {
   feed: {};
   permissionManager: {
     isOpen: boolean,
-    permissions: {[index:string]: Permission[]},
+    permissions: { [index: string]: Permission[] },
     grantedApps: string[],
   };
   tray: {};

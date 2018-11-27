@@ -1,9 +1,8 @@
-import { of } from 'rxjs';
 import { ofType, Epic, combineEpics } from 'redux-observable';
 import { merge, concatMap, switchMap, map, tap } from 'rxjs/operators';
 
 import * as constants from '../constants';
-import { OrbitDbClass } from '../OrbitDb';
+import { OrbitDbClass } from '../systemComponents/OrbitDb';
 import * as orbitDbActions from '../actions/orbitDb';
 
 const orbitCreateDatabaseThunk = (databaseName: string, sourceUUID: string) => async (dispatch: any) => {
@@ -36,12 +35,12 @@ const orbitOpenDatabaseThunk = (databaseName: string, sourceUUID: string) => asy
 
 const orbitCreateDb: Epic<any> = action$ => action$.pipe(
   ofType(constants.ORBIT_DB_CREATE_DATABASE),
-  map((action) => orbitCreateDatabaseThunk(action.payload.database, action.meta.sourceUUID)),
+  map(action => orbitCreateDatabaseThunk(action.payload.database, action.meta.sourceUUID)),
 );
 
 const orbitOpenDb: Epic<any> = action$ => action$.pipe(
   ofType(constants.ORBIT_DB_OPEN_DATABASE),
-  map((action) => orbitOpenDatabaseThunk(action.payload.database, action.meta.sourceUUID)),
+  map(action => orbitOpenDatabaseThunk(action.payload.database, action.meta.sourceUUID)),
 );
 
 const orbitAddEntry: Epic<any> = action$ => action$.pipe(

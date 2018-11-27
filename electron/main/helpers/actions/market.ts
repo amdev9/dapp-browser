@@ -1,6 +1,6 @@
 import { action } from 'typesafe-actions';
 import * as constants from '../constants';
-import { AppItem } from "../AppsManager";
+import { AppItem } from '../systemComponents/AppsManager';
 
 export const downloadDappSuccess = (parsedDapp: AppItem, targetUUID?: string) =>
   action(constants.MARKET_DOWNLOAD_DAPP_SUCCESS, { parsedDapp }, { targetUUID });

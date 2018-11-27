@@ -2,8 +2,8 @@ import { ofType, Epic, combineEpics } from 'redux-observable';
 import { ignoreElements, switchMap } from 'rxjs/operators';
 
 import * as constants from '../constants';
-import { AppsManager } from '../AppsManager';
-import ClientManager from '../ClientManager';
+import { AppsManager } from '../systemComponents/AppsManager';
+import ClientManager from '../systemComponents/ClientManager';
 import { HTTP_PROTOCOL } from '../constants/globalVariables';
 import * as httpProtocolActions from '../actions/httpProtocol';
 import { activeDappSelector } from '../selectors';

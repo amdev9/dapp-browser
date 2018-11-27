@@ -3,7 +3,7 @@ import { createStore, applyMiddleware, compose, Store, Middleware, Dispatch } fr
 import { isFSA } from 'flux-standard-action';
 // import { triggerAlias } from 'electron-redux';
 import { createEpicMiddleware } from 'redux-observable';
-import { persistStore,  persistReducer } from 'redux-persist';
+import { persistStore, persistReducer } from 'redux-persist';
 import thunk from 'redux-thunk';
 
 import { validatePermissionAction } from './validatePermissionAction';
@@ -200,7 +200,7 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
         },
       ];
 
-      globalId.forEach(function (renObj, i, arr) {
+      globalId.forEach((renObj, i, arr) => {
         if (renObj.id === action.payload.uuidSend) {
           arr[i].intent = action.payload.uuidRec;
         }
@@ -240,24 +240,14 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
           return next(action);
         }
       }
-      // }
-      return next(action);
-    } else {
-      const allWebContents = webContents.getAllWebContents();
-      allWebContents.forEach((contents) => {
-        // console.log('---> contents id: ', contents.id);
-        contents.send('redux-action', rendererAction);
-      });
       return next(action);
     }
 
-    // const allWebContents = webContents.getAllWebContents();
-    // allWebContents.forEach((contents) => {
-    //   // console.log('---> contents id: ', contents.id);
-    //   contents.send('redux-action', rendererAction);
-    // });
-    // return next(action);
-
+    const allWebContents = webContents.getAllWebContents();
+    allWebContents.forEach((contents) => {
+      contents.send('redux-action', rendererAction);
+    });
+    return next(action);
   };
 };
 
@@ -319,10 +309,10 @@ export const configureStore = (state: IState = initialState, globalId?: Renderer
   };
   const pReducer = persistReducer(persistConfig, rootReducer);
 
-  const store = createStore(pReducer, <any> state, enhancer);
+  const store = createStore(pReducer, <any>state, enhancer);
   const persistor = persistStore(store);
 
   epicMiddleware.run(rootEpic);
   replyActionMain(store, globalId);
-  return <Store<IState>> store;
+  return <Store<IState>>store;
 };
