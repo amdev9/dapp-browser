@@ -43,8 +43,8 @@ export const getReadyIpfsInstance = async (options: IPFS.Options = { repo: path.
         if (ipfsInstance.isOnline()) {
           console.log('online');
         } else {
-          // console.log('offline, try to start');
-          // ipfsInstance.start();
+          console.log('offline, try to start');
+          ipfsInstance.start();
         }
       });
 

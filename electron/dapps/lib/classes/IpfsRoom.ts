@@ -1,9 +1,9 @@
 import * as uuidv4 from 'uuid/v4';
+import { AnyAction } from 'redux';
+
 import * as actions from '../redux/actions/channel';
 import * as constants from '../redux/constants';
-
 import StoreUIDSubscriber from './StoreUIDSubscriber';
-import { AnyAction } from "redux";
 
 interface SubscribeOptions {
   onMessage: (message: any) => void;
