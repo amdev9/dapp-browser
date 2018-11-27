@@ -27,8 +27,8 @@ const cleanRepo = async (repoPath: string) => {
 };
 
 export const getReadyIpfsInstance = async (options: IPFS.Options = { repo: path.join(appTempPath, 'ipfs', 'repo') }): Promise<any> => {
-  // if (!ipfsInstance) {
-    const ipfsInstance = new IPFS({
+  if (!ipfsInstance) {
+    ipfsInstance = new IPFS({
       ...remoteConfig,
       repo: path.join(options.repo, Math.random().toString()),
     });
@@ -52,8 +52,8 @@ export const getReadyIpfsInstance = async (options: IPFS.Options = { repo: path.
         reject(error);
       });
     });
-  // }
+  }
 
-  // return ipfsInstance;
+  return ipfsInstance;
 
 };

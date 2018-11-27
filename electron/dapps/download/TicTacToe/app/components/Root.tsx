@@ -6,12 +6,7 @@ import Game from './Game';
 export default function () {
   return (
     <div>
-      <div>
-        <Game/>
-      </div>
-      <div>
-        <Game/>
-      </div>
+      <Game/>
     </div>
-  )
+  );
 }

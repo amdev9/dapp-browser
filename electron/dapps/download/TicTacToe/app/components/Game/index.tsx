@@ -2,272 +2,128 @@ import * as React from 'react';
 
 import * as cn from 'classnames';
 import Board from '../Board';
-import { calculateWinner, cloneNestedArray } from '../../redux/utils';
-import { IpfsRoom } from "../../../types/array-io";
-import emitter from './event';
+import {
+  calculateWinner,
+  checkFillAllSquares,
+  symbolsMap,
+  findPlayer,
+  nextTurn,
+  InitGameInterface,
+  CheckedSquares,
+  HistoryTap,
+  Square,
+} from '../../redux/utils';
+import uuid = require("uuid");
 
-import uuid = require("uuid/v4");
-
-const ArrayIO = require('array-io');
 const styles: any = require('./styles.scss');
 
-const symbolsMap = {
-  x: 'x',
-  o: 'o',
-};
+interface IState {
+  history: HistoryTap[];
+  playerSymbol: string;
+  currentPlayerStep: boolean;
+  enemyLeaved: boolean;
+  game: InitGameInterface | null;
+  gameFetching: boolean;
+  gameError: string | null;
+  winner: CheckedSquares | null;
+  operationUID: string | null;
+}
 
-export const nextTurn = (currentTurn) => {
-  return (currentTurn === symbolsMap.x ? symbolsMap.o : symbolsMap.x);
-};
+interface IProps {
+}
 
-// emitter.on('/', (peerId: string, msg: string) => {
-//   console.log(`${peerId}:${msg}`);
-// });
-
-class Game extends React.Component {
-  constructor(props) {
+class Game extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props);
     this.state = {
+      ...this.nullState,
+    };
+  }
+
+  get nullState() {
+    return {
+      operationUID: null,
+      enemyLeaved: false,
+      playerSymbol: '',
+      winner: null,
+      gameError: null,
+      gameFetching: false,
+      game: null,
+      currentPlayerStep: false,
       history: [{
         squares: [
-          [null, null, null],
-          [null, null, null],
-          [null, null, null],
+          ['', '', ''],
+          ['', '', ''],
+          ['', '', ''],
         ],
-      }],
-      highLights: [],
-
-      enemyUUID: null,
-
-      playerSymbol: null,
-
-      currentPlayerStep: false,
-
-      msgList: [],
-      uuid: uuid(),
+      }]
     };
   }
 
-  appendMsg(message: { from: string, data: Buffer | string }) {
-    const msg = `${message.from}:${message.data.toString()}`;
-
-    this.setState({ msgList: [...this.state.msgList, msg] });
-  }
-
-  getFirstId(uuid: string) {
-    if (uuid) {
-      return uuid.split('-')[0];
-    }
-
-    return;
-  }
-
-  async subscribeToIpfsRoom() {
-    const chat: IpfsRoom = new ArrayIO.IpfsRoom();
-
-    const askInvite = 'ASK_INVITE';
-    const acceptInvite = 'ACCEPT_INVITE';
-    let myPeerId: string;
-    let acceptedPeerId: string;
-
-    chat.subscribe('test-game-room', {
-      onSubscribe: async (peerId: string) => {
-        myPeerId = peerId;
-        console.log('subscribed', peerId);
-        chat.sendMessageBroadcast(askInvite);
-        const peers = await chat.getPeers()
-        console.log('peerssasa', peers)
-      },
-      onMessage: (message: { from: string, data: Buffer | string }) => {
-        const ownMsg = myPeerId === message.from;
-        const peerMsg = message.data.toString();
-        console.log('msg', peerMsg, ownMsg, 'myid', myPeerId, 'sender peerid', message.from);
-
-        if (!ownMsg) {
-          console.log('NOT SELF MESSAGE', peerMsg, message.from);
-          if (peerMsg === askInvite) {
-            chat.sendMessageTo(acceptInvite, message.from);
-          }
-
-          if (peerMsg === acceptInvite) {
-            chat.sendMessageTo(acceptInvite, message.from);
-          }
-        }
-      }
-    });
-  }
-
-  subscribeToEventEmitter() {
-    const { uuid } = this.state;
-
-    const comeIn = 'comeIn';
-    const askInvite = 'go game';
-    const acceptInvite = 'go game: ok!';
-    const setInitialData = 'setInitialData';
-    let accepted = false;
-    let isInitialPeer = false;
-
-    const setInitialPeer = () => {
-      isInitialPeer = true;
-    };
-
-    const listenerComeIn = (peerId: string) => {
-      const ownMsg = peerId === uuid;
-
-      if (!ownMsg) {
-        setInitialPeer();
-        console.log('comeIn', this.getFirstId(peerId), 'myid', this.getFirstId(uuid));
-        emitter.emit(peerId, uuid, askInvite);
-      }
-    };
-
-    const selfEvent = (peerId: string, msg: string) => {
-      const ownMsg = peerId === uuid;
-      console.log('selfEvent', msg, this.getFirstId(peerId), 'myid', this.getFirstId(uuid));
-
-      if (!ownMsg && !accepted) {
-        if (msg === askInvite) {
-          emitter.emit(peerId, uuid, acceptInvite);
-          console.log('askInvite', this.getFirstId(peerId), 'myid', this.getFirstId(uuid));
-        }
-
-        if (msg === acceptInvite) {
-          accepted = true;
-          // unsubComeIn();
-          this.setState({ currentPlayerStep: isInitialPeer });
-          console.log('acceptInvite', this.getFirstId(peerId), 'myid', this.getFirstId(uuid));
-          this.receiveActionsFromPlayer(peerId);
-          emitter.emit(peerId, uuid, acceptInvite);
-
-          if (isInitialPeer) {
-            emitter.emit(peerId, uuid, setInitialData);
-            this.setState({ playerSymbol: symbolsMap.x });
-            unsubComeIn();
-            unsubSelfEvent();
-          }
-        }
-      }
-
-      if (!ownMsg) {
-        if (msg === setInitialData) {
-          accepted = true;
-
-          this.setState({ playerSymbol: symbolsMap.o });
-          unsubComeIn();
-          unsubSelfEvent();
-        }
-      }
-    };
-
-    const unsubComeIn = () => emitter.removeListener(comeIn, listenerComeIn);
-    const unsubSelfEvent = () => emitter.removeListener(uuid, selfEvent);
-
-    emitter.on(comeIn, listenerComeIn.bind(this));
-    emitter.on(uuid, selfEvent.bind(this));
-
-    emitter.emit(comeIn, uuid);
-
-  }
-
-  componentDidMount() {
-    // this.subscribeToEventEmitter();
-    this.subscribeToIpfsRoom()
-    // const chat: IpfsRoom = new ArrayIO.IpfsRoom();
-    //
-    // const askInvite = 'go game';
-    // const acceptInvite = 'go game: ok!';
-    // let myPeerId: string;
-    // let acceptedPeerId: string;
-    //
-    // chat.subscribe('test-game-room', {
-    //   onSubscribe: (peerId: string) => {
-    //     myPeerId = peerId;
-    //     console.log('subscribed', peerId);
-    //     chat.sendMessageBroadcast(askInvite);
-    //   },
-    //   onMessage: (message: { from: string, data: Buffer | string }) => {
-    //     const ownMsg = myPeerId === message.from;
-    //     const peerMsg = message.data.toString();
-    //     console.log('msg', peerMsg, ownMsg, 'myid', myPeerId, 'sender peerid', message.from);
-    //
-    //     if (!ownMsg) {
-    //       console.log('NOT SELF MESSAGE', peerMsg, message.from);
-    //       if (peerMsg === askInvite) {
-    //         chat.sendMessageTo(acceptInvite, message.from);
-    //       }
-    //
-    //       if (peerMsg === acceptInvite) {
-    //         chat.sendMessageTo(acceptInvite, message.from);
-    //       }
-    //     }
-    //   }
-    // });
-
-  }
-
-  async handleClick(x, y, me: boolean = true) {
-    const history = this.state.history.slice(0);
+  async handleClick(x: number, y: number, me: boolean = true) {
+    console.log('state', this.state);
+    const { history } = this.state;
     const current = history[history.length - 1];
-    const squares = cloneNestedArray(current.squares.slice());
-    const highLights = this.state.highLights;
+    const squares: Square[] = current.squares.slice();
+    const isSetPoint = squares[x][y];
 
-    if (highLights.length > 0 || squares[x][y]) {
+    if (isSetPoint) {
       return;
     }
 
     squares[x][y] = me ? this.state.playerSymbol : nextTurn(this.state.playerSymbol);
 
     const winner = calculateWinner(squares);
-    console.log('handleClick winner', winner)
+    console.log('handleClick winner', winner);
 
     if (me) {
       console.log('if me', me);
-      await this.sendActionToPlayer(x, y);
+      this.state.game && await this.state.game.sendStep(x, y);
+      console.log('after sendstep');
       this.setState({ currentPlayerStep: false });
     } else {
       this.setState({ currentPlayerStep: true });
     }
 
     this.setState({
-      history: history.concat([{
+      history: this.state.history.concat([{
         squares,
       }]),
       winner: winner || null,
-      stepNumber: history.length,
     });
   }
 
-  receiveActionsFromPlayer(uuid: string) {
-    this.setState({ enemyUUID: uuid });
+  getStatus() {
+    const { history, winner, currentPlayerStep, playerSymbol, enemyLeaved } = this.state;
+    const current = history[history.length - 1];
 
-    emitter.on(`${this.state.uuid}/game`, ({ x, y }) => {
-      console.log('game event', x, y);
-      this.handleClick(x, y, false);
-    });
-  }
+    if (enemyLeaved) {
+      return <div>Enemy has been leaved</div>;
+    }
 
-  sendActionToPlayer(x, y) {
-    const { enemyUUID, uuid } = this.state;
+    if (checkFillAllSquares(current.squares)) {
+      return <div>Nobody wins</div>;
+    }
 
-    emitter.emit(`${enemyUUID}/game`, { x, y });
-  }
-
-  render() {
-    const { highLights, history, winner, stepNumber, msgList, currentPlayerStep, playerSymbol } = this.state;
-    const current = history[history.length-1];
-
-    let status;
     if (winner) {
-      // const { x, y } = highLights[0];
       const winnerFirstSymbol = winner[0];
 
-      const winnerSymbol = current.squares[winnerFirstSymbol.x][winnerFirstSymbol.y]
-      console.log('winner', winnerSymbol, current.squares, 'mysymbol', playerSymbol)
+      const winnerSymbol = current.squares[winnerFirstSymbol.x][winnerFirstSymbol.y];
 
-      status = `Winner: ${winnerSymbol}`;
-    } else {
-      status = `Next Player: ${currentPlayerStep ? 'me' : 'enemy'}\r\n My symbol:${playerSymbol}`;
+      return <div>Winner: {winnerSymbol}</div>;
     }
+
+    return (
+      <div>
+        Next Player: {currentPlayerStep ? 'me' : 'enemy'}
+        <div>My symbol:{playerSymbol}</div>
+      </div>
+    );
+  }
+
+  renderGame() {
+    const { history, winner, currentPlayerStep, playerSymbol, game } = this.state;
+    const current = history[history.length - 1];
 
     console.log('render', currentPlayerStep, this.state);
 
@@ -275,14 +131,110 @@ class Game extends React.Component {
       <div className={cn('game', { [styles.game_inactive]: !currentPlayerStep || winner })}>
         <div className="game-board">
           <Board
-            highLights={highLights}
+            highLights={winner}
             squares={current.squares}
-            onClick={(x, y) => currentPlayerStep && !winner && this.handleClick(x, y)}/>
+            onClick={(x: number, y: number) => currentPlayerStep && !winner && this.handleClick(x, y)}/>
         </div>
         <div className="game-info">
-          <div>{status}</div>
-          <div>{msgList.map((msg) => <div>{msg}</div>)}</div>
+          <div>{this.getStatus()}</div>
+          <button onClick={this.leaveGame.bind(this)}>leave room</button>
         </div>
+      </div>
+    );
+  }
+
+  async findGame() {
+    const operationUID = uuid();
+    this.setState({ operationUID, gameFetching: true });
+    try {
+      const game = await findPlayer(
+        (x, y) => this.handleClick(x, y, false),
+        () => this.setState({ enemyLeaved: true }),
+      );
+
+      console.log('game', game);
+      if (operationUID === this.state.operationUID) {
+        this.setState({
+          game,
+          gameFetching: false,
+          playerSymbol: game.playerSymbol,
+          currentPlayerStep: game.currentPlayerStep,
+        });
+      } else {
+        game.leaveGame()
+      }
+    } catch (error) {
+      this.setState({
+        gameError: 'Error connecting',
+        gameFetching: false,
+      });
+    }
+  }
+
+  leaveGame() {
+    this.state.game && this.state.game.leaveGame();
+
+    this.resetState();
+  }
+
+  renderFindGameScreen() {
+    return (
+      <div>
+        {this.findGameButton()}
+      </div>
+    );
+  }
+
+  findGameButton() {
+    return <button onClick={this.findGame.bind(this)}>Find game</button>;
+  }
+
+  renderError() {
+    return (
+      <div>
+        Connection error
+        {this.findGameButton()}
+      </div>
+    );
+  }
+
+  resetState() {
+    this.setState({ ...this.nullState });
+  }
+
+  renderFetching() {
+    return (
+      <div>
+        Connecting...
+        <button onClick={this.resetState.bind(this)}>Reset connection</button>
+      </div>
+    );
+  }
+
+  renderScreen() {
+    const { game, gameFetching, gameError } = this.state;
+
+    if (gameError) {
+      return this.renderError();
+    }
+
+    if (gameFetching) {
+      return this.renderFetching();
+    }
+
+    if (game) {
+      return this.renderGame();
+    }
+
+    return this.renderFindGameScreen();
+  }
+
+  render() {
+    console.log('render', this.state);
+
+    return (
+      <div className="game">
+        {this.renderScreen()}
       </div>
     );
   }

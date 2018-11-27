@@ -11,7 +11,7 @@ const ipfsRoomCreateThunk = (topic: string, roomId: string, uid: string, sourceU
   try {
     const room = IpfsRoom.get(sourceUUID, roomId);
     const { id } = await room.getPeerId();
-    console.log('ipfsRoomCreateThunk roomid', roomId, 'peerId', id, await room.getPeerId())
+    console.log('ipfsRoomCreateThunk roomid', roomId, 'peerId', id, await room.getPeerId());
 
     room.subscribe({
       onMessage: message => dispatch(ipfsRoomActions.ipfsRoomSendMessageToDapp(message, topic, uid, sourceUUID)),
@@ -113,7 +113,7 @@ const ipfsRoomGetPeers: Epic<AnyAction> = (action$, state$) => action$.pipe( //@
         throw Error('Room has not exist');
       }
 
-      const peerList = room.getPeers();
+      const peerList = await room.getPeers();
 
       return ipfsRoomActions.ipfsRoomGetPeersSuccess(action.payload.roomId, peerList, action.meta.uid, action.meta.sourceUUID);
     } catch (error) {

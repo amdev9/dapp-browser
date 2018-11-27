@@ -98,6 +98,7 @@ export default class IpfsRoom {
 
   getPeers() {
     if (this.room) {
+      console.log('peers', this.room.getPeers())
       return this.room.getPeers();
     }
   }

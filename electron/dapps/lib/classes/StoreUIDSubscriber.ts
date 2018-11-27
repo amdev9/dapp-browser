@@ -37,7 +37,7 @@ export default class StoreUIDSubscriber {
     });
   }
 
-  actionPromise(uid: string, { onStart, successType, failureType }: ActionFlow) {
+  actionPromise(uid: string, { onStart, successType, failureType }: ActionFlow): Promise<AnyAction> {
     if (!onStart || !successType || !failureType) {
       return;
     }
@@ -48,7 +48,7 @@ export default class StoreUIDSubscriber {
     };
 
     return new Promise((resolve, reject) => {
-      const unsubscribe = this.subscribeActions([successType, failureType], uid, (action) => {
+      const unsubscribe = this.subscribeActions([successType, failureType], uid, (action: AnyAction) => {
         unsubscribe && unsubscribe();
         if (action.type === successType) {
           resolve(action);
