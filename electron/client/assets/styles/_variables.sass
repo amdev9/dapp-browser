@@ -51,7 +51,11 @@ $green: #42D286
 $blue : #DFEAFF
 $red  : #FD6047
 
-// Layout
-$layout-content-height: calc(100vh - (#{$headerbar-height} + 1px))
-
 $status-bar-height: 50px
+$tray-height: calc(100vh - (#{$headerbar-height} + 1px))
+$feeds-height: calc(100vh - 182px)
+
+// Layout
+$layout-content-height: calc(100vh - (#{$headerbar-height} + #{$status-bar-height} + 1px))
+
+
