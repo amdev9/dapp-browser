@@ -1,5 +1,5 @@
 import { EOL } from 'os';
-import { Queue, Task } from './Queue';
+import { Queue, Task } from './queue';
 
 export const MAX_RETRIES = 3;
 

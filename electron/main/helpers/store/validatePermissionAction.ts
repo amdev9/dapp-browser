@@ -96,6 +96,7 @@ const clientActions: string[] = [
   constants.TOGGLE_KEYCHAIN_PANEL,
   constants.KEYCHAIN_CREATE,
   constants.KEYCHAIN_LIST,
+  constants.KEYCHAIN_LOCK,
   constants.KEYCHAIN_SIGN,
   constants.KEYCHAIN_SELECT_KEY,
   constants.KEYCHAIN_REMOVE_KEY,

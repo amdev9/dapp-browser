@@ -2,7 +2,7 @@ import { ChildProcess, spawn } from 'child_process';
 import { TaskProcess } from './TaskProcess';
 
 interface Task {
-  command: 'CMD_CREATE' | 'CMD_SIGN' | 'CMD_LIST';
+  command: 'create' | 'sign' | 'list' | 'lock';
   params?: any;
   promise: {
     resolve: any,

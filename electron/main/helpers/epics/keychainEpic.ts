@@ -40,6 +40,20 @@ const keychainListEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix 
   }),
 );
 
+const keychainLockEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
+  ofType(constants.KEYCHAIN_LOCK),
+  switchMap(async (action) => {
+    try {
+      const keychainInstance = new Keychain(KEYCHAIN_PATH);
+
+      const result = await keychainInstance.lock();
+      return keychainActions.lockSuccess(result, action.meta.sourceUUID);
+    } catch (error) {
+      return keychainActions.lockFailure(error, action.meta.sourceUUID);
+    }
+  }),
+);
+
 const keychainSignEpic: Epic<AnyAction> = (action$, state$) => action$.pipe( // @todo fix action type
   ofType(constants.KEYCHAIN_SIGN),
   switchMap(async (action) => {
@@ -61,4 +75,5 @@ export default combineEpics(
   keychainCreateEpic,
   keychainListEpic,
   keychainSignEpic,
+  keychainLockEpic,
 );

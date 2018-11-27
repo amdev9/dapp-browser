@@ -4,6 +4,7 @@ import {
     KEYCHAIN_CREATE,
     KEYCHAIN_REMOVE_KEY,
     KEYCHAIN_LIST,
+    KEYCHAIN_LOCK,
     KEYCHAIN_LIST_SUCCESS,
     KEYCHAIN_SIGN,
     KEYCHAIN_SELECT_KEY,
@@ -20,5 +21,7 @@ export const signKey = (key: string) => action(KEYCHAIN_SIGN, { key });
 export const selectKey = (key: string) => action(KEYCHAIN_SELECT_KEY, { key });
 
 export const list = () => action(KEYCHAIN_LIST);
+
+export const lock = () => action(KEYCHAIN_LOCK);
 
 export const listSuccess = (items: string[]) => action(KEYCHAIN_LIST_SUCCESS, items);

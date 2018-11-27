@@ -11,6 +11,7 @@ interface KeychainPanelProps {
   removeKey(name: string): void;
   signKey(name: string): void;
   listKeys(): void;
+  lock(): void;
   selectKey(name: string): void;
 }
 
@@ -25,7 +26,7 @@ export class KeychainPanel extends React.Component<KeychainPanelProps, KeychainP
     this.onKeySelect = this.onKeySelect.bind(this);
     this.state = {
       inputValue: '',
-    }
+    };
   }
 
   onKeySelect(key: string) {
@@ -81,6 +82,7 @@ export class KeychainPanel extends React.Component<KeychainPanelProps, KeychainP
         <div className="keychain-popup">
           <div className="header">
             <h4>Wallet</h4>
+            <div className="input-group-icon btn-primary" onClick={ () => this.props.lock() }>Lock</div>
           </div>
           <div className="create">
             <div className="input-group">

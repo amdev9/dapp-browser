@@ -41,7 +41,7 @@ export class Keychain {
 
     return new Promise((resolve, reject) => {
       this.queue.push({
-        command: 'CMD_SIGN',
+        command: 'sign',
         params: properties,
         promise: { resolve, reject },
       });
@@ -57,7 +57,7 @@ export class Keychain {
 
     return new Promise((resolve, reject) => {
       this.queue.push({
-        command: 'CMD_CREATE',
+        command: 'create',
         params: properties,
         promise: { resolve, reject },
       });
@@ -67,7 +67,16 @@ export class Keychain {
   public list(): Promise<Keychain.Key[]> {
     return new Promise((resolve, reject) => {
       this.queue.push({
-        command: 'CMD_LIST',
+        command: 'list',
+        promise: { resolve, reject },
+      });
+    });
+  }
+
+  public lock(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.queue.push({
+        command: 'lock',
         promise: { resolve, reject },
       });
     });

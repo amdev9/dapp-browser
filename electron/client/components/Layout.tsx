@@ -55,6 +55,7 @@ interface AppProps {
   keychainSignKey: (name: string) => void;
   keychainSelectKey: (name: string) => void;
   keychainList: () => void;
+  keychainLock: () => void;
   clearNotification: (id?: number) => void;
   clearAllNotifications: () => void;
   onAddAppItem: (appItem?: AppItem) => any;
@@ -76,7 +77,7 @@ class App extends React.Component<AppProps> {
       onTogglePanel, openNotificationPanel, openKeychainPanel, openStatusBarPanel, openPeersBarPanel, openSettingsPanel, openSearchPanel, clearNotification, clearAllNotifications,
       onAddAppItem, onSwitchDapp, onToggleHome, statusBarToggle, peersBarToggle, onToggleKeychainPanel, onToggleAppHome, onToggleSearch, searchItems,
       trayItems, isHome, feedItems, notifyItems, keychainItems, keychainSelectedKey, statusBarItems, onToggleLoaderPanel, onToggleSettingsPanel, openLoaderPanel, locationPath, loggerWrite,
-      downloadDapp, togglePermission, grantPermissions, permissions, keychainCreateKey, keychainRemoveKey, keychainList, keychainSignKey, keychainSelectKey,
+      downloadDapp, togglePermission, grantPermissions, permissions, keychainCreateKey, keychainRemoveKey, keychainLock, keychainList, keychainSignKey, keychainSelectKey,
     } = this.props;
 
     return (
@@ -102,6 +103,7 @@ class App extends React.Component<AppProps> {
           signKey={(name) => keychainSignKey(name)}
           selectKey={(name) => keychainSelectKey(name)}
           listKeys={keychainList}
+          lock={keychainLock}
           key="root-keychain" />
         <HeaderBar
           isHome={isHome}
@@ -183,6 +185,7 @@ const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
   keychainSignKey: KeychainActions.signKey,
   keychainSelectKey: KeychainActions.selectKey,
   keychainList: KeychainActions.list,
+  keychainLock: KeychainActions.lock,
   onAddAppItem: TrayActions.addAppItem,
   onSwitchDapp: TrayActions.switchDapp,
   onToggleHome: TrayActions.toggleHome,
