@@ -18,6 +18,8 @@ export class IpfsRoom {
 
   sendMessageTo(message: string, peer: string): Promise<any>;
 
+  getPeers(): Promise<string[]>;
+
   leave(): Promise<any>;
 }
 

@@ -27,8 +27,8 @@ const cleanRepo = async (repoPath: string) => {
 };
 
 export const getReadyIpfsInstance = async (options: IPFS.Options = { repo: path.join(appTempPath, 'ipfs', 'repo') }): Promise<any> => {
-  if (!ipfsInstance) {
-    ipfsInstance = new IPFS({
+  // if (!ipfsInstance) {
+    const ipfsInstance = new IPFS({
       ...remoteConfig,
       repo: path.join(options.repo, Math.random().toString()),
     });
@@ -43,8 +43,8 @@ export const getReadyIpfsInstance = async (options: IPFS.Options = { repo: path.
         if (ipfsInstance.isOnline()) {
           console.log('online');
         } else {
-          console.log('offline, try to start');
-          ipfsInstance.start();
+          // console.log('offline, try to start');
+          // ipfsInstance.start();
         }
       });
 
@@ -52,8 +52,8 @@ export const getReadyIpfsInstance = async (options: IPFS.Options = { repo: path.
         reject(error);
       });
     });
-  }
+  // }
 
-  return ipfsInstance;
+  // return ipfsInstance;
 
 };

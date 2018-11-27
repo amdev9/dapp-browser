@@ -109,6 +109,22 @@ exports.default = Board;
 
 /***/ }),
 
+/***/ "./app/components/Game/event.ts":
+/*!**************************************!*\
+  !*** ./app/components/Game/event.ts ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const events_1 = __webpack_require__(/*! events */ "./node_modules/events/events.js");
+exports.default = new events_1.EventEmitter();
+
+
+/***/ }),
+
 /***/ "./app/components/Game/index.tsx":
 /*!***************************************!*\
   !*** ./app/components/Game/index.tsx ***!
@@ -128,10 +144,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+const cn = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
 const Board_1 = __webpack_require__(/*! ../Board */ "./app/components/Board/index.tsx");
-const MoveList_1 = __webpack_require__(/*! ../MoveList */ "./app/components/MoveList/index.tsx");
 const utils_1 = __webpack_require__(/*! ../../redux/utils */ "./app/redux/utils/index.ts");
+const event_1 = __webpack_require__(/*! ./event */ "./app/components/Game/event.ts");
+const uuid = __webpack_require__(/*! uuid/v4 */ "./node_modules/uuid/v4.js");
+const ArrayIO = __webpack_require__(/*! array-io */ "array-io");
 const styles = __webpack_require__(/*! ./styles.scss */ "./app/components/Game/styles.scss");
+const symbolsMap = {
+    x: 'x',
+    o: 'o',
+};
+exports.nextTurn = (currentTurn) => {
+    return (currentTurn === symbolsMap.x ? symbolsMap.o : symbolsMap.x);
+};
+// emitter.on('/', (peerId: string, msg: string) => {
+//   console.log(`${peerId}:${msg}`);
+// });
 class Game extends React.Component {
     constructor(props) {
         super(props);
@@ -142,69 +171,209 @@ class Game extends React.Component {
                         [null, null, null],
                         [null, null, null],
                     ],
-                    checked: {
-                        x: 0,
-                        y: 0
-                    }
                 }],
             highLights: [],
-            stepNumber: 0,
-            xIsNext: true,
-            player: 'X',
-            currentPlayerStep: true,
+            enemyUUID: null,
+            playerSymbol: null,
+            currentPlayerStep: false,
+            msgList: [],
+            uuid: uuid(),
         };
     }
-    handleClick(x, y) {
+    appendMsg(message) {
+        const msg = `${message.from}:${message.data.toString()}`;
+        this.setState({ msgList: [...this.state.msgList, msg] });
+    }
+    getFirstId(uuid) {
+        if (uuid) {
+            return uuid.split('-')[0];
+        }
+        return;
+    }
+    subscribeToIpfsRoom() {
         return __awaiter(this, void 0, void 0, function* () {
-            const history = this.state.history.slice(0, this.state.stepNumber + 1);
+            const chat = new ArrayIO.IpfsRoom();
+            const askInvite = 'ASK_INVITE';
+            const acceptInvite = 'ACCEPT_INVITE';
+            let myPeerId;
+            let acceptedPeerId;
+            chat.subscribe('test-game-room', {
+                onSubscribe: (peerId) => __awaiter(this, void 0, void 0, function* () {
+                    myPeerId = peerId;
+                    console.log('subscribed', peerId);
+                    chat.sendMessageBroadcast(askInvite);
+                    const peers = yield chat.getPeers();
+                    console.log('peerssasa', peers);
+                }),
+                onMessage: (message) => {
+                    const ownMsg = myPeerId === message.from;
+                    const peerMsg = message.data.toString();
+                    console.log('msg', peerMsg, ownMsg, 'myid', myPeerId, 'sender peerid', message.from);
+                    if (!ownMsg) {
+                        console.log('NOT SELF MESSAGE', peerMsg, message.from);
+                        if (peerMsg === askInvite) {
+                            chat.sendMessageTo(acceptInvite, message.from);
+                        }
+                        if (peerMsg === acceptInvite) {
+                            chat.sendMessageTo(acceptInvite, message.from);
+                        }
+                    }
+                }
+            });
+        });
+    }
+    subscribeToEventEmitter() {
+        const { uuid } = this.state;
+        const comeIn = 'comeIn';
+        const askInvite = 'go game';
+        const acceptInvite = 'go game: ok!';
+        const setInitialData = 'setInitialData';
+        let accepted = false;
+        let isInitialPeer = false;
+        const setInitialPeer = () => {
+            isInitialPeer = true;
+        };
+        const listenerComeIn = (peerId) => {
+            const ownMsg = peerId === uuid;
+            if (!ownMsg) {
+                setInitialPeer();
+                console.log('comeIn', this.getFirstId(peerId), 'myid', this.getFirstId(uuid));
+                event_1.default.emit(peerId, uuid, askInvite);
+            }
+        };
+        const selfEvent = (peerId, msg) => {
+            const ownMsg = peerId === uuid;
+            console.log('selfEvent', msg, this.getFirstId(peerId), 'myid', this.getFirstId(uuid));
+            if (!ownMsg && !accepted) {
+                if (msg === askInvite) {
+                    event_1.default.emit(peerId, uuid, acceptInvite);
+                    console.log('askInvite', this.getFirstId(peerId), 'myid', this.getFirstId(uuid));
+                }
+                if (msg === acceptInvite) {
+                    accepted = true;
+                    // unsubComeIn();
+                    this.setState({ currentPlayerStep: isInitialPeer });
+                    console.log('acceptInvite', this.getFirstId(peerId), 'myid', this.getFirstId(uuid));
+                    this.receiveActionsFromPlayer(peerId);
+                    event_1.default.emit(peerId, uuid, acceptInvite);
+                    if (isInitialPeer) {
+                        event_1.default.emit(peerId, uuid, setInitialData);
+                        this.setState({ playerSymbol: symbolsMap.x });
+                        unsubComeIn();
+                        unsubSelfEvent();
+                    }
+                }
+            }
+            if (!ownMsg) {
+                if (msg === setInitialData) {
+                    accepted = true;
+                    this.setState({ playerSymbol: symbolsMap.o });
+                    unsubComeIn();
+                    unsubSelfEvent();
+                }
+            }
+        };
+        const unsubComeIn = () => event_1.default.removeListener(comeIn, listenerComeIn);
+        const unsubSelfEvent = () => event_1.default.removeListener(uuid, selfEvent);
+        event_1.default.on(comeIn, listenerComeIn.bind(this));
+        event_1.default.on(uuid, selfEvent.bind(this));
+        event_1.default.emit(comeIn, uuid);
+    }
+    componentDidMount() {
+        // this.subscribeToEventEmitter();
+        this.subscribeToIpfsRoom();
+        // const chat: IpfsRoom = new ArrayIO.IpfsRoom();
+        //
+        // const askInvite = 'go game';
+        // const acceptInvite = 'go game: ok!';
+        // let myPeerId: string;
+        // let acceptedPeerId: string;
+        //
+        // chat.subscribe('test-game-room', {
+        //   onSubscribe: (peerId: string) => {
+        //     myPeerId = peerId;
+        //     console.log('subscribed', peerId);
+        //     chat.sendMessageBroadcast(askInvite);
+        //   },
+        //   onMessage: (message: { from: string, data: Buffer | string }) => {
+        //     const ownMsg = myPeerId === message.from;
+        //     const peerMsg = message.data.toString();
+        //     console.log('msg', peerMsg, ownMsg, 'myid', myPeerId, 'sender peerid', message.from);
+        //
+        //     if (!ownMsg) {
+        //       console.log('NOT SELF MESSAGE', peerMsg, message.from);
+        //       if (peerMsg === askInvite) {
+        //         chat.sendMessageTo(acceptInvite, message.from);
+        //       }
+        //
+        //       if (peerMsg === acceptInvite) {
+        //         chat.sendMessageTo(acceptInvite, message.from);
+        //       }
+        //     }
+        //   }
+        // });
+    }
+    handleClick(x, y, me = true) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const history = this.state.history.slice(0);
             const current = history[history.length - 1];
             const squares = utils_1.cloneNestedArray(current.squares.slice());
             const highLights = this.state.highLights;
             if (highLights.length > 0 || squares[x][y]) {
                 return;
             }
-            squares[x][y] = this.state.xIsNext ? 'X' : 'O';
-            const checked = { x: x + 1, y: y + 1 };
+            squares[x][y] = me ? this.state.playerSymbol : exports.nextTurn(this.state.playerSymbol);
             const winner = utils_1.calculateWinner(squares);
-            const approve = yield this.sendActionToPlayer(x, y);
-            if (winner) {
-                this.setState({ winner });
+            console.log('handleClick winner', winner);
+            if (me) {
+                console.log('if me', me);
+                yield this.sendActionToPlayer(x, y);
+                this.setState({ currentPlayerStep: false });
+            }
+            else {
+                this.setState({ currentPlayerStep: true });
             }
             this.setState({
                 history: history.concat([{
                         squares,
-                        checked,
                     }]),
+                winner: winner || null,
                 stepNumber: history.length,
-                xIsNext: !this.state.xIsNext,
             });
         });
     }
+    receiveActionsFromPlayer(uuid) {
+        this.setState({ enemyUUID: uuid });
+        event_1.default.on(`${this.state.uuid}/game`, ({ x, y }) => {
+            console.log('game event', x, y);
+            this.handleClick(x, y, false);
+        });
+    }
     sendActionToPlayer(x, y) {
+        const { enemyUUID, uuid } = this.state;
+        event_1.default.emit(`${enemyUUID}/game`, { x, y });
     }
     render() {
-        const { highLights, history, stepNumber, xIsNext } = this.state;
-        const current = history[stepNumber];
+        const { highLights, history, winner, stepNumber, msgList, currentPlayerStep, playerSymbol } = this.state;
+        const current = history[history.length - 1];
         let status;
-        if (highLights.length > 0) {
-            const { x, y } = highLights[0];
-            let winnerSymbol = current.squares[x][y];
-            if (!winnerSymbol) {
-                winnerSymbol = history[stepNumber - 1].squares[x][y];
-            }
+        if (winner) {
+            // const { x, y } = highLights[0];
+            const winnerFirstSymbol = winner[0];
+            const winnerSymbol = current.squares[winnerFirstSymbol.x][winnerFirstSymbol.y];
+            console.log('winner', winnerSymbol, current.squares, 'mysymbol', playerSymbol);
             status = `Winner: ${winnerSymbol}`;
         }
         else {
-            status = `Next Player: ${xIsNext ? 'X' : 'O'}`;
+            status = `Next Player: ${currentPlayerStep ? 'me' : 'enemy'}\r\n My symbol:${playerSymbol}`;
         }
-        console.log('render', current, this.state);
-        return (React.createElement("div", { className: "game" },
+        console.log('render', currentPlayerStep, this.state);
+        return (React.createElement("div", { className: cn('game', { [styles.game_inactive]: !currentPlayerStep || winner }) },
             React.createElement("div", { className: "game-board" },
-                React.createElement(Board_1.default, { highLights: highLights, squares: current.squares, onClick: (x, y) => this.handleClick(x, y) })),
+                React.createElement(Board_1.default, { highLights: highLights, squares: current.squares, onClick: (x, y) => currentPlayerStep && !winner && this.handleClick(x, y) })),
             React.createElement("div", { className: "game-info" },
                 React.createElement("div", null, status),
-                React.createElement(MoveList_1.default, { history: history, jumpTo: () => {
-                    } }))));
+                React.createElement("div", null, msgList.map((msg) => React.createElement("div", null, msg))))));
     }
 }
 exports.default = Game;
@@ -220,38 +389,7 @@ exports.default = Game;
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-module.exports = {"gameWrapper":"styles__gameWrapper___2z2Dh"};
-
-/***/ }),
-
-/***/ "./app/components/MoveList/index.tsx":
-/*!*******************************************!*\
-  !*** ./app/components/MoveList/index.tsx ***!
-  \*******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-function Move(props) {
-    const { x, y } = props.step.checked;
-    const { jumpTo, index } = props;
-    const order = x && y ?
-        `Move (${x}, ${y})` :
-        'Game start';
-    return (React.createElement("li", null,
-        React.createElement("div", { onClick: () => jumpTo(index) }, order)));
-}
-class MoveList extends React.Component {
-    render() {
-        const { history, jumpTo } = this.props;
-        return (React.createElement("ol", null, history.map((step, index) => (React.createElement(Move, { key: index, step: step, index: index, jumpTo: jumpTo })))));
-    }
-}
-exports.default = MoveList;
-
+module.exports = {"gameWrapper":"styles__gameWrapper___2z2Dh","game_inactive":"styles__game_inactive___3-Qtt"};
 
 /***/ }),
 
@@ -268,7 +406,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 const Game_1 = __webpack_require__(/*! ./Game */ "./app/components/Game/index.tsx");
 function default_1() {
-    return (React.createElement(Game_1.default, null));
+    return (React.createElement("div", null,
+        React.createElement("div", null,
+            React.createElement(Game_1.default, null)),
+        React.createElement("div", null,
+            React.createElement(Game_1.default, null))));
 }
 exports.default = default_1;
 
@@ -472,6 +614,319 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	} else {}
 }());
+
+
+/***/ }),
+
+/***/ "./node_modules/events/events.js":
+/*!***************************************!*\
+  !*** ./node_modules/events/events.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+function EventEmitter() {
+  this._events = this._events || {};
+  this._maxListeners = this._maxListeners || undefined;
+}
+module.exports = EventEmitter;
+
+// Backwards-compat with node 0.10.x
+EventEmitter.EventEmitter = EventEmitter;
+
+EventEmitter.prototype._events = undefined;
+EventEmitter.prototype._maxListeners = undefined;
+
+// By default EventEmitters will print a warning if more than 10 listeners are
+// added to it. This is a useful default which helps finding memory leaks.
+EventEmitter.defaultMaxListeners = 10;
+
+// Obviously not all Emitters should be limited to 10. This function allows
+// that to be increased. Set to zero for unlimited.
+EventEmitter.prototype.setMaxListeners = function(n) {
+  if (!isNumber(n) || n < 0 || isNaN(n))
+    throw TypeError('n must be a positive number');
+  this._maxListeners = n;
+  return this;
+};
+
+EventEmitter.prototype.emit = function(type) {
+  var er, handler, len, args, i, listeners;
+
+  if (!this._events)
+    this._events = {};
+
+  // If there is no 'error' event listener then throw.
+  if (type === 'error') {
+    if (!this._events.error ||
+        (isObject(this._events.error) && !this._events.error.length)) {
+      er = arguments[1];
+      if (er instanceof Error) {
+        throw er; // Unhandled 'error' event
+      } else {
+        // At least give some kind of context to the user
+        var err = new Error('Uncaught, unspecified "error" event. (' + er + ')');
+        err.context = er;
+        throw err;
+      }
+    }
+  }
+
+  handler = this._events[type];
+
+  if (isUndefined(handler))
+    return false;
+
+  if (isFunction(handler)) {
+    switch (arguments.length) {
+      // fast cases
+      case 1:
+        handler.call(this);
+        break;
+      case 2:
+        handler.call(this, arguments[1]);
+        break;
+      case 3:
+        handler.call(this, arguments[1], arguments[2]);
+        break;
+      // slower
+      default:
+        args = Array.prototype.slice.call(arguments, 1);
+        handler.apply(this, args);
+    }
+  } else if (isObject(handler)) {
+    args = Array.prototype.slice.call(arguments, 1);
+    listeners = handler.slice();
+    len = listeners.length;
+    for (i = 0; i < len; i++)
+      listeners[i].apply(this, args);
+  }
+
+  return true;
+};
+
+EventEmitter.prototype.addListener = function(type, listener) {
+  var m;
+
+  if (!isFunction(listener))
+    throw TypeError('listener must be a function');
+
+  if (!this._events)
+    this._events = {};
+
+  // To avoid recursion in the case that type === "newListener"! Before
+  // adding it to the listeners, first emit "newListener".
+  if (this._events.newListener)
+    this.emit('newListener', type,
+              isFunction(listener.listener) ?
+              listener.listener : listener);
+
+  if (!this._events[type])
+    // Optimize the case of one listener. Don't need the extra array object.
+    this._events[type] = listener;
+  else if (isObject(this._events[type]))
+    // If we've already got an array, just append.
+    this._events[type].push(listener);
+  else
+    // Adding the second element, need to change to array.
+    this._events[type] = [this._events[type], listener];
+
+  // Check for listener leak
+  if (isObject(this._events[type]) && !this._events[type].warned) {
+    if (!isUndefined(this._maxListeners)) {
+      m = this._maxListeners;
+    } else {
+      m = EventEmitter.defaultMaxListeners;
+    }
+
+    if (m && m > 0 && this._events[type].length > m) {
+      this._events[type].warned = true;
+      console.error('(node) warning: possible EventEmitter memory ' +
+                    'leak detected. %d listeners added. ' +
+                    'Use emitter.setMaxListeners() to increase limit.',
+                    this._events[type].length);
+      if (typeof console.trace === 'function') {
+        // not supported in IE 10
+        console.trace();
+      }
+    }
+  }
+
+  return this;
+};
+
+EventEmitter.prototype.on = EventEmitter.prototype.addListener;
+
+EventEmitter.prototype.once = function(type, listener) {
+  if (!isFunction(listener))
+    throw TypeError('listener must be a function');
+
+  var fired = false;
+
+  function g() {
+    this.removeListener(type, g);
+
+    if (!fired) {
+      fired = true;
+      listener.apply(this, arguments);
+    }
+  }
+
+  g.listener = listener;
+  this.on(type, g);
+
+  return this;
+};
+
+// emits a 'removeListener' event iff the listener was removed
+EventEmitter.prototype.removeListener = function(type, listener) {
+  var list, position, length, i;
+
+  if (!isFunction(listener))
+    throw TypeError('listener must be a function');
+
+  if (!this._events || !this._events[type])
+    return this;
+
+  list = this._events[type];
+  length = list.length;
+  position = -1;
+
+  if (list === listener ||
+      (isFunction(list.listener) && list.listener === listener)) {
+    delete this._events[type];
+    if (this._events.removeListener)
+      this.emit('removeListener', type, listener);
+
+  } else if (isObject(list)) {
+    for (i = length; i-- > 0;) {
+      if (list[i] === listener ||
+          (list[i].listener && list[i].listener === listener)) {
+        position = i;
+        break;
+      }
+    }
+
+    if (position < 0)
+      return this;
+
+    if (list.length === 1) {
+      list.length = 0;
+      delete this._events[type];
+    } else {
+      list.splice(position, 1);
+    }
+
+    if (this._events.removeListener)
+      this.emit('removeListener', type, listener);
+  }
+
+  return this;
+};
+
+EventEmitter.prototype.removeAllListeners = function(type) {
+  var key, listeners;
+
+  if (!this._events)
+    return this;
+
+  // not listening for removeListener, no need to emit
+  if (!this._events.removeListener) {
+    if (arguments.length === 0)
+      this._events = {};
+    else if (this._events[type])
+      delete this._events[type];
+    return this;
+  }
+
+  // emit removeListener for all listeners on all events
+  if (arguments.length === 0) {
+    for (key in this._events) {
+      if (key === 'removeListener') continue;
+      this.removeAllListeners(key);
+    }
+    this.removeAllListeners('removeListener');
+    this._events = {};
+    return this;
+  }
+
+  listeners = this._events[type];
+
+  if (isFunction(listeners)) {
+    this.removeListener(type, listeners);
+  } else if (listeners) {
+    // LIFO order
+    while (listeners.length)
+      this.removeListener(type, listeners[listeners.length - 1]);
+  }
+  delete this._events[type];
+
+  return this;
+};
+
+EventEmitter.prototype.listeners = function(type) {
+  var ret;
+  if (!this._events || !this._events[type])
+    ret = [];
+  else if (isFunction(this._events[type]))
+    ret = [this._events[type]];
+  else
+    ret = this._events[type].slice();
+  return ret;
+};
+
+EventEmitter.prototype.listenerCount = function(type) {
+  if (this._events) {
+    var evlistener = this._events[type];
+
+    if (isFunction(evlistener))
+      return 1;
+    else if (evlistener)
+      return evlistener.length;
+  }
+  return 0;
+};
+
+EventEmitter.listenerCount = function(emitter, type) {
+  return emitter.listenerCount(type);
+};
+
+function isFunction(arg) {
+  return typeof arg === 'function';
+}
+
+function isNumber(arg) {
+  return typeof arg === 'number';
+}
+
+function isObject(arg) {
+  return typeof arg === 'object' && arg !== null;
+}
+
+function isUndefined(arg) {
+  return arg === void 0;
+}
 
 
 /***/ }),
@@ -23472,6 +23927,137 @@ if (false) {} else {
   module.exports = __webpack_require__(/*! ./cjs/scheduler-tracing.development.js */ "./node_modules/scheduler/cjs/scheduler-tracing.development.js");
 }
 
+
+/***/ }),
+
+/***/ "./node_modules/uuid/lib/bytesToUuid.js":
+/*!**********************************************!*\
+  !*** ./node_modules/uuid/lib/bytesToUuid.js ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * Convert array of 16 byte values to UUID string format of the form:
+ * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+ */
+var byteToHex = [];
+for (var i = 0; i < 256; ++i) {
+  byteToHex[i] = (i + 0x100).toString(16).substr(1);
+}
+
+function bytesToUuid(buf, offset) {
+  var i = offset || 0;
+  var bth = byteToHex;
+  // join used to fix memory issue caused by concatenation: https://bugs.chromium.org/p/v8/issues/detail?id=3175#c4
+  return ([bth[buf[i++]], bth[buf[i++]], 
+	bth[buf[i++]], bth[buf[i++]], '-',
+	bth[buf[i++]], bth[buf[i++]], '-',
+	bth[buf[i++]], bth[buf[i++]], '-',
+	bth[buf[i++]], bth[buf[i++]], '-',
+	bth[buf[i++]], bth[buf[i++]],
+	bth[buf[i++]], bth[buf[i++]],
+	bth[buf[i++]], bth[buf[i++]]]).join('');
+}
+
+module.exports = bytesToUuid;
+
+
+/***/ }),
+
+/***/ "./node_modules/uuid/lib/rng-browser.js":
+/*!**********************************************!*\
+  !*** ./node_modules/uuid/lib/rng-browser.js ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// Unique ID creation requires a high quality random # generator.  In the
+// browser this is a little complicated due to unknown quality of Math.random()
+// and inconsistent support for the `crypto` API.  We do the best we can via
+// feature-detection
+
+// getRandomValues needs to be invoked in a context where "this" is a Crypto
+// implementation. Also, find the complete implementation of crypto on IE11.
+var getRandomValues = (typeof(crypto) != 'undefined' && crypto.getRandomValues && crypto.getRandomValues.bind(crypto)) ||
+                      (typeof(msCrypto) != 'undefined' && typeof window.msCrypto.getRandomValues == 'function' && msCrypto.getRandomValues.bind(msCrypto));
+
+if (getRandomValues) {
+  // WHATWG crypto RNG - http://wiki.whatwg.org/wiki/Crypto
+  var rnds8 = new Uint8Array(16); // eslint-disable-line no-undef
+
+  module.exports = function whatwgRNG() {
+    getRandomValues(rnds8);
+    return rnds8;
+  };
+} else {
+  // Math.random()-based (RNG)
+  //
+  // If all else fails, use Math.random().  It's fast, but is of unspecified
+  // quality.
+  var rnds = new Array(16);
+
+  module.exports = function mathRNG() {
+    for (var i = 0, r; i < 16; i++) {
+      if ((i & 0x03) === 0) r = Math.random() * 0x100000000;
+      rnds[i] = r >>> ((i & 0x03) << 3) & 0xff;
+    }
+
+    return rnds;
+  };
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/uuid/v4.js":
+/*!*********************************!*\
+  !*** ./node_modules/uuid/v4.js ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var rng = __webpack_require__(/*! ./lib/rng */ "./node_modules/uuid/lib/rng-browser.js");
+var bytesToUuid = __webpack_require__(/*! ./lib/bytesToUuid */ "./node_modules/uuid/lib/bytesToUuid.js");
+
+function v4(options, buf, offset) {
+  var i = buf && offset || 0;
+
+  if (typeof(options) == 'string') {
+    buf = options === 'binary' ? new Array(16) : null;
+    options = null;
+  }
+  options = options || {};
+
+  var rnds = options.random || (options.rng || rng)();
+
+  // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
+  rnds[6] = (rnds[6] & 0x0f) | 0x40;
+  rnds[8] = (rnds[8] & 0x3f) | 0x80;
+
+  // Copy bytes to buffer, if provided
+  if (buf) {
+    for (var ii = 0; ii < 16; ++ii) {
+      buf[i + ii] = rnds[ii];
+    }
+  }
+
+  return buf || bytesToUuid(rnds);
+}
+
+module.exports = v4;
+
+
+/***/ }),
+
+/***/ "array-io":
+/*!**************************!*\
+  !*** external "ArrayIO" ***!
+  \**************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ArrayIO;
 
 /***/ })
 

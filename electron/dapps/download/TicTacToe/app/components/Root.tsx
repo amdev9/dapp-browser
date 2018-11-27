@@ -5,6 +5,13 @@ import Game from './Game';
 
 export default function () {
   return (
-  <Game/>
+    <div>
+      <div>
+        <Game/>
+      </div>
+      <div>
+        <Game/>
+      </div>
+    </div>
   )
 }
