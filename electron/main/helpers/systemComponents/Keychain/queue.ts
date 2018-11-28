@@ -2,7 +2,7 @@ import { ChildProcess, spawn } from 'child_process';
 import { TaskProcess } from './TaskProcess';
 
 interface Task {
-  command: 'create' | 'sign' | 'list' | 'lock' | 'unlock';
+  command: 'create' | 'sign_hex' | 'list' | 'lock' | 'unlock';
   params?: any;
   promise: {
     resolve: any,

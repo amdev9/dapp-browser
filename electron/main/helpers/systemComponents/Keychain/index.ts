@@ -37,11 +37,12 @@ export class Keychain {
       transaction,
       chainid: chainId,
       keyname: key,
+      blockchain_type: 'ethereum',
     };
 
     return new Promise((resolve, reject) => {
       this.queue.push({
-        command: 'sign',
+        command: 'sign_hex',
         params: properties,
         promise: { resolve, reject },
       });
