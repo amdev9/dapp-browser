@@ -8,6 +8,7 @@ import {
     KEYCHAIN_LIST_SUCCESS,
     KEYCHAIN_SIGN,
     KEYCHAIN_SELECT_KEY,
+    KEYCHAIN_LOCK_SUCCESS,
 } from '../constants';
 
 export const toggle = () => action(TOGGLE_KEYCHAIN_PANEL);
@@ -25,3 +26,5 @@ export const list = () => action(KEYCHAIN_LIST);
 export const lock = () => action(KEYCHAIN_LOCK);
 
 export const listSuccess = (items: string[]) => action(KEYCHAIN_LIST_SUCCESS, items);
+
+export const lockSuccess = () => action(KEYCHAIN_LOCK_SUCCESS);

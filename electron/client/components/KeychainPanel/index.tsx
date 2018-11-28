@@ -6,6 +6,7 @@ interface KeychainPanelProps {
   isOpen: boolean;
   items: string[];
   selectedKey: string;
+  successMessage: string;
   togglePanel(): void;
   createKey(name: string): void;
   removeKey(name: string): void;
@@ -82,7 +83,8 @@ export class KeychainPanel extends React.Component<KeychainPanelProps, KeychainP
         <div className="keychain-popup">
           <div className="header">
             <h4>Wallet</h4>
-            <div className="input-group-icon btn-primary" onClick={ () => this.props.lock() }>Lock</div>
+            <div className="success-message">{ this.props.successMessage }</div>
+            <div className="input-group-icon btn-primary lock" onClick={ () => this.props.lock() }>🔒</div>
           </div>
           <div className="create">
             <div className="input-group">

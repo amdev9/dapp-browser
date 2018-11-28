@@ -40,6 +40,7 @@ interface AppProps {
   notifyItems: NotifyItem[];
   keychainItems: string[];
   keychainSelectedKey: string;
+  keychainSuccessMessage: string;
   searchItems: { [index: string]: SearchItem[] };
   statusBarItems?: { [index: string]: StatusBarItem };
   statusBarToggle: () => void;
@@ -76,7 +77,9 @@ class App extends React.Component<AppProps> {
     const {
       onTogglePanel, openNotificationPanel, openKeychainPanel, openStatusBarPanel, openPeersBarPanel, openSettingsPanel, openSearchPanel, clearNotification, clearAllNotifications,
       onAddAppItem, onSwitchDapp, onToggleHome, statusBarToggle, peersBarToggle, onToggleKeychainPanel, onToggleAppHome, onToggleSearch, searchItems,
-      trayItems, isHome, feedItems, notifyItems, keychainItems, keychainSelectedKey, statusBarItems, onToggleLoaderPanel, onToggleSettingsPanel, openLoaderPanel, locationPath, loggerWrite,
+      trayItems, isHome, feedItems, notifyItems,
+      keychainItems, keychainSelectedKey, keychainSuccessMessage,
+      statusBarItems, onToggleLoaderPanel, onToggleSettingsPanel, openLoaderPanel, locationPath, loggerWrite,
       downloadDapp, togglePermission, grantPermissions, permissions, keychainCreateKey, keychainRemoveKey, keychainLock, keychainList, keychainSignKey, keychainSelectKey,
     } = this.props;
 
@@ -96,6 +99,7 @@ class App extends React.Component<AppProps> {
         <KeychainPanel
           items={keychainItems}
           selectedKey={keychainSelectedKey}
+          successMessage={keychainSuccessMessage}
           isOpen={openKeychainPanel}
           togglePanel={onToggleKeychainPanel}
           createKey={(name) => keychainCreateKey(name)}
@@ -155,6 +159,7 @@ const mapStateToProps = (state: IState) => ({
   notifyItems: state.notification.items,
   keychainItems: state.keychain.items,
   keychainSelectedKey: state.keychain.selectedKey,
+  keychainSuccessMessage: state.keychain.successMessage,
   openNotificationPanel: state.isOpen.notification,
   openKeychainPanel: state.isOpen.keychain,
   openLoaderPanel: state.isOpen.loader,
