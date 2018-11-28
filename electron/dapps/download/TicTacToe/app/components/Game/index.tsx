@@ -1,21 +1,26 @@
 import * as React from 'react';
+import { Field, InjectedFormProps, reduxForm } from 'redux-form';
 
 import * as cn from 'classnames';
+import * as uuid from 'uuid/v4';
+
 import Board from '../Board';
 import {
   calculateWinner,
   checkFillAllSquares,
-  symbolsMap,
-  findPlayer,
+  createGame,
   nextTurn,
   InitGameInterface,
   CheckedSquares,
   HistoryTap,
   Square,
 } from '../../redux/utils';
-import uuid = require("uuid");
+import * as constants from '../../redux/constants';
 
 const styles: any = require('./styles.scss');
+
+interface StateProps {
+}
 
 interface IState {
   history: HistoryTap[];
@@ -29,11 +34,8 @@ interface IState {
   operationUID: string | null;
 }
 
-interface IProps {
-}
-
-class Game extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
+class Game extends React.Component<InjectedFormProps, IState> {
+  constructor(props: InjectedFormProps) {
     super(props);
     this.state = {
       ...this.nullState,
@@ -61,7 +63,6 @@ class Game extends React.Component<IProps, IState> {
   }
 
   async handleClick(x: number, y: number, me: boolean = true) {
-    console.log('state', this.state);
     const { history } = this.state;
     const current = history[history.length - 1];
     const squares: Square[] = current.squares.slice();
@@ -74,12 +75,9 @@ class Game extends React.Component<IProps, IState> {
     squares[x][y] = me ? this.state.playerSymbol : nextTurn(this.state.playerSymbol);
 
     const winner = calculateWinner(squares);
-    console.log('handleClick winner', winner);
 
     if (me) {
-      console.log('if me', me);
       this.state.game && await this.state.game.sendStep(x, y);
-      console.log('after sendstep');
       this.setState({ currentPlayerStep: false });
     } else {
       this.setState({ currentPlayerStep: true });
@@ -101,16 +99,16 @@ class Game extends React.Component<IProps, IState> {
       return <div>Enemy has been leaved</div>;
     }
 
-    if (checkFillAllSquares(current.squares)) {
-      return <div>Nobody wins</div>;
-    }
-
     if (winner) {
       const winnerFirstSymbol = winner[0];
 
       const winnerSymbol = current.squares[winnerFirstSymbol.x][winnerFirstSymbol.y];
 
       return <div>Winner: {winnerSymbol}</div>;
+    }
+
+    if (checkFillAllSquares(current.squares)) {
+      return <div>Nobody wins</div>;
     }
 
     return (
@@ -122,7 +120,7 @@ class Game extends React.Component<IProps, IState> {
   }
 
   renderGame() {
-    const { history, winner, currentPlayerStep, playerSymbol, game } = this.state;
+    const { history, winner, currentPlayerStep } = this.state;
     const current = history[history.length - 1];
 
     console.log('render', currentPlayerStep, this.state);
@@ -143,14 +141,15 @@ class Game extends React.Component<IProps, IState> {
     );
   }
 
-  async findGame() {
+  async findGame(gameRoom?: string) {
     const operationUID = uuid();
     this.setState({ operationUID, gameFetching: true });
     try {
-      const game = await findPlayer(
-        (x, y) => this.handleClick(x, y, false),
-        () => this.setState({ enemyLeaved: true }),
-      );
+      const game = await createGame({
+        gameRoom,
+        onAction: (x, y) => this.handleClick(x, y, false),
+        onEnemyLeave: () => this.setState({ enemyLeaved: true }),
+      });
 
       console.log('game', game);
       if (operationUID === this.state.operationUID) {
@@ -161,7 +160,7 @@ class Game extends React.Component<IProps, IState> {
           currentPlayerStep: game.currentPlayerStep,
         });
       } else {
-        game.leaveGame()
+        game.leaveGame();
       }
     } catch (error) {
       this.setState({
@@ -177,16 +176,33 @@ class Game extends React.Component<IProps, IState> {
     this.resetState();
   }
 
+  handleSubmit(values: any) {
+    const roomName = values.roomName;
+
+    this.findGame(roomName);
+  }
+
   renderFindGameScreen() {
     return (
       <div>
+        <form onSubmit={this.props.handleSubmit(this.handleSubmit.bind(this))}>
+          <div>Connect to the room</div>
+          <Field
+            name="roomName"
+            type="text"
+            component="input"
+            placeholder="Enter room name..."
+          />
+          <button>Connect</button>
+        </form>
+        or
         {this.findGameButton()}
       </div>
     );
   }
 
   findGameButton() {
-    return <button onClick={this.findGame.bind(this)}>Find game</button>;
+    return <button onClick={() => this.findGame()}>Find game</button>;
   }
 
   renderError() {
@@ -205,8 +221,8 @@ class Game extends React.Component<IProps, IState> {
   renderFetching() {
     return (
       <div>
-        Connecting...
-        <button onClick={this.resetState.bind(this)}>Reset connection</button>
+        Waiting enemy player...
+        <button onClick={this.resetState.bind(this)}>Back</button>
       </div>
     );
   }
@@ -240,4 +256,4 @@ class Game extends React.Component<IProps, IState> {
   }
 }
 
-export default Game;
+export default reduxForm<{}, StateProps>({ form: constants.FORM_GAME_ROOM_CONNECT })(Game);
