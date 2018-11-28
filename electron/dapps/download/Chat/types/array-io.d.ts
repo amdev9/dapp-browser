@@ -2,6 +2,16 @@ declare module 'array-io';
 
 export as namespace ArrayIO;
 
+export interface NotificationOptions {
+  title: string;
+  body: string;
+}
+
+export interface NotificationEvents {
+  onClick: () => void;
+  onClose: () => void;
+}
+
 interface SubscribeOptions {
   onMessage: (message: any) => void;
   onJoined?: (peer: string) => void;
@@ -9,24 +19,34 @@ interface SubscribeOptions {
   onSubscribe?: (peer: string) => void;
 }
 
-export class IpfsRoom {
+declare class IpfsRoom {
   constructor()
 
   subscribe(topic: string, options: SubscribeOptions): Promise<void>;
-
   sendMessageBroadcast(message: string): Promise<any>;
-
   sendMessageTo(message: string, peer: string): Promise<any>;
-
   leave(): Promise<any>;
 }
 
-type DappEvents = 'openLink' | 'setTrayCounter';
-
-export class DappClass {
+declare class Keychain {
   constructor();
-
-  on(event: DappEvents, callback: (error: any, result: any) => void): any;
-
-  emit(event: DappEvents, ...args: any[]): any;
+  sign(): Promise<any>;
 }
+
+declare class Dapp {
+  on(event: string, callback: (error: any, result: any) => void): any;
+
+  emit(event: string, ...args: any[]): any;
+}
+
+declare class Notification {
+
+  showNotification(options: NotificationOptions, events: NotificationEvents): void;
+}
+
+export {
+  IpfsRoom,
+  Dapp,
+  Keychain,
+  Notification,
+};

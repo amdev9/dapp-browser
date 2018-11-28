@@ -1,6 +1,6 @@
-// declare module 'array-io';
+declare module 'array-io';
 
-import { EventEmitter } from "events";
+import { NotificationEvents, NotificationOptions } from '../classes/Notification';
 
 interface SubscribeOptions {
   onMessage: (message: any) => void;
@@ -23,13 +23,19 @@ declare class Keychain {
   sign(): Promise<any>;
 }
 
-declare class DappClass {
-  constructor()
+declare class Dapp {
+  on(event: string, callback: (error: any, result: any) => void): any;
 
+  emit(event: string, ...args: any[]): any;
+}
+
+declare class Notification {
+
+  showNotification(options: NotificationOptions, events: NotificationEvents): void;
 }
 
 export {
   IpfsRoom,
-  DappClass,
+  Dapp,
   Keychain,
 };

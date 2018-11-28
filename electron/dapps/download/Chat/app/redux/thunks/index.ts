@@ -7,6 +7,8 @@ import { IState } from '../reducers';
 import * as selectors from '../selectors';
 import * as events from '../events';
 
+const ArrayIO = require('array-io');
+
 export const onSubmitMainFormThunk = (roomId: string) => async (dispatch: any) => {
   dispatch(selectRoom(roomId));
 
@@ -15,7 +17,9 @@ export const onSubmitMainFormThunk = (roomId: string) => async (dispatch: any) =
 };
 
 export const addRoomThunk = (roomName: string) => async (dispatch: any, getState: any) => {
-  if (RoomComponentStore.getRoomByName(roomName)) {
+  const existedRoom = RoomComponentStore.getRoomByName(roomName);
+
+  if (existedRoom) {
     throw new Error('Room already exist');
   }
 
@@ -28,7 +32,7 @@ export const addRoomThunk = (roomName: string) => async (dispatch: any, getState
       dispatch(setRoomUnreadMessages(room.id, roomUnreadMessagesCounter));
     }
 
-    dispatch(actions.addRoomMessage(room.id, message));
+    dispatch(addRoomMessage(room.id, message));
   });
   RoomComponentStore.addRoom(room);
 
@@ -86,7 +90,7 @@ export const removeSelectedRoomThunk = () => (dispatch: any, getState: any) => {
 export const selectRoom = (roomId: string) => (dispatch: any) => {
   dispatch(actions.selectRoom(roomId));
   dispatch(setRoomUnreadMessages(roomId, 0));
-}
+};
 
 export const setRoomUnreadMessages = (roomId: string, counter: number) => (dispatch: any, getState: any) => {
   dispatch(actions.setRoomUnreadMessages(roomId, counter));
@@ -94,4 +98,21 @@ export const setRoomUnreadMessages = (roomId: string, counter: number) => (dispa
   const state: IState = getState();
   const unreadRoomsCounter = selectors.getAllRoomsUnreadMessagesCounter(state);
   events.setTrayCounter(unreadRoomsCounter);
-}
+};
+
+export const addRoomMessage = (roomId: string, message: Message) => (dispatch: any, getState: any) => {
+  const state: IState = getState();
+
+  const room = RoomComponentStore.getRoomById(roomId);
+
+  dispatch(actions.addRoomMessage(roomId, message));
+
+  if (!message.own) {
+    ArrayIO.Notification.showNotification({
+      title: 'Chat',
+      body: message.message,
+    }, {
+      onClick: () => dispatch(selectRoom(roomId)),
+    });
+  }
+};

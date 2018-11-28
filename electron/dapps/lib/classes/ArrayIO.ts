@@ -80,7 +80,7 @@ export default class ArrayIO {
         actions.loggerWriteFailure,
       ], [message]),
     );
-  }
+  };
 
   keychainSign = async () => {
     return new Promise(
@@ -90,7 +90,7 @@ export default class ArrayIO {
         actions.keychainSignFailure,
       ], []),
     );
-  }
+  };
 
   storageSave = async (key: string, value: string) => {
     return new Promise(

@@ -91,6 +91,7 @@ const dappActions: string[] = [
   constants.ORBIT_DB_GET_ALL_ENTRIES_FAILURE,
 
   constants.DAPP_SET_TRAY_COUNTER,
+  constants.NOTIFICATIONS_SHOW_NOTIFY,
 ];
 
 const clientActions: string[] = [

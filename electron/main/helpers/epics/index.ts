@@ -14,6 +14,7 @@ import storageEpic from './storageEpic';
 import httpProtocolEpic from './httpProtocolEpic';
 import appMainEpic from './appMainEpic';
 import permissionManagerEpic from './permissionManagerEpic';
+import notificationsEpic from './notificationsEpic';
 
 // todo fix https://github.com/piotrwitek/react-redux-typescript-guide#async-flow
 
@@ -32,4 +33,5 @@ export default combineEpics(
   storageEpic,
   httpProtocolEpic,
   permissionManagerEpic,
+  notificationsEpic,
 );
