@@ -60,10 +60,10 @@ const keychainSignEpic: Epic<AnyAction> = (action$, state$) => action$.pipe( // 
     try {
       const key = `${state$.value.client.keychain.selectedKey}`; // keys consitsted only of numbers throw 'Bad cast' exception. Converting everythin to string
       // const chainId = action.payload.chainId;
-      // const transaction = action.payload.transaction;
+      const transaction = action.payload.transaction;
       const keychainInstance = new Keychain(KEYCHAIN_PATH);
 
-      const result = await keychainInstance.sign(key, '', '');
+      const result = await keychainInstance.sign(key, '', transaction);
       return keychainActions.signSuccess(result, action.meta.uid, action.meta.sourceUUID);
     } catch (error) {
       return keychainActions.signFailure(error, action.meta.uid, action.meta.sourceUUID);

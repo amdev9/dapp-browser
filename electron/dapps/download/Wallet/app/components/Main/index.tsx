@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 
 import * as constants from '../../redux/constants';
-import * as actions from '../../redux/actions';
 const ArrayIO = require('array-io');
 const keychain: ArrayIO.Keychain = new ArrayIO.Keychain();
 
@@ -15,8 +14,7 @@ interface MainState {
 
 const mapDispatchToProps = (dispatch: any) => ({
   onSubmit: async (values: any) => {
-    // console.log('sign result: ', result);
-    // dispatch(actions.onSubmitMainFormThunk(amount));
+    // console.log('values: ', values);
   },
 });
 
@@ -31,7 +29,7 @@ class Main extends React.Component<InjectedFormProps, MainState> {
 
   async handleSign(e: any) {
     e.preventDefault();
-    // const amount = values['amount'];
+    // const transaction = values['transaction'];
     const result = await keychain.sign();
     this.setState({signResult: result});
   }
@@ -44,14 +42,13 @@ class Main extends React.Component<InjectedFormProps, MainState> {
         <form>
           <ul className="flex-outer">
             <li>
-              <label>Amount</label>
+              <label>Transaction</label>
               <Field
-                name="amount"
+                name="transaction"
                 type="text"
-                className="mainFormAmountInput"
                 component="input"
-                label="Amount"
-                placeholder="Enter amount..."
+                label="Transaction"
+                placeholder="871689d060721b5cec5a010080841e00000000000011130065cd1d0000000000000000"
               />
             </li>
             <li>
@@ -69,8 +66,8 @@ class Main extends React.Component<InjectedFormProps, MainState> {
 
 const validate = (values: any) => {
   const errors: any = {};
-  if (!values['amount']) {
-    errors['amount'] = 'Required';
+  if (!values['transaction']) {
+    errors['transaction'] = 'Required';
   }
   return errors;
 };

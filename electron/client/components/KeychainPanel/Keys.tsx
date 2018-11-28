@@ -47,8 +47,8 @@ export class Keys extends React.Component<KeysProps, KeysState> {
         <div key={`keys_${item}`} className={`item ${this.selectedClass(item)}`} onClick={ () => this.itemClickHandle(item)}>
           <div className="title">
             <span className="app">{item}</span>
-            <IoMdLock fontSize="25px" color="#ffffff" className={`lock-status ${this.selectedClass(item)} unlock`} onClick={ () => this.props.unlockKey()} />
-            <IoMdUnlock fontSize="25px" color="#ffffff" className={`lock-status ${this.selectedClass(item)} lock`} onClick={ () => this.props.lockKey()} />
+            <IoMdLock fontSize="25px" color="#ffffff" className={`lock-status ${this.selectedClass(item)} lock`} onClick={ () => this.props.unlockKey()} />
+            <IoMdUnlock fontSize="25px" color="#ffffff" className={`lock-status ${this.selectedClass(item)} unlock`} onClick={ () => this.props.lockKey()} />
           </div>
         </div>
       ));
