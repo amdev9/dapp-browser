@@ -39,6 +39,9 @@ const dappActions: string[] = [
   constants.IPFS_ROOM_LEAVE,
   constants.IPFS_ROOM_LEAVE_SUCCESS,
   constants.IPFS_ROOM_LEAVE_FAILURE,
+  constants.IPFS_ROOM_GET_PEERS,
+  constants.IPFS_ROOM_GET_PEERS_SUCCESS,
+  constants.IPFS_ROOM_GET_PEERS_FAILURE,
 
   constants.SHOW_FILE_ENTRIES,
   constants.NETWORK_GET_BLOCK,
@@ -160,6 +163,9 @@ const ipfsActions: string[] = [
   constants.IPFS_ROOM_LEAVE,
   constants.IPFS_ROOM_LEAVE_SUCCESS,
   constants.IPFS_ROOM_LEAVE_FAILURE,
+  constants.IPFS_ROOM_GET_PEERS,
+  constants.IPFS_ROOM_GET_PEERS_SUCCESS,
+  constants.IPFS_ROOM_GET_PEERS_FAILURE,
 ];
 
 const pmActions: string[] = [

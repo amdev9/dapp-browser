@@ -11,7 +11,7 @@ declare class IpfsPubsubRoom {
   leave(): void;
   sendTo(peer: string, message: string | Buffer): void;
   broadcast(message: string | Buffer): void;
-  getPeers(): string;
+  getPeers(): string[];
   hasPeer(peer: string): boolean;
 
   on(event: 'message', callback: (message: { from: string, data: Buffer }) => void): void;

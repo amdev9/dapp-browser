@@ -1,0 +1,14 @@
+{
+  "title": "Tic-tac-toe",
+  "main": "index.html",
+  "appName": "ticTacToe",
+  "assets/": ["app/images/**"],
+  "icon": "app/images/tictactoe.svg",
+  "preview": "app/images/tictactoe.svg",
+  "categories": [
+    "tools"
+  ],
+  "permissions": [
+    "ipfs"
+  ]
+}

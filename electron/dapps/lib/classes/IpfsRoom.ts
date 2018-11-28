@@ -1,7 +1,8 @@
 import * as uuidv4 from 'uuid/v4';
+import { AnyAction } from 'redux';
+
 import * as actions from '../redux/actions/channel';
 import * as constants from '../redux/constants';
-
 import StoreUIDSubscriber from './StoreUIDSubscriber';
 
 interface SubscribeOptions {
@@ -13,6 +14,7 @@ interface SubscribeOptions {
 
 export default class IpfsRoom extends StoreUIDSubscriber {
   topic: string;
+  id: string;
   // Callbacks for removing listeners
   subscribePromise: Promise<any>;
   unsubscribeOnMessage: () => void | null;
@@ -27,6 +29,24 @@ export default class IpfsRoom extends StoreUIDSubscriber {
       return;
     }
 
+    this.unsubscribeOnMessage = options.onMessage && this.subscribeActions(
+      constants.IPFS_ROOM_SEND_MESSAGE_TO_DAPP,
+      uid,
+      (action) => options.onMessage(action.payload.message),
+    );
+
+    this.unsubscribeOnJoined = options.onJoined && this.subscribeActions(
+      constants.IPFS_ROOM_PEER_JOINED,
+      uid,
+      (action) => options.onJoined(action.payload.peer),
+    );
+
+    this.unsubscribeOnLeft = options.onLeft && this.subscribeActions(
+      constants.IPFS_ROOM_PEER_LEFT,
+      uid,
+      (action) => options.onLeft(action.payload.peer),
+    );
+
     this.subscribePromise = this.actionPromise(uid, {
       onStart: actions.ipfsRoomSubscribe(topic),
       successType: constants.IPFS_ROOM_SUBSCRIBE_SUCCESS,
@@ -34,10 +54,7 @@ export default class IpfsRoom extends StoreUIDSubscriber {
     });
 
     const action: any = await this.subscribePromise;
-
-    this.unsubscribeOnMessage = this.subscribeActions(constants.IPFS_ROOM_SEND_MESSAGE_TO_DAPP, uid, (action) => options.onMessage(action.payload.message));
-    this.unsubscribeOnJoined = this.subscribeActions(constants.IPFS_ROOM_PEER_JOINED, uid, (action) => options.onJoined(action.payload.peer));
-    this.unsubscribeOnLeft = this.subscribeActions(constants.IPFS_ROOM_PEER_LEFT, uid, (action) => options.onLeft(action.payload.peer));
+    this.id = action.payload.roomId;
 
     options.onSubscribe && options.onSubscribe(action.payload.peerId);
   }
@@ -45,7 +62,7 @@ export default class IpfsRoom extends StoreUIDSubscriber {
   async sendMessageBroadcast(message: string) {
     const messageId = uuidv4();
     return this.actionPromise(messageId, {
-      onStart: actions.ipfsRoomSendMessageBroadcast(message, this.topic, messageId),
+      onStart: actions.ipfsRoomSendMessageBroadcast(message, this.id, messageId),
       successType: constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST_SUCCESS,
       failureType: constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST_FAILURE,
     });
@@ -55,15 +72,26 @@ export default class IpfsRoom extends StoreUIDSubscriber {
   async sendMessageTo(message: string, peer: string) {
     const messageId = uuidv4();
     return this.actionPromise(messageId, {
-      onStart: actions.ipfsRoomSendMessageToPeer(message, this.topic, peer, messageId),
+      onStart: actions.ipfsRoomSendMessageToPeer(message, this.id, peer, messageId),
       successType: constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER_SUCCESS,
       failureType: constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER_FAILURE,
     });
   }
 
+  async getPeers() {
+    const actionId = uuidv4();
+    const action: AnyAction = await this.actionPromise(actionId, {
+      onStart: actions.ipfsRoomGetPeers(this.id),
+      successType: constants.IPFS_ROOM_GET_PEERS_SUCCESS,
+      failureType: constants.IPFS_ROOM_GET_PEERS_FAILURE,
+    });
+
+    return action.payload.peerList;
+  }
+
   async leave() {
     await this.subscribePromise;
-    this.store.dispatch(actions.ipfsRoomLeave(this.topic));
+    this.store.dispatch(actions.ipfsRoomLeave(this.id));
     this.unsubscribeOnMessage && this.unsubscribeOnMessage();
     this.unsubscribeOnJoined && this.unsubscribeOnJoined();
     this.unsubscribeOnLeft && this.unsubscribeOnLeft();

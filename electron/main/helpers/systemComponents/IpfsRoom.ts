@@ -1,6 +1,8 @@
 import * as IPFS from 'ipfs';
 import * as Room from 'ipfs-pubsub-room';
 import * as path from 'path';
+import * as uuid from 'uuid/v4';
+
 import { getReadyIpfsInstance } from './IpfsInstance';
 import { appTempPath } from '../constants/appPaths';
 
@@ -15,7 +17,7 @@ export interface SubscribeOptions {
   onSubscribed?: () => void;
 }
 
-type DappRooms = { [roomName: string]: Room };
+type DappRooms = { [roomUUID: string]: IpfsRoom };
 type DappMap = { [dappUUID: string]: DappRooms };
 
 class RoomStorage {
@@ -25,19 +27,19 @@ class RoomStorage {
     this.rooms = {};
   }
 
-  getRoom(dappUUID: DappUUID, roomName: RoomName): Room {
-    return this.rooms[dappUUID] && this.rooms[dappUUID][roomName];
+  getRoom(dappUUID: string, roomUUID: string): IpfsRoom {
+    return this.rooms[dappUUID] && this.rooms[dappUUID][roomUUID];
   }
 
-  addRoom(dappUUID: DappUUID, roomName: RoomName, room: Room): void {
-    if (!this.rooms[dappUUID]) {
-      this.rooms[dappUUID] = {};
+  addRoom(room: IpfsRoom): void {
+    if (!this.rooms[room.dappUUID]) {
+      this.rooms[room.dappUUID] = {};
     }
-    this.rooms[dappUUID][roomName] = room;
+    this.rooms[room.dappUUID][room.id] = room;
   }
 
-  removeRoom(dappUUID: DappUUID, roomName: RoomName) {
-    delete this.rooms[dappUUID][roomName];
+  removeRoom(dappUUID: DappUUID, roomUUID: string) {
+    delete this.rooms[dappUUID][roomUUID];
   }
 }
 
@@ -46,33 +48,28 @@ const RoomMapInstance = new RoomStorage();
 export default class IpfsRoom {
   room: Room;
   dappUUID: string;
-  roomName: string;
+  id: string;
 
-  constructor(room: Room, options: { dappUUID: string, roomName: string }) {
+  constructor(room: Room, options: { dappUUID: string, roomUUID?: string }) {
     this.room = room || null;
-
     this.dappUUID = options && options.dappUUID || null;
-    this.roomName = options && options.roomName || null;
+    this.id = options && options.roomUUID || uuid();
   }
 
-  static async create(dappUUID: string, roomName: RoomName): Promise<IpfsRoom> {
+  static async create(dappUUID: string, roomName: string): Promise<IpfsRoom> {
     const ipfs = await getReadyIpfsInstance({ repo: path.join(appTempPath, 'ipfs-room', 'repos') });
 
-    const similarRoom = RoomMapInstance.getRoom(dappUUID, roomName);
-
-    if (similarRoom) {
-      return similarRoom && new IpfsRoom(similarRoom, { dappUUID, roomName });
-    }
-
     const getRoomInstance = <any> Room;
-    const room = getRoomInstance(ipfs, roomName);
-    RoomMapInstance.addRoom(dappUUID, roomName, room);
-    return new IpfsRoom(room, { dappUUID, roomName });
+    const roomInstance = getRoomInstance(ipfs, roomName);
+    console.log('RoomMA', await roomInstance._ipfs.id())
+
+    const room = new IpfsRoom(roomInstance, { dappUUID });
+    RoomMapInstance.addRoom(room);
+    return room;
   }
 
-  static get(dappUUID: string, roomName?: RoomName): IpfsRoom {
-    const room = RoomMapInstance.getRoom(dappUUID, roomName);
-    return room && new IpfsRoom(room, { dappUUID, roomName });
+  static get(dappUUID: string, roomUUID: string): IpfsRoom {
+    return RoomMapInstance.getRoom(dappUUID, roomUUID);
   }
 
   async getPeerId(): Promise<IPFS.Id> {
@@ -100,10 +97,17 @@ export default class IpfsRoom {
     }
   }
 
+  getPeers() {
+    if (this.room) {
+      console.log('peers', this.room.getPeers())
+      return this.room.getPeers();
+    }
+  }
+
   leave() {
     if (this.room) {
       this.room.leave();
-      RoomMapInstance.removeRoom(this.dappUUID, this.roomName);
+      RoomMapInstance.removeRoom(this.dappUUID, this.id);
     }
   }
 

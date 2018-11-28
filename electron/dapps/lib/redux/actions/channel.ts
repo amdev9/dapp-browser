@@ -65,14 +65,24 @@ export const ipfsRoomSubscribe = (topic: string) =>
   action(constants.IPFS_ROOM_SUBSCRIBE, { topic });
 
 // MessageId need to resolve message sending status
-export const ipfsRoomSendMessageBroadcast = (message: string, roomName: string, messageId: string = '') =>
-  action(constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST, { message, roomName, messageId });
+export const ipfsRoomSendMessageBroadcast = (message: string, roomId: string, messageId: string = '') =>
+  action(constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST, { message, roomId, messageId });
 
-export const ipfsRoomSendMessageToPeer = (message: string | Buffer, roomName: string, peer: string, messageId: string = '') =>
-  action(constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER, { message, messageId, roomName, peer });
+export const ipfsRoomSendMessageToPeer = (message: string | Buffer, roomId: string, peer: string, messageId: string = '') =>
+  action(constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER, { message, messageId, roomId, peer });
 
-export const ipfsRoomLeave = (roomName: string) =>
-  action(constants.IPFS_ROOM_LEAVE, { roomName } );
+export const ipfsRoomLeave = (roomId: string) =>
+  action(constants.IPFS_ROOM_LEAVE, { roomId } );
+
+export const ipfsRoomGetPeers = (roomId: string) =>
+  action(constants.IPFS_ROOM_GET_PEERS, { roomId })
+
+export const ipfsRoomGetPeersSuccess = (roomId: string, peerList: string[]) =>
+  action(constants.IPFS_ROOM_GET_PEERS_SUCCESS, { roomId, peerList })
+
+export const ipfsRoomGetPeersFailure = (error: string, roomId: string) =>
+  action(constants.IPFS_ROOM_GET_PEERS_FAILURE, { error, roomId })
+
 
 export const keychainCreate = (key: string, cipher: string, curve: string) =>
   action(constants.KEYCHAIN_CREATE, {key, cipher, curve});
