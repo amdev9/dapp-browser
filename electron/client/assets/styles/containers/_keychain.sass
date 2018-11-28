@@ -19,12 +19,6 @@
       font-weight: 800
       margin: 0
 
-  // Scrollbar hotfix
-  // .scrollbar-container
-  //   .ps__rail-y
-  //     left: auto !important
-  //     right: 0px !important
-
   .lock-status
     float: right
     cursor: pointer
@@ -39,12 +33,6 @@
         display: inline
         &.unlocked          
           display: none
-
-
-  .success-message
-    padding-left: 10px
-    font-size: 13px
-    color: darkgreen
 
   .create
     .input-group
@@ -72,6 +60,11 @@
       background: #5755d9
       border-color: #4b48d6
       color: #fff
+    .disabled
+      cursor: default
+      opacity: .5
+      pointer-events: none
+      
 
   .groups
     flex-direction: column

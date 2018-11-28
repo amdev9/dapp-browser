@@ -64,7 +64,7 @@ export class Keychain {
 
   public create(key: Keychain.Key, cipher: Keychain.Cipher, curve: Keychain.Curve): Promise<boolean> {
     const properties = {
-      keyname: 'test1',
+      keyname: key,
       encrypted: true,
       curve: 'secp256k1',
       cipher: 'aes256',

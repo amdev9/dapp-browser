@@ -62,6 +62,16 @@ export class KeychainPanel extends React.Component<KeychainPanelProps, KeychainP
     }
   }
 
+  getDisabledClass() {
+    return this.state.inputValue ? '' : 'disabled';
+  }
+
+  handleCreateKey() {
+    if (this.state.inputValue) {
+      this.props.createKey(this.state.inputValue);
+    }
+  }
+
   render() {
     const { isOpen, togglePanel } = this.props;
 
@@ -89,7 +99,7 @@ export class KeychainPanel extends React.Component<KeychainPanelProps, KeychainP
           <div className="create">
             <div className="input-group">
               <div className="input-group-area"><input value={this.state.inputValue} onChange={evt => this.updateInputValue(evt)} /></div>
-              <div className="input-group-icon btn-primary" onClick={ () => this.props.createKey(this.state.inputValue) }>Create</div>
+              <div className={`input-group-icon btn-primary ${this.getDisabledClass()}`} onClick={ () => this.handleCreateKey() }>Create</div>
             </div>
           </div>
           <div className="groups">
