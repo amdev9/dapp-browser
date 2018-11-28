@@ -25,8 +25,10 @@ export class Keys extends React.Component<KeysProps, KeysState> {
   }
 
   itemClickHandle(item: string) {
-    this.props.onSelect(item);
-    this.setState({selectedKey: item});
+    if (!this.props.unlocked) {
+      this.props.onSelect(item);
+      this.setState({selectedKey: item});
+    }
   }
 
   selectedClass(item: string) {
@@ -45,8 +47,8 @@ export class Keys extends React.Component<KeysProps, KeysState> {
         <div key={`keys_${item}`} className={`item ${this.selectedClass(item)}`} onClick={ () => this.itemClickHandle(item)}>
           <div className="title">
             <span className="app">{item}</span>
-            <IoMdLock fontSize="25px" color="#ffffff" className={`lock-status ${this.selectedClass(item)} lock`} onClick={ () => this.props.lockKey()} />
-            <IoMdUnlock fontSize="25px" color="#ffffff" className={`lock-status ${this.selectedClass(item)} unlock`} onClick={ () => this.props.unlockKey()} />
+            <IoMdLock fontSize="25px" color="#ffffff" className={`lock-status ${this.selectedClass(item)} unlock`} onClick={ () => this.props.unlockKey()} />
+            <IoMdUnlock fontSize="25px" color="#ffffff" className={`lock-status ${this.selectedClass(item)} lock`} onClick={ () => this.props.lockKey()} />
           </div>
         </div>
       ));
