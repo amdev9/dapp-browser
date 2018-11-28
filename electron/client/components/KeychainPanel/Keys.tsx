@@ -1,9 +1,11 @@
 import * as React from 'react';
+import { IoMdUnlock } from 'react-icons/io';
 
 interface KeysProps {
   items: string[];
   selectedKey: string;
   removeKey: (name: string) => void;
+  unlockKey: (name: string) => void;
   onSelect: (name: string) => void;
 }
 
@@ -39,6 +41,7 @@ export class Keys extends React.Component<KeysProps, KeysState> {
         <div key={`keys_${item}`} className={`item ${this.selectedClass(item)}`} onClick={ () => this.itemClickHandle(item)}>
           <div className="title">
             <span className="app">{item}</span>
+            <IoMdUnlock fontSize="25px" color="#ffffff" className={`lock-status ${this.selectedClass(item)}`} onClick={ () => this.props.unlockKey(item)} />
           </div>
         </div>
       ));

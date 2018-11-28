@@ -9,6 +9,7 @@ import {
     KEYCHAIN_SIGN,
     KEYCHAIN_SELECT_KEY,
     KEYCHAIN_LOCK_SUCCESS,
+    KEYCHAIN_UNLOCK,
 } from '../constants';
 
 export const toggle = () => action(TOGGLE_KEYCHAIN_PANEL);
@@ -18,6 +19,8 @@ export const createKey = (key: string) => action(KEYCHAIN_CREATE, { key });
 export const removeKey = (name: string) => action(KEYCHAIN_REMOVE_KEY, { name });
 
 export const signKey = (key: string) => action(KEYCHAIN_SIGN, { key });
+
+export const unlockKey = () => action(KEYCHAIN_UNLOCK);
 
 export const selectKey = (key: string) => action(KEYCHAIN_SELECT_KEY, { key });
 

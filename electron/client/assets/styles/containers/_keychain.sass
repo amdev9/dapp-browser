@@ -19,15 +19,24 @@
       font-weight: 800
       margin: 0
 
+    .lock
+    cursor: pointer
+    +noselect  
+
   // Scrollbar hotfix
   // .scrollbar-container
   //   .ps__rail-y
   //     left: auto !important
   //     right: 0px !important
 
-  .lock
+  
+  .lock-status
+    float: right
     cursor: pointer
-    +noselect
+    display: none
+    &.selected
+      display: inline
+
 
   .success-message
     padding-left: 10px

@@ -2,7 +2,7 @@ import { ChildProcess, spawn } from 'child_process';
 import { TaskProcess } from './TaskProcess';
 
 interface Task {
-  command: 'create' | 'sign' | 'list' | 'lock';
+  command: 'create' | 'sign' | 'list' | 'lock' | 'unlock';
   params?: any;
   promise: {
     resolve: any,
@@ -17,7 +17,7 @@ class Queue {
   private path: string;
 
   constructor(path: string) {
-    this.keychain = spawn(path);
+    this.keychain = spawn(path, ['--mode=test_run']); // todo remove mode=test_run
     this.path = path;
     this.queue = [];
   }
@@ -45,7 +45,7 @@ class Queue {
           } catch (error) {
             if (!error.normal) {
               // Restart daemon
-              this.keychain = spawn(this.path);
+              this.keychain = spawn(this.path, ['--mode=test_run']); // todo remove mode=test_run
 
               if (!this.activeProcess.retries) {
                 this.activeProcess.task.promise.reject(error);

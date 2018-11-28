@@ -57,6 +57,7 @@ interface AppProps {
   keychainSelectKey: (name: string) => void;
   keychainList: () => void;
   keychainLock: () => void;
+  keychainUnlock: () => void;
   clearNotification: (id?: number) => void;
   clearAllNotifications: () => void;
   onAddAppItem: (appItem?: AppItem) => any;
@@ -78,9 +79,9 @@ class App extends React.Component<AppProps> {
       onTogglePanel, openNotificationPanel, openKeychainPanel, openStatusBarPanel, openPeersBarPanel, openSettingsPanel, openSearchPanel, clearNotification, clearAllNotifications,
       onAddAppItem, onSwitchDapp, onToggleHome, statusBarToggle, peersBarToggle, onToggleKeychainPanel, onToggleAppHome, onToggleSearch, searchItems,
       trayItems, isHome, feedItems, notifyItems,
-      keychainItems, keychainSelectedKey, keychainSuccessMessage,
+      keychainItems, keychainSelectedKey, keychainSuccessMessage, keychainCreateKey, keychainUnlock, keychainRemoveKey, keychainLock, keychainList, keychainSignKey, keychainSelectKey,
       statusBarItems, onToggleLoaderPanel, onToggleSettingsPanel, openLoaderPanel, locationPath, loggerWrite,
-      downloadDapp, togglePermission, grantPermissions, permissions, keychainCreateKey, keychainRemoveKey, keychainLock, keychainList, keychainSignKey, keychainSelectKey,
+      downloadDapp, togglePermission, grantPermissions, permissions,
     } = this.props;
 
     return (
@@ -108,6 +109,7 @@ class App extends React.Component<AppProps> {
           selectKey={(name) => keychainSelectKey(name)}
           listKeys={keychainList}
           lock={keychainLock}
+          unlock={keychainUnlock}
           key="root-keychain" />
         <HeaderBar
           isHome={isHome}
@@ -188,6 +190,7 @@ const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
   keychainCreateKey: KeychainActions.createKey,
   keychainRemoveKey: KeychainActions.removeKey,
   keychainSignKey: KeychainActions.signKey,
+  keychainUnlock: KeychainActions.unlockKey,
   keychainSelectKey: KeychainActions.selectKey,
   keychainList: KeychainActions.list,
   keychainLock: KeychainActions.lock,

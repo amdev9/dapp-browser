@@ -25,6 +25,12 @@ export const lockSuccess = (result: boolean, targetUUID: string) =>
 export const lockFailure = (error: string, targetUUID: string) =>
   action(constants.KEYCHAIN_LOCK_FAILURE, error, { targetUUID });
 
+export const unlockSuccess = (result: boolean, targetUUID: string) =>
+  action(constants.KEYCHAIN_UNLOCK_SUCCESS, result, { targetUUID });
+
+export const unlockFailure = (error: string, targetUUID: string) =>
+  action(constants.KEYCHAIN_UNLOCK_FAILURE, error, { targetUUID });
+
 export const signSuccess = (result: string, uid: string, targetUUID: string) =>
   action(constants.KEYCHAIN_SIGN_SUCCESS, result, { uid, targetUUID });
 

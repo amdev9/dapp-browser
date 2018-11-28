@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { slide as Menu, Props as MenuProps } from 'react-burger-menu';
 import { Keys } from './Keys';
+import { IoMdLock } from 'react-icons/io';
 
 interface KeychainPanelProps {
   isOpen: boolean;
@@ -13,6 +14,7 @@ interface KeychainPanelProps {
   signKey(name: string): void;
   listKeys(): void;
   lock(): void;
+  unlock(): void;
   selectKey(name: string): void;
 }
 
@@ -55,6 +57,7 @@ export class KeychainPanel extends React.Component<KeychainPanelProps, KeychainP
           selectedKey={selectedKey}
           removeKey={this.props.removeKey}
           onSelect={this.onKeySelect}
+          unlockKey={this.props.unlock}
         />
       );
     }
@@ -84,7 +87,9 @@ export class KeychainPanel extends React.Component<KeychainPanelProps, KeychainP
           <div className="header">
             <h4>Wallet</h4>
             <div className="success-message">{ this.props.successMessage }</div>
-            <div className="input-group-icon btn-primary lock" onClick={ () => this.props.lock() }>🔒</div>
+            <div className="input-group-icon btn-primary lock" onClick={ () => this.props.lock() }>🔒
+              {/* <IoMdLock fontSize="25px" color="#A8B2BD" /> */}
+            </div>
           </div>
           <div className="create">
             <div className="input-group">

@@ -48,11 +48,26 @@ export class Keychain {
     });
   }
 
+  public unlock(key: Keychain.Key): Promise<boolean> {
+    const properties = {
+      keyname: key,
+    };
+
+    return new Promise((resolve, reject) => {
+      this.queue.push({
+        command: 'unlock',
+        params: properties,
+        promise: { resolve, reject },
+      });
+    });
+  }
+
   public create(key: Keychain.Key, cipher: Keychain.Cipher, curve: Keychain.Curve): Promise<boolean> {
     const properties = {
-      curve,
-      algo: cipher,
-      keyname: key,
+      keyname: 'test1',
+      encrypted: true,
+      curve: 'secp256k1',
+      cipher: 'aes256',
     };
 
     return new Promise((resolve, reject) => {
