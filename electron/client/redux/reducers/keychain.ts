@@ -12,12 +12,15 @@ export default function keychain(state: KeychainPanel = null, action: KeychainPa
       return { ...state, selectedKey: action.payload.key };
 
     case constants.KEYCHAIN_LOCK_SUCCESS:
-      return {...state, successMessage: 'All keys have been locked'};
+      return {...state, unlocked: false};
+
+    case constants.KEYCHAIN_UNLOCK_SUCCESS:
+      return {...state, unlocked: true};
 
     case constants.KEYCHAIN_LIST_SUCCESS:
       return {...state, items: action.payload};
 
     default:
-      return {...state, successMessage: null};
+      return state;
   }
 }

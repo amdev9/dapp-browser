@@ -40,7 +40,7 @@ interface AppProps {
   notifyItems: NotifyItem[];
   keychainItems: string[];
   keychainSelectedKey: string;
-  keychainSuccessMessage: string;
+  keychainUnlocked: boolean;
   searchItems: { [index: string]: SearchItem[] };
   statusBarItems?: { [index: string]: StatusBarItem };
   statusBarToggle: () => void;
@@ -52,7 +52,6 @@ interface AppProps {
   onToggleSettingsPanel: () => any;
   onToggleSearch: (openStatus?: boolean) => any;
   keychainCreateKey: (name: string) => void;
-  keychainRemoveKey: (name: string) => void;
   keychainSignKey: (name: string) => void;
   keychainSelectKey: (name: string) => void;
   keychainList: () => void;
@@ -79,7 +78,7 @@ class App extends React.Component<AppProps> {
       onTogglePanel, openNotificationPanel, openKeychainPanel, openStatusBarPanel, openPeersBarPanel, openSettingsPanel, openSearchPanel, clearNotification, clearAllNotifications,
       onAddAppItem, onSwitchDapp, onToggleHome, statusBarToggle, peersBarToggle, onToggleKeychainPanel, onToggleAppHome, onToggleSearch, searchItems,
       trayItems, isHome, feedItems, notifyItems,
-      keychainItems, keychainSelectedKey, keychainSuccessMessage, keychainCreateKey, keychainUnlock, keychainRemoveKey, keychainLock, keychainList, keychainSignKey, keychainSelectKey,
+      keychainItems, keychainSelectedKey, keychainUnlocked, keychainCreateKey, keychainUnlock, keychainLock, keychainList, keychainSignKey, keychainSelectKey,
       statusBarItems, onToggleLoaderPanel, onToggleSettingsPanel, openLoaderPanel, locationPath, loggerWrite,
       downloadDapp, togglePermission, grantPermissions, permissions,
     } = this.props;
@@ -100,11 +99,10 @@ class App extends React.Component<AppProps> {
         <KeychainPanel
           items={keychainItems}
           selectedKey={keychainSelectedKey}
-          successMessage={keychainSuccessMessage}
+          unlocked={keychainUnlocked}
           isOpen={openKeychainPanel}
           togglePanel={onToggleKeychainPanel}
           createKey={(name) => keychainCreateKey(name)}
-          removeKey={(name) => keychainRemoveKey(name)}
           signKey={(name) => keychainSignKey(name)}
           selectKey={(name) => keychainSelectKey(name)}
           listKeys={keychainList}
@@ -161,7 +159,7 @@ const mapStateToProps = (state: IState) => ({
   notifyItems: state.notification.items,
   keychainItems: state.keychain.items,
   keychainSelectedKey: state.keychain.selectedKey,
-  keychainSuccessMessage: state.keychain.successMessage,
+  keychainUnlocked: state.keychain.unlocked,
   openNotificationPanel: state.isOpen.notification,
   openKeychainPanel: state.isOpen.keychain,
   openLoaderPanel: state.isOpen.loader,
@@ -188,7 +186,6 @@ const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
   peersBarToggle: StatusBarActions.togglePeers,
   onToggleKeychainPanel: KeychainActions.toggle,
   keychainCreateKey: KeychainActions.createKey,
-  keychainRemoveKey: KeychainActions.removeKey,
   keychainSignKey: KeychainActions.signKey,
   keychainUnlock: KeychainActions.unlockKey,
   keychainSelectKey: KeychainActions.selectKey,

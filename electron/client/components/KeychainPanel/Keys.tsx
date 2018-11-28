@@ -1,12 +1,13 @@
 import * as React from 'react';
-import { IoMdUnlock } from 'react-icons/io';
+import { IoMdLock, IoMdUnlock } from 'react-icons/io';
 
 interface KeysProps {
   items: string[];
   selectedKey: string;
-  removeKey: (name: string) => void;
-  unlockKey: (name: string) => void;
+  unlockKey: () => void;
+  lockKey: () => void;
   onSelect: (name: string) => void;
+  unlocked: boolean;
 }
 
 interface KeysState {
@@ -24,13 +25,16 @@ export class Keys extends React.Component<KeysProps, KeysState> {
   }
 
   itemClickHandle(item: string) {
-    // this.props.removeKey(item);
     this.props.onSelect(item);
     this.setState({selectedKey: item});
   }
 
   selectedClass(item: string) {
-    return item === this.props.selectedKey ? 'selected' : '';
+    const classes = [
+      item === this.props.selectedKey ? 'selected' : '',
+      this.props.unlocked ? 'unlocked' : '',
+    ];
+    return classes.join(' ');
   }
 
   private getList(): JSX.Element[] | null {
@@ -41,7 +45,8 @@ export class Keys extends React.Component<KeysProps, KeysState> {
         <div key={`keys_${item}`} className={`item ${this.selectedClass(item)}`} onClick={ () => this.itemClickHandle(item)}>
           <div className="title">
             <span className="app">{item}</span>
-            <IoMdUnlock fontSize="25px" color="#ffffff" className={`lock-status ${this.selectedClass(item)}`} onClick={ () => this.props.unlockKey(item)} />
+            <IoMdLock fontSize="25px" color="#ffffff" className={`lock-status ${this.selectedClass(item)} lock`} onClick={ () => this.props.lockKey()} />
+            <IoMdUnlock fontSize="25px" color="#ffffff" className={`lock-status ${this.selectedClass(item)} unlock`} onClick={ () => this.props.unlockKey()} />
           </div>
         </div>
       ));
