@@ -52,10 +52,11 @@ export const roomRemoveThunk = (roomId: string) => (dispatch: any, getState: any
   if (selectedRoom === roomId) {
     dispatch(actions.deselectRoom());
   }
+  room.leave();
+
   dispatch(actions.removeRoom(roomId));
   dispatch(actions.removeRoomMessages(roomId));
 
-  room.leave();
   RoomComponentStore.removeRoom(roomId);
   dispatch(updateFilterRoomListThunk());
 };

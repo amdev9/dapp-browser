@@ -1,3 +1,4 @@
+import { app } from 'electron';
 import { Store } from 'redux';
 import { IState } from '../reducers/state';
 import { globalUUIDList } from '../constants/globalVariables';
@@ -47,6 +48,14 @@ export default class ClientManager {
     ClientManager.setClientWindow(clientWindow);
 
     return clientWindow;
+  }
+
+  static setBadge(text: string): void {
+    app.dock.setBadge(text);
+  }
+
+  static getBadge(): string {
+    return app.dock.getBadge();
   }
 
 }

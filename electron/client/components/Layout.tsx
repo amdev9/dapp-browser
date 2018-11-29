@@ -38,6 +38,7 @@ interface AppProps {
   trayItems: AppItem[];
   feedItems: FeedItem[];
   notifyItems: NotifyItem[];
+  onClickNotification: (actionUid: string) => void;
   keychainItems: string[];
   keychainSelectedKey: string;
   keychainUnlocked: boolean;
@@ -76,7 +77,7 @@ class App extends React.Component<AppProps> {
   render() {
     const {
       onTogglePanel, openNotificationPanel, openKeychainPanel, openStatusBarPanel, openPeersBarPanel, openSettingsPanel, openSearchPanel, clearNotification, clearAllNotifications,
-      onAddAppItem, onSwitchDapp, onToggleHome, statusBarToggle, peersBarToggle, onToggleKeychainPanel, onToggleAppHome, onToggleSearch, searchItems,
+      onAddAppItem, onClickNotification, onSwitchDapp, onToggleHome, statusBarToggle, peersBarToggle, onToggleKeychainPanel, onToggleAppHome, onToggleSearch, searchItems,
       trayItems, isHome, feedItems, notifyItems,
       keychainItems, keychainSelectedKey, keychainUnlocked, keychainCreateKey, keychainUnlock, keychainLock, keychainList, keychainSignKey, keychainSelectKey,
       statusBarItems, onToggleLoaderPanel, onToggleSettingsPanel, openLoaderPanel, locationPath, loggerWrite,
@@ -89,6 +90,7 @@ class App extends React.Component<AppProps> {
           clearAllNotifications={() => clearAllNotifications()}
           clearNotification={(id: number) => clearNotification(id)}
           items={notifyItems}
+          onClickNotification={onClickNotification}
           isOpen={openNotificationPanel}
           togglePanel={onTogglePanel}
           key="root-notifications" />
@@ -180,6 +182,7 @@ const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
   onTogglePanel: NotificationActions.toggle,
   clearNotification: NotificationActions.clearNotification,
   clearAllNotifications: NotificationActions.clearAllNotifications,
+  onClickNotification: NotificationActions.triggerAction,
   onToggleLoaderPanel: LoaderActions.toggle,
   onToggleSettingsPanel: SettingsActions.toggle,
   statusBarToggle: StatusBarActions.toggle,

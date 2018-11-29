@@ -5,13 +5,13 @@ import { NotifyItem } from '../../redux/model';
 
 interface NotifyProps {
   item: NotifyItem,
-  clearNotification?: (id: number) => void
+  onClickNotification: () => void,
 }
 
 export class Notify extends React.Component<NotifyProps> {
 
   public render() {
-    const { clearNotification, item } = this.props;
+    const { item, onClickNotification } = this.props;
     const created = moment(item.created)
 
     const timeLabel = created.isSame(moment(), "day")
@@ -19,7 +19,7 @@ export class Notify extends React.Component<NotifyProps> {
       : created.format("DD.MM.YY")
 
     return (
-      <div className="item" onClick={() => clearNotification(item.id)}>
+      <div className="item" onClick={() => this.props.onClickNotification()}>
         <div className="title">
           <img src={item.icon} />
           <span className="app">{item.appName}</span>

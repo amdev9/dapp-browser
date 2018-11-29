@@ -2,6 +2,15 @@ import { action } from 'typesafe-actions';
 import { AppItem } from '../systemComponents/AppsManager';
 import * as constants from '../constants';
 
+export type NotifyItem = {
+  id: string,
+  message: string;
+  icon: string;
+  appName: string;
+  created: Date;
+  onClick: string;
+};
+
 export const switchDapp = (dappName: string) => action(constants.SWITCH_DAPP, {
   targetDappName: dappName,
 });
@@ -31,3 +40,5 @@ export const setTrayCounter = (dappName: string, counter: string) => action(cons
   counter,
   targetDappName: dappName,
 });
+
+export const clientAddNotification = (item: NotifyItem) => action(constants.CLIENT_ADD_NOTIFICATION, { item });

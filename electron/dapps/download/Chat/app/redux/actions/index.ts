@@ -29,7 +29,7 @@ export const addRoomMessage = (roomId: string, message: Message) =>
   action(constants.MESSAGES_ADD_ROOM_MESSAGE, { roomId, message });
 
 export const removeRoomMessages = (roomId: string) =>
-  action(constants.MESSAGES_REMOVE_ROOM_MESSAGES, roomId);
+  action(constants.MESSAGES_REMOVE_ROOM_MESSAGES, { roomId });
 
 export const setFilteredRoomList = (roomList: Room[]) => action(constants.ROOMS_SET_FILTERED_ROOMS_LIST, { roomList });
 

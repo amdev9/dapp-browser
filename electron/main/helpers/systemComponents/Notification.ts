@@ -1,4 +1,4 @@
-import { Notification } from 'electron';
+import { Notification, app } from 'electron';
 
 import ClientManager from './ClientManager';
 import * as actions from '../actions/notification';
@@ -13,12 +13,13 @@ interface NotificationEventsUids {
   onClose: string;
 }
 
-export const showNotification = (options: NotificationOptions, events: NotificationEventsUids) => {
+export const showNotification = (options: NotificationOptions, events: NotificationEventsUids, dappName: string) => {
   const notification = new Notification(options);
 
   if (events.onClick) {
     notification.on('click', () => {
       ClientManager.store.dispatch(actions.triggerAction(events.onClick));
+      ClientManager.switchDapp(dappName);
     });
   }
 
