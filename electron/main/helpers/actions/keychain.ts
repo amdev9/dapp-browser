@@ -39,3 +39,9 @@ export const signFailure = (error: string, uid: string, targetUUID: string) =>
 
 export const sign = (key: string, chainId: string, transaction: string) =>
   action(constants.KEYCHAIN_CREATE);
+
+export const publicKeySuccess = (result: string, uid: string, targetUUID: string) =>
+  action(constants.KEYCHAIN_PUBLIC_KEY_SUCCESS, result, { uid, targetUUID });
+
+export const publicKeyFailure = (error: string, uid: string, targetUUID: string) =>
+  action(constants.KEYCHAIN_PUBLIC_KEY_FAILURE, error, { uid, targetUUID });

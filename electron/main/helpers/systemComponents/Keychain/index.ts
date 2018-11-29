@@ -63,6 +63,20 @@ export class Keychain {
     });
   }
 
+  public publicKey(key: Keychain.Key): Promise<Keychain.PublicKey> {
+    const properties = {
+      keyname: key,
+    };
+
+    return new Promise((resolve, reject) => {
+      this.queue.push({
+        command: 'public_key',
+        params: properties,
+        promise: { resolve, reject },
+      });
+    });
+  }
+
   public create(key: Keychain.Key, cipher: Keychain.Cipher, curve: Keychain.Curve): Promise<boolean> {
     const properties = {
       keyname: key,
@@ -104,6 +118,7 @@ export namespace Keychain {
   export type ChainId = string;
   export type Signed = string;
   export type Key = string;
+  export type PublicKey = string;
 
   export enum Cipher {
     AES256 = 'CIPHER_AES256',

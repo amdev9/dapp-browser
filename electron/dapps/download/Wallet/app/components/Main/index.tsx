@@ -1,79 +1,62 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { Field, reduxForm, InjectedFormProps } from 'redux-form';
-
-import * as constants from '../../redux/constants';
 const ArrayIO = require('array-io');
 const keychain: ArrayIO.Keychain = new ArrayIO.Keychain();
 
 import './styles.css';
 
 interface MainState {
-  signResult: string;
+  result: string;
+  inputValue: string;
 }
 
-const mapDispatchToProps = (dispatch: any) => ({
-  onSubmit: async (values: any) => {
-    // console.log('values: ', values);
-  },
-});
-
-class Main extends React.Component<InjectedFormProps, MainState> {
+export default class Main extends React.Component<{}, MainState> {
   constructor(props: any) {
     super(props);
-    this.handleSign = this.handleSign.bind(this);
+    this.handleSignClick = this.handleSignClick.bind(this);
+    this.handlePublicKeyClick = this.handlePublicKeyClick.bind(this);
     this.state = {
-      signResult: '',
+      result: '',
+      inputValue: '',
     };
   }
 
-  async handleSign(e: any) {
-    e.preventDefault();
-    // const transaction = values['transaction'];
-    const result = await keychain.sign();
-    this.setState({signResult: result});
+  async handleSignClick(e: any) {
+    const result = await keychain.sign(this.state.inputValue);
+    this.setState({result});
+  }
+
+  async handlePublicKeyClick(e: any) {
+    const result = await keychain.publicKey();
+    this.setState({result});
+  }
+
+  updateInputValue(evt: React.ChangeEvent<HTMLInputElement>) {
+    this.setState({
+      inputValue: evt.target.value,
+    });
   }
 
   render() {
-    // const { handleSubmit } = this.props;
-
     return (
       <div className="container">
-        <form>
-          <ul className="flex-outer">
-            <li>
-              <label>Transaction</label>
-              <Field
-                name="transaction"
-                type="text"
-                component="input"
-                label="Transaction"
-                placeholder="871689d060721b5cec5a010080841e00000000000011130065cd1d0000000000000000"
-              />
-            </li>
-            <li>
-              <button type="submit">Send</button>
-              <button type="submit" onClick={this.handleSign}>Sign</button>
-              <span>{ this.state.signResult }</span>
-            </li>
-          </ul>
-        </form>
+        <ul className="flex-outer">
+          <li>
+            <label>Transaction</label>
+            <input
+              type="text"
+              placeholder="871689d060721b5cec5a010080841e00000000000011130065cd1d0000000000000000"
+              onChange={evt => this.updateInputValue(evt)}
+            />
+          </li>
+          <li>
+            <button onClick={this.handlePublicKeyClick}>Public key</button>
+            <button onClick={this.handleSignClick}>Sign</button>
+            <span>{ this.state.result }</span>
+          </li>
+        </ul>
       </div>
     );
   }
 
 }
 
-const validate = (values: any) => {
-  const errors: any = {};
-  if (!values['transaction']) {
-    errors['transaction'] = 'Required';
-  }
-  return errors;
-};
-
-const form: any = reduxForm({
-  validate,
-  form: constants.MAIN_PAGE_FORM,
-})(Main);
-export default connect(null, mapDispatchToProps)(form);
