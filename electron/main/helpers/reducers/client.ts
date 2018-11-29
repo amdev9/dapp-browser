@@ -90,7 +90,7 @@ export function client(state: Client = null, action: any) { // @todo refactor ad
         ...state,
         isOpen: {
           ...state.isOpen,
-          search: !state.isOpen.statusBarPeers,
+          search: !state.isOpen.search,
         },
       };
 
