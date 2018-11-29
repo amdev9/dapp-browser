@@ -11,8 +11,11 @@ export default function keychain(state: KeychainPanel = null, action: KeychainPa
     case constants.KEYCHAIN_SELECT_KEY:
       return { ...state, selectedKey: action.payload.key };
 
-    case constants.KEYCHAIN_REMOVE_KEY:
-      return {...state, items: state.items.filter(item => item !== action.payload.name)};
+    case constants.KEYCHAIN_LOCK_SUCCESS:
+      return {...state, unlocked: false};
+
+    case constants.KEYCHAIN_UNLOCK_SUCCESS:
+      return {...state, unlocked: true};
 
     case constants.KEYCHAIN_LIST_SUCCESS:
       return {...state, items: action.payload};

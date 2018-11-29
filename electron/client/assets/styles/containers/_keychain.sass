@@ -19,11 +19,20 @@
       font-weight: 800
       margin: 0
 
-  // Scrollbar hotfix
-  // .scrollbar-container
-  //   .ps__rail-y
-  //     left: auto !important
-  //     right: 0px !important
+  .lock-status
+    float: right
+    cursor: pointer
+    display: none
+    &.selected
+      display: inline
+      &.unlock
+        display: none
+        &.unlocked
+          display: inline
+      &.lock
+        display: inline
+        &.unlocked          
+          display: none
 
   .create
     .input-group
@@ -51,6 +60,11 @@
       background: #5755d9
       border-color: #4b48d6
       color: #fff
+    .disabled
+      cursor: default
+      opacity: .5
+      pointer-events: none
+      
 
   .groups
     flex-direction: column

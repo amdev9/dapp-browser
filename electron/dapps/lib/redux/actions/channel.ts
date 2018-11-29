@@ -88,11 +88,13 @@ export const keychainCreate = (key: string, cipher: string, curve: string) =>
 
 export const keychainList = () => action(constants.KEYCHAIN_LIST);
 
-// export const keychainSign = (key: string, chainId: string, transaction: string) =>
-//   action(constants.KEYCHAIN_SIGN, {key, chainId, transaction});
+export const keychainPublicKey = () => action(constants.KEYCHAIN_PUBLIC_KEY);
+export const keychainPublicKeySuccess = (result: any, targetUUID?: string) =>
+  action(constants.KEYCHAIN_PUBLIC_KEY_SUCCESS, {result}, targetUUID);
+export const keychainPublicKeyFailure = (error: string, targetUUID?: string) =>
+  action(constants.KEYCHAIN_PUBLIC_KEY_FAILURE, error, targetUUID);
 
-// export const keychainSign = (uid: string) => action(constants.KEYCHAIN_SIGN, {uid});
-export const keychainSign = () => action(constants.KEYCHAIN_SIGN);
+export const keychainSign = (transaction: string) => action(constants.KEYCHAIN_SIGN, { transaction });
 export const keychainSignSuccess = (result: any, targetUUID?: string) =>
   action(constants.KEYCHAIN_SIGN_SUCCESS, { result }, targetUUID);
 export const keychainSignFailure = (error: string, targetUUID?: string) =>

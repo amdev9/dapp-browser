@@ -40,19 +40,63 @@ const keychainListEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix 
   }),
 );
 
+const keychainLockEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
+  ofType(constants.KEYCHAIN_LOCK),
+  switchMap(async (action) => {
+    try {
+      const keychainInstance = new Keychain(KEYCHAIN_PATH);
+
+      const result = await keychainInstance.lock();
+      return keychainActions.lockSuccess(result, action.meta.sourceUUID);
+    } catch (error) {
+      return keychainActions.lockFailure(error, action.meta.sourceUUID);
+    }
+  }),
+);
+
 const keychainSignEpic: Epic<AnyAction> = (action$, state$) => action$.pipe( // @todo fix action type
   ofType(constants.KEYCHAIN_SIGN),
   switchMap(async (action) => {
     try {
       const key = `${state$.value.client.keychain.selectedKey}`; // keys consitsted only of numbers throw 'Bad cast' exception. Converting everythin to string
       // const chainId = action.payload.chainId;
-      // const transaction = action.payload.transaction;
+      const transaction = action.payload.transaction;
       const keychainInstance = new Keychain(KEYCHAIN_PATH);
 
-      const result = await keychainInstance.sign(key, '', '');
+      const result = await keychainInstance.sign(key, '', transaction);
       return keychainActions.signSuccess(result, action.meta.uid, action.meta.sourceUUID);
     } catch (error) {
       return keychainActions.signFailure(error, action.meta.uid, action.meta.sourceUUID);
+    }
+  }),
+);
+
+const keychainPubliKeyEpic: Epic<AnyAction> = (action$, state$) => action$.pipe( // @todo fix action type
+  ofType(constants.KEYCHAIN_PUBLIC_KEY),
+  switchMap(async (action) => {
+    try {
+      const key = `${state$.value.client.keychain.selectedKey}`; // keys consitsted only of numbers throw 'Bad cast' exception. Converting everythin to string
+      const keychainInstance = new Keychain(KEYCHAIN_PATH);
+
+      const result = await keychainInstance.publicKey(key);
+      return keychainActions.publicKeySuccess(result, action.meta.uid, action.meta.sourceUUID);
+    } catch (error) {
+      return keychainActions.publicKeyFailure(error, action.meta.uid, action.meta.sourceUUID);
+    }
+  }),
+);
+
+const keychainUnlockEpic: Epic<AnyAction> = (action$, state$) => action$.pipe( // @todo fix action type
+  ofType(constants.KEYCHAIN_UNLOCK),
+  switchMap(async (action) => {
+    try {
+      const key = `${state$.value.client.keychain.selectedKey}`; // keys consitsted only of numbers throw 'Bad cast' exception. Converting everythin to string
+      const keychainInstance = new Keychain(KEYCHAIN_PATH);
+
+      const result = await keychainInstance.unlock(key);
+      return keychainActions.unlockSuccess(result, action.meta.sourceUUID);
+    } catch (error) {
+      return keychainActions.unlockFailure(error, action.meta.sourceUUID);
     }
   }),
 );
@@ -61,4 +105,7 @@ export default combineEpics(
   keychainCreateEpic,
   keychainListEpic,
   keychainSignEpic,
+  keychainLockEpic,
+  keychainUnlockEpic,
+  keychainPubliKeyEpic,
 );

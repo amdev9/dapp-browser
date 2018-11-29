@@ -62,6 +62,9 @@ const dappActions: string[] = [
   constants.KEYCHAIN_SIGN,
   constants.KEYCHAIN_SIGN_SUCCESS,
   constants.KEYCHAIN_SIGN_FAILURE,
+  constants.KEYCHAIN_PUBLIC_KEY,
+  constants.KEYCHAIN_PUBLIC_KEY_SUCCESS,
+  constants.KEYCHAIN_PUBLIC_KEY_FAILURE,
   constants.KEYCHAIN_SHOW_RESULT,
 
   constants.STORAGE_SAVE,
@@ -100,6 +103,8 @@ const clientActions: string[] = [
   constants.TOGGLE_KEYCHAIN_PANEL,
   constants.KEYCHAIN_CREATE,
   constants.KEYCHAIN_LIST,
+  constants.KEYCHAIN_LOCK,
+  constants.KEYCHAIN_UNLOCK,
   constants.KEYCHAIN_SIGN,
   constants.KEYCHAIN_SELECT_KEY,
   constants.KEYCHAIN_REMOVE_KEY,

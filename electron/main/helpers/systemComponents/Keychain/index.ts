@@ -37,11 +37,40 @@ export class Keychain {
       transaction,
       chainid: chainId,
       keyname: key,
+      blockchain_type: 'ethereum',
     };
 
     return new Promise((resolve, reject) => {
       this.queue.push({
-        command: 'CMD_SIGN',
+        command: 'sign_hex',
+        params: properties,
+        promise: { resolve, reject },
+      });
+    });
+  }
+
+  public unlock(key: Keychain.Key): Promise<boolean> {
+    const properties = {
+      keyname: key,
+    };
+
+    return new Promise((resolve, reject) => {
+      this.queue.push({
+        command: 'unlock',
+        params: properties,
+        promise: { resolve, reject },
+      });
+    });
+  }
+
+  public publicKey(key: Keychain.Key): Promise<Keychain.PublicKey> {
+    const properties = {
+      keyname: key,
+    };
+
+    return new Promise((resolve, reject) => {
+      this.queue.push({
+        command: 'public_key',
         params: properties,
         promise: { resolve, reject },
       });
@@ -50,14 +79,15 @@ export class Keychain {
 
   public create(key: Keychain.Key, cipher: Keychain.Cipher, curve: Keychain.Curve): Promise<boolean> {
     const properties = {
-      curve,
-      algo: cipher,
       keyname: key,
+      encrypted: true,
+      curve: 'secp256k1',
+      cipher: 'aes256',
     };
 
     return new Promise((resolve, reject) => {
       this.queue.push({
-        command: 'CMD_CREATE',
+        command: 'create',
         params: properties,
         promise: { resolve, reject },
       });
@@ -67,7 +97,16 @@ export class Keychain {
   public list(): Promise<Keychain.Key[]> {
     return new Promise((resolve, reject) => {
       this.queue.push({
-        command: 'CMD_LIST',
+        command: 'list',
+        promise: { resolve, reject },
+      });
+    });
+  }
+
+  public lock(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.queue.push({
+        command: 'lock',
         promise: { resolve, reject },
       });
     });
@@ -79,6 +118,7 @@ export namespace Keychain {
   export type ChainId = string;
   export type Signed = string;
   export type Key = string;
+  export type PublicKey = string;
 
   export enum Cipher {
     AES256 = 'CIPHER_AES256',

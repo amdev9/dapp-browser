@@ -6,11 +6,13 @@ interface KeychainPanelProps {
   isOpen: boolean;
   items: string[];
   selectedKey: string;
+  unlocked: boolean;
   togglePanel(): void;
   createKey(name: string): void;
-  removeKey(name: string): void;
   signKey(name: string): void;
   listKeys(): void;
+  lock(): void;
+  unlock(): void;
   selectKey(name: string): void;
 }
 
@@ -25,7 +27,7 @@ export class KeychainPanel extends React.Component<KeychainPanelProps, KeychainP
     this.onKeySelect = this.onKeySelect.bind(this);
     this.state = {
       inputValue: '',
-    }
+    };
   }
 
   onKeySelect(key: string) {
@@ -51,10 +53,22 @@ export class KeychainPanel extends React.Component<KeychainPanelProps, KeychainP
         <Keys
           items={items}
           selectedKey={selectedKey}
-          removeKey={this.props.removeKey}
           onSelect={this.onKeySelect}
+          unlockKey={this.props.unlock}
+          lockKey={this.props.lock}
+          unlocked={this.props.unlocked}
         />
       );
+    }
+  }
+
+  getDisabledClass() {
+    return this.state.inputValue ? '' : 'disabled';
+  }
+
+  handleCreateKey() {
+    if (this.state.inputValue) {
+      this.props.createKey(this.state.inputValue);
     }
   }
 
@@ -85,7 +99,7 @@ export class KeychainPanel extends React.Component<KeychainPanelProps, KeychainP
           <div className="create">
             <div className="input-group">
               <div className="input-group-area"><input value={this.state.inputValue} onChange={evt => this.updateInputValue(evt)} /></div>
-              <div className="input-group-icon btn-primary" onClick={ () => this.props.createKey(this.state.inputValue) }>Create</div>
+              <div className={`input-group-icon btn-primary ${this.getDisabledClass()}`} onClick={ () => this.handleCreateKey() }>Create</div>
             </div>
           </div>
           <div className="groups">

@@ -4,5 +4,6 @@ export as namespace ArrayIO;
 
 export class Keychain {
   constructor();
-  sign(): Promise<any>;
+  sign(transaction: string): Promise<any>;
+  publicKey(): Promise<any>;
 }

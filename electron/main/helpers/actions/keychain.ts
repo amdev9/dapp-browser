@@ -19,6 +19,18 @@ export const listFailure = (error: string, targetUUID?: string) =>
 export const list = () =>
   action(constants.KEYCHAIN_LIST);
 
+export const lockSuccess = (result: boolean, targetUUID: string) =>
+  action(constants.KEYCHAIN_LOCK_SUCCESS, result, { targetUUID });
+
+export const lockFailure = (error: string, targetUUID: string) =>
+  action(constants.KEYCHAIN_LOCK_FAILURE, error, { targetUUID });
+
+export const unlockSuccess = (result: boolean, targetUUID: string) =>
+  action(constants.KEYCHAIN_UNLOCK_SUCCESS, result, { targetUUID });
+
+export const unlockFailure = (error: string, targetUUID: string) =>
+  action(constants.KEYCHAIN_UNLOCK_FAILURE, error, { targetUUID });
+
 export const signSuccess = (result: string, uid: string, targetUUID: string) =>
   action(constants.KEYCHAIN_SIGN_SUCCESS, result, { uid, targetUUID });
 
@@ -27,3 +39,9 @@ export const signFailure = (error: string, uid: string, targetUUID: string) =>
 
 export const sign = (key: string, chainId: string, transaction: string) =>
   action(constants.KEYCHAIN_CREATE);
+
+export const publicKeySuccess = (result: string, uid: string, targetUUID: string) =>
+  action(constants.KEYCHAIN_PUBLIC_KEY_SUCCESS, result, { uid, targetUUID });
+
+export const publicKeyFailure = (error: string, uid: string, targetUUID: string) =>
+  action(constants.KEYCHAIN_PUBLIC_KEY_FAILURE, error, { uid, targetUUID });
