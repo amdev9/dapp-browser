@@ -4,6 +4,8 @@ import { AnyAction } from 'redux';
 import { action } from 'typesafe-actions';
 const ArrayIO = require('array-io');
 
+import * as constants from '../constants';
+
 interface CheckedSquare {
   x: number;
   y: number;
@@ -13,6 +15,19 @@ export type CheckedSquares = [CheckedSquare, CheckedSquare, CheckedSquare];
 
 export type Square = string[];
 export type HistoryTap = { squares: Square[] };
+
+export interface InitGameInterface {
+  leaveGame: () => void;
+  sendStep: (x: number, y: number) => void;
+  playerSymbol: string;
+  currentPlayerStep: boolean;
+}
+
+export interface CreateGameOptions {
+  gameRoom?: string;
+  onAction: (x: number, y: number) => void;
+  onEnemyLeave?: () => void;
+}
 
 export function calculateWinner(squares: Square[]): CheckedSquares | null {
   const lines: CheckedSquares[] = [
@@ -91,19 +106,12 @@ export function checkFillAllSquares(squares: Square[]) {
   return squares.every((square) => square.every(s => !!s));
 }
 
-export interface InitGameInterface {
-  leaveGame: () => void;
-  sendStep: (x: number, y: number) => void;
-  playerSymbol: string;
-  currentPlayerStep: boolean;
-}
-
 const getRandomSymbol = (): string => {
   const anyItem: number = parseInt(Math.random().toFixed(0), 10);
   return [symbolsMap.x, symbolsMap.o][anyItem];
 }
 
-export async function findPlayer(onAction: (x: number, y: number) => void, onEnemyLeave?: () => void): Promise<InitGameInterface> {
+export async function createGame(options: CreateGameOptions): Promise<InitGameInterface> {
   const chat: ArrayIO.IpfsRoom = new ArrayIO.IpfsRoom();
   const observable: Subject<AnyAction> = new Subject();
   let myPeerId: string = '', enemyId: string = '', currentPlayerStep: boolean = false, playerSymbol: string = '';
@@ -156,14 +164,13 @@ export async function findPlayer(onAction: (x: number, y: number) => void, onEne
 
   const subscriberSendAction = observable
     .pipe(ofType(SEND_ACTION))
-    .subscribe(({ payload }) => onAction(payload.x, payload.y));
+    .subscribe(({ payload }) => options.onAction(payload.x, payload.y));
 
-  await chat.subscribe('test-game-room', {
+  await chat.subscribe(options.gameRoom || constants.DEFAULT_GAME_ROOM, {
     onSubscribe: (peerId) => {
       myPeerId = peerId;
     },
     onJoined: (peerId: string) => {
-      console.log('joined:', peerId);
       if (!enemyId) {
         chat.sendMessageTo(askInvite(), peerId);
       }
@@ -186,15 +193,13 @@ export async function findPlayer(onAction: (x: number, y: number) => void, onEne
       }
     },
     onLeft: (peerId: string) => {
-      console.log('onLeft', peerId, enemyId);
       if (enemyId && enemyId === peerId) {
-        onEnemyLeave && onEnemyLeave();
+        options.onEnemyLeave && options.onEnemyLeave();
         leaveGame();
       }
     }
   });
 
-  console.log('after subscribe');
   await Promise.race([acceptPromise, invitePromise]);
 
   return {
