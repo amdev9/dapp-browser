@@ -1,0 +1,15 @@
+{
+  "filetype": "TYPE_KEY",
+  "keyname": "testkey123@182af46b552ac434",
+  "keyinfo": {
+    "format": "FORMAT_ARRAYIO",
+    "encrypted": true,
+    "curve_type": "secp256k1",
+    "priv_key_data": {
+      "cipher_type": "aes256",
+      "iv": "xaIR1Vk6v0l2tWV5MRi2fSUaQcrKola2",
+      "enc_data": "e8ab0b86a73c3a47e246605d24eb376cee419d5d265cdd95fc876aaa4b3a5c858979cc64cb91b79ce2dedd13299bade86a208f3fb54a0df3070f874a4b6b74a523eb1d2b77cdca17f2cf9506eeea0428"
+    },
+    "public_key": "3e662a030f606dd6ea8151f3383a1638a2568eaf1fc7806f959543b05eeefa801812c1c296ca6b29921f8c6b6e34bab04d164cfed730da27dd2cab5b0bb446aa"
+  }
+}

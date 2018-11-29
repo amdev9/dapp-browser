@@ -1,0 +1,7 @@
+2018-Nov-29 12:09:22.312576 info Start
+2018-Nov-29 12:09:22.313543 info OS: unknown
+2018-Nov-29 12:09:22.313664 info secure_module: <sec_mod_dummy>
+2018-Nov-29 12:09:22.313770 info stdin:{"command":"list","promise":{}}
+
+2018-Nov-29 12:09:22.314228 info stdout:{"id":0,"result":[]}
+2018-Nov-29 12:09:22.314286 info stdin:
