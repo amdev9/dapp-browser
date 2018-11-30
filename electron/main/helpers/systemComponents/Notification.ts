@@ -9,8 +9,8 @@ interface NotificationOptions {
 }
 
 interface NotificationEventsUids {
-  onClick: string;
-  onClose: string;
+  onClick?: string;
+  onClose?: string;
 }
 
 export const showNotification = (options: NotificationOptions, events: NotificationEventsUids, dappName: string) => {

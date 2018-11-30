@@ -8,4 +8,4 @@ export const clearAllNotifications = () => action(constants.CLIENT_CLEAR_ALL_NOT
 export const addNotification = (item: NotifyItem) => action(constants.CLIENT_ADD_NOTIFICATION, { item });
 
 export const triggerAction = (actionUid: string) =>
-  action(constants.NOTIFICATIONS_TRIGGER_ACTION, null, { uid: actionUid })
+  action(constants.CLIENT_NOTIFICATION_TRIGGER_ACTION, null, { uid: actionUid })

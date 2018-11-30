@@ -7,6 +7,7 @@ import * as constants from '../constants';
 import * as clientActions from '../actions/client';
 
 import { showNotification } from '../systemComponents/Notification';
+import * as actions from '../actions/notification';
 
 const notificationEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
   ofType(constants.NOTIFICATIONS_SHOW_NOTIFY),
@@ -24,6 +25,12 @@ const notificationEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix 
   }),
 );
 
+const clientNotificationEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
+  ofType(constants.CLIENT_NOTIFICATION_TRIGGER_ACTION),
+  map((action) => actions.triggerAction(action.meta.uid)),
+);
+
 export default combineEpics(
   notificationEpic,
+  clientNotificationEpic,
 );
