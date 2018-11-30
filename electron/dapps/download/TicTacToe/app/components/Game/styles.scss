@@ -1,3 +1,12 @@
+:global {
+  #app {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+}
 .gameWrapper {
   border: 1px solid black;
 }

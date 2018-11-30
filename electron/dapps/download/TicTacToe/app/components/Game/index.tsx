@@ -126,16 +126,19 @@ class Game extends React.Component<InjectedFormProps, IState> {
     console.log('render', currentPlayerStep, this.state);
 
     return (
-      <div className={cn('game', { [styles.game_inactive]: !currentPlayerStep || winner })}>
-        <div className="game-board">
-          <Board
-            highLights={winner}
-            squares={current.squares}
-            onClick={(x: number, y: number) => currentPlayerStep && !winner && this.handleClick(x, y)}/>
-        </div>
-        <div className="game-info">
-          <div>{this.getStatus()}</div>
-          <button onClick={this.leaveGame.bind(this)}>leave room</button>
+      <div
+        className={cn('game row align-items-center justify-content-center', { [styles.game_inactive]: !currentPlayerStep || winner })}>
+        <div className="row">
+          <div className="col game-board">
+            <Board
+              highLights={winner}
+              squares={current.squares}
+              onClick={(x: number, y: number) => currentPlayerStep && !winner && this.handleClick(x, y)}/>
+          </div>
+          <div className="col game-info align-content-between">
+            <div className="form-group">{this.getStatus()}</div>
+            <button className="btn btn-danger" onClick={this.leaveGame.bind(this)}>leave room</button>
+          </div>
         </div>
       </div>
     );
@@ -184,25 +187,41 @@ class Game extends React.Component<InjectedFormProps, IState> {
 
   renderFindGameScreen() {
     return (
-      <div>
-        <form onSubmit={this.props.handleSubmit(this.handleSubmit.bind(this))}>
-          <div>Connect to the room</div>
-          <Field
-            name="roomName"
-            type="text"
-            component="input"
-            placeholder="Enter room name..."
-          />
-          <button>Connect</button>
+      <div className="row">
+        <form className="col clearfix" onSubmit={this.props.handleSubmit(this.handleSubmit.bind(this))}>
+          <label>Connect to the room</label>
+          <div className="form-inline form-row form-group justify-content-center">
+            <Field
+              name="roomName"
+              props={{ className: 'form-control' }}
+              type="text"
+              component="input"
+              placeholder="Enter room name..."
+            />
+            <div className="form-row form-group justify-content-center">
+              <button className="btn btn-primary">Connect</button>
+            </div>
+          </div>
+
+          <div className="form-row justify-content-center">
+            <label className="col-form-label">or</label>
+            <button
+              className="btn btn-secondary btn-sm"
+              type="button"
+              onClick={() => this.findGame()}>
+              Find game
+            </button>
+          </div>
         </form>
-        or
-        {this.findGameButton()}
       </div>
     );
   }
 
   findGameButton() {
-    return <button onClick={() => this.findGame()}>Find game</button>;
+    return (
+      <button className="btn" type="button" onClick={() => this.findGame()}>
+        Find game
+      </button>);
   }
 
   renderError() {
@@ -215,14 +234,15 @@ class Game extends React.Component<InjectedFormProps, IState> {
   }
 
   resetState() {
+    this.state.game && this.state.game.leaveGame()
     this.setState({ ...this.nullState });
   }
 
   renderFetching() {
     return (
-      <div>
-        Waiting enemy player...
-        <button onClick={this.resetState.bind(this)}>Back</button>
+      <div className="form-inline justify-content-center">
+        <label className="col-form-label mr-sm-5">Waiting enemy player...</label>
+        <button className="btn btn-primary" onClick={this.resetState.bind(this)}>Back</button>
       </div>
     );
   }
@@ -249,8 +269,12 @@ class Game extends React.Component<InjectedFormProps, IState> {
     console.log('render', this.state);
 
     return (
-      <div className="game">
-        {this.renderScreen()}
+      <div className="container">
+        <div className="row justify-content-center">
+          <div className="col text-center">
+            {this.renderScreen()}
+          </div>
+        </div>
       </div>
     );
   }

@@ -131,6 +131,7 @@ export async function createGame(options: CreateGameOptions): Promise<InitGameIn
     const subscriberInvite = observable
       .pipe(ofType(ASK_INVITE))
       .subscribe((action) => {
+        console.log('ASK_INVITE_EVENT')
         if (!enemyId) {
           enemyId = action.meta.from;
           subscriberInvite.unsubscribe();
@@ -150,6 +151,7 @@ export async function createGame(options: CreateGameOptions): Promise<InitGameIn
     const subscriberAccept = observable
       .pipe(ofType(ACCEPT_INVITE))
       .subscribe((action) => {
+        console.log('ACCEPT_INVITE_EVENT')
         if (!enemyId) {
           enemyId = action.meta.from;
           subscriberAccept.unsubscribe();
@@ -171,6 +173,7 @@ export async function createGame(options: CreateGameOptions): Promise<InitGameIn
       myPeerId = peerId;
     },
     onJoined: (peerId: string) => {
+      console.log('ON_JOINED', peerId, 'enemyid', peerId)
       if (!enemyId) {
         chat.sendMessageTo(askInvite(), peerId);
       }
@@ -178,6 +181,7 @@ export async function createGame(options: CreateGameOptions): Promise<InitGameIn
     onMessage: (message: { from: string, data: Buffer | string }) => {
       const ownMsg = myPeerId === message.from;
       const peerMsg = message.data.toString();
+      console.log('msg', peerMsg, message.from);
 
       // If message from self or not enemy player
       if (ownMsg || enemyId && enemyId !== message.from) {
