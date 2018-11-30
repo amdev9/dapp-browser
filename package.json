@@ -4,7 +4,7 @@
   "description": "",
   "main": "./electron/main/dist/main.js",
   "scripts": {
-    "setup": "concurrently --kill-others \"npm run webpack-client\" \"npm run webpack-dapps-lib\" \"npm run webpack-dapps-download\" \"npm run webpack-main\" \"npm run webpack-permission-manager\" ",
+    "setup": "concurrently \"npm run webpack-client\" \"npm run webpack-dapps-lib\" \"npm run webpack-dapps-download\" \"npm run webpack-main\" \"npm run webpack-permission-manager\" ",
     "dev": "NODE_ENV=development npm start",
     "start": "node index.js",
     "clean": "rimraf release && rimraf electron/main/release",
