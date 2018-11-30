@@ -128,13 +128,13 @@ export default function tray(state: Tray = null, action: TrayAction) {
     }
 
     case constants.SET_TRAY_COUNTER: {
-      const dappName = action.payload.targetDappName;
-      const counter = action.payload.counter;
+      const dappsList = action.payload.dappsList;
       const newItems = state.items.map((item) => {
-        if (item.appName === dappName) {
+        const appCounter = dappsList.find((dappCounter) => dappCounter.dappName === item.appName);
+        if (appCounter) {
           return {
             ...item,
-            counter
+            counter: appCounter.counter,
           };
         } else {
           return item;

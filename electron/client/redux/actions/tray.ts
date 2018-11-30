@@ -2,6 +2,11 @@ import { action } from 'typesafe-actions';
 import * as constants from '../constants';
 import { AppItem } from '../model';
 
+export type DappsCounter = {
+  dappName: string;
+  counter: string;
+};
+
 export const switchDapp = (dappName: string) => action(constants.SWITCH_DAPP, {
   targetDappName: dappName
 });
@@ -29,7 +34,4 @@ export const removeTrayItem = (dappName: string) => action(constants.REMOVE_TRAY
   targetDappName: dappName
 });
 
-export const setTrayCounter = (dappName: string, counter: string) => action(constants.SET_TRAY_COUNTER, {
-  counter,
-  targetDappName: dappName,
-});
+export const setTrayCounters = (dappsList: DappsCounter[]) => action(constants.SET_TRAY_COUNTER, { dappsList });

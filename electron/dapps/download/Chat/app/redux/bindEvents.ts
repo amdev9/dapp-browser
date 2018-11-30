@@ -1,5 +1,6 @@
 import * as thunks from './thunks';
 import * as constants from './constants';
+import * as events from './events';
 
 const ArrayIO = require('array-io');
 
@@ -11,5 +12,8 @@ export default (store: any) => {
       store.dispatch(thunks.addRoomThunk(roomName));
     }
   });
+
+  // Reset counter on app init
+  events.setTrayCounter(0);
 
 };

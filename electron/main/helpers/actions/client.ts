@@ -36,9 +36,17 @@ export const addAppItem = (appItem: AppItem) => action(constants.ADD_APP_ITEM, {
   item: appItem,
 });
 
-export const setTrayCounter = (dappName: string, counter: string) => action(constants.SET_TRAY_COUNTER, {
+export type DappsCounter = {
+  dappName: string;
+  counter: number;
+};
+
+export const setTrayCounters = (dappsList: DappsCounter[]) => action(constants.SET_TRAY_COUNTER, { dappsList });
+
+export const setMainTrayCounter = (dappName: string, counter: string) => action(constants.SET_MAIN_TRAY_COUNTER, {
   counter,
   targetDappName: dappName,
 });
 
 export const clientAddNotification = (item: NotifyItem) => action(constants.CLIENT_ADD_NOTIFICATION, { item });
+export const clientClearNotification = (item: NotifyItem) => action(constants.CLIENT_CLEAR_NOTIFICATION, { item });

@@ -4,6 +4,7 @@ import * as constants from '../constants';
 import { AppsManager } from '../systemComponents/AppsManager';
 import ClientManager from '../systemComponents/ClientManager';
 import * as clientActions from '../actions/client';
+import { AppItem } from '../../../client/redux/model';
 
 const openDappEpic: Epic<any> = action$ => action$.pipe(
   ofType(constants.SWITCH_DAPP),
@@ -33,9 +34,35 @@ const removeTrayItemEpic: Epic<any> = action$ => action$.pipe(
   mapTo(clientActions.toggleHome(true)),
 );
 
-const setTrayCounterEpic: Epic<any> = action$ => action$.pipe(
+const setMainTrayCounterEpic: Epic<any> = action$ => action$.pipe(
   ofType(constants.DAPP_SET_TRAY_COUNTER),
-  map(action => clientActions.setTrayCounter(action.meta.name, action.payload.counter)),
+  tap((action) => console.log('DAPP_SET_TRAY_COUNTER', action)),
+  map(action => clientActions.setMainTrayCounter(action.meta.name, action.payload.counter)),
+);
+
+const setClientTrayCounterEpic: Epic<any> = (action$, state$) => action$.pipe(
+  ofType(constants.SET_MAIN_TRAY_COUNTER),
+  tap((action) => console.log('SET_MAIN_TRAY_COUNTER', action, state$.value.tray.items)),
+  map((action) => {
+    const dappsCounterList: clientActions.DappsCounter[] = [];
+    let allDappsCounter = 0;
+
+    const dappsList = state$.value.tray.items.forEach((trayItem: AppItem) => {
+      const counter = trayItem.counter || 0;
+      allDappsCounter += counter;
+
+      dappsCounterList.push({
+        counter,
+        dappName: trayItem.appName,
+      });
+    });
+
+    const badge = allDappsCounter ? allDappsCounter.toString() : '';
+
+    ClientManager.setBadge(badge);
+    return clientActions.setTrayCounters(dappsCounterList);
+  }),
+  // map(action => clientActions.setTrayCounter(action.meta.name, action.payload.counter)),
 );
 
 export default combineEpics(
@@ -44,5 +71,6 @@ export default combineEpics(
   toggleHomeEpic,
   toggleSettingsEpic,
   removeTrayItemEpic,
-  setTrayCounterEpic,
+  setMainTrayCounterEpic,
+  setClientTrayCounterEpic,
 );
