@@ -38,13 +38,11 @@ const removeTrayItemEpic: Epic<any> = action$ => action$.pipe(
 
 const setMainTrayCounterEpic: Epic<any> = action$ => action$.pipe(
   ofType(constants.DAPP_SET_TRAY_COUNTER),
-  tap((action) => console.log('DAPP_SET_TRAY_COUNTER', action)),
   map(action => clientActions.setMainTrayCounter(action.meta.name, action.payload.counter)),
 );
 
 const setClientTrayCounterEpic: Epic<any> = (action$, state$) => action$.pipe(
   ofType(constants.SET_MAIN_TRAY_COUNTER),
-  tap((action) => console.log('SET_MAIN_TRAY_COUNTER', action, state$.value.tray.items)),
   map((action) => {
     const dappsCounterList: clientActions.DappsCounter[] = [];
     let allDappsCounter = 0;

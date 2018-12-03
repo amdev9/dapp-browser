@@ -16,9 +16,9 @@ import { onAction } from '../utils/actionUtils';
 import PermissionManager from './PermissionManager';
 
 import BrowserWindow = Electron.BrowserWindow;
-import ClientManager from './ClientManager';
 import * as actionsDappInterface from '../actions/dappInterface';
 import { activeDappSelector } from '../selectors';
+import StoreManager from './StoreManager';
 
 export const isProduction = process.env.ELECTRON_ENV !== 'development';
 
@@ -98,7 +98,6 @@ export class AppsManager {
   static async parseDapps() {
     try {
       const dappsFolders: string[] = await readDir(DAPPS_PATH);
-      console.log('PATH', DAPPS_PATH);
 
       const promises = dappsFolders.map(folder => AppsManager.parseDapp(folder)); // @todo rewrite with async lib
       await Promise.all(promises);
@@ -161,20 +160,18 @@ export class AppsManager {
   }
 
   static setDappFocus(dappUUID: string) {
-    ClientManager.store.dispatch(actionsDappInterface.dappSetFocus(dappUUID));
+    StoreManager.store.dispatch(actionsDappInterface.dappSetFocus(dappUUID));
   }
 
   static resetDappFocus(dappUUID: string) {
-    ClientManager.store.dispatch(actionsDappInterface.dappResetFocus(dappUUID));
+    StoreManager.store.dispatch(actionsDappInterface.dappResetFocus(dappUUID));
   }
 
   static resetDappFocusActiveDapp() {
     const activeDappName = AppsManager.getActiveDappName();
-    console.log('reset active dapp name', activeDappName);
 
     if (activeDappName) {
       const activeDapp = AppsManager.getDappByName(activeDappName);
-      console.log('activedapp', activeDapp);
       activeDapp && AppsManager.resetDappFocus(activeDapp.id);
     }
   }
@@ -184,7 +181,7 @@ export class AppsManager {
   }
 
   static getActiveDappName() {
-    const state = ClientManager.store.getState();
+    const state = StoreManager.store.getState();
     return activeDappSelector(state);
   }
 

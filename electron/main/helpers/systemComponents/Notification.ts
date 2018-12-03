@@ -2,6 +2,7 @@ import { Notification, app } from 'electron';
 
 import ClientManager from './ClientManager';
 import * as actions from '../actions/notification';
+import StoreManager from './StoreManager';
 
 interface NotificationOptions {
   title: string;
@@ -18,14 +19,14 @@ export const showNotification = (options: NotificationOptions, events: Notificat
 
   if (events.onClick) {
     notification.on('click', () => {
-      ClientManager.store.dispatch(actions.triggerAction(events.onClick));
+      StoreManager.store.dispatch(actions.triggerAction(events.onClick));
       ClientManager.switchDapp(dappName);
     });
   }
 
   if (events.onClose) {
     notification.on('close', () => {
-      ClientManager.store.dispatch(actions.triggerAction(events.onClose));
+      StoreManager.store.dispatch(actions.triggerAction(events.onClose));
     });
   }
 

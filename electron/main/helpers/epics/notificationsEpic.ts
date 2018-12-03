@@ -14,7 +14,6 @@ const notificationEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix 
   ofType(constants.NOTIFICATIONS_SHOW_NOTIFY),
   map((action) => {
     showNotification(action.payload.options, action.payload.events, action.meta.name);
-    console.log('notifyyyyy', action);
     return clientActions.clientAddNotification({
       id: uuid(),
       message: action.payload.options.body,

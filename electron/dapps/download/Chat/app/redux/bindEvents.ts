@@ -15,12 +15,10 @@ export default (store: any) => {
   });
 
   ArrayIO.Dapp.on(constants.EVENT_DAPP_SET_FOCUS, () => {
-    console.log('FOCUSSET')
     store.dispatch(thunks.setDappFocused());
   });
 
   ArrayIO.Dapp.on(constants.EVENT_DAPP_RESET_FOCUS, () => {
-    console.log('FOCUSRESET')
     store.dispatch(actions.resetDappFocused());
   });
 

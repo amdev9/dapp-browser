@@ -6,28 +6,20 @@ import { createClientWindow } from '../../createClientWindow';
 import BrowserWindow = Electron.BrowserWindow;
 import * as clientActions from '../actions/client';
 import { AppsManager } from './AppsManager';
+import StoreManager from './StoreManager';
 
 export default class ClientManager {
-  static store: Store<IState>;
   static clientWindow: Electron.BrowserWindow;
   static isClientWindowLoaded: Promise<void>;
-
-  constructor(store: Store<IState>) {
-    if (!store) {
-      throw Error('Store must be an object');
-    }
-
-    ClientManager.store = store;
-  }
 
   static async switchDapp(dappName: string) {
     try {
       await ClientManager.isClientWindowLoaded;
-      await AppsManager.openDapp(dappName, ClientManager.clientWindow, ClientManager.store.getState());
-      ClientManager.store.dispatch(clientActions.switchDapp(dappName));
-      ClientManager.store.dispatch(clientActions.switchDappSuccess(dappName));
+      await AppsManager.openDapp(dappName, ClientManager.clientWindow, StoreManager.store.getState());
+      StoreManager.store.dispatch(clientActions.switchDapp(dappName));
+      StoreManager.store.dispatch(clientActions.switchDappSuccess(dappName));
     } catch (error) {
-      ClientManager.store.dispatch(clientActions.switchDappFailure(dappName, error));
+      StoreManager.store.dispatch(clientActions.switchDappFailure(dappName, error));
     }
   }
 
@@ -46,7 +38,7 @@ export default class ClientManager {
   }
 
   static createClientWindow(): BrowserWindow {
-    const clientWindow = createClientWindow(globalUUIDList, ClientManager.store);
+    const clientWindow = createClientWindow(globalUUIDList, StoreManager.store);
     ClientManager.setClientWindow(clientWindow);
 
     return clientWindow;

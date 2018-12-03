@@ -38,12 +38,10 @@ export function tray(state: { items: AppItem[] } = { items: [] }, action: TrayAc
       };
 
     case constants.SET_MAIN_TRAY_COUNTER:
-      console.log('SET_TRAY_counter')
 
       return {
         ...state,
         items: state.items.map((item) => {
-          console.log('SET_TRAY', item.appName === action.payload.targetDappName, item.appName, action.payload.targetDappName)
           if (item.appName === action.payload.targetDappName) {
             return {
               ...item,
