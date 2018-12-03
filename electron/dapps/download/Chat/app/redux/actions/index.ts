@@ -37,3 +37,9 @@ export const resetFilterRoomList = () => action(constants.ROOMS_RESET_FILTERED_R
 
 export const setRoomUnreadMessages = (roomId: string, counter: number) =>
   action(constants.ROOM_SET_UNREAD_MESSAGES, { roomId, counter });
+
+export const setDappFocused = () =>
+  action(constants.MAIN_SET_DAPP_FOCUSED);
+
+export const resetDappFocused = () =>
+  action(constants.MAIN_RESET_DAPP_FOCUSED);

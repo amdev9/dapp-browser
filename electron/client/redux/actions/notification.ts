@@ -7,5 +7,5 @@ export const clearNotification = (id: number) => action(constants.CLIENT_CLEAR_N
 export const clearAllNotifications = () => action(constants.CLIENT_CLEAR_ALL_NOTIFICATIONS);
 export const addNotification = (item: NotifyItem) => action(constants.CLIENT_ADD_NOTIFICATION, { item });
 
-export const triggerAction = (actionUid: string) =>
-  action(constants.CLIENT_NOTIFICATION_TRIGGER_ACTION, null, { uid: actionUid })
+export const triggerAction = (actionUid: string, appName: string) =>
+  action(constants.CLIENT_NOTIFICATION_TRIGGER_ACTION, null, { appName, uid: actionUid })

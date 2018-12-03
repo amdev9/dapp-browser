@@ -112,7 +112,7 @@ export const addRoomMessage = (roomId: string, message: Message) => (dispatch: a
     return;
   }
 
-  if (state.rooms.selectedRoom !== roomId) {
+  if (state.rooms.selectedRoom !== roomId || !state.main.isDappFocused) {
     const roomUnreadMessagesCounter = selectors.getRoomUnreadMessagesCounter(roomId)(state) + 1;
     dispatch(setRoomUnreadMessages(roomId, roomUnreadMessagesCounter));
 
@@ -127,4 +127,16 @@ export const addRoomMessage = (roomId: string, message: Message) => (dispatch: a
   }
 
   dispatch(actions.addRoomMessage(roomId, message));
+};
+
+export const setDappFocused = () => (dispatch: any, getState: any) => {
+  const state: IState = getState();
+  const selectedRoom = state.rooms.selectedRoom;
+
+  dispatch(actions.setDappFocused());
+
+  if (selectedRoom) {
+    dispatch(selectRoom(selectedRoom));
+  }
+
 };

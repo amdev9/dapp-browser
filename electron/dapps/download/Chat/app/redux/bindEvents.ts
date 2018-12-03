@@ -1,6 +1,7 @@
-import * as thunks from './thunks';
 import * as constants from './constants';
 import * as events from './events';
+import * as actions from './actions';
+import * as thunks from './thunks';
 
 const ArrayIO = require('array-io');
 
@@ -11,6 +12,16 @@ export default (store: any) => {
     if (roomName) {
       store.dispatch(thunks.addRoomThunk(roomName));
     }
+  });
+
+  ArrayIO.Dapp.on(constants.EVENT_DAPP_SET_FOCUS, () => {
+    console.log('FOCUSSET')
+    store.dispatch(thunks.setDappFocused());
+  });
+
+  ArrayIO.Dapp.on(constants.EVENT_DAPP_RESET_FOCUS, () => {
+    console.log('FOCUSRESET')
+    store.dispatch(actions.resetDappFocused());
   });
 
   // Reset counter on app init

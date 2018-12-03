@@ -24,6 +24,7 @@ export default class ClientManager {
     try {
       await ClientManager.isClientWindowLoaded;
       await AppsManager.openDapp(dappName, ClientManager.clientWindow, ClientManager.store.getState());
+      ClientManager.store.dispatch(clientActions.switchDapp(dappName));
       ClientManager.store.dispatch(clientActions.switchDappSuccess(dappName));
     } catch (error) {
       ClientManager.store.dispatch(clientActions.switchDappFailure(dappName, error));
@@ -31,6 +32,7 @@ export default class ClientManager {
   }
 
   static toggleHome() {
+    AppsManager.resetDappFocusActiveDapp();
     ClientManager.clientWindow.setBrowserView(null);
   }
 

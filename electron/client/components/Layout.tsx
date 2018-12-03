@@ -38,7 +38,7 @@ interface AppProps {
   trayItems: AppItem[];
   feedItems: FeedItem[];
   notifyItems: NotifyItem[];
-  onClickNotification: (actionUid: string) => void;
+  onClickNotification: (actionUid: string, dappName: string) => void;
   keychainItems: string[];
   keychainSelectedKey: string;
   keychainUnlocked: boolean;

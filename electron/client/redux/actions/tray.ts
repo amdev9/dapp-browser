@@ -7,7 +7,7 @@ export type DappsCounter = {
   counter: string;
 };
 
-export const switchDapp = (dappName: string) => action(constants.SWITCH_DAPP, {
+export const switchDapp = (dappName: string) => action(constants.CLIENT_SWITCH_DAPP, {
   targetDappName: dappName
 });
 
@@ -15,7 +15,7 @@ export const addAppItem = (TrayItem: AppItem) => action(constants.ADD_APP_ITEM, 
   item: TrayItem
 });
 
-export const toggleHome = (openStatus: boolean) => action(constants.TOGGLE_HOME, {
+export const toggleHome = (openStatus: boolean) => action(constants.CLIENT_TOGGLE_HOME, {
   isHome: openStatus
 });
 

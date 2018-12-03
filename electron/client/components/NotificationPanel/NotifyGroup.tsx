@@ -6,7 +6,7 @@ import { IoMdClose } from 'react-icons/io';
 interface NotifyGroupProps {
   clearNotification?: (id: number) => void,
   clearAllNotifications?: () => void,
-  onClickNotification: (actionUid: string) => void,
+  onClickNotification: (actionUid: string, dappName: string) => void,
   items: NotifyItem[]
 }
 
@@ -36,7 +36,7 @@ export class NotifyGroup extends React.Component<NotifyGroupProps> {
           item={item}
           onClickNotification={() => {
             this.props.clearNotification(item.id);
-            this.props.onClickNotification(item.onClick);
+            this.props.onClickNotification(item.onClick, item.appName);
           }}
         />
       ));
