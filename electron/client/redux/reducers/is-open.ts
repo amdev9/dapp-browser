@@ -28,9 +28,9 @@ export default function isOpen(state: ToggleStatus = null, action: IsOpenAction)
         return {...state, loader: false, notification: false, keychain: !state.keychain};
       case constants.TOGGLE_SETTINGS_PANEL:
         return {...state, settings: true};
-      case constants.TOGGLE_HOME:
+      case constants.CLIENT_TOGGLE_HOME:
         return {...state, settings: false};
-      case constants.SWITCH_DAPP:
+      case constants.CLIENT_SWITCH_DAPP:
         return {...state, settings: false};
       default:
         return state;

@@ -2,7 +2,12 @@ import { action } from 'typesafe-actions';
 import * as constants from '../constants';
 import { AppItem } from '../model';
 
-export const switchDapp = (dappName: string) => action(constants.SWITCH_DAPP, {
+export type DappsCounter = {
+  dappName: string;
+  counter: string;
+};
+
+export const switchDapp = (dappName: string) => action(constants.CLIENT_SWITCH_DAPP, {
   targetDappName: dappName
 });
 
@@ -10,7 +15,7 @@ export const addAppItem = (TrayItem: AppItem) => action(constants.ADD_APP_ITEM, 
   item: TrayItem
 });
 
-export const toggleHome = (openStatus: boolean) => action(constants.TOGGLE_HOME, {
+export const toggleHome = (openStatus: boolean) => action(constants.CLIENT_TOGGLE_HOME, {
   isHome: openStatus
 });
 
@@ -29,7 +34,4 @@ export const removeTrayItem = (dappName: string) => action(constants.REMOVE_TRAY
   targetDappName: dappName
 });
 
-export const setTrayCounter = (dappName: string, counter: string) => action(constants.SET_TRAY_COUNTER, {
-  counter,
-  targetDappName: dappName,
-});
+export const setTrayCounters = (dappsList: DappsCounter[]) => action(constants.SET_TRAY_COUNTER, { dappsList });

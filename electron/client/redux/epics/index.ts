@@ -1,7 +1,7 @@
 import 'rxjs';
 
 import { combineEpics, ofType, Epic } from 'redux-observable';
-import { delay, switchMap, mapTo } from 'rxjs/operators';
+import { delay, switchMap, mapTo, map } from 'rxjs/operators';
 import { Action, AnyAction } from 'redux';
 import { Logger } from '../../Logger';
 import * as loggerActions from '../actions/logger';

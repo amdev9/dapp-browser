@@ -16,6 +16,10 @@ import { onAction } from '../utils/actionUtils';
 import PermissionManager from './PermissionManager';
 
 import BrowserWindow = Electron.BrowserWindow;
+import * as actionsDappInterface from '../actions/dappInterface';
+import { activeDappSelector } from '../selectors';
+import StoreManager from './StoreManager';
+
 export const isProduction = process.env.ELECTRON_ENV !== 'development';
 
 declare global {
@@ -94,7 +98,6 @@ export class AppsManager {
   static async parseDapps() {
     try {
       const dappsFolders: string[] = await readDir(DAPPS_PATH);
-      console.log('PATH', DAPPS_PATH);
 
       const promises = dappsFolders.map(folder => AppsManager.parseDapp(folder)); // @todo rewrite with async lib
       await Promise.all(promises);
@@ -156,12 +159,40 @@ export class AppsManager {
       });
   }
 
+  static setDappFocus(dappUUID: string) {
+    StoreManager.store.dispatch(actionsDappInterface.dappSetFocus(dappUUID));
+  }
+
+  static resetDappFocus(dappUUID: string) {
+    StoreManager.store.dispatch(actionsDappInterface.dappResetFocus(dappUUID));
+  }
+
+  static resetDappFocusActiveDapp() {
+    const activeDappName = AppsManager.getActiveDappName();
+
+    if (activeDappName) {
+      const activeDapp = AppsManager.getDappByName(activeDappName);
+      activeDapp && AppsManager.resetDappFocus(activeDapp.id);
+    }
+  }
+
+  static getDappByName(dappName: string) {
+    return globalUUIDList.find(dapp => dapp.name === dappName);
+  }
+
+  static getActiveDappName() {
+    const state = StoreManager.store.getState();
+    return activeDappSelector(state);
+  }
+
   static async createDapp(targetDappName: string, clientWindow: BrowserWindow, state: IState) {
-    const activeDapp = AppsManager.getDappItem(targetDappName);
-    const activeDappRenderer = createDappView(globalUUIDList, activeDapp);
-    const dappView = activeDappRenderer && activeDappRenderer.dappView || null;
+    const dapp = AppsManager.getDappItem(targetDappName);
+    const dappRenderer = createDappView(globalUUIDList, dapp);
+    const dappView = dappRenderer && dappRenderer.dappView || null;
     const isDappReady = AppsManager.isDappReady(targetDappName);
-    const dappReadyPromise = !isDappReady ? onAction(constants.DAPP_CONTENT_LOADED, action => action.meta.sourceUUID === activeDappRenderer.id) : true;
+    const dappReadyPromise = !isDappReady ? onAction(constants.DAPP_CONTENT_LOADED, action => action.meta.sourceUUID === dappRenderer.id) : true;
+
+    AppsManager.resetDappFocusActiveDapp();
 
     clientWindow.setBrowserView(dappView);
 
@@ -169,6 +200,7 @@ export class AppsManager {
 
     // If dapp DOM hasn't loaded wait for loading dapp
     await dappReadyPromise;
+    AppsManager.setDappFocus(dappRenderer.id);
   }
 
   static async openDapp(dappName: string, clientWindow: BrowserWindow, state: IState) {

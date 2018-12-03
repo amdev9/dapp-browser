@@ -1,17 +1,22 @@
 import * as uuid from 'uuid/v4';
 import { EventEmitter } from 'events';
-import { IpfsRoom } from '../../types/array-io';
+import { IpfsRoom, NotificationEvents, NotificationOptions } from '../../types/array-io';
+import { selectRoom } from '../redux/thunks';
 
 const ArrayIO = require('array-io');
 
 const ON_JOIN_USER_MESSAGE = 'User has joined';
 const ON_LEFT_USER_MESSAGE = 'User has left';
 
-export interface Message {
+export type Message = {
   from: string;
   message: string;
   own: boolean;
-}
+};
+
+export type RoomNotification = {
+  removeNotification: () => void;
+};
 
 export type RoomComponentEvent = 'message';
 
@@ -21,7 +26,8 @@ export class RoomComponent {
   chatInstance: IpfsRoom;
   messages: Message[] = [];
   peerId: string;
-  eventEmitter: EventEmitter = new EventEmitter();
+  private eventEmitter: EventEmitter = new EventEmitter();
+  private notifications: RoomNotification[] = [];
 
   constructor(roomName: string, chatInstance: IpfsRoom) {
     this.id = uuid();
@@ -86,6 +92,19 @@ export class RoomComponent {
 
   async leave() {
     await this.chatInstance.leave();
+    this.removeAllNotifications();
+  }
+
+  showNotification(options: NotificationOptions, events: NotificationEvents) {
+    const removeNotification = ArrayIO.Notification.showNotification(options, events);
+
+    this.notifications.push({ removeNotification });
+  }
+
+  removeAllNotifications() {
+    this.notifications.forEach((notification) => notification.removeNotification());
+
+    this.notifications = [];
   }
 }
 
@@ -99,12 +118,13 @@ export class RoomComponentStore {
   static getRoomById(roomId: string = ''): RoomComponent | null {
     return RoomComponentStore.roomList.find((room: RoomComponent) => room.id === roomId) || null;
   }
+
   static getRoomByName(roomName: string = ''): RoomComponent | null {
     return RoomComponentStore.roomList.find((room: RoomComponent) => room.roomName.toLowerCase() === roomName.toLowerCase()) || null;
   }
 
   static removeRoom(roomId: string): void {
-    const { roomList } = RoomComponentStore
-    roomList.splice(roomList.findIndex((room) => room.id === roomId), 1)
+    const { roomList } = RoomComponentStore;
+    roomList.splice(roomList.findIndex((room) => room.id === roomId), 1);
   }
 }

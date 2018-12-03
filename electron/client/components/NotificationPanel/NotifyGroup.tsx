@@ -6,6 +6,7 @@ import { IoMdClose } from 'react-icons/io';
 interface NotifyGroupProps {
   clearNotification?: (id: number) => void,
   clearAllNotifications?: () => void,
+  onClickNotification: (actionUid: string, dappName: string) => void,
   items: NotifyItem[]
 }
 
@@ -16,18 +17,31 @@ export class NotifyGroup extends React.Component<NotifyGroupProps> {
   }
 
   private getList(): JSX.Element[] | null {
-    const { items, clearNotification } = this.props
+    const { items, clearNotification } = this.props;
 
     if (items) {
-      return items.map((item) => (
+      return items.sort((a, b) => {
+        if (a.created > b.created) {
+          return -1;
+        }
+
+        if (a.created < b.created) {
+          return 1;
+        }
+
+        return 0;
+      }).map((item) => (
         <Item
           key={item.id}
           item={item}
-          clearNotification={clearNotification}
+          onClickNotification={() => {
+            this.props.clearNotification(item.id);
+            this.props.onClickNotification(item.onClick, item.appName);
+          }}
         />
-      ))
+      ));
     } else {
-      return null
+      return null;
     }
   }
 
@@ -39,13 +53,13 @@ export class NotifyGroup extends React.Component<NotifyGroupProps> {
         <div className="title">
           <span>{groupTimeLabel}</span>
           <div className="clear" onClick={() => clearAllNotifications()}>
-            <IoMdClose fontSize="14px" color="#A8B2BD" />
+            <IoMdClose fontSize="14px" color="#A8B2BD"/>
           </div>
         </div>
         <div className="items">
           {this.getList()}
         </div>
       </div>
-    )
+    );
   }
 }

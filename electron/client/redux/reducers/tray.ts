@@ -29,7 +29,7 @@ const cleanItems = (state: Tray) => {
 
 export default function tray(state: Tray = null, action: TrayAction) {
   switch (action.type) {
-    case constants.SWITCH_DAPP:
+    case constants.CLIENT_SWITCH_DAPP:
 
       const dappName = action.payload.targetDappName;
       const newItems = state.items.map((item) => {
@@ -67,7 +67,7 @@ export default function tray(state: Tray = null, action: TrayAction) {
           state.items
       };
 
-    case constants.TOGGLE_HOME:
+    case constants.CLIENT_TOGGLE_HOME:
       const isHome = action.payload.isHome;
 
       return {
@@ -128,13 +128,13 @@ export default function tray(state: Tray = null, action: TrayAction) {
     }
 
     case constants.SET_TRAY_COUNTER: {
-      const dappName = action.payload.targetDappName;
-      const counter = action.payload.counter;
+      const dappsList = action.payload.dappsList;
       const newItems = state.items.map((item) => {
-        if (item.appName === dappName) {
+        const appCounter = dappsList.find((dappCounter) => dappCounter.dappName === item.appName);
+        if (appCounter) {
           return {
             ...item,
-            counter
+            counter: appCounter.counter,
           };
         } else {
           return item;

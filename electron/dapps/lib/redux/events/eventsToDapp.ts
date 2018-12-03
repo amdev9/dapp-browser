@@ -12,6 +12,9 @@ interface EventActionMatch {
 // Transform dispatched action to event from ArrayIO library
 const matchActionToEvent: EventActionMatch[] = [
   { actionType: constants.DAPP_ACTION_OPEN_LINK, event: 'openLink' },
+  { actionType: constants.DAPP_TRIGGER_ACTION, event: 'triggerAction' },
+  { actionType: constants.DAPP_SET_FOCUS, event: 'dappSetFocus' },
+  { actionType: constants.DAPP_RESET_FOCUS, event: 'dappResetFocus' },
 ];
 
 const callEventOnAction = (action: AnyAction) => {

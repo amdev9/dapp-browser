@@ -8,8 +8,8 @@ export interface NotificationOptions {
 }
 
 export interface NotificationEvents {
-  onClick: () => void;
-  onClose: () => void;
+  onClick?: () => void;
+  onClose?: () => void;
 }
 
 interface SubscribeOptions {

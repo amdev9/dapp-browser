@@ -68,6 +68,6 @@ export const actionPromise = ({
         }
         subscriber.unsubscribe();
       });
-    // onStart && ClientManager.store.dispatch(onStart);
+    // onStart && StoreManager.store.dispatch(onStart);
   });
 };

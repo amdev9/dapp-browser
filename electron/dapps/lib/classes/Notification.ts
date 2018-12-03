@@ -22,18 +22,18 @@ class Notification extends StoreUIDSubscriber {
     const _EVENTS_UID_MATCH: { [event: string]: string } = {};
 
     const unsubscriberArray = Object.keys(_EVENTS).map((event: keyof NotificationEvents) => {
-      const callbackUid = uuid();
+      const callbackUid = `${event}]_${uuid()}`;
       _EVENTS_UID_MATCH[event] = callbackUid;
       return this.onUIDEvent(callbackUid, () => {
         console.log('NOTIFICATION:', event);
         _EVENTS[event]();
-
-        // Unsubscribe events after triggered any event
-        unsubscriberArray.forEach(callback => callback());
       });
     });
 
     this.store.dispatch(actions.showNotification(options, _EVENTS_UID_MATCH));
+
+    // Unsubscribe events after triggered any event
+    return () => unsubscriberArray.forEach(callback => callback());
   };
 }
 

@@ -20,6 +20,7 @@ import { NetworkAPI } from './helpers/systemComponents/Network';
 import ClientManager from './helpers/systemComponents/ClientManager';
 import { AppsManager } from './helpers/systemComponents/AppsManager';
 import * as httpProtocolActions from './helpers/actions/httpProtocol';
+import StoreManager from './helpers/systemComponents/StoreManager';
 
 const KEYCHAIN_PATH = path.join(__dirname, '..', 'helpers', 'systemComponents', 'Keychain', getDefaultExecPath());
 const console = new nodeConsole.Console(process.stdout, process.stderr);
@@ -151,7 +152,7 @@ app.on('ready', async () => {
     // clientWindow = createClientWindow(globalUUIDList, store);
   });
 
-  new ClientManager(store);
+  StoreManager.store = store;
 
   clientWindow = ClientManager.createClientWindow();
 

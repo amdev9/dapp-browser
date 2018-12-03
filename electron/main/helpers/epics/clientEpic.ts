@@ -4,9 +4,10 @@ import * as constants from '../constants';
 import { AppsManager } from '../systemComponents/AppsManager';
 import ClientManager from '../systemComponents/ClientManager';
 import * as clientActions from '../actions/client';
+import { AppItem } from '../../../client/redux/model';
 
 const openDappEpic: Epic<any> = action$ => action$.pipe(
-  ofType(constants.SWITCH_DAPP),
+  ofType(constants.CLIENT_SWITCH_DAPP),
   tap(action => ClientManager.switchDapp(action.payload.targetDappName)),
   ignoreElements(),
 );
@@ -16,10 +17,12 @@ const addAppItemEpic: Epic<any> = action$ => action$.pipe(
   map(action => clientActions.addAppItem(AppsManager.getAppItem(action.payload.targetDappName))),
 );
 
-const toggleHomeEpic: Epic<any> = action$ => action$.pipe(
-  ofType(constants.TOGGLE_HOME),
-  tap((action: any) => ClientManager.toggleHome()),
-  ignoreElements(),
+const clientToggleHomeEpic: Epic<any> = action$ => action$.pipe(
+  ofType(constants.CLIENT_TOGGLE_HOME),
+  map((action) => {
+    ClientManager.toggleHome();
+    return clientActions.toggleHome(action.payload.isHome);
+  }),
 );
 
 const toggleSettingsEpic: Epic<any> = action$ => action$.pipe(
@@ -33,16 +36,41 @@ const removeTrayItemEpic: Epic<any> = action$ => action$.pipe(
   mapTo(clientActions.toggleHome(true)),
 );
 
-const setTrayCounterEpic: Epic<any> = action$ => action$.pipe(
+const setMainTrayCounterEpic: Epic<any> = action$ => action$.pipe(
   ofType(constants.DAPP_SET_TRAY_COUNTER),
-  map(action => clientActions.setTrayCounter(action.meta.name, action.payload.counter)),
+  map(action => clientActions.setMainTrayCounter(action.meta.name, action.payload.counter)),
+);
+
+const setClientTrayCounterEpic: Epic<any> = (action$, state$) => action$.pipe(
+  ofType(constants.SET_MAIN_TRAY_COUNTER),
+  map((action) => {
+    const dappsCounterList: clientActions.DappsCounter[] = [];
+    let allDappsCounter = 0;
+
+    const dappsList = state$.value.tray.items.forEach((trayItem: AppItem) => {
+      const counter = trayItem.counter || 0;
+      allDappsCounter += counter;
+
+      dappsCounterList.push({
+        counter,
+        dappName: trayItem.appName,
+      });
+    });
+
+    const badge = allDappsCounter ? allDappsCounter.toString() : '';
+
+    ClientManager.setBadge(badge);
+    return clientActions.setTrayCounters(dappsCounterList);
+  }),
+  // map(action => clientActions.setTrayCounter(action.meta.name, action.payload.counter)),
 );
 
 export default combineEpics(
   openDappEpic,
   addAppItemEpic,
-  toggleHomeEpic,
   toggleSettingsEpic,
   removeTrayItemEpic,
-  setTrayCounterEpic,
+  setMainTrayCounterEpic,
+  setClientTrayCounterEpic,
+  clientToggleHomeEpic,
 );

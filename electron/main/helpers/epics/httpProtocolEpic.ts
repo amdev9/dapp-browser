@@ -7,6 +7,7 @@ import ClientManager from '../systemComponents/ClientManager';
 import { HTTP_PROTOCOL } from '../constants/globalVariables';
 import * as httpProtocolActions from '../actions/httpProtocol';
 import { activeDappSelector } from '../selectors';
+import StoreManager from '../systemComponents/StoreManager';
 
 const httpProtocolOpenLink: Epic<any> = (action$, state$) => action$.pipe(
   ofType(constants.HTTP_PROTOCOL_OPEN_LINK),
@@ -33,7 +34,7 @@ const httpProtocolOpenLink: Epic<any> = (action$, state$) => action$.pipe(
       const createdDapp = AppsManager.getDappRenderer(requestDappName);
 
       if (createdDapp) {
-        ClientManager.store.dispatch(httpProtocolActions.dappActionOpenLink(params, createdDapp.id));
+        StoreManager.store.dispatch(httpProtocolActions.dappActionOpenLink(params, createdDapp.id));
       }
 
       return httpProtocolActions.httpProtocolOpenLinkSuccess(link);

@@ -36,7 +36,6 @@ export default (state: MessagesState = initialState, action: any) => {
         },
       };
 
-
     default:
       return state;
   }

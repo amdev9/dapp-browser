@@ -12,6 +12,7 @@ interface NotificationPanelProps {
   togglePanel(): void;
   clearNotification?(id: number): void;
   clearAllNotifications?(): void;
+  onClickNotification(actionUid: string, dappName: string): void;
 }
 
 export class NotificationPanel extends React.Component<NotificationPanelProps> {
@@ -33,6 +34,7 @@ export class NotificationPanel extends React.Component<NotificationPanelProps> {
       return (
         <NotifyGroup
           items={items}
+          onClickNotification={this.props.onClickNotification}
           clearNotification={this.props.clearNotification}
           clearAllNotifications={this.props.clearAllNotifications}
         />

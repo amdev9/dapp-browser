@@ -11,6 +11,8 @@ export const FIELD_FORM_CHAT_ROOMS_SEARCH_STRING = 'FIELD_FORM_CHAT_ROOMS_SEARCH
 // Events
 export const EVENT_OPEN_LINK = 'openLink';
 export const EVENT_SET_TRAY_COUNTER = 'setTrayCounter';
+export const EVENT_DAPP_SET_FOCUS = 'dappSetFocus';
+export const EVENT_DAPP_RESET_FOCUS = 'dappResetFocus';
 
 // Messages reducer
 export const MESSAGES_ADD_ROOM_MESSAGE = 'MESSAGES_ADD_ROOM_MESSAGE';
@@ -22,3 +24,7 @@ export const ROOMS_ADD = 'ROOMS_ADD';
 export const ROOMS_REMOVE = 'ROOMS_REMOVE';
 export const ROOMS_SET_FILTERED_ROOMS_LIST = 'ROOMS_SET_FILTERED_ROOMS_LIST';
 export const ROOMS_RESET_FILTERED_ROOMS_LIST = 'ROOMS_RESET_FILTERED_ROOMS_LIST';
+
+// Main
+export const MAIN_SET_DAPP_FOCUSED = 'MAIN_SET_DAPP_FOCUSED';
+export const MAIN_RESET_DAPP_FOCUSED = 'MAIN_RESET_DAPP_FOCUSED';

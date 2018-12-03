@@ -29,7 +29,7 @@ export const addRoomMessage = (roomId: string, message: Message) =>
   action(constants.MESSAGES_ADD_ROOM_MESSAGE, { roomId, message });
 
 export const removeRoomMessages = (roomId: string) =>
-  action(constants.MESSAGES_REMOVE_ROOM_MESSAGES, roomId);
+  action(constants.MESSAGES_REMOVE_ROOM_MESSAGES, { roomId });
 
 export const setFilteredRoomList = (roomList: Room[]) => action(constants.ROOMS_SET_FILTERED_ROOMS_LIST, { roomList });
 
@@ -37,3 +37,9 @@ export const resetFilterRoomList = () => action(constants.ROOMS_RESET_FILTERED_R
 
 export const setRoomUnreadMessages = (roomId: string, counter: number) =>
   action(constants.ROOM_SET_UNREAD_MESSAGES, { roomId, counter });
+
+export const setDappFocused = () =>
+  action(constants.MAIN_SET_DAPP_FOCUSED);
+
+export const resetDappFocused = () =>
+  action(constants.MAIN_RESET_DAPP_FOCUSED);

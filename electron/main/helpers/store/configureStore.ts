@@ -98,22 +98,7 @@ const searchInitialState: SearchPanel = {
 };
 
 const notificationsInitialState: NotificationPanel = {
-  items: [
-    {
-      id: 1,
-      message: 'Ipsum delorem new as lorem ipsum, we go to hell',
-      created: new Date(),
-      icon: 'assets/app-icons/chat.svg',
-      appName: 'Chat',
-    },
-    {
-      id: 2,
-      message: 'Delorem new as lorem ipsum, we go to hell',
-      created: new Date(),
-      icon: 'assets/app-icons/contact.svg',
-      appName: 'Chat',
-    },
-  ],
+  items: [],
 };
 
 const clientInitialState: Client = {

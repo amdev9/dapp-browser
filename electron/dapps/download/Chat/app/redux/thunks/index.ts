@@ -27,11 +27,6 @@ export const addRoomThunk = (roomName: string) => async (dispatch: any, getState
   room.on('message', (message: Message) => {
     const state: IState = getState();
 
-    if (state.rooms.selectedRoom !== room.id) {
-      const roomUnreadMessagesCounter = selectors.getRoomUnreadMessagesCounter(room.id)(state) + 1;
-      dispatch(setRoomUnreadMessages(room.id, roomUnreadMessagesCounter));
-    }
-
     dispatch(addRoomMessage(room.id, message));
   });
   RoomComponentStore.addRoom(room);
@@ -52,10 +47,11 @@ export const roomRemoveThunk = (roomId: string) => (dispatch: any, getState: any
   if (selectedRoom === roomId) {
     dispatch(actions.deselectRoom());
   }
+  room.leave();
+
   dispatch(actions.removeRoom(roomId));
   dispatch(actions.removeRoomMessages(roomId));
 
-  room.leave();
   RoomComponentStore.removeRoom(roomId);
   dispatch(updateFilterRoomListThunk());
 };
@@ -88,8 +84,15 @@ export const removeSelectedRoomThunk = () => (dispatch: any, getState: any) => {
 };
 
 export const selectRoom = (roomId: string) => (dispatch: any) => {
+  const room = RoomComponentStore.getRoomById(roomId);
+
+  if (!room) {
+    return;
+  }
+
   dispatch(actions.selectRoom(roomId));
   dispatch(setRoomUnreadMessages(roomId, 0));
+  room.removeAllNotifications();
 };
 
 export const setRoomUnreadMessages = (roomId: string, counter: number) => (dispatch: any, getState: any) => {
@@ -105,14 +108,35 @@ export const addRoomMessage = (roomId: string, message: Message) => (dispatch: a
 
   const room = RoomComponentStore.getRoomById(roomId);
 
-  dispatch(actions.addRoomMessage(roomId, message));
-
-  if (!message.own) {
-    ArrayIO.Notification.showNotification({
-      title: 'Chat',
-      body: message.message,
-    }, {
-      onClick: () => dispatch(selectRoom(roomId)),
-    });
+  if (!room) {
+    return;
   }
+
+  if (state.rooms.selectedRoom !== roomId || !state.main.isDappFocused) {
+    const roomUnreadMessagesCounter = selectors.getRoomUnreadMessagesCounter(roomId)(state) + 1;
+    dispatch(setRoomUnreadMessages(roomId, roomUnreadMessagesCounter));
+
+    if (!message.own) {
+      room.showNotification({
+        title: 'Chat',
+        body: message.message,
+      }, {
+        onClick: () => dispatch(selectRoom(roomId)),
+      });
+    }
+  }
+
+  dispatch(actions.addRoomMessage(roomId, message));
+};
+
+export const setDappFocused = () => (dispatch: any, getState: any) => {
+  const state: IState = getState();
+  const selectedRoom = state.rooms.selectedRoom;
+
+  dispatch(actions.setDappFocused());
+
+  if (selectedRoom) {
+    dispatch(selectRoom(selectedRoom));
+  }
+
 };
