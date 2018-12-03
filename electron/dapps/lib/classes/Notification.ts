@@ -2,7 +2,7 @@ import * as uuid from 'uuid/v4';
 
 import * as actions from '../redux/actions/notification';
 
-import StoreUIDSubscriber from './StoreUIDSubscriber';
+import StoreUIDSubscriber from './internal/StoreUIDSubscriber';
 
 export interface NotificationOptions {
   title: string;

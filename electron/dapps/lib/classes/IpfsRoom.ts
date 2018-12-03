@@ -3,7 +3,7 @@ import { AnyAction } from 'redux';
 
 import * as actions from '../redux/actions/channel';
 import * as constants from '../redux/constants';
-import StoreUIDSubscriber from './StoreUIDSubscriber';
+import StoreUIDSubscriber from './internal/StoreUIDSubscriber';
 
 interface SubscribeOptions {
   onMessage: (message: any) => void;
@@ -47,11 +47,11 @@ export default class IpfsRoom extends StoreUIDSubscriber {
       (action) => options.onLeft(action.payload.peer),
     );
 
-    this.subscribePromise = this.actionPromise(uid, {
+    this.subscribePromise = this.actionPromise({
       onStart: actions.ipfsRoomSubscribe(topic),
       successType: constants.IPFS_ROOM_SUBSCRIBE_SUCCESS,
       failureType: constants.IPFS_ROOM_SUBSCRIBE_FAILURE,
-    });
+    }, uid);
 
     const action: any = await this.subscribePromise;
     this.id = action.payload.roomId;
@@ -60,27 +60,15 @@ export default class IpfsRoom extends StoreUIDSubscriber {
   }
 
   async sendMessageBroadcast(message: string) {
-    const messageId = uuidv4();
-    return this.actionPromise(messageId, {
-      onStart: actions.ipfsRoomSendMessageBroadcast(message, this.id, messageId),
-      successType: constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST_SUCCESS,
-      failureType: constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST_FAILURE,
-    });
-
+    this.store.dispatch(actions.ipfsRoomSendMessageBroadcast(message, this.id));
   }
 
   async sendMessageTo(message: string, peer: string) {
-    const messageId = uuidv4();
-    return this.actionPromise(messageId, {
-      onStart: actions.ipfsRoomSendMessageToPeer(message, this.id, peer, messageId),
-      successType: constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER_SUCCESS,
-      failureType: constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER_FAILURE,
-    });
+    this.store.dispatch(actions.ipfsRoomSendMessageToPeer(message, this.id, peer));
   }
 
   async getPeers() {
-    const actionId = uuidv4();
-    const action: AnyAction = await this.actionPromise(actionId, {
+    const action: AnyAction = await this.actionPromise({
       onStart: actions.ipfsRoomGetPeers(this.id),
       successType: constants.IPFS_ROOM_GET_PEERS_SUCCESS,
       failureType: constants.IPFS_ROOM_GET_PEERS_FAILURE,

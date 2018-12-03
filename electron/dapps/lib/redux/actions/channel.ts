@@ -5,7 +5,7 @@ import * as constants from '../constants';
 
 export const openChannelIntent = () => action(constants.INTENT_OPEN_CHANNELS);
 
-export const openFileManagerDialog = (uid: string) => action(constants.FILE_MANAGER_OPEN_DIALOG, {}, { uid });
+export const openFileManagerDialog = () => action(constants.FILE_MANAGER_OPEN_DIALOG);
 export const openDialogSuccess = (entry: any, targetUUID?: string) =>
   action(constants.FILE_MANAGER_OPEN_DIALOG_SUCCESS, { entry }, { targetUUID });
 export const openDialogFailure = (error: string, targetUUID?: string) =>
@@ -14,7 +14,7 @@ export const uploadIpfsFile = (entry: string) => action(constants.IPFS_STORAGE_U
 
 export const showFileEntries = () => action(constants.SHOW_FILE_ENTRIES);
 
-export const networkGetBlock = (uid: string) => action(constants.NETWORK_GET_BLOCK, {}, { uid });
+export const networkGetBlock = () => action(constants.NETWORK_GET_BLOCK);
 export const getBlockSuccess = (block: string, targetUUID?: string) =>
   action(constants.NETWORK_GET_BLOCK_SUCCESS, block, targetUUID);
 export const getBlockFailure = (error: string, targetUUID?: string) =>
@@ -33,24 +33,24 @@ export const networkUnsubscribeSuccess = (result: any, targetUUID?: string) =>
 export const networkUnsubscribeFailure = (error: string, targetUUID?: string) =>
   action(constants.NETWORK_UNSUBSCRIBE_FAILURE, error, targetUUID);
 
-export const writeToConsole = (uid: string, message: string) => action(constants.LOGGER_WRITE, { message }, { uid });
+export const writeToConsole = (message: string) => action(constants.LOGGER_WRITE, { message });
 export const loggerWriteSuccess = (result: any, targetUUID?: string) =>
   action(constants.LOGGER_WRITE_SUCCESS, { result }, targetUUID);
 export const loggerWriteFailure = (error: string, targetUUID?: string) =>
   action(constants.LOGGER_WRITE_FAILURE, error, targetUUID);
 
-export const storageSave = (uid: string, entry: { key: string, value: string }) => action(constants.STORAGE_SAVE, entry, { uid });
+export const storageSave = (entry: { key: string, value: string }) => action(constants.STORAGE_SAVE, entry);
 export const storageSaveSuccess = (result: any, targetUUID?: string) =>
   action(constants.STORAGE_SAVE_SUCCESS, { result }, targetUUID);
 export const storageSaveFailure = (error: string, targetUUID?: string) =>
   action(constants.STORAGE_SAVE_FAILURE, error, targetUUID);
 
-export const storageFindAll = (uid: string) => action(constants.STORAGE_FIND_ALL, { uid });
+export const storageFindAll = () => action(constants.STORAGE_FIND_ALL);
 export const storageFindAllSuccess = (result: any, targetUUID?: string) =>
   action(constants.STORAGE_FIND_ALL_SUCCESS, { result }, targetUUID);
 export const storageFindAllFailure = (error: string, targetUUID?: string) =>
   action(constants.STORAGE_FIND_ALL_FAILURE, error, targetUUID);
-export const storageRemove = (uid: string, key: string) => action(constants.STORAGE_REMOVE, key, { uid });
+export const storageRemove = (key: string) => action(constants.STORAGE_REMOVE, key);
 export const storageRemoveSuccess = (result: any, targetUUID?: string) =>
   action(constants.STORAGE_REMOVE_SUCCESS, { result }, targetUUID);
 export const storageRemoveFailure = (error: string, targetUUID?: string) =>
@@ -65,14 +65,14 @@ export const ipfsRoomSubscribe = (topic: string) =>
   action(constants.IPFS_ROOM_SUBSCRIBE, { topic });
 
 // MessageId need to resolve message sending status
-export const ipfsRoomSendMessageBroadcast = (message: string, roomId: string, messageId: string = '') =>
-  action(constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST, { message, roomId, messageId });
+export const ipfsRoomSendMessageBroadcast = (message: string, roomId: string) =>
+  action(constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST, { message, roomId });
 
-export const ipfsRoomSendMessageToPeer = (message: string | Buffer, roomId: string, peer: string, messageId: string = '') =>
-  action(constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER, { message, messageId, roomId, peer });
+export const ipfsRoomSendMessageToPeer = (message: string | Buffer, roomId: string, peer: string) =>
+  action(constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER, { message, roomId, peer });
 
 export const ipfsRoomLeave = (roomId: string) =>
-  action(constants.IPFS_ROOM_LEAVE, { roomId } );
+  action(constants.IPFS_ROOM_LEAVE, { roomId });
 
 export const ipfsRoomGetPeers = (roomId: string) =>
   action(constants.IPFS_ROOM_GET_PEERS, { roomId })

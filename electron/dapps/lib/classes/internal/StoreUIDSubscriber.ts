@@ -1,5 +1,6 @@
-import { emitter, store } from '../array';
+import { emitter, store } from '../../array';
 import { AnyAction } from 'redux';
+import * as uuid from 'uuid/v4';
 
 interface ActionFlow {
   onStart: AnyAction;
@@ -37,10 +38,12 @@ export default class StoreUIDSubscriber {
     });
   }
 
-  actionPromise(uid: string, { onStart, successType, failureType }: ActionFlow): Promise<AnyAction> {
+  actionPromise({ onStart, successType, failureType }: ActionFlow, actionUid?: string): Promise<AnyAction> {
     if (!onStart || !successType || !failureType) {
       return;
     }
+
+    const uid = actionUid || uuid();
 
     const copyAction = {
       ...onStart,
