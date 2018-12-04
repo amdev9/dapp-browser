@@ -2,7 +2,7 @@ import * as uuid from 'uuid/v4';
 
 import * as actions from '../redux/actions/notification';
 
-import StoreUIDSubscriber from './internal/StoreUIDSubscriber';
+import StoreSubscriber from './internal/StoreSubscriber';
 
 export interface NotificationOptions {
   title: string;
@@ -14,7 +14,7 @@ export interface NotificationEvents {
   onClose: () => void;
 }
 
-class Notification extends StoreUIDSubscriber {
+class Notification extends StoreSubscriber {
   showNotification(options: NotificationOptions, events: NotificationEvents) {
 
     const _EVENTS: NotificationEvents = { ...events };

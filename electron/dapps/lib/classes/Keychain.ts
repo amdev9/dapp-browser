@@ -1,9 +1,9 @@
 import * as actions from '../redux/actions/channel';
 import * as constants from '../redux/constants';
 
-import StoreUIDSubscriber from './internal/StoreUIDSubscriber';
+import StoreSubscriber from './internal/StoreSubscriber';
 
-export default class Keychain extends StoreUIDSubscriber {
+export default class Keychain extends StoreSubscriber {
   subscribePromise: Promise<any>;
 
   async sign(transaction: string) {

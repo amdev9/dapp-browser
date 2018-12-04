@@ -3,7 +3,7 @@ import { AnyAction } from 'redux';
 
 import * as actions from '../redux/actions/channel';
 import * as constants from '../redux/constants';
-import StoreUIDSubscriber from './internal/StoreUIDSubscriber';
+import StoreSubscriber from './internal/StoreSubscriber';
 
 interface SubscribeOptions {
   onMessage: (message: any) => void;
@@ -12,7 +12,7 @@ interface SubscribeOptions {
   onSubscribe?: (peer: string) => void;
 }
 
-export default class IpfsRoom extends StoreUIDSubscriber {
+export default class IpfsRoom extends StoreSubscriber {
   topic: string;
   id: string;
   // Callbacks for removing listeners

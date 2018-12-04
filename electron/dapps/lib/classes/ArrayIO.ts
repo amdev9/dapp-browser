@@ -1,8 +1,14 @@
-import StoreUIDSubscriber from './internal/StoreUIDSubscriber';
+import StoreSubscriber from './internal/StoreSubscriber';
 import * as actions from '../redux/actions/channel';
 import * as constants from '../redux/constants';
+import { storeObservable } from '../redux/epics';
+import { ofType } from 'redux-observable';
 
-class ArrayIO extends StoreUIDSubscriber {
+type NetworkSubscribeOptions = {
+  onGetBlock: (block: any) => void;
+};
+
+class ArrayIO extends StoreSubscriber {
   openFileManager() {
     return this.actionPromise({
       onStart: actions.openFileManagerDialog(),
@@ -19,16 +25,35 @@ class ArrayIO extends StoreUIDSubscriber {
     });
   }
 
-  networkSubscribe() {
-    return this.actionPromise({
+  async networkSubscribe(options: NetworkSubscribeOptions) {
+    if (!options) {
+      return;
+    }
+
+    const subscribeAction = await this.actionObservablePromise({
       onStart: actions.networkSubscribe(),
       successType: constants.NETWORK_SUBSCRIBE_SUCCESS,
       failureType: constants.NETWORK_SUBSCRIBE_FAILURE,
     });
+
+    const getBlockUnsubscriber = this.subscribeStoreObservable(
+      constants.NETWORK_BLOCK_CREATED,
+      (action) => {
+        if (options.onGetBlock) {
+          const block = JSON.parse(action.payload.block);
+          options.onGetBlock(block);
+        }
+      }
+    );
+
+    return async () => {
+      await this.networkUnsubscribe();
+      getBlockUnsubscriber();
+    };
   }
 
   networkUnsubscribe() {
-    return this.actionPromise({
+    return this.actionObservablePromise({
       onStart: actions.networkUnsubscribe(),
       successType: constants.NETWORK_UNSUBSCRIBE_SUCCESS,
       failureType: constants.NETWORK_UNSUBSCRIBE_FAILURE,
