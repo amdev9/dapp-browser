@@ -1,4 +1,4 @@
-import { emitter, store } from '../../array';
+import { emitter, store } from '../../redux/store';
 import { AnyAction } from 'redux';
 import * as uuid from 'uuid/v4';
 

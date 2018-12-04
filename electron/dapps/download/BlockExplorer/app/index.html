@@ -5,27 +5,9 @@
 		<link rel="stylesheet" href="css/github-gist.css">		
 	</head>
 </head>
-<body style="background-color:white;">	
-	<div class="container pt-5">
-		<h1>Block Explorer</h1>
-		<div>
-			<button id="networkSubscribeButtonDapp">Subscribe</button>
-			<button id="networkUnsubscribeButtonDapp">Unsubscribe</button>
-		</div>
-		<br />
-		<table class="table table-hover">
-			<thead>
-				<tr>
-				<th scope="col">BLOCK ID</th>
-				<th scope="col">TRANSACTIONS COUNT</th>
-				<th scope="col">WITNESS</th>
-				<th scope="col">TIME</th>
-				</tr>
-			</thead>
-			<tbody id="tbody">
-			</tbody>
-			</table>
-	</div>	
-	
+<body style="background-color:white;">
+	<div id="Block-explorer-app"></div>
+
 	<script src="../../../lib/build/app.bundle.js"></script>
+	<script src="./build/dapp.js"></script>
 </body>

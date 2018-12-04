@@ -1,11 +1,8 @@
-import { AnyAction } from 'redux';
-import * as uuidv4 from 'uuid/v4';
-
-import * as actions from '../redux/actions/channel';
 import StoreUIDSubscriber from './internal/StoreUIDSubscriber';
+import * as actions from '../redux/actions/channel';
 import * as constants from '../redux/constants';
 
-export default class ArrayIO extends StoreUIDSubscriber {
+class ArrayIO extends StoreUIDSubscriber {
   openFileManager() {
     return this.actionPromise({
       onStart: actions.openFileManagerDialog(),
@@ -70,3 +67,5 @@ export default class ArrayIO extends StoreUIDSubscriber {
     });
   }
 }
+
+export default new ArrayIO();
