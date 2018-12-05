@@ -7,9 +7,12 @@ import './styles.css';
 
 interface MainState {
   result: string;
-  inputValue: string;
+  toValue: string;
   publicKey: string;
+  amountValue: string;
 }
+const TO_DEFAULT = '0xE8899BA12578d60e4D0683a596EDaCbC85eC18CC';
+const AMOUNT_DEFAULT = '100';
 
 export default class Main extends React.Component<{}, MainState> {
   constructor(props: any) {
@@ -18,15 +21,16 @@ export default class Main extends React.Component<{}, MainState> {
     this.handlePublicKeyClick = this.handlePublicKeyClick.bind(this);
     this.state = {
       result: '',
-      inputValue: '',
+      toValue: TO_DEFAULT,
+      amountValue: AMOUNT_DEFAULT,
       publicKey: '',
     };
   }
 
   async handleSignClick(e: any) {
     // const result = await keychain.sign(this.state.inputValue);
-    const result = await ethereum.buildTransaction(this.state.inputValue, 100);
-    console.log('handleSignClick result: ', result);
+    console.log('handleSignClick this.state.toValue: ', this.state.toValue);
+    const result = await ethereum.buildTransaction(this.state.toValue, parseInt(this.state.amountValue, 10));
     this.setState({result});
   }
 
@@ -35,9 +39,15 @@ export default class Main extends React.Component<{}, MainState> {
     this.setState({publicKey, result: publicKey});
   }
 
-  updateInputValue(evt: React.ChangeEvent<HTMLInputElement>) {
+  updateToValue(evt: React.ChangeEvent<HTMLInputElement>) {
     this.setState({
-      inputValue: evt.target.value,
+      toValue: evt.target.value,
+    });
+  }
+
+  updateAmountValue(evt: React.ChangeEvent<HTMLInputElement>) {
+    this.setState({
+      amountValue: evt.target.value,
     });
   }
 
@@ -49,9 +59,17 @@ export default class Main extends React.Component<{}, MainState> {
             <label>To address</label>
             <input
               type="text"
-              value="0xE8899BA12578d60e4D0683a596EDaCbC85eC18CC"
-              placeholder="0xE8899BA12578d60e4D0683a596EDaCbC85eC18CC"
-              onChange={evt => this.updateInputValue(evt)}
+              defaultValue={TO_DEFAULT}
+              onChange={evt => this.updateToValue(evt)}
+            />
+          </li>
+          <li>
+            <label>Amount</label>
+            <input
+              type="number"
+              defaultValue={AMOUNT_DEFAULT}
+              placeholder={AMOUNT_DEFAULT}
+              onChange={evt => this.updateAmountValue(evt)}
             />
           </li>
           <li>
