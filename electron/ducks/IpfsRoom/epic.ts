@@ -3,7 +3,7 @@ import { AnyAction } from 'redux';
 import { of } from 'rxjs';
 import { switchMap, map, catchError, ignoreElements, tap, mergeMap } from 'rxjs/operators';
 
-import IpfsRoom from './class';
+import IpfsRoom from './component';
 import * as constants from './constants';
 import * as ipfsRoomActions from './actions';
 

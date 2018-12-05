@@ -3,10 +3,13 @@ import { Action } from './configureStore';
 import { RendererConf } from '../constants/globalVariables';
 import * as constants from '../constants';
 import { IState, Permission } from '../reducers/state';
-import { constants as IpfsRoomConstants } from '../../../ducks/IpfsRoom';
 import { getModuleActionTypes } from '../utils/actionUtils';
 
+import { constants as IpfsRoomConstants } from '../../../ducks/IpfsRoom';
+import { constants as IpfsStorageConstants } from '../../../ducks/IpfsStorage';
+
 const ipfsRoomActionTypes = getModuleActionTypes(IpfsRoomConstants);
+const ipfsStorageActionTypes = getModuleActionTypes(IpfsStorageConstants);
 
 const dappActions: string[] = [
   constants.INTENT_OPEN_CHANNELS,
@@ -22,12 +25,7 @@ const dappActions: string[] = [
   constants.DAPP_ACTION_OPEN_LINK_SUCCESS,
   constants.DAPP_CONTENT_LOADED,
 
-  constants.IPFS_STORAGE_UPLOAD_FILE,
-  constants.IPFS_STORAGE_UPLOAD_FILE_SUCCESS,
-  constants.IPFS_STORAGE_UPLOAD_FILE_FAILURE,
-  constants.IPFS_STORAGE_DOWNLOAD_FILE,
-  constants.IPFS_STORAGE_DOWNLOAD_FILE_SUCCESS,
-  constants.IPFS_STORAGE_DOWNLOAD_FILE_FAILURE,
+  ...ipfsStorageActionTypes,
   ...ipfsRoomActionTypes,
 
   constants.SHOW_FILE_ENTRIES,
@@ -138,12 +136,7 @@ const networkActions: string[] = [
 ];
 
 const ipfsActions: string[] = [
-  constants.IPFS_STORAGE_UPLOAD_FILE,
-  constants.IPFS_STORAGE_UPLOAD_FILE_SUCCESS,
-  constants.IPFS_STORAGE_UPLOAD_FILE_FAILURE,
-  constants.IPFS_STORAGE_DOWNLOAD_FILE,
-  constants.IPFS_STORAGE_DOWNLOAD_FILE_SUCCESS,
-  constants.IPFS_STORAGE_DOWNLOAD_FILE_FAILURE,
+  ...ipfsStorageActionTypes,
   ...ipfsRoomActionTypes,
 ];
 

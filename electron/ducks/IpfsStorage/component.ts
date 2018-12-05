@@ -2,10 +2,10 @@ import * as fs from 'fs';
 import * as IPFS from 'ipfs';
 import * as pathModule from 'path';
 
-import { Path } from './FileManager';
-import { IPFSGetResult } from '../../types/ipfs';
-import { remoteConfig } from '../config/ipfs';
-import { getReadyIpfsInstance } from './IpfsInstance';
+import { Path } from '../../main/helpers/systemComponents/FileManager';
+import { IPFSGetResult } from '../../main/types/ipfs';
+import { remoteConfig } from '../../main/helpers/config/ipfs';
+import { getReadyIpfsInstance } from '../../main/helpers/systemComponents/IpfsInstance';
 
 export interface IpfsFileObject {
   hash: string;

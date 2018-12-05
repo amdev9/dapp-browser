@@ -5,7 +5,7 @@ import { switchMap } from 'rxjs/operators';
 import * as marketActions  from '../actions/market';
 import * as constants from '../constants';
 import { FileObject, FileManager } from '../systemComponents/FileManager';
-import ipfs from '../systemComponents/IpfsStorage';
+import { component as ipfs } from '../../../ducks/IpfsStorage';
 import { AppsManager } from '../systemComponents/AppsManager';
 import { DAPPS_PATH } from '../constants/appPaths';
 import * as fs from 'fs';
