@@ -3,9 +3,9 @@ import { AnyAction } from 'redux';
 import { of } from 'rxjs';
 import { switchMap, map, catchError, ignoreElements, tap, mergeMap } from 'rxjs/operators';
 
-import IpfsRoom from '../systemComponents/IpfsRoom';
-import * as constants from '../constants';
-import * as ipfsRoomActions from '../actions/ipfsRoom';
+import IpfsRoom from './class';
+import * as constants from './constants';
+import * as ipfsRoomActions from './actions';
 
 const ipfsRoomCreateThunk = (topic: string, roomId: string, uid: string, sourceUUID: string) => async (dispatch: any) => {
   try {

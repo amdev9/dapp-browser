@@ -1,7 +1,7 @@
 import { action } from 'typesafe-actions';
 
-import * as constants from '../constants';
-import { Message } from '../systemComponents/IpfsRoom';
+import * as constants from './constants';
+import { Message } from './class';
 
 export const ipfsRoomSubscribe = (topic: string, targetUUID: string) =>
   action(constants.IPFS_ROOM_SUBSCRIBE, { topic }, { targetUUID })

@@ -7,7 +7,7 @@ import fileManagerEpic from './fileManagerEpic';
 import ipfsStorageEpic from './ipfsStorageEpic';
 import networkEpic from './networkEpic';
 import keychainEpic from './keychainEpic';
-import ipfsRoomEpic from './ipfsRoomEpic';
+import { epic as ipfsRoomEpic } from '../../../ducks/IpfsRoom';
 import marketEpic from './marketEpic';
 import orbitDBEpic from './orbitDBEpic';
 import storageEpic from './storageEpic';

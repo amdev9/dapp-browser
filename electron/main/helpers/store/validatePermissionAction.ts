@@ -3,6 +3,10 @@ import { Action } from './configureStore';
 import { RendererConf } from '../constants/globalVariables';
 import * as constants from '../constants';
 import { IState, Permission } from '../reducers/state';
+import { constants as IpfsRoomConstants } from '../../../ducks/IpfsRoom';
+import { getModuleActionTypes } from '../utils/actionUtils';
+
+const ipfsRoomActionTypes = getModuleActionTypes(IpfsRoomConstants);
 
 const dappActions: string[] = [
   constants.INTENT_OPEN_CHANNELS,
@@ -24,24 +28,7 @@ const dappActions: string[] = [
   constants.IPFS_STORAGE_DOWNLOAD_FILE,
   constants.IPFS_STORAGE_DOWNLOAD_FILE_SUCCESS,
   constants.IPFS_STORAGE_DOWNLOAD_FILE_FAILURE,
-  constants.IPFS_ROOM_SUBSCRIBE,
-  constants.IPFS_ROOM_SUBSCRIBE_SUCCESS,
-  constants.IPFS_ROOM_SUBSCRIBE_FAILURE,
-  constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST,
-  constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST_SUCCESS,
-  constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST_FAILURE,
-  constants.IPFS_ROOM_SEND_MESSAGE_TO_DAPP,
-  constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER,
-  constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER_SUCCESS,
-  constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER_FAILURE,
-  constants.IPFS_ROOM_PEER_JOINED,
-  constants.IPFS_ROOM_PEER_LEFT,
-  constants.IPFS_ROOM_LEAVE,
-  constants.IPFS_ROOM_LEAVE_SUCCESS,
-  constants.IPFS_ROOM_LEAVE_FAILURE,
-  constants.IPFS_ROOM_GET_PEERS,
-  constants.IPFS_ROOM_GET_PEERS_SUCCESS,
-  constants.IPFS_ROOM_GET_PEERS_FAILURE,
+  ...ipfsRoomActionTypes,
 
   constants.SHOW_FILE_ENTRIES,
   constants.NETWORK_GET_BLOCK,
@@ -157,24 +144,7 @@ const ipfsActions: string[] = [
   constants.IPFS_STORAGE_DOWNLOAD_FILE,
   constants.IPFS_STORAGE_DOWNLOAD_FILE_SUCCESS,
   constants.IPFS_STORAGE_DOWNLOAD_FILE_FAILURE,
-  constants.IPFS_ROOM_SUBSCRIBE,
-  constants.IPFS_ROOM_SUBSCRIBE_SUCCESS,
-  constants.IPFS_ROOM_SUBSCRIBE_FAILURE,
-  constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST,
-  constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST_SUCCESS,
-  constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST_FAILURE,
-  constants.IPFS_ROOM_SEND_MESSAGE_TO_DAPP,
-  constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER,
-  constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER_SUCCESS,
-  constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER_FAILURE,
-  constants.IPFS_ROOM_PEER_JOINED,
-  constants.IPFS_ROOM_PEER_LEFT,
-  constants.IPFS_ROOM_LEAVE,
-  constants.IPFS_ROOM_LEAVE_SUCCESS,
-  constants.IPFS_ROOM_LEAVE_FAILURE,
-  constants.IPFS_ROOM_GET_PEERS,
-  constants.IPFS_ROOM_GET_PEERS_SUCCESS,
-  constants.IPFS_ROOM_GET_PEERS_FAILURE,
+  ...ipfsRoomActionTypes,
 ];
 
 const pmActions: string[] = [
