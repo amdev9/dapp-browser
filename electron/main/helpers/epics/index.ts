@@ -7,6 +7,7 @@ import fileManagerEpic from './fileManagerEpic';
 import ipfsStorageEpic from './ipfsStorageEpic';
 import networkEpic from './networkEpic';
 import keychainEpic from './keychainEpic';
+import ethereumEpic from './ethereumEpic';
 import ipfsRoomEpic from './ipfsRoomEpic';
 import marketEpic from './marketEpic';
 import orbitDBEpic from './orbitDBEpic';
@@ -34,4 +35,5 @@ export default combineEpics(
   httpProtocolEpic,
   permissionManagerEpic,
   notificationsEpic,
+  ethereumEpic,
 );

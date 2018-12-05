@@ -66,6 +66,7 @@ const dappActions: string[] = [
   constants.KEYCHAIN_PUBLIC_KEY_SUCCESS,
   constants.KEYCHAIN_PUBLIC_KEY_FAILURE,
   constants.KEYCHAIN_SHOW_RESULT,
+  constants.ETHEREUM_BUILD_TRANSACTION,
 
   constants.STORAGE_SAVE,
   constants.STORAGE_SAVE_SUCCESS,

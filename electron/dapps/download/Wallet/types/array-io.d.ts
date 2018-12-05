@@ -7,3 +7,8 @@ export class Keychain {
   sign(transaction: string): Promise<any>;
   publicKey(): Promise<any>;
 }
+
+export class Ethereum {
+  constructor();
+  buildTransaction(to: string, value: number): Promise<any>;
+}

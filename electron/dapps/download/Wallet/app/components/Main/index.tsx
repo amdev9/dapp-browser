@@ -1,12 +1,14 @@
 import * as React from 'react';
 const ArrayIO = require('array-io');
 const keychain: ArrayIO.Keychain = new ArrayIO.Keychain();
+const ethereum: ArrayIO.Ethereum = new ArrayIO.Ethereum();
 
 import './styles.css';
 
 interface MainState {
   result: string;
   inputValue: string;
+  publicKey: string;
 }
 
 export default class Main extends React.Component<{}, MainState> {
@@ -17,17 +19,20 @@ export default class Main extends React.Component<{}, MainState> {
     this.state = {
       result: '',
       inputValue: '',
+      publicKey: '',
     };
   }
 
   async handleSignClick(e: any) {
-    const result = await keychain.sign(this.state.inputValue);
+    // const result = await keychain.sign(this.state.inputValue);
+    const result = await ethereum.buildTransaction(this.state.inputValue, 100);
+    console.log('handleSignClick result: ', result);
     this.setState({result});
   }
 
   async handlePublicKeyClick(e: any) {
-    const result = await keychain.publicKey();
-    this.setState({result});
+    const publicKey = await keychain.publicKey();
+    this.setState({publicKey, result: publicKey});
   }
 
   updateInputValue(evt: React.ChangeEvent<HTMLInputElement>) {
@@ -41,10 +46,11 @@ export default class Main extends React.Component<{}, MainState> {
       <div className="container">
         <ul className="flex-outer">
           <li>
-            <label>Transaction</label>
+            <label>To address</label>
             <input
               type="text"
-              placeholder="871689d060721b5cec5a010080841e00000000000011130065cd1d0000000000000000"
+              value="0xE8899BA12578d60e4D0683a596EDaCbC85eC18CC"
+              placeholder="0xE8899BA12578d60e4D0683a596EDaCbC85eC18CC"
               onChange={evt => this.updateInputValue(evt)}
             />
           </li>
@@ -59,4 +65,3 @@ export default class Main extends React.Component<{}, MainState> {
   }
 
 }
-
