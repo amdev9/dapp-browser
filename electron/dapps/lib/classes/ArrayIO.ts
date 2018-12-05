@@ -1,124 +1,96 @@
-import { AnyAction } from 'redux';
-import * as uuidv4 from 'uuid/v4';
+import StoreSubscriber from './internal/StoreSubscriber';
 import * as actions from '../redux/actions/channel';
+import * as constants from '../redux/constants';
+import { storeObservable } from '../redux/epics';
+import { ofType } from 'redux-observable';
 
-type actionWrapper = (uid?: string, entry?: any, targetUUID?: string) => AnyAction;
+type NetworkSubscribeOptions = {
+  onGetBlock: (block: any) => void;
+};
 
-export default class ArrayIO {
-  store: any;
-  emitter: any;
-
-  constructor(store: any, emitter: any) {
-    this.store = store;
-    this.emitter = emitter;
+class ArrayIO extends StoreSubscriber {
+  openFileManager() {
+    return this.actionPromise({
+      onStart: actions.openFileManagerDialog(),
+      successType: constants.FILE_MANAGER_OPEN_DIALOG_SUCCESS,
+      failureType: constants.FILE_MANAGER_OPEN_DIALOG_FAILURE,
+    });
   }
 
-  handleUidPromise = (actionFlow: actionWrapper[], params?: any) => {
-    const uid = uuidv4();
-    return (resolve: any, reject: any) => {
+  networkGetBlock() {
+    return this.actionPromise({
+      onStart: actions.networkGetBlock(),
+      successType: constants.NETWORK_GET_BLOCK_SUCCESS,
+      failureType: constants.NETWORK_GET_BLOCK_FAILURE,
+    });
+  }
 
-      this.emitter.on(uid, function (action: AnyAction) {
-        if (action.meta.uid === uid) {
-          if (action.type === actionFlow[1]().type) {
-            resolve(action.payload);
-          } else if (action.type === actionFlow[2]().type) {
-            reject(action.payload);
-          }
-        } else {
-          console.log('Uid spoofing');
+  async networkSubscribe(options: NetworkSubscribeOptions) {
+    if (!options) {
+      return;
+    }
+
+    const subscribeAction = await this.actionObservablePromise({
+      onStart: actions.networkSubscribe(),
+      successType: constants.NETWORK_SUBSCRIBE_SUCCESS,
+      failureType: constants.NETWORK_SUBSCRIBE_FAILURE,
+    });
+
+    const getBlockUnsubscriber = this.subscribeObservableActions({
+      actionTypes: [constants.NETWORK_BLOCK_CREATED],
+      callback: (action) => {
+        if (options.onGetBlock) {
+          const block = JSON.parse(action.payload.block);
+          options.onGetBlock(block);
         }
-      });
-      this.store.dispatch(actionFlow[0](uid, params));
+      }
+    });
+
+    return async () => {
+      await this.networkUnsubscribe();
+      getBlockUnsubscriber();
     };
-  };
+  }
 
-  openFileManager = async () => {
-    return new Promise(
-      this.handleUidPromise([
-        actions.openFileManagerDialog,
-        actions.openDialogSuccess,
-        actions.openDialogFailure,
-      ], []),
-    );
-  };
+  networkUnsubscribe() {
+    return this.actionObservablePromise({
+      onStart: actions.networkUnsubscribe(),
+      successType: constants.NETWORK_UNSUBSCRIBE_SUCCESS,
+      failureType: constants.NETWORK_UNSUBSCRIBE_FAILURE,
+    });
+  }
 
-  networkGetBlock = async () => {
-    return new Promise(
-      this.handleUidPromise([
-        actions.networkGetBlock,
-        actions.getBlockSuccess,
-        actions.getBlockFailure,
-      ], []),
-    );
-  };
+  writeToConsole(message: string) {
+    return this.actionPromise({
+      onStart: actions.writeToConsole(message),
+      successType: constants.LOGGER_WRITE_SUCCESS,
+      failureType: constants.LOGGER_WRITE_FAILURE,
+    });
+  }
 
-  networkSubscribe = async () => {
-    return new Promise(
-      this.handleUidPromise([
-        actions.networkSubscribe,
-        actions.networkSubscribeSuccess,
-        actions.networkSubscribeFailure,
-      ], []),
-    );
-  };
+  storageSave(key: string, value: string) {
+    return this.actionPromise({
+      onStart: actions.storageSave({ key, value }),
+      successType: constants.STORAGE_SAVE_SUCCESS,
+      failureType: constants.STORAGE_SAVE_FAILURE,
+    });
+  }
 
-  networkUnsubscribe = async () => {
-    return new Promise(
-      this.handleUidPromise([
-        actions.networkUnsubscribe,
-        actions.networkUnsubscribeSuccess,
-        actions.networkUnsubscribeFailure,
-      ], []),
-    );
-  };
+  storageFindAll() {
+    return this.actionPromise({
+      onStart: actions.storageFindAll(),
+      successType: constants.STORAGE_FIND_ALL_SUCCESS,
+      failureType: constants.STORAGE_FIND_ALL_FAILURE,
+    });
+  }
 
-  writeToConsole = async (message: string) => {
-    return new Promise(
-      this.handleUidPromise([
-        actions.writeToConsole,
-        actions.loggerWriteSuccess,
-        actions.loggerWriteFailure,
-      ], [message]),
-    );
-  };
-
-  keychainSign = async () => {
-    return new Promise(
-      this.handleUidPromise([
-        actions.keychainSign,
-        actions.keychainSignSuccess,
-        actions.keychainSignFailure,
-      ], []),
-    );
-  };
-
-  storageSave = async (key: string, value: string) => {
-    return new Promise(
-      this.handleUidPromise([
-        actions.storageSave,
-        actions.storageSaveSuccess,
-        actions.storageSaveFailure,
-      ], { key, value }),
-    );
-  };
-
-  storageFindAll = async () => {
-    return new Promise(
-      this.handleUidPromise([
-        actions.storageFindAll,
-        actions.storageFindAllSuccess,
-        actions.storageFindAllFailure,
-      ], []),
-    );
-  };
-
-  storageRemove = async (key: string) => {
-    return new Promise(
-      this.handleUidPromise([
-        actions.storageRemove,
-        actions.storageRemoveSuccess,
-        actions.storageRemoveFailure,
-      ], { key }),
-    );
-  };
+  storageRemove(key: string) {
+    return this.actionPromise({
+      onStart: actions.storageRemove(key),
+      successType: constants.STORAGE_REMOVE_SUCCESS,
+      failureType: constants.STORAGE_REMOVE_FAILURE,
+    });
+  }
 }
+
+export default new ArrayIO();

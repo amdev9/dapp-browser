@@ -1,16 +1,13 @@
 import * as actions from '../redux/actions/channel';
-import * as uuidv4 from 'uuid/v4';
 import * as constants from '../redux/constants';
 
-import StoreUIDSubscriber from './StoreUIDSubscriber';
+import StoreSubscriber from './internal/StoreSubscriber';
 
-export default class Keychain extends StoreUIDSubscriber {
+export default class Keychain extends StoreSubscriber {
   subscribePromise: Promise<any>;
 
   async sign(transaction: string) {
-    const uid = uuidv4();
-
-    this.subscribePromise = this.actionPromise(uid, {
+    this.subscribePromise = this.actionPromise({
       onStart: actions.keychainSign(transaction),
       successType: constants.KEYCHAIN_SIGN_SUCCESS,
       failureType: constants.KEYCHAIN_SIGN_FAILURE,
@@ -22,9 +19,7 @@ export default class Keychain extends StoreUIDSubscriber {
   }
 
   async publicKey() {
-    const uid = uuidv4();
-
-    this.subscribePromise = this.actionPromise(uid, {
+    this.subscribePromise = this.actionPromise({
       onStart: actions.keychainPublicKey(),
       successType: constants.KEYCHAIN_PUBLIC_KEY_SUCCESS,
       failureType: constants.KEYCHAIN_PUBLIC_KEY_FAILURE,
