@@ -1,13 +1,13 @@
-import { combineReducers, createStore, applyMiddleware, compose, Store, Dispatch, AnyAction } from 'redux';
+import { createStore, applyMiddleware, compose, Store, Dispatch, AnyAction } from 'redux';
 import { EventEmitter } from 'events';
 import { isFSA } from 'flux-standard-action';
 import { createEpicMiddleware } from 'redux-observable';
 import { logger } from 'redux-logger';
 import { Subject } from 'rxjs';
 
-import { rootEpic } from './redux/epics';
-import { rootReducer } from './redux/reducers';
-import bindDappEvents from './redux/events';
+import { rootEpic } from './epics';
+import { rootReducer } from './reducers';
+import bindDappEvents from './events';
 
 interface ElectronManager {
   sendActionMain(action: any): void;
@@ -89,6 +89,7 @@ const configureStore = (initialState?: any) => {
   const store = createStore(rootReducer, initialState, enhancer);
   epicMiddleware.run(rootEpic);
   electronManager.replyActionRenderer(store);
+
   bindDappEvents(storeObservable, store);
   return store;
 };
@@ -97,27 +98,11 @@ const initStore = () => {
   const states = electronManager.getGlobalState();
   const initialState = JSON.parse(states()); // getInitialStateRenderer();
 
-  const store = configureStore(initialState);
-  return store;
-};
-
-const sendDataChannel1 = (data: any) => {
-  electronManager.sendDataChannel('testChannel1', data);
-};
-
-const sendDataChannel2 = (data: any) => {
-  electronManager.sendDataChannel('testChannel2', data);
-};
-
-const receiveDataChannel = (channelId: string, callback: any) => {
-  electronManager.receiveDataChannel(channelId, callback);
+  return configureStore(initialState);
 };
 
 const store = initStore();
 
 export {
   store,
-  sendDataChannel1,
-  sendDataChannel2,
-  receiveDataChannel,
 };
