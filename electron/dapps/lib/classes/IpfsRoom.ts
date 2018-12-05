@@ -29,23 +29,25 @@ export default class IpfsRoom extends StoreSubscriber {
       return;
     }
 
-    this.unsubscribeOnMessage = options.onMessage && this.subscribeActions(
-      constants.IPFS_ROOM_SEND_MESSAGE_TO_DAPP,
-      uid,
-      (action) => options.onMessage(action.payload.message),
+    this.unsubscribeOnMessage = options.onMessage && this.subscribeUIDActions(
+      {
+        uid,
+        actionTypes: [constants.IPFS_ROOM_SEND_MESSAGE_TO_DAPP],
+        callback: (action) => options.onMessage(action.payload.message)
+      }
     );
 
-    this.unsubscribeOnJoined = options.onJoined && this.subscribeActions(
-      constants.IPFS_ROOM_PEER_JOINED,
+    this.unsubscribeOnJoined = options.onJoined && this.subscribeUIDActions({
       uid,
-      (action) => options.onJoined(action.payload.peer),
-    );
+      actionTypes: [constants.IPFS_ROOM_PEER_JOINED],
+      callback: (action) => options.onJoined(action.payload.peer),
+    });
 
-    this.unsubscribeOnLeft = options.onLeft && this.subscribeActions(
-      constants.IPFS_ROOM_PEER_LEFT,
+    this.unsubscribeOnLeft = options.onLeft && this.subscribeUIDActions({
       uid,
-      (action) => options.onLeft(action.payload.peer),
-    );
+      actionTypes: constants.IPFS_ROOM_PEER_LEFT,
+      callback: (action) => options.onLeft(action.payload.peer),
+    });
 
     this.subscribePromise = this.actionPromise({
       onStart: actions.ipfsRoomSubscribe(topic),

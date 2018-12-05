@@ -12,10 +12,7 @@ const openChannelSuccess = () => ({ type: constants.OPEN_CHANNEL_SUCCESS });
 export const storeObservable: Subject<AnyAction> = new Subject();
 
 const appMainEpic: Epic<AnyAction> = action$ => action$.pipe(
-  tap((action) => {
-    console.log('appmain', action, storeObservable)
-    storeObservable.next(action)
-  }),
+  tap((action) => storeObservable.next(action)),
   ignoreElements(),
 );
 

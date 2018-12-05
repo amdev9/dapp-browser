@@ -36,15 +36,15 @@ class ArrayIO extends StoreSubscriber {
       failureType: constants.NETWORK_SUBSCRIBE_FAILURE,
     });
 
-    const getBlockUnsubscriber = this.subscribeStoreObservable(
-      constants.NETWORK_BLOCK_CREATED,
-      (action) => {
+    const getBlockUnsubscriber = this.subscribeObservableActions({
+      actionTypes: [constants.NETWORK_BLOCK_CREATED],
+      callback: (action) => {
         if (options.onGetBlock) {
           const block = JSON.parse(action.payload.block);
           options.onGetBlock(block);
         }
       }
-    );
+    });
 
     return async () => {
       await this.networkUnsubscribe();

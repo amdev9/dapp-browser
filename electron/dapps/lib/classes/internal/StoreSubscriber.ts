@@ -9,6 +9,18 @@ interface ActionFlow {
   onStart: AnyAction;
   successType: string;
   failureType: string;
+  actionUid?: string;
+}
+
+interface SubscribeUIDActionsOptions {
+  actionTypes: string | string[];
+  uid: string;
+  callback: (action: AnyAction) => void;
+}
+
+interface SubscribeObservableActions {
+  actionTypes: string | string[];
+  callback: (action: AnyAction) => void;
 }
 
 export default class StoreSubscriber {
@@ -33,18 +45,18 @@ export default class StoreSubscriber {
     return () => this.emitter.removeListener(uid, listener);
   }
 
-  subscribeActions(actionTypes: string | string[], uid: string, callback: (action: AnyAction) => void) {
-    return this.onUIDEvent(uid, (action) => {
-      if (actionTypes && [].concat(actionTypes).includes(action.type)) {
-        callback(action);
+  subscribeUIDActions(options: SubscribeUIDActionsOptions) {
+    return this.onUIDEvent(options.uid, (action) => {
+      if (options.actionTypes && [].concat(options.actionTypes).includes(action.type)) {
+        options.callback(action);
       }
     });
   }
 
-  subscribeStoreObservable(actionTypes: string | string[], callback: (action: AnyAction) => void) {
+  subscribeObservableActions(options: SubscribeObservableActions) {
     const subscriber = storeObservable
-      .pipe(ofType(...[].concat(actionTypes)))
-      .subscribe(callback);
+      .pipe(ofType(...[].concat(options.actionTypes)))
+      .subscribe(options.callback);
 
     return () => subscriber.unsubscribe();
   }
@@ -62,14 +74,17 @@ export default class StoreSubscriber {
     };
 
     return new Promise((resolve, reject) => {
-      const unsubscribe = this.subscribeStoreObservable([successType, failureType], (action: AnyAction) => {
-        unsubscribe && unsubscribe();
-        if (action.type === successType) {
-          resolve(action);
-        }
+      const unsubscribe = this.subscribeObservableActions({
+        actionTypes: [successType, failureType],
+        callback: (action: AnyAction) => {
+          unsubscribe && unsubscribe();
+          if (action.type === successType) {
+            resolve(action);
+          }
 
-        if (action.type === failureType) {
-          reject(action);
+          if (action.type === failureType) {
+            reject(action);
+          }
         }
       });
       onStart && this.store.dispatch(copyAction);
@@ -89,14 +104,18 @@ export default class StoreSubscriber {
     };
 
     return new Promise((resolve, reject) => {
-      const unsubscribe = this.subscribeActions([successType, failureType], uid, (action: AnyAction) => {
-        unsubscribe && unsubscribe();
-        if (action.type === successType) {
-          resolve(action);
-        }
+      const unsubscribe = this.subscribeUIDActions({
+        uid,
+        actionTypes: [successType, failureType],
+        callback: (action: AnyAction) => {
+          unsubscribe && unsubscribe();
+          if (action.type === successType) {
+            resolve(action);
+          }
 
-        if (action.type === failureType) {
-          reject(action);
+          if (action.type === failureType) {
+            reject(action);
+          }
         }
       });
       onStart && this.store.dispatch(copyAction);
