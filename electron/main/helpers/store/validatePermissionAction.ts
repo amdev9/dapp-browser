@@ -5,20 +5,19 @@ import * as constants from '../constants';
 import { IState, Permission } from '../reducers/state';
 import { getModuleActionTypes } from '../utils/actionUtils';
 
-import { constants as IpfsRoomConstants } from '../../../ducks/IpfsRoom';
-import { constants as IpfsStorageConstants } from '../../../ducks/IpfsStorage';
+import { constants as IpfsRoomConstants } from '../ducks/IpfsRoom';
+import { constants as IpfsStorageConstants } from '../ducks/IpfsStorage';
+import { constants as FileManagerConstants } from '../ducks/FileManager';
 
 const ipfsRoomActionTypes = getModuleActionTypes(IpfsRoomConstants);
 const ipfsStorageActionTypes = getModuleActionTypes(IpfsStorageConstants);
+const fileManagerActionTypes = getModuleActionTypes(FileManagerConstants);
 
 const dappActions: string[] = [
   constants.INTENT_OPEN_CHANNELS,
   constants.OPEN_CHANNEL,
   constants.OPEN_CHANNEL_SUCCESS,
   constants.BIND_OPEN_CHANNELS_DONE,
-  constants.FILE_MANAGER_OPEN_DIALOG,
-  constants.FILE_MANAGER_OPEN_DIALOG_SUCCESS,
-  constants.FILE_MANAGER_OPEN_DIALOG_FAILURE,
   constants.TOGGLE_APP_HOME_SUCCESS,
   constants.HTTP_PROTOCOL_OPEN_LINK,
   constants.DAPP_ACTION_OPEN_LINK,
@@ -27,6 +26,7 @@ const dappActions: string[] = [
 
   ...ipfsStorageActionTypes,
   ...ipfsRoomActionTypes,
+  ...fileManagerActionTypes,
 
   constants.SHOW_FILE_ENTRIES,
   constants.NETWORK_GET_BLOCK,
@@ -116,10 +116,7 @@ const clientActions: string[] = [
 ];
 
 const fileManagerActions: string[] = [
-  constants.FILE_MANAGER_OPEN_DIALOG,
-  constants.FILE_MANAGER_OPEN_DIALOG_SUCCESS,
-  constants.FILE_MANAGER_OPEN_DIALOG_FAILURE,
-  // constants.SHOW_FILE_ENTRIES
+  ...fileManagerActionTypes,
 ];
 
 const networkActions: string[] = [

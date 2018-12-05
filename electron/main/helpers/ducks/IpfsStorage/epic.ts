@@ -4,14 +4,14 @@ import { switchMap } from 'rxjs/operators';
 
 import * as ipfsStorageActions from './actions';
 import * as constants from './constants';
-import fileManager, { FileManager, FileObject } from '../../main/helpers/systemComponents/FileManager';
+import { FileManager, FileObject } from '../FileManager';
 import ipfs from './component';
 
 const ipfsStorageUploadEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
   ofType(constants.IPFS_STORAGE_UPLOAD_FILE),
   switchMap(async (action) => {
     try {
-      const filePath = fileManager.getPath(action.payload.entry);
+      const filePath = FileManager.getPath(action.payload.entry);
 
       const ipfsFileObject = await ipfs.uploadFile(filePath);
 
@@ -42,7 +42,7 @@ const ipfsStorageDownloadEpic: Epic<AnyAction> = action$ => action$.pipe(
         throw Error('File with current hash does not exist');
       }
 
-      const savedFile = await fileManager.saveFile(targetDirectory, <FileObject> downloadFile);
+      const savedFile = await FileManager.saveFile(targetDirectory, <FileObject> downloadFile);
       const ipfsFileEntry: ipfsStorageActions.IpfsFileEntry = {
         id: savedFile,
         hash: action.payload.hash,

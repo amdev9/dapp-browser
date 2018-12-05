@@ -3,13 +3,13 @@ import { AnyAction } from 'redux';
 import { of } from 'rxjs';
 import { switchMap, map, catchError, ignoreElements, tap, mergeMap } from 'rxjs/operators';
 
-import IpfsRoom from './component';
+import Component from './component';
 import * as constants from './constants';
 import * as ipfsRoomActions from './actions';
 
 const ipfsRoomCreateThunk = (topic: string, roomId: string, uid: string, sourceUUID: string) => async (dispatch: any) => {
   try {
-    const room = IpfsRoom.get(sourceUUID, roomId);
+    const room = Component.get(sourceUUID, roomId);
     const { id } = await room.getPeerId();
 
     room.subscribe({
@@ -33,7 +33,7 @@ const ipfsRoomsSubscribe = (action$: ActionsObservable<AnyAction>) => action$.pi
     const roomId = action.payload.roomId;
 
     try {
-      const room = await IpfsRoom.create(action.meta.sourceUUID, action.payload.topic);
+      const room = await Component.create(action.meta.sourceUUID, action.payload.topic);
 
       return ipfsRoomCreateThunk(action.payload.topic, room.id, action.meta.uid, action.meta.sourceUUID);
     } catch (error) {
@@ -47,7 +47,7 @@ const ipfsRoomSendBroadcastMessage: Epic<AnyAction> = (action$, state$) => actio
   ofType(constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST),
   switchMap(async (action) => {
     try {
-      const room = IpfsRoom.get(action.meta.sourceUUID, action.payload.roomId);
+      const room = Component.get(action.meta.sourceUUID, action.payload.roomId);
 
       if (!room) {
         throw Error('Room has not exist');
@@ -67,7 +67,7 @@ const ipfsRoomSendToPeerMessage: Epic<AnyAction> = (action$, state$) => action$.
   ofType(constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER),
   switchMap(async (action) => {
     try {
-      let room = IpfsRoom.get(action.meta.sourceUUID, action.payload.roomId);
+      let room = Component.get(action.meta.sourceUUID, action.payload.roomId);
 
       if (!room) {
         throw Error('Room has not exist');
@@ -87,7 +87,7 @@ const ipfsRoomLeave: Epic<AnyAction> = (action$, state$) => action$.pipe( //@tod
   ofType(constants.IPFS_ROOM_LEAVE),
   switchMap(async (action) => {
     try {
-      const room = IpfsRoom.get(action.meta.sourceUUID, action.payload.roomId);
+      const room = Component.get(action.meta.sourceUUID, action.payload.roomId);
 
       if (!room) {
         throw Error('Room has not exist');
@@ -106,7 +106,7 @@ const ipfsRoomGetPeers: Epic<AnyAction> = (action$, state$) => action$.pipe( //@
   ofType(constants.IPFS_ROOM_GET_PEERS),
   switchMap(async (action) => {
     try {
-      const room = IpfsRoom.get(action.meta.sourceUUID, action.payload.roomId);
+      const room = Component.get(action.meta.sourceUUID, action.payload.roomId);
 
       if (!room) {
         throw Error('Room has not exist');

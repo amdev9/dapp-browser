@@ -3,8 +3,8 @@ import * as Room from 'ipfs-pubsub-room';
 import * as path from 'path';
 import * as uuid from 'uuid/v4';
 
-import { getReadyIpfsInstance } from '../../main/helpers/systemComponents/IpfsInstance';
-import { appTempPath } from '../../main/helpers/constants/appPaths';
+import { getReadyIpfsInstance } from '../../systemComponents/IpfsInstance';
+import { appTempPath } from '../../constants/appPaths';
 
 export type RoomName = string;
 export type DappUUID = string;
@@ -17,7 +17,7 @@ export interface SubscribeOptions {
   onSubscribed?: () => void;
 }
 
-type DappRooms = { [roomUUID: string]: IpfsRoom };
+type DappRooms = { [roomUUID: string]: Component };
 type DappMap = { [dappUUID: string]: DappRooms };
 
 class RoomStorage {
@@ -27,11 +27,11 @@ class RoomStorage {
     this.rooms = {};
   }
 
-  getRoom(dappUUID: string, roomUUID: string): IpfsRoom {
+  getRoom(dappUUID: string, roomUUID: string): Component {
     return this.rooms[dappUUID] && this.rooms[dappUUID][roomUUID];
   }
 
-  addRoom(room: IpfsRoom): void {
+  addRoom(room: Component): void {
     if (!this.rooms[room.dappUUID]) {
       this.rooms[room.dappUUID] = {};
     }
@@ -45,7 +45,7 @@ class RoomStorage {
 
 const RoomMapInstance = new RoomStorage();
 
-export default class IpfsRoom {
+export default class Component {
   room: Room;
   dappUUID: string;
   id: string;
@@ -56,19 +56,19 @@ export default class IpfsRoom {
     this.id = options && options.roomUUID || uuid();
   }
 
-  static async create(dappUUID: string, roomName: string): Promise<IpfsRoom> {
+  static async create(dappUUID: string, roomName: string): Promise<Component> {
     const ipfs = await getReadyIpfsInstance({ repo: path.join(appTempPath, 'ipfs-room', 'repos') });
 
     const getRoomInstance = <any> Room;
     const roomInstance = getRoomInstance(ipfs, roomName);
     console.log('RoomMA', await roomInstance._ipfs.id())
 
-    const room = new IpfsRoom(roomInstance, { dappUUID });
+    const room = new Component(roomInstance, { dappUUID });
     RoomMapInstance.addRoom(room);
     return room;
   }
 
-  static get(dappUUID: string, roomUUID: string): IpfsRoom {
+  static get(dappUUID: string, roomUUID: string): Component {
     return RoomMapInstance.getRoom(dappUUID, roomUUID);
   }
 

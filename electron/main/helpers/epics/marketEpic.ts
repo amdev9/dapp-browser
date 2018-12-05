@@ -4,8 +4,8 @@ import { switchMap } from 'rxjs/operators';
 
 import * as marketActions  from '../actions/market';
 import * as constants from '../constants';
-import { FileObject, FileManager } from '../systemComponents/FileManager';
-import { component as ipfs } from '../../../ducks/IpfsStorage';
+import { FileManager } from '../ducks/FileManager';
+import { component as ipfs } from '../ducks/IpfsStorage';
 import { AppsManager } from '../systemComponents/AppsManager';
 import { DAPPS_PATH } from '../constants/appPaths';
 import * as fs from 'fs';
@@ -16,7 +16,7 @@ const marketDownloadAppEpic: Epic<AnyAction> = action$ => action$.pipe(
   switchMap(async (action) => {
     try {
       const targetDirectory = DAPPS_PATH;
-      const downloadFiles: FileObject[] = await ipfs.downloadFolder(action.payload.ipfsHash);
+      const downloadFiles = await ipfs.downloadFolder(action.payload.ipfsHash);
 
       if (!downloadFiles) {
         throw Error('Folder with current hash does not exist');

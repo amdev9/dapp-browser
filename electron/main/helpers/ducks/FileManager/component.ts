@@ -13,6 +13,7 @@ export interface FileEntry {
   path?: Path;
   name?: FileName;
 }
+
 export type FileEntryList = FileEntry[];
 export type FileIdList = FileId[];
 export type PathList = Path[];
@@ -27,11 +28,7 @@ export interface FileObject {
 }
 
 export class FileManager {
-  entryMap: Map<FileId, Path>;
-
-  constructor() {
-    this.entryMap = new Map();
-  }
+  static entryMap: Map<FileId, Path> = new Map();
 
   static generateFileEntryId() {
     return uuidv4();
@@ -49,20 +46,20 @@ export class FileManager {
     return paths[0];
   }
 
-  setPathEntry(path: Path): FileId {
+  static setPathEntry(path: Path): FileId {
     const pathId = FileManager.generateFileEntryId();
-    this.entryMap.set(pathId, path);
+    FileManager.entryMap.set(pathId, path);
     return pathId;
   }
 
-  getPath(id: FileId): Path {
-    if (!this.entryMap.has(id)) {
+  static getPath(id: FileId): Path {
+    if (!FileManager.entryMap.has(id)) {
       return;
     }
-    return this.entryMap.get(id);
+    return FileManager.entryMap.get(id);
   }
 
-  async openFile(): Promise<FileEntry | undefined> {
+  static async openFile(): Promise<FileEntry | undefined> {
     const file = await FileManager.selectFile();
 
     if (!file || !file.length) {
@@ -70,17 +67,19 @@ export class FileManager {
     }
 
     return {
-      id: this.setPathEntry(file[0]),
+      id: FileManager.setPathEntry(file[0]),
       name: path.basename(file[0]),
     };
   }
 
-  async saveFile(dir: Path, file: FileObject) {
+  static async saveFile(dir: Path, file: FileObject) {
     const location = path.join(dir, file.name);
     await fs.writeFile(location, file.content, (err) => {
-      if (err) { console.warn(`unable to save file here: ${location}`); }
+      if (err) {
+        console.warn(`unable to save file here: ${location}`);
+      }
     });
-    return this.setPathEntry(location);
+    return FileManager.setPathEntry(location);
   }
 
   static async saveFolder(dir: Path, files: FileObject[]) {
@@ -91,5 +90,3 @@ export class FileManager {
     }
   }
 }
-
-export default new FileManager();

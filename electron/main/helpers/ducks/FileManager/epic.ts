@@ -2,15 +2,15 @@ import { AnyAction } from 'redux';
 import { combineEpics, Epic, ofType } from 'redux-observable';
 import { switchMap } from 'rxjs/operators';
 
-import fileManager  from '../systemComponents/FileManager';
-import * as fileManagerActions from '../actions/fileManager';
-import * as constants from '../constants';
+import { FileManager } from './component';
+import * as fileManagerActions from './actions';
+import * as constants from './constants';
 
 const fileManagerOpenDialogEpic: Epic<AnyAction> = action$ => action$.pipe(
   ofType(constants.FILE_MANAGER_OPEN_DIALOG),
   switchMap(async (action) => {
     try {
-      const fileEntry = await fileManager.openFile();
+      const fileEntry = await FileManager.openFile();
 
       if (!fileEntry) {
         throw Error('File not selected');

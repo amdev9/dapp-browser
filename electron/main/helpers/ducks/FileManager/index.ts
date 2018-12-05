@@ -1,12 +1,11 @@
 import * as constants from './constants';
 import epic from './epic';
-import component from './component';
+export * from './component';
 
-const moduleName = 'ipfsRoom';
+const moduleName = 'fileManager';
 
 export {
   moduleName,
   constants,
   epic,
-  component,
 };
