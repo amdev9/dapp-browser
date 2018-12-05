@@ -2,14 +2,25 @@ import * as React from 'react';
 import BlockTableRow from '../BlockTableRow';
 
 const ArrayIO = require('array-io');
-const styles: any = require('./styles.sass');
 
-export default class BlocksTable extends React.Component {
-  constructor(props) {
+export type BlockObject = {
+  block: any;
+  transaction: any;
+};
+
+interface IProps {}
+interface IState {
+  blockList: BlockObject[];
+  networkUnsubscriber: null | (() => void);
+}
+
+export default class BlocksTable extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props);
 
     this.state = {
       blockList: [],
+      networkUnsubscriber: null,
     };
   }
 
@@ -29,21 +40,21 @@ export default class BlocksTable extends React.Component {
   renderBody() {
     return (
       <tbody id="tbody">
-        {this.state.blockList.map((block, i) => <BlockTableRow key={i} block={block}/>}
+        {this.state.blockList.map((block: any, i: number) => <BlockTableRow key={i} block={block}/>)}
       </tbody>
     );
   }
 
   onClickSubscribe() {
-    const unsubscriber = ArrayIO.ArrayIO.networkSubscribe({
-      onGetBlock: (block) => this.setState({ blockList: [...this.state.blockList, block] })
+    const networkUnsubscriber = ArrayIO.ArrayIO.networkSubscribe({
+      onGetBlock: (block: any) => this.setState({ blockList: [...this.state.blockList, block] })
     });
 
-    this.setState({ unsubscriber });
+    this.setState({ networkUnsubscriber });
   }
 
   onClickUnsubscribe() {
-    this.state.unsubscriber && this.state.unsubscriber();
+    this.state.networkUnsubscriber && this.state.networkUnsubscriber();
   }
 
   renderHeader() {
@@ -59,12 +70,11 @@ export default class BlocksTable extends React.Component {
   }
 
   render() {
-    console.log('table', this.state.blockList)
-
     return (
       <div className="container pt-5">
         {this.renderHeader()}
         <table className="table table-hover">
+          {this.renderHead()}
           {this.renderBody()}
         </table>
       </div>

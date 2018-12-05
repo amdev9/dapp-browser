@@ -2,8 +2,16 @@ import * as React from 'react';
 
 const ArrayIO = require('array-io');
 
-export default class BlockTableRow extends React.Component {
-  constructor(props) {
+interface IProps {
+  block: any;
+}
+
+interface IState {
+  isExpanded: boolean;
+}
+
+export default class BlockTableRow extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props);
 
     this.state = {
@@ -12,7 +20,7 @@ export default class BlockTableRow extends React.Component {
   }
 
   renderRow() {
-    const blockObject = this.props.block.block
+    const blockObject = this.props.block.block;
 
     return (
       <tr key={0} onClick={() => this.setState({ isExpanded: !this.state.isExpanded })}>
@@ -21,7 +29,7 @@ export default class BlockTableRow extends React.Component {
         <td>{blockObject.witnessName}</td>
         <td>{new Date(blockObject.timestamp).toLocaleString('en-US', {})}</td>
       </tr>
-    )
+    );
   }
 
   renderAdditionalRow() {
@@ -29,13 +37,13 @@ export default class BlockTableRow extends React.Component {
 
     return (
       <tr key={1}>
-        <td colSpan='4'>{JSON.stringify(block)}</td>
+        <td colSpan={4}>{JSON.stringify(block)}</td>
       </tr>
-    )
+    );
   }
 
   render() {
 
-    return [this.renderRow(), this.state.isExpanded ? this.renderAdditionalRow(): null]
+    return [this.renderRow(), this.state.isExpanded ? this.renderAdditionalRow() : null];
   }
 }
