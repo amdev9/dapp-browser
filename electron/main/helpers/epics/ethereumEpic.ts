@@ -22,7 +22,8 @@ const etheriumBuildTransactionEpic: Epic<AnyAction> = (action$, state$) => actio
       const ethereum = new Ethereum();
       const from = await keychainInstance.publicKey(key);
 
-      const result: string = await ethereum.buildTxSinature(null, from, to, value);
+      const signature: string = await ethereum.buildTxSinature(null, from, to, value);
+      const result: string = await ethereum.buildTxSinature(signature, from, to, value);
       return ethereumActions.buildTransactionSuccess(result, action.meta.uid, action.meta.sourceUUID);
     } catch (error) {
       return ethereumActions.buildTransactionFailure(error, action.meta.uid, action.meta.sourceUUID);

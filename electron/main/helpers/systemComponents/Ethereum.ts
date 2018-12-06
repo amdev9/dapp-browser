@@ -5,7 +5,6 @@ const rlp = require('rlp');
 
 export class Ethereum {
   endpoint = 'https://ropsten.infura.io/v3/6e07edb991d64b9197996b7ff174de42';
-  flag = false;
   buffer: Buffer;
 
   async buildTxSinature (signature: string, from: string, to: string, value: number, data = '') {
@@ -16,7 +15,7 @@ export class Ethereum {
     const web3 = new Web3(new Web3.providers.HttpProvider(this.endpoint));
     const nonce = await web3.eth.getTransactionCount(fromAddress);
     const gasPrice = await web3.eth.getGasPrice().then((wei: number) => Number(wei));
-    const chainIdHere = 3;
+    const chainIdHere = 3;  // todo rename to chainid
 
     const draftTxParams = {
       nonce,
@@ -79,7 +78,7 @@ export class Ethereum {
     }
 
     const tx = new EthereumTxKeychain(txParams);
-    if (this.flag) {
+    if (signature) {
       this.buffer = tx.serialize();
     } else {
       this.buffer = tx.hash(false);
