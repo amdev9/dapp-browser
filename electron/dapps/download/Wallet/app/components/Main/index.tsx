@@ -30,10 +30,13 @@ export default class Main extends React.Component<{}, MainState> {
   }
 
   async handleSignClick(e: any) {
-    const from = await keychain.publicKey();
-    console.log('publicKey: ', from); // todo substitute console.log() on the Client's Console log
+    const publicKey = await keychain.publicKey();
+    console.log('publicKey: ', publicKey);  // todo substitute console.log() on the Client's Console log
 
-    const rawTransaction = await ethereum.buildTransaction('', from, this.state.to, parseInt(this.state.amount, 10)); // todo rewrite the methods
+    const from = await ethereum.publicToAddress(`0x${publicKey}`);
+    console.log('from address: ', from);
+
+    const rawTransaction = await ethereum.buildTransaction('', from, this.state.to, parseInt(this.state.amount, 10));
     console.log('rawTransaction: ', rawTransaction);
 
     const signature = await keychain.sign(rawTransaction);

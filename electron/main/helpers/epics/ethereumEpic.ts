@@ -6,7 +6,7 @@ import { Ethereum } from '../systemComponents/Ethereum';
 import * as ethereumActions from '../actions/ethereum';
 import * as constants from '../constants';
 
-const etheriumBuildTransactionEpic: Epic<AnyAction> = (action$, state$) => action$.pipe( // @todo fix action type
+const ethereumBuildTransactionEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
   ofType(constants.ETHEREUM_BUILD_TRANSACTION),
   switchMap(async (action) => {
     try {
@@ -24,7 +24,7 @@ const etheriumBuildTransactionEpic: Epic<AnyAction> = (action$, state$) => actio
   }),
 );
 
-const etheriumPublishTransactionEpic: Epic<AnyAction> = (action$, state$) => action$.pipe( // @todo fix action type
+const ethereumPublishTransactionEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
   ofType(constants.ETHEREUM_PUBLISH_TRANSACTION),
   switchMap(async (action) => {
     try {
@@ -39,7 +39,23 @@ const etheriumPublishTransactionEpic: Epic<AnyAction> = (action$, state$) => act
   }),
 );
 
+const ethereumPublicToAddressEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
+  ofType(constants.ETHEREUM_PUBLIC_TO_ADDRESS),
+  switchMap(async (action) => {
+    try {
+      const publicKey = action.payload.publicKey;
+
+      const ethereum = new Ethereum();
+      const result = await ethereum.publicToAddress(publicKey);
+      return ethereumActions.publicToAddressSuccess(result, action.meta.uid, action.meta.sourceUUID);
+    } catch (error) {
+      return ethereumActions.publicToAddressFailure(error, action.meta.uid, action.meta.sourceUUID);
+    }
+  }),
+);
+
 export default combineEpics(
-  etheriumBuildTransactionEpic,
-  etheriumPublishTransactionEpic,
+  ethereumBuildTransactionEpic,
+  ethereumPublishTransactionEpic,
+  ethereumPublicToAddressEpic,
 );
