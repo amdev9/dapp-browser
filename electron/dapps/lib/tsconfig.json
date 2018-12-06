@@ -8,7 +8,10 @@
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "*": ["node_modules/*", "types/*"]
+      "*": ["node_modules/*", "types/*"],
+      "ClientApp/*": ["../../client/*"],
+      "MainApp/*": ["../../main/*"],
+      "PermissionApp/*": ["../../permissionManager/*"]
     },
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,

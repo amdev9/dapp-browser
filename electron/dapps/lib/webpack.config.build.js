@@ -28,7 +28,12 @@ module.exports = {
   },
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
-    extensions: ['.ts', '.tsx', '.js', '.json']
+    extensions: ['.ts', '.tsx', '.js', '.json'],
+    alias: {
+      MainApp: path.resolve(__dirname, '../../main'),
+      PermissionApp: path.resolve(__dirname, '../../permissionManager'),
+      ClientApp: path.resolve(__dirname, '../../client'),
+    }
   },
   plugins: [
     new WebpackShellPlugin({

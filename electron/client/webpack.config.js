@@ -6,7 +6,7 @@ const port = process.env.PORT || 3000;
 module.exports = {
     mode: 'development',
     // target: 'electron-renderer',
-    entry: { 
+    entry: {
         app: [
         'react-hot-loader/patch',
         `webpack-hot-middleware/client?path=http://localhost:${port}/__webpack_hmr&reload=true`,
@@ -24,7 +24,12 @@ module.exports = {
     // },
     devtool: 'source-map',
     resolve: {
-        extensions: ['.js', '.jsx', '.json', '.ts', '.tsx']
+        extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
+        alias: {
+          MainApp: path.resolve(__dirname, '../main'),
+          DappApp: path.resolve(__dirname, '../dapps/lib'),
+          PermissionApp: path.resolve(__dirname, '../permissionManager'),
+        }
     },
     module: {
         rules: [
