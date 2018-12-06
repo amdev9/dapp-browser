@@ -17,12 +17,14 @@ const etheriumBuildTransactionEpic: Epic<AnyAction> = (action$, state$) => actio
       const key = `${state$.value.client.keychain.selectedKey}`; // keys consitsted only of numbers throw 'Bad cast' exception. Converting everythin to string
       const to = action.payload.to;
       const value = action.payload.value;
-      const keychainInstance = new Keychain(KEYCHAIN_PATH);
+      let keychainInstance = new Keychain(KEYCHAIN_PATH);
 
       const ethereum = new Ethereum();
       const from = await keychainInstance.publicKey(key);
 
-      const signature: string = await ethereum.buildTxSinature(null, from, to, value);
+      const transaction: string = await ethereum.buildTxSinature(null, from, to, value);
+      keychainInstance = new Keychain(KEYCHAIN_PATH); // todo have to instantiate Keychain again because othervise getting error 'stream write after closed'
+      const signature: string = await keychainInstance.sign(key, '', transaction);
       const result: string = await ethereum.buildTxSinature(signature, from, to, value);
       return ethereumActions.buildTransactionSuccess(result, action.meta.uid, action.meta.sourceUUID);
     } catch (error) {
@@ -31,6 +33,22 @@ const etheriumBuildTransactionEpic: Epic<AnyAction> = (action$, state$) => actio
   }),
 );
 
+const etheriumPublishTransactionEpic: Epic<AnyAction> = (action$, state$) => action$.pipe( // @todo fix action type
+  ofType(constants.ETHEREUM_PUBLISH_TRANSACTION),
+  switchMap(async (action) => {
+    try {
+      const transaction = action.payload.transaction;
+
+      const ethereum = new Ethereum();
+      const result = await ethereum.sendSignedTransaction(transaction);
+      return ethereumActions.publishTransactionSuccess(result.transactionHash, action.meta.uid, action.meta.sourceUUID);
+    } catch (error) {
+      return ethereumActions.publishTransactionFailure(error, action.meta.uid, action.meta.sourceUUID);
+    }
+  }),
+);
+
 export default combineEpics(
   etheriumBuildTransactionEpic,
+  etheriumPublishTransactionEpic,
 );

@@ -10,6 +10,8 @@ interface MainState {
   toValue: string;
   publicKey: string;
   amountValue: string;
+  transactionToSign: string;
+  linkText: string;
 }
 const TO_DEFAULT = '0xE8899BA12578d60e4D0683a596EDaCbC85eC18CC';
 const AMOUNT_DEFAULT = '100';
@@ -19,24 +21,32 @@ export default class Main extends React.Component<{}, MainState> {
     super(props);
     this.handleSignClick = this.handleSignClick.bind(this);
     this.handlePublicKeyClick = this.handlePublicKeyClick.bind(this);
+    this.handlePublishClick = this.handlePublishClick.bind(this);
     this.state = {
       result: '',
       toValue: TO_DEFAULT,
       amountValue: AMOUNT_DEFAULT,
+      transactionToSign: 'Please, sign your transaction',
       publicKey: '',
+      linkText: 'Please, publish your transaction',
     };
   }
 
   async handleSignClick(e: any) {
-    // const result = await keychain.sign(this.state.inputValue);
-    console.log('handleSignClick this.state.toValue: ', this.state.toValue);
-    const result = await ethereum.buildTransaction(this.state.toValue, parseInt(this.state.amountValue, 10));
-    this.setState({result});
+    const transactionToSign = await ethereum.buildTransaction(this.state.toValue, parseInt(this.state.amountValue, 10));
+    this.setState({transactionToSign});
   }
 
   async handlePublicKeyClick(e: any) {
     const publicKey = await keychain.publicKey();
     this.setState({publicKey, result: publicKey});
+  }
+
+  async handlePublishClick(e: any) {
+    const result = await ethereum.publishTransaction(this.state.transactionToSign);
+    this.setState({
+      linkText: `https://ropsten.etherscan.io/tx/${result}`,
+    });
   }
 
   updateToValue(evt: React.ChangeEvent<HTMLInputElement>) {
@@ -75,8 +85,11 @@ export default class Main extends React.Component<{}, MainState> {
           <li>
             <button onClick={this.handlePublicKeyClick}>Public key</button>
             <button onClick={this.handleSignClick}>Sign</button>
+            <button onClick={this.handlePublishClick}>Publish</button>
             <span>{ this.state.result }</span>
           </li>
+          <li>Transaction to Sign:&nbsp;<i>{this.state.transactionToSign}</i></li>
+          <li>Etherscan link:&nbsp;<i>{this.state.linkText}</i></li>
         </ul>
       </div>
     );

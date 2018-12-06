@@ -11,4 +11,5 @@ export class Keychain {
 export class Ethereum {
   constructor();
   buildTransaction(to: string, value: number): Promise<any>;
+  publishTransaction(transaction: string): Promise<any>;
 }

@@ -3,9 +3,18 @@ const EthereumTx = require('ethereumjs-tx');
 const ethUtil = require('ethereumjs-util');
 const rlp = require('rlp');
 
+interface SendTransactionResult {
+  transactionHash: string;
+}
+
 export class Ethereum {
   endpoint = 'https://ropsten.infura.io/v3/6e07edb991d64b9197996b7ff174de42';
   buffer: Buffer;
+
+  async sendSignedTransaction(rawHex: string): Promise<SendTransactionResult> {
+    const web3 = new Web3(new Web3.providers.HttpProvider(this.endpoint)); // todo instantiate web3 in the constructor ?
+    return await web3.eth.sendSignedTransaction(`0x${rawHex}`);
+  }
 
   async buildTxSinature (signature: string, from: string, to: string, value: number, data = '') {
     console.log('buildTxSinature');
