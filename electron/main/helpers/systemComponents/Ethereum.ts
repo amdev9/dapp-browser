@@ -24,7 +24,7 @@ export class Ethereum {
     const web3 = new Web3(new Web3.providers.HttpProvider(this.endpoint));
     const nonce = await web3.eth.getTransactionCount(fromAddress);
     const gasPrice = await web3.eth.getGasPrice().then((wei: number) => Number(wei));
-    const chainIdHere = 3;  // todo rename to chainid
+    const chainId = 3;
 
     const draftTxParams = {
       nonce,
@@ -33,7 +33,7 @@ export class Ethereum {
       value,
       data,
       // EIP 155 chainId - mainnet: 1, ropsten: 3, rinkeby: 4
-      chainId: chainIdHere,
+      chainId,
     };
 
     const gasLimit = 21000; // await web3.eth.estimateGas(draftTxParams) ||
@@ -44,7 +44,7 @@ export class Ethereum {
     };
 
     if (signature) {
-      const ret = this.rsv(signature, chainIdHere);
+      const ret = this.rsv(signature, chainId);
       txParams = { ...txParams,
         ...ret,
       };
@@ -99,13 +99,13 @@ export class Ethereum {
     return hex;
   }
 
-  rsv(signature: string, chainIdHere: number) {
+  rsv(signature: string, chainId: number) {
     const r = `0x${signature.slice(0, 64)}`;
     const s = `0x${signature.slice(64, 128)}`;
     const recovery = parseInt(signature.slice(128, 130), 16);
     let tmpV = recovery + 27;
-    if (chainIdHere > 0) {
-      tmpV += chainIdHere * 2 + 8;
+    if (chainId > 0) {
+      tmpV += chainId * 2 + 8;
     }
     const v = tmpV;
     return { r, s, v };

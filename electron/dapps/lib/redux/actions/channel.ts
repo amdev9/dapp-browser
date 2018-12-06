@@ -100,7 +100,8 @@ export const keychainSignSuccess = (result: any, targetUUID?: string) =>
 export const keychainSignFailure = (error: string, targetUUID?: string) =>
   action(constants.KEYCHAIN_SIGN_FAILURE, error, targetUUID);
 
-export const ethereumBuildTransaction = (to: string, value: number) => action(constants.ETHEREUM_BUILD_TRANSACTION, { to, value });
+export const ethereumBuildTransaction = (signature: string, from: string, to: string, value: number) =>
+  action(constants.ETHEREUM_BUILD_TRANSACTION, { signature, from, to, value });
 export const ethereumBuildTransactionSuccess = (result: any, targetUUID?: string) =>
   action(constants.ETHEREUM_BUILD_TRANSACTION_SUCCESS, {result}, targetUUID);
 export const ethereumBuildTransactionFailure = (error: string, targetUUID?: string) =>

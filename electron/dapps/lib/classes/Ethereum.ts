@@ -7,11 +7,11 @@ import StoreUIDSubscriber from './internal/StoreSubscriber';
 export default class Ethereum extends StoreUIDSubscriber {
   subscribePromise: Promise<any>;
 
-  async buildTransaction(to: string, value: number) {
+  async buildTransaction(signature: string, from: string, to: string, value: number) {
     const uid = uuidv4();
 
     this.subscribePromise = this.actionPromise({
-      onStart: actions.ethereumBuildTransaction(to, value),
+      onStart: actions.ethereumBuildTransaction(signature, from, to, value),
       successType: constants.ETHEREUM_BUILD_TRANSACTION_SUCCESS,
       failureType: constants.ETHEREUM_BUILD_TRANSACTION_FAILURE,
     }, uid);

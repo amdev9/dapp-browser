@@ -7,9 +7,8 @@ import './styles.css';
 
 interface MainState {
   result: string;
-  toValue: string;
-  publicKey: string;
-  amountValue: string;
+  to: string;
+  amount: string;
   transactionToSign: string;
   linkText: string;
 }
@@ -20,26 +19,30 @@ export default class Main extends React.Component<{}, MainState> {
   constructor(props: any) {
     super(props);
     this.handleSignClick = this.handleSignClick.bind(this);
-    this.handlePublicKeyClick = this.handlePublicKeyClick.bind(this);
     this.handlePublishClick = this.handlePublishClick.bind(this);
     this.state = {
       result: '',
-      toValue: TO_DEFAULT,
-      amountValue: AMOUNT_DEFAULT,
+      to: TO_DEFAULT,
+      amount: AMOUNT_DEFAULT,
       transactionToSign: 'Please, sign your transaction',
-      publicKey: '',
       linkText: 'Please, publish your transaction',
     };
   }
 
   async handleSignClick(e: any) {
-    const transactionToSign = await ethereum.buildTransaction(this.state.toValue, parseInt(this.state.amountValue, 10));
-    this.setState({transactionToSign});
-  }
+    const from = await keychain.publicKey();
+    console.log('publicKey: ', from); // todo substitute console.log() on the Client's Console log
 
-  async handlePublicKeyClick(e: any) {
-    const publicKey = await keychain.publicKey();
-    this.setState({publicKey, result: publicKey});
+    const rawTransaction = await ethereum.buildTransaction('', from, this.state.to, parseInt(this.state.amount, 10)); // todo rewrite the methods
+    console.log('rawTransaction: ', rawTransaction);
+
+    const signature = await keychain.sign(rawTransaction);
+    console.log('signature: ', signature);
+
+    const transactionToSign = await ethereum.buildTransaction(signature, from, this.state.to, parseInt(this.state.amount, 10));
+    console.log('transactionToSign: ', transactionToSign);
+
+    this.setState({transactionToSign});
   }
 
   async handlePublishClick(e: any) {
@@ -49,15 +52,15 @@ export default class Main extends React.Component<{}, MainState> {
     });
   }
 
-  updateToValue(evt: React.ChangeEvent<HTMLInputElement>) {
+  updateTo(evt: React.ChangeEvent<HTMLInputElement>) {
     this.setState({
-      toValue: evt.target.value,
+      to: evt.target.value,
     });
   }
 
-  updateAmountValue(evt: React.ChangeEvent<HTMLInputElement>) {
+  updateAmount(evt: React.ChangeEvent<HTMLInputElement>) {
     this.setState({
-      amountValue: evt.target.value,
+      amount: evt.target.value,
     });
   }
 
@@ -70,7 +73,7 @@ export default class Main extends React.Component<{}, MainState> {
             <input
               type="text"
               defaultValue={TO_DEFAULT}
-              onChange={evt => this.updateToValue(evt)}
+              onChange={evt => this.updateTo(evt)}
             />
           </li>
           <li>
@@ -79,11 +82,10 @@ export default class Main extends React.Component<{}, MainState> {
               type="number"
               defaultValue={AMOUNT_DEFAULT}
               placeholder={AMOUNT_DEFAULT}
-              onChange={evt => this.updateAmountValue(evt)}
+              onChange={evt => this.updateAmount(evt)}
             />
           </li>
           <li>
-            <button onClick={this.handlePublicKeyClick}>Public key</button>
             <button onClick={this.handleSignClick}>Sign</button>
             <button onClick={this.handlePublishClick}>Publish</button>
             <span>{ this.state.result }</span>
