@@ -1,8 +1,8 @@
 import * as uuidv4 from 'uuid/v4';
 import { AnyAction } from 'redux';
 
-import * as actions from './actions';
-import * as constants from './constants';
+import * as actions from 'MainApp/modules/IpfsRoom/actions';
+import * as constants from 'MainApp/modules/IpfsRoom/constants';
 import StoreSubscriber from '../../classes/internal/StoreSubscriber';
 
 interface SubscribeOptions {

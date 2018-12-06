@@ -5,10 +5,10 @@ import * as uuid from 'uuid/v4';
 
 import { getReadyIpfsInstance } from '../../helpers/systemComponents/IpfsInstance';
 import { appTempPath } from '../../helpers/constants/appPaths';
+import { Message } from './models';
 
 export type RoomName = string;
 export type DappUUID = string;
-export type Message = { from: string, data: Buffer };
 
 export interface SubscribeOptions {
   onMessage?: (message: Message) => void;
