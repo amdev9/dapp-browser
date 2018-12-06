@@ -1,8 +1,8 @@
 import { Notification, app } from 'electron';
 
-import ClientManager from './ClientManager';
-import * as actions from '../actions/notification';
-import StoreManager from './StoreManager';
+import * as actions from './actions';
+import ClientManager from '../../helpers/systemComponents/ClientManager';
+import StoreManager from '../../helpers/systemComponents/StoreManager';
 
 interface NotificationOptions {
   title: string;

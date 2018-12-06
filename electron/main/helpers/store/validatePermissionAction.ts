@@ -5,13 +5,19 @@ import * as constants from '../constants';
 import { IState, Permission } from '../reducers/state';
 import { getModuleActionTypes } from '../utils/actionUtils';
 
-import { constants as IpfsRoomConstants } from '../ducks/IpfsRoom';
-import { constants as IpfsStorageConstants } from '../ducks/IpfsStorage';
-import { constants as FileManagerConstants } from '../ducks/FileManager';
+import { constants as IpfsRoomConstants } from '../../modules/IpfsRoom';
+import { constants as IpfsStorageConstants } from '../../modules/IpfsStorage';
+import { constants as FileManagerConstants } from '../../modules/FileManager';
+import { constants as NotificationConstants } from '../../modules/Notification';
+import { constants as HttpProtocolConstants } from '../../modules/HttpProtocol';
+import { constants as OrbitDbConstants } from '../../modules/OrbitDb';
 
 const ipfsRoomActionTypes = getModuleActionTypes(IpfsRoomConstants);
 const ipfsStorageActionTypes = getModuleActionTypes(IpfsStorageConstants);
 const fileManagerActionTypes = getModuleActionTypes(FileManagerConstants);
+const notificationActionTypes = getModuleActionTypes(NotificationConstants);
+const httpProtocolActionTypes = getModuleActionTypes(HttpProtocolConstants);
+const orbitDbActionTypes = getModuleActionTypes(OrbitDbConstants);
 
 const dappActions: string[] = [
   constants.INTENT_OPEN_CHANNELS,
@@ -19,14 +25,14 @@ const dappActions: string[] = [
   constants.OPEN_CHANNEL_SUCCESS,
   constants.BIND_OPEN_CHANNELS_DONE,
   constants.TOGGLE_APP_HOME_SUCCESS,
-  constants.HTTP_PROTOCOL_OPEN_LINK,
-  constants.DAPP_ACTION_OPEN_LINK,
-  constants.DAPP_ACTION_OPEN_LINK_SUCCESS,
   constants.DAPP_CONTENT_LOADED,
 
   ...ipfsStorageActionTypes,
   ...ipfsRoomActionTypes,
   ...fileManagerActionTypes,
+  ...notificationActionTypes,
+  ...httpProtocolActionTypes,
+  ...orbitDbActionTypes,
 
   constants.SHOW_FILE_ENTRIES,
   constants.NETWORK_GET_BLOCK,
@@ -62,24 +68,7 @@ const dappActions: string[] = [
   constants.STORAGE_FIND_ALL_SUCCESS,
   constants.STORAGE_FIND_ALL_FAILURE,
 
-  constants.ORBIT_DB_CREATE_DATABASE,
-  constants.ORBIT_DB_CREATE_DATABASE_SUCCESS,
-  constants.ORBIT_DB_CREATE_DATABASE_FAILURE,
-  constants.ORBIT_DB_OPEN_DATABASE,
-  constants.ORBIT_DB_OPEN_DATABASE_SUCCESS,
-  constants.ORBIT_DB_OPEN_DATABASE_FAILURE,
-  constants.ORBIT_DB_ADD_ENTRY,
-  constants.ORBIT_DB_ADD_ENTRY_SUCCESS,
-  constants.ORBIT_DB_ADD_ENTRY_FAILURE,
-  constants.ORBIT_DB_GET_ENTRY,
-  constants.ORBIT_DB_GET_ENTRY_SUCCESS,
-  constants.ORBIT_DB_GET_ENTRY_FAILURE,
-  constants.ORBIT_DB_GET_ALL_ENTRIES,
-  constants.ORBIT_DB_GET_ALL_ENTRIES_SUCCESS,
-  constants.ORBIT_DB_GET_ALL_ENTRIES_FAILURE,
-
   constants.DAPP_SET_TRAY_COUNTER,
-  constants.NOTIFICATIONS_SHOW_NOTIFY,
 ];
 
 const clientActions: string[] = [
@@ -96,7 +85,6 @@ const clientActions: string[] = [
   constants.CLIENT_ADD_NOTIFICATION,
   constants.CLIENT_CLEAR_ALL_NOTIFICATIONS,
   constants.CLIENT_CLEAR_NOTIFICATION,
-  constants.CLIENT_NOTIFICATION_TRIGGER_ACTION,
   constants.TOGGLE_LOADER_PANEL,
   constants.TOGGLE_STATUS_BAR_PANEL,
   constants.LOGGER_WRITE_SUCCESS,
@@ -113,6 +101,8 @@ const clientActions: string[] = [
   constants.MARKET_DOWNLOAD_DAPP,
   constants.TOGGLE_PERMISSION,
   constants.GRANT_PERMISSIONS,
+
+  ...notificationActionTypes,
 ];
 
 const fileManagerActions: string[] = [
@@ -163,21 +153,7 @@ const keychainActions: string[] = [
 ];
 
 const orbitDbActions: string[] = [
-  constants.ORBIT_DB_CREATE_DATABASE,
-  constants.ORBIT_DB_CREATE_DATABASE_SUCCESS,
-  constants.ORBIT_DB_CREATE_DATABASE_FAILURE,
-  constants.ORBIT_DB_OPEN_DATABASE,
-  constants.ORBIT_DB_OPEN_DATABASE_SUCCESS,
-  constants.ORBIT_DB_OPEN_DATABASE_FAILURE,
-  constants.ORBIT_DB_ADD_ENTRY,
-  constants.ORBIT_DB_ADD_ENTRY_SUCCESS,
-  constants.ORBIT_DB_ADD_ENTRY_FAILURE,
-  constants.ORBIT_DB_GET_ENTRY,
-  constants.ORBIT_DB_GET_ENTRY_SUCCESS,
-  constants.ORBIT_DB_GET_ENTRY_FAILURE,
-  constants.ORBIT_DB_GET_ALL_ENTRIES,
-  constants.ORBIT_DB_GET_ALL_ENTRIES_SUCCESS,
-  constants.ORBIT_DB_GET_ALL_ENTRIES_FAILURE,
+  ...orbitDbActionTypes,
 ];
 
 const checkGranted = (state: IState, dappName: string, actionType: string) => {

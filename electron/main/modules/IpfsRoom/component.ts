@@ -3,8 +3,8 @@ import * as Room from 'ipfs-pubsub-room';
 import * as path from 'path';
 import * as uuid from 'uuid/v4';
 
-import { getReadyIpfsInstance } from '../../systemComponents/IpfsInstance';
-import { appTempPath } from '../../constants/appPaths';
+import { getReadyIpfsInstance } from '../../helpers/systemComponents/IpfsInstance';
+import { appTempPath } from '../../helpers/constants/appPaths';
 
 export type RoomName = string;
 export type DappUUID = string;

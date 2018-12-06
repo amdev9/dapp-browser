@@ -1,7 +1,7 @@
-import * as constants from '../constants';
+import * as constants from './constants';
 import { ActionType } from 'typesafe-actions';
-import * as notificationActions from '../actions/notification';
-import { NotificationPanel } from './state';
+import * as notificationActions from './actions';
+import { NotificationPanel } from './models';
 
 export type NotificationPanelAction = ActionType<typeof notificationActions>;
 

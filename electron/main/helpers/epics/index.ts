@@ -6,16 +6,16 @@ import clientEpic from './clientEpic';
 import networkEpic from './networkEpic';
 import keychainEpic from './keychainEpic';
 import marketEpic from './marketEpic';
-import orbitDBEpic from './orbitDBEpic';
 import storageEpic from './storageEpic';
-import httpProtocolEpic from './httpProtocolEpic';
 import appMainEpic from './appMainEpic';
 import permissionManagerEpic from './permissionManagerEpic';
-import notificationsEpic from './notificationsEpic';
 
-import { epic as ipfsStorageEpic } from '../ducks/IpfsStorage';
-import { epic as ipfsRoomEpic } from '../ducks/IpfsRoom';
-import { epic as fileManagerEpic } from '../ducks/FileManager';
+import { epics as orbitDBEpic } from '../../modules/OrbitDb';
+import { epics as httpProtocolEpic } from '../../modules/HttpProtocol';
+import { epics as notificationsEpic } from '../../modules/Notification';
+import { epics as ipfsStorageEpic } from '../../modules/IpfsStorage';
+import { epics as ipfsRoomEpic } from '../../modules/IpfsRoom';
+import { epics as fileManagerEpic } from '../../modules/FileManager';
 
 // todo fix https://github.com/piotrwitek/react-redux-typescript-guide#async-flow
 

@@ -18,7 +18,7 @@ import { isFSA } from 'flux-standard-action';
 import { rootEpic } from './redux/epics';
 import rootReducer from './redux/reducers';
 
-import * as notificationActions from './redux/actions/notification';
+import { actions as notificationActions } from './modules/Notification';
 import * as trayActions from './redux/actions/tray';
 
 import { IState as State } from './redux/reducers/state';

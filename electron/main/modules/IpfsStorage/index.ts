@@ -1,5 +1,5 @@
 import * as constants from './constants';
-import epic from './epic';
+import epics from './epics';
 import component from './component';
 
 const moduleName = 'ipfsStorage';
@@ -7,6 +7,6 @@ const moduleName = 'ipfsStorage';
 export {
   moduleName,
   constants,
-  epic,
+  epics,
   component,
 };

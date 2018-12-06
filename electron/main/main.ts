@@ -3,7 +3,7 @@
   Uses process.stdout.write instead of console.log so we can cleanly catch the output in the parent process.
 */
 
-import { app, BrowserWindow, Menu, dialog, MenuItem } from 'electron';
+import { app, BrowserWindow, Menu, dialog, MenuItem, protocol } from 'electron';
 import { Store } from 'redux';
 import { ReplaySubject } from 'rxjs';
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer';
@@ -19,7 +19,7 @@ import { getDefaultExecPath, Keychain } from './helpers/systemComponents/Keychai
 import { NetworkAPI } from './helpers/systemComponents/Network';
 import ClientManager from './helpers/systemComponents/ClientManager';
 import { AppsManager } from './helpers/systemComponents/AppsManager';
-import * as httpProtocolActions from './helpers/actions/httpProtocol';
+import { actions as httpProtocolActions, constants as httpProtocolConstants } from './modules/HttpProtocol';
 import StoreManager from './helpers/systemComponents/StoreManager';
 
 const KEYCHAIN_PATH = path.join(__dirname, '..', 'helpers', 'systemComponents', 'Keychain', getDefaultExecPath());
@@ -165,6 +165,17 @@ app.on('ready', async () => {
   // Subscribe on links after create client window
   replayOpenUrls.subscribe((value: string) => {
     store.dispatch(httpProtocolActions.httpProtocolOpenLink(value));
+  });
+
+  protocol.registerHttpProtocol(httpProtocolConstants.HTTP_PROTOCOL_PREFIX, (req, cb) => {
+    store.dispatch(httpProtocolActions.httpProtocolOpenLink(req.url));
+  }, (err) => {
+    if (!err) {
+      console.log('registered arr protocol');
+    } else {
+      console.error('could not register arr protocol');
+      console.error(err);
+    }
   });
 
   // @TODO: Use 'ready-to-show' event

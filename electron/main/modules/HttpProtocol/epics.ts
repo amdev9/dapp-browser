@@ -1,13 +1,13 @@
 import { ofType, Epic, combineEpics } from 'redux-observable';
 import { ignoreElements, switchMap } from 'rxjs/operators';
 
-import * as constants from '../constants';
-import { AppsManager } from '../systemComponents/AppsManager';
-import ClientManager from '../systemComponents/ClientManager';
-import { HTTP_PROTOCOL } from '../constants/globalVariables';
-import * as httpProtocolActions from '../actions/httpProtocol';
-import { activeDappSelector } from '../selectors';
-import StoreManager from '../systemComponents/StoreManager';
+import * as constants from './constants';
+import * as httpProtocolActions from './actions';
+
+import { AppsManager } from '../../helpers/systemComponents/AppsManager';
+import ClientManager from '../../helpers/systemComponents/ClientManager';
+import { activeDappSelector } from '../../helpers/selectors';
+import StoreManager from '../../helpers/systemComponents/StoreManager';
 
 const httpProtocolOpenLink: Epic<any> = (action$, state$) => action$.pipe(
   ofType(constants.HTTP_PROTOCOL_OPEN_LINK),
@@ -15,7 +15,7 @@ const httpProtocolOpenLink: Epic<any> = (action$, state$) => action$.pipe(
     try {
       const state = state$.value;
       const { link } = action.payload;
-      const clearLink = link && link.replace(HTTP_PROTOCOL, '');
+      const clearLink = link && link.replace(constants.HTTP_PROTOCOL, '');
       const [dappName, ...params] = clearLink.split('/').filter((item: string) => item);
       const requestDapp = AppsManager.getDappItem(dappName);
 

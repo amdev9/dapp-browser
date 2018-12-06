@@ -1,6 +1,6 @@
 import { action } from 'typesafe-actions';
 import * as constants from './constants';
-import { FileId } from '../FileManager';
+import { FileId } from '../FileManager/index';
 
 export interface IpfsFileEntry {
   id: FileId;

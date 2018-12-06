@@ -1,8 +1,12 @@
 export interface NotifyItem {
-  id: number;
+  id: string;
   message: string;
   icon: string;
   appName: string;
   created: Date;
   onClick: string;
+}
+
+export interface NotificationPanel {
+  items: NotifyItem[];
 }

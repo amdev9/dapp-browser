@@ -1,10 +1,10 @@
 import * as constants from './constants';
-import epic from './epic';
+import epics from './epics';
 
 const moduleName = 'ipfsRoom';
 
 export {
   moduleName,
   constants,
-  epic,
+  epics,
 };

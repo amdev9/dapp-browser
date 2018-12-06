@@ -1,4 +1,4 @@
-export * from './notification';
+export * from '../../modules/Notification/models';
 export * from './status-bar';
 export * from './tray';
 export * from './dapp';

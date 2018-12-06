@@ -1,6 +1,4 @@
 import { app } from 'electron';
-import { Store } from 'redux';
-import { IState } from '../reducers/state';
 import { globalUUIDList } from '../constants/globalVariables';
 import { createClientWindow } from '../../createClientWindow';
 import BrowserWindow = Electron.BrowserWindow;

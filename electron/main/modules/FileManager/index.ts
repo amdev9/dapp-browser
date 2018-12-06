@@ -1,5 +1,5 @@
 import * as constants from './constants';
-import epic from './epic';
+import epics from './epics';
 export * from './component';
 
 const moduleName = 'fileManager';
@@ -7,5 +7,5 @@ const moduleName = 'fileManager';
 export {
   moduleName,
   constants,
-  epic,
+  epics,
 };

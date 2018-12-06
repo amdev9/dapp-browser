@@ -47,6 +47,3 @@ export const setMainTrayCounter = (dappName: string, counter: string) => action(
   counter,
   targetDappName: dappName,
 });
-
-export const clientAddNotification = (item: NotifyItem) => action(constants.CLIENT_ADD_NOTIFICATION, { item });
-export const clientClearNotification = (item: NotifyItem) => action(constants.CLIENT_CLEAR_NOTIFICATION, { item });

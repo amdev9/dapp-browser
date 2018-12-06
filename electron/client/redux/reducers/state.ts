@@ -1,4 +1,6 @@
-import { AppItem, NotifyItem, ActiveDapp, StatusBarItem, FeedItem, SearchItem } from '../model';
+import { AppItem, ActiveDapp, StatusBarItem, FeedItem, SearchItem } from '../model';
+export { NotificationPanel } from '../model';
+import { models as NotificationModels } from '../../modules/Notification';
 
 export interface ToggleStatus {
   notification: boolean;
@@ -20,10 +22,6 @@ export interface Tray {
   activeDapp: ActiveDapp;
   pinned: string[];
   isHome: boolean;
-}
-
-export interface NotificationPanel {
-  items: NotifyItem[];
 }
 
 export interface KeychainPanel {
@@ -52,7 +50,7 @@ export interface PermissionsPanel {
 }
 
 export interface IState {
-  notification: NotificationPanel;
+  notification: NotificationModels.NotificationPanel;
   keychain: KeychainPanel;
   loader: LoaderPanel;
   statusBar: StatusBarPanel;

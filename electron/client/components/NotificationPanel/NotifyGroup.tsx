@@ -4,7 +4,7 @@ import { NotifyItem } from '../../redux/model';
 import { IoMdClose } from 'react-icons/io';
 
 interface NotifyGroupProps {
-  clearNotification?: (id: number) => void,
+  clearNotification?: (id: string) => void,
   clearAllNotifications?: () => void,
   onClickNotification: (actionUid: string, dappName: string) => void,
   items: NotifyItem[]

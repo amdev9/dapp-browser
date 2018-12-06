@@ -15,7 +15,3 @@ export interface RendererConf {
 }
 
 export const globalUUIDList: RendererConf[] = [];
-
-// This application opens links that start with this protocol
-export const HTTP_PROTOCOL_PREFIX = 'arr';
-export const HTTP_PROTOCOL = `${HTTP_PROTOCOL_PREFIX}://`;

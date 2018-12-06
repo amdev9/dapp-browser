@@ -60,29 +60,6 @@ export const showBlock = () => action(constants.SHOW_BLOCK);
 
 export const downloadIpfsFile = (hash: string) =>
   action(constants.IPFS_STORAGE_DOWNLOAD_FILE, { hash });
-
-export const ipfsRoomSubscribe = (topic: string) =>
-  action(constants.IPFS_ROOM_SUBSCRIBE, { topic });
-
-// MessageId need to resolve message sending status
-export const ipfsRoomSendMessageBroadcast = (message: string, roomId: string) =>
-  action(constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST, { message, roomId });
-
-export const ipfsRoomSendMessageToPeer = (message: string | Buffer, roomId: string, peer: string) =>
-  action(constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER, { message, roomId, peer });
-
-export const ipfsRoomLeave = (roomId: string) =>
-  action(constants.IPFS_ROOM_LEAVE, { roomId });
-
-export const ipfsRoomGetPeers = (roomId: string) =>
-  action(constants.IPFS_ROOM_GET_PEERS, { roomId })
-
-export const ipfsRoomGetPeersSuccess = (roomId: string, peerList: string[]) =>
-  action(constants.IPFS_ROOM_GET_PEERS_SUCCESS, { roomId, peerList })
-
-export const ipfsRoomGetPeersFailure = (error: string, roomId: string) =>
-  action(constants.IPFS_ROOM_GET_PEERS_FAILURE, { error, roomId })
-
 export const keychainCreate = (key: string, cipher: string, curve: string) =>
   action(constants.KEYCHAIN_CREATE, { key, cipher, curve });
 
@@ -101,22 +78,6 @@ export const keychainSignFailure = (error: string, targetUUID?: string) =>
   action(constants.KEYCHAIN_SIGN_FAILURE, error, targetUUID);
 
 export const keychainShowResult = () => action(constants.KEYCHAIN_SHOW_RESULT);
-
-export const orbitDbCreateDatabase = (database: string) => action(constants.ORBIT_DB_CREATE_DATABASE, { database });
-
-export const orbitDbOpenDatabase = (database: string) => action(constants.ORBIT_DB_OPEN_DATABASE, { database });
-
-export const orbitDbAddEntry = (database: string, entry: any) => action(constants.ORBIT_DB_ADD_ENTRY, {
-  database,
-  entry
-});
-
-export const orbitDbGetEntry = (database: string, hash: string) => action(constants.ORBIT_DB_GET_ENTRY, {
-  database,
-  hash
-});
-
-export const orbitDbGetAllEntries = (database: string) => action(constants.ORBIT_DB_GET_ALL_ENTRIES, { database });
 
 export const toggleAppHomeSuccess = () => action(constants.TOGGLE_APP_HOME_SUCCESS);
 

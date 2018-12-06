@@ -3,7 +3,6 @@ import { AnyAction } from 'redux';
 import { ofType } from 'redux-observable';
 import { filter } from 'rxjs/operators';
 import { storeObservable } from '../epics/appMainEpic';
-import ClientManager from '../systemComponents/ClientManager';
 
 interface ActionFlow {
   successType: string;
