@@ -1,38 +1,66 @@
 import * as React from 'react';
 const ArrayIO = require('array-io');
 const keychain: ArrayIO.Keychain = new ArrayIO.Keychain();
+const ethereum: ArrayIO.Ethereum = new ArrayIO.Ethereum();
 
 import './styles.css';
 
 interface MainState {
   result: string;
-  inputValue: string;
+  to: string;
+  amount: string;
+  transactionToSign: string;
+  linkText: string;
 }
+const TO_DEFAULT = '0xE8899BA12578d60e4D0683a596EDaCbC85eC18CC';
+const AMOUNT_DEFAULT = '100';
 
 export default class Main extends React.Component<{}, MainState> {
   constructor(props: any) {
     super(props);
     this.handleSignClick = this.handleSignClick.bind(this);
-    this.handlePublicKeyClick = this.handlePublicKeyClick.bind(this);
+    this.handlePublishClick = this.handlePublishClick.bind(this);
     this.state = {
       result: '',
-      inputValue: '',
+      to: TO_DEFAULT,
+      amount: AMOUNT_DEFAULT,
+      transactionToSign: 'Please, sign your transaction',
+      linkText: 'Please, publish your transaction',
     };
   }
 
   async handleSignClick(e: any) {
-    const result = await keychain.sign(this.state.inputValue);
-    this.setState({result});
+    const from = await keychain.publicKey();
+    console.log('publicKey: ', from); // todo substitute console.log() on the Client's Console log
+
+    const rawTransaction = await ethereum.buildTransaction('', from, this.state.to, parseInt(this.state.amount, 10)); // todo rewrite the methods
+    console.log('rawTransaction: ', rawTransaction);
+
+    const signature = await keychain.sign(rawTransaction);
+    console.log('signature: ', signature);
+
+    const transactionToSign = await ethereum.buildTransaction(signature, from, this.state.to, parseInt(this.state.amount, 10));
+    console.log('transactionToSign: ', transactionToSign);
+
+    this.setState({transactionToSign});
   }
 
-  async handlePublicKeyClick(e: any) {
-    const result = await keychain.publicKey();
-    this.setState({result});
-  }
-
-  updateInputValue(evt: React.ChangeEvent<HTMLInputElement>) {
+  async handlePublishClick(e: any) {
+    const result = await ethereum.publishTransaction(this.state.transactionToSign);
     this.setState({
-      inputValue: evt.target.value,
+      linkText: `https://ropsten.etherscan.io/tx/${result}`,
+    });
+  }
+
+  updateTo(evt: React.ChangeEvent<HTMLInputElement>) {
+    this.setState({
+      to: evt.target.value,
+    });
+  }
+
+  updateAmount(evt: React.ChangeEvent<HTMLInputElement>) {
+    this.setState({
+      amount: evt.target.value,
     });
   }
 
@@ -41,22 +69,32 @@ export default class Main extends React.Component<{}, MainState> {
       <div className="container">
         <ul className="flex-outer">
           <li>
-            <label>Transaction</label>
+            <label>To address</label>
             <input
               type="text"
-              placeholder="871689d060721b5cec5a010080841e00000000000011130065cd1d0000000000000000"
-              onChange={evt => this.updateInputValue(evt)}
+              defaultValue={TO_DEFAULT}
+              onChange={evt => this.updateTo(evt)}
             />
           </li>
           <li>
-            <button onClick={this.handlePublicKeyClick}>Public key</button>
+            <label>Amount</label>
+            <input
+              type="number"
+              defaultValue={AMOUNT_DEFAULT}
+              placeholder={AMOUNT_DEFAULT}
+              onChange={evt => this.updateAmount(evt)}
+            />
+          </li>
+          <li>
             <button onClick={this.handleSignClick}>Sign</button>
+            <button onClick={this.handlePublishClick}>Publish</button>
             <span>{ this.state.result }</span>
           </li>
+          <li>Transaction to Sign:&nbsp;<i>{this.state.transactionToSign}</i></li>
+          <li>Etherscan link:&nbsp;<i>{this.state.linkText}</i></li>
         </ul>
       </div>
     );
   }
 
 }
-
