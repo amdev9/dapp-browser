@@ -59,30 +59,6 @@ class ArrayIO extends StoreSubscriber {
       failureType: constants.LOGGER_WRITE_FAILURE,
     });
   }
-
-  storageSave(key: string, value: string) {
-    return this.actionPromise({
-      onStart: actions.storageSave({ key, value }),
-      successType: constants.STORAGE_SAVE_SUCCESS,
-      failureType: constants.STORAGE_SAVE_FAILURE,
-    });
-  }
-
-  storageFindAll() {
-    return this.actionPromise({
-      onStart: actions.storageFindAll(),
-      successType: constants.STORAGE_FIND_ALL_SUCCESS,
-      failureType: constants.STORAGE_FIND_ALL_FAILURE,
-    });
-  }
-
-  storageRemove(key: string) {
-    return this.actionPromise({
-      onStart: actions.storageRemove(key),
-      successType: constants.STORAGE_REMOVE_SUCCESS,
-      failureType: constants.STORAGE_REMOVE_FAILURE,
-    });
-  }
 }
 
 export default new ArrayIO();

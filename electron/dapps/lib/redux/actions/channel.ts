@@ -32,23 +32,6 @@ export const loggerWriteSuccess = (result: any, targetUUID?: string) =>
 export const loggerWriteFailure = (error: string, targetUUID?: string) =>
   action(constants.LOGGER_WRITE_FAILURE, error, targetUUID);
 
-export const storageSave = (entry: { key: string, value: string }) => action(constants.STORAGE_SAVE, entry);
-export const storageSaveSuccess = (result: any, targetUUID?: string) =>
-  action(constants.STORAGE_SAVE_SUCCESS, { result }, targetUUID);
-export const storageSaveFailure = (error: string, targetUUID?: string) =>
-  action(constants.STORAGE_SAVE_FAILURE, error, targetUUID);
-
-export const storageFindAll = () => action(constants.STORAGE_FIND_ALL);
-export const storageFindAllSuccess = (result: any, targetUUID?: string) =>
-  action(constants.STORAGE_FIND_ALL_SUCCESS, { result }, targetUUID);
-export const storageFindAllFailure = (error: string, targetUUID?: string) =>
-  action(constants.STORAGE_FIND_ALL_FAILURE, error, targetUUID);
-export const storageRemove = (key: string) => action(constants.STORAGE_REMOVE, key);
-export const storageRemoveSuccess = (result: any, targetUUID?: string) =>
-  action(constants.STORAGE_REMOVE_SUCCESS, { result }, targetUUID);
-export const storageRemoveFailure = (error: string, targetUUID?: string) =>
-  action(constants.STORAGE_REMOVE_FAILURE, error, targetUUID);
-
 export const showBlock = () => action(constants.SHOW_BLOCK);
 
 export const keychainCreate = (key: string, cipher: string, curve: string) =>

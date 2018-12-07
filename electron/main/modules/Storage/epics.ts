@@ -2,9 +2,9 @@ import { AnyAction } from 'redux';
 import { combineEpics, Epic, ofType } from 'redux-observable';
 import { switchMap } from 'rxjs/operators';
 
-import * as storageActions  from '../actions/storage';
-import * as constants from '../constants';
-import { Storage } from '../systemComponents/Storage';
+import * as storageActions  from './actions';
+import * as constants from './constants';
+import { Storage } from './component';
 
 const storageSaveEpic: Epic<AnyAction> = action$ => action$.pipe(
   ofType(constants.STORAGE_SAVE),

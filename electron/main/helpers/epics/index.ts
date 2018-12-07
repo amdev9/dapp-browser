@@ -7,10 +7,10 @@ import networkEpic from './networkEpic';
 import keychainEpic from './keychainEpic';
 import ethereumEpic from './ethereumEpic';
 import marketEpic from './marketEpic';
-import storageEpic from './storageEpic';
 import appMainEpic from './appMainEpic';
 import permissionManagerEpic from './permissionManagerEpic';
 
+import { epics as storageEpic } from '../../modules/Storage';
 import { epics as dappEpic } from '../../modules/Dapp';
 import { epics as appsManagerEpic } from '../../modules/AppsManager';
 import { epics as orbitDBEpic } from '../../modules/OrbitDb';

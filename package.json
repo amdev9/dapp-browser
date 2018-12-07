@@ -22,10 +22,11 @@
     "build-dapp-Wallet": "cd electron/dapps/download/Wallet && npm i && npm run build",
     "build-dapp-TicTacToe": "cd electron/dapps/download/TicTacToe && npm i && npm run build",
     "build-dapp-BlockExplorer": "cd electron/dapps/download/BlockExplorer && npm i && npm run build",
+    "build-dapp-lib": "cd electron/dapps/lib && npm i && npm run build",
     "build-dapps": "npm run build-dapp-Chat && npm run build-dapp-Wallet && npm run build-dapp-TicTacToe && npm run build-dapp-BlockExplorer",
     "build-main": "cd electron/main && npm i && npm run build",
     "build-permission": "cd electron/permissionManager && npm i && npm run build",
-    "build-combine": "npm run build-client && npm run build-main && npm run build-permission && npm run build-dapps",
+    "build-combine": "npm run build-client && npm run build-main && npm run build-permission && npm run build-dapps && npm run build-dapp-lib",
     "build": "npm i && npm run clean && npm run build-combine && cd electron/main && npm run dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

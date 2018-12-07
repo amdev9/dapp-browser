@@ -12,10 +12,11 @@ import { constants as NotificationConstants } from '../../modules/Notification';
 import { constants as HttpProtocolConstants } from '../../modules/HttpProtocol';
 import { constants as OrbitDbConstants } from '../../modules/OrbitDb';
 import { constants as AppsManagerConstants } from '../../modules/AppsManager';
-import { constants as dappConstants } from '../../modules/Dapp';
+import { constants as DappConstants } from '../../modules/Dapp';
+import { constants as StorageConstants } from '../../modules/Storage';
 
-import { constants as clientDappConstants } from 'ClientApp/modules/Dapp';
-import { constants as clientNotificationConstants } from 'ClientApp/modules/Notification';
+import { constants as ClientDappConstants } from 'ClientApp/modules/Dapp';
+import { constants as ClientNotificationConstants } from 'ClientApp/modules/Notification';
 
 const ipfsRoomActionTypes = getModuleActionTypes(IpfsRoomConstants);
 const ipfsStorageActionTypes = getModuleActionTypes(IpfsStorageConstants);
@@ -24,10 +25,11 @@ const notificationActionTypes = getModuleActionTypes(NotificationConstants);
 const httpProtocolActionTypes = getModuleActionTypes(HttpProtocolConstants);
 const orbitDbActionTypes = getModuleActionTypes(OrbitDbConstants);
 const appsManagerActionTypes = getModuleActionTypes(AppsManagerConstants);
-const dappsActionTypes = getModuleActionTypes(dappConstants);
+const dappsActionTypes = getModuleActionTypes(DappConstants);
+const storageActionTypes = getModuleActionTypes(StorageConstants);
 
-const clientDappsActionTypes = getModuleActionTypes(clientDappConstants);
-const clientNotificationActionTypes = getModuleActionTypes(clientNotificationConstants);
+const clientDappsActionTypes = getModuleActionTypes(ClientDappConstants);
+const clientNotificationActionTypes = getModuleActionTypes(ClientNotificationConstants);
 
 const dappActions: string[] = [
   constants.INTENT_OPEN_CHANNELS,
@@ -44,6 +46,7 @@ const dappActions: string[] = [
   ...httpProtocolActionTypes,
   ...orbitDbActionTypes,
   ...dappsActionTypes,
+  ...storageActionTypes,
 
   constants.SHOW_FILE_ENTRIES,
   constants.NETWORK_GET_BLOCK,
@@ -70,16 +73,6 @@ const dappActions: string[] = [
   constants.KEYCHAIN_SHOW_RESULT,
   constants.ETHEREUM_BUILD_TRANSACTION,
   constants.ETHEREUM_PUBLISH_TRANSACTION,
-
-  constants.STORAGE_SAVE,
-  constants.STORAGE_SAVE_SUCCESS,
-  constants.STORAGE_SAVE_FAILURE,
-  constants.STORAGE_REMOVE,
-  constants.STORAGE_REMOVE_SUCCESS,
-  constants.STORAGE_REMOVE_FAILURE,
-  constants.STORAGE_FIND_ALL,
-  constants.STORAGE_FIND_ALL_SUCCESS,
-  constants.STORAGE_FIND_ALL_FAILURE,
 ];
 
 const clientActions: string[] = [

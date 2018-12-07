@@ -1,5 +1,5 @@
 import { createConnection, getConnection } from 'typeorm';
-import { Store } from '../store/model/Store';
+import { Store } from './models';
 
 export class Storage {
   name: string;

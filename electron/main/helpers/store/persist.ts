@@ -20,7 +20,7 @@
 import 'reflect-metadata';
 import { createConnection, ConnectionOptions } from 'typeorm';
 import * as path from 'path';
-import { Store } from './model/Store';
+import { Store } from '../../modules/Storage/models';
 import { appTempPath } from '../constants/appPaths';
 
 const dbPath = path.join(appTempPath, 'db');
