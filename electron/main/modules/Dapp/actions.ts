@@ -8,6 +8,7 @@ export const dappResetFocus = (targetUUID: string) => action(constants.DAPP_RESE
 export const dappActionOpenLink = (params: string[], targetUUID: string) =>
   action(constants.DAPP_ACTION_OPEN_LINK, { params }, { targetUUID });
 
+export const setTrayCounter = (counter: number) => action(constants.DAPP_SET_TRAY_COUNTER, { counter });
 
 export const setMainTrayCounter = (dappName: string, counter: string) => action(constants.SET_MAIN_TRAY_COUNTER, {
   counter,
