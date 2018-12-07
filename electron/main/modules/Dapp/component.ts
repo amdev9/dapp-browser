@@ -23,6 +23,10 @@ export default class Dapp {
   static getActiveDapp() {
     const activeDappName = Dapp.getActiveDappName();
 
+    if (!activeDappName) {
+      return;
+    }
+
     return Dapp.getDappByName(activeDappName);
   }
 
