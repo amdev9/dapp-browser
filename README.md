@@ -19,4 +19,4 @@ npm run dev
 npm install
 npm run build
 ```
-and get executable file from ./release folder.
+and get executable file from `./release` folder.

@@ -5,6 +5,7 @@ import bindOpenChannelsEpic from './bindOpenChannelsEpic';
 import clientEpic from './clientEpic';
 import networkEpic from './networkEpic';
 import keychainEpic from './keychainEpic';
+import ethereumEpic from './ethereumEpic';
 import marketEpic from './marketEpic';
 import storageEpic from './storageEpic';
 import appMainEpic from './appMainEpic';
@@ -39,4 +40,5 @@ export default combineEpics(
   httpProtocolEpic,
   permissionManagerEpic,
   notificationsEpic,
+  ethereumEpic,
 );

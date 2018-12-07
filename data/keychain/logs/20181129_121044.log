@@ -1,7 +1,0 @@
-2018-Nov-29 12:10:44.450455 info Start
-2018-Nov-29 12:10:44.451210 info OS: unknown
-2018-Nov-29 12:10:44.451369 info secure_module: <sec_mod_dummy>
-2018-Nov-29 12:10:44.451525 info stdin:{"command":"lock","promise":{}}
-
-2018-Nov-29 12:10:44.451936 info stdout:{"id":0,"result":true}
-2018-Nov-29 12:10:44.452016 info stdin:

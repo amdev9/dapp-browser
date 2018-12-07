@@ -1,4 +1,5 @@
 export { default as Keychain } from './Keychain';
+export { default as Ethereum } from './Ethereum';
 export { default as ArrayIO } from './ArrayIO';
 export { default as Notification } from './Notification';
 export { component as Dapp } from '../modules/Dapp';

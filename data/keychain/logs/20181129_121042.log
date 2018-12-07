@@ -1,7 +1,0 @@
-2018-Nov-29 12:10:42.669803 info Start
-2018-Nov-29 12:10:42.670538 info OS: unknown
-2018-Nov-29 12:10:42.670672 info secure_module: <sec_mod_dummy>
-2018-Nov-29 12:10:42.670780 info stdin:{"command":"unlock","params":{"keyname":"testkey123@182af46b552ac434"},"promise":{}}
-
-2018-Nov-29 12:10:42.671604 info stdout:{"id":0,"result":true}
-2018-Nov-29 12:10:42.671661 info stdin:
