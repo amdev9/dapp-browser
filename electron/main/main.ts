@@ -12,15 +12,15 @@ import * as nodeConsole from 'console';
 import { configureStore, initialState } from './helpers/store/configureStore';
 import { globalUUIDList } from './helpers/constants/globalVariables';
 import { IState } from './helpers/reducers/state';
-import * as clientActions from './helpers/actions/client';
 import contextMenu from './contextMenu';
 import { getDefaultExecPath, Keychain } from './helpers/systemComponents/Keychain';
 import { NetworkAPI } from './helpers/systemComponents/Network';
 import ClientManager from './helpers/systemComponents/ClientManager';
-import { component as AppsManager } from './modules/AppsManager';
-import { actions as httpProtocolActions, constants as httpProtocolConstants } from './modules/HttpProtocol';
 import StoreManager from './helpers/systemComponents/StoreManager';
+
+import { component as AppsManager } from './modules/AppsManager';
 import { component as Dapp } from './modules/Dapp';
+import { component as HttpProtocol } from './modules/HttpProtocol';
 
 const KEYCHAIN_PATH = path.join(__dirname, '..', 'helpers', 'systemComponents', 'Keychain', getDefaultExecPath());
 const console = new nodeConsole.Console(process.stdout, process.stderr);
@@ -162,20 +162,10 @@ app.on('ready', async () => {
     process.stdout.write(JSON.stringify(storeState));
   });
 
+  HttpProtocol.registerHttpProtocol();
   // Subscribe on links after create client window
   replayOpenUrls.subscribe((value: string) => {
-    store.dispatch(httpProtocolActions.httpProtocolOpenLink(value));
-  });
-
-  protocol.registerHttpProtocol(httpProtocolConstants.HTTP_PROTOCOL_PREFIX, (req, cb) => {
-    store.dispatch(httpProtocolActions.httpProtocolOpenLink(req.url));
-  }, (err) => {
-    if (!err) {
-      console.log('registered arr protocol');
-    } else {
-      console.error('could not register arr protocol');
-      console.error(err);
-    }
+    HttpProtocol.openLink(value);
   });
 
   // @TODO: Use 'ready-to-show' event
@@ -189,7 +179,7 @@ app.on('ready', async () => {
 
     const activeDapp = Dapp.getActiveDappName();
     if (activeDapp) {
-      store.dispatch(clientActions.switchDapp(activeDapp));
+      ClientManager.switchDapp(activeDapp);
     }
   });
 

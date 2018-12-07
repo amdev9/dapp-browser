@@ -14,7 +14,6 @@ import permissionManagerEpic from './permissionManagerEpic';
 import { epics as dappEpic } from '../../modules/Dapp';
 import { epics as appsManagerEpic } from '../../modules/AppsManager';
 import { epics as orbitDBEpic } from '../../modules/OrbitDb';
-import { epics as httpProtocolEpic } from '../../modules/HttpProtocol';
 import { epics as notificationsEpic } from '../../modules/Notification';
 import { epics as ipfsStorageEpic } from '../../modules/IpfsStorage';
 import { epics as ipfsRoomEpic } from '../../modules/IpfsRoom';
@@ -37,7 +36,6 @@ export default combineEpics(
   marketEpic,
   orbitDBEpic,
   storageEpic,
-  httpProtocolEpic,
   permissionManagerEpic,
   notificationsEpic,
   ethereumEpic,
