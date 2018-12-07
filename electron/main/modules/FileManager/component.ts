@@ -4,28 +4,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as fse from 'fs-extra';
 
-export type FileId = string;
-export type Path = string;
-export type FileName = string;
-
-export interface FileEntry {
-  id: FileId;
-  path?: Path;
-  name?: FileName;
-}
-
-export type FileEntryList = FileEntry[];
-export type FileIdList = FileId[];
-export type PathList = Path[];
-
-export interface FileObject {
-  name: string;
-  path: string;
-  hash: Buffer | string;
-  size: number;
-  content?: Buffer;
-  type: 'file' | string;
-}
+import { FileId, FileEntry, PathList, Path, FileObject } from './models';
 
 export class FileManager {
   static entryMap: Map<FileId, Path> = new Map();

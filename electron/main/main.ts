@@ -12,15 +12,15 @@ import * as nodeConsole from 'console';
 import { configureStore, initialState } from './helpers/store/configureStore';
 import { globalUUIDList } from './helpers/constants/globalVariables';
 import { IState } from './helpers/reducers/state';
-import { activeDappSelector } from './helpers/selectors';
 import * as clientActions from './helpers/actions/client';
 import contextMenu from './contextMenu';
 import { getDefaultExecPath, Keychain } from './helpers/systemComponents/Keychain';
 import { NetworkAPI } from './helpers/systemComponents/Network';
 import ClientManager from './helpers/systemComponents/ClientManager';
-import { AppsManager } from './helpers/systemComponents/AppsManager';
+import { component as AppsManager } from './modules/AppsManager';
 import { actions as httpProtocolActions, constants as httpProtocolConstants } from './modules/HttpProtocol';
 import StoreManager from './helpers/systemComponents/StoreManager';
+import { component as Dapp } from './modules/Dapp';
 
 const KEYCHAIN_PATH = path.join(__dirname, '..', 'helpers', 'systemComponents', 'Keychain', getDefaultExecPath());
 const console = new nodeConsole.Console(process.stdout, process.stderr);
@@ -158,7 +158,7 @@ app.on('ready', async () => {
 
   store.subscribe(() => {
     const storeState = store.getState();
-    AppsManager.correctDappViewBounds(clientWindow, storeState);
+    AppsManager.correctDappViewBounds(clientWindow);
     process.stdout.write(JSON.stringify(storeState));
   });
 
@@ -187,7 +187,7 @@ app.on('ready', async () => {
     clientWindow.show();
     clientWindow.focus();
 
-    const activeDapp = activeDappSelector(store.getState());
+    const activeDapp = Dapp.getActiveDappName();
     if (activeDapp) {
       store.dispatch(clientActions.switchDapp(activeDapp));
     }
@@ -210,9 +210,9 @@ app.on('ready', async () => {
     });
   }
 
-  clientWindow.on('resize', () => AppsManager.correctDappViewBounds(clientWindow, store.getState()));
-  clientWindow.on('maximize', () => AppsManager.correctDappViewBounds(clientWindow, store.getState()));
-  clientWindow.on('restore', () => AppsManager.correctDappViewBounds(clientWindow, store.getState()));
+  clientWindow.on('resize', () => AppsManager.correctDappViewBounds(clientWindow));
+  clientWindow.on('maximize', () => AppsManager.correctDappViewBounds(clientWindow));
+  clientWindow.on('restore', () => AppsManager.correctDappViewBounds(clientWindow));
 });
 
 process.stdout.write('Main initialized');

@@ -15,3 +15,5 @@ export interface RendererConf {
 }
 
 export const globalUUIDList: RendererConf[] = [];
+
+export const isDev = process.env.ELECTRON_ENV === 'development';

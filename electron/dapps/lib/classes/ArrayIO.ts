@@ -9,14 +9,6 @@ type NetworkSubscribeOptions = {
 };
 
 class ArrayIO extends StoreSubscriber {
-  openFileManager() {
-    return this.actionPromise({
-      onStart: actions.openFileManagerDialog(),
-      successType: constants.FILE_MANAGER_OPEN_DIALOG_SUCCESS,
-      failureType: constants.FILE_MANAGER_OPEN_DIALOG_FAILURE,
-    });
-  }
-
   networkGetBlock() {
     return this.actionPromise({
       onStart: actions.networkGetBlock(),

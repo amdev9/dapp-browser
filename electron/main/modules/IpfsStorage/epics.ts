@@ -4,7 +4,7 @@ import { switchMap } from 'rxjs/operators';
 
 import * as ipfsStorageActions from './actions';
 import * as constants from './constants';
-import { FileManager, FileObject } from '../FileManager/index';
+import { FileManager, models as FileManagerModels } from '../FileManager';
 import ipfs from './component';
 
 const ipfsStorageUploadEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
@@ -42,7 +42,7 @@ const ipfsStorageDownloadEpic: Epic<AnyAction> = action$ => action$.pipe(
         throw Error('File with current hash does not exist');
       }
 
-      const savedFile = await FileManager.saveFile(targetDirectory, <FileObject> downloadFile);
+      const savedFile = await FileManager.saveFile(targetDirectory, <FileManagerModels.FileObject> downloadFile);
       const ipfsFileEntry: ipfsStorageActions.IpfsFileEntry = {
         id: savedFile,
         hash: action.payload.hash,

@@ -1,7 +1,7 @@
 import { ofType, Epic, combineEpics } from 'redux-observable';
 import { ignoreElements, tap, mapTo, map } from 'rxjs/operators';
 import * as constants from '../constants';
-import { AppsManager } from '../systemComponents/AppsManager';
+import { component as AppsManager, models as AppsManagerModels } from '../../modules/AppsManager';
 import ClientManager from '../systemComponents/ClientManager';
 import * as clientActions from '../actions/client';
 import { AppItem } from '../../../client/redux/model';
@@ -36,41 +36,11 @@ const removeTrayItemEpic: Epic<any> = action$ => action$.pipe(
   mapTo(clientActions.toggleHome(true)),
 );
 
-const setMainTrayCounterEpic: Epic<any> = action$ => action$.pipe(
-  ofType(constants.DAPP_SET_TRAY_COUNTER),
-  map(action => clientActions.setMainTrayCounter(action.meta.name, action.payload.counter)),
-);
-
-const setClientTrayCounterEpic: Epic<any> = (action$, state$) => action$.pipe(
-  ofType(constants.SET_MAIN_TRAY_COUNTER),
-  map((action) => {
-    const dappsCounterList: clientActions.DappsCounter[] = [];
-    let allDappsCounter = 0;
-
-    const dappsList = state$.value.tray.items.forEach((trayItem: AppItem) => {
-      const counter = trayItem.counter || 0;
-      allDappsCounter += counter;
-
-      dappsCounterList.push({
-        counter,
-        dappName: trayItem.appName,
-      });
-    });
-
-    const badge = allDappsCounter ? allDappsCounter.toString() : '';
-
-    ClientManager.setBadge(badge);
-    return clientActions.setTrayCounters(dappsCounterList);
-  }),
-  // map(action => clientActions.setTrayCounter(action.meta.name, action.payload.counter)),
-);
 
 export default combineEpics(
   openDappEpic,
   addAppItemEpic,
   toggleSettingsEpic,
   removeTrayItemEpic,
-  setMainTrayCounterEpic,
-  setClientTrayCounterEpic,
   clientToggleHomeEpic,
 );

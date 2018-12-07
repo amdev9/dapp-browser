@@ -2,8 +2,8 @@ import * as fs from 'fs';
 import * as IPFS from 'ipfs';
 import * as pathModule from 'path';
 
-import { Path } from '../FileManager/index';
-import { IPFSGetResult } from '../../types/ipfs/index';
+import { models as FileManagerModels } from '../FileManager';
+import { IPFSGetResult } from '../../types/ipfs';
 import { remoteConfig } from '../../helpers/config/ipfs';
 import { getReadyIpfsInstance } from '../../helpers/systemComponents/IpfsInstance';
 
@@ -45,7 +45,7 @@ class IpfsStorage {
     this.ipfs = getReadyIpfsInstance();
   }
 
-  async uploadFile(filePath: Path): Promise<IpfsFileObject | null> {
+  async uploadFile(filePath: FileManagerModels.Path): Promise<IpfsFileObject | null> {
     if (!filePath) {
       return;
     }

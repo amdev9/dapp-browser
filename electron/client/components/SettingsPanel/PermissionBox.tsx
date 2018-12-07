@@ -8,7 +8,7 @@ interface PermissionBoxProps {
   permissions: PermissionsPanel;
 }
 
-// @todo read data & assets from AppsManager for icons preview
+// @todo read data & assets from Component for icons preview
 export class PermissionBox extends React.Component<PermissionBoxProps> {
   checked: boolean;
 

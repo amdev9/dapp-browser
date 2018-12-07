@@ -11,6 +11,11 @@ import { constants as FileManagerConstants } from '../../modules/FileManager';
 import { constants as NotificationConstants } from '../../modules/Notification';
 import { constants as HttpProtocolConstants } from '../../modules/HttpProtocol';
 import { constants as OrbitDbConstants } from '../../modules/OrbitDb';
+import { constants as AppsManagerConstants } from '../../modules/AppsManager';
+import { constants as dappConstants } from '../../modules/Dapp';
+
+import { constants as clientDappConstants } from 'ClientApp/modules/Dapp';
+import { constants as clientNotificationConstants } from 'ClientApp/modules/Notification';
 
 const ipfsRoomActionTypes = getModuleActionTypes(IpfsRoomConstants);
 const ipfsStorageActionTypes = getModuleActionTypes(IpfsStorageConstants);
@@ -18,6 +23,11 @@ const fileManagerActionTypes = getModuleActionTypes(FileManagerConstants);
 const notificationActionTypes = getModuleActionTypes(NotificationConstants);
 const httpProtocolActionTypes = getModuleActionTypes(HttpProtocolConstants);
 const orbitDbActionTypes = getModuleActionTypes(OrbitDbConstants);
+const appsManagerActionTypes = getModuleActionTypes(AppsManagerConstants);
+const dappsActionTypes = getModuleActionTypes(dappConstants);
+
+const clientDappsActionTypes = getModuleActionTypes(clientDappConstants);
+const clientNotificationActionTypes = getModuleActionTypes(clientNotificationConstants);
 
 const dappActions: string[] = [
   constants.INTENT_OPEN_CHANNELS,
@@ -25,14 +35,15 @@ const dappActions: string[] = [
   constants.OPEN_CHANNEL_SUCCESS,
   constants.BIND_OPEN_CHANNELS_DONE,
   constants.TOGGLE_APP_HOME_SUCCESS,
-  constants.DAPP_CONTENT_LOADED,
 
+  ...appsManagerActionTypes,
   ...ipfsStorageActionTypes,
   ...ipfsRoomActionTypes,
   ...fileManagerActionTypes,
   ...notificationActionTypes,
   ...httpProtocolActionTypes,
   ...orbitDbActionTypes,
+  ...dappsActionTypes,
 
   constants.SHOW_FILE_ENTRIES,
   constants.NETWORK_GET_BLOCK,
@@ -67,8 +78,6 @@ const dappActions: string[] = [
   constants.STORAGE_FIND_ALL,
   constants.STORAGE_FIND_ALL_SUCCESS,
   constants.STORAGE_FIND_ALL_FAILURE,
-
-  constants.DAPP_SET_TRAY_COUNTER,
 ];
 
 const clientActions: string[] = [
@@ -95,14 +104,14 @@ const clientActions: string[] = [
   constants.TOGGLE_SEARCH_PANEL,
   constants.CLIENT_SWITCH_DAPP,
   constants.ADD_APP_ITEM,
-  constants.SET_TRAY_COUNTER,
   constants.SET_TRAY_PROGRESS,
   constants.REMOVE_TRAY_ITEM,
   constants.MARKET_DOWNLOAD_DAPP,
   constants.TOGGLE_PERMISSION,
   constants.GRANT_PERMISSIONS,
 
-  ...notificationActionTypes,
+  ...clientNotificationActionTypes,
+  ...clientDappsActionTypes,
 ];
 
 const fileManagerActions: string[] = [

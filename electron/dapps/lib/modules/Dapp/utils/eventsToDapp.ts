@@ -1,8 +1,8 @@
 import { Subject } from 'rxjs';
 import { AnyAction } from 'redux';
 
-import * as constants from '../constants';
-import Dapp from '../../classes/Dapp';
+import * as constants from '../../../redux/constants/index';
+import Dapp from '../component';
 
 interface EventActionMatch {
   actionType: string;

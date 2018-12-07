@@ -1,5 +1,7 @@
 import { Action } from 'redux';
-import * as constants from '../../../client/redux/constants';
+
+import * as constants from '../constants';
+import { constants as dappConstants } from '../../modules/Dapp';
 
 interface TrayAction extends Action {
   payload?: {
@@ -37,7 +39,7 @@ export function tray(state: { items: AppItem[] } = { items: [] }, action: TrayAc
         items: state.items.filter(item => item.appName !== dappName),
       };
 
-    case constants.SET_MAIN_TRAY_COUNTER:
+    case dappConstants.SET_MAIN_TRAY_COUNTER:
 
       return {
         ...state,

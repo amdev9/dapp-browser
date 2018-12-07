@@ -1,13 +1,33 @@
+import * as fs from 'fs';
 import { BrowserView, BrowserWindow } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 import * as uuidv4 from 'uuid/v4';
-import { AppItem } from './helpers/systemComponents/AppsManager';
-import { DAPPS_PATH } from './helpers/constants/appPaths';
-import { RendererConf } from './helpers/constants/globalVariables';
+
+import * as AppsManagerModels from './models';
+import { DAPPS_PATH } from './constants';
+import { RendererConf } from '../../helpers/constants/globalVariables';
+
+export async function readDir(path: string): Promise<any> {
+  return new Promise((res: any, rej: any) => {
+    fs.readdir(path, (err, data) => {
+      if (err) rej(err);
+      else res(data);
+    });
+  });
+}
+
+export async function readFile(path: string, opts = 'utf8'): Promise<any> {
+  return new Promise((res: any, rej: any) => {
+    fs.readFile(path, opts, (err, data) => {
+      if (err) rej(err);
+      else res(data);
+    });
+  });
+}
 
 let dappView: Electron.BrowserView = null;
-export function createDappView(globalUUIDList: RendererConf[], dapp: AppItem) { // entryPath: string, appName: string
+export function createDappView(globalUUIDList: RendererConf[], dapp: AppsManagerModels.AppItem) { // entryPath: string, appName: string
   const createdDapp = dapp && globalUUIDList.find(item => item.name === dapp.appName && item.status === 'dapp');
 
   if (createdDapp) { // Skip creating a new BrowserView for the same dapp

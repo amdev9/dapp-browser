@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { IState } from '../reducers/state';
+import { IState } from '../../helpers/reducers/state';
 
 export const activeDappSelector = createSelector(
   (state: IState) => state.client.activeDapp,

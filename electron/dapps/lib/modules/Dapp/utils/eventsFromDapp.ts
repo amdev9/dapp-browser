@@ -1,7 +1,7 @@
 import { AnyAction } from 'redux';
 
-import Dapp from '../../classes/Dapp';
-import * as eventsActions from '../actions/events';
+import Dapp from '../component';
+import { actions as dappActions } from 'MainApp/modules/Dapp';
 
 interface ActionEventMatch {
   action: (...args: any[]) => AnyAction;
@@ -10,7 +10,7 @@ interface ActionEventMatch {
 
 // Transform dispatched action to event from ArrayIO library
 const matchActionToEvent: ActionEventMatch[] = [
-  { event: 'setTrayCounter', action: (counter: number) => eventsActions.setTrayCounter(counter) },
+  { event: 'setTrayCounter', action: (counter: number) => dappActions.setTrayCounter(counter) },
 ];
 
 export default (store: any) => {
