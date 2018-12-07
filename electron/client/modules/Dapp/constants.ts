@@ -1,0 +1,1 @@
+export const SET_TRAY_COUNTER = 'SET_TRAY_COUNTER';

@@ -9,7 +9,10 @@
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "*": ["node_modules/*", "types/*"]
+      "*": ["node_modules/*", "types/*"],
+      "MainApp/*": ["../main/*"],
+      "DappApp/*": ["../dapps/lib/*"],
+      "PermissionApp/*": ["../permissionManager/*"]
     }
   },
   "files": [

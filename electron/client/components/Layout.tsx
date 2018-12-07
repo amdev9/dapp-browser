@@ -2,7 +2,7 @@ import * as React from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 
-import * as NotificationActions from '../redux/actions/notification';
+import { actions as NotificationActions } from '../modules/Notification';
 import * as KeychainActions from '../redux/actions/keychain';
 import * as LoaderActions from '../redux/actions/loader';
 import * as TrayActions from '../redux/actions/tray';
@@ -58,7 +58,7 @@ interface AppProps {
   keychainList: () => void;
   keychainLock: () => void;
   keychainUnlock: () => void;
-  clearNotification: (id?: number) => void;
+  clearNotification: (id?: string) => void;
   clearAllNotifications: () => void;
   onAddAppItem: (appItem?: AppItem) => any;
   onSwitchDapp: (targetDappName?: string) => any;
@@ -88,7 +88,7 @@ class App extends React.Component<AppProps> {
       <div>
         <NotificationPanel
           clearAllNotifications={() => clearAllNotifications()}
-          clearNotification={(id: number) => clearNotification(id)}
+          clearNotification={(id: string) => clearNotification(id)}
           items={notifyItems}
           onClickNotification={onClickNotification}
           isOpen={openNotificationPanel}

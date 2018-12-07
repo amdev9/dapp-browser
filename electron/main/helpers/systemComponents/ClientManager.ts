@@ -1,12 +1,11 @@
-import { app } from 'electron';
-import { Store } from 'redux';
-import { IState } from '../reducers/state';
 import { globalUUIDList } from '../constants/globalVariables';
 import { createClientWindow } from '../../createClientWindow';
 import BrowserWindow = Electron.BrowserWindow;
 import * as clientActions from '../actions/client';
-import { AppsManager } from './AppsManager';
 import StoreManager from './StoreManager';
+
+import { component as AppsManager } from '../../modules/AppsManager';
+import { component as Dapp } from '../../modules/Dapp';
 
 export default class ClientManager {
   static clientWindow: Electron.BrowserWindow;
@@ -15,7 +14,7 @@ export default class ClientManager {
   static async switchDapp(dappName: string) {
     try {
       await ClientManager.isClientWindowLoaded;
-      await AppsManager.openDapp(dappName, ClientManager.clientWindow, StoreManager.store.getState());
+      await AppsManager.openDapp(dappName, ClientManager.clientWindow);
       StoreManager.store.dispatch(clientActions.switchDapp(dappName));
       StoreManager.store.dispatch(clientActions.switchDappSuccess(dappName));
     } catch (error) {
@@ -24,7 +23,10 @@ export default class ClientManager {
   }
 
   static toggleHome() {
-    AppsManager.resetDappFocusActiveDapp();
+    const activeDapp = Dapp.getActiveDapp();
+    if (activeDapp) {
+      activeDapp.resetDappFocus();
+    }
     ClientManager.clientWindow.setBrowserView(null);
   }
 
@@ -42,14 +44,6 @@ export default class ClientManager {
     ClientManager.setClientWindow(clientWindow);
 
     return clientWindow;
-  }
-
-  static setBadge(text: string): void {
-    app.dock.setBadge(text);
-  }
-
-  static getBadge(): string {
-    return app.dock.getBadge();
   }
 
 }

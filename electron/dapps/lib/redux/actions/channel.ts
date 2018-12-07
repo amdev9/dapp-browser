@@ -5,13 +5,6 @@ import * as constants from '../constants';
 
 export const openChannelIntent = () => action(constants.INTENT_OPEN_CHANNELS);
 
-export const openFileManagerDialog = () => action(constants.FILE_MANAGER_OPEN_DIALOG);
-export const openDialogSuccess = (entry: any, targetUUID?: string) =>
-  action(constants.FILE_MANAGER_OPEN_DIALOG_SUCCESS, { entry }, { targetUUID });
-export const openDialogFailure = (error: string, targetUUID?: string) =>
-  action(constants.FILE_MANAGER_OPEN_DIALOG_FAILURE, error, { targetUUID });
-export const uploadIpfsFile = (entry: string) => action(constants.IPFS_STORAGE_UPLOAD_FILE, { entry });
-
 export const showFileEntries = () => action(constants.SHOW_FILE_ENTRIES);
 
 export const networkGetBlock = () => action(constants.NETWORK_GET_BLOCK);
@@ -39,49 +32,7 @@ export const loggerWriteSuccess = (result: any, targetUUID?: string) =>
 export const loggerWriteFailure = (error: string, targetUUID?: string) =>
   action(constants.LOGGER_WRITE_FAILURE, error, targetUUID);
 
-export const storageSave = (entry: { key: string, value: string }) => action(constants.STORAGE_SAVE, entry);
-export const storageSaveSuccess = (result: any, targetUUID?: string) =>
-  action(constants.STORAGE_SAVE_SUCCESS, { result }, targetUUID);
-export const storageSaveFailure = (error: string, targetUUID?: string) =>
-  action(constants.STORAGE_SAVE_FAILURE, error, targetUUID);
-
-export const storageFindAll = () => action(constants.STORAGE_FIND_ALL);
-export const storageFindAllSuccess = (result: any, targetUUID?: string) =>
-  action(constants.STORAGE_FIND_ALL_SUCCESS, { result }, targetUUID);
-export const storageFindAllFailure = (error: string, targetUUID?: string) =>
-  action(constants.STORAGE_FIND_ALL_FAILURE, error, targetUUID);
-export const storageRemove = (key: string) => action(constants.STORAGE_REMOVE, key);
-export const storageRemoveSuccess = (result: any, targetUUID?: string) =>
-  action(constants.STORAGE_REMOVE_SUCCESS, { result }, targetUUID);
-export const storageRemoveFailure = (error: string, targetUUID?: string) =>
-  action(constants.STORAGE_REMOVE_FAILURE, error, targetUUID);
-
 export const showBlock = () => action(constants.SHOW_BLOCK);
-
-export const downloadIpfsFile = (hash: string) =>
-  action(constants.IPFS_STORAGE_DOWNLOAD_FILE, { hash });
-
-export const ipfsRoomSubscribe = (topic: string) =>
-  action(constants.IPFS_ROOM_SUBSCRIBE, { topic });
-
-// MessageId need to resolve message sending status
-export const ipfsRoomSendMessageBroadcast = (message: string, roomId: string) =>
-  action(constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST, { message, roomId });
-
-export const ipfsRoomSendMessageToPeer = (message: string | Buffer, roomId: string, peer: string) =>
-  action(constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER, { message, roomId, peer });
-
-export const ipfsRoomLeave = (roomId: string) =>
-  action(constants.IPFS_ROOM_LEAVE, { roomId });
-
-export const ipfsRoomGetPeers = (roomId: string) =>
-  action(constants.IPFS_ROOM_GET_PEERS, { roomId })
-
-export const ipfsRoomGetPeersSuccess = (roomId: string, peerList: string[]) =>
-  action(constants.IPFS_ROOM_GET_PEERS_SUCCESS, { roomId, peerList })
-
-export const ipfsRoomGetPeersFailure = (error: string, roomId: string) =>
-  action(constants.IPFS_ROOM_GET_PEERS_FAILURE, { error, roomId })
 
 export const keychainCreate = (key: string, cipher: string, curve: string) =>
   action(constants.KEYCHAIN_CREATE, { key, cipher, curve });
@@ -121,22 +72,4 @@ export const ethereumPublicToAddressFailure = (error: string, targetUUID?: strin
 
 export const keychainShowResult = () => action(constants.KEYCHAIN_SHOW_RESULT);
 
-export const orbitDbCreateDatabase = (database: string) => action(constants.ORBIT_DB_CREATE_DATABASE, { database });
-
-export const orbitDbOpenDatabase = (database: string) => action(constants.ORBIT_DB_OPEN_DATABASE, { database });
-
-export const orbitDbAddEntry = (database: string, entry: any) => action(constants.ORBIT_DB_ADD_ENTRY, {
-  database,
-  entry
-});
-
-export const orbitDbGetEntry = (database: string, hash: string) => action(constants.ORBIT_DB_GET_ENTRY, {
-  database,
-  hash
-});
-
-export const orbitDbGetAllEntries = (database: string) => action(constants.ORBIT_DB_GET_ALL_ENTRIES, { database });
-
 export const toggleAppHomeSuccess = () => action(constants.TOGGLE_APP_HOME_SUCCESS);
-
-export const dappContentLoaded = () => action(constants.DAPP_CONTENT_LOADED);

@@ -34,4 +34,3 @@ export const removeTrayItem = (dappName: string) => action(constants.REMOVE_TRAY
   targetDappName: dappName
 });
 
-export const setTrayCounters = (dappsList: DappsCounter[]) => action(constants.SET_TRAY_COUNTER, { dappsList });

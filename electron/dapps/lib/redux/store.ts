@@ -7,7 +7,7 @@ import { Subject } from 'rxjs';
 
 import { rootEpic } from './epics';
 import { rootReducer } from './reducers';
-import bindDappEvents from './events';
+import { bindDappEvents } from '../modules/Dapp';
 
 interface ElectronManager {
   sendActionMain(action: any): void;

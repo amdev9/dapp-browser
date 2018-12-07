@@ -3,7 +3,7 @@
   Uses process.stdout.write instead of console.log so we can cleanly catch the output in the parent process.
 */
 
-import { app, BrowserWindow, Menu, dialog, MenuItem } from 'electron';
+import { app, BrowserWindow, Menu, dialog, MenuItem, protocol } from 'electron';
 import { Store } from 'redux';
 import { ReplaySubject } from 'rxjs';
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer';
@@ -12,15 +12,15 @@ import * as nodeConsole from 'console';
 import { configureStore, initialState } from './helpers/store/configureStore';
 import { globalUUIDList } from './helpers/constants/globalVariables';
 import { IState } from './helpers/reducers/state';
-import { activeDappSelector } from './helpers/selectors';
-import * as clientActions from './helpers/actions/client';
 import contextMenu from './contextMenu';
 import { getDefaultExecPath, Keychain } from './helpers/systemComponents/Keychain';
 import { NetworkAPI } from './helpers/systemComponents/Network';
 import ClientManager from './helpers/systemComponents/ClientManager';
-import { AppsManager } from './helpers/systemComponents/AppsManager';
-import * as httpProtocolActions from './helpers/actions/httpProtocol';
 import StoreManager from './helpers/systemComponents/StoreManager';
+
+import { component as AppsManager } from './modules/AppsManager';
+import { component as Dapp } from './modules/Dapp';
+import { component as HttpProtocol } from './modules/HttpProtocol';
 
 const KEYCHAIN_PATH = path.join(__dirname, '..', 'helpers', 'systemComponents', 'Keychain', getDefaultExecPath());
 const console = new nodeConsole.Console(process.stdout, process.stderr);
@@ -158,13 +158,14 @@ app.on('ready', async () => {
 
   store.subscribe(() => {
     const storeState = store.getState();
-    AppsManager.correctDappViewBounds(clientWindow, storeState);
+    AppsManager.correctDappViewBounds(clientWindow);
     process.stdout.write(JSON.stringify(storeState));
   });
 
+  HttpProtocol.registerHttpProtocol();
   // Subscribe on links after create client window
   replayOpenUrls.subscribe((value: string) => {
-    store.dispatch(httpProtocolActions.httpProtocolOpenLink(value));
+    HttpProtocol.openLink(value);
   });
 
   // @TODO: Use 'ready-to-show' event
@@ -176,9 +177,9 @@ app.on('ready', async () => {
     clientWindow.show();
     clientWindow.focus();
 
-    const activeDapp = activeDappSelector(store.getState());
+    const activeDapp = Dapp.getActiveDappName();
     if (activeDapp) {
-      store.dispatch(clientActions.switchDapp(activeDapp));
+      ClientManager.switchDapp(activeDapp);
     }
   });
 
@@ -199,9 +200,9 @@ app.on('ready', async () => {
     });
   }
 
-  clientWindow.on('resize', () => AppsManager.correctDappViewBounds(clientWindow, store.getState()));
-  clientWindow.on('maximize', () => AppsManager.correctDappViewBounds(clientWindow, store.getState()));
-  clientWindow.on('restore', () => AppsManager.correctDappViewBounds(clientWindow, store.getState()));
+  clientWindow.on('resize', () => AppsManager.correctDappViewBounds(clientWindow));
+  clientWindow.on('maximize', () => AppsManager.correctDappViewBounds(clientWindow));
+  clientWindow.on('restore', () => AppsManager.correctDappViewBounds(clientWindow));
 });
 
 process.stdout.write('Main initialized');

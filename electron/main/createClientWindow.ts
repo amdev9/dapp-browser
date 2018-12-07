@@ -2,10 +2,8 @@ import { BrowserWindow, protocol } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 import * as uuidv4 from 'uuid/v4';
-import { openDevTool } from './helpers/devtools';
-import { RendererConf, HTTP_PROTOCOL_PREFIX } from './helpers/constants/globalVariables';
+import { RendererConf } from './helpers/constants/globalVariables';
 import { RENDERER_PATH } from './helpers/constants/appPaths';
-import * as httpProtocolActions from './helpers/actions/httpProtocol';
 
 let clientWindow: Electron.BrowserWindow = null;
 
@@ -40,17 +38,6 @@ export function createClientWindow(globalUUIDList: RendererConf[], store: any) {
 
   clientWindow.once('show', () => {
     console.log('show event'); // @todo https://stackoverflow.com/questions/42292608/electron-loading-animation
-  });
-
-  protocol.registerHttpProtocol(HTTP_PROTOCOL_PREFIX, (req, cb) => {
-    store.dispatch(httpProtocolActions.httpProtocolOpenLink(req.url));
-  }, (err) => {
-    if (!err) {
-      console.log('registered arr protocol');
-    } else {
-      console.error('could not register arr protocol');
-      console.error(err);
-    }
   });
 
   const clientPath = path.join(RENDERER_PATH, 'index.html');

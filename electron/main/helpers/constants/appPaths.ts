@@ -3,9 +3,6 @@ import * as os from 'os';
 
 const isDev = process.env.ELECTRON_ENV === 'development';
 
-export const DAPPS_PATH: string =
-  isDev ? path.join(__dirname, '..', '..', 'dapps', 'download') : path.join(__dirname, 'dapps', 'download');
-
 export const RENDERER_PATH: string =
   isDev ? path.join(__dirname, '..', '..', 'client') : path.join(__dirname, 'client');
 

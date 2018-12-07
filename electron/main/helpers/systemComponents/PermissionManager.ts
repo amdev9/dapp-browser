@@ -1,9 +1,8 @@
 import { BrowserWindow } from 'electron';
 import { createPermissionWindow } from '../../createPermissionWindow';
 import { RendererConf, globalUUIDList } from '../constants/globalVariables';
-import { onAction } from '../utils/actionUtils';
 import * as constants from '../constants';
-import { IState } from '../reducers/state';
+import StoreManager from './StoreManager';
 
 export default class PermissionManager {
   static permissionWindow: BrowserWindow;
@@ -23,16 +22,18 @@ export default class PermissionManager {
     }
   }
 
-  static async checkDappPermissions(targetDappName: string, dappsPermissions: string[], clientWindow: BrowserWindow, state: IState) {
+  static async checkDappPermissions(targetDappName: string, dappsPermissions: string[], clientWindow: BrowserWindow) {
     if (PermissionManager.permissionWindow) {
       throw Error('Permission window already opened');
     }
+
+    const state = StoreManager.store.getState();
 
     const activeDappGranted = state.permissionManager.grantedApps.includes(targetDappName);
     if (!activeDappGranted) {
       PermissionManager.createPermissionWindow(globalUUIDList, clientWindow, targetDappName, dappsPermissions);
 
-      await onAction(constants.GRANT_PERMISSIONS, action => action.payload.appName === targetDappName);
+      await StoreManager.onAction(constants.GRANT_PERMISSIONS, action => action.payload.appName === targetDappName);
     }
   }
 }

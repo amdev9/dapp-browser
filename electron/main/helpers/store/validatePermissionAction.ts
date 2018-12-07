@@ -3,45 +3,50 @@ import { Action } from './configureStore';
 import { RendererConf } from '../constants/globalVariables';
 import * as constants from '../constants';
 import { IState, Permission } from '../reducers/state';
+import { getModuleActionTypes } from '../utils/actionUtils';
+
+import { constants as IpfsRoomConstants } from '../../modules/IpfsRoom';
+import { constants as IpfsStorageConstants } from '../../modules/IpfsStorage';
+import { constants as FileManagerConstants } from '../../modules/FileManager';
+import { constants as NotificationConstants } from '../../modules/Notification';
+import { constants as HttpProtocolConstants } from '../../modules/HttpProtocol';
+import { constants as OrbitDbConstants } from '../../modules/OrbitDb';
+import { constants as AppsManagerConstants } from '../../modules/AppsManager';
+import { constants as DappConstants } from '../../modules/Dapp';
+import { constants as StorageConstants } from '../../modules/Storage';
+
+import { constants as ClientDappConstants } from 'ClientApp/modules/Dapp';
+import { constants as ClientNotificationConstants } from 'ClientApp/modules/Notification';
+
+const ipfsRoomActionTypes = getModuleActionTypes(IpfsRoomConstants);
+const ipfsStorageActionTypes = getModuleActionTypes(IpfsStorageConstants);
+const fileManagerActionTypes = getModuleActionTypes(FileManagerConstants);
+const notificationActionTypes = getModuleActionTypes(NotificationConstants);
+const httpProtocolActionTypes = getModuleActionTypes(HttpProtocolConstants);
+const orbitDbActionTypes = getModuleActionTypes(OrbitDbConstants);
+const appsManagerActionTypes = getModuleActionTypes(AppsManagerConstants);
+const dappsActionTypes = getModuleActionTypes(DappConstants);
+const storageActionTypes = getModuleActionTypes(StorageConstants);
+
+const clientDappsActionTypes = getModuleActionTypes(ClientDappConstants);
+const clientNotificationActionTypes = getModuleActionTypes(ClientNotificationConstants);
 
 const dappActions: string[] = [
   constants.INTENT_OPEN_CHANNELS,
   constants.OPEN_CHANNEL,
   constants.OPEN_CHANNEL_SUCCESS,
   constants.BIND_OPEN_CHANNELS_DONE,
-  constants.FILE_MANAGER_OPEN_DIALOG,
-  constants.FILE_MANAGER_OPEN_DIALOG_SUCCESS,
-  constants.FILE_MANAGER_OPEN_DIALOG_FAILURE,
   constants.TOGGLE_APP_HOME_SUCCESS,
-  constants.HTTP_PROTOCOL_OPEN_LINK,
-  constants.DAPP_ACTION_OPEN_LINK,
-  constants.DAPP_ACTION_OPEN_LINK_SUCCESS,
-  constants.DAPP_CONTENT_LOADED,
 
-  constants.IPFS_STORAGE_UPLOAD_FILE,
-  constants.IPFS_STORAGE_UPLOAD_FILE_SUCCESS,
-  constants.IPFS_STORAGE_UPLOAD_FILE_FAILURE,
-  constants.IPFS_STORAGE_DOWNLOAD_FILE,
-  constants.IPFS_STORAGE_DOWNLOAD_FILE_SUCCESS,
-  constants.IPFS_STORAGE_DOWNLOAD_FILE_FAILURE,
-  constants.IPFS_ROOM_SUBSCRIBE,
-  constants.IPFS_ROOM_SUBSCRIBE_SUCCESS,
-  constants.IPFS_ROOM_SUBSCRIBE_FAILURE,
-  constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST,
-  constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST_SUCCESS,
-  constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST_FAILURE,
-  constants.IPFS_ROOM_SEND_MESSAGE_TO_DAPP,
-  constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER,
-  constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER_SUCCESS,
-  constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER_FAILURE,
-  constants.IPFS_ROOM_PEER_JOINED,
-  constants.IPFS_ROOM_PEER_LEFT,
-  constants.IPFS_ROOM_LEAVE,
-  constants.IPFS_ROOM_LEAVE_SUCCESS,
-  constants.IPFS_ROOM_LEAVE_FAILURE,
-  constants.IPFS_ROOM_GET_PEERS,
-  constants.IPFS_ROOM_GET_PEERS_SUCCESS,
-  constants.IPFS_ROOM_GET_PEERS_FAILURE,
+  ...appsManagerActionTypes,
+  ...ipfsStorageActionTypes,
+  ...ipfsRoomActionTypes,
+  ...fileManagerActionTypes,
+  ...notificationActionTypes,
+  ...httpProtocolActionTypes,
+  ...orbitDbActionTypes,
+  ...dappsActionTypes,
+  ...storageActionTypes,
 
   constants.SHOW_FILE_ENTRIES,
   constants.NETWORK_GET_BLOCK,
@@ -69,35 +74,6 @@ const dappActions: string[] = [
   constants.ETHEREUM_BUILD_TRANSACTION,
   constants.ETHEREUM_PUBLISH_TRANSACTION,
   constants.ETHEREUM_PUBLIC_TO_ADDRESS,
-
-  constants.STORAGE_SAVE,
-  constants.STORAGE_SAVE_SUCCESS,
-  constants.STORAGE_SAVE_FAILURE,
-  constants.STORAGE_REMOVE,
-  constants.STORAGE_REMOVE_SUCCESS,
-  constants.STORAGE_REMOVE_FAILURE,
-  constants.STORAGE_FIND_ALL,
-  constants.STORAGE_FIND_ALL_SUCCESS,
-  constants.STORAGE_FIND_ALL_FAILURE,
-
-  constants.ORBIT_DB_CREATE_DATABASE,
-  constants.ORBIT_DB_CREATE_DATABASE_SUCCESS,
-  constants.ORBIT_DB_CREATE_DATABASE_FAILURE,
-  constants.ORBIT_DB_OPEN_DATABASE,
-  constants.ORBIT_DB_OPEN_DATABASE_SUCCESS,
-  constants.ORBIT_DB_OPEN_DATABASE_FAILURE,
-  constants.ORBIT_DB_ADD_ENTRY,
-  constants.ORBIT_DB_ADD_ENTRY_SUCCESS,
-  constants.ORBIT_DB_ADD_ENTRY_FAILURE,
-  constants.ORBIT_DB_GET_ENTRY,
-  constants.ORBIT_DB_GET_ENTRY_SUCCESS,
-  constants.ORBIT_DB_GET_ENTRY_FAILURE,
-  constants.ORBIT_DB_GET_ALL_ENTRIES,
-  constants.ORBIT_DB_GET_ALL_ENTRIES_SUCCESS,
-  constants.ORBIT_DB_GET_ALL_ENTRIES_FAILURE,
-
-  constants.DAPP_SET_TRAY_COUNTER,
-  constants.NOTIFICATIONS_SHOW_NOTIFY,
 ];
 
 const clientActions: string[] = [
@@ -114,7 +90,6 @@ const clientActions: string[] = [
   constants.CLIENT_ADD_NOTIFICATION,
   constants.CLIENT_CLEAR_ALL_NOTIFICATIONS,
   constants.CLIENT_CLEAR_NOTIFICATION,
-  constants.CLIENT_NOTIFICATION_TRIGGER_ACTION,
   constants.TOGGLE_LOADER_PANEL,
   constants.TOGGLE_STATUS_BAR_PANEL,
   constants.LOGGER_WRITE_SUCCESS,
@@ -125,19 +100,18 @@ const clientActions: string[] = [
   constants.TOGGLE_SEARCH_PANEL,
   constants.CLIENT_SWITCH_DAPP,
   constants.ADD_APP_ITEM,
-  constants.SET_TRAY_COUNTER,
   constants.SET_TRAY_PROGRESS,
   constants.REMOVE_TRAY_ITEM,
   constants.MARKET_DOWNLOAD_DAPP,
   constants.TOGGLE_PERMISSION,
   constants.GRANT_PERMISSIONS,
+
+  ...clientNotificationActionTypes,
+  ...clientDappsActionTypes,
 ];
 
 const fileManagerActions: string[] = [
-  constants.FILE_MANAGER_OPEN_DIALOG,
-  constants.FILE_MANAGER_OPEN_DIALOG_SUCCESS,
-  constants.FILE_MANAGER_OPEN_DIALOG_FAILURE,
-  // constants.SHOW_FILE_ENTRIES
+  ...fileManagerActionTypes,
 ];
 
 const networkActions: string[] = [
@@ -154,30 +128,8 @@ const networkActions: string[] = [
 ];
 
 const ipfsActions: string[] = [
-  constants.IPFS_STORAGE_UPLOAD_FILE,
-  constants.IPFS_STORAGE_UPLOAD_FILE_SUCCESS,
-  constants.IPFS_STORAGE_UPLOAD_FILE_FAILURE,
-  constants.IPFS_STORAGE_DOWNLOAD_FILE,
-  constants.IPFS_STORAGE_DOWNLOAD_FILE_SUCCESS,
-  constants.IPFS_STORAGE_DOWNLOAD_FILE_FAILURE,
-  constants.IPFS_ROOM_SUBSCRIBE,
-  constants.IPFS_ROOM_SUBSCRIBE_SUCCESS,
-  constants.IPFS_ROOM_SUBSCRIBE_FAILURE,
-  constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST,
-  constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST_SUCCESS,
-  constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST_FAILURE,
-  constants.IPFS_ROOM_SEND_MESSAGE_TO_DAPP,
-  constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER,
-  constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER_SUCCESS,
-  constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER_FAILURE,
-  constants.IPFS_ROOM_PEER_JOINED,
-  constants.IPFS_ROOM_PEER_LEFT,
-  constants.IPFS_ROOM_LEAVE,
-  constants.IPFS_ROOM_LEAVE_SUCCESS,
-  constants.IPFS_ROOM_LEAVE_FAILURE,
-  constants.IPFS_ROOM_GET_PEERS,
-  constants.IPFS_ROOM_GET_PEERS_SUCCESS,
-  constants.IPFS_ROOM_GET_PEERS_FAILURE,
+  ...ipfsStorageActionTypes,
+  ...ipfsRoomActionTypes,
 ];
 
 const pmActions: string[] = [
@@ -206,21 +158,7 @@ const keychainActions: string[] = [
 ];
 
 const orbitDbActions: string[] = [
-  constants.ORBIT_DB_CREATE_DATABASE,
-  constants.ORBIT_DB_CREATE_DATABASE_SUCCESS,
-  constants.ORBIT_DB_CREATE_DATABASE_FAILURE,
-  constants.ORBIT_DB_OPEN_DATABASE,
-  constants.ORBIT_DB_OPEN_DATABASE_SUCCESS,
-  constants.ORBIT_DB_OPEN_DATABASE_FAILURE,
-  constants.ORBIT_DB_ADD_ENTRY,
-  constants.ORBIT_DB_ADD_ENTRY_SUCCESS,
-  constants.ORBIT_DB_ADD_ENTRY_FAILURE,
-  constants.ORBIT_DB_GET_ENTRY,
-  constants.ORBIT_DB_GET_ENTRY_SUCCESS,
-  constants.ORBIT_DB_GET_ENTRY_FAILURE,
-  constants.ORBIT_DB_GET_ALL_ENTRIES,
-  constants.ORBIT_DB_GET_ALL_ENTRIES_SUCCESS,
-  constants.ORBIT_DB_GET_ALL_ENTRIES_FAILURE,
+  ...orbitDbActionTypes,
 ];
 
 const checkGranted = (state: IState, dappName: string, actionType: string) => {

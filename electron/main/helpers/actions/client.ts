@@ -1,5 +1,5 @@
 import { action } from 'typesafe-actions';
-import { AppItem } from '../systemComponents/AppsManager';
+import { models as AppsManagerModels } from '../../modules/AppsManager';
 import * as constants from '../constants';
 
 export type NotifyItem = {
@@ -32,21 +32,6 @@ export const toggleAppHome = (dappName: string) => action(constants.TOGGLE_APP_H
   targetDappName: dappName,
 });
 
-export const addAppItem = (appItem: AppItem) => action(constants.ADD_APP_ITEM, {
+export const addAppItem = (appItem: AppsManagerModels.AppItem) => action(constants.ADD_APP_ITEM, {
   item: appItem,
 });
-
-export type DappsCounter = {
-  dappName: string;
-  counter: number;
-};
-
-export const setTrayCounters = (dappsList: DappsCounter[]) => action(constants.SET_TRAY_COUNTER, { dappsList });
-
-export const setMainTrayCounter = (dappName: string, counter: string) => action(constants.SET_MAIN_TRAY_COUNTER, {
-  counter,
-  targetDappName: dappName,
-});
-
-export const clientAddNotification = (item: NotifyItem) => action(constants.CLIENT_ADD_NOTIFICATION, { item });
-export const clientClearNotification = (item: NotifyItem) => action(constants.CLIENT_CLEAR_NOTIFICATION, { item });

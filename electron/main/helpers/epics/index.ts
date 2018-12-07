@@ -3,24 +3,28 @@ import { combineEpics } from 'redux-observable';
 import openChannelEpic from './openChannelEpic';
 import bindOpenChannelsEpic from './bindOpenChannelsEpic';
 import clientEpic from './clientEpic';
-import fileManagerEpic from './fileManagerEpic';
-import ipfsStorageEpic from './ipfsStorageEpic';
 import networkEpic from './networkEpic';
 import keychainEpic from './keychainEpic';
 import ethereumEpic from './ethereumEpic';
-import ipfsRoomEpic from './ipfsRoomEpic';
 import marketEpic from './marketEpic';
-import orbitDBEpic from './orbitDBEpic';
-import storageEpic from './storageEpic';
-import httpProtocolEpic from './httpProtocolEpic';
 import appMainEpic from './appMainEpic';
 import permissionManagerEpic from './permissionManagerEpic';
-import notificationsEpic from './notificationsEpic';
+
+import { epics as storageEpic } from '../../modules/Storage';
+import { epics as dappEpic } from '../../modules/Dapp';
+import { epics as appsManagerEpic } from '../../modules/AppsManager';
+import { epics as orbitDBEpic } from '../../modules/OrbitDb';
+import { epics as notificationsEpic } from '../../modules/Notification';
+import { epics as ipfsStorageEpic } from '../../modules/IpfsStorage';
+import { epics as ipfsRoomEpic } from '../../modules/IpfsRoom';
+import { epics as fileManagerEpic } from '../../modules/FileManager';
 
 // todo fix https://github.com/piotrwitek/react-redux-typescript-guide#async-flow
 
 export default combineEpics(
   appMainEpic,
+  dappEpic,
+  appsManagerEpic,
   openChannelEpic,
   bindOpenChannelsEpic,
   clientEpic,
@@ -32,7 +36,6 @@ export default combineEpics(
   marketEpic,
   orbitDBEpic,
   storageEpic,
-  httpProtocolEpic,
   permissionManagerEpic,
   notificationsEpic,
   ethereumEpic,

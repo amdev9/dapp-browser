@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux';
 
-import notification from './notification';
 import keychain from './keychain';
 import loader from './loader';
 import search from './search';
@@ -13,6 +12,8 @@ import isHome from './is-home';
 import window from './window';
 import activeDapp from './active-dapp';
 import isOpen from './is-open';
+
+import { reducer as notification } from '../../modules/Notification';
 
 import { IState } from './state';
 

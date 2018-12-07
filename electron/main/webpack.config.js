@@ -1,5 +1,6 @@
 const nodeExternals = require("webpack-node-externals");
 const CircularDependencyPlugin = require('circular-dependency-plugin')
+const path = require('path')
 
 module.exports = {
   mode: 'development',
@@ -21,7 +22,12 @@ module.exports = {
 
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
-    extensions: ['.ts', '.tsx', '.js', '.json']
+    extensions: ['.ts', '.tsx', '.js', '.json'],
+    alias: {
+      ClientApp: path.resolve(__dirname, '../client'),
+      DappApp: path.resolve(__dirname, '../dapps/lib'),
+      PermissionApp: path.resolve(__dirname, '../permissionManager'),
+    }
   },
 
   module: {

@@ -13,7 +13,12 @@ module.exports = {
   },
   devtool: 'source-map',
   resolve: {
-    extensions: ['.js', '.jsx', '.json', '.ts', '.tsx']
+    extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
+    alias: {
+      MainApp: path.resolve(__dirname, '../main'),
+      DappApp: path.resolve(__dirname, '../dapps/lib'),
+      PermissionApp: path.resolve(__dirname, '../permissionManager'),
+    }
   },
   module: {
     rules: [

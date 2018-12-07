@@ -1,9 +1,10 @@
 import { ActionType } from 'typesafe-actions';
 import * as constants from '../constants';
+import { constants as dappConstants, actions as dappActions } from '../../modules/Dapp';
 import * as trayActions from '../actions/tray';
 import { Tray } from './state';
 
-export type TrayAction = ActionType<typeof trayActions>;
+export type TrayAction = ActionType<typeof trayActions | typeof dappActions>;
 
 // const initialState: Tray = {
 //   items: [],
@@ -127,7 +128,7 @@ export default function tray(state: Tray = null, action: TrayAction) {
       };
     }
 
-    case constants.SET_TRAY_COUNTER: {
+    case dappConstants.SET_TRAY_COUNTER: {
       const dappsList = action.payload.dappsList;
       const newItems = state.items.map((item) => {
         const appCounter = dappsList.find((dappCounter) => dappCounter.dappName === item.appName);
