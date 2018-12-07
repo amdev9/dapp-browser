@@ -16,13 +16,13 @@ export class Ethereum {
     return await web3.eth.sendSignedTransaction(`0x${rawHex}`);
   }
 
-  async buildTxSinature (signature: string, from: string, to: string, value: number, data = '') {
-    console.log('buildTxSinature');
-    const publicKey = `0x${from}`;
-    const fromAddress = ethUtil.publicToAddress(publicKey).toString('hex');
+  async publicToAddress(publicKey: string): Promise<string> {
+    return ethUtil.publicToAddress(publicKey).toString('hex');
+  }
 
+  async buildTxSinature (signature: string, from: string, to: string, value: number, data = '') {
     const web3 = new Web3(new Web3.providers.HttpProvider(this.endpoint));
-    const nonce = await web3.eth.getTransactionCount(fromAddress);
+    const nonce = await web3.eth.getTransactionCount(from);
     const gasPrice = await web3.eth.getGasPrice().then((wei: number) => Number(wei));
     const chainId = 3;
 

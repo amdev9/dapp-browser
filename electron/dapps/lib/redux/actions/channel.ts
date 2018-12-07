@@ -113,6 +113,12 @@ export const ethereumPublishTransactionSuccess = (result: any, targetUUID?: stri
 export const ethereumPublishTransactionFailure = (error: string, targetUUID?: string) =>
   action(constants.ETHEREUM_PUBLISH_TRANSACTION_FAILURE, error, targetUUID);
 
+export const ethereumPublicToAddress = (publicKey: string) => action(constants.ETHEREUM_PUBLIC_TO_ADDRESS, { publicKey });
+export const ethereumPublicToAddressSuccess = (result: any, targetUUID?: string) =>
+  action(constants.ETHEREUM_PUBLIC_TO_ADDRESS_SUCCESS, {result}, targetUUID);
+export const ethereumPublicToAddressFailure = (error: string, targetUUID?: string) =>
+  action(constants.ETHEREUM_PUBLIC_TO_ADDRESS_FAILURE, error, targetUUID);
+
 export const keychainShowResult = () => action(constants.KEYCHAIN_SHOW_RESULT);
 
 export const orbitDbCreateDatabase = (database: string) => action(constants.ORBIT_DB_CREATE_DATABASE, { database });

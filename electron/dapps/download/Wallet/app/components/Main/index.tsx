@@ -2,6 +2,7 @@ import * as React from 'react';
 const ArrayIO = require('array-io');
 const keychain: ArrayIO.Keychain = new ArrayIO.Keychain();
 const ethereum: ArrayIO.Ethereum = new ArrayIO.Ethereum();
+const logger: ArrayIO.Logger = new ArrayIO.Logger();
 
 import './styles.css';
 
@@ -30,17 +31,21 @@ export default class Main extends React.Component<{}, MainState> {
   }
 
   async handleSignClick(e: any) {
-    const from = await keychain.publicKey();
-    console.log('publicKey: ', from); // todo substitute console.log() on the Client's Console log
+    const publicKey = await keychain.publicKey();
+    console.log('publicKey: ', publicKey);  // todo substitute console.log() on the Client's Console log
+    logger.write(`publicKey: ${publicKey}`);
 
-    const rawTransaction = await ethereum.buildTransaction('', from, this.state.to, parseInt(this.state.amount, 10)); // todo rewrite the methods
-    console.log('rawTransaction: ', rawTransaction);
+    const from = await ethereum.publicToAddress(`0x${publicKey}`);
+    logger.write(`from address: ${from}`);
+
+    const rawTransaction = await ethereum.buildTransaction('', from, this.state.to, parseInt(this.state.amount, 10));
+    logger.write(`rawTransaction: ${rawTransaction}`);
 
     const signature = await keychain.sign(rawTransaction);
-    console.log('signature: ', signature);
+    logger.write(`signature: ${signature}`);
 
     const transactionToSign = await ethereum.buildTransaction(signature, from, this.state.to, parseInt(this.state.amount, 10));
-    console.log('transactionToSign: ', transactionToSign);
+    logger.write(`transactionToSign: ${transactionToSign}`);
 
     this.setState({transactionToSign});
   }
