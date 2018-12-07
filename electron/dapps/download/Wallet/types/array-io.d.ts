@@ -14,3 +14,8 @@ export class Ethereum {
   publishTransaction(transaction: string): Promise<string>;
   publicToAddress(publicKey: string): Promise<string>;
 }
+
+export class Logger {
+  constructor();
+  write(message: string): Promise<any>;
+}
