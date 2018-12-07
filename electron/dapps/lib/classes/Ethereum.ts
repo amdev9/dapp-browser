@@ -34,4 +34,18 @@ export default class Ethereum extends StoreUIDSubscriber {
 
     return action.payload;
   }
+
+  async publicToAddress(publicKey: string) {
+    const uid = uuidv4();
+
+    this.subscribePromise = this.actionPromise({
+      onStart: actions.ethereumPublicToAddress(publicKey),
+      successType: constants.ETHEREUM_PUBLIC_TO_ADDRESS_SUCCESS,
+      failureType: constants.ETHEREUM_PUBLIC_TO_ADDRESS_FAILURE,
+    }, uid);
+
+    const action: any = await this.subscribePromise;
+
+    return action.payload;
+  }
 }

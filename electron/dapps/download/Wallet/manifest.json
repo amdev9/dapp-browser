@@ -4,12 +4,13 @@
   "appName": "Wallet",
   "assets/": ["app/images/**"],
   "icon": "app/images/exchange.svg",
-  "preview": "app/images/thumb.png",
+  "preview": "app/images/wallet.png",
   "categories": [
     "tools"
   ],
   "permissions": [
     "network",
-    "keychain"
+    "keychain",
+    "logger"
   ]
 }

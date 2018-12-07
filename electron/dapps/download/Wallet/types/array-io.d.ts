@@ -10,6 +10,12 @@ export class Keychain {
 
 export class Ethereum {
   constructor();
-  buildTransaction(signature: string, from:string, to: string, value: number): Promise<any>;
-  publishTransaction(transaction: string): Promise<any>;
+  buildTransaction(signature: string, from:string, to: string, value: number): Promise<string>;
+  publishTransaction(transaction: string): Promise<string>;
+  publicToAddress(publicKey: string): Promise<string>;
+}
+
+export class Logger {
+  constructor();
+  write(message: string): Promise<any>;
 }
