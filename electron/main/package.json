@@ -4,6 +4,7 @@
   "description": "Array.io client",
   "main": "./dist/main.js",
   "scripts": {
+    "postinstall": "install-app-deps",
     "webpack": "webpack --watch",
     "build": "webpack --config webpack.config.build.js",
     "rebuild": "electron-rebuild -f -w sqlite3",
@@ -32,6 +33,7 @@
     "node-abi": "^2.4.5",
     "npm": "^6.2.0",
     "orbit-db": "^0.19.9",
+    "path": "^0.12.7",
     "react": "^16.4.1",
     "redux": "^4.0.0-rc.1",
     "redux-logger": "^3.0.6",
@@ -67,7 +69,6 @@
     "electron-devtools-installer": "^2.2.4",
     "electron-rebuild": "^1.8.2",
     "electron-redux-devtools": "^0.3.4",
-    "path": "^0.12.7",
     "source-map-loader": "^0.2.3",
     "tslint-config-airbnb": "^5.11.0",
     "typescript": "^2.9.2",

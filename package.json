@@ -8,7 +8,7 @@
     "dev": "NODE_ENV=development npm start",
     "start": "node index.js",
     "clean": "rimraf release && rimraf electron/main/release",
-    "install-packages-apps": "concurrently \"npm run install-packages-client\" \"npm run install-packages-main\" \"npm run install-packages-dapplib\" \"npm run install-packages-permissions\"",
+    "install-packages-apps": "npm run install-packages-client && npm run install-packages-main && npm run install-packages-dapplib && npm run install-packages-permissions",
     "install-packages-client": "cd electron/client && npm i",
     "install-packages-main": "cd electron/main && npm i",
     "install-packages-dapplib": "cd electron/dapps/lib && npm i",
