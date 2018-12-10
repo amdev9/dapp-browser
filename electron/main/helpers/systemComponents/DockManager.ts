@@ -2,10 +2,10 @@ import { app } from 'electron';
 
 export default class DockManager {
   static setBadge(text: string): void {
-    app.dock.setBadge(text);
+    app.dock && app.dock.setBadge(text);
   }
 
   static getBadge(): string {
-    return app.dock.getBadge();
+    return app.dock && app.dock.getBadge() || '';
   }
 }
