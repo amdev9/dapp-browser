@@ -8,7 +8,6 @@ export default class Logger extends StoreUIDSubscriber {
   subscribePromise: Promise<any>;
 
   async write(message: string) {
-    console.log('Logger is here message: ', message);
     const uid = uuidv4();
 
     this.subscribePromise = this.actionPromise({
