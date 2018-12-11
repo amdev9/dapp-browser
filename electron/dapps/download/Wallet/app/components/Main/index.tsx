@@ -4,10 +4,7 @@ const keychain: ArrayIO.Keychain = new ArrayIO.Keychain();
 const ethereum: ArrayIO.Ethereum = new ArrayIO.Ethereum();
 const logger: ArrayIO.Logger = new ArrayIO.Logger();
 
-import './styles.css';
-
 interface MainState {
-  result: string;
   to: string;
   amount: string;
   transactionToSign: string;
@@ -22,7 +19,6 @@ export default class Main extends React.Component<{}, MainState> {
     this.handleSignClick = this.handleSignClick.bind(this);
     this.handlePublishClick = this.handlePublishClick.bind(this);
     this.state = {
-      result: '',
       to: TO_DEFAULT,
       amount: AMOUNT_DEFAULT,
       transactionToSign: 'Please, sign your transaction',
@@ -70,34 +66,54 @@ export default class Main extends React.Component<{}, MainState> {
   }
 
   render() {
+
     return (
       <div className="container">
-        <ul className="flex-outer">
-          <li>
-            <label>To address</label>
-            <input
-              type="text"
-              defaultValue={TO_DEFAULT}
-              onChange={evt => this.updateTo(evt)}
-            />
-          </li>
-          <li>
-            <label>Amount</label>
-            <input
-              type="number"
-              defaultValue={AMOUNT_DEFAULT}
-              placeholder={AMOUNT_DEFAULT}
-              onChange={evt => this.updateAmount(evt)}
-            />
-          </li>
-          <li>
-            <button onClick={this.handleSignClick}>Sign</button>
-            <button onClick={this.handlePublishClick}>Publish</button>
-            <span>{ this.state.result }</span>
-          </li>
-          <li>Transaction to Sign:&nbsp;<i>{this.state.transactionToSign}</i></li>
-          <li>Etherscan link:&nbsp;<i>{this.state.linkText}</i></li>
-        </ul>
+        <div className="form-group">
+          <label htmlFor="toAddressInput">To address</label>
+          <input
+            type="text"
+            className="form-control"
+            id="toAddressInput"
+            defaultValue={TO_DEFAULT}
+            onChange={evt => this.updateTo(evt)}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="amountInput">Amount</label>
+          <input
+            type="number"
+            className="form-control"
+            id="amountInput"
+            defaultValue={AMOUNT_DEFAULT}
+            placeholder={AMOUNT_DEFAULT}
+            onChange={evt => this.updateAmount(evt)}
+          />
+        </div>
+
+        <button className="btn btn-primary mr-1" onClick={this.handleSignClick}>Sign</button>
+        <button className="btn btn-primary" onClick={this.handlePublishClick}>Publish</button>
+
+        <div className="form-group mt-4">
+          <label htmlFor="transactionToSignInput">Transaction to Sign</label>
+          <input
+            type="text"
+            className="form-control"
+            id="transactionToSignInput"
+            value={this.state.transactionToSign}
+            readOnly
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="etherscanLinkInput">Etherscan link</label>
+          <input
+            type="text"
+            className="form-control"
+            id="etherscanLinkInput"
+            value={this.state.linkText}
+            readOnly
+          />
+        </div>
       </div>
     );
   }
