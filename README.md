@@ -25,7 +25,7 @@ and get executable file from `./release` folder.
 **Build for Windows:**
 
 ***Requirements:***
-1. Python
+1. Python 2.7
 2. Visual Studio 2015
 3. ```npm install --global windows-build-tools```
 ```
