@@ -33,9 +33,13 @@ const toggleSettingsEpic: Epic<any> = action$ => action$.pipe(
 
 const removeTrayItemEpic: Epic<any> = action$ => action$.pipe(
   ofType(constants.REMOVE_TRAY_ITEM),
-  mapTo(clientActions.toggleHome(true)),
+  mapTo(clientActions.clientToggleHome(true)),
+  // map((action) => {
+  //   console.log('--REMOVE_TRAY_ITEM');
+  //   ClientManager.toggleHome();
+  //   return clientActions.toggleHome(true);
+  // }),
 );
-
 
 export default combineEpics(
   openDappEpic,

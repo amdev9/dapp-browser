@@ -48,7 +48,7 @@ export class AppCard extends React.Component<AppCardProps, AppCardState>  {
     const { status } = this.state;
 
     const label = (
-      <div className="label">Intall</div>
+      <div className="label">Install</div>
     );
 
     // @TODO: next add spinner type by status
