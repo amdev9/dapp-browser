@@ -28,6 +28,10 @@ export const toggleHome = (openStatus: boolean) => action(constants.TOGGLE_HOME,
   isHome: openStatus,
 });
 
+export const clientToggleHome = (openStatus: boolean) => action(constants.CLIENT_TOGGLE_HOME, {
+  isHome: openStatus,
+});
+
 export const toggleAppHome = (dappName: string) => action(constants.TOGGLE_APP_HOME, {
   targetDappName: dappName,
 });

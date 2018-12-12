@@ -120,6 +120,13 @@ export default class AppsManager {
     createdDapp.setDappFocus();
   }
 
+  static async closeDapp(targetDappName: string) {
+    const renderer = AppsManager.getDappRenderer(targetDappName);
+    renderer.dappView.destroy();
+    const index = globalUUIDList.findIndex(item => item.name === targetDappName && item.status === 'dapp');
+    globalUUIDList.splice(index, 1);
+  }
+
   static async openDapp(dappName: string, clientWindow: BrowserWindow) {
     const dapp = AppsManager.getDappItem(dappName);
 
