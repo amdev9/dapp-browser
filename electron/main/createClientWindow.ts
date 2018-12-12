@@ -41,10 +41,8 @@ export function createClientWindow(globalUUIDList: RendererConf[], store: any) {
   });
 
   const clientPath = path.join(RENDERER_PATH, 'index.html');
-  const clientPathUrl = url.format({
-    protocol: 'file',
-    hostname: clientPath,
-  });
+  const clientPathUrl = `file://${clientPath}`;
+  console.log('CREATE_CLIENT_WINDOW', clientPath);
   clientWindow.loadURL(clientPathUrl);
 
   // console.log(process.env);

@@ -55,10 +55,7 @@ export function createDappView(globalUUIDList: RendererConf[], dapp: AppsManager
 
   // console.log('entry: ', path.join(DAPPS_PATH, dapp.appName, dapp.main));
   const dappPath = path.join(DAPPS_PATH, dapp.appName, dapp.main);
-  const dappPathUrl = url.format({
-    protocol: 'file',
-    hostname: dappPath,
-  });
+  const dappPathUrl = `file://${dappPath}`;
   dappView.webContents.loadURL(dappPathUrl); // todo pass @param path to index.html
 
   if (process.env.ELECTRON_ENV === 'development') {
