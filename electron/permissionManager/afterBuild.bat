@@ -1,3 +1,3 @@
-mkdir -p ..\main\dist\permissionManager\dist
+mkdir ..\main\dist\permissionManager\dist
 copy dist\* ..\main\dist\permissionManager\dist
 copy index.html ..\main\dist\permissionManager\index.html

@@ -10,7 +10,7 @@
     "build-script-bash": "bash afterBuild.sh",
     "build-linux": "webpack --config webpack.config.build.js && npm run build-script-bash",
     "build-win": "webpack --config webpack.config.build.js && npm run build-script-win",
-    "clear-dist-win": "rmdir dist",
+    "clear-dist-win": "rmdir dist /S /Q",
     "clear-dist-linux": "rm -rf dist",
     "hot-server": "cross-env NODE_ENV=development node --max_old_space_size=2096 server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
