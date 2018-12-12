@@ -1,6 +1,5 @@
 var path = require('path');
 var webpack = require('webpack');
-var WebpackShellPlugin = require('webpack-shell-plugin');
 
 const port = process.env.PORT || 3000;
 
@@ -62,11 +61,6 @@ module.exports = {
       }
     ]
   },
-  plugins: [
-    new WebpackShellPlugin({
-      onBuildEnd: 'bash afterBuild.sh'
-    })
-  ],
   stats: {
     colors: true
   },

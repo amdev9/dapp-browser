@@ -36,8 +36,8 @@ export default class AppsManager {
   }
 
   static resolvePath(item: AppItem) {
-    const icon = path.join(constants.DAPPS_PATH, item.appName, item.icon);
-    const preview = path.join(constants.DAPPS_PATH, item.appName, item.preview);
+    const icon = path.join(constants.DAPPS_PATH, item.appName, item.icon).replace(/\\/g,"/");
+    const preview = path.join(constants.DAPPS_PATH, item.appName, item.preview).replace(/\\/g,"/");
     return { ...item, icon, preview };
   }
 
@@ -57,6 +57,8 @@ export default class AppsManager {
     try {
       const fileContent = await readFile(path.join(constants.DAPPS_PATH, folder, 'manifest.json'));
       const itemWithResolvedPath = AppsManager.resolvePath(JSON.parse(fileContent));
+      console.log('PARSE_DAPP', fileContent, itemWithResolvedPath)
+
       AppsManager.dapps.push(itemWithResolvedPath);
       return itemWithResolvedPath;
 

@@ -13,10 +13,22 @@ Spawn new shell & wait for build process finish:
 npm run dev
 ```
 
-**Build application**
+**Build application for Linux/macOS**
 
 ```
 npm install
 npm run build
 ```
 and get executable file from `./release` folder.
+
+
+**Build for Windows:**
+
+***Requirements:***
+1. Python
+2. Visual Studio 2015
+3. ```npm install --global windows-build-tools```
+```
+npm install
+npm run build-win
+```
