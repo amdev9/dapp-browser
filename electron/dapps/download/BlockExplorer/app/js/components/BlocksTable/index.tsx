@@ -63,8 +63,8 @@ export default class BlocksTable extends React.Component<IProps, IState> {
       <div>
         <h1>Block Explorer</h1>
         <div>
-          <button onClick={this.onClickSubscribe.bind(this)}>Subscribe</button>
-          <button onClick={this.onClickUnsubscribe.bind(this)}>Unsubscribe</button>
+          <button onClick={this.onClickSubscribe.bind(this)} className="btn btn-primary mr-1">Subscribe</button>
+          <button onClick={this.onClickUnsubscribe.bind(this)} className="btn btn-primary">Unsubscribe</button>
         </div>
       </div>
     );
@@ -74,7 +74,7 @@ export default class BlocksTable extends React.Component<IProps, IState> {
     return (
       <div className="container pt-5">
         {this.renderHeader()}
-        <table className="table table-hover">
+        <table className="table table-hover mt-2">
           {this.renderHead()}
           {this.renderBody()}
         </table>
