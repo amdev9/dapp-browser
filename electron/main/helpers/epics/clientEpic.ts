@@ -33,12 +33,11 @@ const toggleSettingsEpic: Epic<any> = action$ => action$.pipe(
 
 const removeTrayItemEpic: Epic<any> = action$ => action$.pipe(
   ofType(constants.REMOVE_TRAY_ITEM),
-  mapTo(clientActions.clientToggleHome(true)),
-  // map((action) => {
-  //   console.log('--REMOVE_TRAY_ITEM');
-  //   ClientManager.toggleHome();
-  //   return clientActions.toggleHome(true);
-  // }),
+  map((action) => {
+    ClientManager.toggleHome(); // call setBrowserView(null) before destoying the BrowserView
+    AppsManager.closeDapp(action.payload.targetDappName);
+    return clientActions.clientToggleHome(true);
+  }),
 );
 
 export default combineEpics(
