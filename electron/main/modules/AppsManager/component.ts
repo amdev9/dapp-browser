@@ -57,7 +57,6 @@ export default class AppsManager {
     try {
       const fileContent = await readFile(path.join(constants.DAPPS_PATH, folder, 'manifest.json'));
       const itemWithResolvedPath = AppsManager.resolvePath(JSON.parse(fileContent));
-      console.log('PARSE_DAPP', fileContent, itemWithResolvedPath)
 
       AppsManager.dapps.push(itemWithResolvedPath);
       return itemWithResolvedPath;

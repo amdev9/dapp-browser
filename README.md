@@ -19,7 +19,7 @@ npm run dev
 npm install
 npm run build
 ```
-and get executable file from `./release` folder.
+and get executable file from `./electron/main/release` folder.
 
 
 **Build for Windows:**
@@ -28,6 +28,8 @@ and get executable file from `./release` folder.
 1. Python 2.7
 2. Visual Studio 2015
 3. ```npm install --global windows-build-tools```
+
+Run build process and get '.exe' file from ```./electron/main/release``` folder.
 ```
 npm install
 npm run build-win
