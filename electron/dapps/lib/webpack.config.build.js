@@ -1,6 +1,5 @@
 var path = require('path');
 var webpack = require('webpack');
-var WebpackShellPlugin = require('webpack-shell-plugin');
 
 module.exports = {
   mode: 'production',
@@ -35,10 +34,5 @@ module.exports = {
       ClientApp: path.resolve(__dirname, '../../client'),
     }
   },
-  plugins: [
-    new WebpackShellPlugin({
-      onBuildEnd: 'bash afterBuild.sh'
-    })
-  ],
   watch: false
 };

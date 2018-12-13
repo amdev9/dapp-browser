@@ -1,6 +1,5 @@
 var path = require('path');
 var webpack = require('webpack');
-var WebpackShellPlugin = require('webpack-shell-plugin');
 
 module.exports = {
   mode: 'production',
@@ -70,9 +69,6 @@ module.exports = {
     // https://webpack.github.io/docs/hot-module-replacement-with-webpack.html
     new webpack.HotModuleReplacementPlugin(),
     new webpack.LoaderOptionsPlugin(),
-    new WebpackShellPlugin({
-      onBuildEnd: 'bash afterBuild.sh'
-    })
   ],
   watch: false
 };

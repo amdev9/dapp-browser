@@ -45,8 +45,8 @@ export default class BlocksTable extends React.Component<IProps, IState> {
     );
   }
 
-  onClickSubscribe() {
-    const networkUnsubscriber = ArrayIO.ArrayIO.networkSubscribe({
+  async onClickSubscribe() {
+    const networkUnsubscriber = await ArrayIO.ArrayIO.networkSubscribe({
       onGetBlock: (block: any) => this.setState({ blockList: [...this.state.blockList, block] })
     });
 
@@ -55,6 +55,7 @@ export default class BlocksTable extends React.Component<IProps, IState> {
 
   onClickUnsubscribe() {
     this.state.networkUnsubscriber && this.state.networkUnsubscriber();
+    this.setState({ networkUnsubscriber: null })
   }
 
   renderHeader() {

@@ -39,10 +39,7 @@ export function createPermissionWindow(globalUUIDList: RendererConf[], mainWindo
   permissionWindow.setMenu(null);
 
   const permissionWPath = path.join(PERMISSION_PATH, 'index.html');
-  const permissionWPathUrl = url.format({
-    protocol: 'file',
-    hostname: permissionWPath,
-  });
+  const permissionWPathUrl = `file://${permissionWPath}`;
   permissionWindow.loadURL(permissionWPathUrl);
 
   if (process.env.ELECTRON_ENV === 'development') {

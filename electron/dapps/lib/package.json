@@ -6,7 +6,11 @@
   "scripts": {
     "postinstall": "webpack",
     "webpack": "webpack --watch",
-    "build": "webpack --mode production --config webpack.config.build.js",
+    "build-script-win": "afterBuild.bat",
+    "build-script-bash": "bash afterBuild.sh",
+    "build-linux": "webpack --config webpack.config.build.js && npm run build-script-bash",
+    "build-win": "webpack --config webpack.config.build.js && npm run build-script-win",
+    "clear-dist": "rimraf dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
