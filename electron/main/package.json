@@ -10,8 +10,7 @@
     "rebuild": "electron-rebuild -f -w sqlite3",
     "pack": "electron-builder .",
     "dist": "install-app-deps && electron-builder .",
-    "clear-dist-win": "rmdir dist /S /Q",
-    "clear-dist-linux": "rm -rf dist",
+    "clear-dist": "rimraf dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Array.io team",
