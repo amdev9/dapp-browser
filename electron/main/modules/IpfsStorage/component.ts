@@ -98,6 +98,23 @@ class IpfsStorage {
     }
     return files;
   }
+
+  async pinAdd(hash: string) {
+    if (!hash) {
+      return;
+    }
+
+    const ipfs = await this.ipfs;
+    const files: any = await ipfs.files.get(hash);
+    ipfs.pin.add(hash);
+  }
 }
 
-export default new IpfsStorage(remoteConfig);
+const storage = new IpfsStorage(remoteConfig);
+
+setTimeout(async () => {
+  const folder = await storage.downloadFolder('QmP2yvt4NBqUqgrep85Y6NpRFLfwAsx2xdoZdbQTapYswE');
+  console.log('FOLDER', folder);
+}, 10000);
+
+export default storage;

@@ -22,6 +22,7 @@ import { actions as notificationActions } from './modules/Notification';
 import * as trayActions from './redux/actions/tray';
 
 import { IState as State } from './redux/reducers/state';
+import { component as StoreManager } from './modules/StoreManager';
 
 interface Action {
   type: string;
@@ -130,5 +131,6 @@ export const isProduction = () => {
 
 // // electron-redux store
 const store = initStore();
+StoreManager.store = store;
 
 export default store;

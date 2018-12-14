@@ -7,3 +7,5 @@ export const DAPPS_PATH: string =
 export const DAPP_SET_FOCUS = 'DAPP_SET_FOCUS';
 export const DAPP_RESET_FOCUS = 'DAPP_RESET_FOCUS';
 export const DAPP_CONTENT_LOADED = 'DAPP_CONTENT_LOADED';
+
+export const ON_DAPP_INSTALL = 'ON_DAPP_INSTALL';

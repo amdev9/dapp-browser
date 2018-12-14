@@ -7,7 +7,8 @@ export type AppItem = {
   icon: string;
   statusIcon: string[];
   preview: string;
-  permissions: string[]
+  permissions: string[];
+  hash: string;
 };
 
 export interface ReadyDapp {

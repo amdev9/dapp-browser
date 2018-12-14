@@ -19,11 +19,9 @@
 
 import 'reflect-metadata';
 import { createConnection, ConnectionOptions } from 'typeorm';
-import * as path from 'path';
 import { Store } from '../../modules/Storage/models';
-import { appTempPath } from '../constants/appPaths';
+import { dbPath } from '../constants/appPaths';
 
-const dbPath = path.join(appTempPath, 'db');
 console.log('App temp path:', dbPath);
 
 export interface SQLiteStorageConfig {

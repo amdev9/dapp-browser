@@ -2,18 +2,40 @@ import * as path from 'path';
 import { BrowserWindow } from 'electron';
 
 import { RendererConf, globalUUIDList } from '../../helpers/constants/globalVariables';
+import { dappsPath } from '../../helpers/constants/appPaths';
 import { DappFrame } from '../../helpers/systemComponents/DappFrame';
-import { activeDappSelector } from './selectors';
 import PermissionManager from '../../helpers/systemComponents/PermissionManager';
 import StoreManager from '../../helpers/systemComponents/StoreManager';
+import { component as IpfsStorage } from '../IpfsStorage';
+import { component as FileManager } from '../FileManager';
 
 import * as actions from './actions';
 import * as constants from './constants';
 import { AppItem, ReadyDapp } from './models';
 import { readDir, readFile, createDappView } from './utils';
 import { component as Dapp } from '../Dapp';
+import { all } from 'async';
 
-const dappsGlobal: AppItem[] = [];
+const installedDapps: AppItem[] = [];
+const allDapps: DappDownloadEntity[] = [];
+
+export type DappDownloadEntity = {
+  hash: string;
+  appName: string;
+  preview?: string;
+  categories?: string[];
+  permissions?: string[];
+};
+
+class AppsProvider {
+  static requestAllDappsList(): DappDownloadEntity[] {
+    return [{
+      hash: 'QmP2yvt4NBqUqgrep85Y6NpRFLfwAsx2xdoZdbQTapYswE',
+      appName: 'BlockExplorer',
+      categories: [],
+    }];
+  }
+}
 
 export default class AppsManager {
   id: number;
@@ -22,7 +44,7 @@ export default class AppsManager {
   static readyDapps: ReadyDapp[] = [];
 
   static getAppItem(appName: string) {
-    const targetDapp = dappsGlobal.find((item: AppItem) => item.appName === appName);
+    const targetDapp = AppsManager.installedDapps.find((item: AppItem) => item.appName === appName);
     const randomKey = Math.floor(Math.random() * 1000);
 
     return Object.assign({}, targetDapp, {
@@ -31,25 +53,65 @@ export default class AppsManager {
     });
   }
 
-  static get dapps() {
-    return dappsGlobal;
+  static get installedDapps() {
+    return installedDapps;
+  }
+
+  static get allDapps() {
+    return allDapps;
   }
 
   static resolvePath(item: AppItem) {
-    const icon = path.join(constants.DAPPS_PATH, item.appName, item.icon).replace(/\\/g,"/");
-    const preview = path.join(constants.DAPPS_PATH, item.appName, item.preview).replace(/\\/g,"/");
+    const icon = path.join(constants.DAPPS_PATH, item.appName, item.icon).replace(/\\/g, "/");
+    const preview = path.join(constants.DAPPS_PATH, item.appName, item.preview).replace(/\\/g, "/");
     return { ...item, icon, preview };
+  }
+
+  static async getAllDapps() {
+    const allDappsList = AppsProvider.requestAllDappsList();
+    await AppsManager.parseDapps();
+    console.log('INSTALLED DAPPS', installedDapps);
+
+    return allDappsList.map((dapp) => ({
+      ...dapp,
+      installed: !!AppsManager.getInstalledDappItem(dapp.appName),
+    }));
+  }
+
+  // Get dapp item by name case insensitive
+  static getInstalledDappItem(dappName: string = ''): AppItem {
+    return AppsManager.installedDapps.find(dappObj => dappObj.appName && dappObj.appName.toLowerCase() === dappName.toLowerCase());
+  }
+
+  static getDappItemByName(dappName: string = '') {
+    return AppsManager.allDapps.find((dapp) => dapp.appName === dappName);
+  }
+
+  static async installDapp(dappName: string, hash: string) {
+    const dapp = AppsManager.getInstalledDappItem(dappName);
+
+    if (!dapp) {
+      return;
+    }
+    await AppsManager.downloadDapp(hash);
+  }
+
+  static async downloadDapp(hash: string) {
+    const dappFolder = await IpfsStorage.downloadFolder(hash);
+    await FileManager.saveFolder(dappsPath, dappFolder);
+    console.log('DOWNLOAD_DAPP', dappFolder);
   }
 
   static async parseDapps() {
     try {
-      const dappsFolders: string[] = await readDir(constants.DAPPS_PATH);
+      const dappsFolders: string[] = await readDir(dappsPath);
 
       const promises = dappsFolders.map(folder => AppsManager.parseDapp(folder)); // @todo rewrite with async lib
-      await Promise.all(promises);
+      return await Promise.all(promises);
 
     } catch (err) {
       console.log('Catched', err);
+      return [];
     }
   }
 
@@ -58,7 +120,7 @@ export default class AppsManager {
       const fileContent = await readFile(path.join(constants.DAPPS_PATH, folder, 'manifest.json'));
       const itemWithResolvedPath = AppsManager.resolvePath(JSON.parse(fileContent));
 
-      AppsManager.dapps.push(itemWithResolvedPath);
+      AppsManager.installedDapps.push(itemWithResolvedPath);
       return itemWithResolvedPath;
 
     } catch (err) {
@@ -69,11 +131,6 @@ export default class AppsManager {
         console.log('other error: ', err);
       }
     }
-  }
-
-  // Get dapp item by name case insensitive
-  static getDappItem(dappName: string = ''): AppItem {
-    return AppsManager.dapps.find(dappObj => dappObj.appName && dappObj.appName.toLowerCase() === dappName.toLowerCase());
   }
 
   static getDappRenderer(dappName: string = ''): RendererConf {
@@ -100,7 +157,7 @@ export default class AppsManager {
   }
 
   static async createDapp(targetDappName: string, clientWindow: BrowserWindow) {
-    const dapp = AppsManager.getDappItem(targetDappName);
+    const dapp = AppsManager.getInstalledDappItem(targetDappName);
     const dappRenderer = createDappView(globalUUIDList, dapp);
     const dappView = dappRenderer && dappRenderer.dappView || null;
     const isDappReady = AppsManager.isDappReady(targetDappName);
@@ -129,7 +186,7 @@ export default class AppsManager {
   }
 
   static async openDapp(dappName: string, clientWindow: BrowserWindow) {
-    const dapp = AppsManager.getDappItem(dappName);
+    const dapp = AppsManager.getInstalledDappItem(dappName);
 
     await PermissionManager.checkDappPermissions(dappName, dapp.permissions, clientWindow);
     await AppsManager.createDapp(dappName, clientWindow);

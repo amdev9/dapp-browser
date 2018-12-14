@@ -13,6 +13,15 @@ const dappContentLoadedEpic: Epic<AnyAction> = action$ => action$.pipe(
   ignoreElements(),
 );
 
+const installDappEpic: Epic<AnyAction> = action$ => action$.pipe(
+  ofType(constants.ON_DAPP_INSTALL),
+  tap((action) => {
+    AppsManager.installDapp(action.payload.dappName, action.payload.hash);
+  }),
+  ignoreElements(),
+);
+
 export default combineEpics(
   dappContentLoadedEpic,
+  installDappEpic,
 );

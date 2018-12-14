@@ -4,7 +4,7 @@ import { switchMap } from 'rxjs/operators';
 
 import * as marketActions  from '../actions/market';
 import * as constants from '../constants';
-import { FileManager } from '../../modules/FileManager';
+import { component as FileManager } from '../../modules/FileManager';
 import { component as ipfs } from '../../modules/IpfsStorage';
 import { component as AppsManager, constants as AppsManagerConstants } from '../../modules/AppsManager';
 import * as fs from 'fs';

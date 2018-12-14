@@ -130,7 +130,8 @@ app.on('ready', async () => {
 
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
-  await AppsManager.parseDapps();
+  const dapps = await AppsManager.getAllDapps();
+  console.log('GET_ALL_DAPS RESULT', dapps)
 
   let keysList: string[] = [];
   try {
@@ -143,14 +144,8 @@ app.on('ready', async () => {
   store = configureStore({
     ...initialState,
     client: { ...initialState.client, keychain: { ...initialState.client.keychain, items: keysList } },
-    feed: { items: AppsManager.dapps },
+    feed: { items: dapps },
   }, globalUUIDList);
-  // Mac OS X sends url to open via this event
-  app.on('activate', () => {
-    // On OS X it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
-    // clientWindow = createClientWindow(globalUUIDList, store);
-  });
 
   StoreManager.store = store;
 

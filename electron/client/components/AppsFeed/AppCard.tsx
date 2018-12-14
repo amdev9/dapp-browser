@@ -1,10 +1,13 @@
 import { MoonLoader } from 'react-spinners';
 import * as React from 'react';
+import * as cn from 'classnames';
 import { DApp } from '../../redux/model';
 // import { MoonLoader } from "react-spinners";
 
+import './AppCard.sass';
+
 interface AppCardProps {
-  dapp?: DApp;
+  dapp?: any;
   switchDapp: () => void;
 }
 
@@ -12,7 +15,7 @@ interface AppCardState {
   status: string;
 }
 
-export class AppCard extends React.Component<AppCardProps, AppCardState>  {
+export class AppCard extends React.Component<AppCardProps, AppCardState> {
   constructor(props: AppCardProps) {
     super(props);
     this.getCategories = this.getCategories.bind(this);
@@ -24,7 +27,8 @@ export class AppCard extends React.Component<AppCardProps, AppCardState>  {
 
   private getCategories(): JSX.Element {
     const { dapp } = this.props;
-    const items = dapp.categories.map((item, index): JSX.Element => (
+    console.log('getCategories', dapp);
+    const items = dapp.categories && dapp.categories.map((item: any, index: number): JSX.Element => (
       <div key={`tag-${index}`} className="tag">
         <span>{item}</span>
       </div>
@@ -45,25 +49,22 @@ export class AppCard extends React.Component<AppCardProps, AppCardState>  {
   }
 
   private getAction(): JSX.Element {
+    const { dapp } = this.props;
     const { status } = this.state;
-
-    const label = (
-      <div className="label">Install</div>
-    );
 
     // @TODO: next add spinner type by status
     // e.g for updated or install indicator is progress
     const spinner = (
       <div className="loading">
-        <MoonLoader color="#508dff" size={13} />
+        <MoonLoader color="#508dff" size={13}/>
       </div>
     );
 
-    const content = status ? spinner : label;
+    // const content = status ? spinner : label;
 
     return (
-      <div className="action" onClick={this.actionHandle}>
-        {content}
+      <div className={cn('action', { action_installed: dapp.installed })} onClick={this.actionHandle}>
+        {dapp.installed ? 'Open' : 'Install'}
       </div>
     );
   }
@@ -72,7 +73,7 @@ export class AppCard extends React.Component<AppCardProps, AppCardState>  {
     const { dapp, switchDapp } = this.props;
     return (
       <div className="app-card" onClick={switchDapp}>
-        <div className="header" style={{ backgroundImage: `url('${dapp.preview}')` }}>
+        <div className="header" style={{ backgroundImage: `url('${dapp.preview || ''}')` }}>
         </div>
         <div className="content">
           <div className="title">{dapp.appName}</div>

@@ -9,7 +9,7 @@ export default class HttpProtocol {
   static async openLink(link: string) {
     const clearLink = link && link.replace(constants.HTTP_PROTOCOL, '');
     const [dappName, ...params] = clearLink.split('/').filter((item: string) => item);
-    const requestDapp = AppsManager.getDappItem(dappName);
+    const requestDapp = AppsManager.getInstalledDappItem(dappName);
 
     if (!requestDapp) {
       throw Error('Dapp does not exist');
