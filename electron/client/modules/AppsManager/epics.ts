@@ -1,25 +1,16 @@
 import { AnyAction } from 'redux';
 import { combineEpics, Epic, ofType } from 'redux-observable';
-import { ignoreElements, tap } from 'rxjs/operators';
+import { ignoreElements, tap, mergeMap } from 'rxjs/operators';
 
 import * as mainConstants from 'MainApp/modules/AppsManager/constants';
 import AppsManager from './component';
+import * as actions from './actions';
 
-const dappDownloadSuccessEpic: Epic<AnyAction> = action$ => action$.pipe(
-  ofType(mainConstants.DAPP_DOWNLOAD_SUCCESS),
-  tap((action) => {
-  }),
-  ignoreElements(),
-);
-
-const dappDownloadFailureEpic: Epic<AnyAction> = action$ => action$.pipe(
-  ofType(mainConstants.DAPP_DOWNLOAD_FAILURE),
-  tap((action) => {
-  }),
-  ignoreElements(),
+const updateInstalledDapps: Epic<AnyAction> = action$ => action$.pipe(
+  ofType(mainConstants.UPDATE_INSTALLED_DAPPS),
+  ignoreElements()
 );
 
 export default combineEpics(
-  dappDownloadSuccessEpic,
-  dappDownloadFailureEpic,
+  updateInstalledDapps
 );

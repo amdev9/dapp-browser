@@ -24,6 +24,16 @@ export interface ReadyDapp {
   uuid: string;
 }
 
+export type DappDownloadEntity = {
+  hash: string;
+  appName: string;
+  preview?: string;
+  categories?: string[];
+  permissions?: string[];
+  installed?: boolean;
+};
+
+
 declare global {
   export interface Promise<T> extends Bluebird<T> {
   }

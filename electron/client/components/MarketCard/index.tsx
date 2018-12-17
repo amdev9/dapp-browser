@@ -10,27 +10,39 @@ import * as TrayActions from '../../redux/actions/tray';
 import { actions as NotificationActions } from '../../modules/Notification';
 import { component as AppsManager } from '../../modules/AppsManager';
 
-import './AppCard.sass';
+// import './InstalledAppsFeed.sass';
+import * as MarketActions from '../../redux/actions/market';
 
 interface AppCardProps {
   dapp?: any;
-  switchDapp: (dappName: string) => void;
+}
+
+interface AppCardConnectProps {
+  switchDapp?: (dappName: string) => void;
   installDapp?: (dappName: string, hash: string) => void;
+  downloadDapp?: (ipfsHash: string) => void;
+  updateAllDapps: () => void;
   hideAction?: boolean;
 }
 
 interface AppCardState {
   status: string;
+  isInstalling: boolean;
+  installSuccess: any;
+  installFailure: any;
 }
 
-export class AppCard extends React.Component<AppCardProps, AppCardState> {
-  constructor(props: AppCardProps) {
+export class AppCard extends React.Component<AppCardProps & AppCardConnectProps, AppCardState> {
+  constructor(props: AppCardProps & AppCardConnectProps) {
     super(props);
     this.getCategories = this.getCategories.bind(this);
     this.actionHandle = this.actionHandle.bind(this);
 
     this.state = {
       status: '',
+      isInstalling: false,
+      installSuccess: null,
+      installFailure: null,
     };
   }
 
@@ -59,25 +71,64 @@ export class AppCard extends React.Component<AppCardProps, AppCardState> {
 
   getBadge() {
     const { dapp } = this.props;
+    const { isInstalling, installSuccess } = this.state;
+
+    if (isInstalling) {
+      return (
+        <div className="loading">
+          <MoonLoader color="#508dff" size={13}/>
+        </div>
+      );
+    }
+
+    if (installSuccess) {
+      return 'Open';
+    }
 
     return dapp.installed ? 'Open' : 'Install';
   }
 
   private getAction(): JSX.Element {
     const { dapp } = this.props;
+    const { installSuccess } = this.state;
 
     return (
-      <div className={cn('action', { action_installed: dapp.installed })}>
+      <div className={cn('action', { action_installed: dapp.installed || installSuccess })}>
         {this.getBadge()}
       </div>
     );
   }
 
+  async installDapp() {
+    const { dapp, updateAllDapps } = this.props;
+
+    this.setState({
+      isInstalling: true,
+    });
+
+    try {
+      await AppsManager.installDapp(dapp.appName, dapp.hash);
+      this.setState({ installSuccess: true, isInstalling: false });
+    } catch (e) {
+      this.setState({ installFailure: e, isInstalling: false });
+    }
+    // updateAllDapps();
+  }
+
   onClickAppCard() {
     const { dapp, switchDapp } = this.props;
+    const { isInstalling, installSuccess } = this.state;
+
+    if (isInstalling) {
+      return null;
+    }
 
     console.log('appCARD', this.props, AppsManager);
-    return switchDapp(dapp.appName);
+    if (dapp.installed || installSuccess) {
+      return switchDapp(dapp.appName);
+    }
+
+    return this.installDapp();
   }
 
   public render() {
@@ -97,9 +148,9 @@ export class AppCard extends React.Component<AppCardProps, AppCardState> {
     );
   }
 }
-
 const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
   switchDapp: TrayActions.switchDapp,
+  downloadDapp: MarketActions.downloadDapp,
 }, dispatch);
 
 export default connect<AppCardProps, {}>(null, mapDispatchToProps)(AppCard);

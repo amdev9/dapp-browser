@@ -5,7 +5,7 @@
   "main": "./electron/main/dist/main.js",
   "scripts": {
     "setup": "npm run install-packages-apps && npm run start-apps",
-    "start-apps": "concurrently \"npm run webpack-client\" \"npm run webpack-dapps-lib\" \"npm run webpack-dapps-download\" \"npm run webpack-permission-manager\" \"npm run webpack-main\"",
+    "start-apps": "concurrently \"npm run webpack-dapps-lib\" \"npm run webpack-dapps-download\" \"npm run webpack-permission-manager\" \"npm run webpack-main\"",
     "dev": "cross-env NODE_ENV=development npm start",
     "start": "node index.js",
     "clean": "rimraf release && rimraf electron/main/release && npm run clear-dist",

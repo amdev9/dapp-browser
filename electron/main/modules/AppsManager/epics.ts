@@ -1,6 +1,7 @@
 import { AnyAction } from 'redux';
+import { of, concat } from 'rxjs';
 import { combineEpics, Epic, ofType } from 'redux-observable';
-import { ignoreElements, tap, mergeMap } from 'rxjs/operators';
+import { ignoreElements, tap, map, mergeMap } from 'rxjs/operators';
 
 import * as constants from './constants';
 import * as actions from './actions';
@@ -16,10 +17,23 @@ const dappContentLoadedEpic: Epic<AnyAction> = action$ => action$.pipe(
 
 const installDappEpic: Epic<AnyAction> = action$ => action$.pipe(
   ofType(constants.ON_DAPP_INSTALL),
-  tap((action) => {
-    AppsManager.installDapp(action.payload.dappName, action.payload.hash);
+  mergeMap(async (action: AnyAction) => {
+    try {
+      await AppsManager.installDapp(action.payload.dappName, action.payload.hash);
+      return actions.onDappInstallSuccess(action.meta.uid)
+    } catch (e) {
+      return actions.onDappInstallFailure(e, action.meta.uid);
+    }
   }),
-  ignoreElements(),
+);
+
+const updateDappsListEpic: Epic<AnyAction> = action$ => action$.pipe(
+  ofType(constants.ON_DAPP_INSTALL_SUCCESS),
+  map( (action) => {
+    const updatedDappsList = AppsManager.installedDapps;
+
+    return actions.updateinstalledDapps(updatedDappsList)
+  })
 );
 
 const getAllDappsEpic: Epic<AnyAction> = action$ => action$.pipe(
@@ -37,5 +51,6 @@ const getAllDappsEpic: Epic<AnyAction> = action$ => action$.pipe(
 export default combineEpics(
   dappContentLoadedEpic,
   installDappEpic,
+  updateDappsListEpic,
   getAllDappsEpic,
 );

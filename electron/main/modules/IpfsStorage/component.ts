@@ -6,37 +6,13 @@ import { models as FileManagerModels } from '../FileManager';
 import { IPFSGetResult } from '../../types/ipfs';
 import { remoteConfig } from '../../helpers/config/ipfs';
 import { getReadyIpfsInstance } from '../../helpers/systemComponents/IpfsInstance';
+import { functionPromiseTimeout } from '../../helpers/utils';
 
 export interface IpfsFileObject {
   hash: string;
   path: string;
   size: number;
 }
-
-const EXEC_TIMEOUT = 10000;
-
-const functionPromiseTimeout = (f: () => Promise<any>, timeout: number) => {
-  if (!(f instanceof Function)) {
-    throw Error('First argument is not a function');
-  }
-
-  const result = f();
-
-  if (!(result instanceof Promise)) {
-    return result;
-  }
-
-  return new Promise((resolve, reject) => {
-    const timerId = setTimeout(() => {
-      reject('Timeout error');
-    }, timeout);
-
-    result
-      .then(data => resolve(data))
-      .catch(error => reject(error))
-      .finally(() => clearTimeout(timerId));
-  });
-};
 
 class IpfsStorage {
   ipfs: Promise<IPFS>;
@@ -76,9 +52,7 @@ class IpfsStorage {
 
     const ipfs = await this.ipfs;
 
-    const files: any = await functionPromiseTimeout(() => {
-      return ipfs.files.get(hash);
-    }, EXEC_TIMEOUT);
+    const files: any = await functionPromiseTimeout(() => ipfs.files.get(hash));
 
     if (!files || !files.length) {
       throw Error('File with current hash does not exist');
@@ -110,11 +84,4 @@ class IpfsStorage {
   }
 }
 
-const storage = new IpfsStorage(remoteConfig);
-
-setTimeout(async () => {
-  const folder = await storage.downloadFolder('QmP2yvt4NBqUqgrep85Y6NpRFLfwAsx2xdoZdbQTapYswE');
-  console.log('FOLDER', folder);
-}, 10000);
-
-export default storage;
+export default new IpfsStorage(remoteConfig);

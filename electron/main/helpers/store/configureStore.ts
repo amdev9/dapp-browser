@@ -290,6 +290,7 @@ export const configureStore = (state: IState = initialState, globalId?: Renderer
   const persistConfig = {
     key: 'root',
     storage: storeEngine, // storage,
+    blacklist: ['feed'],
     debug: true,
   };
   const pReducer = persistReducer(persistConfig, rootReducer);
