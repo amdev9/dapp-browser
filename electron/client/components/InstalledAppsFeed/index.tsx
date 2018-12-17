@@ -1,7 +1,7 @@
 import AppCard from '../AppsFeed/AppCard';
 import { Link } from 'react-router-dom';
 import * as React from 'react';
-import { DApp } from '../../redux/model';
+import { DApp, FeedItem } from '../../redux/model';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { IState } from '../../redux/reducers/state';
@@ -10,8 +10,9 @@ import * as TrayActions from '../../redux/actions/tray';
 import './InstalledAppsFeed.sass';
 
 interface IProps {
-  switchDapp?: (dappName?: string) => void;
-  feedItems?: DApp[];
+  navigateToMarket: () => void;
+  switchDapp: (dappName: string) => void;
+  feedItems: FeedItem[];
 }
 
 class InstalledAppsFeed extends React.Component<IProps> {
@@ -54,4 +55,4 @@ const mapStateToProps = (state: IState) => ({
   feedItems: state.feed.items,
 });
 
-export default connect<IProps>(mapStateToProps, mapDispatchToProps)(InstalledAppsFeed);
+export default connect(mapStateToProps, mapDispatchToProps)(InstalledAppsFeed);

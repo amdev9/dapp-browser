@@ -10,23 +10,22 @@ interface NotificationOptions {
 }
 
 interface NotificationEventsUids {
-  onClick?: string;
-  onClose?: string;
+  onClick?: () => void;
+  onClose?: () => void;
 }
 
-export const showNotification = (options: NotificationOptions, events: NotificationEventsUids, dappName: string) => {
+export const showNotification = (options: NotificationOptions, events: NotificationEventsUids) => {
   const notification = new Notification(options);
 
   if (events.onClick) {
     notification.on('click', () => {
-      StoreManager.store.dispatch(actions.triggerAction(events.onClick));
-      ClientManager.switchDapp(dappName);
+      events.onClick();
     });
   }
 
   if (events.onClose) {
     notification.on('close', () => {
-      StoreManager.store.dispatch(actions.triggerAction(events.onClose));
+      events.onClose();
     });
   }
 

@@ -5,7 +5,7 @@ import MarketCard from '../MarketCard';
 import { component as AppsManager } from '../../modules/AppsManager';
 
 interface IProps {
-  switchDapp: (dapp: string) => void;
+  navigateToInstalled: () => void;
 }
 
 interface IState {

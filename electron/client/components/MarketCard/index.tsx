@@ -3,11 +3,8 @@ import * as React from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import * as cn from 'classnames';
-import { DApp } from '../../redux/model';
-// import { MoonLoader } from "react-spinners";
 import { IState } from '../../redux/reducers/state';
 import * as TrayActions from '../../redux/actions/tray';
-import { actions as NotificationActions } from '../../modules/Notification';
 import { component as AppsManager } from '../../modules/AppsManager';
 
 // import './InstalledAppsFeed.sass';
