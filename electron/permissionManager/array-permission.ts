@@ -93,12 +93,12 @@ const configureStore = (initialState?: State) => {
   const enhancer: GenericStoreEnhancer = composeEnhancers(...enhanced); // compose
 
   const store = createStore(rootReducer, initialState, enhancer);
-  //
-  // if (module.hot) {
-  //     module.hot.accept('./redux/reducers', () =>
-  //       store.replaceReducer(require('./redux/reducers')) // eslint-disable-line global-require
-  //     );
-  // }
+
+  if (module.hot) {
+    module.hot.accept('./redux/reducers', () =>
+      store.replaceReducer(require('./redux/reducers')) // eslint-disable-line global-require
+    );
+  }
 
   epicMiddleware.run(rootEpic);
 

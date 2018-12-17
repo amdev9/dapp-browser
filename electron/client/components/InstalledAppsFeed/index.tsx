@@ -26,7 +26,7 @@ class InstalledAppsFeed extends React.Component<IProps> {
     }
 
     return this.props.feedItems.map((item): JSX.Element => (
-      <AppCard key={item.appName} hideAction={true} dapp={item} switchDapp={() => this.props.switchDapp(item.appName)}/>
+      <AppCard key={item.appName} dapp={item} switchDapp={() => this.props.switchDapp(item.appName)}/>
     ));
   }
 
@@ -37,7 +37,9 @@ class InstalledAppsFeed extends React.Component<IProps> {
           <div className="title">
             Your apps
           </div>
-          <Link className="action action-navigation" to="/market">Go to market</Link>
+          <div onClick={this.props.navigateToMarket} className="action action-navigation">
+            Go to market
+          </div>
         </div>
         <div className="list">
           {this.renderAppCardsList()}

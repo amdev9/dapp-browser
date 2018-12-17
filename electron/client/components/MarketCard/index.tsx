@@ -19,7 +19,6 @@ interface AppCardConnectProps {
   installDapp?: (dappName: string, hash: string) => void;
   downloadDapp?: (ipfsHash: string) => void;
   updateAllDapps: () => void;
-  hideAction?: boolean;
 }
 
 interface AppCardState {
@@ -29,7 +28,7 @@ interface AppCardState {
   installFailure: any;
 }
 
-export class AppCard extends React.Component<AppCardProps & AppCardConnectProps, AppCardState> {
+export class MarketCard extends React.Component<AppCardProps & AppCardConnectProps, AppCardState> {
   constructor(props: AppCardProps & AppCardConnectProps) {
     super(props);
     this.getCategories = this.getCategories.bind(this);
@@ -45,7 +44,6 @@ export class AppCard extends React.Component<AppCardProps & AppCardConnectProps,
 
   private getCategories(): JSX.Element {
     const { dapp } = this.props;
-    console.log('getCategories', dapp);
     const items = dapp.categories && dapp.categories.map((item: any, index: number): JSX.Element => (
       <div key={`tag-${index}`} className="tag">
         <span>{item}</span>
@@ -97,7 +95,7 @@ export class AppCard extends React.Component<AppCardProps & AppCardConnectProps,
   }
 
   async installDapp() {
-    const { dapp, updateAllDapps } = this.props;
+    const { dapp } = this.props;
 
     this.setState({
       isInstalling: true,
@@ -109,7 +107,6 @@ export class AppCard extends React.Component<AppCardProps & AppCardConnectProps,
     } catch (e) {
       this.setState({ installFailure: e, isInstalling: false });
     }
-    // updateAllDapps();
   }
 
   onClickAppCard() {
@@ -120,7 +117,6 @@ export class AppCard extends React.Component<AppCardProps & AppCardConnectProps,
       return null;
     }
 
-    console.log('appCARD', this.props, AppsManager);
     if (dapp.installed || installSuccess) {
       return switchDapp(dapp.appName);
     }
@@ -129,7 +125,7 @@ export class AppCard extends React.Component<AppCardProps & AppCardConnectProps,
   }
 
   public render() {
-    const { dapp, hideAction } = this.props;
+    const { dapp } = this.props;
     return (
       <div className="app-card" onClick={this.onClickAppCard.bind(this)}>
         <div className="header" style={{ backgroundImage: `url('${dapp.preview || ''}')` }}>
@@ -138,7 +134,7 @@ export class AppCard extends React.Component<AppCardProps & AppCardConnectProps,
           <div className="title">{dapp.appName}</div>
           <div className="footer">
             {this.getCategories()}
-            {hideAction ? null : this.getAction()}
+            {this.getAction()}
           </div>
         </div>
       </div>
@@ -150,4 +146,4 @@ const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
   downloadDapp: MarketActions.downloadDapp,
 }, dispatch);
 
-export default connect<AppCardProps, {}>(null, mapDispatchToProps)(AppCard);
+export default connect<AppCardProps, {}>(null, mapDispatchToProps)(MarketCard);

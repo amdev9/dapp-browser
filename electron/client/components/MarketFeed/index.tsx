@@ -77,7 +77,9 @@ export default class MarketFeed extends React.Component<IProps, IState> {
             Market apps
           </div>
           <div className="action">
-            <Link className="action action-navigation" to="/">My apps</Link>
+            <div className="action action-navigation" onClick={this.props.navigateToInstalled}>
+              My apps
+            </div>
           </div>
         </div>
         <div className="list">

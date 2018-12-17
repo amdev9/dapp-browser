@@ -71,7 +71,6 @@ export default class AppsManager {
   static async getAllDapps(): Promise<DappDownloadEntity[]> {
     const allDappsList = AppsProvider.requestAllDappsList();
     await AppsManager.parseDapps();
-    console.log('INSTALLED DAPPS', installedDapps);
 
     return allDappsList.map((dapp) => ({
       ...dapp,
@@ -86,27 +85,21 @@ export default class AppsManager {
 
   static async installDapp(dappName: string, hash: string) {
     const dapp = AppsManager.getInstalledDappItem(dappName);
-    console.log('APPS MANAGER INSTALL DAPP', dapp);
 
     if (dapp) {
       return;
     }
-    console.log('start download', hash)
     const downloadedDappPath = await AppsManager.downloadDapp(hash);
-    console.log('DOWNLOADED DAPP PATH', downloadedDappPath);
     const parseDapp = await AppsManager.parseDapp(downloadedDappPath);
     if (!parseDapp) {
       throw Error('Dapp is invalid');
     }
     AppsManager.addInstalledDapp(parseDapp);
-    console.log('parsedapp', parseDapp);
   }
 
   static async downloadDapp(hash: string) {
     const dappFolder = await functionPromiseTimeout(() => IpfsStorage.downloadFolder(hash), 60000);
-    console.log('download folder success', dappFolder);
     await FileManager.saveFolder(dappsPath, dappFolder);
-    console.log('save folder');
     return path.join(dappsPath, hash);
 
   }
@@ -114,9 +107,8 @@ export default class AppsManager {
   static async parseDapps() {
     try {
       // For development use constants.DAPPS_PATH instead dappsPath
-      const dappsFolders: string[] = await readDir(dappsPath);
+      const dappsFolders: string[] = await readDir(constants.DAPPS_PATH);
 
-      console.log('dappsFolders', dappsFolders);
       const promises = dappsFolders.map(folder => AppsManager.parseDapp(folder)); // @todo rewrite with async lib
       const dapps = await Promise.all(promises);
 

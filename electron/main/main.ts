@@ -131,7 +131,6 @@ app.on('ready', async () => {
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
   const dapps = await AppsManager.parseDapps();
-  console.log('parsed dapps', dapps)
 
   let keysList: string[] = [];
   try {
