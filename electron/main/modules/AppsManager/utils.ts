@@ -8,11 +8,41 @@ import * as AppsManagerModels from './models';
 import { DAPPS_PATH } from './constants';
 import { RendererConf } from '../../helpers/constants/globalVariables';
 
-export async function readDir(path: string): Promise<any> {
+export const isDirectory = (dir: string) => new Promise((resolve, reject) => {
+  fs.lstat(dir, (err, stats) => {
+    if (err) {
+      reject();
+    }
+
+    if (stats.isDirectory()) {
+      resolve(true);
+    } else {
+      resolve(false);
+    }
+  });
+});
+
+export async function readDir(dir: string): Promise<any> {
   return new Promise((res: any, rej: any) => {
-    fs.readdir(path, (err, data) => {
-      if (err) rej(err);
-      else res(data);
+    fs.readdir(dir, async (err, data) => {
+      if (err) {
+        rej(err);
+      } else {
+        const dirList: string[] = [];
+
+        const pathChecks = await data.map(async (dirName: string) => {
+          const readDirPath = path.join(dir, dirName);
+          const isDirectoryPath = await isDirectory(readDirPath);
+
+          if (isDirectoryPath) {
+            dirList.push(readDirPath);
+          }
+        });
+
+        await Promise.all(pathChecks);
+
+        res(dirList);
+      }
     });
   });
 }
@@ -27,6 +57,7 @@ export async function readFile(path: string, opts = 'utf8'): Promise<any> {
 }
 
 let dappView: Electron.BrowserView = null;
+
 export function createDappView(globalUUIDList: RendererConf[], dapp: AppsManagerModels.AppItem) { // entryPath: string, appName: string
   const createdDapp = dapp && globalUUIDList.find(item => item.name === dapp.appName && item.status === 'dapp');
 

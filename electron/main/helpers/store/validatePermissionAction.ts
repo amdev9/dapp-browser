@@ -106,6 +106,8 @@ const clientActions: string[] = [
   constants.TOGGLE_PERMISSION,
   constants.GRANT_PERMISSIONS,
 
+  ...appsManagerActionTypes,
+
   ...clientNotificationActionTypes,
   ...clientDappsActionTypes,
 ];

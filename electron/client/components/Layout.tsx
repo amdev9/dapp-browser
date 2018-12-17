@@ -20,7 +20,7 @@ import { KeychainPanel } from './KeychainPanel';
 import { SettingsPanel } from './SettingsPanel';
 import { StatusBar } from './StatusBar';
 import { Tray } from './Tray';
-import { AppsFeed } from './AppsFeed';
+import AppsFeed from './AppsFeed';
 import { IState, Permission, PermissionsPanel } from '../redux/reducers/state';
 
 import * as ROUTES from '../router/routes';

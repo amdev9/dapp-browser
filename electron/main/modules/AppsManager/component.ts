@@ -17,7 +17,6 @@ import { component as Dapp } from '../Dapp';
 import { all } from 'async';
 
 const installedDapps: AppItem[] = [];
-const allDapps: DappDownloadEntity[] = [];
 
 export type DappDownloadEntity = {
   hash: string;
@@ -32,6 +31,7 @@ class AppsProvider {
     return [{
       hash: 'QmP2yvt4NBqUqgrep85Y6NpRFLfwAsx2xdoZdbQTapYswE',
       appName: 'BlockExplorer',
+      preview: '',
       categories: [],
     }];
   }
@@ -57,13 +57,9 @@ export default class AppsManager {
     return installedDapps;
   }
 
-  static get allDapps() {
-    return allDapps;
-  }
-
-  static resolvePath(item: AppItem) {
-    const icon = path.join(constants.DAPPS_PATH, item.appName, item.icon).replace(/\\/g, "/");
-    const preview = path.join(constants.DAPPS_PATH, item.appName, item.preview).replace(/\\/g, "/");
+  static resolvePath(item: AppItem, folder: string = '') {
+    const icon = path.join(folder, item.icon).replace(/\\/g, '/');
+    const preview = path.join(folder, item.preview).replace(/\\/g, '/');
     return { ...item, icon, preview };
   }
 
@@ -83,29 +79,40 @@ export default class AppsManager {
     return AppsManager.installedDapps.find(dappObj => dappObj.appName && dappObj.appName.toLowerCase() === dappName.toLowerCase());
   }
 
-  static getDappItemByName(dappName: string = '') {
-    return AppsManager.allDapps.find((dapp) => dapp.appName === dappName);
-  }
-
   static async installDapp(dappName: string, hash: string) {
     const dapp = AppsManager.getInstalledDappItem(dappName);
+    console.log('APPS MANAGER INSTALL DAPP', dapp);
 
-    if (!dapp) {
+    if (dapp) {
       return;
     }
-    await AppsManager.downloadDapp(hash);
+    const downloadedDappPath = await AppsManager.downloadDapp(hash);
+    console.log('DOWNLOADED DAPP PATH', downloadedDappPath);
+    const parseDapp = await AppsManager.parseDapp(downloadedDappPath);
+    console.log('parsedapp', parseDapp);
   }
 
   static async downloadDapp(hash: string) {
-    const dappFolder = await IpfsStorage.downloadFolder(hash);
-    await FileManager.saveFolder(dappsPath, dappFolder);
-    console.log('DOWNLOAD_DAPP', dappFolder);
+    StoreManager.store.dispatch(actions.downloadDapp(hash));
+
+    try {
+      const dappFolder = await IpfsStorage.downloadFolder(hash);
+      console.log('DOWNLOAD_folder');
+      await FileManager.saveFolder(dappsPath, dappFolder);
+      // StoreManager.store.dispatch(actions.downloadDappSuccess(hash));
+      return path.join(dappsPath, hash);
+    } catch (error) {
+      console.log(`download dapp with hash ${hash} as failed`)
+      StoreManager.store.dispatch(actions.downloadDappFailure(hash, error));
+      return null;
+    }
   }
 
   static async parseDapps() {
     try {
       const dappsFolders: string[] = await readDir(dappsPath);
 
+      console.log('dappsFolders', dappsFolders);
       const promises = dappsFolders.map(folder => AppsManager.parseDapp(folder)); // @todo rewrite with async lib
       return await Promise.all(promises);
 
@@ -117,8 +124,8 @@ export default class AppsManager {
 
   static async parseDapp(folder: string) {
     try {
-      const fileContent = await readFile(path.join(constants.DAPPS_PATH, folder, 'manifest.json'));
-      const itemWithResolvedPath = AppsManager.resolvePath(JSON.parse(fileContent));
+      const fileContent = await readFile(path.join(folder, 'manifest.json'));
+      const itemWithResolvedPath = AppsManager.resolvePath(JSON.parse(fileContent), folder);
 
       AppsManager.installedDapps.push(itemWithResolvedPath);
       return itemWithResolvedPath;

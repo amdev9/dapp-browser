@@ -5,8 +5,16 @@ export type AppItem = {
   appName: string;
   main: string;
   icon: string;
-  statusIcon: string[];
+  statusIcon?: string[];
   preview: string;
+  installed: boolean;
+  manifest: any;
+  categories?: string[];
+  downloadStatus: {
+    isDownloadStarted: boolean;
+    downloadSuccess: any;
+    downloadFailure: any;
+  } | null;
   permissions: string[];
   hash: string;
 };
