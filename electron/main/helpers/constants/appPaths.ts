@@ -9,7 +9,14 @@ export const RENDERER_PATH: string =
 export const PERMISSION_PATH: string =
   isDev ? path.join(__dirname, '..', '..', 'permissionManager') : path.join(__dirname, 'permissionManager');
 
+export const DAPPS_DOWNLOAD_PATH: string =
+  isDev ? path.join(__dirname, '..', '..', 'dapps', 'download') : path.join(__dirname, 'dapps', 'download');
+
+export const DAPP_LIB_BUNDLE_PATH: string =
+  isDev ? path.join(__dirname, '..', '..', 'dapps', 'lib', 'build', 'app.bundle.js') : path.join(__dirname, 'dapp', 'lib', 'build', 'app.bundle.js');
+
 export const appTempPath = path.join(os.tmpdir(), 'array-io-client-temp');
 
-export const dbPath = path.join(appTempPath, 'db');
-export const dappsPath = path.join(appTempPath, 'dapps');
+export const dbTempPath = path.join(appTempPath, 'db');
+export const dappsTempPath = path.join(appTempPath, 'dapps');
+export const dappLibBundleTempPath = path.join(appTempPath, 'lib', 'build', 'app.bundle.js');

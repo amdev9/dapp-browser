@@ -2,8 +2,8 @@ import * as path from 'path';
 import { BrowserWindow } from 'electron';
 
 import { RendererConf, globalUUIDList } from '../../helpers/constants/globalVariables';
-import { dappsPath } from '../../helpers/constants/appPaths';
-import { functionPromiseTimeout } from '../../helpers/utils';
+import { appTempPath, dappsTempPath, dappLibBundleTempPath, DAPPS_DOWNLOAD_PATH } from '../../helpers/constants/appPaths';
+import { functionPromiseTimeout, readDir, readFile } from '../../helpers/utils';
 import { DappFrame } from '../../helpers/systemComponents/DappFrame';
 import PermissionManager from '../../helpers/systemComponents/PermissionManager';
 import StoreManager from '../../helpers/systemComponents/StoreManager';
@@ -13,7 +13,7 @@ import { component as FileManager } from '../FileManager';
 import * as actions from './actions';
 import * as constants from './constants';
 import { AppItem, ReadyDapp, DappDownloadEntity } from './models';
-import { readDir, readFile, createDappView } from './utils';
+import { createDappView } from './utils';
 import { component as Dapp } from '../Dapp';
 import { all } from 'async';
 
@@ -65,7 +65,8 @@ export default class AppsManager {
   static resolvePath(item: AppItem, folder: string = '') {
     const icon = path.join(folder, item.icon).replace(/\\/g, '/');
     const preview = path.join(folder, item.preview).replace(/\\/g, '/');
-    return { ...item, icon, preview };
+    const main = path.join(folder, item.main).replace(/\\/g, '/');
+    return { ...item, icon, preview, main };
   }
 
   static async getAllDapps(): Promise<DappDownloadEntity[]> {
@@ -90,7 +91,9 @@ export default class AppsManager {
       return;
     }
     const downloadedDappPath = await AppsManager.downloadDapp(hash);
+    console.log('downloadedDappPath', downloadedDappPath);
     const parseDapp = await AppsManager.parseDapp(downloadedDappPath);
+    console.log('parsedapp', parseDapp);
     if (!parseDapp) {
       throw Error('Dapp is invalid');
     }
@@ -99,15 +102,15 @@ export default class AppsManager {
 
   static async downloadDapp(hash: string) {
     const dappFolder = await functionPromiseTimeout(() => IpfsStorage.downloadFolder(hash), 60000);
-    await FileManager.saveFolder(dappsPath, dappFolder);
-    return path.join(dappsPath, hash);
+    await FileManager.saveFolder(dappsTempPath, dappFolder);
+    return path.join(dappsTempPath, hash);
 
   }
 
   static async parseDapps() {
     try {
-      // For development use constants.DAPPS_PATH instead dappsPath
-      const dappsFolders: string[] = await readDir(constants.DAPPS_PATH);
+      // For development use constants.DAPPS_PATH instead dappsTempPath
+      const dappsFolders: string[] = await readDir(dappsTempPath);
 
       const promises = dappsFolders.map(folder => AppsManager.parseDapp(folder)); // @todo rewrite with async lib
       const dapps = await Promise.all(promises);
@@ -165,7 +168,7 @@ export default class AppsManager {
 
   static async createDapp(targetDappName: string, clientWindow: BrowserWindow) {
     const dapp = AppsManager.getInstalledDappItem(targetDappName);
-    const dappRenderer = createDappView(globalUUIDList, dapp);
+    const dappRenderer = await createDappView(globalUUIDList, dapp);
     const dappView = dappRenderer && dappRenderer.dappView || null;
     const isDappReady = AppsManager.isDappReady(targetDappName);
     const dappReadyPromise = !isDappReady ? StoreManager.onAction(constants.DAPP_CONTENT_LOADED, action => action.meta.sourceUUID === dappRenderer.id) : true;

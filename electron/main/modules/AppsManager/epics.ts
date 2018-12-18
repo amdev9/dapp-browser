@@ -20,7 +20,7 @@ const installDappEpic: Epic<AnyAction> = action$ => action$.pipe(
   mergeMap(async (action: AnyAction) => {
     try {
       await AppsManager.installDapp(action.payload.dappName, action.payload.hash);
-      return actions.onDappInstallSuccess(action.meta.uid)
+      return actions.onDappInstallSuccess(action.meta.uid);
     } catch (e) {
       return actions.onDappInstallFailure(e, action.meta.uid);
     }
@@ -29,11 +29,11 @@ const installDappEpic: Epic<AnyAction> = action$ => action$.pipe(
 
 const updateDappsListEpic: Epic<AnyAction> = action$ => action$.pipe(
   ofType(constants.ON_DAPP_INSTALL_SUCCESS),
-  map( (action) => {
+  map((action) => {
     const updatedDappsList = AppsManager.installedDapps;
 
-    return actions.updateinstalledDapps(updatedDappsList)
-  })
+    return actions.updateinstalledDapps(updatedDappsList);
+  }),
 );
 
 const getAllDappsEpic: Epic<AnyAction> = action$ => action$.pipe(
