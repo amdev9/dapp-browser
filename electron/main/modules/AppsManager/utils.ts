@@ -3,13 +3,26 @@ import { BrowserView, BrowserWindow } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 import * as uuidv4 from 'uuid/v4';
+import * as Bluebird from 'bluebird';
+import { all } from 'async';
 
 import * as AppsManagerModels from './models';
 import { RendererConf } from '../../helpers/constants/globalVariables';
-import { checkExists, mkdir, copyFile } from '../../helpers/utils';
-import { appTempPath, dappsTempPath, dappLibBundleTempPath, DAPP_LIB_BUNDLE_PATH } from '../../helpers/constants/appPaths';
+import { checkExists, mkdirp, copyFile } from '../../helpers/utils';
+import { appTempPath, dappsTempPath, dappLibTempBundlePath, DAPP_LIB_BUNDLE_PATH } from '../../helpers/constants/appPaths';
 
 let dappView: Electron.BrowserView = null;
+
+declare global {
+  export interface Promise<T> extends Bluebird<T> {
+  }
+
+  interface PromiseConstructor {
+    delay: typeof Bluebird.prototype.delay;
+  }
+}
+
+declare const Promise: any;
 
 export async function createDappView(globalUUIDList: RendererConf[], dapp: AppsManagerModels.AppItem) { // entryPath: string, appName: string
   const createdDapp = dapp && globalUUIDList.find(item => item.name === dapp.appName && item.status === 'dapp');
@@ -38,11 +51,15 @@ export async function createDappView(globalUUIDList: RendererConf[], dapp: AppsM
   });
 
   try {
-    const dappLibBundleExist = await checkExists(dappLibBundleTempPath);
+    const dappLibBundleExist = await checkExists(dappLibTempBundlePath);
 
+    console.log('dapp lib bundle exitst', dappLibBundleExist)
     if (!dappLibBundleExist) {
-      await mkdir(path.dirname(dappLibBundleTempPath));
-      await copyFile(DAPP_LIB_BUNDLE_PATH, dappLibBundleTempPath);
+      console.log('before mkdir', path.dirname(dappLibTempBundlePath))
+      await mkdirp(path.dirname(dappLibTempBundlePath));
+      console.log('after mkdir', DAPP_LIB_BUNDLE_PATH, dappLibTempBundlePath)
+      await copyFile(DAPP_LIB_BUNDLE_PATH, dappLibTempBundlePath);
+      console.log('after copyfile', path.dirname(dappLibTempBundlePath))
     }
 
   } catch (error) {

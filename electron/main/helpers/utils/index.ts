@@ -90,7 +90,7 @@ export async function copyFile(src: string, dist: string): Promise<any> {
   return new Promise((res: any, rej: any) => {
     fs.copyFile(src, dist, (err) => {
       if (err) {
-        rej();
+        rej(err);
       }
       res();
     });
@@ -99,17 +99,29 @@ export async function copyFile(src: string, dist: string): Promise<any> {
 
 export async function mkdir(folderPath: string): Promise<any> {
   return new Promise(async (res: any, rej: any) => {
-    const dirname = path.dirname(folderPath);
-
-    const checkExistDirname = await checkExists(dirname);
-    if (!checkExistDirname) {
-      await mkdir(dirname);
+    const checkExistFolderPath = await checkExists(folderPath);
+    if (checkExistFolderPath) {
+      res();
     }
-    fs.mkdir(folderPath, { recursive: true }, (err) => {
+
+    fs.mkdir(folderPath, (err) => {
       if (err) {
         rej(err);
       }
       res();
     });
   });
+}
+
+export async function mkdirp(folderPath: string): Promise<any> {
+  const checkExistParentFolder = await checkExists(path.dirname(folderPath));
+  console.log('checkExistFolderPath', checkExistParentFolder);
+  if (!checkExistParentFolder) {
+    const parentFolder = path.dirname(folderPath);
+    const checkExistParentFolderPath = await checkExists(parentFolder);
+    console.log('folder path does not exist, create parent folder', parentFolder);
+    await mkdirp(parentFolder);
+  }
+
+  await mkdir(folderPath);
 }

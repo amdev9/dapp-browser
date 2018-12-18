@@ -2,7 +2,7 @@ import * as path from 'path';
 import { BrowserWindow } from 'electron';
 
 import { RendererConf, globalUUIDList } from '../../helpers/constants/globalVariables';
-import { appTempPath, dappsTempPath, dappLibBundleTempPath, DAPPS_DOWNLOAD_PATH } from '../../helpers/constants/appPaths';
+import { appTempPath, dappsTempPath, dappLibTempBundlePath, DAPPS_DOWNLOAD_PATH } from '../../helpers/constants/appPaths';
 import { functionPromiseTimeout, readDir, readFile } from '../../helpers/utils';
 import { DappFrame } from '../../helpers/systemComponents/DappFrame';
 import PermissionManager from '../../helpers/systemComponents/PermissionManager';
@@ -15,7 +15,6 @@ import * as constants from './constants';
 import { AppItem, ReadyDapp, DappDownloadEntity } from './models';
 import { createDappView } from './utils';
 import { component as Dapp } from '../Dapp';
-import { all } from 'async';
 
 let installedDapps: AppItem[] = [];
 
@@ -91,9 +90,7 @@ export default class AppsManager {
       return;
     }
     const downloadedDappPath = await AppsManager.downloadDapp(hash);
-    console.log('downloadedDappPath', downloadedDappPath);
     const parseDapp = await AppsManager.parseDapp(downloadedDappPath);
-    console.log('parsedapp', parseDapp);
     if (!parseDapp) {
       throw Error('Dapp is invalid');
     }
@@ -101,7 +98,7 @@ export default class AppsManager {
   }
 
   static async downloadDapp(hash: string) {
-    const dappFolder = await functionPromiseTimeout(() => IpfsStorage.downloadFolder(hash), 60000);
+    const dappFolder = await functionPromiseTimeout(() => IpfsStorage.downloadFolder(hash), 30000);
     await FileManager.saveFolder(dappsTempPath, dappFolder);
     return path.join(dappsTempPath, hash);
 

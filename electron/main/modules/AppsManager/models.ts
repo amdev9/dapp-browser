@@ -1,5 +1,3 @@
-import * as Bluebird from 'bluebird';
-
 export type AppItem = {
   id?: number;
   appName: string;
@@ -32,15 +30,3 @@ export type DappDownloadEntity = {
   permissions?: string[];
   installed?: boolean;
 };
-
-
-declare global {
-  export interface Promise<T> extends Bluebird<T> {
-  }
-
-  interface PromiseConstructor {
-    delay: typeof Bluebird.prototype.delay;
-  }
-}
-
-declare const Promise: any;
