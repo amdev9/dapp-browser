@@ -26,7 +26,7 @@ export const functionPromiseTimeout = (f: () => Promise<any>, timeout: number = 
   });
 };
 
-export const checkExists = async (path: string): boolean => {
+export const checkExists = async (path: string): Promise<boolean> => {
   let flag;
 
   try {
