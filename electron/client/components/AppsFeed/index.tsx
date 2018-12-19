@@ -1,45 +1,53 @@
-import * as React from "react"
-import { AppCard } from "./AppCard"
-import { DApp } from "../../redux/model";
+import * as React from 'react';
 
-interface AppsFeedProps {
-  items?: DApp[],
-  switchDapp?: (dappName?: string) => void,
-  resizeAppsFeed?: (width: number, height: number) => any;
-  downloadDapp: (ipfsHash: string) => void;
-  //settingsPanelIsOpen: boolean
+import MarketFeed from '../MarketFeed';
+import InstalledAppsFeed from '../InstalledAppsFeed';
+
+interface IProps {}
+
+interface IState {
+  currentPage: string;
 }
 
-export class AppsFeed extends React.Component<AppsFeedProps> {
+export default class AppsFeed extends React.Component<IProps, IState> {
+  static pages = {
+    INSTALLED_APPS: 'INSTALLED_APPS',
+    MARKET_FEED: 'MARKET_FEED',
+  };
 
-  constructor(props: AppsFeedProps) {
+  constructor(props: IProps) {
     super(props);
 
-    this.state = { activeTab: 'uploads' };
+    this.state = {
+      currentPage: AppsFeed.pages.INSTALLED_APPS,
+    };
+  }
+
+  setInstalledPage() {
+    this.setState({ currentPage: AppsFeed.pages.INSTALLED_APPS });
+  }
+
+  setMarketPage() {
+    this.setState({ currentPage: AppsFeed.pages.MARKET_FEED });
+  }
+
+  renderCurrentPage() {
+    const { currentPage } = this.state;
+
+    switch (currentPage) {
+      case AppsFeed.pages.INSTALLED_APPS:
+        return <InstalledAppsFeed navigateToMarket={this.setMarketPage.bind(this)}/>;
+      case AppsFeed.pages.MARKET_FEED:
+        return <MarketFeed navigateToInstalled={this.setInstalledPage.bind(this)}/>;
+      default:
+        return <InstalledAppsFeed navigateToMarket={this.setMarketPage.bind(this)}/>;
+    }
   }
 
   public render() {
-    //const { settingsPanelIsOpen } = this.props;
-
-    const appCardsList: JSX.Element[] = this.props.items.map((item): JSX.Element => (
-      <AppCard key={item.appName} dapp={item} switchDapp={() => this.props.switchDapp(item.appName)} />
-    ));
-
-    //const props = { style: { display: settingsPanelIsOpen ? "none" : "block" } };
-    
     return (
-      <div className="feeds" /*{...props}*/>
-        <div className="header">
-          <div className="title">
-            Your apps
-          </div>
-          <div className="action">
-            <span onClick={() => this.props.downloadDapp('QmZdU95L4os5nrLhBm7envsXB746b8UHEe1imY5ZD87cgw')}>Go to market</span>
-          </div>
-        </div>
-        <div className="list">
-          {appCardsList}
-        </div>
+      <div className="feeds">
+        {this.renderCurrentPage()}
       </div>
     );
   }

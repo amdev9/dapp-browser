@@ -6,7 +6,6 @@ import clientEpic from './clientEpic';
 import networkEpic from './networkEpic';
 import keychainEpic from './keychainEpic';
 import ethereumEpic from './ethereumEpic';
-import marketEpic from './marketEpic';
 import appMainEpic from './appMainEpic';
 import permissionManagerEpic from './permissionManagerEpic';
 
@@ -33,7 +32,6 @@ export default combineEpics(
   networkEpic,
   ipfsRoomEpic,
   keychainEpic,
-  marketEpic,
   orbitDBEpic,
   storageEpic,
   permissionManagerEpic,

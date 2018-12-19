@@ -37,6 +37,7 @@ declare class IPFS {
   libp2p: any;
   swarm: IPFS.SwarmAPI;
   files: IPFS.FilesAPI;
+  pin: IPFS.PinAPI;
   bitswap: any;
 
   ping(callback: (error: Error) => void): void;
@@ -115,13 +116,19 @@ declare namespace IPFS {
     content?: FileContent;
   }
 
+  export interface PinAPI {
+    add(hash: string, options: { recursive: boolean }, callback?: (err: any, res: any) => void): void;
+    add(hash: string, options: { recursive: boolean }): Promise<any>;
+    add(hash: string): Promise<any>;
+  }
+
   export interface IPFSGetResult {
-    depth: number,
-    name: string,
-    path: string,
-    size: number,
-    hash: Buffer,
-    content: Buffer,
+    depth: number;
+    name: string;
+    path: string;
+    size: number;
+    hash: Buffer;
+    content: Buffer;
     type: 'file' | string;
   }
 

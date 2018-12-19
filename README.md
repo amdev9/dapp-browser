@@ -34,3 +34,36 @@ Run build process and get '.exe' file from ```./electron/main/release``` folder.
 npm install
 npm run build-win
 ```
+
+**How to upload dapp into IPFS**
+- Download <a href="https://github.com/ipfs/go-ipfs">go-ipfs client</a>
+- Upload Dapp folder.
+Every Dapp is web application, which should contain manifest.json file with project settings (app title, entry point html file, icons and etc...)
+```
+{
+  "title": "IPFS Chat application",
+  "main": "index.html",
+  "appName": "Chat",
+  "assets/": ["app/images/**"],
+  "icon": "app/images/contact.svg",
+  "preview": "app/images/thumb.png",
+  "categories": [
+    "tools"
+  ],
+  "permissions": [
+    "ipfs"
+  ]
+}
+
+```
+You can upload Dapp folder with native ipfs client by command:
+
+```ipfs add -r <dapp-folder>```
+
+To keep the files online and avoid them to be garbage collected, just use thepin command and they will remain online as long as your ipfs daemon is running.
+
+```ipfs pin add -r <dapp-folder-ipfs-hash>```
+
+- Copy IPFS hash (Dapp list located in ```main/modules/AppsManager/component->AppsProvider```)
+- If you create new Dapp in development mode, please change path to yours Dapps folder in ```main/modules/AppsManager/component:112``` parseDapps method (ex. ```constants.DAPPS_PATH```)
+

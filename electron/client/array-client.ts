@@ -9,7 +9,8 @@ import {
   Store,
   Middleware,
   GenericStoreEnhancer,
-  Dispatch
+  Dispatch,
+  AnyAction,
 } from 'redux';
 import { createEpicMiddleware } from 'redux-observable';
 import { logger } from 'redux-logger';
@@ -22,6 +23,7 @@ import { actions as notificationActions } from './modules/Notification';
 import * as trayActions from './redux/actions/tray';
 
 import { IState as State } from './redux/reducers/state';
+import { component as StoreManager } from './modules/StoreManager';
 
 interface Action {
   type: string;
@@ -31,7 +33,8 @@ interface Action {
     uuidRec?: string;
   };
   meta?: {
-    scope?: string
+    scope?: string;
+    uid?: string;
   };
 }
 
@@ -89,8 +92,18 @@ const forwardToMain = (store: Store<any>) => (next: Dispatch<void>) => <A extend
   return next(action);
 };
 
+const promiseHandlerMiddleware = () => {
+  return (store: Store<any>) => (next: Dispatch<AnyAction>) => <A extends Action>(action: A) => {
+    if (action.meta && action.meta) {
+      StoreManager.emitter.emit(action.meta.uid, action);
+    }
+    StoreManager.observable.next(action);
+    return next(action);
+  };
+};
+
 const configureStore = (initialState?: State) => {
-  const middleware = [forwardToMain, epicMiddleware, logger];
+  const middleware = [forwardToMain, epicMiddleware, logger, promiseHandlerMiddleware()];
   const enhanced = [
     applyMiddleware(...middleware),
   ];
@@ -130,5 +143,6 @@ export const isProduction = () => {
 
 // // electron-redux store
 const store = initStore();
+StoreManager.store = store;
 
 export default store;

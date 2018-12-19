@@ -13,11 +13,20 @@ import {
 } from 'ClientApp/modules/Notification';
 
 import ClientManager from '../../helpers/systemComponents/ClientManager';
+import StoreManager from '../../helpers/systemComponents/StoreManager';
 
 const notificationEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
   ofType(constants.NOTIFICATIONS_SHOW_NOTIFY),
   map((action) => {
-    showNotification(action.payload.options, action.payload.events, action.meta.name);
+    showNotification(action.payload.options, {
+      onClick: () => {
+        StoreManager.store.dispatch(actions.triggerAction(action.payload.events.onClick));
+        ClientManager.switchDapp(action.meta.name);
+      },
+      onClose: () => {
+        StoreManager.store.dispatch(actions.triggerAction(action.payload.events.onClose));
+      }
+    });
     return clientActions.addNotification({
       id: uuid(),
       message: action.payload.options.body,

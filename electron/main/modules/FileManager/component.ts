@@ -6,7 +6,7 @@ import * as fse from 'fs-extra';
 
 import { FileId, FileEntry, PathList, Path, FileObject } from './models';
 
-export class FileManager {
+export default class FileManager {
   static entryMap: Map<FileId, Path> = new Map();
 
   static generateFileEntryId() {

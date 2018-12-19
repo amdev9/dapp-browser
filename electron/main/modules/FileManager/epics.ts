@@ -2,7 +2,7 @@ import { AnyAction } from 'redux';
 import { combineEpics, Epic, ofType } from 'redux-observable';
 import { switchMap } from 'rxjs/operators';
 
-import { FileManager } from './component';
+import FileManager from './component';
 import * as fileManagerActions from './actions';
 import * as constants from './constants';
 

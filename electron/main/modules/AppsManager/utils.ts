@@ -3,31 +3,28 @@ import { BrowserView, BrowserWindow } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 import * as uuidv4 from 'uuid/v4';
+import * as Bluebird from 'bluebird';
+import { all } from 'async';
 
 import * as AppsManagerModels from './models';
-import { DAPPS_PATH } from './constants';
 import { RendererConf } from '../../helpers/constants/globalVariables';
-
-export async function readDir(path: string): Promise<any> {
-  return new Promise((res: any, rej: any) => {
-    fs.readdir(path, (err, data) => {
-      if (err) rej(err);
-      else res(data);
-    });
-  });
-}
-
-export async function readFile(path: string, opts = 'utf8'): Promise<any> {
-  return new Promise((res: any, rej: any) => {
-    fs.readFile(path, opts, (err, data) => {
-      if (err) rej(err);
-      else res(data);
-    });
-  });
-}
+import { checkExists, mkdirp, copyFile } from '../../helpers/utils';
+import { appTempPath, dappsTempPath, dappLibTempBundlePath, DAPP_LIB_BUNDLE_PATH } from '../../helpers/constants/appPaths';
 
 let dappView: Electron.BrowserView = null;
-export function createDappView(globalUUIDList: RendererConf[], dapp: AppsManagerModels.AppItem) { // entryPath: string, appName: string
+
+declare global {
+  export interface Promise<T> extends Bluebird<T> {
+  }
+
+  interface PromiseConstructor {
+    delay: typeof Bluebird.prototype.delay;
+  }
+}
+
+declare const Promise: any;
+
+export async function createDappView(globalUUIDList: RendererConf[], dapp: AppsManagerModels.AppItem): Promise<RendererConf> { // entryPath: string, appName: string
   const createdDapp = dapp && globalUUIDList.find(item => item.name === dapp.appName && item.status === 'dapp');
 
   if (createdDapp) { // Skip creating a new BrowserView for the same dapp
@@ -53,9 +50,20 @@ export function createDappView(globalUUIDList: RendererConf[], dapp: AppsManager
     webPreferences: webPrefObj,
   });
 
-  // console.log('entry: ', path.join(DAPPS_PATH, dapp.appName, dapp.main));
-  const dappPath = path.join(DAPPS_PATH, dapp.appName, dapp.main);
-  const dappPathUrl = `file://${dappPath}`;
+  try {
+    const dappLibBundleExist = await checkExists(dappLibTempBundlePath);
+
+    if (!dappLibBundleExist) {
+      await mkdirp(path.dirname(dappLibTempBundlePath));
+      await copyFile(DAPP_LIB_BUNDLE_PATH, dappLibTempBundlePath);
+    }
+
+  } catch (error) {
+    console.log('copy dapp lib error', error);
+  }
+
+  // console.log('entry: ', path.join(DAPPS_DOWNLOAD_PATH, dapp.appName, dapp.main));
+  const dappPathUrl = `file://${dapp.main}`;
   dappView.webContents.loadURL(dappPathUrl); // todo pass @param path to index.html
 
   if (process.env.ELECTRON_ENV === 'development') {

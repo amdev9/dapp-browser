@@ -95,9 +95,9 @@ const configureStore = (initialState?: State) => {
   const store = createStore(rootReducer, initialState, enhancer);
 
   if (module.hot) {
-      module.hot.accept('./redux/reducers', () =>
-        store.replaceReducer(require('./redux/reducers')) // eslint-disable-line global-require
-      );
+    module.hot.accept('./redux/reducers', () =>
+      store.replaceReducer(require('./redux/reducers')) // eslint-disable-line global-require
+    );
   }
 
   epicMiddleware.run(rootEpic);

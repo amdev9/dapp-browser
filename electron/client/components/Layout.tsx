@@ -20,7 +20,7 @@ import { KeychainPanel } from './KeychainPanel';
 import { SettingsPanel } from './SettingsPanel';
 import { StatusBar } from './StatusBar';
 import { Tray } from './Tray';
-import { AppsFeed } from './AppsFeed';
+import AppsFeed from './AppsFeed';
 import { IState, Permission, PermissionsPanel } from '../redux/reducers/state';
 
 import * as ROUTES from '../router/routes';
@@ -66,7 +66,6 @@ interface AppProps {
   loggerWrite: boolean;
   isProduction: boolean;
   locationPath: string;
-  downloadDapp: (ipfsHash: string) => void;
   togglePermission: (permissionName: Permission, checked: boolean, appName: string) => void;
   grantPermissions: (appName: string) => void;
   permissions: PermissionsPanel;
@@ -80,8 +79,7 @@ class App extends React.Component<AppProps> {
       onAddAppItem, onClickNotification, onSwitchDapp, onToggleHome, statusBarToggle, peersBarToggle, onToggleKeychainPanel, onToggleAppHome, onToggleSearch, searchItems,
       trayItems, isHome, feedItems, notifyItems,
       keychainItems, keychainSelectedKey, keychainUnlocked, keychainCreateKey, keychainUnlock, keychainLock, keychainList, keychainSignKey, keychainSelectKey,
-      statusBarItems, onToggleLoaderPanel, onToggleSettingsPanel, openLoaderPanel, locationPath, loggerWrite,
-      downloadDapp, togglePermission, grantPermissions, permissions,
+      statusBarItems, onToggleLoaderPanel, onToggleSettingsPanel, openLoaderPanel, locationPath, loggerWrite, togglePermission, grantPermissions, permissions,
     } = this.props;
 
     return (
@@ -146,7 +144,7 @@ class App extends React.Component<AppProps> {
                       />;
 
               default:
-                return <AppsFeed items={feedItems} switchDapp={onSwitchDapp} downloadDapp={downloadDapp}/>;
+                return <AppsFeed/>;
             }
           })()}
 
@@ -199,7 +197,6 @@ const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
   onToggleHome: TrayActions.toggleHome,
   onToggleAppHome: TrayActions.toggleAppHome,
   onToggleSearch: SearchActions.toggle,
-  downloadDapp: MarketActions.downloadDapp,
   togglePermission: PermissionsActions.togglePermission,
   grantPermissions: PermissionsActions.grantPermissions,
 }, dispatch);

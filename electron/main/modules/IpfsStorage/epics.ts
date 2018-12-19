@@ -4,7 +4,7 @@ import { switchMap } from 'rxjs/operators';
 
 import * as ipfsStorageActions from './actions';
 import * as constants from './constants';
-import { FileManager, models as FileManagerModels } from '../FileManager';
+import { component as FileManager, models as FileManagerModels } from '../FileManager';
 import ipfs from './component';
 
 const ipfsStorageUploadEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type

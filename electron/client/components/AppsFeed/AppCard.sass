@@ -1,18 +1,21 @@
+@import "../../assets/styles/variables"
+
 .app-card
   flex-direction: column
   background: #ffffff
   border-radius: 8px
   overflow: hidden
   display: flex
-  
+  cursor: pointer
+
   margin-right: 20px
   margin-top: 20px
   height: 179px
   width: 200px
- 
-  &:hover 
+
+  &:hover
     box-shadow: 0px 0px 10px rgba(0,0,0, 0.2)
-    
+
   .header
     background-size: contain
     background-repeat: no-repeat
@@ -29,11 +32,11 @@
       font-weight: 500
       font-style: normal
       font-size: 18px
-    
+
     .footer
       +flex(row, space-between, center)
       margin-top: 8px
-      
+
       .tags
         +flex(row, flex-start, center)
         .tag
@@ -52,15 +55,19 @@
             color: rgba(0,0,0, 0.8)
             font-weight: 300
             font-size: 12px
-      
+
       .action
-        padding: 4px 10px 3px 10px
+        padding: 4px 10px 4px 10px
         background-color: #dfeaff
         border-radius: 15px
         cursor: pointer
+        text-transform: uppercase
+        font-weight: 400
+        font-size: 13px
+        &.action_installed
+          background-color: #4CAF50
+          color: #fff
 
         .label
-          text-transform: uppercase
-          font-weight: 400
-          font-size: 13px
+
           color: #508dff
