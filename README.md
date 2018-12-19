@@ -56,7 +56,7 @@ Every Dapp is web application, which should contain manifest.json file with proj
 }
 
 ```
-You can upload Dapp folder with native ipfs client by commands:
+You can upload Dapp folder with native ipfs client by command:
 
 ```ipfs add -r <dapp-folder>```
 
