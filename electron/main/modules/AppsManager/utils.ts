@@ -24,7 +24,7 @@ declare global {
 
 declare const Promise: any;
 
-export async function createDappView(globalUUIDList: RendererConf[], dapp: AppsManagerModels.AppItem) { // entryPath: string, appName: string
+export async function createDappView(globalUUIDList: RendererConf[], dapp: AppsManagerModels.AppItem): RendererConf { // entryPath: string, appName: string
   const createdDapp = dapp && globalUUIDList.find(item => item.name === dapp.appName && item.status === 'dapp');
 
   if (createdDapp) { // Skip creating a new BrowserView for the same dapp

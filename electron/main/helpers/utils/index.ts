@@ -26,7 +26,7 @@ export const functionPromiseTimeout = (f: () => Promise<any>, timeout: number = 
   });
 };
 
-export const checkExists = async (path: string) => {
+export const checkExists = async (path: string): boolean => {
   let flag;
 
   try {
@@ -115,11 +115,8 @@ export async function mkdir(folderPath: string): Promise<any> {
 
 export async function mkdirp(folderPath: string): Promise<any> {
   const checkExistParentFolder = await checkExists(path.dirname(folderPath));
-  console.log('checkExistFolderPath', checkExistParentFolder);
   if (!checkExistParentFolder) {
     const parentFolder = path.dirname(folderPath);
-    const checkExistParentFolderPath = await checkExists(parentFolder);
-    console.log('folder path does not exist, create parent folder', parentFolder);
     await mkdirp(parentFolder);
   }
 
