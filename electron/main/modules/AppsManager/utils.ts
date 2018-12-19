@@ -53,13 +53,9 @@ export async function createDappView(globalUUIDList: RendererConf[], dapp: AppsM
   try {
     const dappLibBundleExist = await checkExists(dappLibTempBundlePath);
 
-    console.log('dapp lib bundle exitst', dappLibBundleExist)
     if (!dappLibBundleExist) {
-      console.log('before mkdir', path.dirname(dappLibTempBundlePath))
       await mkdirp(path.dirname(dappLibTempBundlePath));
-      console.log('after mkdir', DAPP_LIB_BUNDLE_PATH, dappLibTempBundlePath)
       await copyFile(DAPP_LIB_BUNDLE_PATH, dappLibTempBundlePath);
-      console.log('after copyfile', path.dirname(dappLibTempBundlePath))
     }
 
   } catch (error) {
