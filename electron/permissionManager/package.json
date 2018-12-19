@@ -5,10 +5,7 @@
   "main": "permissions.js",
   "scripts": {
     "webpack": "webpack --watch",
-    "build-script-win": "afterBuild.bat",
-    "build-script-bash": "bash afterBuild.sh",
-    "build-linux": "webpack --config webpack.config.build.js && npm run build-script-bash",
-    "build-win": "webpack --config webpack.config.build.js && npm run build-script-win",
+    "build": "webpack --config webpack.config.build.js",
     "clear-dist": "rimraf dist && rimraf node_modules",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -36,6 +33,7 @@
     "@types/react-redux": "^6.0.7",
     "@types/redux": "^3.6.0",
     "@types/redux-logger": "^3.0.6",
+    "filemanager-webpack-plugin": "^2.0.5",
     "node-sass": "^4.10.0",
     "sass-loader": "^7.1.0",
     "ts-loader": "^5.1.0",

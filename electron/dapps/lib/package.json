@@ -5,10 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "webpack": "webpack --watch",
-    "build-script-win": "afterBuild.bat",
-    "build-script-bash": "bash afterBuild.sh",
-    "build-linux": "webpack --config webpack.config.build.js && npm run build-script-bash",
-    "build-win": "webpack --config webpack.config.build.js && npm run build-script-win",
+    "build": "webpack --config webpack.config.build.js",
     "clear-dist": "rimraf dist && rimraf build && rimraf node_nodules",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -29,6 +26,7 @@
     "@types/redux-logger": "^3.0.6",
     "@types/uuid": "^3.4.3",
     "circular-dependency-plugin": "^5.0.2",
+    "filemanager-webpack-plugin": "^2.0.5",
     "http-server": "^0.10.0",
     "react-hot-loader": "^4.3.11",
     "source-map-loader": "^0.2.4",
