@@ -61,7 +61,7 @@ export default class AppsManager {
     }
   }
 
-  static resolvePath(item: AppItem, folder: string = '') {
+  static setAbsoluteDappPaths(item: AppItem, folder: string = '') {
     const icon = path.join(folder, item.icon).replace(/\\/g, '/');
     const preview = path.join(folder, item.preview).replace(/\\/g, '/');
     const main = path.join(folder, item.main).replace(/\\/g, '/');
@@ -90,11 +90,11 @@ export default class AppsManager {
       return;
     }
     const downloadedDappPath = await AppsManager.downloadDapp(hash);
-    const parseDapp = await AppsManager.parseDapp(downloadedDappPath);
-    if (!parseDapp) {
+    const dappManifest = await AppsManager.getDappManifest(downloadedDappPath);
+    if (!dappManifest) {
       throw Error('Dapp is invalid');
     }
-    AppsManager.addInstalledDapp(parseDapp);
+    AppsManager.addInstalledDapp(dappManifest);
   }
 
   static async downloadDapp(hash: string) {
@@ -109,7 +109,7 @@ export default class AppsManager {
       // For development use constants.DAPPS_PATH instead dappsTempPath
       const dappsFolders: string[] = await readDir(dappsTempPath);
 
-      const promises = dappsFolders.map(folder => AppsManager.parseDapp(folder)); // @todo rewrite with async lib
+      const promises = dappsFolders.map(folder => AppsManager.getDappManifest(folder)); // @todo rewrite with async lib
       const dapps = await Promise.all(promises);
 
       const validDapps = dapps.filter((dapp) => dapp);
@@ -123,10 +123,10 @@ export default class AppsManager {
     }
   }
 
-  static async parseDapp(folder: string) {
+  static async getDappManifest(folder: string) {
     try {
       const fileContent = await readFile(path.join(folder, 'manifest.json'));
-      const itemWithResolvedPath = AppsManager.resolvePath(JSON.parse(fileContent), folder);
+      const itemWithResolvedPath = AppsManager.setAbsoluteDappPaths(JSON.parse(fileContent), folder);
 
       return itemWithResolvedPath;
 
