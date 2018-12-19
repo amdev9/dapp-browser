@@ -1,5 +1,6 @@
-var path = require('path');
-var webpack = require('webpack');
+const path = require('path');
+const webpack = require('webpack');
+const FileManagerPlugin = require('filemanager-webpack-plugin');
 
 module.exports = {
   mode: 'production',
@@ -69,6 +70,14 @@ module.exports = {
     // https://webpack.github.io/docs/hot-module-replacement-with-webpack.html
     new webpack.HotModuleReplacementPlugin(),
     new webpack.LoaderOptionsPlugin(),
+    new FileManagerPlugin({
+      onEnd: {
+        copy: [
+          { source: 'dist/app.bundle.js', destination: '../main/dist/permissionManager/dist/app.bundle.js' },
+          { source: 'index.html', destination: '../main/dist/permissionManager/index.html' },
+        ],
+      }
+    })
   ],
   watch: false
 };

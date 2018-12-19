@@ -32,7 +32,7 @@ and get executable file from `./electron/main/release` folder.
 Run build process and get '.exe' file from ```./electron/main/release``` folder.
 ```
 npm install
-npm run build-win
+npm run build
 ```
 
 **How to upload dapp into IPFS**
@@ -60,7 +60,7 @@ You can upload Dapp folder with native ipfs client by command:
 
 ```ipfs add -r <dapp-folder>```
 
-To keep the files online and avoid them to be garbage collected, just use thepin command and they will remain online as long as your ipfs daemon is running.
+To keep the files online and avoid them to be garbage collected, just use the pin command and they will remain online as long as your ipfs daemon is running.
 
 ```ipfs pin add -r <dapp-folder-ipfs-hash>```
 

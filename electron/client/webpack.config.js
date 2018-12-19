@@ -1,5 +1,6 @@
-var path = require('path');
-var webpack = require('webpack');
+const path = require('path');
+const webpack = require('webpack');
+const FileManagerPlugin = require('filemanager-webpack-plugin');
 
 const port = process.env.PORT || 3000;
 
@@ -78,11 +79,19 @@ module.exports = {
     },
    
     plugins: [
-        // https://webpack.github.io/docs/hot-module-replacement-with-webpack.html
-        new webpack.HotModuleReplacementPlugin(),
-        new webpack.LoaderOptionsPlugin({
-            debug: true
-        }),
+      // https://webpack.github.io/docs/hot-module-replacement-with-webpack.html
+      new webpack.HotModuleReplacementPlugin(),
+      new webpack.LoaderOptionsPlugin({
+          debug: true
+      }),
+      new FileManagerPlugin({
+        onEnd: {
+          copy: [
+            { source: 'dist/*', destination: '../main/dist/client' },
+            { source: 'index__build.html', destination: '../main/dist/client/index.html' },
+          ],
+        }
+      })
     ]
     // watch: true
 };

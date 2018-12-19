@@ -1,5 +1,6 @@
-var path = require('path');
-var webpack = require('webpack');
+const path = require('path');
+const webpack = require('webpack');
+const FileManagerPlugin = require('filemanager-webpack-plugin');
  
 module.exports = {
   mode: 'development',
@@ -71,6 +72,14 @@ module.exports = {
     new webpack.LoaderOptionsPlugin({
         debug: true
     }),
+    new FileManagerPlugin({
+      onEnd: {
+        copy: [
+          { source: 'dist/app.bundle.js', destination: '../main/dist/permissionManager/dist/app.bundle.js' },
+          { source: 'index.html', destination: '../main/dist/permissionManager/index.html' },
+        ],
+      }
+    })
   ],
   watch: true
 };

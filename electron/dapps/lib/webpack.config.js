@@ -1,7 +1,6 @@
-var path = require('path');
-var webpack = require('webpack');
-var WebpackShellPlugin = require('webpack-shell-plugin');
-var CircularDependencyPlugin = require('circular-dependency-plugin')
+const path = require('path');
+const CircularDependencyPlugin = require('circular-dependency-plugin');
+const FileManagerPlugin = require('filemanager-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -42,6 +41,13 @@ module.exports = {
       failOnError: true,
       // set the current working directory for displaying module paths
       cwd: process.cwd(),
+    }),
+    new FileManagerPlugin({
+      onEnd: {
+        copy: [
+          { source: './build/app.bundle.js', destination: '../../main/dist/dapps/lib/build/app.bundle.js' },
+        ],
+      }
     })
   ],
   devtool: 'source-map',

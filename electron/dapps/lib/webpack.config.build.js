@@ -1,5 +1,5 @@
-var path = require('path');
-var webpack = require('webpack');
+const path = require('path');
+const FileManagerPlugin = require('filemanager-webpack-plugin');
 
 module.exports = {
   mode: 'production',
@@ -34,5 +34,14 @@ module.exports = {
       ClientApp: path.resolve(__dirname, '../../client'),
     }
   },
+  plugins: [
+    new FileManagerPlugin({
+      onEnd: {
+        copy: [
+          { source: './build/app.bundle.js', destination: '../../main/dist/dapps/lib/build/app.bundle.js' },
+        ],
+      }
+    })
+  ],
   watch: false
 };
