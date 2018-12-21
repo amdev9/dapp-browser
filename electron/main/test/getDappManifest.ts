@@ -25,7 +25,7 @@ describe('getDappManifest', () => {
     });
   });
 
-  describe('Get dapp manifest from nonexisting path', () => {
+  describe('Get dapp manifest from non existing path', () => {
     const FOLDER_DAPP_NON_EXISTING = path.join(downloadDappPath, 'FOLDER_DAPP_NON_EXISTING');
 
     it('Get dapp manifest from non existing dapp folder', async () => {
