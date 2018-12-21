@@ -133,6 +133,8 @@ export default class AppsManager {
       } else {
         console.log('other error: ', err);
       }
+
+      return;
     }
   }
 
