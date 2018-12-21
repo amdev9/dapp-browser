@@ -128,7 +128,7 @@ export default class AppsManager {
 
     } catch (err) {
       if (err instanceof SyntaxError) {
-        console.log('Please check your js syntax: \n'); // @todo put it into console logs
+        console.log('Please check your manifest file syntax: \n'); // @todo put it into console logs
         console.log(err);
       } else {
         console.log('other error: ', err);

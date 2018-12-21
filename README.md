@@ -26,8 +26,9 @@ and get executable file from `./electron/main/release` folder.
 
 ***Requirements:***
 1. Python 2.7
-2. Visual Studio 2015
-3. ```npm install --global windows-build-tools```
+2. NodeJS v.11 or higher version
+3. Visual Studio 2015
+4. ```npm install --global windows-build-tools```
 
 Run build process and get '.exe' file from ```./electron/main/release``` folder.
 ```
