@@ -3,7 +3,7 @@
   "main": "index.html",
   "appName": "Chat",
   "assets/": ["app/images/**"],
-  "icon": "app/images/contact.svg",
+  "icon": "app/images/favicon.svg",
   "preview": "app/images/thumb.png",
   "categories": [
     "tools"
