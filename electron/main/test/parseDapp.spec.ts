@@ -1,5 +1,7 @@
 const assert = require('assert');
 const mock = require('mock-require');
+const path = require('path');
+
 mock('ClientApp/modules/Dapp/actions', '../../client/modules/Dapp/actions');
 
 const AppsManager = require('../modules/AppsManager/component').default;
@@ -7,15 +9,13 @@ const AppsManager = require('../modules/AppsManager/component').default;
 describe('Dapp download and parse', () => {
 
   it('Download and parse dapp with manifest', async () => {
-    const dappPath = await AppsManager.downloadDapp('QmeN8trCSyJ3ndhY21NzmKoAtXLRxKBKBBW2eGJnLVPMqj');
-    const dappManifest = await AppsManager.getDappManifest(dappPath);
+    const dappManifest = await AppsManager.getDappManifest(path.join(__dirname, '../../dapps/download', 'Wallet'));
 
     assert.strictEqual(typeof dappManifest, 'object');
   });
 
   it('Download and parse dapp without manifest ', async () => {
-    const dappPathWithoutManifest = await AppsManager.downloadDapp('QmNiyUzGWLf8cqbrzM7nwNAjRoUjTJuK6C6raamLR4uNdU');
-    const dappWithoutManifest = await AppsManager.getDappManifest(dappPathWithoutManifest);
+    const dappWithoutManifest = await AppsManager.getDappManifest(path.join(__dirname, '../../dapps/download', 'NONEXISTING_DAPP'));
 
     assert.strictEqual(typeof dappWithoutManifest, 'undefined');
   });
