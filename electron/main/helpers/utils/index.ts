@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import * as path from "path";
+import * as path from 'path';
 
 export const EXEC_TIMEOUT = 10000;
 

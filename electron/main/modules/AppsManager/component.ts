@@ -2,7 +2,7 @@ import * as path from 'path';
 import { BrowserWindow } from 'electron';
 
 import { RendererConf, globalUUIDList } from '../../helpers/constants/globalVariables';
-import { appTempPath, dappsTempPath, dappLibTempBundlePath, DAPPS_DOWNLOAD_PATH } from '../../helpers/constants/appPaths';
+import { dappsTempPath } from '../../helpers/constants/appPaths';
 import { functionPromiseTimeout, readDir, readFile } from '../../helpers/utils';
 import { DappFrame } from '../../helpers/systemComponents/DappFrame';
 import PermissionManager from '../../helpers/systemComponents/PermissionManager';
@@ -10,7 +10,6 @@ import StoreManager from '../../helpers/systemComponents/StoreManager';
 import { component as IpfsStorage } from '../IpfsStorage';
 import { component as FileManager } from '../FileManager';
 
-import * as actions from './actions';
 import * as constants from './constants';
 import { AppItem, ReadyDapp, DappDownloadEntity } from './models';
 import { createDappView } from './utils';
