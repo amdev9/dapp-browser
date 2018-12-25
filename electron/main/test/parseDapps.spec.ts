@@ -4,7 +4,7 @@ import * as chai from 'chai';
 import * as assert from 'assert';
 
 import { mkdirp, rimraf } from '../helpers/utils';
-import { DappDublicate, DappManifestError } from '../modules/Errors';
+import { DappDublicateError, DappManifestError } from '../modules/Errors';
 import { testManifest, FOLDER_DAPPS_TEMP, createTestDapp } from './hooks';
 import AppsManager from '../modules/AppsManager/component';
 
@@ -39,7 +39,7 @@ describe('parseDapps', () => {
     it('Parse dapps folder if we have two dublicate dapps', async () => {
       const parseDappPromise = AppsManager.parseDapps();
 
-      const error = await parseDappPromise.should.be.rejectedWith(DappDublicate);
+      const error = await parseDappPromise.should.be.rejectedWith(DappDublicateError);
     });
   });
 });

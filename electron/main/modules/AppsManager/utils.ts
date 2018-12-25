@@ -15,7 +15,7 @@ import {
   dappLibTempBundlePath,
   DAPP_LIB_BUNDLE_PATH,
 } from '../../helpers/constants/appPaths';
-import { DappDublicate, DappManifestError } from '../Errors';
+import { DappDublicateError, DappManifestError } from '../Errors';
 
 let dappView: Electron.BrowserView = null;
 
@@ -127,10 +127,10 @@ export const validateDapps = (dappList: AppsManagerModels.AppItem[]): AppsManage
   const validDapps = dappList.filter((dapp) => dapp);
 
   validDapps.forEach((dapp) => {
-    const foundDublicateDapp = validDapps.find((item) => item.appName === dapp.appName);
+    const foundDublicateDapp = validDapps.find((item) => dapp !== item && item.appName === dapp.appName);
 
     if (foundDublicateDapp) {
-      throw new DappDublicate(dapp.appName);
+      throw new DappDublicateError(dapp.appName);
     }
   });
 

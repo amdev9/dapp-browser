@@ -7,7 +7,7 @@ export class DappManifestError extends Error {
   }
 }
 
-export class DappDublicate extends Error {
+export class DappDublicateError extends Error {
   constructor(dappName: string) {
     super();
     Error.captureStackTrace(this, DappManifestError);
