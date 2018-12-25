@@ -5,16 +5,11 @@ export type AppItem = {
   icon: string;
   statusIcon?: string[];
   preview: string;
-  installed: boolean;
-  manifest: any;
+  installed?: boolean;
   categories?: string[];
-  downloadStatus: {
-    isDownloadStarted: boolean;
-    downloadSuccess: any;
-    downloadFailure: any;
-  } | null;
-  permissions: string[];
-  hash: string;
+  permissions?: string[];
+  title: string;
+  hash?: string;
 };
 
 export interface ReadyDapp {

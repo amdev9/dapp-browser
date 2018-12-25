@@ -55,6 +55,8 @@
   "devDependencies": {
     "@types/async": "^2.0.49",
     "@types/bluebird": "^3.5.25",
+    "@types/chai": "^4.1.7",
+    "@types/chai-as-promised": "^7.1.0",
     "@types/electron-devtools-installer": "^2.2.0",
     "@types/elliptic": "^6.4.0",
     "@types/ethereumjs-tx": "^1.0.0",
