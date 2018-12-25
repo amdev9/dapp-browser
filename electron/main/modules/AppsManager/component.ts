@@ -2,18 +2,17 @@ import * as path from 'path';
 import { BrowserWindow } from 'electron';
 
 import { RendererConf, globalUUIDList } from '../../helpers/constants/globalVariables';
-import { appTempPath, dappsTempPath, dappLibTempBundlePath, DAPPS_DOWNLOAD_PATH } from '../../helpers/constants/appPaths';
-import { functionPromiseTimeout, readDir, readFile } from '../../helpers/utils';
+import { dappsTempPath } from '../../helpers/constants/appPaths';
+import { functionPromiseTimeout, mkdirp, readDir, readFile, checkExists } from '../../helpers/utils';
 import { DappFrame } from '../../helpers/systemComponents/DappFrame';
 import PermissionManager from '../../helpers/systemComponents/PermissionManager';
 import StoreManager from '../../helpers/systemComponents/StoreManager';
 import { component as IpfsStorage } from '../IpfsStorage';
 import { component as FileManager } from '../FileManager';
 
-import * as actions from './actions';
 import * as constants from './constants';
 import { AppItem, ReadyDapp, DappDownloadEntity } from './models';
-import { createDappView } from './utils';
+import { createDappView, validateDappManifest, validateDapps } from './utils';
 import { component as Dapp } from '../Dapp';
 
 let installedDapps: AppItem[] = [];
@@ -65,6 +64,7 @@ export default class AppsManager {
     const icon = path.join(folder, item.icon).replace(/\\/g, '/');
     const preview = path.join(folder, item.preview).replace(/\\/g, '/');
     const main = path.join(folder, item.main).replace(/\\/g, '/');
+
     return { ...item, icon, preview, main };
   }
 
@@ -101,40 +101,34 @@ export default class AppsManager {
     const dappFolder = await functionPromiseTimeout(() => IpfsStorage.downloadFolder(hash), 30000);
     await FileManager.saveFolder(dappsTempPath, dappFolder);
     return path.join(dappsTempPath, hash);
-
   }
 
   static async parseDapps(): Promise<AppItem[]> {
-    try {
-      // For development use constants.DAPPS_PATH instead dappsTempPath
+    // For development use constants.DAPPS_PATH instead dappsTempPath
+    const dappTempPathAvailable = await checkExists(dappsTempPath);
+
+    if (dappTempPathAvailable) {
       const dappsFolders: string[] = await readDir(dappsTempPath);
 
       const promises = dappsFolders.map(folder => AppsManager.getDappManifest(folder)); // @todo rewrite with async lib
       const dapps = await Promise.all(promises);
 
-      const validDapps = dapps.filter((dapp) => dapp);
+      const validDapps = validateDapps(dapps);
       AppsManager.setInstalledDapps(validDapps);
-
       return validDapps;
-    } catch (err) {
-      console.log('Catched', err);
-      return [];
     }
+
+    await mkdirp(dappsTempPath);
+
+    return [];
   }
 
-  static async getDappManifest(folder: string): Promise<AppItem> {
-    try {
-      const fileContent = await readFile(path.join(folder, 'manifest.json'));
-      return AppsManager.setAbsoluteDappPaths(JSON.parse(fileContent), folder);
+  static async getDappManifest(folder: string = ''): Promise<AppItem> {
+    const fileContent = await readFile(path.join(folder, 'manifest.json'));
+    const manifest = AppsManager.setAbsoluteDappPaths(JSON.parse(fileContent), folder);
 
-    } catch (err) {
-      if (err instanceof SyntaxError) {
-        console.log('Please check your js syntax: \n'); // @todo put it into console logs
-        console.log(err);
-      } else {
-        console.log('other error: ', err);
-      }
-    }
+    await validateDappManifest(manifest);
+    return manifest;
   }
 
   static getDappRenderer(dappName: string = ''): RendererConf {

@@ -1,0 +1,5 @@
+--timeout 30000
+--require ts-node/register
+--reporter spec
+--webpack-config webpack.config.js
+test/*.spec.ts

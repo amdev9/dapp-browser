@@ -40,7 +40,7 @@
     "clear-dist-main": "cd electron/main && npm run clear-dist",
     "clear-dist-permission": "cd electron/permissionManager && npm run clear-dist",
     "clear-dist": "concurrently \"npm run clear-dist-client\" \"npm run clear-dist-dapps-lib\" \"npm run clear-dist-main\" \"npm run clear-dist-permission\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test-main": "cd electron/main && npm run test"
   },
   "author": "cypherpunk99",
   "license": "MIT",

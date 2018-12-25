@@ -9,7 +9,13 @@ import { all } from 'async';
 import * as AppsManagerModels from './models';
 import { RendererConf } from '../../helpers/constants/globalVariables';
 import { checkExists, mkdirp, copyFile } from '../../helpers/utils';
-import { appTempPath, dappsTempPath, dappLibTempBundlePath, DAPP_LIB_BUNDLE_PATH } from '../../helpers/constants/appPaths';
+import {
+  appTempPath,
+  dappsTempPath,
+  dappLibTempBundlePath,
+  DAPP_LIB_BUNDLE_PATH,
+} from '../../helpers/constants/appPaths';
+import { DappDublicateError, DappManifestError } from '../Errors';
 
 let dappView: Electron.BrowserView = null;
 
@@ -85,3 +91,48 @@ export async function createDappView(globalUUIDList: RendererConf[], dapp: AppsM
 
   return rendererObj;
 }
+
+export const validateDappManifest = async (manifest: AppsManagerModels.AppItem): Promise<void> => {
+  const { icon, preview, main, appName, title } = manifest;
+
+  if (!title) {
+    throw new DappManifestError('Dapp title should be not empty');
+  }
+
+  if (!appName) {
+    throw new DappManifestError('App name should be not empty');
+  }
+
+  try {
+    await fs.promises.access(icon, fs.constants.R_OK);
+  } catch (err) {
+    throw new DappManifestError('Dapp icon is not available');
+  }
+
+  try {
+    await fs.promises.access(preview, fs.constants.R_OK);
+  } catch (err) {
+    throw new DappManifestError('Dapp icon preview is not available');
+  }
+
+  try {
+    await fs.promises.access(main, fs.constants.R_OK);
+  } catch (err) {
+    throw new DappManifestError('Dapp main file is not available');
+  }
+
+};
+
+export const validateDapps = (dappList: AppsManagerModels.AppItem[]): AppsManagerModels.AppItem[] => {
+  const validDapps = dappList.filter((dapp) => dapp);
+
+  validDapps.forEach((dapp) => {
+    const foundDublicateDapp = validDapps.find((item) => dapp !== item && item.appName === dapp.appName);
+
+    if (foundDublicateDapp) {
+      throw new DappDublicateError(dapp.appName);
+    }
+  });
+
+  return validDapps;
+};

@@ -13,6 +13,11 @@ Spawn new shell & wait for build process finish:
 npm run dev
 ```
 
+**Run tests:**
+```
+npm run test-main
+```
+
 **Build application for Linux/macOS**
 
 ```
@@ -26,8 +31,9 @@ and get executable file from `./electron/main/release` folder.
 
 ***Requirements:***
 1. Python 2.7
-2. Visual Studio 2015
-3. ```npm install --global windows-build-tools```
+2. NodeJS v.11 or higher version
+3. Visual Studio 2015
+4. ```npm install --global windows-build-tools```
 
 Run build process and get '.exe' file from ```./electron/main/release``` folder.
 ```
@@ -35,27 +41,13 @@ npm install
 npm run build
 ```
 
+
+
+
 **How to upload dapp into IPFS**
 - Download <a href="https://github.com/ipfs/go-ipfs">go-ipfs client</a>
 - Upload Dapp folder.
-Every Dapp is web application, which should contain manifest.json file with project settings (app title, entry point html file, icons and etc...)
-```
-{
-  "title": "IPFS Chat application",
-  "main": "index.html",
-  "appName": "Chat",
-  "assets/": ["app/images/**"],
-  "icon": "app/images/contact.svg",
-  "preview": "app/images/thumb.png",
-  "categories": [
-    "tools"
-  ],
-  "permissions": [
-    "ipfs"
-  ]
-}
-
-```
+ 
 You can upload Dapp folder with native ipfs client by command:
 
 ```ipfs add -r <dapp-folder>```

@@ -1,5 +1,7 @@
 import * as fs from 'fs';
-import * as path from "path";
+import * as path from 'path';
+import * as extra from 'fs-extra';
+import * as rimrafModule from 'rimraf';
 
 export const EXEC_TIMEOUT = 10000;
 
@@ -121,4 +123,28 @@ export async function mkdirp(folderPath: string): Promise<any> {
   }
 
   await mkdir(folderPath);
+}
+
+export async function rimraf(path: string): Promise<any> {
+  return new Promise((resolve, reject) => {
+    rimrafModule(path, {}, (err) => {
+      if (err) {
+        reject(err);
+      }
+
+      resolve();
+    });
+  });
+}
+
+export async function copy(src: string, dest: string): Promise<any> {
+  return new Promise((resolve, reject) => {
+    extra.copy(src, dest, {}, (err) => {
+      if (err) {
+        reject(err);
+      }
+
+      resolve();
+    });
+  });
 }
