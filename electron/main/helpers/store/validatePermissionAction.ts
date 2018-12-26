@@ -17,6 +17,7 @@ import { constants as StorageConstants } from '../../modules/Storage';
 
 import { constants as ClientDappConstants } from 'ClientApp/modules/Dapp';
 import { constants as ClientNotificationConstants } from 'ClientApp/modules/Notification';
+import { constants as ClientIpfsStorageConstants } from 'ClientApp/modules/IpfsStorage';
 
 const ipfsRoomActionTypes = getModuleActionTypes(IpfsRoomConstants);
 const ipfsStorageActionTypes = getModuleActionTypes(IpfsStorageConstants);
@@ -30,6 +31,7 @@ const storageActionTypes = getModuleActionTypes(StorageConstants);
 
 const clientDappsActionTypes = getModuleActionTypes(ClientDappConstants);
 const clientNotificationActionTypes = getModuleActionTypes(ClientNotificationConstants);
+const clientIpfsStorageActionTypes = getModuleActionTypes(ClientIpfsStorageConstants);
 
 const dappActions: string[] = [
   constants.INTENT_OPEN_CHANNELS,
@@ -110,6 +112,7 @@ const clientActions: string[] = [
 
   ...clientNotificationActionTypes,
   ...clientDappsActionTypes,
+  ...clientIpfsStorageActionTypes,
 ];
 
 const fileManagerActions: string[] = [

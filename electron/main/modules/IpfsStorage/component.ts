@@ -21,7 +21,7 @@ class IpfsStorage {
     this.ipfs = getReadyIpfsInstance();
   }
 
-  async uploadFile(filePath: FileManagerModels.Path): Promise<IpfsFileObject | null> {
+  async uploadFile(filePath: FileManagerModels.Path, progressHandler?: ((progress: number) => void) | null): Promise<IpfsFileObject | null> {
     if (!filePath) {
       return;
     }
@@ -30,10 +30,13 @@ class IpfsStorage {
 
     const file = { path: pathModule.basename(filePath), content: fs.createReadStream(filePath) };
 
-    const handler = (p: any) => { console.log(p); };
+    const fileStat = await fs.promises.stat(filePath);
+
+    const fileSize = fileStat.size;
     const options = {
-      progress: handler,
       wrapWithDirectory: true,
+      recursive: true,
+      progress: progressHandler ? (progress: number) => progressHandler(progress / fileSize * 100) : null,
     };
 
     const ipfsFiles = await ipfs.files.add([file], options);

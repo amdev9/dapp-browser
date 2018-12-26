@@ -1,7 +1,8 @@
 import * as uuid from 'uuid/v4';
-import { AnyAction } from 'redux';
+import { AnyAction, Store } from 'redux';
 import { EventEmitter } from 'events';
 import { Subject } from 'rxjs';
+import { IState } from '../../redux/reducers/state';
 
 interface ActionFlow {
   onStart: AnyAction;
@@ -17,7 +18,7 @@ interface SubscribeUIDActionsOptions {
 }
 
 export default class StoreManager {
-  static store: any;
+  static store: Store<IState>;
   static emitter = new EventEmitter();
   static observable: Subject<AnyAction> = new Subject();
 

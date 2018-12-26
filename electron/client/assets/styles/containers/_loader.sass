@@ -148,6 +148,7 @@
             height: 50px
             background: $gray
             border-radius: 50%
+            overflow: auto
 
             [class^="icon-"]
               position: absolute
@@ -160,11 +161,8 @@
               text-align: center
 
             svg
-              position: absolute
-              top: 9px
-              left: 0
-              right: 0
-              margin: 0 auto
+              margin: 9px auto 0
+              display: block
 
               &.over
                 margin: -25px auto 0
@@ -174,10 +172,11 @@
               position: absolute
               font: 500 12px $font-opensans
               color: $lgray
-              top: 40%
+              top: 0
               left: 0
               right: 0
-              margin: -9px auto 0
+              bottom: 0
+              line-height: 50px
               text-align: center
 
             //@keyframes rotator
