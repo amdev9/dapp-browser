@@ -74,7 +74,6 @@ export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelSt
   }
 
   private onDrop(uploads: File[]): void {
-    console.log('onDrop', uploads)
     uploads.forEach(async (file) => {
       const fileEntry = this.createFileEntry(file);
 

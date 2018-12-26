@@ -14,14 +14,11 @@ const ipfsStorageClientUploadEpic: Epic<AnyAction> = action$ => action$.pipe( //
   ofType(clientConstants.CLIENT_IPFS_STORAGE_UPLOAD_FILE),
   mergeMap(async (action) => {
     try {
-      console.log('ipfsStorage before', action);
       const progressCallback = action.payload.progress ? (percent: number) => {
-        console.log('progress main', percent, clientActions.ipfsStorageUploadFileStatus(percent, action.meta.uid));
         StoreManager.store.dispatch(clientActions.ipfsStorageUploadFileStatus(percent, action.meta.uid));
       } : null;
 
       const file = await ipfs.uploadFile(action.payload.path, progressCallback);
-      console.log('ipfsStorage', file);
       return clientActions.ipfsStorageUploadFileSuccess(file.hash, action.meta.uid);
     } catch (error) {
       return clientActions.ipfsStorageUploadFileFailure(error, action.meta.uid);
