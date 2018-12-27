@@ -1,14 +1,29 @@
 import * as React from 'react';
 import Dropzone from 'react-dropzone';
+import * as uuid from 'uuid/v4';
+import CircularProgressbar from 'react-circular-progressbar';
 import { Props as MenuProps, slide as Menu, State } from 'react-burger-menu';
 import { IoIosDocument, IoMdFolderOpen, IoMdCloudUpload, IoMdMenu } from 'react-icons/io';
+import { component as IpfsStorage } from '../../modules/IpfsStorage';
+
+import './LoaderPanelStyles.sass';
+
 interface LoaderPanelProps {
   isOpen: boolean;
+
   togglePanel(): void;
 }
+
+interface UploadedFileEntry {
+  oid: string;
+  file: File;
+  progress: number;
+  error?: any;
+}
+
 interface LoaderPanelState {
   activeTab: string;
-  uploads: File[];
+  uploads: UploadedFileEntry[];
   uploaded: File[];
 }
 
@@ -21,13 +36,57 @@ export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelSt
     this.state = { activeTab: 'uploads', uploads: [], uploaded: [] };
   }
 
+  createFileEntry(file: File): UploadedFileEntry {
+    return {
+      file,
+      oid: uuid(),
+      progress: 0,
+    };
+  }
+
+  updateProgressFileEntry(oid: string, progress: number): void {
+    if (!isNaN(progress)) {
+      const newUploadsArray = this.state.uploads.map((entry) => {
+        if (entry.oid === oid) {
+          return {
+            ...entry,
+            progress,
+          };
+        }
+
+        return entry;
+      });
+
+      this.setState({ uploads: newUploadsArray });
+    }
+  }
+
+  removeFileEntry(oid: string) {
+    const newUploads: UploadedFileEntry[] = [];
+
+    this.state.uploads.forEach((entry) => {
+      if (entry.oid !== oid) {
+        newUploads.push(entry);
+      }
+    });
+
+    this.setState({ uploads: newUploads });
+  }
+
   private onDrop(uploads: File[]): void {
-    const uploaded = [...this.state.uploaded, ...uploads].filter(
-      (file, i, files) => files.findIndex(item => item.name === file.name) === i,
-    ); // only unique values
-    this.setState({
-      uploads,
-      uploaded,
+    uploads.forEach(async (file) => {
+      const fileEntry = this.createFileEntry(file);
+
+      this.setState({ uploads: [...this.state.uploads, fileEntry] });
+
+      try {
+        await IpfsStorage.uploadFile(file.path, (progress) => this.updateProgressFileEntry(fileEntry.oid, progress))
+        this.setState({ uploaded: [...this.state.uploaded, file] });
+      } catch (err) {
+        console.log('Upload file error:', err)
+      }
+
+      this.removeFileEntry(fileEntry.oid);
     });
   }
 
@@ -67,8 +126,10 @@ export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelSt
       <Menu {...menuProps}>
         <div className="loader-popup">
           <ul className="nav nav-tabs nav-justified">
-            <li className="nav-item"><a href="#downloads" className={['nav-link'].concat(downloadClass).join(' ')} data-toggle="tab" onClick={() => this.switchTab('downloads')}>Downloads</a></li>
-            <li className="nav-item"><a href="#uploads" className={['nav-link'].concat(uploadClass).join(' ')} data-toggle="tab" onClick={() => this.switchTab('uploads')}>Uploads</a></li>
+            <li className="nav-item"><a href="#downloads" className={['nav-link'].concat(downloadClass).join(' ')}
+                                        data-toggle="tab" onClick={() => this.switchTab('downloads')}>Downloads</a></li>
+            <li className="nav-item"><a href="#uploads" className={['nav-link'].concat(uploadClass).join(' ')}
+                                        data-toggle="tab" onClick={() => this.switchTab('uploads')}>Uploads</a></li>
           </ul>
 
           <div className="tab-content">
@@ -76,7 +137,7 @@ export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelSt
               <ul>
                 <li className="row align-items-center">
                   <div className="col-auto icon">
-                    <IoIosDocument fontSize="35px" color="#A8B2BD" />
+                    <IoIosDocument fontSize="35px" color="#A8B2BD"/>
                   </div>
 
                   <div className="col introtext">
@@ -87,7 +148,7 @@ export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelSt
 
                 <li className="row align-items-center complete">
                   <div className="col-auto icon">
-                    <IoMdFolderOpen fontSize="35px" color="#A8B2BD" />
+                    <IoMdFolderOpen fontSize="35px" color="#A8B2BD"/>
                   </div>
 
                   <div className="col introtext">
@@ -102,7 +163,7 @@ export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelSt
 
               <Dropzone className="dragzone" activeClassName="dragover" onDrop={this.onDrop}>
                 <div className="message">
-                  <IoMdCloudUpload />
+                  <IoMdCloudUpload/>
                   <strong>Drag & drop</strong>
                   <span>Files Here to Upload</span>
                 </div>
@@ -110,21 +171,25 @@ export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelSt
 
               <ul>
                 {
-                  this.state.uploads.map(f => <li className="row align-items-center complete no-bg" key={f.name}>
-                    <div className="col-auto icon">
-                      <svg className="out" height="0" width="50">
-                        <circle cx="25" cy="9" r="22" stroke="#F2F3F6" strokeWidth="3" fill="none"></circle>
-                      </svg>
-                      <svg className="over" height="70" width="50">
-                        <circle cx="25" cy="37" r="22" stroke="#4686FF" strokeWidth="3" fill="none" strokeDasharray="138,138"></circle>
-                      </svg>
-                      <small className="total">100%</small>
-                    </div>
-                    <div className="col introtext">
-                      <strong>{f.name}</strong>
-                      <small>{f.size}</small>
-                    </div>
-                  </li>,
+                  this.state.uploads.map((f, i) => (
+                      <li className="row align-items-center complete no-bg nowrap" key={i}>
+                        <div className="col">
+                          <div className="icon">
+                            <CircularProgressbar
+                              percentage={f.progress}
+                              styles={{
+                                path: { stroke: `rgba(70, 134, 255, ${f.progress / 100})` },
+                              }}
+                            />
+                            <small className="total">{Math.round(f.progress) || 0}%</small>
+                          </div>
+                        </div>
+                        <div className="col introtext">
+                          <strong>{f.file.name}</strong>
+                          <small>{f.file.size}</small>
+                        </div>
+                      </li>
+                    ),
                   )
                 }
               </ul>
@@ -135,16 +200,19 @@ export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelSt
 
               <ul>
                 {
-                  this.state.uploaded.map(f => <li className="row align-items-center complete" key={f.name}>
-                    <div className="col-auto icon">
-                      <IoIosDocument fontSize="35px" color="#A8B2BD" />
-                    </div>
-                    <div className="col introtext">
-                      <strong>{f.name}</strong>
-                      <small>{f.size}</small>
-                    </div>
-                  </li>,
-                  )
+                  this.state.uploaded.map((f, i) => (
+                    <li className="row align-items-center complete nowrap" key={i}>
+                      <div className="col">
+                        <div className="icon">
+                          <IoIosDocument fontSize="35px" color="#A8B2BD"/>
+                        </div>
+                      </div>
+                      <div className="col introtext">
+                        <strong>{f.name}</strong>
+                        <small>{f.size}</small>
+                      </div>
+                    </li>
+                  ))
                 }
               </ul>
             </div>

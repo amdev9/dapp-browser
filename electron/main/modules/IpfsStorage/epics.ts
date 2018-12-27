@@ -1,15 +1,34 @@
 import { AnyAction } from 'redux';
 import { combineEpics, Epic, ofType } from 'redux-observable';
-import { switchMap } from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 
 import * as ipfsStorageActions from './actions';
 import * as constants from './constants';
+import * as clientConstants from 'ClientApp/modules/IpfsStorage/constants';
+import * as clientActions from 'ClientApp/modules/IpfsStorage/actions';
 import { component as FileManager, models as FileManagerModels } from '../FileManager';
 import ipfs from './component';
+import StoreManager from '../../helpers/systemComponents/StoreManager';
+
+const ipfsStorageClientUploadEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
+  ofType(clientConstants.CLIENT_IPFS_STORAGE_UPLOAD_FILE),
+  mergeMap(async (action) => {
+    try {
+      const progressCallback = action.payload.progress ? (percent: number) => {
+        StoreManager.store.dispatch(clientActions.ipfsStorageUploadFileStatus(percent, action.meta.uid));
+      } : null;
+
+      const file = await ipfs.uploadFile(action.payload.path, progressCallback);
+      return clientActions.ipfsStorageUploadFileSuccess(file.hash, action.meta.uid);
+    } catch (error) {
+      return clientActions.ipfsStorageUploadFileFailure(error, action.meta.uid);
+    }
+  }),
+);
 
 const ipfsStorageUploadEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
   ofType(constants.IPFS_STORAGE_UPLOAD_FILE),
-  switchMap(async (action) => {
+  mergeMap(async (action) => {
     try {
       const filePath = FileManager.getPath(action.payload.entry);
 
@@ -33,7 +52,7 @@ const ipfsStorageUploadEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo
 
 const ipfsStorageDownloadEpic: Epic<AnyAction> = action$ => action$.pipe(
   ofType(constants.IPFS_STORAGE_DOWNLOAD_FILE),
-  switchMap(async (action) => {
+  mergeMap(async (action) => {
     try {
       const targetDirectory = await FileManager.selectDirectory();
       const downloadFile = await ipfs.downloadFile(action.payload.hash);
@@ -58,4 +77,5 @@ const ipfsStorageDownloadEpic: Epic<AnyAction> = action$ => action$.pipe(
 export default combineEpics(
   ipfsStorageUploadEpic,
   ipfsStorageDownloadEpic,
+  ipfsStorageClientUploadEpic,
 );

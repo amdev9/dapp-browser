@@ -94,7 +94,7 @@ const forwardToMain = (store: Store<any>) => (next: Dispatch<void>) => <A extend
 
 const promiseHandlerMiddleware = () => {
   return (store: Store<any>) => (next: Dispatch<AnyAction>) => <A extends Action>(action: A) => {
-    if (action.meta && action.meta) {
+    if (action.meta && action.meta.uid) {
       StoreManager.emitter.emit(action.meta.uid, action);
     }
     StoreManager.observable.next(action);
