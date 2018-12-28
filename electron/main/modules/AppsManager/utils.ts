@@ -106,19 +106,19 @@ export const validateDappManifest = async (manifest: AppsManagerModels.AppItem):
   try {
     await fs.promises.access(icon, fs.constants.R_OK);
   } catch (err) {
-    throw new DappManifestError('Dapp icon is not available');
+    throw new DappManifestError(`Dapp icon is not available ${icon}`);
   }
 
   try {
     await fs.promises.access(preview, fs.constants.R_OK);
   } catch (err) {
-    throw new DappManifestError('Dapp icon preview is not available');
+    throw new DappManifestError(`Dapp icon preview is not available ${preview}`);
   }
 
   try {
     await fs.promises.access(main, fs.constants.R_OK);
   } catch (err) {
-    throw new DappManifestError('Dapp main file is not available');
+    throw new DappManifestError(`Dapp main file is not available ${main}`);
   }
 
 };
