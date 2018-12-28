@@ -85,6 +85,7 @@ class ChatControls extends React.Component<FormProps<StateProps>> {
       >
         <button
           className="chatControlsAttachButton"
+          type="button"
           onClick={this.onClickFileAttach.bind(this)}
         >
           <img src={PaperClipSvg} className="chatControlsAttachImage" width={20}/>
