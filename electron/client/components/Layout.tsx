@@ -49,7 +49,7 @@ interface AppProps {
   onToggleKeychainPanel: () => void;
   onTogglePanel: () => any;
   onToggleHome: (openStatus?: boolean) => any;
-  onToggleLoaderPanel: () => any;
+  onToggleLoaderPanel?: () => any;
   onToggleSettingsPanel: () => any;
   onToggleSearch: (openStatus?: boolean) => any;
   keychainCreateKey: (name: string) => void;

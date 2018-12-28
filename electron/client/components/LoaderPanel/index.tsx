@@ -79,13 +79,13 @@ class LoaderPanel extends React.Component< StateProps & DispatchProps, LoaderPan
     const { isOpen, togglePanel } = this.props;
 
     const menuProps: MenuProps = {
+      isOpen,
       outerContainerId: 'root-container',
       pageWrapId: 'content-wrap',
       customBurgerIcon: false,
       customCrossIcon: false,
       right: true,
       width: 300,
-      isOpen,
       onStateChange: (value) => {
         if (isOpen !== value.isOpen) {
           togglePanel();

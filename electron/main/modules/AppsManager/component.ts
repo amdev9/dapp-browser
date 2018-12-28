@@ -105,10 +105,10 @@ export default class AppsManager {
 
   static async parseDapps(): Promise<AppItem[]> {
     // For development use DAPPS_DOWNLOAD_PATH instead dappsTempPath
-    const dappTempPathAvailable = await checkExists(DAPPS_DOWNLOAD_PATH);
+    const dappTempPathAvailable = await checkExists(dappsTempPath);
 
     if (dappTempPathAvailable) {
-      const dappsFolders: string[] = await readDir(DAPPS_DOWNLOAD_PATH);
+      const dappsFolders: string[] = await readDir(dappsTempPath);
 
       const promises = dappsFolders.map(folder => AppsManager.getDappManifest(folder)); // @todo rewrite with async lib
       const dapps = await Promise.all(promises);
