@@ -13,6 +13,11 @@ Spawn new shell & wait for build process finish:
 npm run dev
 ```
 
+**Run tests:**
+```
+npm run test-main
+```
+
 **Build application for Linux/macOS**
 
 ```
@@ -33,35 +38,21 @@ and get executable file from `./electron/main/release` folder.
 Run build process and get '.exe' file from ```./electron/main/release``` folder.
 ```
 npm install
-npm run build-win
+npm run build
 ```
+
+
+
 
 **How to upload dapp into IPFS**
 - Download <a href="https://github.com/ipfs/go-ipfs">go-ipfs client</a>
 - Upload Dapp folder.
-Every Dapp is web application, which should contain manifest.json file with project settings (app title, entry point html file, icons and etc...)
-```
-{
-  "title": "IPFS Chat application",
-  "main": "index.html",
-  "appName": "Chat",
-  "assets/": ["app/images/**"],
-  "icon": "app/images/contact.svg",
-  "preview": "app/images/thumb.png",
-  "categories": [
-    "tools"
-  ],
-  "permissions": [
-    "ipfs"
-  ]
-}
-
-```
+ 
 You can upload Dapp folder with native ipfs client by command:
 
 ```ipfs add -r <dapp-folder>```
 
-To keep the files online and avoid them to be garbage collected, just use thepin command and they will remain online as long as your ipfs daemon is running.
+To keep the files online and avoid them to be garbage collected, just use the pin command and they will remain online as long as your ipfs daemon is running.
 
 ```ipfs pin add -r <dapp-folder-ipfs-hash>```
 

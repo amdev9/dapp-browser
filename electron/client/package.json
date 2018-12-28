@@ -5,10 +5,7 @@
   "main": "index.js",
   "scripts": {
     "webpack": "webpack --watch",
-    "build-script-win": "afterBuild.bat",
-    "build-script-bash": "bash afterBuild.sh",
-    "build-linux": "webpack --config webpack.config.build.js && npm run build-script-bash",
-    "build-win": "webpack --config webpack.config.build.js && npm run build-script-win",
+    "build": "webpack --config webpack.config.build.js",
     "clear-dist": "rimraf dist && rimraf node_modules",
     "hot-server": "cross-env NODE_ENV=development node --max_old_space_size=2096 server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -39,6 +36,7 @@
     "css-loader": "^1.0.0",
     "electron-redux-devtools": "^0.3.4",
     "file-loader": "^1.1.11",
+    "filemanager-webpack-plugin": "^2.0.5",
     "http-server": "^0.10.0",
     "node-sass": "^4.9.2",
     "react-hot-loader": "^4.3.4",

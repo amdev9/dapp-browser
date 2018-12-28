@@ -3,8 +3,8 @@
   "main": "index.html",
   "appName": "Wallet",
   "assets/": ["app/images/**"],
-  "icon": "app/images/exchange.svg",
-  "preview": "app/images/wallet.png",
+  "icon": "app/images/favicon.svg",
+  "preview": "app/images/thumb.png",
   "categories": [
     "tools"
   ],

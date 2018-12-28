@@ -1,7 +1,5 @@
-var path = require('path');
-var webpack = require('webpack');
-
-const port = process.env.PORT || 3000;
+const path = require('path');
+const FileManagerPlugin = require('filemanager-webpack-plugin');
 
 module.exports = {
   mode: 'production',
@@ -61,6 +59,16 @@ module.exports = {
       }
     ]
   },
+  plugins: [
+    new FileManagerPlugin({
+      onEnd: {
+        copy: [
+          { source: 'dist/*', destination: '../main/dist/client' },
+          { source: 'index__build.html', destination: '../main/dist/client/index.html' },
+        ],
+      }
+    })
+  ],
   stats: {
     colors: true
   },
