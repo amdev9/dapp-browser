@@ -43,3 +43,6 @@ export const setDappFocused = () =>
 
 export const resetDappFocused = () =>
   action(constants.MAIN_RESET_DAPP_FOCUSED);
+
+export const onClickFileAttach = () =>
+  action(constants.ROOMS_ON_CLICK_FILE_ATTACH)

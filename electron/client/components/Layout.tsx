@@ -15,7 +15,7 @@ import * as PermissionsActions from '../redux/actions/permissions';
 import { AppItem, NotifyItem, StatusBarItem, FeedItem, SearchItem } from '../redux/model';
 import { HeaderBar } from './HeaderBar';
 import { NotificationPanel } from './NotificationPanel';
-import { LoaderPanel } from './LoaderPanel';
+import LoaderPanel from './LoaderPanel';
 import { KeychainPanel } from './KeychainPanel';
 import { SettingsPanel } from './SettingsPanel';
 import { StatusBar } from './StatusBar';
@@ -92,10 +92,7 @@ class App extends React.Component<AppProps> {
           isOpen={openNotificationPanel}
           togglePanel={onTogglePanel}
           key="root-notifications" />
-        <LoaderPanel
-          isOpen={openLoaderPanel}
-          togglePanel={onToggleLoaderPanel}
-          key="root-loader" />
+        <LoaderPanel key="root-loader" />
         <KeychainPanel
           items={keychainItems}
           selectedKey={keychainSelectedKey}
@@ -181,7 +178,6 @@ const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
   clearNotification: NotificationActions.clearNotification,
   clearAllNotifications: NotificationActions.clearAllNotifications,
   onClickNotification: NotificationActions.triggerAction,
-  onToggleLoaderPanel: LoaderActions.toggle,
   onToggleSettingsPanel: SettingsActions.toggle,
   statusBarToggle: StatusBarActions.toggle,
   peersBarToggle: StatusBarActions.togglePeers,

@@ -32,6 +32,7 @@
   "dependencies": {
     "classnames": "^2.2.6",
     "css-loader": "^1.0.1",
+    "file-loader": "^3.0.1",
     "history": "^4.7.2",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
@@ -47,6 +48,7 @@
     "style-loader": "^0.23.1",
     "ts-loader": "^5.2.2",
     "typesafe-actions": "^2.0.4",
+    "url-loader": "^1.1.2",
     "uuid": "^3.3.2"
   }
 }

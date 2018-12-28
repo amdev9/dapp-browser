@@ -1,92 +1,63 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
 import Dropzone from 'react-dropzone';
 import * as uuid from 'uuid/v4';
 import CircularProgressbar from 'react-circular-progressbar';
 import { Props as MenuProps, slide as Menu, State } from 'react-burger-menu';
 import { IoIosDocument, IoMdFolderOpen, IoMdCloudUpload, IoMdMenu } from 'react-icons/io';
-import { component as IpfsStorage } from '../../modules/IpfsStorage';
+import * as filesize from 'filesize';
+
+import {
+  component as IpfsStorage,
+  models as IpfsStorageModels,
+} from '../../modules/IpfsStorage';
 
 import './LoaderPanelStyles.sass';
-
-interface LoaderPanelProps {
-  isOpen: boolean;
-
-  togglePanel(): void;
-}
-
-interface UploadedFileEntry {
-  oid: string;
-  file: File;
-  progress: number;
-  error?: any;
-}
+import { bindActionCreators, Dispatch } from 'redux';
+import { IState } from '../../redux/reducers/state';
+import * as LoaderActions from '../../redux/actions/loader';
 
 interface LoaderPanelState {
   activeTab: string;
-  uploads: UploadedFileEntry[];
-  uploaded: File[];
 }
 
-export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelState> {
-  constructor(props: LoaderPanelProps) {
+interface DispatchProps {
+  togglePanel(): void;
+}
+
+interface StateProps {
+  uploads: IpfsStorageModels.UploadsFileEntry[];
+  uploaded: IpfsStorageModels.UploadedFileEntry[];
+  isOpen: boolean;
+}
+
+const mapDispatchToProps = (dispatch: Dispatch<IState>): DispatchProps => bindActionCreators({
+  togglePanel: LoaderActions.toggle,
+}, dispatch);
+
+const mapStateToProps = (state: IState): StateProps => ({
+  uploads: state.ipfsStorage.uploads,
+  uploaded: state.ipfsStorage.uploaded,
+  isOpen: state.isOpen.loader,
+
+});
+
+class LoaderPanel extends React.Component< StateProps & DispatchProps, LoaderPanelState> {
+  constructor(props: StateProps & DispatchProps) {
     super(props);
 
     this.onDrop = this.onDrop.bind(this);
     this.switchTab = this.switchTab.bind(this);
-    this.state = { activeTab: 'uploads', uploads: [], uploaded: [] };
-  }
-
-  createFileEntry(file: File): UploadedFileEntry {
-    return {
-      file,
-      oid: uuid(),
-      progress: 0,
-    };
-  }
-
-  updateProgressFileEntry(oid: string, progress: number): void {
-    if (!isNaN(progress)) {
-      const newUploadsArray = this.state.uploads.map((entry) => {
-        if (entry.oid === oid) {
-          return {
-            ...entry,
-            progress,
-          };
-        }
-
-        return entry;
-      });
-
-      this.setState({ uploads: newUploadsArray });
-    }
-  }
-
-  removeFileEntry(oid: string) {
-    const newUploads: UploadedFileEntry[] = [];
-
-    this.state.uploads.forEach((entry) => {
-      if (entry.oid !== oid) {
-        newUploads.push(entry);
-      }
-    });
-
-    this.setState({ uploads: newUploads });
+    this.state = { activeTab: 'uploads' };
   }
 
   private onDrop(uploads: File[]): void {
     uploads.forEach(async (file) => {
-      const fileEntry = this.createFileEntry(file);
-
-      this.setState({ uploads: [...this.state.uploads, fileEntry] });
-
       try {
-        await IpfsStorage.uploadFile(file.path, (progress) => this.updateProgressFileEntry(fileEntry.oid, progress))
-        this.setState({ uploaded: [...this.state.uploaded, file] });
+        await IpfsStorage.uploadFile(file.path);
       } catch (err) {
-        console.log('Upload file error:', err)
+        console.log('Upload file error:', err);
       }
-
-      this.removeFileEntry(fileEntry.oid);
     });
   }
 
@@ -171,7 +142,7 @@ export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelSt
 
               <ul>
                 {
-                  this.state.uploads.map((f, i) => (
+                  this.props.uploads.map((f, i) => (
                       <li className="row align-items-center complete no-bg nowrap" key={i}>
                         <div className="col">
                           <div className="icon">
@@ -186,7 +157,7 @@ export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelSt
                         </div>
                         <div className="col introtext">
                           <strong>{f.file.name}</strong>
-                          <small>{f.file.size}</small>
+                          <small>{filesize(f.file.size)}</small>
                         </div>
                       </li>
                     ),
@@ -200,7 +171,7 @@ export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelSt
 
               <ul>
                 {
-                  this.state.uploaded.map((f, i) => (
+                  this.props.uploaded.map((f, i) => (
                     <li className="row align-items-center complete nowrap" key={i}>
                       <div className="col">
                         <div className="icon">
@@ -208,8 +179,8 @@ export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelSt
                         </div>
                       </div>
                       <div className="col introtext">
-                        <strong>{f.name}</strong>
-                        <small>{f.size}</small>
+                        <strong>{f.file.name}</strong>
+                        <small>{filesize(f.file.size)}</small>
                       </div>
                     </li>
                   ))
@@ -222,3 +193,5 @@ export class LoaderPanel extends React.Component<LoaderPanelProps, LoaderPanelSt
     );
   }
 }
+
+export default connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps)(LoaderPanel);

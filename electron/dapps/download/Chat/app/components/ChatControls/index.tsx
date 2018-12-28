@@ -2,10 +2,13 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 
+const ArrayIO = require('array-io');
+
 import { RoomComponentStore } from '../../services/RoomComponentService';
 import * as constants from '../../redux/constants/index';
 import { IState } from '../../redux/reducers';
 
+import * as PaperClipSvg from '../../images/paperclip.svg';
 import './styles.css';
 
 type FormProps<P> = P & InjectedFormProps<{}, P>;
@@ -47,6 +50,31 @@ class ChatControls extends React.Component<FormProps<StateProps>> {
     }
   }
 
+  async onClickFileAttach() {
+    const { selectedRoom } = this.props;
+
+    try {
+      if (!selectedRoom) {
+        return;
+      }
+      const fileEntry = await ArrayIO.FileManager.openFile();
+      console.log('fileEntry', fileEntry);
+      if (!fileEntry || !fileEntry.id) {
+        throw Error('File entry incorrect');
+      }
+      const ipfsEntry = await ArrayIO.IpfsStorage.uploadIpfsFile(fileEntry.id);
+      console.log('upload', ipfsEntry);
+
+      const room = RoomComponentStore.getRoomById(selectedRoom);
+
+      if (room) {
+        await room.sendMessageBroadcast(ipfsEntry.hash);
+      }
+    } catch (err) {
+      console.log('FileAttachError', err);
+    }
+  }
+
   render() {
     const { handleSubmit } = this.props;
 
@@ -55,6 +83,12 @@ class ChatControls extends React.Component<FormProps<StateProps>> {
         onSubmit={handleSubmit(this.handleSubmit.bind(this))}
         className="chatControls"
       >
+        <button
+          className="chatControlsAttachButton"
+          onClick={this.onClickFileAttach.bind(this)}
+        >
+          <img src={PaperClipSvg} className="chatControlsAttachImage" width={20}/>
+        </button>
         <Field
           name="message"
           type="text"

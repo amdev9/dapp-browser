@@ -4,6 +4,7 @@ import { mergeMap } from 'rxjs/operators';
 
 import * as ipfsStorageActions from './actions';
 import * as constants from './constants';
+import * as models from './models';
 import * as clientConstants from 'ClientApp/modules/IpfsStorage/constants';
 import * as clientActions from 'ClientApp/modules/IpfsStorage/actions';
 import { component as FileManager, models as FileManagerModels } from '../FileManager';
@@ -14,11 +15,12 @@ const ipfsStorageClientUploadEpic: Epic<AnyAction> = action$ => action$.pipe( //
   ofType(clientConstants.CLIENT_IPFS_STORAGE_UPLOAD_FILE),
   mergeMap(async (action) => {
     try {
-      const progressCallback = action.payload.progress ? (percent: number) => {
-        StoreManager.store.dispatch(clientActions.ipfsStorageUploadFileStatus(percent, action.meta.uid));
-      } : null;
+      const file = await ipfs.uploadFileWithSendStatus(action.payload.path);
 
-      const file = await ipfs.uploadFile(action.payload.path, progressCallback);
+      if (!file) {
+        throw Error('Ipfs file object is empty');
+      }
+
       return clientActions.ipfsStorageUploadFileSuccess(file.hash, action.meta.uid);
     } catch (error) {
       return clientActions.ipfsStorageUploadFileFailure(error, action.meta.uid);
@@ -29,23 +31,34 @@ const ipfsStorageClientUploadEpic: Epic<AnyAction> = action$ => action$.pipe( //
 const ipfsStorageUploadEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
   ofType(constants.IPFS_STORAGE_UPLOAD_FILE),
   mergeMap(async (action) => {
-    try {
-      const filePath = FileManager.getPath(action.payload.entry);
+    const { entry } = action.payload;
+    const { uid } = action.meta;
 
-      const ipfsFileObject = await ipfs.uploadFile(filePath);
+    try {
+      if (!entry) {
+        throw Error('File entry is incorrect');
+      }
+
+      const filePath = FileManager.getPath(entry);
+
+      if (!filePath) {
+        throw Error('File path with current entry does not exist');
+      }
+
+      const ipfsFileObject = await ipfs.uploadFileWithSendStatus(filePath);
 
       if (!ipfsFileObject) {
         throw Error('Ipfs file object is empty');
       }
 
-      const ipfsFile: ipfsStorageActions.IpfsFileEntry = {
-        id: action.payload.entry,
+      const ipfsFile: models.IpfsFileEntry = {
+        id: entry,
         hash: ipfsFileObject.hash,
       };
 
-      return ipfsStorageActions.uploadIpfsFileSuccess(ipfsFile, action.meta.sourceUUID);
+      return ipfsStorageActions.uploadIpfsFileSuccess(ipfsFile, uid, action.meta.sourceUUID);
     } catch (error) {
-      return ipfsStorageActions.uploadIpfsFileFailure(error, action.meta.sourceUUID);
+      return ipfsStorageActions.uploadIpfsFileFailure(error, uid, action.meta.sourceUUID);
     }
   }),
 );
@@ -62,14 +75,14 @@ const ipfsStorageDownloadEpic: Epic<AnyAction> = action$ => action$.pipe(
       }
 
       const savedFile = await FileManager.saveFile(targetDirectory, <FileManagerModels.FileObject> downloadFile);
-      const ipfsFileEntry: ipfsStorageActions.IpfsFileEntry = {
+      const ipfsFileEntry: models.IpfsFileEntry = {
         id: savedFile,
         hash: action.payload.hash,
       };
 
-      return ipfsStorageActions.downloadIpfsFileSuccess(ipfsFileEntry, action.meta.sourceUUID);
+      return ipfsStorageActions.downloadIpfsFileSuccess(ipfsFileEntry, action.meta.uid, action.meta.sourceUUID);
     } catch (error) {
-      return ipfsStorageActions.downloadIpfsFileFailure(error, action.meta.sourceUUID);
+      return ipfsStorageActions.downloadIpfsFileFailure(error, action.meta.uid, action.meta.sourceUUID);
     }
   }),
 );

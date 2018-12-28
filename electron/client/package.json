@@ -54,6 +54,7 @@
     "webpack-shell-plugin": "^0.5.0"
   },
   "dependencies": {
+    "@types/filesize": "^3.6.0",
     "babel-core": "^6.25.0",
     "babel-loader": "^7.1.1",
     "babel-polyfill": "^6.23.0",
@@ -62,6 +63,7 @@
     "classnames": "^2.2.6",
     "cross-env": "^5.2.0",
     "express": "^4.16.3",
+    "filesize": "^3.6.1",
     "flux-standard-action": "^2.0.3",
     "http-server": "^0.10.0",
     "minimist": "^1.2.0",

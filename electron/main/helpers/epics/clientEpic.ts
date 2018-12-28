@@ -4,7 +4,6 @@ import * as constants from '../constants';
 import { component as AppsManager, models as AppsManagerModels } from '../../modules/AppsManager';
 import ClientManager from '../systemComponents/ClientManager';
 import * as clientActions from '../actions/client';
-import { AppItem } from '../../../client/redux/model';
 
 const openDappEpic: Epic<any> = action$ => action$.pipe(
   ofType(constants.CLIENT_SWITCH_DAPP),

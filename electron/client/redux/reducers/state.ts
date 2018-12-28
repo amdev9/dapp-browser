@@ -1,6 +1,7 @@
 import { AppItem, ActiveDapp, StatusBarItem, FeedItem, SearchItem } from '../model';
 export { NotificationPanel } from '../model';
 import { models as NotificationModels } from '../../modules/Notification';
+import { models as IpfsStorageModels } from '../../modules/IpfsStorage';
 
 export interface ToggleStatus {
   notification: boolean;
@@ -60,6 +61,7 @@ export interface IState {
   search: SearchPanel;
   permissions: PermissionsPanel;
   isOpen: ToggleStatus;
+  ipfsStorage: IpfsStorageModels.IpfsStorageState;
 }
 
 export type IsHome = boolean;

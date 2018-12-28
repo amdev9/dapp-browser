@@ -1,5 +1,5 @@
 import { ofType, Epic, combineEpics } from 'redux-observable';
-import { switchMap, map } from 'rxjs/operators';
+import { mergeMap, map } from 'rxjs/operators';
 
 import * as constants from './constants';
 import { OrbitDbClass } from './component';
@@ -45,7 +45,7 @@ const orbitOpenDb: Epic<any> = action$ => action$.pipe(
 
 const orbitAddEntry: Epic<any> = action$ => action$.pipe(
   ofType(constants.ORBIT_DB_ADD_ENTRY),
-  switchMap(async (action) => {
+  mergeMap(async (action) => {
     try {
       const hash = await OrbitDbClass.addEntry(action.payload.database, action.payload.entry);
 
@@ -58,7 +58,7 @@ const orbitAddEntry: Epic<any> = action$ => action$.pipe(
 
 const orbitGetEntry: Epic<any> = action$ => action$.pipe(
   ofType(constants.ORBIT_DB_GET_ENTRY),
-  switchMap(async (action) => {
+  mergeMap(async (action) => {
     try {
       const entry = await OrbitDbClass.getEntry(action.payload.database, action.payload.entry);
 
@@ -71,7 +71,7 @@ const orbitGetEntry: Epic<any> = action$ => action$.pipe(
 
 const orbitGetAllEntries: Epic<any> = action$ => action$.pipe(
   ofType(constants.ORBIT_DB_GET_ALL_ENTRIES),
-  switchMap(async (action) => {
+  mergeMap(async (action) => {
     try {
       const entries = await OrbitDbClass.getAllEntries(action.payload.database);
 

@@ -1,6 +1,6 @@
 import { AnyAction } from 'redux';
 import { combineEpics, Epic, ofType } from 'redux-observable';
-import { switchMap } from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 
 import FileManager from './component';
 import * as fileManagerActions from './actions';
@@ -8,7 +8,7 @@ import * as constants from './constants';
 
 const fileManagerOpenDialogEpic: Epic<AnyAction> = action$ => action$.pipe(
   ofType(constants.FILE_MANAGER_OPEN_DIALOG),
-  switchMap(async (action) => {
+  mergeMap(async (action) => {
     try {
       const fileEntry = await FileManager.openFile();
 
@@ -16,9 +16,9 @@ const fileManagerOpenDialogEpic: Epic<AnyAction> = action$ => action$.pipe(
         throw Error('File not selected');
       }
 
-      return fileManagerActions.openDialogSuccess(fileEntry, action.meta.sourceUUID);
+      return fileManagerActions.openDialogSuccess(fileEntry, action.meta.uid, action.meta.sourceUUID);
     } catch (error) {
-      return fileManagerActions.openDialogFailure(error, action.meta.sourceUUID);
+      return fileManagerActions.openDialogFailure(error, action.meta.uid, action.meta.sourceUUID);
     }
   }),
 );

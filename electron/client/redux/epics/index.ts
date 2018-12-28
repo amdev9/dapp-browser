@@ -1,7 +1,7 @@
 import 'rxjs';
 
 import { combineEpics, ofType, Epic } from 'redux-observable';
-import { delay, switchMap, mapTo, map } from 'rxjs/operators';
+import { delay, mergeMap, mapTo, map } from 'rxjs/operators';
 import { Action, AnyAction } from 'redux';
 import { Logger } from '../../Logger';
 import * as loggerActions from '../actions/logger';
@@ -16,7 +16,7 @@ const startCountdownEpic: Epic<Action> = action$ => action$.pipe(
 
 const loggerWriteEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
   ofType(constants.LOGGER_WRITE),
-  switchMap(async (action) => {
+  mergeMap(async (action) => {
     try {
       Logger.writeToConsole(action.payload.message);
       return loggerActions.loggerWriteSuccess(action.payload.message, action.meta.sourceUUID);
