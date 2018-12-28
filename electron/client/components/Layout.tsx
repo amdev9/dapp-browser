@@ -49,7 +49,7 @@ interface AppProps {
   onToggleKeychainPanel: () => void;
   onTogglePanel: () => any;
   onToggleHome: (openStatus?: boolean) => any;
-  onToggleLoaderPanel?: () => any;
+  onToggleLoaderPanel: () => any;
   onToggleSettingsPanel: () => any;
   onToggleSearch: (openStatus?: boolean) => any;
   keychainCreateKey: (name: string) => void;
@@ -178,6 +178,7 @@ const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
   clearNotification: NotificationActions.clearNotification,
   clearAllNotifications: NotificationActions.clearAllNotifications,
   onClickNotification: NotificationActions.triggerAction,
+  onToggleLoaderPanel: LoaderActions.toggle,
   onToggleSettingsPanel: SettingsActions.toggle,
   statusBarToggle: StatusBarActions.toggle,
   peersBarToggle: StatusBarActions.togglePeers,

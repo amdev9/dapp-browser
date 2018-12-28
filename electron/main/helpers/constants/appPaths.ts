@@ -18,6 +18,6 @@ export const DAPP_LIB_BUNDLE_PATH: string =
 export const appTempPath = path.join(os.tmpdir(), 'array-io-client-temp');
 
 export const dbTempPath = path.join(appTempPath, 'db');
-export const dappsTempPath = DAPPS_DOWNLOAD_PATH;
-// export const dappsTempPath = path.join(appTempPath, 'dapps');
+// export const dappsTempPath = DAPPS_DOWNLOAD_PATH;
+export const dappsTempPath = path.join(appTempPath, 'dapps');
 export const dappLibTempBundlePath = path.join(appTempPath, 'lib', 'build', 'app.bundle.js');

@@ -9,11 +9,12 @@ import * as clientConstants from 'ClientApp/modules/IpfsStorage/constants';
 import * as clientActions from 'ClientApp/modules/IpfsStorage/actions';
 import { component as FileManager, models as FileManagerModels } from '../FileManager';
 import ipfs from './component';
-import StoreManager from '../../helpers/systemComponents/StoreManager';
 
 const ipfsStorageClientUploadEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
   ofType(clientConstants.CLIENT_IPFS_STORAGE_UPLOAD_FILE),
   mergeMap(async (action) => {
+    const { uid } = action.meta
+
     try {
       const file = await ipfs.uploadFileWithSendStatus(action.payload.path);
 
@@ -21,9 +22,9 @@ const ipfsStorageClientUploadEpic: Epic<AnyAction> = action$ => action$.pipe( //
         throw Error('Ipfs file object is empty');
       }
 
-      return clientActions.ipfsStorageUploadFileSuccess(file.hash, action.meta.uid);
+      return clientActions.ipfsStorageUploadFileSuccess(file.hash, uid);
     } catch (error) {
-      return clientActions.ipfsStorageUploadFileFailure(error, action.meta.uid);
+      return clientActions.ipfsStorageUploadFileFailure(error, uid);
     }
   }),
 );

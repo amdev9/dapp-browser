@@ -55,6 +55,8 @@ class IpfsStorage {
       utils.progressUploadHookClient(fileEntry.id, progress);
     });
 
+    console.log('IpfsStorage:uploadFileWithSendStatus', ipfsObject.hash);
+
     utils.afterUploadFileHookClient(fileEntry, ipfsObject.hash);
 
     return ipfsObject;
