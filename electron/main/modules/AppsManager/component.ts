@@ -2,7 +2,7 @@ import * as path from 'path';
 import { BrowserWindow } from 'electron';
 
 import { RendererConf, globalUUIDList } from '../../helpers/constants/globalVariables';
-import { dappsTempPath } from '../../helpers/constants/appPaths';
+import { dappsTempPath, DAPPS_DOWNLOAD_PATH } from '../../helpers/constants/appPaths';
 import { functionPromiseTimeout, mkdirp, readDir, readFile, checkExists } from '../../helpers/utils';
 import { DappFrame } from '../../helpers/systemComponents/DappFrame';
 import PermissionManager from '../../helpers/systemComponents/PermissionManager';
@@ -104,7 +104,7 @@ export default class AppsManager {
   }
 
   static async parseDapps(): Promise<AppItem[]> {
-    // For development use constants.DAPPS_PATH instead dappsTempPath
+    // For development use DAPPS_DOWNLOAD_PATH instead dappsTempPath
     const dappTempPathAvailable = await checkExists(dappsTempPath);
 
     if (dappTempPathAvailable) {

@@ -14,6 +14,7 @@ import activeDapp from './active-dapp';
 import isOpen from './is-open';
 
 import { reducer as notification } from '../../modules/Notification';
+import { reducer as ipfsStorage } from '../../modules/IpfsStorage';
 
 import { IState } from './state';
 
@@ -30,6 +31,7 @@ const rootReducer = combineReducers<IState>({
   search,
   permissions,
   isOpen,
+  ipfsStorage,
 });
 
 export default rootReducer;

@@ -4,7 +4,7 @@
   "appName": "Wallet",
   "assets/": ["app/images/**"],
   "icon": "app/images/favicon.svg",
-  "preview": "app/images/thumb.png",
+  "preview": "app/images/thumb.svg",
   "categories": [
     "tools"
   ],

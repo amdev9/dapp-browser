@@ -1,6 +1,6 @@
 import { AnyAction } from 'redux';
 import { combineEpics, Epic, ofType } from 'redux-observable';
-import { switchMap } from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 import * as path from 'path';
 
 import { getDefaultExecPath, Keychain } from '../systemComponents/Keychain';
@@ -11,7 +11,7 @@ const KEYCHAIN_PATH = path.join(__dirname, '..', 'helpers', 'systemComponents', 
 
 const keychainCreateEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
   ofType(constants.KEYCHAIN_CREATE),
-  switchMap(async (action) => {
+  mergeMap(async (action) => {
     try {
       const key = action.payload.key;
       const cipher = Keychain.Cipher.AES256; // todo do we need to pass 'cipher' and 'curve' parameters from a dapp?
@@ -28,7 +28,7 @@ const keychainCreateEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fi
 
 const keychainListEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
   ofType(constants.KEYCHAIN_LIST),
-  switchMap(async (action) => {
+  mergeMap(async (action) => {
     try {
       const keychainInstance = new Keychain(KEYCHAIN_PATH);
 
@@ -42,7 +42,7 @@ const keychainListEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix 
 
 const keychainLockEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
   ofType(constants.KEYCHAIN_LOCK),
-  switchMap(async (action) => {
+  mergeMap(async (action) => {
     try {
       const keychainInstance = new Keychain(KEYCHAIN_PATH);
 
@@ -56,7 +56,7 @@ const keychainLockEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix 
 
 const keychainSignEpic: Epic<AnyAction> = (action$, state$) => action$.pipe( // @todo fix action type
   ofType(constants.KEYCHAIN_SIGN),
-  switchMap(async (action) => {
+  mergeMap(async (action) => {
     try {
       const key = `${state$.value.client.keychain.selectedKey}`; // keys consitsted only of numbers throw 'Bad cast' exception. Converting everythin to string
       // const chainId = action.payload.chainId;
@@ -73,7 +73,7 @@ const keychainSignEpic: Epic<AnyAction> = (action$, state$) => action$.pipe( // 
 
 const keychainPubliKeyEpic: Epic<AnyAction> = (action$, state$) => action$.pipe( // @todo fix action type
   ofType(constants.KEYCHAIN_PUBLIC_KEY),
-  switchMap(async (action) => {
+  mergeMap(async (action) => {
     try {
       const key = `${state$.value.client.keychain.selectedKey}`; // keys consitsted only of numbers throw 'Bad cast' exception. Converting everythin to string
       const keychainInstance = new Keychain(KEYCHAIN_PATH);
@@ -88,7 +88,7 @@ const keychainPubliKeyEpic: Epic<AnyAction> = (action$, state$) => action$.pipe(
 
 const keychainUnlockEpic: Epic<AnyAction> = (action$, state$) => action$.pipe( // @todo fix action type
   ofType(constants.KEYCHAIN_UNLOCK),
-  switchMap(async (action) => {
+  mergeMap(async (action) => {
     try {
       const key = `${state$.value.client.keychain.selectedKey}`; // keys consitsted only of numbers throw 'Bad cast' exception. Converting everythin to string
       const keychainInstance = new Keychain(KEYCHAIN_PATH);

@@ -1,6 +1,6 @@
 import { AnyAction } from 'redux';
 import { combineEpics, Epic, ofType } from 'redux-observable';
-import { switchMap } from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 
 import * as storageActions  from './actions';
 import * as constants from './constants';
@@ -8,7 +8,7 @@ import { Storage } from './component';
 
 const storageSaveEpic: Epic<AnyAction> = action$ => action$.pipe(
   ofType(constants.STORAGE_SAVE),
-  switchMap(async (action) => {
+  mergeMap(async (action) => {
     try {
       const key = action.payload.key;
       const value = action.payload.value;
@@ -25,7 +25,7 @@ const storageSaveEpic: Epic<AnyAction> = action$ => action$.pipe(
 
 const storageRemoveEpic: Epic<AnyAction> = action$ => action$.pipe(
   ofType(constants.STORAGE_REMOVE),
-  switchMap(async (action) => {
+  mergeMap(async (action) => {
     try {
       const key = action.payload.key;
       const storage = new Storage(action.meta.sourceUUID);
@@ -39,7 +39,7 @@ const storageRemoveEpic: Epic<AnyAction> = action$ => action$.pipe(
 
 const storageFindAllEpic: Epic<AnyAction> = action$ => action$.pipe(
   ofType(constants.STORAGE_FIND_ALL),
-  switchMap(async (action) => {
+  mergeMap(async (action) => {
     try {
       const storage = new Storage(action.meta.sourceUUID);
       const result = await storage.findAll();

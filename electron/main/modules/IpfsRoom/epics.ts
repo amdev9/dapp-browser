@@ -1,7 +1,7 @@
 import { combineEpics, Epic, ofType, ActionsObservable } from 'redux-observable';
 import { AnyAction } from 'redux';
 import { of } from 'rxjs';
-import { switchMap, map, catchError, ignoreElements, tap, mergeMap } from 'rxjs/operators';
+import { map, catchError, ignoreElements, tap, mergeMap } from 'rxjs/operators';
 
 import Component from './component';
 import * as constants from './constants';
@@ -45,7 +45,7 @@ const ipfsRoomsSubscribe = (action$: ActionsObservable<AnyAction>) => action$.pi
 
 const ipfsRoomSendBroadcastMessage: Epic<AnyAction> = (action$, state$) => action$.pipe( //@todo fix action type
   ofType(constants.IPFS_ROOM_SEND_MESSAGE_BROADCAST),
-  switchMap(async (action) => {
+  mergeMap(async (action) => {
     try {
       const room = Component.get(action.meta.sourceUUID, action.payload.roomId);
 
@@ -65,7 +65,7 @@ const ipfsRoomSendBroadcastMessage: Epic<AnyAction> = (action$, state$) => actio
 
 const ipfsRoomSendToPeerMessage: Epic<AnyAction> = (action$, state$) => action$.pipe( //@todo fix action type
   ofType(constants.IPFS_ROOM_SEND_MESSAGE_TO_PEER),
-  switchMap(async (action) => {
+  mergeMap(async (action) => {
     try {
       let room = Component.get(action.meta.sourceUUID, action.payload.roomId);
 
@@ -85,7 +85,7 @@ const ipfsRoomSendToPeerMessage: Epic<AnyAction> = (action$, state$) => action$.
 
 const ipfsRoomLeave: Epic<AnyAction> = (action$, state$) => action$.pipe( //@todo fix action type
   ofType(constants.IPFS_ROOM_LEAVE),
-  switchMap(async (action) => {
+  mergeMap(async (action) => {
     try {
       const room = Component.get(action.meta.sourceUUID, action.payload.roomId);
 
@@ -104,7 +104,7 @@ const ipfsRoomLeave: Epic<AnyAction> = (action$, state$) => action$.pipe( //@tod
 
 const ipfsRoomGetPeers: Epic<AnyAction> = (action$, state$) => action$.pipe( //@todo fix action type
   ofType(constants.IPFS_ROOM_GET_PEERS),
-  switchMap(async (action) => {
+  mergeMap(async (action) => {
     try {
       const room = Component.get(action.meta.sourceUUID, action.payload.roomId);
 

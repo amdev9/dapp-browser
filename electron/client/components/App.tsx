@@ -4,7 +4,7 @@ import { Route } from 'react-router-dom';
 import Layout from '../components/Layout';
 
 interface IAppType {
-  isProduction: boolean
+  isProduction: boolean;
 }
 
 export default class App extends React.Component<IAppType> {
@@ -12,7 +12,7 @@ export default class App extends React.Component<IAppType> {
     const { isProduction } = this.props
     return (
       <div>
-        <Route path='/:page/:dapp' children={({ match, ...rest }) => {
+        <Route path="/:page/:dapp" children={({ match, ...rest }) => {
           return <Layout isProduction={isProduction} locationPath={rest.location.pathname} />
         }
         } />

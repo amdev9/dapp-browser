@@ -61,7 +61,6 @@ export default class Component {
 
     const getRoomInstance = <any> Room;
     const roomInstance = getRoomInstance(ipfs, roomName);
-    console.log('RoomMA', await roomInstance._ipfs.id())
 
     const room = new Component(roomInstance, { dappUUID });
     RoomMapInstance.addRoom(room);

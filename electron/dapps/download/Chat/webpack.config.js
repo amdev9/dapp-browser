@@ -1,6 +1,6 @@
-var path = require('path');
-var webpack = require('webpack');
-var CircularDependencyPlugin = require('circular-dependency-plugin');
+var path = require('path')
+var webpack = require('webpack')
+var CircularDependencyPlugin = require('circular-dependency-plugin')
 
 module.exports = {
   mode: 'development',
@@ -14,12 +14,19 @@ module.exports = {
   },
   module: {
     rules: [
-      { test: /\.(ts|tsx)$/, loader: 'ts-loader' },
+      {test: /\.(ts|tsx)$/, loader: 'ts-loader'},
       {
         test: /\.css$/,
-        loader:'style-loader!css-loader',
+        loader: 'style-loader!css-loader',
         exclude: /node_modules/
-      }
+      },
+      {
+        test: /\.(jpg|png|svg)$/,
+        loader: 'file-loader',
+        options: {
+          name: '[path][name].[ext]'
+        },
+      },
     ]
   },
   plugins: [
@@ -40,4 +47,4 @@ module.exports = {
     extensions: ['.ts', '.tsx', '.js', '.json']
   },
   devtool: 'source-map',
-};
+}

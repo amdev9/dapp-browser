@@ -1,6 +1,6 @@
 import { AnyAction } from 'redux';
 import { combineEpics, Epic, ofType } from 'redux-observable';
-import { switchMap } from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 
 import { Ethereum } from '../systemComponents/Ethereum';
 import * as ethereumActions from '../actions/ethereum';
@@ -8,7 +8,7 @@ import * as constants from '../constants';
 
 const ethereumBuildTransactionEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
   ofType(constants.ETHEREUM_BUILD_TRANSACTION),
-  switchMap(async (action) => {
+  mergeMap(async (action) => {
     try {
       const to = action.payload.to;
       const from = action.payload.from;
@@ -26,7 +26,7 @@ const ethereumBuildTransactionEpic: Epic<AnyAction> = action$ => action$.pipe( /
 
 const ethereumPublishTransactionEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
   ofType(constants.ETHEREUM_PUBLISH_TRANSACTION),
-  switchMap(async (action) => {
+  mergeMap(async (action) => {
     try {
       const transaction = action.payload.transaction;
 
@@ -41,7 +41,7 @@ const ethereumPublishTransactionEpic: Epic<AnyAction> = action$ => action$.pipe(
 
 const ethereumPublicToAddressEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
   ofType(constants.ETHEREUM_PUBLIC_TO_ADDRESS),
-  switchMap(async (action) => {
+  mergeMap(async (action) => {
     try {
       const publicKey = action.payload.publicKey;
 

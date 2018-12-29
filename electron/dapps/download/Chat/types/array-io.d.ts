@@ -19,6 +19,11 @@ interface SubscribeOptions {
   onSubscribe?: (peer: string) => void;
 }
 
+export interface IpfsFileEntry {
+  id: string;
+  hash: string;
+}
+
 declare class IpfsRoom {
   constructor()
 
@@ -44,9 +49,22 @@ declare class Notification {
   showNotification(options: NotificationOptions, events: NotificationEvents): void;
 }
 
+declare class FileManager {
+
+  openFile(): void;
+}
+
+declare class IpfsStorage {
+
+  uploadIpfsFile(hash: string): Promise<IpfsFileEntry>;
+  downloadIpfsFile(entry: string): Promise<IpfsFileEntry>;
+}
+
 export {
   IpfsRoom,
   Dapp,
   Keychain,
   Notification,
+  FileManager,
+  IpfsStorage,
 };

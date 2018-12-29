@@ -1,6 +1,5 @@
 
 .chatControls {
-    height: 100px;
     display: flex;
     margin: 0 0 5px;
     padding: 0 10px;
@@ -11,7 +10,7 @@
     flex: 1;
     border: none;
     font-size: 18px;
-    padding: 30px;
+    padding: 20px;
     width: 100%;
     outline: none;
 }
@@ -21,5 +20,13 @@
     border: none;
     font-size: 32px;
     cursor: pointer;
+    outline: none;
+}
+
+.chatControlsAttachButton {
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    padding: 0 10px;
     outline: none;
 }

@@ -2,11 +2,11 @@ import * as fs from 'fs';
 import * as IPFS from 'ipfs';
 import * as pathModule from 'path';
 
-import { models as FileManagerModels } from '../FileManager';
 import { IPFSGetResult } from '../../types/ipfs';
 import { remoteConfig } from '../../helpers/config/ipfs';
 import { getReadyIpfsInstance } from '../../helpers/systemComponents/IpfsInstance';
 import { functionPromiseTimeout } from '../../helpers/utils';
+import * as utils from './utils';
 
 export interface IpfsFileObject {
   hash: string;
@@ -21,7 +21,7 @@ class IpfsStorage {
     this.ipfs = getReadyIpfsInstance();
   }
 
-  async uploadFile(filePath: FileManagerModels.Path, progressHandler?: ((progress: number) => void) | null): Promise<IpfsFileObject | null> {
+  async uploadFile(filePath: string, progressHandler?: ((progress: number) => void) | null): Promise<IpfsFileObject | null> {
     if (!filePath) {
       return;
     }
@@ -46,6 +46,20 @@ class IpfsStorage {
     }
 
     return ipfsFiles[ipfsFiles.length - 1];
+  }
+
+  async uploadFileWithSendStatus(path: string): Promise<IpfsFileObject | null>  {
+    const fileEntry = await utils.beforeUploadFileHookClient(path);
+
+    const ipfsObject = await this.uploadFile(path, (progress) => {
+      utils.progressUploadHookClient(fileEntry.id, progress);
+    });
+
+    console.log('IpfsStorage:uploadFileWithSendStatus', ipfsObject.hash);
+
+    utils.afterUploadFileHookClient(fileEntry, ipfsObject.hash);
+
+    return ipfsObject;
   }
 
   async downloadFile(hash: string): Promise<IPFSGetResult | null> {

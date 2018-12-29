@@ -1,6 +1,6 @@
 import { AnyAction } from 'redux';
 import { combineEpics, Epic, ofType } from 'redux-observable';
-import { switchMap } from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 
 import { NetworkAPI } from '../systemComponents/Network';
 import * as networkActions from '../actions/network';
@@ -16,7 +16,7 @@ try {
 
 const networkGetBlockEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
   ofType(constants.NETWORK_GET_BLOCK),
-  switchMap(async (action) => {
+  mergeMap(async (action) => {
     try {
       const block = await networkInstance.getBlock();
       return networkActions.getBlockSuccess(JSON.stringify(block), action.meta.sourceUUID);
@@ -28,7 +28,7 @@ const networkGetBlockEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo f
 
 const networkGetWitnessEpic: Epic<AnyAction> = action$ => action$.pipe(
   ofType(constants.NETWORK_GET_WITNESS),
-  switchMap(async (action) => {
+  mergeMap(async (action) => {
     try {
       const witnessId = action.payload.witnessId;
       const witness = await networkInstance.getWitness(witnessId);
@@ -41,7 +41,7 @@ const networkGetWitnessEpic: Epic<AnyAction> = action$ => action$.pipe(
 
 const networkSubscribeEpic: Epic<AnyAction> = action$ => action$.pipe(
   ofType(constants.NETWORK_SUBSCRIBE),
-  switchMap(async (action) => {
+  mergeMap(async (action) => {
     try {
       networkInstance.addSubscriber(action.meta.sourceUUID);
       return networkActions.subscribeSuccess(action.meta.sourceUUID);
@@ -53,7 +53,7 @@ const networkSubscribeEpic: Epic<AnyAction> = action$ => action$.pipe(
 
 const networkUnsubscribeEpic: Epic<AnyAction> = action$ => action$.pipe(
   ofType(constants.NETWORK_UNSUBSCRIBE),
-  switchMap(async (action) => {
+  mergeMap(async (action) => {
     try {
       networkInstance.removeSubscriber(action.meta.sourceUUID);
       return networkActions.unsubscribeSuccess(action.meta.sourceUUID);
