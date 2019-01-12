@@ -1,10 +1,12 @@
 import { AnyAction } from 'redux';
 import { combineEpics, Epic, ofType } from 'redux-observable';
 import { mergeMap } from 'rxjs/operators';
+import * as path from 'path';
 
 import * as ipfsStorageActions from './actions';
 import * as constants from './constants';
 import * as models from './models';
+import * as utils from './utils';
 import * as clientConstants from 'ClientApp/modules/IpfsStorage/constants';
 import * as clientActions from 'ClientApp/modules/IpfsStorage/actions';
 import { component as FileManager, models as FileManagerModels } from '../FileManager';
@@ -13,7 +15,7 @@ import ipfs from './component';
 const ipfsStorageClientUploadEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
   ofType(clientConstants.CLIENT_IPFS_STORAGE_UPLOAD_FILE),
   mergeMap(async (action) => {
-    const { uid } = action.meta
+    const { uid } = action.meta;
 
     try {
       const file = await ipfs.uploadFileWithSendStatus(action.payload.path);
@@ -55,6 +57,7 @@ const ipfsStorageUploadEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo
       const ipfsFile: models.IpfsFileEntry = {
         id: entry,
         hash: ipfsFileObject.hash,
+        fileName: path.basename(filePath),
       };
 
       return ipfsStorageActions.uploadIpfsFileSuccess(ipfsFile, uid, action.meta.sourceUUID);
@@ -67,18 +70,26 @@ const ipfsStorageUploadEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo
 const ipfsStorageDownloadEpic: Epic<AnyAction> = action$ => action$.pipe(
   ofType(constants.IPFS_STORAGE_DOWNLOAD_FILE),
   mergeMap(async (action) => {
+    const { hash } = action.payload;
     try {
       const targetDirectory = await FileManager.selectDirectory();
-      const downloadFile = await ipfs.downloadFile(action.payload.hash);
+      const downloadFileEntry = await utils.beforeDownloadFileHookClient(hash);
+      const downloadFile = await ipfs.downloadFile(hash);
 
       if (!downloadFile) {
         throw Error('File with current hash does not exist');
       }
 
       const savedFile = await FileManager.saveFile(targetDirectory, <FileManagerModels.FileObject> downloadFile);
+      await utils.afterDownloadFileHookClient(downloadFileEntry, {
+        path: savedFile.path,
+        name: savedFile.name,
+        size: savedFile.size,
+      });
+
       const ipfsFileEntry: models.IpfsFileEntry = {
-        id: savedFile,
-        hash: action.payload.hash,
+        hash,
+        id: savedFile.fileId,
       };
 
       return ipfsStorageActions.downloadIpfsFileSuccess(ipfsFileEntry, action.meta.uid, action.meta.sourceUUID);

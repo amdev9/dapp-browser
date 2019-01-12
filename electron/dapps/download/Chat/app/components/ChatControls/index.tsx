@@ -7,6 +7,7 @@ const ArrayIO = require('array-io');
 import { RoomComponentStore } from '../../services/RoomComponentService';
 import * as constants from '../../redux/constants/index';
 import { IState } from '../../redux/reducers';
+import { getHashLink } from '../../utils';
 
 import * as PaperClipSvg from '../../images/paperclip.svg';
 import './styles.css';
@@ -68,7 +69,8 @@ class ChatControls extends React.Component<FormProps<StateProps>> {
       const room = RoomComponentStore.getRoomById(selectedRoom);
 
       if (room) {
-        await room.sendMessageBroadcast(ipfsEntry.hash);
+        const ipfsLink = getHashLink(ipfsEntry.hash, ipfsEntry.fileName);
+        await room.sendMessageBroadcast(ipfsLink);
       }
     } catch (err) {
       console.log('FileAttachError', err);

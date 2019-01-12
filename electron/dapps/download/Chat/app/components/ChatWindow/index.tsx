@@ -4,6 +4,7 @@ import * as cn from 'classnames';
 import { Message } from '../../services/RoomComponentService';
 import { getSelectedRoomMessages } from '../../redux/selectors';
 import { IState } from '../../redux/reducers';
+import ChatMessage from '../ChatMessage';
 
 import './styles.css';
 
@@ -35,7 +36,9 @@ class ChatHeader extends React.Component<StateProps> {
         key={i}
       >
         {!msg.own && <div className="messageBlockFrom">{msg.from}</div>}
-        <div className="messageBlockContent">{msg.message}</div>
+        <div className="messageBlockContent">
+          <ChatMessage message={msg.message}/>
+        </div>
       </div>
     );
   }

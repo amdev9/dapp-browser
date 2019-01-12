@@ -6,6 +6,7 @@ import CircularProgressbar from 'react-circular-progressbar';
 import { Props as MenuProps, slide as Menu, State } from 'react-burger-menu';
 import { IoIosDocument, IoMdFolderOpen, IoMdCloudUpload, IoMdMenu } from 'react-icons/io';
 import * as filesize from 'filesize';
+import * as cn from 'classnames';
 
 import {
   component as IpfsStorage,
@@ -28,6 +29,8 @@ interface DispatchProps {
 interface StateProps {
   uploads: IpfsStorageModels.UploadsFileEntry[];
   uploaded: IpfsStorageModels.UploadedFileEntry[];
+  downloads: IpfsStorageModels.DownloadFileEntry[];
+  downloaded: IpfsStorageModels.DownloadedFileEntry[];
   isOpen: boolean;
 }
 
@@ -38,11 +41,12 @@ const mapDispatchToProps = (dispatch: Dispatch<IState>): DispatchProps => bindAc
 const mapStateToProps = (state: IState): StateProps => ({
   uploads: state.ipfsStorage.uploads,
   uploaded: state.ipfsStorage.uploaded,
+  downloads: state.ipfsStorage.downloads,
+  downloaded: state.ipfsStorage.downloaded,
   isOpen: state.isOpen.loader,
-
 });
 
-class LoaderPanel extends React.Component< StateProps & DispatchProps, LoaderPanelState> {
+class LoaderPanel extends React.Component<StateProps & DispatchProps, LoaderPanelState> {
   constructor(props: StateProps & DispatchProps) {
     super(props);
 
@@ -65,8 +69,128 @@ class LoaderPanel extends React.Component< StateProps & DispatchProps, LoaderPan
     this.setState({ activeTab: tabName });
   }
 
+  renderDownloadingItem(entry: IpfsStorageModels.DownloadFileEntry, i: number) {
+    return (
+      <li key={i} className="row align-items-center complete no-bg nowrap">
+        <div className="col">
+          <div className="icon">
+            <IoIosDocument fontSize="35px" color="#A8B2BD"/>
+          </div>
+        </div>
+
+        <div className="col introtext">
+          <strong>{entry.hash}</strong>
+          <small>Loading...</small>
+        </div>
+      </li>
+    );
+  }
+
+  renderDownloadedItem(entry: IpfsStorageModels.DownloadedFileEntry, i: number) {
+    return (
+      <li key={i} className="row align-items-center complete no-bg nowrap">
+        <div className="col">
+          <div className="icon">
+            <IoIosDocument fontSize="35px" color="#A8B2BD"/>
+          </div>
+        </div>
+
+        <div className="col introtext">
+          <strong>{entry.file.name}</strong>
+          <small>{filesize(entry.file.size)}</small>
+        </div>
+      </li>
+    );
+  }
+
+  renderDownloadsPanel() {
+    const { downloaded, downloads } = this.props;
+    console.log('down', downloaded, downloads);
+
+    return (
+      <React.Fragment>
+        <ul>
+          {
+            downloads.map(this.renderDownloadingItem.bind(this))
+          }
+        </ul>
+
+        <div className="uploaded-name">
+          <span>Downloaded files</span>
+        </div>
+
+        <ul>
+          {
+            downloaded.length ? downloaded.map(this.renderDownloadedItem.bind(this)) : <div>Empty list...</div>
+          }
+        </ul>
+      </React.Fragment>
+    );
+  }
+
+  renderUploadsPanel() {
+    return (
+      <React.Fragment>
+        <Dropzone className="dragzone" activeClassName="dragover" onDrop={this.onDrop}>
+          <div className="message">
+            <IoMdCloudUpload/>
+            <strong>Drag & drop</strong>
+            <span>Files Here to Upload</span>
+          </div>
+        </Dropzone>
+
+        <ul>
+          {
+            this.props.uploads.map((f, i) => (
+                <li className="row align-items-center complete no-bg nowrap" key={i}>
+                  <div className="col">
+                    <div className="icon">
+                      <CircularProgressbar
+                        percentage={f.progress}
+                        styles={{
+                          path: { stroke: `rgba(70, 134, 255, ${f.progress / 100})` },
+                        }}
+                      />
+                      <small className="total">{Math.round(f.progress) || 0}%</small>
+                    </div>
+                  </div>
+                  <div className="col introtext">
+                    <strong>{f.file.name}</strong>
+                    <small>{filesize(f.file.size)}</small>
+                  </div>
+                </li>
+              ),
+            )
+          }
+        </ul>
+
+        <div className="uploaded-name">
+          <span>Uploaded files</span>
+        </div>
+
+        <ul>
+          {
+            this.props.uploaded.map((f, i) => (
+              <li className="row align-items-center complete nowrap" key={i}>
+                <div className="col">
+                  <div className="icon">
+                    <IoIosDocument fontSize="35px" color="#A8B2BD"/>
+                  </div>
+                </div>
+                <div className="col introtext">
+                  <strong>{f.file.name}</strong>
+                  <small>{filesize(f.file.size)}</small>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+      </React.Fragment>
+    );
+  }
+
   render() {
-    const activeClass = ['active', 'show'];
+    const activeClass = 'active show';
 
     let downloadClass = null;
     let uploadClass = null;
@@ -97,95 +221,33 @@ class LoaderPanel extends React.Component< StateProps & DispatchProps, LoaderPan
       <Menu {...menuProps}>
         <div className="loader-popup">
           <ul className="nav nav-tabs nav-justified">
-            <li className="nav-item"><a href="#downloads" className={['nav-link'].concat(downloadClass).join(' ')}
-                                        data-toggle="tab" onClick={() => this.switchTab('downloads')}>Downloads</a></li>
-            <li className="nav-item"><a href="#uploads" className={['nav-link'].concat(uploadClass).join(' ')}
-                                        data-toggle="tab" onClick={() => this.switchTab('uploads')}>Uploads</a></li>
+            <li className="nav-item">
+              <a
+                href="#downloads"
+                className={`nav-link ${downloadClass}`}
+                data-toggle="tab"
+                onClick={() => this.switchTab('downloads')}>
+                Downloads
+              </a>
+            </li>
+            <li className="nav-item">
+              <a
+                href="#uploads"
+                className={`nav-link ${uploadClass}`}
+                data-toggle="tab"
+                onClick={() => this.switchTab('uploads')}>
+                Uploads
+              </a>
+            </li>
           </ul>
 
           <div className="tab-content">
-            <div className={['tab-pane'].concat(downloadClass).join(' ')} id="downloads">
-              <ul>
-                <li className="row align-items-center">
-                  <div className="col-auto icon">
-                    <IoIosDocument fontSize="35px" color="#A8B2BD"/>
-                  </div>
-
-                  <div className="col introtext">
-                    <strong>Document.doc</strong>
-                    <small>2 mb</small>
-                  </div>
-                </li>
-
-                <li className="row align-items-center complete">
-                  <div className="col-auto icon">
-                    <IoMdFolderOpen fontSize="35px" color="#A8B2BD"/>
-                  </div>
-
-                  <div className="col introtext">
-                    <strong>Document downl.doc</strong>
-                    <small>2 mb</small>
-                  </div>
-                </li>
-              </ul>
+            <div className={`tab-pane ${downloadClass}`} id="downloads">
+              {this.renderDownloadsPanel()}
             </div>
 
-            <div className={['tab-pane'].concat(uploadClass).join(' ')} id="uploads">
-
-              <Dropzone className="dragzone" activeClassName="dragover" onDrop={this.onDrop}>
-                <div className="message">
-                  <IoMdCloudUpload/>
-                  <strong>Drag & drop</strong>
-                  <span>Files Here to Upload</span>
-                </div>
-              </Dropzone>
-
-              <ul>
-                {
-                  this.props.uploads.map((f, i) => (
-                      <li className="row align-items-center complete no-bg nowrap" key={i}>
-                        <div className="col">
-                          <div className="icon">
-                            <CircularProgressbar
-                              percentage={f.progress}
-                              styles={{
-                                path: { stroke: `rgba(70, 134, 255, ${f.progress / 100})` },
-                              }}
-                            />
-                            <small className="total">{Math.round(f.progress) || 0}%</small>
-                          </div>
-                        </div>
-                        <div className="col introtext">
-                          <strong>{f.file.name}</strong>
-                          <small>{filesize(f.file.size)}</small>
-                        </div>
-                      </li>
-                    ),
-                  )
-                }
-              </ul>
-
-              <div className="uploaded-name">
-                <span>Uploaded files</span>
-              </div>
-
-              <ul>
-                {
-                  this.props.uploaded.map((f, i) => (
-                    <li className="row align-items-center complete nowrap" key={i}>
-                      <div className="col">
-                        <div className="icon">
-                          <IoIosDocument fontSize="35px" color="#A8B2BD"/>
-                        </div>
-                      </div>
-                      <div className="col introtext">
-                        <strong>{f.file.name}</strong>
-                        <small>{filesize(f.file.size)}</small>
-                      </div>
-                    </li>
-                  ))
-                }
-              </ul>
+            <div className={`tab-pane ${uploadClass}`} id="uploads">
+              {this.renderUploadsPanel()}
             </div>
           </div>
         </div>

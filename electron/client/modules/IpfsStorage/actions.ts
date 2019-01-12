@@ -45,6 +45,18 @@ export const uploadedListFileAdd = (file: models.UploadedFileEntry) =>
 export const uploadedListDeleteAll = () =>
   action(constants.CLIENT_UPLOADED_LIST_DELETE_ALL);
 
+export const downloadListEntryAdd = (entry: models.DownloadFileEntry) =>
+  action(constants.CLIENT_DOWNLOAD_LIST_ENTRY_ADD, { entry });
+
+export const downloadListEntryDelete = (entryId: string) =>
+  action(constants.CLIENT_DOWNLOAD_LIST_ENTRY_DELETE, { entryId });
+
+export const downloadListEntrySetError = (entryId: string, error: any) =>
+  action(constants.CLIENT_DOWNLOAD_LIST_ENTRY_SET_ERROR, { entryId, error });
+
+export const downloadedListFileAdd = (entry: models.DownloadedFileEntry) =>
+  action(constants.CLIENT_DOWNLOADED_LIST_ENTRY_ADD, { entry });
+
 export const dappIpfsUploadFile = (path: string, sendProgress: boolean = false, uid?: string) =>
   action(constants.CLIENT_DAPP_IPFS_STORAGE_UPLOAD_FILE, { path, sendProgress }, { uid });
 

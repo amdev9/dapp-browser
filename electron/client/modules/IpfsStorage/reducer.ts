@@ -5,7 +5,9 @@ import * as models from './models';
 const initialState = {
   uploaded: [] as models.UploadedFileEntry[],
   uploads: [] as models.UploadsFileEntry[],
-}
+  downloaded: [] as models.DownloadedFileEntry[],
+  downloads: [] as models.DownloadFileEntry[],
+};
 
 export default function reducer(state: models.IpfsStorageState = initialState, action: any) {
   switch (action.type) {
@@ -69,6 +71,40 @@ export default function reducer(state: models.IpfsStorageState = initialState, a
       return {
         ...state,
         uploaded: [],
+      };
+
+    case constants.CLIENT_DOWNLOAD_LIST_ENTRY_ADD:
+      return {
+        ...state,
+        downloads: [...state.downloads, action.payload.entry]
+      };
+
+    case constants.CLIENT_DOWNLOAD_LIST_ENTRY_SET_ERROR:
+      return {
+        ...state,
+        downloads: state.downloads.map((download) => {
+          if (download.id === action.payload.entryId) {
+            return {
+              ...download,
+              error: action.payload.error,
+            };
+          }
+
+          return download;
+        }),
+      };
+
+    case constants.CLIENT_DOWNLOAD_LIST_ENTRY_DELETE:
+
+      return {
+        ...state,
+        downloads: state.downloads.filter((entry) => entry.id !== action.payload.entryId),
+      };
+
+    case constants.CLIENT_DOWNLOADED_LIST_ENTRY_ADD:
+      return {
+        ...state,
+        downloaded: [action.payload.entry, ...state.downloaded],
       };
 
     default:

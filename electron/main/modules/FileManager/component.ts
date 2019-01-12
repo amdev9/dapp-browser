@@ -4,7 +4,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as fse from 'fs-extra';
 
-import { FileId, FileEntry, PathList, Path, FileObject } from './models';
+import { FileId, FileEntry, PathList, Path, FileObject, SavedFile } from './models';
 
 export default class FileManager {
   static entryMap: Map<FileId, Path> = new Map();
@@ -51,14 +51,18 @@ export default class FileManager {
     };
   }
 
-  static async saveFile(dir: Path, file: FileObject) {
+  static async saveFile(dir: Path, file: FileObject): Promise<SavedFile> {
     const location = path.join(dir, file.name);
-    await fs.writeFile(location, file.content, (err) => {
-      if (err) {
-        console.warn(`unable to save file here: ${location}`);
-      }
-    });
-    return FileManager.setPathEntry(location);
+    await fs.promises.writeFile(location, file.content);
+
+    const stats = await fs.promises.lstat(location);
+
+    return {
+      fileId: FileManager.setPathEntry(location),
+      path: location,
+      size: stats.size,
+      name: file.name,
+    };
   }
 
   static async saveFolder(dir: Path, files: FileObject[]) {

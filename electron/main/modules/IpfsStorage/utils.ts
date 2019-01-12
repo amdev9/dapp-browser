@@ -7,15 +7,20 @@ import * as IpfsStorageModels from 'ClientApp/modules/IpfsStorage/models';
 
 import StoreManager from '../../helpers/systemComponents/StoreManager';
 
-export const beforeUploadFileHookClient = async (path: string): Promise<IpfsStorageModels.UploadsFileEntry> => {
+export const getIpfsFileEntry = async (path: string): Promise<IpfsStorageModels.IpfsFileEntry> => {
   const name = pathModule.basename(path);
   const stats = await fs.lstat(path);
 
-  const fileEntry = IpfsStorageUtils.createUploadsFileEntry({
+  return {
     path,
     name,
     size: stats.size,
-  });
+  };
+}
+
+export const beforeUploadFileHookClient = async (path: string): Promise<IpfsStorageModels.UploadsFileEntry> => {
+  const fileStats = await getIpfsFileEntry(path);
+  const fileEntry = IpfsStorageUtils.createUploadsFileEntry(fileStats);
 
   StoreManager.store.dispatch(IpfsStorageActions.uploadsListEntryAdd(fileEntry));
 
@@ -30,4 +35,18 @@ export const afterUploadFileHookClient = (entry: IpfsStorageModels.UploadsFileEn
 
 export const progressUploadHookClient = (entryId: string, progress: number) => {
   StoreManager.store.dispatch(IpfsStorageActions.uploadsListEntryUpdateProgress(entryId, progress));
+};
+
+export const beforeDownloadFileHookClient = async (hash: string): Promise<IpfsStorageModels.DownloadFileEntry> => {
+  const fileEntry = IpfsStorageUtils.createDownloadFileEntry(hash);
+
+  StoreManager.store.dispatch(IpfsStorageActions.downloadListEntryAdd(fileEntry));
+
+  return fileEntry;
+};
+
+export const afterDownloadFileHookClient = async (entry: IpfsStorageModels.DownloadFileEntry, file: IpfsStorageModels.IpfsFileEntry): Promise<void> => {
+  StoreManager.store.dispatch(IpfsStorageActions.downloadListEntryDelete(entry.id));
+  const uploadedEntry = IpfsStorageUtils.createDownloadedFileEntry(entry, file);
+  StoreManager.store.dispatch(IpfsStorageActions.downloadedListFileAdd(uploadedEntry));
 };

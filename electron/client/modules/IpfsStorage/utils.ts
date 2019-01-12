@@ -17,3 +17,18 @@ export const createUploadedFileEntry = (entry: models.UploadsFileEntry, hash: st
     file: entry.file,
   };
 };
+
+export const createDownloadFileEntry = (hash: string): models.DownloadFileEntry => {
+  return {
+    hash,
+    id: uuid(),
+  };
+};
+
+export const createDownloadedFileEntry = (entry: models.DownloadFileEntry, file: models.IpfsFileEntry): models.DownloadedFileEntry => {
+  return {
+    file,
+    hash: entry.hash,
+    id: entry.id,
+  };
+};
