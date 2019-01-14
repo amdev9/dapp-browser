@@ -105,7 +105,6 @@ class LoaderPanel extends React.Component<StateProps & DispatchProps, LoaderPane
 
   renderDownloadsPanel() {
     const { downloaded, downloads } = this.props;
-    console.log('down', downloaded, downloads);
 
     return (
       <React.Fragment>
@@ -121,7 +120,7 @@ class LoaderPanel extends React.Component<StateProps & DispatchProps, LoaderPane
 
         <ul>
           {
-            downloaded.length ? downloaded.map(this.renderDownloadedItem.bind(this)) : <div>Empty list...</div>
+            downloaded.map(this.renderDownloadedItem.bind(this))
           }
         </ul>
       </React.Fragment>

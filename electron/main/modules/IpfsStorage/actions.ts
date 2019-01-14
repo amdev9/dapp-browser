@@ -1,7 +1,6 @@
 import { action } from 'typesafe-actions';
 import * as constants from './constants';
 import * as models from './models';
-import { models as FileManagerModels } from '../FileManager';
 
 export const uploadIpfsFile = (entry: string) => action(constants.IPFS_STORAGE_UPLOAD_FILE, { entry });
 

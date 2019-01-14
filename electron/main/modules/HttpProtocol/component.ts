@@ -20,7 +20,7 @@ export default class HttpProtocol {
     const isDappOpen = activeDapp === requestDappName;
 
     if (!isDappOpen || !AppsManager.isDappReady(requestDappName)) {
-      await ClientManager.switchDapp(requestDappName);
+      await AppsManager.openDapp(requestDappName);
     }
 
     const createdDapp = Dapp.getDappByName(requestDappName);

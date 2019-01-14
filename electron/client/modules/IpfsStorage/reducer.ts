@@ -35,16 +35,7 @@ export default function reducer(state: models.IpfsStorageState = initialState, a
     case constants.CLIENT_UPLOADS_LIST_ENTRY_SET_ERROR:
       return {
         ...state,
-        uploads: state.uploads.map((upload) => {
-          if (upload.id === action.payload.entryId) {
-            return {
-              ...upload,
-              error: action.payload.error,
-            };
-          }
-
-          return upload;
-        }),
+        uploads: state.uploads.filter((upload) => upload.id !== action.payload.entryId)
       };
 
     case constants.CLIENT_UPLOADS_LIST_ENTRY_DELETE:
@@ -82,16 +73,7 @@ export default function reducer(state: models.IpfsStorageState = initialState, a
     case constants.CLIENT_DOWNLOAD_LIST_ENTRY_SET_ERROR:
       return {
         ...state,
-        downloads: state.downloads.map((download) => {
-          if (download.id === action.payload.entryId) {
-            return {
-              ...download,
-              error: action.payload.error,
-            };
-          }
-
-          return download;
-        }),
+        downloads: state.downloads.filter((download) => download.id !== action.payload.entryId)
       };
 
     case constants.CLIENT_DOWNLOAD_LIST_ENTRY_DELETE:

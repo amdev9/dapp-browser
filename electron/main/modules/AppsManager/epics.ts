@@ -6,6 +6,10 @@ import { ignoreElements, tap, map, mergeMap } from 'rxjs/operators';
 import * as constants from './constants';
 import * as actions from './actions';
 import AppsManager from './component';
+import * as clientActions from '../../helpers/actions/client';
+import ClientManager from '../../helpers/systemComponents/ClientManager';
+import * as ClientAppConstants from 'ClientApp/redux/constants';
+import StoreManager from '../../helpers/systemComponents/StoreManager';
 
 const dappContentLoadedEpic: Epic<AnyAction> = action$ => action$.pipe(
   ofType(constants.DAPP_CONTENT_LOADED),
@@ -48,9 +52,39 @@ const getAllDappsEpic: Epic<AnyAction> = action$ => action$.pipe(
   }),
 );
 
+const removeTrayItemEpic: Epic<any> = action$ => action$.pipe(
+  ofType(constants.ON_DAPP_CLOSE),
+  map((action) => {
+    const { dappName } = action.payload;
+    AppsManager.toggleHome();
+    AppsManager.closeDapp(dappName);
+    StoreManager.store.dispatch(clientActions.removeTrayItem(dappName));
+
+    return clientActions.clientToggleHome(true);
+  }),
+);
+
+const openDappEpic: Epic<any> = action$ => action$.pipe(
+  ofType(ClientAppConstants.CLIENT_SWITCH_DAPP),
+  mergeMap(async (action) => {
+    const { targetDappName } = action.payload;
+    try {
+      await ClientManager.isClientWindowLoaded;
+      await AppsManager.openDapp(targetDappName);
+      StoreManager.store.dispatch(clientActions.switchDapp(targetDappName));
+      StoreManager.store.dispatch(clientActions.switchDappSuccess(targetDappName));
+    } catch (error) {
+      StoreManager.store.dispatch(clientActions.switchDappFailure(targetDappName, error));
+    }
+  }),
+  ignoreElements(),
+);
+
 export default combineEpics(
+  openDappEpic,
   dappContentLoadedEpic,
   installDappEpic,
   updateDappsListEpic,
   getAllDappsEpic,
+  removeTrayItemEpic,
 );

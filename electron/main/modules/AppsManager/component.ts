@@ -7,13 +7,15 @@ import { functionPromiseTimeout, mkdirp, readDir, readFile, checkExists } from '
 import { DappFrame } from '../../helpers/systemComponents/DappFrame';
 import PermissionManager from '../../helpers/systemComponents/PermissionManager';
 import StoreManager from '../../helpers/systemComponents/StoreManager';
-import { component as IpfsStorage } from '../IpfsStorage';
+import IpfsStorage from '../IpfsStorage/component';
 import { component as FileManager } from '../FileManager';
 
+import * as actions from './actions';
 import * as constants from './constants';
 import { AppItem, ReadyDapp, DappDownloadEntity } from './models';
 import { createDappView, validateDappManifest, validateDapps } from './utils';
 import { component as Dapp } from '../Dapp';
+import ClientManager from '../../helpers/systemComponents/ClientManager';
 
 let installedDapps: AppItem[] = [];
 
@@ -183,7 +185,18 @@ export default class AppsManager {
     globalUUIDList.splice(index, 1);
   }
 
-  static async openDapp(dappName: string, clientWindow: BrowserWindow): Promise<void> {
+  static toggleHome(): void {
+    const activeDapp = Dapp.getActiveDapp();
+    if (activeDapp) {
+      activeDapp.resetDappFocus();
+    }
+    ClientManager.clientWindow.setBrowserView(null);
+  }
+
+  static async openDapp(dappName: string): Promise<void> {
+    const clientWindow = ClientManager.clientWindow;
+    await ClientManager.isClientWindowLoaded;
+
     const dapp = AppsManager.getInstalledDappItem(dappName);
 
     await PermissionManager.checkDappPermissions(dappName, dapp.permissions, clientWindow);

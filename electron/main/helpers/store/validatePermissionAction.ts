@@ -17,7 +17,8 @@ import { constants as StorageConstants } from '../../modules/Storage';
 
 import { constants as ClientDappConstants } from 'ClientApp/modules/Dapp';
 import { constants as ClientNotificationConstants } from 'ClientApp/modules/Notification';
-import { constants as ClientIpfsStorageConstants } from 'ClientApp/modules/IpfsStorage';
+import * as ClientIpfsStorageConstants from 'ClientApp/modules/IpfsStorage/constants';
+import * as ClientAppConstants from 'ClientApp/redux/constants';
 
 const ipfsRoomActionTypes = getModuleActionTypes(IpfsRoomConstants);
 const ipfsStorageActionTypes = getModuleActionTypes(IpfsStorageConstants);
@@ -100,13 +101,13 @@ const clientActions: string[] = [
   constants.CLIENT_TOGGLE_HOME,
   constants.TOGGLE_APP_HOME,
   constants.TOGGLE_SEARCH_PANEL,
-  constants.CLIENT_SWITCH_DAPP,
   constants.ADD_APP_ITEM,
   constants.SET_TRAY_PROGRESS,
   constants.REMOVE_TRAY_ITEM,
   constants.MARKET_DOWNLOAD_DAPP,
   constants.TOGGLE_PERMISSION,
   constants.GRANT_PERMISSIONS,
+  ClientAppConstants.CLIENT_SWITCH_DAPP,
 
   ...appsManagerActionTypes,
 

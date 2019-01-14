@@ -18,7 +18,7 @@ import { NetworkAPI } from './helpers/systemComponents/Network';
 import ClientManager from './helpers/systemComponents/ClientManager';
 import StoreManager from './helpers/systemComponents/StoreManager';
 
-import { component as AppsManager } from './modules/AppsManager';
+import { component as AppsManager, actions as AppsManagerActions } from './modules/AppsManager';
 import { component as Dapp } from './modules/Dapp';
 import { component as HttpProtocol } from './modules/HttpProtocol';
 
@@ -32,7 +32,7 @@ contextMenu({
   prepend: (params: any, browserWindow: BrowserWindow) => [{
     label: 'Close app',
     click: (menuItem: MenuItem, browserWindow: BrowserWindow, event: Event) => {
-      store.dispatch({ type: 'REMOVE_TRAY_ITEM', payload: { targetDappName: params.titleText } });
+      store.dispatch(AppsManagerActions.onDappClose(params.titleText));
     },
   }],
   showInspectElement: false,
@@ -173,7 +173,7 @@ app.on('ready', async () => {
 
     const activeDapp = Dapp.getActiveDappName();
     if (activeDapp) {
-      ClientManager.switchDapp(activeDapp);
+      AppsManager.openDapp(activeDapp);
     }
   });
 
