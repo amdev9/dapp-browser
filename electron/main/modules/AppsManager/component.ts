@@ -174,15 +174,8 @@ export default class AppsManager {
 
     // Waiting for loading DOM of dapp
     await dappReadyPromise;
-    const createdDapp = new Dapp(dappRenderer.id);
+    const createdDapp = new Dapp(dappRenderer);
     createdDapp.setDappFocus();
-  }
-
-  static async closeDapp(targetDappName: string): Promise<void> {
-    const renderer = AppsManager.getDappRenderer(targetDappName);
-    renderer.dappView.destroy();
-    const index = globalUUIDList.findIndex(item => item.name === targetDappName && item.status === 'dapp');
-    globalUUIDList.splice(index, 1);
   }
 
   static toggleHome(): void {

@@ -48,18 +48,6 @@ class IpfsStorage {
     return ipfsFiles[ipfsFiles.length - 1];
   }
 
-  async uploadFileWithSendStatus(path: string): Promise<IpfsFileObject | null>  {
-    const fileEntry = await utils.beforeUploadFileHookClient(path);
-
-    const ipfsObject = await this.uploadFile(path, (progress) => {
-      utils.progressUploadHookClient(fileEntry.id, progress);
-    });
-
-    utils.afterUploadFileHookClient(fileEntry, ipfsObject.hash);
-
-    return ipfsObject;
-  }
-
   async downloadFile(hash: string): Promise<IPFSGetResult | null> {
     if (!hash) {
       return;

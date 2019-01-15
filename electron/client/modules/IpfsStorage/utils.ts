@@ -2,9 +2,9 @@ import * as uuid from 'uuid/v4';
 
 import * as models from './models';
 
-export const createUploadsFileEntry = (entry: models.IpfsFileEntry): models.UploadsFileEntry => {
+export const createUploadsFileEntry = (entry: models.IpfsFileEntry, uid: string = ''): models.UploadsFileEntry => {
   return {
-    id: uuid(),
+    id: uid || uuid(),
     file: entry,
     progress: 0,
   };
@@ -18,10 +18,10 @@ export const createUploadedFileEntry = (entry: models.UploadsFileEntry, hash: st
   };
 };
 
-export const createDownloadFileEntry = (hash: string): models.DownloadFileEntry => {
+export const createDownloadFileEntry = (hash: string, uid: string = ''): models.DownloadFileEntry => {
   return {
     hash,
-    id: uuid(),
+    id: uid || uuid(),
   };
 };
 

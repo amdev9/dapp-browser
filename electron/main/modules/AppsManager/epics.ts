@@ -10,6 +10,7 @@ import * as clientActions from '../../helpers/actions/client';
 import ClientManager from '../../helpers/systemComponents/ClientManager';
 import * as ClientAppConstants from 'ClientApp/redux/constants';
 import StoreManager from '../../helpers/systemComponents/StoreManager';
+import Dapp from '../Dapp/component';
 
 const dappContentLoadedEpic: Epic<AnyAction> = action$ => action$.pipe(
   ofType(constants.DAPP_CONTENT_LOADED),
@@ -55,10 +56,14 @@ const getAllDappsEpic: Epic<AnyAction> = action$ => action$.pipe(
 const removeTrayItemEpic: Epic<any> = action$ => action$.pipe(
   ofType(constants.ON_DAPP_CLOSE),
   map((action) => {
-    const { dappName } = action.payload;
+    const { dappUUID } = action.payload;
     AppsManager.toggleHome();
-    AppsManager.closeDapp(dappName);
-    StoreManager.store.dispatch(clientActions.removeTrayItem(dappName));
+    const dapp = Dapp.getDappById(dappUUID);
+
+    if (dapp) {
+      dapp.closeDapp();
+      StoreManager.store.dispatch(clientActions.removeTrayItem(dapp.name));
+    }
 
     return clientActions.clientToggleHome(true);
   }),

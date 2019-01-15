@@ -36,6 +36,12 @@ export const uploadsListEntryUpdateProgress = (entryId: string, progress: number
 export const uploadsListEntrySetError = (entryId: string, error: any) =>
   action(constants.CLIENT_UPLOADS_LIST_ENTRY_SET_ERROR, { entryId, error });
 
+export const uploadsListEntrySetUploaded = (entryId: string, hash: string) =>
+  action(constants.CLIENT_UPLOADS_LIST_ENTRY_SET_UPLOADED, { entryId, hash });
+
+export const uploadsListEntrySetUploadedError = (entryId: string, error: any) =>
+  action(constants.CLIENT_UPLOADS_LIST_ENTRY_SET_UPLOADED_ERROR, { entryId, error });
+
 export const uploadsListEntryDelete = (entryId: string) =>
   action(constants.CLIENT_UPLOADS_LIST_ENTRY_DELETE, { entryId });
 
@@ -53,6 +59,12 @@ export const downloadListEntryDelete = (entryId: string) =>
 
 export const downloadListEntrySetError = (entryId: string, error: any) =>
   action(constants.CLIENT_DOWNLOAD_LIST_ENTRY_SET_ERROR, { entryId, error });
+
+export const downloadListEntrySetDownloaded = (entryId: string, file: models.IpfsFileEntry) =>
+  action(constants.CLIENT_DOWNLOAD_LIST_ENTRY_SET_DOWNLOADED, { entryId, file });
+
+export const downloadListEntrySetDownloadedError = (entryId: string, error: any) =>
+  action(constants.CLIENT_DOWNLOAD_LIST_ENTRY_SET_DOWNLOADED_ERROR, { entryId, error });
 
 export const downloadedListFileAdd = (entry: models.DownloadedFileEntry) =>
   action(constants.CLIENT_DOWNLOADED_LIST_ENTRY_ADD, { entry });

@@ -13,6 +13,7 @@ import * as clientActions from 'ClientApp/modules/IpfsStorage/actions';
 import { component as FileManager, models as FileManagerModels } from '../FileManager';
 import ipfs from './component';
 import * as AppsManagerConstants from '../AppsManager/constants';
+import StoreManager from '../../helpers/systemComponents/StoreManager';
 
 const ipfsStorageClientUploadEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
   ofType(clientConstants.CLIENT_IPFS_STORAGE_UPLOAD_FILE),
@@ -20,7 +21,7 @@ const ipfsStorageClientUploadEpic: Epic<AnyAction> = action$ => action$.pipe( //
     const { uid } = action.meta;
 
     try {
-      const file = await ipfs.uploadFileWithSendStatus(action.payload.path);
+      const file = await utils.uploadFileWithSendStatus(action.payload.path, uid);
 
       if (!file) {
         throw Error('Ipfs file object is empty');
@@ -48,7 +49,14 @@ const uploadingFilePromise = (action: AnyAction): Promise<AnyAction> => new Prom
       throw Error('File path with current entry does not exist');
     }
 
-    const ipfsFileObject = await ipfs.uploadFileWithSendStatus(filePath);
+    // setTimeout(() => {
+    //   console.log('uploading file promise', action);
+    //   StoreManager.store.dispatch({
+    //     type: AppsManagerConstants.ON_DAPP_CLOSE,
+    //     payload: { dappName: 'Chat' }
+    //   });
+    // }, 1000);
+    const ipfsFileObject = await utils.uploadFileWithSendStatus(filePath, uid);
 
     if (!ipfsFileObject) {
       throw Error('Ipfs file object is empty');
@@ -69,14 +77,14 @@ const uploadingFilePromise = (action: AnyAction): Promise<AnyAction> => new Prom
 const ipfsStorageUploadEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
   ofType(constants.IPFS_STORAGE_UPLOAD_FILE),
   mergeMap((action) =>
-  race(
-    from(uploadingFilePromise(action)),
-    action$.pipe(
-      ofType(AppsManagerConstants.ON_DAPP_CLOSE),
-      filter((dappCloseAction: AnyAction) => dappCloseAction.payload.dappName === action.meta.name),
-      map((dappCloseAction: AnyAction) => ipfsStorageActions.uploadIpfsFileFailure('Dapp has been closed', action.meta.uid, action.meta.sourceUUID)),
-    ),
-  )),
+    race(
+      from(uploadingFilePromise(action)),
+      action$.pipe(
+        ofType(AppsManagerConstants.ON_DAPP_CLOSE),
+        filter((dappCloseAction: AnyAction) => dappCloseAction.payload.dappUUID === action.meta.sourceUUID),
+        map((dappCloseAction: AnyAction) => ipfsStorageActions.uploadIpfsFileFailure('Dapp has been closed', action.meta.uid, action.meta.sourceUUID)),
+      ),
+    )),
 );
 
 const downloadingFilePromise = (action: AnyAction): Promise<AnyAction> => new Promise(async (resolve, reject) => {
@@ -88,7 +96,7 @@ const downloadingFilePromise = (action: AnyAction): Promise<AnyAction> => new Pr
     if (!targetDirectory) {
       throw Error('Directory has not been selected');
     }
-    const downloadFileEntry = await utils.beforeDownloadFileHookClient(hash);
+    const downloadFileEntry = await utils.beforeDownloadFileHookClient(hash, uid);
     const downloadFile = await ipfs.downloadFile(hash);
 
     if (!downloadFile) {
@@ -121,7 +129,7 @@ const ipfsStorageDownloadWithCancellingEpic: Epic<AnyAction> = action$ => action
       from(downloadingFilePromise(action)),
       action$.pipe(
         ofType(AppsManagerConstants.ON_DAPP_CLOSE),
-        filter((dappCloseAction: AnyAction) => dappCloseAction.payload.dappName === action.meta.name),
+        filter((dappCloseAction: AnyAction) => dappCloseAction.payload.dappUUID === action.meta.sourceUUID),
         map((dappCloseAction: AnyAction) => ipfsStorageActions.downloadIpfsFileFailure('Dapp has been closed', action.meta.uid, action.meta.sourceUUID)),
       ),
     ),

@@ -32,7 +32,11 @@ contextMenu({
   prepend: (params: any, browserWindow: BrowserWindow) => [{
     label: 'Close app',
     click: (menuItem: MenuItem, browserWindow: BrowserWindow, event: Event) => {
-      store.dispatch(AppsManagerActions.onDappClose(params.titleText));
+      const dapp = Dapp.getDappByName(params.titleText);
+
+      if (dapp) {
+        store.dispatch(AppsManagerActions.onDappClose(dapp.uuid));
+      }
     },
   }],
   showInspectElement: false,
