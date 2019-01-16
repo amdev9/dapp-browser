@@ -86,6 +86,7 @@
     "redux": "^3.7.2",
     "redux-actions": "^2.6.1",
     "redux-observable": "^1.0.0",
+    "reselect": "^4.0.0",
     "rxjs": "^6.2.2",
     "typesafe-actions": "^2.0.4",
     "uuid": "^3.3.2",

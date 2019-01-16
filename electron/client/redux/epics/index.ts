@@ -8,6 +8,8 @@ import * as loggerActions from '../actions/logger';
 import * as keychainActions from '../actions/keychain';
 import * as constants from '../constants';
 
+import { epics as NotificationEpics } from '../../modules/Notification';
+
 const startCountdownEpic: Epic<Action> = action$ => action$.pipe(
   ofType(constants.INTENT_OPEN_CHANNELS),
   delay(1000), // Asynchronously wait 1000ms then continue
@@ -33,6 +35,7 @@ const keychainCreateSuccessEpic: Epic<AnyAction> = action$ => action$.pipe(
 
 export const rootEpic = combineEpics(
   // startCountdownEpic
+  NotificationEpics,
   loggerWriteEpic,
   keychainCreateSuccessEpic,
 );

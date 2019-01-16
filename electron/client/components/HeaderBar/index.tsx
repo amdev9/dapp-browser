@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { NotificationWidget } from './NotificationWidget';
+import NotificationWidget from './NotificationWidget';
 import { HomeWidget } from './HomeWidget';
 import { DownloadWidget } from './DownloadWidget';
 import { SettingsWidget } from './SettingsWidget';
@@ -68,7 +68,7 @@ export class HeaderBar extends React.Component<HeaderBarProps> {
             <NetworkWidget />
             <KeychainWidget togglePanel={toggleKeychain} isOpen={isKeychainPanelOpen}/>
             <SettingsWidget togglePanel={toggleSettingsPanel} isOpen={isSettingsOpen}/>
-            <NotificationWidget togglePanel={togglePanel} isOpen={isNotificationsPanelOpen}/>
+            <NotificationWidget />
             <DownloadWidget togglePanel={toggleLoaderPanel} isOpen={isLoaderPanelOpen}/>
           </div>
         </div>

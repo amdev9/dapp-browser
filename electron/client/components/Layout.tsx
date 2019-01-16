@@ -14,7 +14,7 @@ import * as PermissionsActions from '../redux/actions/permissions';
 
 import { AppItem, NotifyItem, StatusBarItem, FeedItem, SearchItem } from '../redux/model';
 import { HeaderBar } from './HeaderBar';
-import { NotificationPanel } from './NotificationPanel';
+import NotificationPanel from './NotificationPanel';
 import LoaderPanel from './LoaderPanel';
 import { KeychainPanel } from './KeychainPanel';
 import { SettingsPanel } from './SettingsPanel';
