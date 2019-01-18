@@ -29,13 +29,7 @@ const resetUnreadCounterEpic: Epic<AnyAction> = (action$, state$) => action$.pip
   ofType(constants.TOGGLE_NOTIFICATION_PANEL),
   tap((action) => {
     if (state$.value.isOpen.notification) {
-
-      const notifications: models.NotifyItem[] = state$.value.notification.items;
-      const unreadIds: string[] = notifications
-        .filter((item) => !item.shown)
-        .map((item) => item.id);
-
-      StoreManager.store.dispatch(actions.setNotificationsAsRead(unreadIds));
+      StoreManager.store.dispatch(actions.setAllNotificationsAsRead());
     }
   }),
   ignoreElements(),

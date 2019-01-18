@@ -99,7 +99,12 @@ const searchInitialState: SearchPanel = {
 
 const notificationsInitialState: NotificationPanel = {
   items: [],
+  unreadCounter: 0,
 };
+
+const loaderInitialState = {
+  activeTab: '',
+}
 
 const clientInitialState: Client = {
   activeDapp: {
@@ -108,7 +113,7 @@ const clientInitialState: Client = {
   isHome: true,
   notification: notificationsInitialState,
   keychain: { items: [], selectedKey: null, unlocked: false },
-  loader: {},
+  loader: loaderInitialState,
   statusBar: statusBarInitialState,
   search: searchInitialState,
   window: { width: 0, height: 0 },

@@ -16,6 +16,7 @@ export interface UploadedFileEntry {
   id: string;
   file: IpfsFileEntry;
   hash: string;
+  shown?: boolean;
 }
 
 export type IpfsStorageState = {
@@ -34,4 +35,5 @@ export interface DownloadedFileEntry {
   id: string;
   hash: string;
   file: IpfsFileEntry;
+  shown?: boolean;
 }

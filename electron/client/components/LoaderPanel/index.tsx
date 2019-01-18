@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import Dropzone from 'react-dropzone';
+import { bindActionCreators, Dispatch } from 'redux';
 import * as uuid from 'uuid/v4';
 import CircularProgressbar from 'react-circular-progressbar';
 import { Props as MenuProps, slide as Menu, State } from 'react-burger-menu';
@@ -11,12 +12,13 @@ import * as cn from 'classnames';
 import {
   component as IpfsStorage,
   models as IpfsStorageModels,
+  selectors as IpfsStorageSelectors,
 } from '../../modules/IpfsStorage';
 
 import './LoaderPanelStyles.sass';
-import { bindActionCreators, Dispatch } from 'redux';
 import { IState } from '../../redux/reducers/state';
 import * as LoaderActions from '../../redux/actions/loader';
+import * as constants from '../../redux/constants';
 
 interface LoaderPanelState {
   activeTab: string;
@@ -24,6 +26,8 @@ interface LoaderPanelState {
 
 interface DispatchProps {
   togglePanel(): void;
+
+  setLoaderTab(tab: string): void;
 }
 
 interface StateProps {
@@ -32,10 +36,14 @@ interface StateProps {
   downloads: IpfsStorageModels.DownloadFileEntry[];
   downloaded: IpfsStorageModels.DownloadedFileEntry[];
   isOpen: boolean;
+  activeTab: string;
+  uploadedUnreadCounter: number;
+  downloadedUnreadCounter: number;
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<IState>): DispatchProps => bindActionCreators({
   togglePanel: LoaderActions.toggle,
+  setLoaderTab: LoaderActions.setLoaderTab,
 }, dispatch);
 
 const mapStateToProps = (state: IState): StateProps => ({
@@ -43,6 +51,9 @@ const mapStateToProps = (state: IState): StateProps => ({
   uploaded: state.ipfsStorage.uploaded,
   downloads: state.ipfsStorage.downloads,
   downloaded: state.ipfsStorage.downloaded,
+  uploadedUnreadCounter: IpfsStorageSelectors.getUnshownUploadedFilesCounter(state),
+  downloadedUnreadCounter: IpfsStorageSelectors.getUnshownDownloadedFilesCounter(state),
+  activeTab: state.loader.activeTab,
   isOpen: state.isOpen.loader,
 });
 
@@ -52,7 +63,10 @@ class LoaderPanel extends React.Component<StateProps & DispatchProps, LoaderPane
 
     this.onDrop = this.onDrop.bind(this);
     this.switchTab = this.switchTab.bind(this);
-    this.state = { activeTab: 'uploads' };
+    console.log('constructor loader panel', props.activeTab);
+    if (!props.activeTab) {
+      this.props.setLoaderTab(constants.LOADER_TAB_UPLOAD);
+    }
   }
 
   private onDrop(uploads: File[]): void {
@@ -66,7 +80,7 @@ class LoaderPanel extends React.Component<StateProps & DispatchProps, LoaderPane
   }
 
   private switchTab(tabName: string): void {
-    this.setState({ activeTab: tabName });
+    this.props.setLoaderTab(tabName);
   }
 
   renderDownloadingItem(entry: IpfsStorageModels.DownloadFileEntry, i: number) {
@@ -189,17 +203,18 @@ class LoaderPanel extends React.Component<StateProps & DispatchProps, LoaderPane
   }
 
   render() {
+    const { isOpen, togglePanel, uploadedUnreadCounter, downloadedUnreadCounter } = this.props;
+
+    console.log('loaderpanel', downloadedUnreadCounter && `${downloadedUnreadCounter}`, downloadedUnreadCounter )
     const activeClass = 'active show';
 
     let downloadClass = null;
     let uploadClass = null;
-    if (this.state.activeTab === 'downloads') {
+    if (this.props.activeTab === constants.LOADER_TAB_DOWNLOAD) {
       downloadClass = activeClass;
     } else {
       uploadClass = activeClass;
     }
-
-    const { isOpen, togglePanel } = this.props;
 
     const menuProps: MenuProps = {
       isOpen,
@@ -225,8 +240,9 @@ class LoaderPanel extends React.Component<StateProps & DispatchProps, LoaderPane
                 href="#downloads"
                 className={`nav-link ${downloadClass}`}
                 data-toggle="tab"
-                onClick={() => this.switchTab('downloads')}>
+                onClick={() => this.switchTab(constants.LOADER_TAB_DOWNLOAD)}>
                 Downloads
+                {downloadedUnreadCounter && ` (${downloadedUnreadCounter})` || null}
               </a>
             </li>
             <li className="nav-item">
@@ -234,9 +250,10 @@ class LoaderPanel extends React.Component<StateProps & DispatchProps, LoaderPane
                 href="#uploads"
                 className={`nav-link ${uploadClass}`}
                 data-toggle="tab"
-                onClick={() => this.switchTab('uploads')}>
+                onClick={() => this.switchTab(constants.LOADER_TAB_UPLOAD)}>
                 Uploads
-              </a>
+                {uploadedUnreadCounter && ` (${uploadedUnreadCounter})` || null}
+                </a>
             </li>
           </ul>
 

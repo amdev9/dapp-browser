@@ -1,7 +1,7 @@
 import { AnyAction } from 'redux';
 import { combineEpics, Epic, ofType } from 'redux-observable';
 import { mergeMap, map, take, takeUntil, filter, mapTo } from 'rxjs/operators';
-import { Observable, race, from, Observer } from 'rxjs';
+import { Observable, race, from, Observer, defer } from 'rxjs';
 import * as path from 'path';
 
 import * as ipfsStorageActions from './actions';
@@ -49,13 +49,6 @@ const uploadingFilePromise = (action: AnyAction): Promise<AnyAction> => new Prom
       throw Error('File path with current entry does not exist');
     }
 
-    // setTimeout(() => {
-    //   console.log('uploading file promise', action);
-    //   StoreManager.store.dispatch({
-    //     type: AppsManagerConstants.ON_DAPP_CLOSE,
-    //     payload: { dappName: 'Chat' }
-    //   });
-    // }, 1000);
     const ipfsFileObject = await utils.uploadFileWithSendStatus(filePath, uid);
 
     if (!ipfsFileObject) {
@@ -118,6 +111,7 @@ const downloadingFilePromise = (action: AnyAction): Promise<AnyAction> => new Pr
 
     resolve(ipfsStorageActions.downloadIpfsFileSuccess(ipfsFileEntry, uid, action.meta.sourceUUID));
   } catch (error) {
+    console.log('download error', error)
     reject(ipfsStorageActions.downloadIpfsFileFailure(error, uid, action.meta.sourceUUID));
   }
 });
@@ -126,7 +120,45 @@ const ipfsStorageDownloadWithCancellingEpic: Epic<AnyAction> = action$ => action
   ofType(constants.IPFS_STORAGE_DOWNLOAD_FILE),
   mergeMap((action: AnyAction) =>
     race(
-      from(downloadingFilePromise(action)),
+      new Observable((observer: any) => {
+        observer.next();
+      }).pipe(
+        mergeMap(async () => {
+          const { hash } = action.payload;
+          const { uid } = action.meta;
+
+          try {
+            const targetDirectory = await FileManager.selectDirectory();
+            if (!targetDirectory) {
+              throw Error('Directory has not been selected');
+            }
+            const downloadFileEntry = await utils.beforeDownloadFileHookClient(hash, uid);
+            const downloadFile = await ipfs.downloadFile(hash);
+
+            if (!downloadFile) {
+              throw Error('File with current hash does not exist');
+            }
+
+            const savedFile = await FileManager.saveFile(targetDirectory, <FileManagerModels.FileObject> downloadFile);
+            await utils.afterDownloadFileHookClient(downloadFileEntry, {
+              path: savedFile.path,
+              name: savedFile.name,
+              size: savedFile.size,
+            });
+
+            const ipfsFileEntry: models.IpfsFileEntry = {
+              hash,
+              id: uid,
+              fileName: savedFile.name,
+            };
+
+            return ipfsStorageActions.downloadIpfsFileSuccess(ipfsFileEntry, uid, action.meta.sourceUUID);
+          } catch (error) {
+            console.log('download error', error)
+            return ipfsStorageActions.downloadIpfsFileFailure(error, uid, action.meta.sourceUUID);
+          }
+        })
+      ),
       action$.pipe(
         ofType(AppsManagerConstants.ON_DAPP_CLOSE),
         filter((dappCloseAction: AnyAction) => dappCloseAction.payload.dappUUID === action.meta.sourceUUID),

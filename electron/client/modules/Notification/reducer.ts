@@ -37,6 +37,17 @@ export default function notification(state: NotificationPanel = initialState, ac
         })
       };
 
+    case constants.CLIENT_NOTIFICATION_SET_ALL_NOTIFICATIONS_AS_READ:
+      return {
+        ...state,
+        items: state.items.map((notify) => {
+          return {
+            ...notify,
+            shown: true,
+          };
+        })
+      };
+
     default:
       return state;
   }

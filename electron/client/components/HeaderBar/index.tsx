@@ -1,7 +1,7 @@
 import * as React from 'react';
 import NotificationWidget from './NotificationWidget';
 import { HomeWidget } from './HomeWidget';
-import { DownloadWidget } from './DownloadWidget';
+import DownloadWidget from './DownloadWidget';
 import { SettingsWidget } from './SettingsWidget';
 import { NetworkWidget } from './NetworkWidget';
 import { SuggestSearch } from './SuggestSearch';
@@ -69,7 +69,7 @@ export class HeaderBar extends React.Component<HeaderBarProps> {
             <KeychainWidget togglePanel={toggleKeychain} isOpen={isKeychainPanelOpen}/>
             <SettingsWidget togglePanel={toggleSettingsPanel} isOpen={isSettingsOpen}/>
             <NotificationWidget />
-            <DownloadWidget togglePanel={toggleLoaderPanel} isOpen={isLoaderPanelOpen}/>
+            <DownloadWidget />
           </div>
         </div>
       </div>

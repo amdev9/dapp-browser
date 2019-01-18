@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as parse from 'html-react-parser';
+const parse = require('html-react-parser');
 
 import { IpfsLink } from '../MessageComponents';
 
@@ -19,6 +19,8 @@ const tagsList: MessageTag[] = [
   },
 ];
 
+const htmlReactParser: any = parse;
+
 export default class ChatMessage extends React.Component<IProps> {
   tagTransform(node: any) {
     if (node.type === 'tag') {
@@ -37,8 +39,8 @@ export default class ChatMessage extends React.Component<IProps> {
 
     return (
       <div>
-        {parse(message, {
-          replace: (node) => {
+        {htmlReactParser(message, {
+          replace: (node: any) => {
             return this.tagTransform(node);
           },
         })}

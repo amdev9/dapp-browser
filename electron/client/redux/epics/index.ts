@@ -1,7 +1,7 @@
 import 'rxjs';
 
 import { combineEpics, ofType, Epic } from 'redux-observable';
-import { delay, mergeMap, mapTo, map } from 'rxjs/operators';
+import { delay, mergeMap, mapTo, map, ignoreElements } from 'rxjs/operators';
 import { Action, AnyAction } from 'redux';
 import { Logger } from '../../Logger';
 import * as loggerActions from '../actions/logger';
@@ -9,6 +9,8 @@ import * as keychainActions from '../actions/keychain';
 import * as constants from '../constants';
 
 import { epics as NotificationEpics } from '../../modules/Notification';
+import { epics as IpfsStorageEpics } from '../../modules/IpfsStorage';
+import LoaderEpic from './loader';
 
 const startCountdownEpic: Epic<Action> = action$ => action$.pipe(
   ofType(constants.INTENT_OPEN_CHANNELS),
@@ -36,6 +38,8 @@ const keychainCreateSuccessEpic: Epic<AnyAction> = action$ => action$.pipe(
 export const rootEpic = combineEpics(
   // startCountdownEpic
   NotificationEpics,
+  IpfsStorageEpics,
   loggerWriteEpic,
   keychainCreateSuccessEpic,
+  LoaderEpic,
 );

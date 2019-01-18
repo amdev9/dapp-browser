@@ -10,9 +10,10 @@ export const createUploadsFileEntry = (entry: models.IpfsFileEntry, uid: string 
   };
 };
 
-export const createUploadedFileEntry = (entry: models.UploadsFileEntry, hash: string): models.UploadedFileEntry => {
+export const createUploadedFileEntry = (entry: models.UploadsFileEntry, hash: string, shown: boolean = false): models.UploadedFileEntry => {
   return {
     hash,
+    shown,
     id: entry.id,
     file: entry.file,
   };
@@ -25,9 +26,10 @@ export const createDownloadFileEntry = (hash: string, uid: string = ''): models.
   };
 };
 
-export const createDownloadedFileEntry = (entry: models.DownloadFileEntry, file: models.IpfsFileEntry): models.DownloadedFileEntry => {
+export const createDownloadedFileEntry = (entry: models.DownloadFileEntry, file: models.IpfsFileEntry, shown: boolean = false): models.DownloadedFileEntry => {
   return {
     file,
+    shown,
     hash: entry.hash,
     id: entry.id,
   };

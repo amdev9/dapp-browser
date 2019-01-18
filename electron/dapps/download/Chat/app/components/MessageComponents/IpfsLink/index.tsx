@@ -10,12 +10,12 @@ interface IProps {
 }
 
 export default class Index extends React.Component<IProps> {
-  onClick(e) {
+  async onClick(e: any) {
     const { hash } = this.props;
     e.preventDefault();
 
     try {
-      ArrayIO.IpfsStorage.downloadIpfsFile(hash);
+      await ArrayIO.IpfsStorage.downloadIpfsFile(hash);
     } catch (error) {
       console.log('Download error', error);
     }

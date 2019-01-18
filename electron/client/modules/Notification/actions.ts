@@ -7,8 +7,12 @@ export const clearNotification = (id: string) => action(constants.CLIENT_CLEAR_N
 export const clearAllNotifications = () => action(constants.CLIENT_CLEAR_ALL_NOTIFICATIONS);
 export const addNotification = (item: NotifyItem) => action(constants.CLIENT_ADD_NOTIFICATION, { item });
 export const addNotificationWithStatus = (item: NotifyItem) => action(constants.CLIENT_ADD_NOTIFICATION_WITH_STATUS, { item });
+
 export const setNotificationsAsRead = (ids: string[]) =>
   action(constants.CLIENT_NOTIFICATION_SET_NOTIFICATION_AS_READ, { ids })
+
+export const setAllNotificationsAsRead = () =>
+  action(constants.CLIENT_NOTIFICATION_SET_ALL_NOTIFICATIONS_AS_READ)
 
 export const triggerAction = (actionUid: string, appName: string) =>
   action(constants.CLIENT_NOTIFICATION_TRIGGER_ACTION, null, { appName, uid: actionUid });
