@@ -1,28 +1,38 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 
 const ArrayIO = require('array-io');
 
 import { RoomComponentStore } from '../../services/RoomComponentService';
-import * as constants from '../../redux/constants/index';
+import * as thunks from '../../redux/thunks';
+import * as models from '../../redux/models';
+import * as constants from '../../redux/constants';
 import { IState } from '../../redux/reducers';
-import { getHashLink } from '../../utils';
 
 import * as PaperClipSvg from '../../images/paperclip.svg';
 import './styles.css';
 
 type FormProps<P> = P & InjectedFormProps<{}, P>;
 
+interface DispatchProps {
+  uploadFileToSelectedIpfsRoom: (fileEntryId: string) => void;
+}
+
 interface StateProps {
   selectedRoom: string | null;
 }
+
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => bindActionCreators({
+  uploadFileToSelectedIpfsRoom: thunks.uploadFileToSelectedIpfsRoom,
+}, dispatch);
 
 const mapStateToProps = (state: IState): StateProps => ({
   selectedRoom: state.rooms.selectedRoom,
 });
 
-class ChatControls extends React.Component<FormProps<StateProps>> {
+class ChatControls extends React.Component<FormProps<StateProps & DispatchProps>> {
   messageInput: any;
 
   async handleSubmit(values: any) {
@@ -52,7 +62,7 @@ class ChatControls extends React.Component<FormProps<StateProps>> {
   }
 
   async onClickFileAttach() {
-    const { selectedRoom } = this.props;
+    const { selectedRoom, uploadFileToSelectedIpfsRoom } = this.props;
 
     try {
       if (!selectedRoom) {
@@ -63,15 +73,9 @@ class ChatControls extends React.Component<FormProps<StateProps>> {
       if (!fileEntry || !fileEntry.id) {
         throw Error('File entry incorrect');
       }
-      const ipfsEntry = await ArrayIO.IpfsStorage.uploadIpfsFile(fileEntry.id);
-      console.log('upload', ipfsEntry);
 
-      const room = RoomComponentStore.getRoomById(selectedRoom);
+      uploadFileToSelectedIpfsRoom(fileEntry.id);
 
-      if (room) {
-        const ipfsLink = getHashLink(ipfsEntry.hash, ipfsEntry.fileName);
-        await room.sendMessageBroadcast(ipfsLink);
-      }
     } catch (err) {
       console.log('FileAttachError', err);
     }
@@ -116,4 +120,4 @@ class ChatControls extends React.Component<FormProps<StateProps>> {
 }
 
 const form: any = reduxForm<{}, StateProps>({ form: constants.FORM_CHAT_SUBMIT_MESSAGE })(ChatControls);
-export default connect(mapStateToProps)(form);
+export default connect(mapStateToProps, mapDispatchToProps)(form);

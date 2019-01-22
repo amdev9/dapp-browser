@@ -34,44 +34,46 @@ const ipfsStorageClientUploadEpic: Epic<AnyAction> = action$ => action$.pipe( //
   }),
 );
 
-const uploadingFilePromise = (action: AnyAction): Promise<AnyAction> => new Promise(async (resolve, reject) => {
-  const { entry } = action.payload;
-  const { uid } = action.meta;
-
-  try {
-    if (!entry) {
-      throw Error('File entry is incorrect');
-    }
-
-    const filePath = FileManager.getPath(entry);
-
-    if (!filePath) {
-      throw Error('File path with current entry does not exist');
-    }
-
-    const ipfsFileObject = await utils.uploadFileWithSendStatus(filePath, uid);
-
-    if (!ipfsFileObject) {
-      throw Error('Ipfs file object is empty');
-    }
-
-    const ipfsFile: models.IpfsFileEntry = {
-      id: uid,
-      hash: ipfsFileObject.hash,
-      fileName: path.basename(filePath),
-    };
-
-    resolve(ipfsStorageActions.uploadIpfsFileSuccess(ipfsFile, uid, action.meta.sourceUUID));
-  } catch (error) {
-    reject(ipfsStorageActions.uploadIpfsFileFailure(error, uid, action.meta.sourceUUID));
-  }
-});
-
 const ipfsStorageUploadEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
   ofType(constants.IPFS_STORAGE_UPLOAD_FILE),
-  mergeMap((action) =>
+  mergeMap((action: AnyAction) =>
     race(
-      from(uploadingFilePromise(action)),
+      new Observable((observer: any) => {
+        observer.next();
+      }).pipe(
+        mergeMap(async () => {
+          const { entry } = action.payload;
+          const { uid } = action.meta;
+
+          try {
+            if (!entry) {
+              throw Error('File entry is incorrect');
+            }
+
+            const filePath = FileManager.getPath(entry);
+
+            if (!filePath) {
+              throw Error('File path with current entry does not exist');
+            }
+
+            const ipfsFileObject = await utils.uploadFileWithSendStatus(filePath, uid);
+
+            if (!ipfsFileObject) {
+              throw Error('Ipfs file object is empty');
+            }
+
+            const ipfsFile: models.IpfsFileEntry = {
+              id: uid,
+              hash: ipfsFileObject.hash,
+              fileName: path.basename(filePath),
+            };
+
+            return ipfsStorageActions.uploadIpfsFileSuccess(ipfsFile, uid, action.meta.sourceUUID);
+          } catch (error) {
+            return ipfsStorageActions.uploadIpfsFileFailure(error, uid, action.meta.sourceUUID);
+          }
+        })
+      ),
       action$.pipe(
         ofType(AppsManagerConstants.ON_DAPP_CLOSE),
         filter((dappCloseAction: AnyAction) => dappCloseAction.payload.dappUUID === action.meta.sourceUUID),
@@ -79,42 +81,6 @@ const ipfsStorageUploadEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo
       ),
     )),
 );
-
-const downloadingFilePromise = (action: AnyAction): Promise<AnyAction> => new Promise(async (resolve, reject) => {
-  const { hash } = action.payload;
-  const { uid } = action.meta;
-
-  try {
-    const targetDirectory = await FileManager.selectDirectory();
-    if (!targetDirectory) {
-      throw Error('Directory has not been selected');
-    }
-    const downloadFileEntry = await utils.beforeDownloadFileHookClient(hash, uid);
-    const downloadFile = await ipfs.downloadFile(hash);
-
-    if (!downloadFile) {
-      throw Error('File with current hash does not exist');
-    }
-
-    const savedFile = await FileManager.saveFile(targetDirectory, <FileManagerModels.FileObject> downloadFile);
-    await utils.afterDownloadFileHookClient(downloadFileEntry, {
-      path: savedFile.path,
-      name: savedFile.name,
-      size: savedFile.size,
-    });
-
-    const ipfsFileEntry: models.IpfsFileEntry = {
-      hash,
-      id: uid,
-      fileName: savedFile.name,
-    };
-
-    resolve(ipfsStorageActions.downloadIpfsFileSuccess(ipfsFileEntry, uid, action.meta.sourceUUID));
-  } catch (error) {
-    console.log('download error', error)
-    reject(ipfsStorageActions.downloadIpfsFileFailure(error, uid, action.meta.sourceUUID));
-  }
-});
 
 const ipfsStorageDownloadWithCancellingEpic: Epic<AnyAction> = action$ => action$.pipe(
   ofType(constants.IPFS_STORAGE_DOWNLOAD_FILE),
@@ -154,7 +120,6 @@ const ipfsStorageDownloadWithCancellingEpic: Epic<AnyAction> = action$ => action
 
             return ipfsStorageActions.downloadIpfsFileSuccess(ipfsFileEntry, uid, action.meta.sourceUUID);
           } catch (error) {
-            console.log('download error', error)
             return ipfsStorageActions.downloadIpfsFileFailure(error, uid, action.meta.sourceUUID);
           }
         })

@@ -9,22 +9,41 @@ interface IProps {
   hash: string;
 }
 
-export default class Index extends React.Component<IProps> {
+interface IState {
+  showProgress: boolean;
+}
+
+export default class Index extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
+    super(props);
+
+    this.state = {
+      showProgress: false,
+    };
+  }
+
   async onClick(e: any) {
     const { hash } = this.props;
     e.preventDefault();
 
     try {
+      this.setState({ showProgress: true });
       await ArrayIO.IpfsStorage.downloadIpfsFile(hash);
     } catch (error) {
       console.log('Download error', error);
     }
+    this.setState({ showProgress: false });
+  }
+
+  renderProgress() {
+    return (
+      <span className="ipfs-downloading-spinner"/>
+    );
   }
 
   render() {
     const { hash, filename } = this.props;
 
-    console.log('props ipfslink', this.props)
     if (!hash) {
       return null;
     }
@@ -33,9 +52,10 @@ export default class Index extends React.Component<IProps> {
       <div
         onClick={this.onClick.bind(this)}
         className="ipfs-link">
-        { filename }
-        <br/>
-        { hash }
+        {filename}
+        <br/>s
+        {hash}
+        {this.state.showProgress ? this.renderProgress() : null}
       </div>
     );
   }

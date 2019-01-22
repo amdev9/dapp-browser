@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import * as cn from 'classnames';
-import { Message } from '../../services/RoomComponentService';
+import * as models from '../../redux/models';
 import { getSelectedRoomMessages } from '../../redux/selectors';
 import { IState } from '../../redux/reducers';
 import ChatMessage from '../ChatMessage';
@@ -9,14 +9,14 @@ import ChatMessage from '../ChatMessage';
 import './styles.css';
 
 interface StateProps {
-  messages: Message[];
+  messages: models.MessageEntity[];
 }
 
 const mapStateToProps = (state: IState): StateProps => ({
   messages: getSelectedRoomMessages(state),
 });
 
-class ChatHeader extends React.Component<StateProps> {
+class ChatWindow extends React.Component<StateProps> {
   chatWindowEnd: any;
 
   componentDidUpdate() {
@@ -29,15 +29,18 @@ class ChatHeader extends React.Component<StateProps> {
     }
   }
 
-  renderMessageBlock(msg: Message, i: number) {
+  renderMessageBlock(msgEntity: models.MessageEntity, i: number) {
+    const { message } = msgEntity;
+    console.log('renderMessageBlock', msgEntity);
+
     return (
       <div
-        className={cn('messageBlock', { messageBlock_selfMessage: msg.own })}
+        className={cn('messageBlock', { messageBlock_selfMessage: message.own })}
         key={i}
       >
-        {!msg.own && <div className="messageBlockFrom">{msg.from}</div>}
+        {!message.own && <div className="messageBlockFrom">{message.from}</div>}
         <div className="messageBlockContent">
-          <ChatMessage message={msg.message}/>
+          <ChatMessage message={message.message}/>
         </div>
       </div>
     );
@@ -56,7 +59,7 @@ class ChatHeader extends React.Component<StateProps> {
 
     return (
       <div className="chatWindow">
-        {messages && messages.map((msg: any, i: number) => this.renderMessageBlock(msg, i))}
+        {messages && messages.map((msgEntity, i) => this.renderMessageBlock(msgEntity, i))}
         <div ref={(ref) => {
           this.chatWindowEnd = ref;
         }}/>
@@ -65,4 +68,4 @@ class ChatHeader extends React.Component<StateProps> {
   }
 }
 
-export default connect<StateProps, {}>(mapStateToProps)(ChatHeader);
+export default connect<StateProps, {}>(mapStateToProps)(ChatWindow);

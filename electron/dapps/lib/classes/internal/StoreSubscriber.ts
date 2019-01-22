@@ -5,11 +5,17 @@ import { storeObservable } from '../../redux/epics';
 import { ofType } from 'redux-observable';
 import { action } from 'typesafe-actions';
 
+type AdditionalEvent = {
+  type: string;
+  callback: (action: AnyAction) => void;
+};
+
 interface ActionFlow {
   onStart: AnyAction;
   successType: string;
   failureType: string;
   actionUid?: string;
+  additionalCallbacks?: AdditionalEvent[];
 }
 
 interface SubscribeUIDActionsOptions {
@@ -91,7 +97,7 @@ export default class StoreSubscriber {
     });
   }
 
-  actionPromise({ onStart, successType, failureType }: ActionFlow, actionUid?: string): Promise<AnyAction> {
+  actionPromise({ onStart, successType, failureType, additionalCallbacks }: ActionFlow, actionUid?: string): Promise<AnyAction> {
     if (!onStart || !successType || !failureType) {
       return;
     }
@@ -103,20 +109,29 @@ export default class StoreSubscriber {
       meta: onStart.meta ? { ...onStart.meta, uid } : { uid },
     };
 
+    const additionalTypes = additionalCallbacks ? additionalCallbacks.map((item) => item.type) : [];
+
     return new Promise((resolve, reject) => {
       const unsubscribe = this.subscribeUIDActions({
         uid,
-        actionTypes: [successType, failureType],
+        actionTypes: [successType, failureType].concat(additionalTypes),
         callback: (action: AnyAction) => {
-          unsubscribe && unsubscribe();
           if (action.type === successType) {
+            unsubscribe && unsubscribe();
             resolve(action);
           }
 
           if (action.type === failureType) {
+            unsubscribe && unsubscribe();
             reject(action);
           }
-        }
+
+          additionalCallbacks && additionalCallbacks.forEach((item) => {
+            if (item.type === action.type) {
+              item.callback(action);
+            }
+          });
+        },
       });
       onStart && this.store.dispatch(copyAction);
     });

@@ -2,12 +2,10 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import Dropzone from 'react-dropzone';
 import { bindActionCreators, Dispatch } from 'redux';
-import * as uuid from 'uuid/v4';
 import CircularProgressbar from 'react-circular-progressbar';
 import { Props as MenuProps, slide as Menu, State } from 'react-burger-menu';
 import { IoIosDocument, IoMdFolderOpen, IoMdCloudUpload, IoMdMenu } from 'react-icons/io';
 import * as filesize from 'filesize';
-import * as cn from 'classnames';
 
 import {
   component as IpfsStorage,
@@ -63,7 +61,6 @@ class LoaderPanel extends React.Component<StateProps & DispatchProps, LoaderPane
 
     this.onDrop = this.onDrop.bind(this);
     this.switchTab = this.switchTab.bind(this);
-    console.log('constructor loader panel', props.activeTab);
     if (!props.activeTab) {
       this.props.setLoaderTab(constants.LOADER_TAB_UPLOAD);
     }

@@ -1,7 +1,7 @@
 import * as React from 'react';
 const parse = require('html-react-parser');
 
-import { IpfsLink } from '../MessageComponents';
+import { IpfsLink, IpfsUploadLink } from '../MessageComponents';
 
 interface IProps {
   message: string;
@@ -16,6 +16,9 @@ const tagsList: MessageTag[] = [
   {
     tagName: 'ipfslink',
     component: IpfsLink,
+  }, {
+    tagName: 'ipfsuploadlink',
+    component: IpfsUploadLink,
   },
 ];
 

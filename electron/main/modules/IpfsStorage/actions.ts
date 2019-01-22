@@ -18,3 +18,6 @@ export const downloadIpfsFileSuccess = (file: models.IpfsFileEntry, uid: string,
 
 export const downloadIpfsFileFailure = (error: string, uid: string, targetUUID: string) =>
   action(constants.IPFS_STORAGE_DOWNLOAD_FILE_FAILURE, error, { uid, targetUUID });
+
+export const uploadFileProgress = (entryId: string, progress: number) =>
+  action(constants.IPFS_STORAGE_UPLOAD_FILE_PROGRESS, { entryId, progress }, { uid: entryId });

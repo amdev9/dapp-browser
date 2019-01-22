@@ -14,6 +14,7 @@
   "devDependencies": {
     "@types/classnames": "^2.2.6",
     "@types/react": "^16.7.6",
+    "@types/react-circular-progressbar": "^1.0.1",
     "@types/react-dom": "^16.0.9",
     "@types/react-redux": "^6.0.9",
     "@types/react-router-redux": "^5.0.16",
@@ -37,6 +38,7 @@
     "history": "^4.7.2",
     "html-react-parser": "^0.6.1",
     "react": "^16.6.3",
+    "react-circular-progressbar": "^1.0.0",
     "react-dom": "^16.6.3",
     "react-jsx-parser": "^1.5.1",
     "react-redux": "^5.1.1",

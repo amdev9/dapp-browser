@@ -56,7 +56,7 @@ declare class FileManager {
 
 declare class IpfsStorage {
 
-  uploadIpfsFile(hash: string): Promise<IpfsFileEntry>;
+  uploadIpfsFile(hash: string, onProgressUpdate: (progress: string) => void): Promise<IpfsFileEntry>;
   downloadIpfsFile(entry: string): Promise<IpfsFileEntry>;
 }
 

@@ -1,11 +1,14 @@
 import { formValueSelector } from 'redux-form';
 
 import * as constants from '../constants';
-import { Message, RoomComponent, RoomComponentStore } from '../../services/RoomComponentService';
+import { RoomComponent, RoomComponentStore } from '../../services/RoomComponentService';
 import * as actions from '../actions';
-import { IState } from '../reducers';
 import * as selectors from '../selectors';
 import * as events from '../events';
+import * as utils from '../../utils';
+import { IState } from '../reducers';
+import { Message } from '../models';
+import uuid = require('uuid');
 
 const ArrayIO = require('array-io');
 
@@ -24,11 +27,7 @@ export const addRoomThunk = (roomName: string) => async (dispatch: any, getState
   }
 
   const room = await RoomComponent.create(roomName);
-  room.on('message', (message: Message) => {
-    const state: IState = getState();
-
-    dispatch(addRoomMessage(room.id, message));
-  });
+  room.on('message', (message: Message) => dispatch(addRoomMessage(room.id, message)));
   RoomComponentStore.addRoom(room);
 
   dispatch(actions.addRoom(room.id, roomName));
@@ -138,5 +137,22 @@ export const setDappFocused = () => (dispatch: any, getState: any) => {
   if (selectedRoom) {
     dispatch(selectRoom(selectedRoom));
   }
+
+};
+
+export const uploadFileToSelectedIpfsRoom = (fileEntryId: string) => (dispatch: any, getState: any) => {
+  const state: IState = getState();
+  const selectedRoom = state.rooms.selectedRoom;
+
+  if (selectedRoom) {
+    dispatch(uploadFileToIpfsRoom(selectedRoom, fileEntryId));
+  }
+
+};
+
+export const uploadFileToIpfsRoom = (roomId: string, fileEntryId: string) => (dispatch: any, getState: any) => {
+  const msgId = uuid();
+  const msg: Message = { from: '', own: true, message: utils.getIpfsUploadLink(fileEntryId, msgId) };
+  dispatch(actions.addRoomMessage(roomId, msg, msgId));
 
 };
