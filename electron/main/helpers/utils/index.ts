@@ -3,6 +3,8 @@ import * as path from 'path';
 import * as extra from 'fs-extra';
 import * as rimrafModule from 'rimraf';
 
+import { isDev } from '../constants/globalVariables';
+
 export const EXEC_TIMEOUT = 10000;
 
 export const functionPromiseTimeout = (f: () => Promise<any>, timeout: number = EXEC_TIMEOUT): any => {

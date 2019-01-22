@@ -8,7 +8,6 @@ import { Store } from 'redux';
 import { ReplaySubject } from 'rxjs';
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer';
 import * as path from 'path';
-import * as nodeConsole from 'console';
 import { configureStore, initialState } from './helpers/store/configureStore';
 import { globalUUIDList } from './helpers/constants/globalVariables';
 import { IState } from './helpers/reducers/state';
@@ -23,9 +22,9 @@ import { component as Dapp } from './modules/Dapp';
 import { component as HttpProtocol } from './modules/HttpProtocol';
 
 const KEYCHAIN_PATH = path.join(__dirname, '..', 'helpers', 'systemComponents', 'Keychain', getDefaultExecPath());
-const console = new nodeConsole.Console(process.stdout, process.stderr);
 
 export const isProduction = process.env.ELECTRON_ENV !== 'development';
+
 let store: Store<IState>;
 
 contextMenu({
@@ -35,7 +34,7 @@ contextMenu({
       const dapp = Dapp.getDappByName(params.titleText);
 
       if (dapp) {
-        store.dispatch(AppsManagerActions.onDappClose(dapp.uuid));
+        store && store.dispatch(AppsManagerActions.onDappClose(dapp.uuid));
       }
     },
   }],

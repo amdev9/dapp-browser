@@ -1,6 +1,8 @@
 const nodeExternals = require("webpack-node-externals");
-const CircularDependencyPlugin = require('circular-dependency-plugin')
-const path = require('path')
+const CircularDependencyPlugin = require('circular-dependency-plugin');
+const webpack = require('webpack');
+const path = require('path');
+
 
 module.exports = {
   mode: 'development',
@@ -27,9 +29,9 @@ module.exports = {
       ClientApp: path.resolve(__dirname, '../client'),
       DappApp: path.resolve(__dirname, '../dapps/lib'),
       PermissionApp: path.resolve(__dirname, '../permissionManager'),
+      console: path.resolve(__dirname, './helpers/utils/log.js'),
     }
   },
-
   module: {
     rules: [
       { test: /\.ts$/, loader: 'awesome-typescript-loader' },
@@ -37,6 +39,9 @@ module.exports = {
     ]
   },
   plugins: [
+    new webpack.ProvidePlugin({
+      'console': path.resolve(__dirname, './helpers/utils/log.js')
+    }),
     new CircularDependencyPlugin({
       // exclude detection of files based on a RegExp
       exclude: /a\.js|node_modules/,

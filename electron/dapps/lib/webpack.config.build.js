@@ -1,5 +1,6 @@
 const path = require('path');
 const FileManagerPlugin = require('filemanager-webpack-plugin');
+const DropConsoleWebpackPlugin = require('drop-console-webpack-plugin');
 
 module.exports = {
   mode: 'production',
@@ -35,6 +36,13 @@ module.exports = {
     }
   },
   plugins: [
+    new DropConsoleWebpackPlugin({
+      drop_log    : true,
+      drop_info   : true,
+      drop_warn   : false,
+      drop_error  : false,
+      exclude     : [],
+    }),
     new FileManagerPlugin({
       onEnd: {
         copy: [
