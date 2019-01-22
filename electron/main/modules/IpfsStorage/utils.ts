@@ -8,7 +8,6 @@ import * as IpfsStorageModels from 'ClientApp/modules/IpfsStorage/models';
 import StoreManager from '../../helpers/systemComponents/StoreManager';
 import IpfsStorage, { IpfsFileObject } from './component';
 import * as actions from './actions';
-import { action } from 'typesafe-actions';
 
 export const getIpfsFileEntry = async (path: string): Promise<IpfsStorageModels.IpfsFileEntry> => {
   const name = pathModule.basename(path);
@@ -45,7 +44,7 @@ export const uploadFileWithSendStatus = async (path: string, uid: string = ''): 
 
   const ipfsObject = await IpfsStorage.uploadFile(path, (progress) => {
     StoreManager.store.dispatch(actions.uploadFileProgress(fileEntry.id, progress));
-    // StoreManager.store.dispatch(IpfsStorageActions.uploadsListEntryUpdateProgress(fileEntry.id, progress));
+    StoreManager.store.dispatch(IpfsStorageActions.uploadsListEntryUpdateProgress(fileEntry.id, progress));
   });
 
   StoreManager.store.dispatch(IpfsStorageActions.uploadsListEntrySetUploaded(fileEntry.id, ipfsObject.hash));

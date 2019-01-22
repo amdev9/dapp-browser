@@ -1,24 +1,16 @@
 import { AnyAction } from 'redux';
 import { combineEpics, Epic, ofType } from 'redux-observable';
-import { ignoreElements, map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { ActionType } from 'typesafe-actions';
 
-// import * as mainConstants from 'MainApp/modules/AppsManager/constants';
-import AppsManager from './component';
 import * as models from './models';
 import * as actions from './actions';
 import * as utils from './utils';
 import * as constants from './constants';
 import * as CommonConstants from '../../redux/constants';
 import StoreManager from '../StoreManager/component';
-import * as MainConstants from 'MainApp/modules/IpfsStorage/constants';
 
 export type IpfsStorageActions = ActionType<typeof actions>;
-
-const uploadUpdateFileProgressEpic: Epic<AnyAction> = (action$, state$) => action$.pipe(
-  ofType(MainConstants.IPFS_STORAGE_UPLOAD_FILE_PROGRESS),
-  map(action => actions.uploadsListEntryUpdateProgress(action.payload.entryId, action.payload.progress)),
-);
 
 const setEntryUploadedEpic: Epic<AnyAction> = (action$, state$) => action$.pipe(
   ofType(constants.CLIENT_UPLOADS_LIST_ENTRY_SET_UPLOADED),
@@ -65,7 +57,6 @@ const setEntryDownloadedEpic: Epic<AnyAction> = (action$, state$) => action$.pip
 );
 
 export default combineEpics(
-  uploadUpdateFileProgressEpic,
   setEntryUploadedEpic,
   setEntryDownloadedEpic,
 );

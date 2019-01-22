@@ -1,7 +1,7 @@
 import { AnyAction } from 'redux';
 import { combineEpics, Epic, ofType } from 'redux-observable';
-import { mergeMap, map, take, takeUntil, filter, mapTo } from 'rxjs/operators';
-import { Observable, race, from, Observer, defer } from 'rxjs';
+import { mergeMap, map, filter } from 'rxjs/operators';
+import { Observable, race } from 'rxjs';
 import * as path from 'path';
 
 import * as ipfsStorageActions from './actions';
@@ -13,7 +13,6 @@ import * as clientActions from 'ClientApp/modules/IpfsStorage/actions';
 import { component as FileManager, models as FileManagerModels } from '../FileManager';
 import ipfs from './component';
 import * as AppsManagerConstants from '../AppsManager/constants';
-import StoreManager from '../../helpers/systemComponents/StoreManager';
 
 const ipfsStorageClientUploadEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
   ofType(clientConstants.CLIENT_IPFS_STORAGE_UPLOAD_FILE),
