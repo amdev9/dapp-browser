@@ -30,6 +30,7 @@ module.exports = {
           MainApp: path.resolve(__dirname, '../main'),
           DappApp: path.resolve(__dirname, '../dapps/lib'),
           PermissionApp: path.resolve(__dirname, '../permissionManager'),
+          logger: path.resolve(__dirname, './redux/utils/logger.ts'),
         }
     },
     module: {
@@ -79,6 +80,9 @@ module.exports = {
     },
    
     plugins: [
+      new webpack.ProvidePlugin({
+        logger: path.resolve(__dirname, './redux/utils/logger.ts')
+      }),
       // https://webpack.github.io/docs/hot-module-replacement-with-webpack.html
       new webpack.HotModuleReplacementPlugin(),
       new webpack.LoaderOptionsPlugin({

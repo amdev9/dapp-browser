@@ -98,7 +98,7 @@ export default class Component {
 
   getPeers() {
     if (this.room) {
-      console.log('peers', this.room.getPeers())
+      logger.log('peers', this.room.getPeers())
       return this.room.getPeers();
     }
   }

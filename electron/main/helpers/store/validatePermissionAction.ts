@@ -197,17 +197,17 @@ const checkGrantedForPermission = (state: IState, dappName: string, permissionNa
   if (state.permissionManager.grantedApps.includes(dappName) &&
     state.permissionManager.permissions[dappName] &&
     state.permissionManager.permissions[dappName].includes(permissionName)) {
-    console.log(`Dapp "${dappName}" has privileges to use ${permissionName}}. OK`);
+    logger.log(`Dapp "${dappName}" has privileges to use ${permissionName}}. OK`);
     return true;
   }
-  console.log(`Dapp "${dappName}" has no privileges to use ${permissionName}}`);
+  logger.log(`Dapp "${dappName}" has no privileges to use ${permissionName}}`);
   return false;
 };
 
 const getSourceDappName = (globalId: RendererConf[], action: any) => {
   const dapp = globalId.find(item => item.id === action.meta.sourceUUID);
   if (!dapp) {
-    console.log('Dapp not found in globalId by uuid: ', action.meta.sourceUUID);
+    logger.log('Dapp not found in globalId by uuid: ', action.meta.sourceUUID);
     return null;
   }
   return dapp.name;
@@ -219,14 +219,14 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
 
       if (action.payload.status === 'dapp') {
         if (!dappActions.includes(action.type)) {
-          console.log(`Cancelled for dapp ${action.type}`);
+          logger.log(`Cancelled for dapp ${action.type}`);
         } else {
           const dappName = getSourceDappName(globalId, action);
 
           if (checkGranted(store.getState(), dappName, action.type)) {
             return next(action);
           }
-          console.log(`Action "${action.type}" is not granted for dapp "${dappName}"`);
+          logger.log(`Action "${action.type}" is not granted for dapp "${dappName}"`);
         }
 
       } else if (action.payload.status === 'client') {
@@ -242,16 +242,16 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
         if (clientActions.includes(action.type)) {
           return next(action);
         }
-        console.log('Cancelled for client: ', action.type);
+        logger.log('Cancelled for client: ', action.type);
 
       } else if (action.payload.status === 'permission_manager') {
         if (pmActions.includes(action.type)) {
           return next(action);
         }
-        console.log(`Cancelled for permission manager ${action.type}`);
+        logger.log(`Cancelled for permission manager ${action.type}`);
       }
     } else {
-      console.log('no status: ', action);
+      logger.log('no status: ', action);
       return next(action);
     }
   };

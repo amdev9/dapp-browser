@@ -11,7 +11,7 @@ let networkInstance: NetworkAPI;
 try {
   networkInstance = new NetworkAPI();
 } catch (error) {
-  console.log('Error creating NetworkAPI instance', error);
+  logger.log('Error creating NetworkAPI instance', error);
 }
 
 const networkGetBlockEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type

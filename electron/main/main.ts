@@ -16,6 +16,7 @@ import { getDefaultExecPath, Keychain } from './helpers/systemComponents/Keychai
 import { NetworkAPI } from './helpers/systemComponents/Network';
 import ClientManager from './helpers/systemComponents/ClientManager';
 import StoreManager from './helpers/systemComponents/StoreManager';
+import { getReadyIpfsInstance } from './helpers/systemComponents/IpfsInstance';
 
 import { component as AppsManager, actions as AppsManagerActions } from './modules/AppsManager';
 import { component as Dapp } from './modules/Dapp';
@@ -107,7 +108,7 @@ app.on('window-all-closed', () => {
   try {
     networkAPI.removeAllSubscribers();
   } catch (error) {
-    console.log(error);
+    logger.log(error);
     dialog.showMessageBox(clientWindow, {
       type: 'warning',
       title: 'Warning',
@@ -121,14 +122,14 @@ const replayOpenUrls = new ReplaySubject();
 app.on('open-url', (e, url) => {
   // e.preventDefault();
   replayOpenUrls.next(url);
-  console.log('open-url', url);
+  logger.log('open-url', url);
 });
 
 app.on('ready', async () => {
 
   if (process.env.ELECTRON_ENV === 'development') {
     const devtools = await installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS]);
-    console.log(`Added Extension: ${devtools}`);
+    logger.log(`Added Extension: ${devtools}`);
   }
 
   const menu = Menu.buildFromTemplate(template);
@@ -140,7 +141,7 @@ app.on('ready', async () => {
     const keychainInstance = new Keychain(KEYCHAIN_PATH);
     keysList = await keychainInstance.list();
   } catch (e) {
-    console.log('keychain list error: ', e);
+    logger.log('keychain list error: ', e);
   }
 
   store = configureStore({
@@ -150,6 +151,7 @@ app.on('ready', async () => {
   }, globalUUIDList);
 
   StoreManager.store = store;
+  await getReadyIpfsInstance();
 
   clientWindow = ClientManager.createClientWindow();
 
@@ -189,7 +191,7 @@ app.on('ready', async () => {
     networkAPI = new NetworkAPI(store);
     networkAPI.init();
   } catch (error) {
-    console.log(error);
+    logger.log(error);
     dialog.showMessageBox(clientWindow, {
       type: 'warning',
       title: 'Warning',

@@ -37,7 +37,7 @@ export function createClientWindow(globalUUIDList: RendererConf[], store: any) {
   });
 
   clientWindow.once('show', () => {
-    console.log('show event'); // @todo https://stackoverflow.com/questions/42292608/electron-loading-animation
+    logger.log('show event'); // @todo https://stackoverflow.com/questions/42292608/electron-loading-animation
   });
 
   const clientPath = path.join(RENDERER_PATH, 'index.html');

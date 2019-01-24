@@ -17,7 +17,7 @@
     "sourceMap": true
   },
   "include": [
-    "./*", "test/*"
+    "./*", "test/*", "types/logger/*"
   ],
   "exclude": [
     "node_modules"

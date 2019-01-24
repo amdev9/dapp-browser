@@ -16,7 +16,7 @@
     }
   },
   "files": [
-    "./index.tsx"
+    "./index.tsx", "types/logger.d.ts"
   ],
   "include": [
     "./*"

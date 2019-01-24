@@ -226,7 +226,7 @@ const forwardToRendererWrapper = (globalId: RendererConf[]) => {
           resolver.send('redux-action', copyAction);
 
         } else {
-          console.log('resolver error: ', 'action message lost');
+          logger.log('resolver error: ', 'action message lost');
           return next(action);
         }
       }
@@ -247,7 +247,7 @@ const bindChannel = (webId: number, channelReceiver: string, channelSender: stri
     if (bindResolver) {
       bindResolver.send(channelReceiver, payload);
     } else {
-      console.log('resolver error: ', 'message lost');
+      logger.log('resolver error: ', 'message lost');
     }
 
   });
@@ -279,7 +279,7 @@ const replyActionMain = (store: Store<{}>, globalId: RendererConf[]) => {
       }
       store.dispatch(action);
     } else {
-      console.log('Spoofing detected');
+      logger.log('Spoofing detected');
     }
   });
 };

@@ -50,7 +50,7 @@ export class Ethereum {
       };
     }
 
-    console.log('tx KeyChain params', txParams);
+    logger.log('tx KeyChain params', txParams);
 
     class EthereumTxKeychain extends EthereumTx {
       constructor(txParams: any) {
@@ -80,7 +80,7 @@ export class Ethereum {
             items = this.raw.slice(0, 6);
           }
         }
-        console.log('items: ', items);
+        logger.log('items: ', items);
         // create hash
         return rlp.encode(items);
       }
@@ -95,7 +95,7 @@ export class Ethereum {
 
     const hex = this.buffer.toString('hex');
 
-    console.log('final hex: ', hex);
+    logger.log('final hex: ', hex);
     return hex;
   }
 

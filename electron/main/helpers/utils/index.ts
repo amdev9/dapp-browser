@@ -150,3 +150,21 @@ export async function copy(src: string, dest: string): Promise<any> {
     });
   });
 }
+
+/** inspector module types */
+declare var logger: Logger;
+
+// export = Logger;
+
+interface Logger {
+  log(...args: any[]): void;
+
+  error(...args: any[]): void;
+
+  warn(...args: any[]): void;
+}
+
+interface Window {
+  logger: Logger;
+}
+

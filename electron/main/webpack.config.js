@@ -29,7 +29,7 @@ module.exports = {
       ClientApp: path.resolve(__dirname, '../client'),
       DappApp: path.resolve(__dirname, '../dapps/lib'),
       PermissionApp: path.resolve(__dirname, '../permissionManager'),
-      console: path.resolve(__dirname, './helpers/utils/log.js'),
+      logger: path.resolve(__dirname, './helpers/utils/logger.ts'),
     }
   },
   module: {
@@ -40,7 +40,7 @@ module.exports = {
   },
   plugins: [
     new webpack.ProvidePlugin({
-      'console': path.resolve(__dirname, './helpers/utils/log.js')
+      logger: path.resolve(__dirname, './helpers/utils/logger.ts')
     }),
     new CircularDependencyPlugin({
       // exclude detection of files based on a RegExp

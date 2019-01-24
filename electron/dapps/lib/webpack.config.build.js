@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const FileManagerPlugin = require('filemanager-webpack-plugin');
 const DropConsoleWebpackPlugin = require('drop-console-webpack-plugin');
 
@@ -33,9 +34,13 @@ module.exports = {
       MainApp: path.resolve(__dirname, '../../main'),
       PermissionApp: path.resolve(__dirname, '../../permissionManager'),
       ClientApp: path.resolve(__dirname, '../../client'),
+      logger: path.resolve(__dirname, './redux/utils/logger.ts'),
     }
   },
   plugins: [
+    new webpack.ProvidePlugin({
+      logger: path.resolve(__dirname, './redux/utils/logger.ts')
+    }),
     new DropConsoleWebpackPlugin({
       drop_log    : true,
       drop_info   : true,

@@ -35,10 +35,10 @@ export default class HttpProtocol {
       HttpProtocol.openLink(req.url);
     }, (err) => {
       if (!err) {
-        console.log('registered arr protocol');
+        logger.log('registered arr protocol');
       } else {
-        console.error('could not register arr protocol');
-        console.error(err);
+        logger.error('could not register arr protocol');
+        logger.error(err);
       }
     });
   }

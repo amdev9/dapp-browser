@@ -27,7 +27,7 @@ module.exports = {
       ClientApp: path.resolve(__dirname, '../client'),
       DappApp: path.resolve(__dirname, '../dapps/lib'),
       PermissionApp: path.resolve(__dirname, '../permissionManager'),
-      console: path.resolve(__dirname, 'helpers/utils/log'),
+      logger: path.resolve(__dirname, './helpers/utils/logger'),
     }
   },
   
@@ -38,6 +38,9 @@ module.exports = {
     ]
   },
   plugins: [
+    new webpack.ProvidePlugin({
+      logger: path.resolve(__dirname, './helpers/utils/logger')
+    }),
     new DropConsoleWebpackPlugin({
       drop_log    : true,
       drop_info   : true,
