@@ -195,7 +195,10 @@ export default class AppsManager {
 
     const dapp = AppsManager.getInstalledDappItem(dappName);
 
-    await PermissionManager.checkDappPermissions(dappName, dapp.permissions, clientWindow);
-    await AppsManager.createDapp(dappName, clientWindow);
+    if (dapp) {
+      await PermissionManager.checkDappPermissions(dappName, dapp.permissions, clientWindow);
+      await AppsManager.createDapp(dappName, clientWindow);
+    }
+
   }
 }

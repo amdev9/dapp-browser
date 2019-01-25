@@ -1,6 +1,7 @@
 const path = require('path');
 const nodeExternals = require("webpack-node-externals");
 const DropConsoleWebpackPlugin = require('drop-console-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = {
   mode: 'development',
@@ -27,7 +28,7 @@ module.exports = {
       ClientApp: path.resolve(__dirname, '../client'),
       DappApp: path.resolve(__dirname, '../dapps/lib'),
       PermissionApp: path.resolve(__dirname, '../permissionManager'),
-      logger: path.resolve(__dirname, './helpers/utils/logger'),
+      logger: path.resolve(__dirname, './helpers/utils/logger.ts'),
     }
   },
   
@@ -39,7 +40,7 @@ module.exports = {
   },
   plugins: [
     new webpack.ProvidePlugin({
-      logger: path.resolve(__dirname, './helpers/utils/logger')
+      logger: path.resolve(__dirname, './helpers/utils/logger.ts')
     }),
     new DropConsoleWebpackPlugin({
       drop_log    : true,

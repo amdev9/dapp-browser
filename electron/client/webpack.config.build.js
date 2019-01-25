@@ -66,13 +66,6 @@ module.exports = {
     new webpack.ProvidePlugin({
       logger: path.resolve(__dirname, './redux/utils/logger.ts')
     }),
-    new DropConsoleWebpackPlugin({
-      drop_log    : true,
-      drop_info   : true,
-      drop_warn   : false,
-      drop_error  : false,
-      exclude     : [],
-    }),
     new FileManagerPlugin({
       onEnd: {
         copy: [
