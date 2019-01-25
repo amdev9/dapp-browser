@@ -45,9 +45,12 @@ export default class Dapp {
   }
 
   closeDapp(): void {
-    this.renderer.dappView.destroy();
+    this.renderer && this.renderer.dappView && this.renderer.dappView.destroy();
     const index = globalUUIDList.findIndex(item => item.id === this.renderer.id);
-    globalUUIDList.splice(index, 1);
+
+    if (!isNaN(index)) {
+      globalUUIDList.splice(index, 1);
+    }
   }
 
   get uuid() {
