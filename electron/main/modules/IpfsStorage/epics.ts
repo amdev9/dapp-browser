@@ -11,6 +11,7 @@ import * as utils from './utils';
 import * as clientConstants from 'ClientApp/modules/IpfsStorage/constants';
 import * as clientActions from 'ClientApp/modules/IpfsStorage/actions';
 import { component as FileManager, models as FileManagerModels } from '../FileManager';
+import { component as Dapp } from '../Dapp';
 import ipfs from './component';
 import * as AppsManagerConstants from '../AppsManager/constants';
 
@@ -75,7 +76,10 @@ const ipfsStorageUploadEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo
       ),
       action$.pipe(
         ofType(AppsManagerConstants.ON_DAPP_CLOSE),
-        filter((dappCloseAction: AnyAction) => dappCloseAction.payload.dappUUID === action.meta.sourceUUID),
+        filter((dappCloseAction: AnyAction) => {
+          const dapp = Dapp.getDappById(action.meta.sourceUUID);
+          return dapp.name === dappCloseAction.payload.dappName;
+        }),
         map((dappCloseAction: AnyAction) => ipfsStorageActions.uploadIpfsFileFailure('Dapp has been closed', action.meta.uid, action.meta.sourceUUID)),
       ),
     )),
@@ -125,7 +129,10 @@ const ipfsStorageDownloadWithCancellingEpic: Epic<AnyAction> = action$ => action
       ),
       action$.pipe(
         ofType(AppsManagerConstants.ON_DAPP_CLOSE),
-        filter((dappCloseAction: AnyAction) => dappCloseAction.payload.dappUUID === action.meta.sourceUUID),
+        filter((dappCloseAction: AnyAction) => {
+          const dapp = Dapp.getDappById(action.meta.sourceUUID);
+          return dapp.name === dappCloseAction.payload.dappName;
+        }),
         map((dappCloseAction: AnyAction) => ipfsStorageActions.downloadIpfsFileFailure('Dapp has been closed', action.meta.uid, action.meta.sourceUUID)),
       ),
     ),

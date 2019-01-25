@@ -1,17 +1,14 @@
 import AppCard from '../AppsFeed/AppCard';
-import { Link } from 'react-router-dom';
 import * as React from 'react';
 import { DApp, FeedItem } from '../../redux/model';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { IState } from '../../redux/reducers/state';
-import * as TrayActions from '../../redux/actions/tray';
 
 import './InstalledAppsFeed.sass';
 
 interface IProps {
   navigateToMarket: () => void;
-  switchDapp: (dappName: string) => void;
   feedItems: FeedItem[];
 }
 
@@ -26,7 +23,7 @@ class InstalledAppsFeed extends React.Component<IProps> {
     }
 
     return this.props.feedItems.map((item): JSX.Element => (
-      <AppCard key={item.appName} dapp={item} switchDapp={() => this.props.switchDapp(item.appName)}/>
+      <AppCard key={item.appName} dapp={item}/>
     ));
   }
 
@@ -50,7 +47,6 @@ class InstalledAppsFeed extends React.Component<IProps> {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
-  switchDapp: TrayActions.switchDapp,
 }, dispatch);
 
 const mapStateToProps = (state: IState) => ({

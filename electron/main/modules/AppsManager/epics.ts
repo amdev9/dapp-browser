@@ -3,12 +3,14 @@ import { of, concat } from 'rxjs';
 import { combineEpics, Epic, ofType } from 'redux-observable';
 import { ignoreElements, tap, map, mergeMap } from 'rxjs/operators';
 
+import * as ClientAppTrayActions from 'ClientApp/redux/actions/tray';
+import * as ClientAppsManagerConstants from 'ClientApp/modules/AppsManager/constants';
+
 import * as constants from './constants';
 import * as actions from './actions';
 import AppsManager from './component';
 import * as clientActions from '../../helpers/actions/client';
 import ClientManager from '../../helpers/systemComponents/ClientManager';
-import * as ClientAppConstants from 'ClientApp/redux/constants';
 import StoreManager from '../../helpers/systemComponents/StoreManager';
 import Dapp from '../Dapp/component';
 
@@ -56,13 +58,13 @@ const getAllDappsEpic: Epic<AnyAction> = action$ => action$.pipe(
 const removeTrayItemEpic: Epic<any> = action$ => action$.pipe(
   ofType(constants.ON_DAPP_CLOSE),
   map((action) => {
-    const { dappUUID } = action.payload;
+    const { dappName } = action.payload;
     AppsManager.toggleHome();
-    const dapp = Dapp.getDappById(dappUUID);
+    const dapp = Dapp.getDappByName(dappName);
 
+    StoreManager.store.dispatch(clientActions.removeTrayItem(dappName));
     if (dapp) {
       dapp.closeDapp();
-      StoreManager.store.dispatch(clientActions.removeTrayItem(dapp.name));
     }
 
     return clientActions.clientToggleHome(true);
@@ -70,16 +72,18 @@ const removeTrayItemEpic: Epic<any> = action$ => action$.pipe(
 );
 
 const openDappEpic: Epic<any> = action$ => action$.pipe(
-  ofType(ClientAppConstants.CLIENT_SWITCH_DAPP),
+  ofType(ClientAppsManagerConstants.CLIENT_OPEN_DAPP),
   mergeMap(async (action) => {
-    const { targetDappName } = action.payload;
+    const { dappName } = action.payload;
     try {
       await ClientManager.isClientWindowLoaded;
-      await AppsManager.openDapp(targetDappName);
-      StoreManager.store.dispatch(clientActions.switchDapp(targetDappName));
-      StoreManager.store.dispatch(clientActions.switchDappSuccess(targetDappName));
+      await AppsManager.openDapp(dappName);
+      StoreManager.store.dispatch(clientActions.addAppItem(AppsManager.getAppItem(dappName)));
+      StoreManager.store.dispatch(ClientAppTrayActions.switchDapp(dappName));
+      StoreManager.store.dispatch(clientActions.switchDapp(dappName));
+      StoreManager.store.dispatch(clientActions.switchDappSuccess(dappName));
     } catch (error) {
-      StoreManager.store.dispatch(clientActions.switchDappFailure(targetDappName, error));
+      StoreManager.store.dispatch(clientActions.switchDappFailure(dappName, error));
     }
   }),
   ignoreElements(),

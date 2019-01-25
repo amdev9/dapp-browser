@@ -12,6 +12,8 @@ import { epics as NotificationEpics } from '../../modules/Notification';
 import { epics as IpfsStorageEpics } from '../../modules/IpfsStorage';
 import LoaderEpic from './loader';
 
+import { epics as AppsManagerEpics } from '../../modules/AppsManager';
+
 const startCountdownEpic: Epic<Action> = action$ => action$.pipe(
   ofType(constants.INTENT_OPEN_CHANNELS),
   delay(1000), // Asynchronously wait 1000ms then continue
@@ -42,4 +44,5 @@ export const rootEpic = combineEpics(
   loggerWriteEpic,
   keychainCreateSuccessEpic,
   LoaderEpic,
+  AppsManagerEpics,
 );

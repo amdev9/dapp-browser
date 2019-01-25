@@ -187,6 +187,9 @@ export default class AppsManager {
   }
 
   static async openDapp(dappName: string): Promise<void> {
+    if (!dappName) {
+      throw new Error('AppsManager.openDapp method cancelled with error: dappName is undefined');
+    }
     const clientWindow = ClientManager.clientWindow;
     await ClientManager.isClientWindowLoaded;
 

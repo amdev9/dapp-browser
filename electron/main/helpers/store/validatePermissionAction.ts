@@ -18,6 +18,7 @@ import { constants as StorageConstants } from '../../modules/Storage';
 import { constants as ClientDappConstants } from 'ClientApp/modules/Dapp';
 import { constants as ClientNotificationConstants } from 'ClientApp/modules/Notification';
 import * as ClientIpfsStorageConstants from 'ClientApp/modules/IpfsStorage/constants';
+import * as ClientAppsManagerConstants from 'ClientApp/modules/AppsManager/constants';
 import * as ClientAppConstants from 'ClientApp/redux/constants';
 
 const ipfsRoomActionTypes = getModuleActionTypes(IpfsRoomConstants);
@@ -33,6 +34,7 @@ const storageActionTypes = getModuleActionTypes(StorageConstants);
 const clientDappsActionTypes = getModuleActionTypes(ClientDappConstants);
 const clientNotificationActionTypes = getModuleActionTypes(ClientNotificationConstants);
 const clientIpfsStorageActionTypes = getModuleActionTypes(ClientIpfsStorageConstants);
+const clientAppsManagerActionTypes = getModuleActionTypes(ClientAppsManagerConstants);
 
 const dappActions: string[] = [
   constants.INTENT_OPEN_CHANNELS,
@@ -114,6 +116,7 @@ const clientActions: string[] = [
   ...clientNotificationActionTypes,
   ...clientDappsActionTypes,
   ...clientIpfsStorageActionTypes,
+  ...clientAppsManagerActionTypes,
 ];
 
 const fileManagerActions: string[] = [

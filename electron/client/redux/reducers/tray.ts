@@ -31,31 +31,12 @@ const cleanItems = (state: Tray) => {
 export default function tray(state: Tray = null, action: TrayAction) {
   switch (action.type) {
     case constants.CLIENT_SWITCH_DAPP:
-
-      const dappName = action.payload.targetDappName;
-      const newItems = state.items.map((item) => {
-        if ((item.appName != dappName) && item.statusIcon.includes('active')) {
-          return {
-            ...item,
-            statusIcon: item.statusIcon.filter(status => status !== 'active')
-          };
-        } else if (item.appName == dappName && !item.statusIcon.includes('active')) {
-          return {
-            ...item,
-            statusIcon: item.statusIcon.concat(['active'])
-          };
-        } else {
-          return item;
-        }
-      });
-
       return {
         ...state,
-        items: newItems,
         isHome: false,
         activeDapp: {
-          appName: dappName
-        }
+          appName: action.payload.targetDappName,
+        },
       };
 
     case constants.ADD_APP_ITEM:
@@ -96,7 +77,7 @@ export default function tray(state: Tray = null, action: TrayAction) {
         ...state,
         isHome: false,
         activeDapp: {
-          appName: action.payload.targetDappName,
+          appName: null,
         },
       };
 

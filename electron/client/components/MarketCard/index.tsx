@@ -5,20 +5,21 @@ import { connect } from 'react-redux';
 import * as cn from 'classnames';
 import { IState } from '../../redux/reducers/state';
 import * as TrayActions from '../../redux/actions/tray';
-import { component as AppsManager } from '../../modules/AppsManager';
+import { component as AppsManager, actions as AppsManagerActions } from '../../modules/AppsManager';
 
 // import './InstalledAppsFeed.sass';
 import * as MarketActions from '../../redux/actions/market';
 
 interface AppCardProps {
   dapp?: any;
+  updateAllDapps: () => void;
 }
 
 interface AppCardConnectProps {
   switchDapp?: (dappName: string) => void;
   installDapp?: (dappName: string, hash: string) => void;
   downloadDapp?: (ipfsHash: string) => void;
-  updateAllDapps: () => void;
+  openDapp?: (dappName: string) => void;
 }
 
 interface AppCardState {
@@ -110,7 +111,7 @@ export class MarketCard extends React.Component<AppCardProps & AppCardConnectPro
   }
 
   onClickAppCard() {
-    const { dapp, switchDapp } = this.props;
+    const { dapp, openDapp } = this.props;
     const { isInstalling, installSuccess } = this.state;
 
     if (isInstalling) {
@@ -118,7 +119,7 @@ export class MarketCard extends React.Component<AppCardProps & AppCardConnectPro
     }
 
     if (dapp.installed || installSuccess) {
-      return switchDapp(dapp.appName);
+      return openDapp(dapp.appName);
     }
 
     return this.installDapp();
@@ -141,9 +142,10 @@ export class MarketCard extends React.Component<AppCardProps & AppCardConnectPro
     );
   }
 }
-const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
+const mapDispatchToProps = (dispatch: Dispatch<IState>): AppCardConnectProps => bindActionCreators({
   switchDapp: TrayActions.switchDapp,
   downloadDapp: MarketActions.downloadDapp,
+  openDapp: AppsManagerActions.openDapp,
 }, dispatch);
 
 export default connect<AppCardProps, {}>(null, mapDispatchToProps)(MarketCard);
