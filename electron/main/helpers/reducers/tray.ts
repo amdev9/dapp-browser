@@ -22,6 +22,12 @@ interface AppItem {
 
 export function tray(state: { items: AppItem[] } = { items: [] }, action: TrayAction) {
   switch (action.type) {
+    case constants.SWITCH_DAPP:
+      return {
+        ...state,
+        activeDapp: { appName: action.payload.targetDappName },
+      };
+
     case constants.ADD_APP_ITEM:
       const appItem = action.payload.item;
 
@@ -37,6 +43,12 @@ export function tray(state: { items: AppItem[] } = { items: [] }, action: TrayAc
       return {
         ...state,
         items: state.items.filter(item => item.appName !== dappName),
+      };
+
+    case constants.TOGGLE_HOME:
+      return {
+        ...state,
+        activeDapp: null,
       };
 
     case dappConstants.SET_MAIN_TRAY_COUNTER:

@@ -75,8 +75,7 @@ class App extends React.Component<AppProps> {
 
   render() {
     const {
-      onTogglePanel, openNotificationPanel, openKeychainPanel, openStatusBarPanel, openPeersBarPanel, openSettingsPanel, openSearchPanel, clearNotification, clearAllNotifications,
-      onAddAppItem, onClickNotification, onSwitchDapp, onToggleHome, statusBarToggle, peersBarToggle, onToggleKeychainPanel, onToggleAppHome, onToggleSearch, searchItems,
+      onTogglePanel, openNotificationPanel, openKeychainPanel, openStatusBarPanel, openPeersBarPanel, openSettingsPanel, openSearchPanel, clearNotification, clearAllNotifications, onClickNotification, onSwitchDapp, onToggleHome, statusBarToggle, peersBarToggle, onToggleKeychainPanel, onToggleSearch, searchItems,
       trayItems, isHome, feedItems, notifyItems,
       keychainItems, keychainSelectedKey, keychainUnlocked, keychainCreateKey, keychainUnlock, keychainLock, keychainList, keychainSignKey, keychainSelectKey,
       statusBarItems, onToggleLoaderPanel, onToggleSettingsPanel, openLoaderPanel, locationPath, loggerWrite, togglePermission, grantPermissions, permissions,

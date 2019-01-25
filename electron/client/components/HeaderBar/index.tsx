@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { NotificationWidget } from './NotificationWidget';
-import { HomeWidget } from './HomeWidget';
+import HomeWidget from './HomeWidget';
 import { DownloadWidget } from './DownloadWidget';
 import { SettingsWidget } from './SettingsWidget';
 import { NetworkWidget } from './NetworkWidget';
@@ -50,7 +50,7 @@ export class HeaderBar extends React.Component<HeaderBarProps> {
     } = this.props;
     return (
       <div className="headerbar">
-        <HomeWidget toggleHome={toggleHome} isHome={isHome}/>
+        <HomeWidget toggleHome={toggleHome}/>
         <div className="title">
           Home
         </div>

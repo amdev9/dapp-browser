@@ -5,10 +5,14 @@ import { IState } from '../../redux/reducers/state';
 import * as TrayActions from '../../redux/actions/tray';
 
 import './AppCard.sass';
+import { actions as AppsManagerActions } from '../../modules/AppsManager';
 
 interface AppCardProps {
   dapp?: any;
-  switchDapp: (dappName: string) => void;
+}
+
+interface AppCardConnectProps {
+  openDapp: (dappName: string) => void;
   installDapp?: (dappName: string, hash: string) => void;
 }
 
@@ -16,8 +20,8 @@ interface AppCardState {
   status: string;
 }
 
-export class AppCard extends React.Component<AppCardProps, AppCardState> {
-  constructor(props: AppCardProps) {
+export class AppCard extends React.Component<AppCardProps & AppCardConnectProps, AppCardState> {
+  constructor(props: AppCardProps & AppCardConnectProps) {
     super(props);
     this.getCategories = this.getCategories.bind(this);
     this.actionHandle = this.actionHandle.bind(this);
@@ -50,9 +54,9 @@ export class AppCard extends React.Component<AppCardProps, AppCardState> {
   }
 
   onClickAppCard() {
-    const { dapp, switchDapp } = this.props;
+    const { dapp, openDapp } = this.props;
 
-    return switchDapp(dapp.appName);
+    return openDapp(dapp.appName);
   }
 
   public render() {
@@ -72,8 +76,9 @@ export class AppCard extends React.Component<AppCardProps, AppCardState> {
   }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<IState>) => bindActionCreators({
+const mapDispatchToProps = (dispatch: Dispatch<IState>): AppCardConnectProps => bindActionCreators({
   switchDapp: TrayActions.switchDapp,
+  openDapp: AppsManagerActions.openDapp,
 }, dispatch);
 
-export default connect<AppCardProps, {}>(null, mapDispatchToProps)(AppCard);
+export default connect(null, mapDispatchToProps)(AppCard);
