@@ -74,14 +74,11 @@ const ipfsStorageUploadEpic: Epic<AnyAction> = action$ => action$.pipe(
           } catch (error) {
             return ipfsStorageActions.uploadIpfsFileFailure(error, uid, action.meta.sourceUUID);
           }
-        })
+        }),
       ),
       action$.pipe(
         ofType(AppsManagerConstants.ON_DAPP_CLOSE),
-        filter((dappCloseAction: AnyAction) => {
-          const dapp = Dapp.getDappById(action.meta.sourceUUID);
-          return dapp.name === dappCloseAction.payload.dappName;
-        }),
+        filter((dappCloseAction: AnyAction) =>  action.meta.name === dappCloseAction.payload.dappName),
         map((dappCloseAction: AnyAction) => ipfsStorageActions.uploadIpfsFileFailure('Dapp has been closed', action.meta.uid, action.meta.sourceUUID)),
       ),
     )),
@@ -131,10 +128,7 @@ const ipfsStorageDownloadWithCancellingEpic: Epic<AnyAction> = action$ => action
       ),
       action$.pipe(
         ofType(AppsManagerConstants.ON_DAPP_CLOSE),
-        filter((dappCloseAction: AnyAction) => {
-          const dapp = Dapp.getDappById(action.meta.sourceUUID);
-          return dapp.name === dappCloseAction.payload.dappName;
-        }),
+        filter((dappCloseAction: AnyAction) => action.meta.name === dappCloseAction.payload.dappName),
         map((dappCloseAction: AnyAction) => ipfsStorageActions.downloadIpfsFileFailure('Dapp has been closed', action.meta.uid, action.meta.sourceUUID)),
       ),
     ),
