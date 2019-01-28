@@ -34,10 +34,12 @@ const ipfsStorageClientUploadEpic: Epic<AnyAction> = action$ => action$.pipe( //
   }),
 );
 
-const ipfsStorageUploadEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
+const ipfsStorageUploadEpic: Epic<AnyAction> = action$ => action$.pipe(
   ofType(constants.IPFS_STORAGE_UPLOAD_FILE),
   mergeMap((action: AnyAction) =>
     race(
+      // https://redux-observable.js.org/docs/recipes/Cancellation.html
+      // Cancel and Do Something Else (Emit a Different Action)
       new Observable((observer: any) => {
         observer.next();
       }).pipe(
