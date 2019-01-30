@@ -8,7 +8,7 @@ export const uploadIpfsFileSuccess = (ipfsEntry: models.IpfsFileEntry, uid: stri
   action(constants.IPFS_STORAGE_UPLOAD_FILE_SUCCESS, { ipfsEntry }, { uid, targetUUID });
 
 export const uploadIpfsFileFailure = (error: string, uid: string, targetUUID? :string) =>
-  action(constants.IPFS_STORAGE_UPLOAD_FILE_FAILURE, error, { uid, targetUUID });
+  action(constants.IPFS_STORAGE_UPLOAD_FILE_FAILURE, { error }, { uid, targetUUID });
 
 export const downloadIpfsFile = (hash: string) =>
   action(constants.IPFS_STORAGE_DOWNLOAD_FILE, { hash });

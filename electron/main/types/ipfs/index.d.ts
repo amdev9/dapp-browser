@@ -1,9 +1,15 @@
+import * as Stream from 'stream';
 
 export as namespace ipfs;
 
 export = IPFS;
 
 type Callback<T> = (error: Error, result?: T) => void;
+
+type ReadableStreamOptions = {
+  progress?: (bytes: number) => void;
+  wrapWithDirectory?: boolean;
+};
 
 declare class IPFS {
   constructor(options?: IPFS.Options);
@@ -137,6 +143,9 @@ declare namespace IPFS {
     createAddStream(callback: Callback<any>): void;
 
     createPullStream(options: any): any;
+
+    addReadableStream(options: ReadableStreamOptions): Stream.Writable;
+    getReadableStream(hash: string): Stream.Writable;
 
     add(data: FileContent, options: any, callback: Callback<IPFSFile[]>): void;
     add(data: FileContent, options: any): Promise<IPFSFile[]>;

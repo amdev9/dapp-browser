@@ -53,7 +53,7 @@ export default class Index extends React.Component<IProps, IState> {
         onClick={this.onClick.bind(this)}
         className="ipfs-link">
         {filename}
-        <br/>s
+        <br/>
         {hash}
         {this.state.showProgress ? this.renderProgress() : null}
       </div>
