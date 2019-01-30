@@ -16,6 +16,8 @@ import { AppItem, ReadyDapp, DappDownloadEntity } from './models';
 import { createDappView, validateDappManifest, validateDapps } from './utils';
 import { component as Dapp } from '../Dapp';
 import ClientManager from '../../helpers/systemComponents/ClientManager';
+import * as clientActions from '../../helpers/actions/client';
+import * as ClientAppTrayActions from 'ClientApp/redux/actions/tray';
 
 let installedDapps: AppItem[] = [];
 
@@ -199,6 +201,9 @@ export default class AppsManager {
       await PermissionManager.checkDappPermissions(dappName, dapp.permissions, clientWindow);
       await AppsManager.createDapp(dappName, clientWindow);
     }
+
+    StoreManager.store.dispatch(clientActions.addAppItem(AppsManager.getAppItem(dappName)));
+    StoreManager.store.dispatch(ClientAppTrayActions.switchDapp(dappName));
 
   }
 }

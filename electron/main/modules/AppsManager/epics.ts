@@ -78,10 +78,7 @@ const openDappEpic: Epic<any> = action$ => action$.pipe(
     try {
       await ClientManager.isClientWindowLoaded;
       await AppsManager.openDapp(dappName);
-      StoreManager.store.dispatch(clientActions.addAppItem(AppsManager.getAppItem(dappName)));
-      StoreManager.store.dispatch(ClientAppTrayActions.switchDapp(dappName));
       StoreManager.store.dispatch(clientActions.switchDapp(dappName));
-      StoreManager.store.dispatch(clientActions.switchDappSuccess(dappName));
     } catch (error) {
       StoreManager.store.dispatch(clientActions.switchDappFailure(dappName, error));
     }

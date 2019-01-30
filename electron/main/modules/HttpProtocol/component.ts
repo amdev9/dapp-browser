@@ -1,9 +1,7 @@
 import { protocol } from 'electron';
 import { component as AppsManager } from '../AppsManager';
 import { component as Dapp } from '../Dapp';
-import ClientManager from '../../helpers/systemComponents/ClientManager';
 import * as constants from './constants';
-import * as actions from './actions';
 
 export default class HttpProtocol {
   static async openLink(link: string) {
