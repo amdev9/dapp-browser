@@ -1,95 +1,144 @@
 import { AnyAction } from 'redux';
 import { combineEpics, Epic, ofType } from 'redux-observable';
-import { mergeMap } from 'rxjs/operators';
+import { mergeMap, map, filter } from 'rxjs/operators';
+import { race, defer } from 'rxjs';
+import * as path from 'path';
 
 import * as ipfsStorageActions from './actions';
 import * as constants from './constants';
 import * as models from './models';
+import * as utils from './utils';
 import * as clientConstants from 'ClientApp/modules/IpfsStorage/constants';
 import * as clientActions from 'ClientApp/modules/IpfsStorage/actions';
-import { component as FileManager, models as FileManagerModels } from '../FileManager';
-import ipfs from './component';
+import * as AppsManagerConstants from '../AppsManager/constants';
 
 const ipfsStorageClientUploadEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
   ofType(clientConstants.CLIENT_IPFS_STORAGE_UPLOAD_FILE),
   mergeMap(async (action) => {
-    const { uid } = action.meta
+    const { uid, name } = action.meta;
+    const { path } = action.payload;
 
     try {
-      const file = await ipfs.uploadFileWithSendStatus(action.payload.path);
+      const upload = await utils.uploadFileWithSendStatus({
+        uid,
+        path,
+        dappName: name,
+      });
 
-      if (!file) {
+      const ipfsFile = await upload.file;
+      if (!ipfsFile) {
         throw Error('Ipfs file object is empty');
       }
 
-      return clientActions.ipfsStorageUploadFileSuccess(file.hash, uid);
+      return clientActions.ipfsStorageUploadFileSuccess(ipfsFile.hash, uid);
     } catch (error) {
       return clientActions.ipfsStorageUploadFileFailure(error, uid);
     }
   }),
 );
 
-const ipfsStorageUploadEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
+const ipfsStorageUploadEpic: Epic<AnyAction> = action$ => action$.pipe(
   ofType(constants.IPFS_STORAGE_UPLOAD_FILE),
-  mergeMap(async (action) => {
-    const { entry } = action.payload;
-    const { uid } = action.meta;
+  mergeMap((action: AnyAction) =>
+    race(
+      defer(async () => {
+        const { entry } = action.payload;
+        const { uid, name } = action.meta;
 
-    try {
-      if (!entry) {
-        throw Error('File entry is incorrect');
-      }
+        try {
+          const filePath = utils.getPathFromFileEntry(entry);
 
-      const filePath = FileManager.getPath(entry);
+          const upload = await utils.uploadFileWithSendStatus({
+            uid,
+            dappName: name,
+            path: filePath,
+          });
 
-      if (!filePath) {
-        throw Error('File path with current entry does not exist');
-      }
+          const ipfsFileObject = await upload.file;
 
-      const ipfsFileObject = await ipfs.uploadFileWithSendStatus(filePath);
+          if (!ipfsFileObject) {
+            throw Error('Ipfs file object is empty');
+          }
 
-      if (!ipfsFileObject) {
-        throw Error('Ipfs file object is empty');
-      }
+          const ipfsFile: models.IpfsFileEntry = {
+            id: uid,
+            hash: ipfsFileObject.hash,
+            fileName: path.basename(filePath),
+          };
 
-      const ipfsFile: models.IpfsFileEntry = {
-        id: entry,
-        hash: ipfsFileObject.hash,
-      };
-
-      return ipfsStorageActions.uploadIpfsFileSuccess(ipfsFile, uid, action.meta.sourceUUID);
-    } catch (error) {
-      return ipfsStorageActions.uploadIpfsFileFailure(error, uid, action.meta.sourceUUID);
-    }
-  }),
+          return ipfsStorageActions.uploadIpfsFileSuccess(ipfsFile, uid, action.meta.sourceUUID);
+        } catch (error) {
+          return ipfsStorageActions.uploadIpfsFileFailure(error, uid, action.meta.sourceUUID);
+        }
+      }),
+      action$.pipe(
+        ofType(AppsManagerConstants.ON_DAPP_CLOSE),
+        filter((dappCloseAction: AnyAction) => action.meta.name === dappCloseAction.payload.dappName),
+        map((dappCloseAction: AnyAction) => {
+          try {
+            utils.ActiveLoads.removeActiveUploadsByDappName(action.meta.name);
+          } catch (err) {
+            console.log(err);
+          }
+          return ipfsStorageActions.uploadIpfsFileFailure('Dapp has been closed', action.meta.uid, action.meta.sourceUUID);
+        }),
+      ),
+    )),
 );
 
-const ipfsStorageDownloadEpic: Epic<AnyAction> = action$ => action$.pipe(
+const ipfsStorageDownloadWithCancellingEpic: Epic<AnyAction> = action$ => action$.pipe(
   ofType(constants.IPFS_STORAGE_DOWNLOAD_FILE),
-  mergeMap(async (action) => {
-    try {
-      const targetDirectory = await FileManager.selectDirectory();
-      const downloadFile = await ipfs.downloadFile(action.payload.hash);
+  mergeMap((action: AnyAction) =>
+    race(
+      defer(async () => {
+        const { hash } = action.payload;
+        const { uid, name } = action.meta;
 
-      if (!downloadFile) {
-        throw Error('File with current hash does not exist');
-      }
+        try {
+          const download = await utils.downloadFile({ hash, uid, dappName: name });
+          const savedFile = await download.file;
 
-      const savedFile = await FileManager.saveFile(targetDirectory, <FileManagerModels.FileObject> downloadFile);
-      const ipfsFileEntry: models.IpfsFileEntry = {
-        id: savedFile,
-        hash: action.payload.hash,
-      };
+          const ipfsFileEntry: models.IpfsFileEntry = {
+            hash,
+            id: uid,
+            fileName: savedFile.name,
+          };
 
-      return ipfsStorageActions.downloadIpfsFileSuccess(ipfsFileEntry, action.meta.uid, action.meta.sourceUUID);
-    } catch (error) {
-      return ipfsStorageActions.downloadIpfsFileFailure(error, action.meta.uid, action.meta.sourceUUID);
-    }
-  }),
+          return ipfsStorageActions.downloadIpfsFileSuccess(ipfsFileEntry, uid, action.meta.sourceUUID);
+        } catch (error) {
+          return ipfsStorageActions.downloadIpfsFileFailure(error, uid, action.meta.sourceUUID);
+        }
+      }),
+      action$.pipe(
+        ofType(AppsManagerConstants.ON_DAPP_CLOSE),
+        filter((dappCloseAction: AnyAction) => action.meta.name === dappCloseAction.payload.dappName),
+        map((dappCloseAction: AnyAction) => {
+          try {
+            utils.ActiveLoads.removeActiveDownloadsByDappName(action.meta.name);
+          } catch (err) {
+            console.log(err);
+          }
+          return ipfsStorageActions.downloadIpfsFileFailure('Dapp has been closed', action.meta.uid, action.meta.sourceUUID);
+        }),
+      ),
+    ),
+  ),
+);
+
+const stopUploadingEpic: Epic<AnyAction> = action$ => action$.pipe(
+  ofType(constants.IPFS_STORAGE_UPLOAD_FILE_FAILURE),
+  map((action: AnyAction) => clientActions.uploadsListEntrySetError(action.meta.uid, action.payload.error))
+);
+
+const stopDownloadingEpic: Epic<AnyAction> = action$ => action$.pipe(
+  ofType(constants.IPFS_STORAGE_DOWNLOAD_FILE_FAILURE),
+  map((action: AnyAction) => clientActions.downloadListEntrySetError(action.meta.uid, action.payload.error))
 );
 
 export default combineEpics(
   ipfsStorageUploadEpic,
-  ipfsStorageDownloadEpic,
   ipfsStorageClientUploadEpic,
+  ipfsStorageDownloadWithCancellingEpic,
+  stopUploadingEpic,
+  stopDownloadingEpic,
 );

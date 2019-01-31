@@ -39,3 +39,5 @@ export const toggleAppHome = (dappName: string) => action(constants.TOGGLE_APP_H
 export const addAppItem = (appItem: AppsManagerModels.AppItem) => action(constants.ADD_APP_ITEM, {
   item: appItem,
 });
+
+export const removeTrayItem = (targetDappName: string) => action(constants.REMOVE_TRAY_ITEM, { targetDappName })

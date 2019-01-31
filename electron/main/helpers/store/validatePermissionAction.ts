@@ -17,7 +17,9 @@ import { constants as StorageConstants } from '../../modules/Storage';
 
 import { constants as ClientDappConstants } from 'ClientApp/modules/Dapp';
 import { constants as ClientNotificationConstants } from 'ClientApp/modules/Notification';
-import { constants as ClientIpfsStorageConstants } from 'ClientApp/modules/IpfsStorage';
+import * as ClientIpfsStorageConstants from 'ClientApp/modules/IpfsStorage/constants';
+import * as ClientAppsManagerConstants from 'ClientApp/modules/AppsManager/constants';
+import * as ClientAppConstants from 'ClientApp/redux/constants';
 
 const ipfsRoomActionTypes = getModuleActionTypes(IpfsRoomConstants);
 const ipfsStorageActionTypes = getModuleActionTypes(IpfsStorageConstants);
@@ -32,6 +34,7 @@ const storageActionTypes = getModuleActionTypes(StorageConstants);
 const clientDappsActionTypes = getModuleActionTypes(ClientDappConstants);
 const clientNotificationActionTypes = getModuleActionTypes(ClientNotificationConstants);
 const clientIpfsStorageActionTypes = getModuleActionTypes(ClientIpfsStorageConstants);
+const clientAppsManagerActionTypes = getModuleActionTypes(ClientAppsManagerConstants);
 
 const dappActions: string[] = [
   constants.INTENT_OPEN_CHANNELS,
@@ -100,19 +103,20 @@ const clientActions: string[] = [
   constants.CLIENT_TOGGLE_HOME,
   constants.TOGGLE_APP_HOME,
   constants.TOGGLE_SEARCH_PANEL,
-  constants.CLIENT_SWITCH_DAPP,
   constants.ADD_APP_ITEM,
   constants.SET_TRAY_PROGRESS,
   constants.REMOVE_TRAY_ITEM,
   constants.MARKET_DOWNLOAD_DAPP,
   constants.TOGGLE_PERMISSION,
   constants.GRANT_PERMISSIONS,
+  ClientAppConstants.CLIENT_SWITCH_DAPP,
 
   ...appsManagerActionTypes,
 
   ...clientNotificationActionTypes,
   ...clientDappsActionTypes,
   ...clientIpfsStorageActionTypes,
+  ...clientAppsManagerActionTypes,
 ];
 
 const fileManagerActions: string[] = [
@@ -196,17 +200,17 @@ const checkGrantedForPermission = (state: IState, dappName: string, permissionNa
   if (state.permissionManager.grantedApps.includes(dappName) &&
     state.permissionManager.permissions[dappName] &&
     state.permissionManager.permissions[dappName].includes(permissionName)) {
-    console.log(`Dapp "${dappName}" has privileges to use ${permissionName}}. OK`);
+    logger.log(`Dapp "${dappName}" has privileges to use ${permissionName}}. OK`);
     return true;
   }
-  console.log(`Dapp "${dappName}" has no privileges to use ${permissionName}}`);
+  logger.log(`Dapp "${dappName}" has no privileges to use ${permissionName}}`);
   return false;
 };
 
 const getSourceDappName = (globalId: RendererConf[], action: any) => {
   const dapp = globalId.find(item => item.id === action.meta.sourceUUID);
   if (!dapp) {
-    console.log('Dapp not found in globalId by uuid: ', action.meta.sourceUUID);
+    logger.log('Dapp not found in globalId by uuid: ', action.meta.sourceUUID);
     return null;
   }
   return dapp.name;
@@ -218,14 +222,14 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
 
       if (action.payload.status === 'dapp') {
         if (!dappActions.includes(action.type)) {
-          console.log(`Cancelled for dapp ${action.type}`);
+          logger.log(`Cancelled for dapp ${action.type}`);
         } else {
           const dappName = getSourceDappName(globalId, action);
 
           if (checkGranted(store.getState(), dappName, action.type)) {
             return next(action);
           }
-          console.log(`Action "${action.type}" is not granted for dapp "${dappName}"`);
+          logger.log(`Action "${action.type}" is not granted for dapp "${dappName}"`);
         }
 
       } else if (action.payload.status === 'client') {
@@ -241,16 +245,16 @@ export const validatePermissionAction = (globalId: RendererConf[]) => {
         if (clientActions.includes(action.type)) {
           return next(action);
         }
-        console.log('Cancelled for client: ', action.type);
+        logger.log('Cancelled for client: ', action.type);
 
       } else if (action.payload.status === 'permission_manager') {
         if (pmActions.includes(action.type)) {
           return next(action);
         }
-        console.log(`Cancelled for permission manager ${action.type}`);
+        logger.log(`Cancelled for permission manager ${action.type}`);
       }
     } else {
-      console.log('no status: ', action);
+      logger.log('no status: ', action);
       return next(action);
     }
   };

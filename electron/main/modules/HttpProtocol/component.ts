@@ -1,9 +1,7 @@
 import { protocol } from 'electron';
 import { component as AppsManager } from '../AppsManager';
 import { component as Dapp } from '../Dapp';
-import ClientManager from '../../helpers/systemComponents/ClientManager';
 import * as constants from './constants';
-import * as actions from './actions';
 
 export default class HttpProtocol {
   static async openLink(link: string) {
@@ -20,7 +18,7 @@ export default class HttpProtocol {
     const isDappOpen = activeDapp === requestDappName;
 
     if (!isDappOpen || !AppsManager.isDappReady(requestDappName)) {
-      await ClientManager.switchDapp(requestDappName);
+      await AppsManager.openDapp(requestDappName);
     }
 
     const createdDapp = Dapp.getDappByName(requestDappName);
@@ -35,10 +33,10 @@ export default class HttpProtocol {
       HttpProtocol.openLink(req.url);
     }, (err) => {
       if (!err) {
-        console.log('registered arr protocol');
+        logger.log('registered arr protocol');
       } else {
-        console.error('could not register arr protocol');
-        console.error(err);
+        logger.error('could not register arr protocol');
+        logger.error(err);
       }
     });
   }

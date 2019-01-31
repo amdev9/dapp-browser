@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "css-loader": "^1.0.1",
+    "drop-console-webpack-plugin": "^3.0.2",
     "flux-standard-action": "^2.0.3",
     "fs": "0.0.1-security",
     "react": "^16.5.0",

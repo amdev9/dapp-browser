@@ -11,16 +11,16 @@ const cleanRepo = async (repoPath: string) => {
   // This fixes a bug on Windows, where the daemon seems
   // not to be exiting correctly, hence the file is not
   // removed.
-  console.log('Cleaning repo.lock file');
+  logger.log('Cleaning repo.lock file');
   const lockPath = path.join(repoPath, 'repo.lock');
 
   fs.access(lockPath, fs.constants.F_OK, (err) => {
     if (err) {
-      console.warn(`unable to access file here: ${lockPath}`);
+      logger.warn(`unable to access file here: ${lockPath}`);
     } // throw err;
     fs.unlink(lockPath, (err) => {
       if (err) {
-        console.warn(`unable to delete file here: ${lockPath}`);
+        logger.warn(`unable to delete file here: ${lockPath}`);
       } // throw err;
     });
   });
@@ -30,7 +30,7 @@ export const getReadyIpfsInstance = async (options: IPFS.Options = { repo: path.
   if (!ipfsInstance) {
     ipfsInstance = new IPFS({
       ...remoteConfig,
-      repo: path.join(options.repo, Math.random().toString()),
+      repo: path.join(options.repo),
     });
 
     await cleanRepo(options.repo);
@@ -41,9 +41,9 @@ export const getReadyIpfsInstance = async (options: IPFS.Options = { repo: path.
 
       ipfsInstance.on('ready', () => {
         if (ipfsInstance.isOnline()) {
-          console.log('online');
+          logger.log('online');
         } else {
-          console.log('offline, try to start');
+          logger.log('offline, try to start');
           ipfsInstance.start();
         }
       });

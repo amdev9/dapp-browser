@@ -2,8 +2,9 @@ import { action } from 'typesafe-actions';
 
 import history from '../history';
 import * as constants from '../constants';
-import { Message } from '../../services/RoomComponentService';
+import { Message } from '../../redux/models';
 import { Room } from '../reducers/rooms';
+import uuid = require('uuid');
 
 export const deselectRoom = () =>
   action(constants.DESELECT_ROOM);
@@ -25,11 +26,14 @@ export const addRoom = (roomId: string, roomName: string) =>
 export const removeRoom = (roomId: string) =>
   action(constants.ROOMS_REMOVE, { roomId });
 
-export const addRoomMessage = (roomId: string, message: Message) =>
-  action(constants.MESSAGES_ADD_ROOM_MESSAGE, { roomId, message });
+export const addRoomMessage = (roomId: string, message: Message, messageId?: string) =>
+  action(constants.MESSAGES_ADD_ROOM_MESSAGE, { roomId, entity: { message, id: messageId || uuid() } });
 
 export const removeRoomMessages = (roomId: string) =>
   action(constants.MESSAGES_REMOVE_ROOM_MESSAGES, { roomId });
+
+export const removeRoomMessage = (roomId: string, messageId: string) =>
+  action(constants.MESSAGES_REMOVE_ROOM_MESSAGE, { roomId, messageId });
 
 export const setFilteredRoomList = (roomList: Room[]) => action(constants.ROOMS_SET_FILTERED_ROOMS_LIST, { roomList });
 
@@ -45,4 +49,4 @@ export const resetDappFocused = () =>
   action(constants.MAIN_RESET_DAPP_FOCUSED);
 
 export const onClickFileAttach = () =>
-  action(constants.ROOMS_ON_CLICK_FILE_ATTACH)
+  action(constants.ROOMS_ON_CLICK_FILE_ATTACH);

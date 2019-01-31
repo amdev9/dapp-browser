@@ -12,7 +12,8 @@ import {
   constants as clientConstants,
 } from 'ClientApp/modules/Notification';
 
-import ClientManager from '../../helpers/systemComponents/ClientManager';
+// import ClientManager from '../../helpers/systemComponents/ClientManager';
+import { component as AppsManager } from '../../modules/AppsManager';
 import StoreManager from '../../helpers/systemComponents/StoreManager';
 
 const notificationEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
@@ -21,7 +22,7 @@ const notificationEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix 
     showNotification(action.payload.options, {
       onClick: () => {
         StoreManager.store.dispatch(actions.triggerAction(action.payload.events.onClick));
-        ClientManager.switchDapp(action.meta.name);
+        AppsManager.openDapp(action.meta.name);
       },
       onClose: () => {
         StoreManager.store.dispatch(actions.triggerAction(action.payload.events.onClose));
@@ -41,7 +42,7 @@ const notificationEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix 
 const clientNotificationEpic: Epic<AnyAction> = action$ => action$.pipe( // @todo fix action type
   ofType(clientConstants.CLIENT_NOTIFICATION_TRIGGER_ACTION),
   map((action) => {
-    ClientManager.switchDapp(action.meta.appName);
+    AppsManager.openDapp(action.meta.appName);
     return actions.triggerAction(action.meta.uid);
   }),
 );

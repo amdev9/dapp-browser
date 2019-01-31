@@ -46,7 +46,7 @@ export class NetworkAPI {
       this.dynamicGlobal = ChainStore.getObject('2.1.0');
       this.ws = this.dynamicGlobal ? this.dynamicGlobal.toJS() : this.dynamicGlobal;
     } catch (error) {
-      console.log(error);
+      logger.log(error);
     }
   }
 
@@ -95,7 +95,7 @@ export class NetworkAPI {
       }
       throw new Error('ws connection was broken');
     } catch (error) {
-      console.log(error);
+      logger.log(error);
     }
   }
 
@@ -106,7 +106,7 @@ export class NetworkAPI {
         NetworkAPI.store.dispatch({ type: constants.NETWORK_BLOCK_CREATED, payload: { block: JSON.stringify(broadcastBlock) }, meta: { targetUUID: dapp } });
       });
     } catch (error) {
-      console.log(error);
+      logger.log(error);
     }
   }
 
@@ -135,7 +135,7 @@ export class NetworkAPI {
       NetworkAPI.subscribers = [];
       ChainStore.unsubscribe(this.broadcast);
     } catch (error) {
-      console.log(error);
+      logger.log(error);
     }
   }
 }

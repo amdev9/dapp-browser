@@ -22,7 +22,7 @@ import { createConnection, ConnectionOptions } from 'typeorm';
 import { Store } from '../../modules/Storage/models';
 import { dbTempPath } from '../constants/appPaths';
 
-console.log('App temp path:', dbTempPath);
+logger.log('App temp path:', dbTempPath);
 
 export interface SQLiteStorageConfig {
   database?: string;
@@ -55,7 +55,7 @@ export default function SQLiteStorage(config?: SQLiteStorageConfig) {
       return storeDb && storeDb.value;
 
     } catch (e) {
-      console.error(e);
+      logger.error(e);
     }
   };
 
@@ -70,7 +70,7 @@ export default function SQLiteStorage(config?: SQLiteStorageConfig) {
       return storeRepository.save(storeDb);
 
     } catch (e) {
-      console.error(e);
+      logger.error(e);
     }
   };
 
@@ -83,7 +83,7 @@ export default function SQLiteStorage(config?: SQLiteStorageConfig) {
       return storeRepository.remove(storeToRemove);
 
     } catch (e) {
-      console.error(e);
+      logger.error(e);
     }
   };
 
@@ -96,7 +96,7 @@ export default function SQLiteStorage(config?: SQLiteStorageConfig) {
       return stories.map((store: Store) => store.key);
 
     } catch (e) {
-      console.error(e);
+      logger.error(e);
     }
   };
 
@@ -109,7 +109,7 @@ export default function SQLiteStorage(config?: SQLiteStorageConfig) {
       const result = storeRepository.remove(storiesToRemove);
 
     } catch (e) {
-      console.error(e);
+      logger.error(e);
     }
 
   };

@@ -8,7 +8,6 @@ import { Store } from 'redux';
 import { ReplaySubject } from 'rxjs';
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer';
 import * as path from 'path';
-import * as nodeConsole from 'console';
 import { configureStore, initialState } from './helpers/store/configureStore';
 import { globalUUIDList } from './helpers/constants/globalVariables';
 import { IState } from './helpers/reducers/state';
@@ -17,22 +16,23 @@ import { getDefaultExecPath, Keychain } from './helpers/systemComponents/Keychai
 import { NetworkAPI } from './helpers/systemComponents/Network';
 import ClientManager from './helpers/systemComponents/ClientManager';
 import StoreManager from './helpers/systemComponents/StoreManager';
+import { getReadyIpfsInstance } from './helpers/systemComponents/IpfsInstance';
 
-import { component as AppsManager } from './modules/AppsManager';
+import { component as AppsManager, actions as AppsManagerActions } from './modules/AppsManager';
 import { component as Dapp } from './modules/Dapp';
 import { component as HttpProtocol } from './modules/HttpProtocol';
 
 const KEYCHAIN_PATH = path.join(__dirname, '..', 'helpers', 'systemComponents', 'Keychain', getDefaultExecPath());
-const console = new nodeConsole.Console(process.stdout, process.stderr);
 
 export const isProduction = process.env.ELECTRON_ENV !== 'development';
+
 let store: Store<IState>;
 
 contextMenu({
   prepend: (params: any, browserWindow: BrowserWindow) => [{
     label: 'Close app',
     click: (menuItem: MenuItem, browserWindow: BrowserWindow, event: Event) => {
-      store.dispatch({ type: 'REMOVE_TRAY_ITEM', payload: { targetDappName: params.titleText } });
+      store && store.dispatch(AppsManagerActions.onDappClose(params.titleText));
     },
   }],
   showInspectElement: false,
@@ -104,7 +104,7 @@ app.on('window-all-closed', () => {
   try {
     networkAPI.removeAllSubscribers();
   } catch (error) {
-    console.log(error);
+    logger.log(error);
     dialog.showMessageBox(clientWindow, {
       type: 'warning',
       title: 'Warning',
@@ -118,14 +118,14 @@ const replayOpenUrls = new ReplaySubject();
 app.on('open-url', (e, url) => {
   // e.preventDefault();
   replayOpenUrls.next(url);
-  console.log('open-url', url);
+  logger.log('open-url', url);
 });
 
 app.on('ready', async () => {
 
   if (process.env.ELECTRON_ENV === 'development') {
     const devtools = await installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS]);
-    console.log(`Added Extension: ${devtools}`);
+    logger.log(`Added Extension: ${devtools}`);
   }
 
   const menu = Menu.buildFromTemplate(template);
@@ -137,7 +137,7 @@ app.on('ready', async () => {
     const keychainInstance = new Keychain(KEYCHAIN_PATH);
     keysList = await keychainInstance.list();
   } catch (e) {
-    console.log('keychain list error: ', e);
+    logger.log('keychain list error: ', e);
   }
 
   store = configureStore({
@@ -147,6 +147,7 @@ app.on('ready', async () => {
   }, globalUUIDList);
 
   StoreManager.store = store;
+  await getReadyIpfsInstance();
 
   clientWindow = ClientManager.createClientWindow();
 
@@ -173,7 +174,7 @@ app.on('ready', async () => {
 
     const activeDapp = Dapp.getActiveDappName();
     if (activeDapp) {
-      ClientManager.switchDapp(activeDapp);
+      AppsManager.openDapp(activeDapp);
     }
   });
 
@@ -186,7 +187,7 @@ app.on('ready', async () => {
     networkAPI = new NetworkAPI(store);
     networkAPI.init();
   } catch (error) {
-    console.log(error);
+    logger.log(error);
     dialog.showMessageBox(clientWindow, {
       type: 'warning',
       title: 'Warning',

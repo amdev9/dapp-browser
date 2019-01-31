@@ -17,3 +17,10 @@ export interface FileObject {
   content?: Buffer;
   type: 'file' | string;
 }
+
+export interface SavedFile {
+  fileId: string;
+  path: string;
+  size: number;
+  name: string;
+}

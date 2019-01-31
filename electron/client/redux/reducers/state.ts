@@ -32,6 +32,7 @@ export interface KeychainPanel {
 }
 
 export interface LoaderPanel {
+  activeTab: string;
 }
 
 export interface SettingsPanel {

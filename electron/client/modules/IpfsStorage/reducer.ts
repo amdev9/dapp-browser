@@ -5,7 +5,9 @@ import * as models from './models';
 const initialState = {
   uploaded: [] as models.UploadedFileEntry[],
   uploads: [] as models.UploadsFileEntry[],
-}
+  downloaded: [] as models.DownloadedFileEntry[],
+  downloads: [] as models.DownloadFileEntry[],
+};
 
 export default function reducer(state: models.IpfsStorageState = initialState, action: any) {
   switch (action.type) {
@@ -33,16 +35,7 @@ export default function reducer(state: models.IpfsStorageState = initialState, a
     case constants.CLIENT_UPLOADS_LIST_ENTRY_SET_ERROR:
       return {
         ...state,
-        uploads: state.uploads.map((upload) => {
-          if (upload.id === action.payload.entryId) {
-            return {
-              ...upload,
-              error: action.payload.error,
-            };
-          }
-
-          return upload;
-        }),
+        uploads: state.uploads.filter((upload) => upload.id !== action.payload.entryId)
       };
 
     case constants.CLIENT_UPLOADS_LIST_ENTRY_DELETE:
@@ -69,6 +62,49 @@ export default function reducer(state: models.IpfsStorageState = initialState, a
       return {
         ...state,
         uploaded: [],
+      };
+
+    case constants.CLIENT_UPLOADED_LIST_SET_ALL_AS_READ:
+      return {
+        ...state,
+        uploaded: state.uploaded.map((item) => ({
+          ...item,
+          shown: true,
+        })),
+      };
+
+    case constants.CLIENT_DOWNLOAD_LIST_ENTRY_ADD:
+      return {
+        ...state,
+        downloads: [...state.downloads, action.payload.entry]
+      };
+
+    case constants.CLIENT_DOWNLOAD_LIST_ENTRY_SET_ERROR:
+      return {
+        ...state,
+        downloads: state.downloads.filter((download) => download.id !== action.payload.entryId)
+      };
+
+    case constants.CLIENT_DOWNLOAD_LIST_ENTRY_DELETE:
+
+      return {
+        ...state,
+        downloads: state.downloads.filter((entry) => entry.id !== action.payload.entryId),
+      };
+
+    case constants.CLIENT_DOWNLOADED_LIST_ENTRY_ADD:
+      return {
+        ...state,
+        downloaded: [action.payload.entry, ...state.downloaded],
+      };
+
+    case constants.CLIENT_DOWNLOADED_LIST_SET_ALL_AS_READ:
+      return {
+        ...state,
+        downloaded: state.downloaded.map((item) => ({
+          ...item,
+          shown: true,
+        })),
       };
 
     default:

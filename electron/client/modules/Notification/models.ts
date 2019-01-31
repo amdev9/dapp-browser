@@ -5,8 +5,10 @@ export interface NotifyItem {
   appName: string;
   created: Date;
   onClick: string;
+  shown?: boolean;
 }
 
 export interface NotificationPanel {
   items: NotifyItem[];
+  unreadCounter: number;
 }

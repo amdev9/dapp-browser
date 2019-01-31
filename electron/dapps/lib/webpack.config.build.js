@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const FileManagerPlugin = require('filemanager-webpack-plugin');
 
 module.exports = {
@@ -32,9 +33,13 @@ module.exports = {
       MainApp: path.resolve(__dirname, '../../main'),
       PermissionApp: path.resolve(__dirname, '../../permissionManager'),
       ClientApp: path.resolve(__dirname, '../../client'),
+      logger: path.resolve(__dirname, './redux/utils/logger.ts'),
     }
   },
   plugins: [
+    new webpack.ProvidePlugin({
+      logger: path.resolve(__dirname, './redux/utils/logger.ts')
+    }),
     new FileManagerPlugin({
       onEnd: {
         copy: [

@@ -18,7 +18,7 @@ export default class PermissionManager {
     if (PermissionManager.permissionWindow) {
       PermissionManager.permissionWindow.close();
       PermissionManager.permissionWindow = null;
-      console.log('onSwitchDapp: close permissionManager');
+      logger.log('onSwitchDapp: close permissionManager');
     }
   }
 

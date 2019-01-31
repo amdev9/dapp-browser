@@ -65,7 +65,7 @@ export async function createDappView(globalUUIDList: RendererConf[], dapp: AppsM
     }
 
   } catch (error) {
-    console.log('copy dapp lib error', error);
+    logger.log('copy dapp lib error', error);
   }
 
   // console.log('entry: ', path.join(DAPPS_DOWNLOAD_PATH, dapp.appName, dapp.main));

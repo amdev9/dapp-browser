@@ -7,13 +7,17 @@ import { functionPromiseTimeout, mkdirp, readDir, readFile, checkExists } from '
 import { DappFrame } from '../../helpers/systemComponents/DappFrame';
 import PermissionManager from '../../helpers/systemComponents/PermissionManager';
 import StoreManager from '../../helpers/systemComponents/StoreManager';
-import { component as IpfsStorage } from '../IpfsStorage';
+import IpfsStorage from '../IpfsStorage/component';
 import { component as FileManager } from '../FileManager';
 
+import * as actions from './actions';
 import * as constants from './constants';
 import { AppItem, ReadyDapp, DappDownloadEntity } from './models';
 import { createDappView, validateDappManifest, validateDapps } from './utils';
 import { component as Dapp } from '../Dapp';
+import ClientManager from '../../helpers/systemComponents/ClientManager';
+import * as clientActions from '../../helpers/actions/client';
+import * as ClientAppTrayActions from 'ClientApp/redux/actions/tray';
 
 let installedDapps: AppItem[] = [];
 
@@ -172,21 +176,34 @@ export default class AppsManager {
 
     // Waiting for loading DOM of dapp
     await dappReadyPromise;
-    const createdDapp = new Dapp(dappRenderer.id);
+    const createdDapp = new Dapp(dappRenderer);
     createdDapp.setDappFocus();
   }
 
-  static async closeDapp(targetDappName: string): Promise<void> {
-    const renderer = AppsManager.getDappRenderer(targetDappName);
-    renderer.dappView.destroy();
-    const index = globalUUIDList.findIndex(item => item.name === targetDappName && item.status === 'dapp');
-    globalUUIDList.splice(index, 1);
+  static toggleHome(): void {
+    const activeDapp = Dapp.getActiveDapp();
+    if (activeDapp) {
+      activeDapp.resetDappFocus();
+    }
+    ClientManager.clientWindow.setBrowserView(null);
   }
 
-  static async openDapp(dappName: string, clientWindow: BrowserWindow): Promise<void> {
+  static async openDapp(dappName: string): Promise<void> {
+    if (!dappName) {
+      throw new Error('AppsManager.openDapp method cancelled with error: dappName is undefined');
+    }
+    const clientWindow = ClientManager.clientWindow;
+    await ClientManager.isClientWindowLoaded;
+
     const dapp = AppsManager.getInstalledDappItem(dappName);
 
-    await PermissionManager.checkDappPermissions(dappName, dapp.permissions, clientWindow);
-    await AppsManager.createDapp(dappName, clientWindow);
+    if (dapp) {
+      await PermissionManager.checkDappPermissions(dappName, dapp.permissions, clientWindow);
+      await AppsManager.createDapp(dappName, clientWindow);
+    }
+
+    StoreManager.store.dispatch(clientActions.addAppItem(AppsManager.getAppItem(dappName)));
+    StoreManager.store.dispatch(ClientAppTrayActions.switchDapp(dappName));
+
   }
 }

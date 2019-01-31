@@ -1,18 +1,12 @@
 import * as uuid from 'uuid/v4';
 import { EventEmitter } from 'events';
 import { IpfsRoom, NotificationEvents, NotificationOptions } from '../../types/array-io';
-import { selectRoom } from '../redux/thunks';
+import { Message } from '../redux/models';
 
 const ArrayIO = require('array-io');
 
 const ON_JOIN_USER_MESSAGE = 'User has joined';
 const ON_LEFT_USER_MESSAGE = 'User has left';
-
-export type Message = {
-  from: string;
-  message: string;
-  own: boolean;
-};
 
 export type RoomNotification = {
   removeNotification: () => void;
@@ -115,7 +109,7 @@ export class RoomComponentStore {
     RoomComponentStore.roomList.push(room);
   }
 
-  static getRoomById(roomId: string = ''): RoomComponent | null {
+  static getRoomById(roomId: string | null = ''): RoomComponent | null {
     return RoomComponentStore.roomList.find((room: RoomComponent) => room.id === roomId) || null;
   }
 

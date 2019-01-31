@@ -1,18 +1,32 @@
 import StoreManager from '../../helpers/systemComponents/StoreManager';
 import * as actions from './actions';
-import { globalUUIDList } from '../../helpers/constants/globalVariables';
+import { globalUUIDList, RendererConf } from '../../helpers/constants/globalVariables';
 import { activeDappSelector } from '../AppsManager/selectors';
 
 export default class Dapp {
-  uuid: string;
+  renderer: RendererConf;
 
-  constructor(uuid: string) {
-    this.uuid = uuid;
+  constructor(dappRenderer: RendererConf) {
+    this.renderer = dappRenderer;
   }
 
-  static getDappByName(dappName: string): Dapp {
+  static getDappByName(dappName: string): Dapp | null {
+    if (!dappName) {
+      return null;
+    }
+
     const dappRenderer = globalUUIDList.find(dapp => dapp.name === dappName);
-    return dappRenderer && dappRenderer.id && new Dapp(dappRenderer.id) || null;
+    return dappRenderer && dappRenderer.id && new Dapp(dappRenderer) || null;
+  }
+
+  static getDappById(dappId: string): Dapp | null {
+    if (!dappId) {
+      return null;
+    }
+
+    const dappRenderer = globalUUIDList.find(dapp => dapp.id === dappId && dapp.status === 'dapp');
+
+    return dappRenderer && dappRenderer.id && new Dapp(dappRenderer) || null;
   }
 
   static getActiveDappName() {
@@ -28,6 +42,23 @@ export default class Dapp {
     }
 
     return Dapp.getDappByName(activeDappName);
+  }
+
+  closeDapp(): void {
+    this.renderer && this.renderer.dappView && this.renderer.dappView.destroy();
+    const index = globalUUIDList.findIndex(item => item.id === this.renderer.id);
+
+    if (!isNaN(index)) {
+      globalUUIDList.splice(index, 1);
+    }
+  }
+
+  get uuid() {
+    return this.renderer.id;
+  }
+
+  get name() {
+    return this.renderer.name;
   }
 
   setDappFocus() {

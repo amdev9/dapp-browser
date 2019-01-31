@@ -3,6 +3,8 @@ import * as path from 'path';
 import * as extra from 'fs-extra';
 import * as rimrafModule from 'rimraf';
 
+import { isDev } from '../constants/globalVariables';
+
 export const EXEC_TIMEOUT = 10000;
 
 export const functionPromiseTimeout = (f: () => Promise<any>, timeout: number = EXEC_TIMEOUT): any => {
@@ -148,3 +150,21 @@ export async function copy(src: string, dest: string): Promise<any> {
     });
   });
 }
+
+/** inspector module types */
+declare var logger: Logger;
+
+// export = Logger;
+
+interface Logger {
+  log(...args: any[]): void;
+
+  error(...args: any[]): void;
+
+  warn(...args: any[]): void;
+}
+
+interface Window {
+  logger: Logger;
+}
+

@@ -1,4 +1,6 @@
 import { action } from 'typesafe-actions';
-import { TOGGLE_LOADER_PANEL } from '../constants';
+import * as constants from '../constants';
 
-export const toggle = () => action(TOGGLE_LOADER_PANEL);
+export const toggle = () => action(constants.TOGGLE_LOADER_PANEL);
+
+export const setLoaderTab = (tab: string) => action(constants.SET_LOADER_TAB, { tab }, { scope: 'local' });
