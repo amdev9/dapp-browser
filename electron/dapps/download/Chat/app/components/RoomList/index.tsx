@@ -6,7 +6,7 @@ import * as actions from '../../redux/actions';
 import * as thunks from '../../redux/thunks';
 import { IState } from '../../redux/reducers';
 import { Room } from '../../redux/reducers/rooms';
-import RoomsSearch from '../RoomsSearch/index';
+import RoomsSearch from '../RoomsSearch';
 
 import './styles.css';
 
@@ -18,7 +18,7 @@ interface StateProps {
 
 interface DispatchProps {
   selectRoom: (roomId: string) => void;
-  roomRemove: (roomId: string) => void;
+  roomLeave: (roomId: string) => void;
 }
 
 const mapStateToProps = (state: IState): StateProps => ({
@@ -29,34 +29,68 @@ const mapStateToProps = (state: IState): StateProps => ({
 
 const mapDispatchToProps = (dispatch: any): DispatchProps => ({
   selectRoom: (roomId: string) => dispatch(thunks.selectRoom(roomId)),
-  roomRemove: (roomId: string) => dispatch(thunks.roomRemoveThunk(roomId)),
+  roomLeave: (roomId: string) => dispatch(thunks.roomLeaveThunk(roomId)),
 });
 
 type Props = StateProps & DispatchProps;
 
 class RoomList extends React.Component<Props> {
-  renderRoom(room: Room, i: number) {
-    const { selectRoom, selectedRoom } = this.props;
+  renderEmpty() {
+    return (
+      <li className="roomListItem list-group-item disabled">
+        Room list is empty
+      </li>);
+  }
+
+  isEmptyRoomList() {
+    const { roomList } = this.props;
+
+    return !roomList || !roomList.length;
+  }
+
+  renderRoomList() {
+    const { roomList, filteredRoomList } = this.props;
+
+    if (this.isEmptyRoomList()) {
+      return this.renderEmpty();
+    }
+
+    if (filteredRoomList) {
+
+      return filteredRoomList.map(this.renderRoomListItem.bind(this));
+    }
+
+    return roomList && roomList.map(this.renderRoomListItem.bind(this));
+  }
+
+  renderRoomListItem(room: Room, i: number) {
+    const { selectRoom, selectedRoom, roomLeave } = this.props;
     const isSelectedRoom = selectedRoom === room.roomId;
 
     return (
-      <div
+      <a
         key={i}
-        className={cn('roomListItem', { roomListItem_active: isSelectedRoom })}
+        className={cn('roomListItem', 'justify-content-between', 'list-group-item', 'list-group-item-action', { active: isSelectedRoom })}
         onClick={() => selectRoom(room.roomId)}
+        href="#"
       >
-        <div className="roomListRoomName">{room.roomName}</div>
+        {room.roomName}
         {room.unreadMessagesCount ? (
-          <div className="roomListRoomUnreadMessages">
+          <span className={cn('badge', 'float-right', isSelectedRoom ? 'badge-light' : 'badge-primary')}>
             {room.unreadMessagesCount}
-          </div>
+          </span>
         ) : null}
-      </div>
+        <span
+          aria-hidden="true"
+          className="rootListClose"
+          onClick={(e) => {
+            e.stopPropagation();
+            roomLeave(room.roomId);
+          }}>
+            &times;
+          </span>
+      </a>
     );
-  }
-
-  renderEmpty() {
-    return <div className="roomListEmpty">Room list is empty</div>;
   }
 
   renderFilteredRoomList(filteredRoomList: Room[]) {
@@ -64,22 +98,7 @@ class RoomList extends React.Component<Props> {
       return this.renderEmpty();
     }
 
-    return filteredRoomList.map(this.renderRoom.bind(this));
-  }
-
-  renderRoomList() {
-    const { roomList, filteredRoomList } = this.props;
-
-    if (!roomList || !roomList.length) {
-      return this.renderEmpty();
-    }
-
-    if (filteredRoomList) {
-
-      return filteredRoomList.map(this.renderRoom.bind(this));
-    }
-
-    return roomList && roomList.map(this.renderRoom.bind(this));
+    return filteredRoomList.map(this.renderRoomListItem.bind(this));
   }
 
   render() {
@@ -87,7 +106,9 @@ class RoomList extends React.Component<Props> {
     return (
       <div className="roomList">
         <RoomsSearch/>
-        {this.renderRoomList()}
+        <div className={cn('list-group', { 'list-group-flush': this.isEmptyRoomList() })}>
+          {this.renderRoomList()}
+        </div>
       </div>
     );
   }

@@ -1,18 +1,15 @@
 
 .chatControls {
     display: flex;
-    margin: 0 0 5px;
-    padding: 0 10px;
+    margin: 0;
+    padding: 0;
     border-top: 1px solid #ddd;
 }
 
 .chatControlsInput {
-    flex: 1;
-    border: none;
-    font-size: 18px;
-    padding: 20px;
-    width: 100%;
-    outline: none;
+    outline: none !important;
+    border: 0 !important;
+    box-shadow: none !important;
 }
 
 .chatControlsSubmit {
@@ -20,13 +17,15 @@
     border: none;
     font-size: 32px;
     cursor: pointer;
-    outline: none;
+    outline: none !important;
+    border-radius: 0 !important;
+    border-width: 0 1px 0 1px !important;
 }
 
 .chatControlsAttachButton {
     cursor: pointer;
     background: transparent;
-    border: none;
-    padding: 0 10px;
-    outline: none;
+    outline: none !important;
+    border: 0 !important;
+    border-radius: 0 !important;
 }

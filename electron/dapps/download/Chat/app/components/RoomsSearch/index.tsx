@@ -4,12 +4,13 @@ import { connect } from 'react-redux';
 
 import * as constants from '../../redux/constants';
 import * as actions from '../../redux/actions';
-import* as thunks from '../../redux/thunks';
+import * as thunks from '../../redux/thunks';
 
 import './styles.css';
 
 interface DispatchProps {
   resetFilterRoomList: () => void;
+  deselectRoom: () => void;
   onSubmit: (values: any) => void;
   filterRoomList: (searchString: string) => void;
 }
@@ -21,6 +22,7 @@ const mapDispatchToProps = (dispatch: any): DispatchProps => ({
   },
   resetFilterRoomList: () => dispatch(actions.resetFilterRoomList()),
   filterRoomList: (searchString: string) => dispatch(thunks.filterRoomListThunk(searchString)),
+  deselectRoom: () => dispatch(actions.deselectRoom()),
 });
 
 type FormProps<P> = P & InjectedFormProps<{}, P>;
@@ -44,12 +46,24 @@ class RoomsSearch extends React.Component<FormProps<DispatchProps>> {
         {dirty ? (
           <span
             className="roomSearchClear"
+            aria-hidden="true"
             onClick={(e) => {
               e.stopPropagation();
               reset();
               resetFilterRoomList();
-            }}>X</span>
+            }}>
+            &times;
+          </span>
         ) : null}
+        <div className="input-group-append">
+          <button
+            className="roomSearchAddRoomButton input-group-text btn btn-outline-secondary"
+            type="button"
+            onClick={() => this.props.deselectRoom()}
+          >
+            +
+          </button>
+        </div>
       </form>
     );
   }

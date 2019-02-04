@@ -38,24 +38,19 @@ class CreateRoomScreen extends React.Component<InjectedFormProps> {
 
     return (
       <div className="createRoom">
-        <form onSubmit={handleSubmit}>
+        <form className="form-inline" onSubmit={handleSubmit}>
           <Field
             name={ROOM_NAME_FIELD}
             type="text"
-            className="createRoomInput"
+            className="form-control createRoomInput"
             component="input"
             label="Room name"
             placeholder="Enter room name..."
           />
-
-          <button
-            className="createRoomButton"
-            type="submit">
-            Open chat room
-          </button>
-          {error && this.renderError()}
-          {submitting && this.renderLoading()}
+          <button type="submit" className="btn btn-primary ml-2">Open chat room</button>
         </form>
+        {error && this.renderError()}
+        {submitting && this.renderLoading()}
       </div>
     );
   }

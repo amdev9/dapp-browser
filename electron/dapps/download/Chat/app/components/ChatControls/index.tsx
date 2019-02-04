@@ -12,6 +12,8 @@ import * as constants from '../../redux/constants';
 import { IState } from '../../redux/reducers';
 
 import * as PaperClipSvg from '../../images/paperclip.svg';
+import * as TelegramSvg from '../../images/telegram-plane-brands.svg';
+import * as SmileSvg from '../../images/smile.svg';
 import './styles.css';
 
 type FormProps<P> = P & InjectedFormProps<{}, P>;
@@ -52,13 +54,6 @@ class ChatControls extends React.Component<FormProps<StateProps & DispatchProps>
       reset && reset();
     }
 
-    this.focus();
-  }
-
-  focus() {
-    if (this.messageInput && this.messageInput.getRenderedComponent) {
-      this.messageInput.getRenderedComponent().focus();
-    }
   }
 
   async onClickFileAttach() {
@@ -69,7 +64,6 @@ class ChatControls extends React.Component<FormProps<StateProps & DispatchProps>
         return;
       }
       const fileEntry = await ArrayIO.FileManager.openFile();
-      console.log('fileEntry', fileEntry);
       if (!fileEntry || !fileEntry.id) {
         throw Error('File entry incorrect');
       }
@@ -87,33 +81,37 @@ class ChatControls extends React.Component<FormProps<StateProps & DispatchProps>
     return (
       <form
         onSubmit={handleSubmit(this.handleSubmit.bind(this))}
-        className="chatControls"
+        className="chatControls input-group"
       >
-        <button
-          className="chatControlsAttachButton"
-          type="button"
-          onClick={this.onClickFileAttach.bind(this)}
-        >
-          <img src={PaperClipSvg} className="chatControlsAttachImage" width={20}/>
-        </button>
+        <div className="input-group-prepend">
+          <button
+            className="chatControlsAttachButton input-group-text"
+            type="button"
+            onClick={this.onClickFileAttach.bind(this)}
+          >
+            <img src={PaperClipSvg} className="chatControlsAttachImage" width={20}/>
+          </button>
+        </div>
         <Field
           name="message"
           type="text"
           ref={(ref: any) => {
             this.messageInput = ref;
           }}
-          className="chatControlsInput"
+          className="chatControlsInput form-control"
           component="input"
           placeholder="Enter message..."
           autoFocus
           withRef
         />
-        <button
-          className="chatControlsSubmit"
-          type="submit"
-        >
-          Send
-        </button>
+        <div className="input-group-append">
+          <button
+            className="chatControlsSubmit input-group-text"
+            type="submit"
+          >
+            <img src={TelegramSvg} className="chatControlsAttachImage" width={20}/>
+          </button>
+        </div>
       </form>
     );
   }

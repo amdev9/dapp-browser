@@ -1,9 +1,13 @@
+.input-group-append {
+    outline: none !important;
+}
 .roomList {
     width: 250px;
     border-right: 2px solid #ccc6;
     display: flex;
     flex-direction: column;
     overflow-y: scroll;
+    position: relative;
 }
 
 .roomListEmpty {
@@ -14,24 +18,39 @@
 }
 
 .roomListItem {
-    border-bottom: 1px solid #ccc6;
-    padding: 10px;
     text-overflow: ellipsis;
     overflow: hidden;
     cursor: pointer;
-    position: relative;
-    line-height: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.roomListItem:hover {
-    background: #ccc;
+    border-width: 0 !important;
+    border-radius: 0 !important;
+    color: #fff;
+    background-color: #007bff;
+    text-decoration: none;
+    padding-right: 49px !important;
 }
 
 .roomListItem.roomListItem_active {
     font-weight: bold;
+}
+.roomListItem .badge {
+    margin-top: 4px;
+}
+
+.rootListClose {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 44px;
+    height: 100%;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rootListClose:hover {
+    background: #bbb;
 }
 
 .roomListRoomUnreadMessages {

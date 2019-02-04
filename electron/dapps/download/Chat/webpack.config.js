@@ -17,11 +17,10 @@ module.exports = {
       {test: /\.(ts|tsx)$/, loader: 'ts-loader'},
       {
         test: /\.css$/,
-        loader: 'style-loader!css-loader',
-        exclude: /node_modules/
+        use: ['style-loader', 'css-loader']
       },
       {
-        test: /\.(jpg|png|svg)$/,
+        test: /\.(jpg|png|svg|ttf|otf|eot|woff(2)?)$/,
         loader: 'file-loader',
         options: {
           name: '[path][name].[ext]'

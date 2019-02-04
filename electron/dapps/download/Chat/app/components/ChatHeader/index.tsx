@@ -32,19 +32,7 @@ class ChatHeader extends React.Component<Props> {
   render() {
     return (
       <div className="chatHeader">
-        <h1 className="chatHeaderText">{this.props.selectedRoomName}</h1>
-        <div className="chatHeaderButtonWrapper">
-          <button
-            className="chatHeaderButton chatHeaderButton_openButton"
-            onClick={() => this.props.deselectRoom()}>
-            Open new room
-          </button>
-          <button
-            className="chatHeaderButton chatHeaderButton_closeButton"
-            onClick={() => this.props.leaveRoom()}>
-            Leave room
-          </button>
-        </div>
+        <h4 className="chatHeaderText">{this.props.selectedRoomName}</h4>
       </div>
     );
   }
