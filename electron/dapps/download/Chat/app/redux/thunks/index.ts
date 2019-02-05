@@ -34,7 +34,7 @@ export const addRoomThunk = (roomName: string) => async (dispatch: any, getState
   dispatch(selectRoom(room.id));
 };
 
-export const roomRemoveThunk = (roomId: string) => (dispatch: any, getState: any) => {
+export const roomLeaveThunk = (roomId: string) => (dispatch: any, getState: any) => {
   const state: IState = getState();
   const selectedRoom = state.rooms.selectedRoom;
   const room = RoomComponentStore.getRoomById(roomId);
@@ -78,7 +78,7 @@ export const removeSelectedRoomThunk = () => (dispatch: any, getState: any) => {
   const state: IState = getState();
 
   if (state.rooms.selectedRoom) {
-    dispatch(roomRemoveThunk(state.rooms.selectedRoom));
+    dispatch(roomLeaveThunk(state.rooms.selectedRoom));
   }
 };
 
