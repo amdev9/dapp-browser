@@ -32,7 +32,7 @@
     "build-dapps": "concurrently \"npm run build-dapp-Chat\" \"npm run build-dapp-Wallet\" \"npm run build-dapp-TicTacToe\" \"npm run build-dapp-BlockExplorer\"",
     "build-main": "cd electron/main && npm run build",
     "build-permission": "cd electron/permissionManager && npm run build",
-    "build-combine": "npm run install-packages-apps && npm run build-client && npm run build-main && npm run build-permission && npm run build-dapp-lib",
+    "build-combine": "npm run install-packages-apps && npm run build-client && npm run build-main && npm run build-permission && npm run build-dapps && npm run build-dapp-lib",
     "build": "npm i && npm run clean && npm run build-combine && cd electron/main && npm run dist",
     "build-win": "npm i && npm run clean && npm run build-combine && cd electron/main && npm run dist",
     "clear-dist-client": "cd electron/client && npm run clear-dist",

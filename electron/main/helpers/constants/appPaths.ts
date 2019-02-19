@@ -12,7 +12,8 @@ export const PERMISSION_PATH: string =
   isDev ? path.join(__dirname, '..', '..', 'permissionManager') : path.join(__dirname, 'permissionManager');
 
 export const DAPPS_DOWNLOAD_PATH: string =
-  isDev ? path.join(__dirname, '..', '..', 'dapps', 'download') : path.join(appTempPath, 'dapps');
+  isDev ? path.join(__dirname, '..', '..', 'dapps', 'download') : path.join(__dirname, 'dapps', 'download');
+// isDev ? path.join(__dirname, '..', '..', 'dapps', 'download') : path.join(appTempPath, 'dapps');
 
 export const DAPP_LIB_BUNDLE_PATH: string =
   isDev ? path.join(__dirname, '..', '..', 'dapps', 'lib', 'build', 'app.bundle.js') : path.join(__dirname, 'dapps', 'lib', 'build', 'app.bundle.js');
