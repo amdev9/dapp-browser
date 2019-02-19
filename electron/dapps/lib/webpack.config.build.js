@@ -44,6 +44,7 @@ module.exports = {
       onEnd: {
         copy: [
           { source: './build/app.bundle.js', destination: '../../main/dist/dapps/lib/build/app.bundle.js' },
+          { source: '../download', destination: '../../main/dist/dapps/download' },
         ],
       }
     })
