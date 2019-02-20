@@ -2,6 +2,10 @@
   <img src="logo_white.png" height="250px" width="250px" /> 
 </p>
 
+# Demo
+
+![alt image](.gif)
+
 # Client documentation
 
 - [Architecture](#architecture)
