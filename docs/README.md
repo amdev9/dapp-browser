@@ -118,58 +118,6 @@ Each dispatched action, before it reaches the target dapp, is passed to the main
 
 ![Permission middleware failure](diagrams/permissionMIddlewareFailure.png?raw=true "Permission middleware failure")
 
-<!-- 
-## Component channel resolver
-
-To get data from a **main process component** (i.e. LocalStorage, Network, etc), you schould resolve `CHANNEL_ID` for a dapp renderer process. This is done in eight steps that are described further on.
-
-Every component channel has a particular event identifier for each request, which helps us to map requests from start to finish and distinguish the requests with absolute certainty.
-
-
-```
-      Renderer                     |            Main
------------------------------------------------------------------------
-                                   |
-  [payload] ==> ([payload], id1) ==|==> process [payload] --
-                                   |                        |
-  waiting (callback, id1) <========|==== ([result], id1) ----
-                                   |    
-  (id1 == id1) => callback(result) |
-```
-1. Renderer passes a payload
-2. A unique ID is created and saved on the renderer side
-3. A map `payload, ID` is passed to the main process
-4. ID1 is saved and mapped as `channel, UUID`
-5. Payload is processed. You get the result
-6. ID1 is retrived, mapped as `result, id1` and passed on
-7. Renderer gets a map `result, id1` and checks it against the identifiers that have been saved before
-8. The result is passed. It should correspond to the callback function
-
-![Resolve channelId](./diagrams/channelIdResolve.png?raw=true "Resolve channelId")
-
-
-
-![Resolve channelId failure](./diagrams/channelIdResolveFailure.png?raw=true "Resolve channelId failure")
-
-Each component has its own channel which is responsible for data transportation. We use separate channels for each component-related action for security reasons. For a dapp process to start off, it should have access. Before giving it access, we check the component permission in the manifest file, create and pass channel ID to a preload script. This is how we build a security layer on the renderer side. 
-
-### Actions roadmap
-- Request permission before the beginning of the renderer process, pass a map to the main process:
-```javascript
-{ channelProposal: 'PERMISSION/PROPOSAL', channelId: 'CHANNEL_ID'}
-```
-- When the renderer initiates the data to be sent through the channel, it passes an action with a preload script and a payload:
-```javascript
-{ type: 'INTENT_CHANNEL_DATA_PASS', payload: { uuid: '[UUID_RECEIVER_RENDERER]', channelProposal: '[PERMISSION/PROPOSAL]' } }
-```
-
-- The main process validates a `UUID`, resolves `CHANNEL-ID` and publishes an action: 
-```javascript
-  { type: 'ACCEPT_CHANNEL_DATA_PASS', payload: { channelId: '[CHANNEL_ID]', uuid: '[UUID_RECEIVER_RENDERER]' } }
-```
-- The renderer passes the data through the `CHANNEL_ID` that was resolved in the main action -->
-
-
 ## Dapp communication protocol
 
 Each dapp can initiate communication with another dapp. The sender dapp dispatches `INTENT_OPEN_CHANNELS` action which triggers a handshake processing algorithm on the main side. See the details in the diagram below.
@@ -232,37 +180,7 @@ System components are proxy classes and wrapper classes that are isolated for se
 
 Allow dapp to persist data which have to be accessed on dapp initialization (settings, game scores, chat room's list etc.).
 For large amounts of data have to use [IPFS component](#arrayipfsstorage).
-
-<!-- This component allows to store local data in the BrowserWindow. It is particularly useful for dapps that do not require persistent Internet connection or for dapps that need to store large amounts of data (e.g. a catalog of DVDs in a lending library).
-
-After Local Storage permission is granted and the dapp process is started off, we provide a ready-to-initialize instance of Localforage storage with an IndexedDb adapter. 
-
-## Permissions signal sequence (Success scenario)
-1. Dapp developer initiates instance `new LocalStorage()`
-2. Create a wrapper class with corresponding data manipulation methods. The class  `new LocalStorage()` extends `Localforage` class with `IndexedDb` adapter.
-
-LocalStorage component wraps `localforage` initialization (only if correspond permissions granted): 
-
-```javascript
-localforage.config({
-    driver      : localforage.IndexedDb, // Force WebSQL; same as using setDriver()
-    name        : 'myApp',
-    version     : 1.0,
-    size        : 4980736, // Size of database, in bytes. WebSQL-only for now.
-    storeName   : 'keyvaluepairs', // Should be alphanumeric, with underscores.
-    description : 'some description'
-});
-
-var store = localforage.createInstance({
-  name: "nameHere"
-});
-
-```
-
-## External refferences:
-https://github.com/localForage/localForage<br>
-https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Basic_Concepts_Behind_IndexedDB<br/> -->
-
+ 
 -------------------------
 
 # IPFS Storage
