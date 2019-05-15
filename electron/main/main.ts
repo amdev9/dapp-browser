@@ -43,10 +43,10 @@ let template: any[] = [];
 if (process.platform === 'darwin') {
   // OS X
   template.unshift({
-    label: 'Array.io',
+    label: 'DappIO.io',
     submenu: [
       {
-        label: 'About Array.io',
+        label: 'About DappIO.io',
         role: 'about',
       },
       {
@@ -73,7 +73,7 @@ if (process.platform === 'darwin') {
 } else {
   // Win, Linux
   template = [{
-    label: 'Array.io',
+    label: 'DappIO.io',
     submenu: [{
       label: 'Выход',
       accelerator: 'Command+Q',

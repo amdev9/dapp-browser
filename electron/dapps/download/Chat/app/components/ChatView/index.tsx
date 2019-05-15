@@ -6,7 +6,7 @@ import ChatWindow from '../ChatWindow';
 import ChatControls from '../ChatControls';
 import { IState } from '../../redux/reducers';
 
-const ArrayIO = require('array-io');
+const DappIO = require('dapp-io');
 
 import './styles.css';
 

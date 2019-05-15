@@ -1,5 +1,5 @@
 {
-  "name": "array-io-client",
+  "name": "dapp-browser",
   "version": "0.0.1",
   "description": "",
   "main": "./electron/main/dist/main.js",

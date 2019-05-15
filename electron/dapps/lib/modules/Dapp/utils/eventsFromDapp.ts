@@ -8,7 +8,7 @@ interface ActionEventMatch {
   event: any;
 }
 
-// Transform dispatched action to event from ArrayIO library
+// Transform dispatched action to event from DappIO library
 const matchActionToEvent: ActionEventMatch[] = [
   { event: 'setTrayCounter', action: (counter: number) => mainActions.setTrayCounter(counter) },
 ];

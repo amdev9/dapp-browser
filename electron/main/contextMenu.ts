@@ -59,7 +59,7 @@ function create(win: any, options: any) {
     if (options.prepend) {
       const result = options.prepend(props, win);
 
-      if (Array.isArray(result)) {
+      if (DappIO.isDappIO(result)) {
         menuTpl.unshift(...result);
       }
     }
@@ -67,7 +67,7 @@ function create(win: any, options: any) {
     if (options.append) {
       const result = options.append(props, win);
 
-      if (Array.isArray(result)) {
+      if (DappIO.isDappIO(result)) {
         menuTpl.push(...result);
       }
     }

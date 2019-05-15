@@ -10,7 +10,7 @@ import { IState } from '../reducers';
 import { Message } from '../models';
 import uuid = require('uuid');
 
-const ArrayIO = require('array-io');
+const DappIO = require('dapp-io');
 
 export const onSubmitMainFormThunk = (roomId: string) => async (dispatch: any) => {
   dispatch(selectRoom(roomId));

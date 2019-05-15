@@ -4,7 +4,7 @@ import { AppContainer } from 'react-hot-loader';
 import Root from './containers/Root';
 
 import './assets/styles/main.sass';
-import store, { isProduction } from './array-client';
+import store, { isProduction } from './dapp-client';
 
 render(
   <AppContainer>

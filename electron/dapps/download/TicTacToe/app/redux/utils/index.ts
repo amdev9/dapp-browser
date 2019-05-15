@@ -2,7 +2,7 @@ import { Subject } from 'rxjs';
 import { ofType } from 'redux-observable';
 import { AnyAction } from 'redux';
 import { action } from 'typesafe-actions';
-const ArrayIO = require('array-io');
+const DappIO = require('dapp-io');
 
 import * as constants from '../constants';
 
@@ -112,7 +112,7 @@ const getRandomSymbol = (): string => {
 }
 
 export async function createGame(options: CreateGameOptions): Promise<InitGameInterface> {
-  const chat: ArrayIO.IpfsRoom = new ArrayIO.IpfsRoom();
+  const chat: DappIO.IpfsRoom = new DappIO.IpfsRoom();
   const observable: Subject<AnyAction> = new Subject();
   let myPeerId: string = '', enemyId: string = '', currentPlayerStep: boolean = false, playerSymbol: string = '';
 

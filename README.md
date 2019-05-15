@@ -2,11 +2,7 @@
 
 
 ## Documentation 
-https://bitbucket.org/cypherpunk99/array-io-client/src/develop/docs/
-
-## Demo
-
-![alt image](https://bitbucket.org/cypherpunk99/array-io-client/raw/da31a0bf95766de1f651452cc3a38a9b84e33caf/docs/doc_2019-02-20_12-50-37.gif)
+https://github.com/cypherpunk99/dapp-browser/src/develop/docs/
 
 ## Deploy instruction
 
@@ -14,7 +10,7 @@ For **Linux** enable sandbox (change value from `0` to `1`): `/proc/sys/kernel/u
 
 **Development setup:**
 ```
-git clone https://github.com/arrayio/array-io-client && cd array-io-client
+git clone https://github.com/cypherpunk99/dapp-browser && cd dapp-browser
 npm install
 npm run setup
 ```

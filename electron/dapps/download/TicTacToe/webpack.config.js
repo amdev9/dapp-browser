@@ -11,7 +11,7 @@ module.exports = {
     filename: 'dapp.js',
   },
   externals: {
-    'array-io': 'ArrayIO'
+    'dapp-io': 'DappIO'
   },
   module: {
     rules: [

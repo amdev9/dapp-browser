@@ -37,8 +37,8 @@ declare module "bitsharesjs-ws" {
         init_promise: Promise<any>;
         
         db_api(): {
-            exec(method: "get_witnesses", ids: Array<string[]>): Promise<Witness[]>;
-            exec(method: "get_block", ids: Array<string|number>): Promise<Block>;
+            exec(method: "get_witnesses", ids: DappIO<string[]>): Promise<Witness[]>;
+            exec(method: "get_block", ids: DappIO<string|number>): Promise<Block>;
             exec(method: "get_full_accounts", ids: any[]): Promise<[
                 [string, Account[]] // (witness, account) 
             ]>;

@@ -19,7 +19,7 @@ describe('parseDapps', () => {
     it('Parse dapps folder if folder does not exist', async () => {
       const dapps = await AppsManager.parseDapps();
 
-      chai.expect(dapps).to.be.an('array').that.is.empty;
+      chai.expect(dapps).to.be.an('dapp').that.is.empty;
     });
   });
 

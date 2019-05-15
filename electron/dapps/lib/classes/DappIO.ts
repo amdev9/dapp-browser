@@ -8,7 +8,7 @@ type NetworkSubscribeOptions = {
   onGetBlock: (block: any) => void;
 };
 
-class ArrayIO extends StoreSubscriber {
+class DappIO extends StoreSubscriber {
   networkGetBlock() {
     return this.actionPromise({
       onStart: actions.networkGetBlock(),
@@ -61,4 +61,4 @@ class ArrayIO extends StoreSubscriber {
   }
 }
 
-export default new ArrayIO();
+export default new DappIO();

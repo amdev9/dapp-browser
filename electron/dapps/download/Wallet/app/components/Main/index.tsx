@@ -1,8 +1,8 @@
 import * as React from 'react';
-const ArrayIO = require('array-io');
-const keychain: ArrayIO.Keychain = new ArrayIO.Keychain();
-const ethereum: ArrayIO.Ethereum = new ArrayIO.Ethereum();
-const logger: ArrayIO.Logger = new ArrayIO.Logger();
+const DappIO = require('dapp-io');
+const keychain: DappIO.Keychain = new DappIO.Keychain();
+const ethereum: DappIO.Ethereum = new DappIO.Ethereum();
+const logger: DappIO.Logger = new DappIO.Logger();
 
 interface MainState {
   to: string;

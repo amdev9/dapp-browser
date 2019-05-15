@@ -9,7 +9,7 @@ module.exports = {
   output: {
     path: __dirname + '/build',
     filename: 'app.bundle.js',
-    library: 'ArrayIO',
+    library: 'DappIO',
     libraryTarget: 'umd',
   },
   module: {

@@ -17,18 +17,18 @@
   - [Logger](#logger)
   - [Keychain](#keychain)
   - [Network](#network)
-- [Array library documentation](#array-library-documentation)
+- [DappIO library documentation](#dappio-library-documentation)
   - [Dapp manifest](manifest.md)
-  - [array.dapp](#arraydapp)
-  - [array.dapp.subscribe](#arraydappsubscribe)
-  - [array.Ipc](#arrayipc)
+  - [dappio.dapp](#dappiodapp)
+  - [dappio.dapp.subscribe](#dappiodappsubscribe)
+  - [dappio.Ipc](#dappioipc)
     - [Dapp activity declarations](#dapp-activity-declarations)
-  - [array.LocalStorage](#arraylocalstorage)
-  - [array.IpfsStorage](#arrayipfsstorage)
-  - [array.OrbitDb](#arrayorbitdb)
-  - [array.Logger](#arraylogger)
-  - [array.Keychain](#arraykeychain)
-  - [array.Network](#arraynetwork)
+  - [dappio.LocalStorage](#dappiolocalstorage)
+  - [dappio.IpfsStorage](#dappioipfsstorage)
+  - [dappio.OrbitDb](#dappioorbitdb)
+  - [dappio.Logger](#dappiologger)
+  - [dappio.Keychain](#dappiokeychain)
+  - [dappio.Network](#dappionetwork)
 
 
 # Architecture  
@@ -66,14 +66,14 @@ If an action is dispatched in the main process, it is handled there first, then 
 This makes the main process’ store the One True Store, and ensures that the others are eventually consistent. 
 With this strategy, there’s no need to shuttle state or get into the serialization game. 
 
-ARRAY solves the side-effects of the Redux asynchronous actions with [redux-observable]( https://github.com/redux-observable/redux-observable)
+DAPPIO solves the side-effects of the Redux asynchronous actions with [redux-observable]( https://github.com/redux-observable/redux-observable)
 > It becomes really powerful when combined with a Redux store in each process, 
 because now we can kickoff main process side-effects from a renderer and vice-versa, 
 in a decoupled way. It’s similar to an event bus or pub-sub, but across Chromium processes.
 
 -----------------------------------------------------------------------
 
-ARRAY stack: 
+DAPPIO stack: 
 - Electron.js (sandboxed BrowserWindow and BrowserViews, safe hardcoded list ipc communication channels)
 - React.js
 - Redux + redux-electron
@@ -107,7 +107,7 @@ Start-stop channels: https://github.com/MichaelVasseur/electron-ipc-bus
 
 ![forwardToRendererWrapper middleware mechanizm](./diagrams/forwardToRendererWrapper.png?raw=true "forwardToRendererWrapper middleware mechanizm")
 
-A `UUID` is a unique identifier that is given to a renderer process in `aditionalParams`. With the help of `UUID` we can identify and map every process with a unique token ID. This way an action is delivered directly to the renderer process and then passed to the main process where a given `UUID` is mapped with a dapp name. It is implemented by filtering an array `globalUUIDlist` and choosing a pair 'name - ID' from it. When `UUID` is given to a renderer ID, it becomes possible to acсess `webContents` via `webContents.fromID(id)` Electron method. 
+A `UUID` is a unique identifier that is given to a renderer process in `aditionalParams`. With the help of `UUID` we can identify and map every process with a unique token ID. This way an action is delivered directly to the renderer process and then passed to the main process where a given `UUID` is mapped with a dapp name. It is implemented by filtering an dappio `globalUUIDlist` and choosing a pair 'name - ID' from it. When `UUID` is given to a renderer ID, it becomes possible to acсess `webContents` via `webContents.fromID(id)` Electron method. 
 
 
 ## Redux middleware for permission check
@@ -179,7 +179,7 @@ System components are proxy classes and wrapper classes that are isolated for se
 # Local Storage
 
 Allow dapp to persist data which have to be accessed on dapp initialization (settings, game scores, chat room's list etc.).
-For large amounts of data have to use [IPFS component](#arrayipfsstorage).
+For large amounts of data have to use [IPFS component](#dappioipfsstorage).
  
 -------------------------
 
@@ -231,7 +231,7 @@ Keychain component provides transaction signing methods. It uses third-party Key
  
 # Network
 
-For proceed network queries with blockchain node. Make JSON-RPC calls to blockchain node. Network component can work with different blockchain nodes - ARRAY, bitshares, ethereum, etc.
+For proceed network queries with blockchain node. Make JSON-RPC calls to blockchain node. Network component can work with different blockchain nodes - DAPPIO, bitshares, ethereum, etc.
 
 
 ## Permissions signal sequence (success scenario)
@@ -240,10 +240,10 @@ For proceed network queries with blockchain node. Make JSON-RPC calls to blockch
  
  
 
-# Array library documentation
+# DappIO library documentation
 
 ```
-array
+dappio
 |- dapp -|
 |        |- subscribe
 |
@@ -258,8 +258,8 @@ array
 ```
 
 
-# array.dapp
-The `array.dapp` object controls your dapp's event lifecycle.
+# dappio.dapp
+The `dappio.dapp` object controls your dapp's event lifecycle.
 
 ## Events
  
@@ -283,11 +283,11 @@ Returns:
 Emitted when the user quits the application.
 
 
-# array.dapp.subscribe 
-The `array.dapp.subscribe` function lets you subscribe to specific events your dapp depends on. Every component class uses `dapp.subscribe` with a certain subscription type.
+# dappio.dapp.subscribe 
+The `dappio.dapp.subscribe` function lets you subscribe to specific events your dapp depends on. Every component class uses `dapp.subscribe` with a certain subscription type.
 
 ```
-array.dapp.subscribe(type [, options] [, callback]);
+dappio.dapp.subscribe(type [, options] [, callback]);
 ```
 Parameters
 ----------
@@ -305,7 +305,7 @@ Example
 -------
 
 ```javascript
-    var subscription = array.dapp.subscribe('pendingTransactions', function(error, result) {
+    var subscription = dappio.dapp.subscribe('pendingTransactions', function(error, result) {
         if (!error) { console.log(result); }
     })
     .on("data", function(transaction) {
@@ -318,15 +318,15 @@ Example
 ```
 ## Callbacks Promises Events
 
-To help ARRAY integrate into all kinds of projects with different standards, we provide various approaches to work with asynchronous functions.
+To help DAPPIO integrate into all kinds of projects with different standards, we provide various approaches to work with asynchronous functions.
 
-Most array.js objects allow a callback as the last parameter, as well as returning promises to the chain functions.
+Most dappio.js objects allow a callback as the last parameter, as well as returning promises to the chain functions.
 
 A promise combined with an event emitter allows you to interfere with the process during any stage of action.
 
 PromiEvents work like ordinary promises with the added 'on', 'once' and 'off' functions. This way developers can watch for additional events.
 
-# array.Ipc
+# dappio.Ipc
 This module allows you to communicate asynchronously between two dapp processes.
 The `Ipc` module is an instance of the `EventEmitter` class. It provides a few methods which enable you to:
 * send synchronous and asynchronous messages from one dapp to another
@@ -346,7 +346,7 @@ Example
 -------
 
 ```javascript
-  const { Ipc } = require('array');
+  const { Ipc } = require('dappio');
   const dComm = new Ipc('dappName');
   
   dComm.on('asynchronous-message', (event, arg) => {
@@ -367,7 +367,7 @@ To simplify and formalize the dapp communication protocol dapp, developers were 
 Example:
 --------
 ```javascript
-  const { Ipc } = require('array');
+  const { Ipc } = require('dappio');
   const dComm = new Ipc('dappName');
   const { dFunc1, dFunc2 } = dComm; // 'dappName' dapp activities
   
@@ -376,10 +376,10 @@ Example:
    
 ```
 #### Links
-https://github.com/arrayio/docs.array.io/blob/master/ru_RU/src/components/activity.md
+https://github.com/dappioio/docs.dappio.io/blob/master/ru_RU/src/components/activity.md
 
 
-# array.FileManager
+# dappio.FileManager
 
 The FileManager class provides a secure approach to the local user files management. It encapsulates permission mechanizms and incorporates methods for resource-effiecient file handling.
 
@@ -390,7 +390,7 @@ Example usage
 -------------
 
 ```javascript
-const { FileManager } = require('array');
+const { FileManager } = require('dappio');
 let fmanager = new FileManager();
 let videoInstance = await fmanager.openFileDialog(); // request filepath from dapp user 
 ```
@@ -400,11 +400,11 @@ let videoInstance = await fmanager.openFileDialog(); // request filepath from da
 https://electronjs.org/docs/api/dialog
 
 
-# array.LocalStorage
+# dappio.LocalStorage
 Local Storage gives you the opportunity to persist data. 
 We use `redux-persist` in combination with `SQLite`. 
 
-# array.IpfsStorage
+# dappio.IpfsStorage
 `IpfsStorage` lets you interact with the IPFS storage.
 
 * Create instance via `ipfs = new IpfsStorage()`  
@@ -416,7 +416,7 @@ Example usage
 -------------
 
 ```javascript
-const { IpfsStorage, FileManager } = require('array');
+const { IpfsStorage, FileManager } = require('dappio');
 let fmanager = new FileManager();
 let videoInstance = await fmanager.openFileDialog(); // request filepath from dapp user 
 let ipfs = new IpfsStorage();
@@ -427,7 +427,7 @@ let response = ipfs.transfer(videoInstance, 1000, function(error, result) {
   console.log('Yoohoo! Another 1000 KB uploaded successfully!');
 }); 
 ```
-# array.OrbitDb
+# dappio.OrbitDb
 The `OrbitDb` module is a collection of methods that enable you to work with broadcasting channels in IPFS. For example, we can `create` a broadcasting channel, subscribe to feed via `connect` method, or propogate messages via `broadcast` method.
 
 * Create database instance via `orbit = new OrbitDb()`  
@@ -437,11 +437,11 @@ Example usage
 -------------
 
 ```javascript
-  const { OrbitDb } = require('array');
+  const { OrbitDb } = require('dappio');
   ipfs = new OrbitDb();
  
 ```
-# array.Logger
+# dappio.Logger
 The `Logger` module provides methods for logging such messages, as `debug`, `info`, `warning`, `error`. 
 
 * Create logger instance via `log = new Logger()`  
@@ -451,14 +451,14 @@ Example usage
 -------------
 
 ```javascript
-  const { Logger } = require('array');
+  const { Logger } = require('dappio');
   log = new Logger();
   log.info('Dapp started!', function(error, result) {
     if (!error) { console.log(result); }
   });
 ```
 
-# array.Keychain
+# dappio.Keychain
 The `Keychain` module provides the methods to work with transaction signing.
 They enable you to:
 * Create new keys
@@ -472,7 +472,7 @@ Example usage
 -------------
 
 ```javascript
-const { Keychain } = require('array');
+const { Keychain } = require('dappio');
 kchain = new Keychain();
 // client usage
 const keyname = "my_awesome_key";
@@ -484,10 +484,10 @@ let signed = await kchain.sign(
 );
 ```
 #### Links
-https://github.com/arrayio/docs.array.io/blob/master/ru_RU/src/components/keychain.md
+https://github.com/dappioio/docs.dappio.io/blob/master/ru_RU/src/components/keychain.md
 
 
-# array.Network
+# dappio.Network
 The `Network` module proceed network queries with blockchain node. Dapp developer can pass specific blockchain node name to `Network` class constructor.
 
 Module provide methods to:
@@ -501,7 +501,7 @@ Example usage
 -------------
 
 ```javascript
-const { Network } = require('array');
+const { Network } = require('dappio');
 let net = new Network('bitshares'); // proceed network queries with blockchain node - 'bitshares' node here
 let witnessId = 'de5f4d8974715e20f47c8bb609547c9e66b0b9e31d521199b3d8';
 let witness = await net.getWitnessByID(witnessId);
@@ -518,20 +518,3 @@ web3 events api: <br />
  https://github.com/ethereum/web3.js/blob/develop/lib/web3.js
 
  
-__________________________
-
-## Old documentation:
-
-- [Manifest](manifest.md)
- 
-- [Общие Абстракции](shared/README.md)
-  - [DApp Window Context](shared/dapp-window-context.md)
-  - [Dependencies](shared/dependencies.md)
-  - [Permissions](shared/permissions.md)
-- [Top-Level API](shared/README.md)
-  - [Activity](components/activity.md)
-  - [Keychain](components/keychain.md)
-- [Устаревшее](not-relevant/README.md)
-  - [Изоляция окружений](not-relevant/isolation.md)
-  - [SmartContract](not-relevant/contract.md)
-  - [Loader](not-relevant/loader.md)

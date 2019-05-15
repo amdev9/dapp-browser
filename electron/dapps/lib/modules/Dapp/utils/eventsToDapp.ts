@@ -9,7 +9,7 @@ interface EventActionMatch {
   event: any;
 }
 
-// Transform dispatched action to event from ArrayIO library
+// Transform dispatched action to event from DappIO library
 const matchActionToEvent: EventActionMatch[] = [
   { actionType: mainConstants.DAPP_ACTION_OPEN_LINK, event: 'openLink' },
   { actionType: mainConstants.DAPP_TRIGGER_ACTION, event: 'triggerAction' },

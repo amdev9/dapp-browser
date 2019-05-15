@@ -1,5 +1,5 @@
 import * as constants from '../constants';
 
-const ArrayIO = require('array-io');
+const DappIO = require('dapp-io');
 
-export const setTrayCounter = (counter: number) => ArrayIO.Dapp.emit(constants.EVENT_SET_TRAY_COUNTER, counter);
+export const setTrayCounter = (counter: number) => DappIO.Dapp.emit(constants.EVENT_SET_TRAY_COUNTER, counter);

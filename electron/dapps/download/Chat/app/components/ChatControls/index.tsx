@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 
-const ArrayIO = require('array-io');
+const DappIO = require('dapp-io');
 
 import { RoomComponentStore } from '../../services/RoomComponentService';
 import * as thunks from '../../redux/thunks';
@@ -63,7 +63,7 @@ class ChatControls extends React.Component<FormProps<StateProps & DispatchProps>
       if (!selectedRoom) {
         return;
       }
-      const fileEntry = await ArrayIO.FileManager.openFile();
+      const fileEntry = await DappIO.FileManager.openFile();
       if (!fileEntry || !fileEntry.id) {
         throw Error('File entry incorrect');
       }

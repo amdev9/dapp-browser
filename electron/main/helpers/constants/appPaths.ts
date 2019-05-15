@@ -3,7 +3,7 @@ import * as os from 'os';
 
 const isDev = process.env.ELECTRON_ENV === 'development';
 
-export const appTempPath = path.join(os.tmpdir(), 'array-io-client-temp');
+export const appTempPath = path.join(os.tmpdir(), 'dapp-io-client-temp');
 
 export const RENDERER_PATH: string =
   isDev ? path.join(__dirname, '..', '..', 'client') : path.join(__dirname, 'client');

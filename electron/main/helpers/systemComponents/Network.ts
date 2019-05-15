@@ -4,7 +4,7 @@ import { Store } from 'redux';
 import { IState } from '../reducers/state';
 import * as constants from '../constants';
 
-const DEFAULT_BLOCKCHAIN_URI = 'ws://hawking.array.io:8090/ws';
+const DEFAULT_BLOCKCHAIN_URI = '[ws_connection_endpoint]';
 
 function normalize(height: number, block: Block, witness: string): NetworkAPI.Enriched {
   return {
@@ -51,7 +51,7 @@ export class NetworkAPI {
   }
 
   async init() {
-    await Apis.instance('ws://hawking.array.io:8090/ws', true).init_promise
+    await Apis.instance('[ws_connection_endpoint]', true).init_promise
       .then(response => ChainStore.init());
   }
 

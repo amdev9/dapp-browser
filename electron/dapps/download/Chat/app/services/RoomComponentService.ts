@@ -1,9 +1,9 @@
 import * as uuid from 'uuid/v4';
 import { EventEmitter } from 'events';
-import { IpfsRoom, NotificationEvents, NotificationOptions } from '../../types/array-io';
+import { IpfsRoom, NotificationEvents, NotificationOptions } from '../../types/dapp-io';
 import { Message } from '../redux/models';
 
-const ArrayIO = require('array-io');
+const DappIO = require('dapp-io');
 
 const ON_JOIN_USER_MESSAGE = 'User has joined';
 const ON_LEFT_USER_MESSAGE = 'User has left';
@@ -57,7 +57,7 @@ export class RoomComponent {
   }
 
   static async create(roomName: string) {
-    const chatInstance: ArrayIO.IpfsRoom = new ArrayIO.IpfsRoom();
+    const chatInstance: DappIO.IpfsRoom = new DappIO.IpfsRoom();
     const roomComponent = new RoomComponent(roomName, chatInstance);
 
     await chatInstance.subscribe(roomName, {
@@ -90,7 +90,7 @@ export class RoomComponent {
   }
 
   showNotification(options: NotificationOptions, events: NotificationEvents) {
-    const removeNotification = ArrayIO.Notification.showNotification(options, events);
+    const removeNotification = DappIO.Notification.showNotification(options, events);
 
     this.notifications.push({ removeNotification });
   }

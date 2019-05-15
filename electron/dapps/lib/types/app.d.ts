@@ -1,4 +1,4 @@
-declare module 'array-io';
+declare module 'dapp-io';
 
 import { NotificationEvents, NotificationOptions } from '../classes/Notification';
 

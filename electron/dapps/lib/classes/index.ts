@@ -1,7 +1,7 @@
 export { default as Keychain } from './Keychain';
 export { default as Ethereum } from './Ethereum';
 export { default as Logger } from './Logger';
-export { default as ArrayIO } from './ArrayIO';
+export { default as DappIO } from './DappIO';
 export { default as Notification } from './Notification';
 export { component as Dapp } from '../modules/Dapp';
 export { component as IpfsRoom } from '../modules/IpfsRoom';

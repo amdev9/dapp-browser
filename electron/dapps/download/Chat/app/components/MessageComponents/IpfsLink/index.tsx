@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-const ArrayIO = require('array-io');
+const DappIO = require('dapp-io');
 
 import './styles.css';
 
@@ -28,7 +28,7 @@ export default class Index extends React.Component<IProps, IState> {
 
     try {
       this.setState({ showProgress: true });
-      await ArrayIO.IpfsStorage.downloadIpfsFile(hash);
+      await DappIO.IpfsStorage.downloadIpfsFile(hash);
     } catch (error) {
       console.log('Download error', error);
     }

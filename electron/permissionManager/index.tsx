@@ -4,7 +4,7 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { PermissionLayoutConnected } from './components/PermissionLayout';
 
-import store, { getPermissions, getAppName } from './array-permission';
+import store, { getPermissions, getAppName } from './dapp-permission';
 import './assets/styles/main.css';
  
 render(

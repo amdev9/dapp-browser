@@ -3,10 +3,10 @@ import * as events from './events';
 import * as actions from './actions';
 import * as thunks from './thunks';
 
-const ArrayIO = require('array-io');
+const DappIO = require('dapp-io');
 
 export default (store: any) => {
-  ArrayIO.Dapp.on(constants.EVENT_OPEN_LINK, (payload: { params: string[] }) => {
+  DappIO.Dapp.on(constants.EVENT_OPEN_LINK, (payload: { params: string[] }) => {
     const [roomName] = payload.params;
 
     if (roomName) {
@@ -14,11 +14,11 @@ export default (store: any) => {
     }
   });
 
-  ArrayIO.Dapp.on(constants.EVENT_DAPP_SET_FOCUS, () => {
+  DappIO.Dapp.on(constants.EVENT_DAPP_SET_FOCUS, () => {
     store.dispatch(thunks.setDappFocused());
   });
 
-  ArrayIO.Dapp.on(constants.EVENT_DAPP_RESET_FOCUS, () => {
+  DappIO.Dapp.on(constants.EVENT_DAPP_RESET_FOCUS, () => {
     store.dispatch(actions.resetDappFocused());
   });
 

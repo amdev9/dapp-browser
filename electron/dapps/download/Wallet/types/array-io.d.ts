@@ -1,6 +1,6 @@
-declare module 'array-io';
+declare module 'dapp-io';
 
-export as namespace ArrayIO;
+export as namespace DappIO;
 
 export class Keychain {
   constructor();

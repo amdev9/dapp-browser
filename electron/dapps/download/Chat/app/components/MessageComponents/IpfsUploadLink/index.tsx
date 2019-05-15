@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import CircularProgressbar from 'react-circular-progressbar';
 
-const ArrayIO = require('array-io');
+const DappIO = require('dapp-io');
 
 import './styles.css';
 import { RoomComponentStore } from '../../../services/RoomComponentService';
@@ -57,7 +57,7 @@ class IpfsUploadLink extends React.Component<IProps & StateProps & DispatchProps
     const { fileentryid, messageid, removeRoomMessage, selectedRoom } = this.props;
 
     try {
-      const ipfsEntry = await ArrayIO.IpfsStorage.uploadIpfsFile(fileentryid, (progress: number) => {
+      const ipfsEntry = await DappIO.IpfsStorage.uploadIpfsFile(fileentryid, (progress: number) => {
         this.setState({ progress });
       });
       removeRoomMessage(selectedRoom, messageid);

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-const ArrayIO = require('array-io');
+const DappIO = require('dapp-io');
 
 interface IProps {
   block: any;

@@ -10,7 +10,7 @@ export const remoteConfig = {
     Addresses: {
       Swarm: [
         '/ip4/0.0.0.0/tcp/0',
-        '/dns4/discovery.libp2p.array.io/tcp/9091/wss/p2p-websocket-star/',
+        '[discovery_libp2p_endpoint]',
       ],
       API: '/ip4/127.0.0.1/tcp/0',
       Gateway: '/ip4/0.0.0.0/tcp/0',

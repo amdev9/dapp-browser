@@ -1,7 +1,7 @@
 import * as React from 'react';
 import BlockTableRow from '../BlockTableRow';
 
-const ArrayIO = require('array-io');
+const DappIO = require('dapp-io');
 
 export type BlockObject = {
   block: any;
@@ -46,7 +46,7 @@ export default class BlocksTable extends React.Component<IProps, IState> {
   }
 
   async onClickSubscribe() {
-    const networkUnsubscriber = await ArrayIO.ArrayIO.networkSubscribe({
+    const networkUnsubscriber = await DappIO.DappIO.networkSubscribe({
       onGetBlock: (block: any) => this.setState({ blockList: [...this.state.blockList, block] })
     });
 
