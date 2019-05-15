@@ -2,7 +2,7 @@
 
 
 ## Documentation 
-https://github.com/cypherpunk99/dapp-browser/src/develop/docs/
+https://github.com/cypherpunk99/dapp-browser/tree/develop/docs/
 
 ## Deploy instruction
 
