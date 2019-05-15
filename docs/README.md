@@ -1,6 +1,3 @@
-<p align="center">
-  <img src="logo_white.png" height="250px" width="250px" /> 
-</p>
 
 # Client documentation
 
