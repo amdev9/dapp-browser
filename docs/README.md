@@ -15,7 +15,6 @@
   - [Keychain](#keychain)
   - [Network](#network)
 - [DappIO library documentation](#dappio-library-documentation)
-  - [Dapp manifest](manifest.md)
   - [dappio.dapp](#dappiodapp)
   - [dappio.dapp.subscribe](#dappiodappsubscribe)
   - [dappio.Ipc](#dappioipc)
