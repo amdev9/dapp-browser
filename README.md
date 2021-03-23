@@ -1,8 +1,10 @@
+## Demo
 
-
+![Demo gif](https://github.com/cypherpunk99/dapp-browser/blob/develop/docs/doc_2019-02-20_12-50-37.gif)
 
 ## Documentation 
-https://github.com/cypherpunk99/dapp-browser/tree/develop/docs/
+
+Details of architecture described in Readme https://github.com/cypherpunk99/dapp-browser/tree/develop/docs/README.md
 
 ## Deploy instruction
 
