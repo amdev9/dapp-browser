@@ -52,7 +52,7 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
-    "electron": "3.0.6",
+    "electron": "22.3.21",
     "electron-packager": "^12.2.0",
     "mocha": "^5.2.0",
     "spectron": "^5.0.0"
