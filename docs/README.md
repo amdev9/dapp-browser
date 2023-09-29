@@ -371,9 +371,6 @@ Example:
   let res2 = await dFunc2('Test func 2');
    
 ```
-#### Links
-https://github.com/dappioio/docs.dappio.io/blob/master/ru_RU/src/components/activity.md
-
 
 # dappio.FileManager
 
