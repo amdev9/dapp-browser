@@ -479,9 +479,6 @@ let signed = await kchain.sign(
   "871689d060721b5cec5a010080841e00000000000011130065cd1d0000000000000000"
 );
 ```
-#### Links
-https://github.com/dappioio/docs.dappio.io/blob/master/ru_RU/src/components/keychain.md
-
 
 # dappio.Network
 The `Network` module proceed network queries with blockchain node. Dapp developer can pass specific blockchain node name to `Network` class constructor.
